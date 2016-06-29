@@ -12,7 +12,7 @@ const folderPath = path.join(process.cwd(), packageName);
 
 log('Creating new widget', widgetName, 'to', folderPath);
 
-ncp('./widget-template', folderPath, function (err) {
+ncp(path.join(__dirname, 'widget-template'), folderPath, function (err) {
   if (err) {
     return console.error(err);
   }
