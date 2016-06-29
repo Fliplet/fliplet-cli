@@ -4,6 +4,11 @@ const ncp = require('ncp').ncp;
 
 ncp.limit = 16;
 
+if (process.argv.length < 3) {
+  log('Widget name is required');
+  process.exit();
+}
+
 const widgetName = process.argv[2];
 const packageName = widgetName.trim().replace(/ /g, '-').toLowerCase();
 const folderPath = path.join(process.cwd(), packageName);

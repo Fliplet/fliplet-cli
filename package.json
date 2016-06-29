@@ -1,6 +1,6 @@
 {
   "name": "fliplet-cli",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -14,6 +14,7 @@
   "dependencies": {
     "commander": "^2.9.0",
     "express": "^4.14.0",
+    "handlebars": "^4.0.5",
     "ncp": "^2.0.0",
     "replace": "^0.3.0"
   }
