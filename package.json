@@ -1,6 +1,6 @@
 {
   "name": "fliplet-cli",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -11,6 +11,8 @@
   "bin": {
     "fliplet": "./index.js"
   },
+  "homepage": "https://www.fliplet.com",
+  "repository": "WebooOnline/fliplet-cli",
   "dependencies": {
     "commander": "^2.9.0",
     "express": "^4.14.0",
