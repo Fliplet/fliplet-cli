@@ -1,0 +1,27 @@
+{
+  "fliplet-core": {
+    "category": "first-party",
+    "versions": {
+      "1.0": [
+        "core.js"
+      ]
+    }
+  },
+  "bootstrap": {
+    "category": "vendor",
+    "versions": {
+      "3.3.2": [
+        "bootstrap.css",
+        "bootstrap.js"
+      ]
+    }
+  },
+  "jquery": {
+    "category": "vendor",
+    "versions": {
+      "3.0.0": [
+        "jquery.js"
+      ]
+    }
+  }
+}
