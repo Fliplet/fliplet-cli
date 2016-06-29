@@ -4,7 +4,9 @@
 # Install
 With [node.js](http://nodejs.org/) and [npm](http://github.com/isaacs/npm):
 
-  npm install fliplet -g
+```
+npm install fliplet -g
+```
 
 You can now use the command `fliplet` from the command line. Just type `fliplet` to see the available options and their example usage.
 
