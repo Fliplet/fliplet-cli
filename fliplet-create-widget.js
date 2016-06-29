@@ -1,5 +1,3 @@
-#!/usr/bin/env node
-
 const path = require('path');
 const replace = require('replace');
 const ncp = require('ncp').ncp;

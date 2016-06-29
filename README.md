@@ -1,5 +1,5 @@
 # Fliplet CLI
-`fliplet` is a command line utility for creating and running widgets to be used on the Fliplet platform.
+Command line utility for creating and running widgets to be used on the Fliplet platform.
 
 # Install
 With [node.js](http://nodejs.org/) and [npm](http://github.com/isaacs/npm):
