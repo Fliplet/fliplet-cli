@@ -2,6 +2,7 @@ const fs = require('fs');
 const express = require('express');
 const Handlebars = require('handlebars');
 const path = require('path');
+const exec = require('child_process').exec;
 
 const folderPath = process.cwd();
 const packagePath = path.join(folderPath, 'widget.json');
@@ -20,6 +21,11 @@ try {
   log('Are you sure you are running this command from a widget folder?');
   process.exit();
 }
+
+log('');
+log('Please note: if you make any change to the widget dependencies, the server needs to be restarted.')
+log('Starting up widget development server for', package.name, '(' + package.package + ')...');
+log('');
 
 // --------------------------------------------------------------------------
 // Server configuration
@@ -57,8 +63,17 @@ app.get('/interface', function (req, res) {
 // --------------------------------------------------------------------------
 // Startup configuration
 
+const host = 'http://localhost:3000';
+
 app.listen(3000, function () {
-  console.log('[' + package.name + '] development server is up on http://localhost:3000');
+  log('[' + package.name + '] development server is up on', host);
+  setTimeout(function () {
+    try {
+      exec(['open', host].join(' '));
+    } catch (e) {
+      // nothing really
+    }
+  }, 500);
 });
 
 function log() {
