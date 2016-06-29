@@ -1,0 +1,23 @@
+{
+  "name": "{{name}}",
+  "package": "{{package}}",
+  "version": "1.0.0",
+  "icon": "img/icon.png",
+  "interface": {
+    "dependencies": [
+      "fliplet-core:1.0",
+      "jquery"
+    ],
+    "assets": [
+      "js/interface.js"
+    ]
+  },
+  "build": {
+    "dependencies": [
+      "bootstrap"
+    ],
+    "assets": [
+      "css/build.css"
+    ]
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "name": "fliplet-cli",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nicholas Valbusa",
+  "license": "ISC",
+  "bin": {
+    "fliplet": "./index.js"
+  },
+  "dependencies": {
+    "commander": "^2.9.0",
+    "ncp": "^2.0.0",
+    "replace": "^0.3.0"
+  }
+}
