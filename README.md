@@ -47,6 +47,10 @@ window.ENV = {
   widgetInstanceId: 1,                 // The unique ID of this widget instance
   apiUrl: "https://api.fliplet.com/"   // The endpoint to be used for API requests
 }
+
+window.widgetData = {
+  foo: "bar"                           // Data saved through "Fliplet.saveWidgetData"
+};
 ```
 
 ---

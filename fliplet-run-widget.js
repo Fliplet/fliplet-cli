@@ -50,9 +50,12 @@ app.get('/build', function (req, res) {
       return res.send('The build.html file was not found');
     }
 
-    html = Handlebars.compile(html)(widgetInstanceData);
-
-    res.send(assets.html(html, assets.parse(package.build.dependencies), package.build.assets));
+    res.send(assets.html({
+      html: html,
+      dependencies: assets.parse(package.build.dependencies),
+      assets: package.build.assets,
+      data: widgetInstanceData
+    }));
   });
 });
 
@@ -62,9 +65,12 @@ app.get('/interface', function (req, res) {
       return res.send('The interface.html file was not found');
     }
 
-    html = Handlebars.compile(html)(widgetInstanceData);
-
-    res.send(assets.html(html, assets.parse(package.interface.dependencies), package.interface.assets));
+    res.send(assets.html({
+      html: html,
+      dependencies: assets.parse(package.interface.dependencies),
+      assets: package.interface.assets,
+      data: widgetInstanceData
+    }));
   });
 });
 
