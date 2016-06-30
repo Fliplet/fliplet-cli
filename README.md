@@ -44,7 +44,17 @@ The interface and output of the widget have the following environment variables 
 
 ```
 window.env = {
-  widgetInstanceId: 1,                 // The unique ID of this widget
+  widgetInstanceId: 1,                 // The unique ID of this widget instance
   apiUrl: "https://api.fliplet.com/"   // The endpoint to be used for API requests
 }
+```
+
+By default, the dependencies of the interface contain `fliplet-core`, which will make available the following methods of the `Fliplet` JavaScript library:
+
+```
+// Saves the data of a widget instance
+Promise<> Fliplet.saveWidgetData (data)
+
+// Tells the UI this widget can be closed, optionally passing back some data
+void Fliplet.complete(data)
 ```
