@@ -40,16 +40,21 @@
                 border: 0;
             }
         </style>
+        <script>
+        window.onChildComplete = function (data) {
+            document.getElementById('iframe-build').contentWindow.location.reload();
+        }
+        </script>
     </head>
     <body>
         <div id="content">
             <section>
                 <h2>{{name}} interface</h2>
-                <iframe src="/interface" /></iframe>
+                <iframe src="/interface" id="iframe-interface" /></iframe>
             </section>
             <section>
                 <h2>{{name}} output</h2>
-                <iframe src="/build" /></iframe>
+                <iframe src="/build" id="iframe-build" /></iframe>
             </section>
         </div>
     </body>

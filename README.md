@@ -43,7 +43,7 @@ img/                  // Images
 The interface and output of the widget have the following environment variables available:
 
 ```
-window.env = {
+window.ENV = {
   widgetInstanceId: 1,                 // The unique ID of this widget instance
   apiUrl: "https://api.fliplet.com/"   // The endpoint to be used for API requests
 }

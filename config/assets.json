@@ -1,6 +1,7 @@
 {
   "fliplet-core": {
     "category": "first-party",
+    "dependencies": ["jquery"],
     "versions": {
       "1.0": [
         "core.js"

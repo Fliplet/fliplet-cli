@@ -1,6 +1,7 @@
 const fs = require('fs');
 const express = require('express');
 const Handlebars = require('handlebars');
+const bodyParser = require('body-parser');
 const path = require('path');
 const exec = require('child_process').exec;
 
@@ -12,6 +13,7 @@ const assets = require(path.join(__dirname, 'lib', 'assets'));
 var app = express();
 
 var package;
+var widgetInstanceData;
 
 try {
   package = require(packagePath);
@@ -31,6 +33,8 @@ log('');
 // Server configuration
 
 app.use(express.static(folderPath, { maxage: '1h' }));
+app.use(bodyParser.json({ limit: '10MB' }));
+app.use(bodyParser.urlencoded({ extended: true, limit: '10MB' }));
 
 // --------------------------------------------------------------------------
 // AWS configuration
@@ -41,12 +45,14 @@ app.get('/', function (req, res) {
 });
 
 app.get('/build', function (req, res) {
-  fs.readFile('./build.html', 'utf8', function (err, data) {
-    if (!data) {
+  fs.readFile('./build.html', 'utf8', function (err, html) {
+    if (!html) {
       return res.send('The build.html file was not found');
     }
 
-    res.send(assets.html(data, assets.parse(package.build.dependencies), package.build.assets));
+    html = Handlebars.compile(html)(widgetInstanceData);
+
+    res.send(assets.html(html, assets.parse(package.build.dependencies), package.build.assets));
   });
 });
 
@@ -58,6 +64,11 @@ app.get('/interface', function (req, res) {
 
     res.send(assets.html(data, assets.parse(package.interface.dependencies), package.interface.assets));
   });
+});
+
+app.post('/save-widget-data', function (req, res) {
+  widgetInstanceData = req.body;
+  res.status(200).send();
 });
 
 // --------------------------------------------------------------------------
