@@ -65,7 +65,7 @@ Promise<> Fliplet.saveWidgetData (data)
 void Fliplet.complete(data)
 ```
 
-You can see an example of how those functions are used in the default [interface.js(https://github.com/WebooOnline/fliplet-cli/blob/master/widget-template/js/interface.js) template of your widget.
+You can see an example of how those functions are used in the default [interface.js](https://github.com/WebooOnline/fliplet-cli/blob/master/widget-template/js/interface.js) template of your widget.
 
 ---
 
