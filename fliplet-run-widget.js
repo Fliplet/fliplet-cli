@@ -46,7 +46,7 @@ app.get('/build', function (req, res) {
       return res.send('The build.html file was not found');
     }
 
-    res.send(assets.html(data, assets.parse(package.build.dependencies)));
+    res.send(assets.html(data, assets.parse(package.build.dependencies), package.build.assets));
   });
 });
 
@@ -56,7 +56,7 @@ app.get('/interface', function (req, res) {
       return res.send('The interface.html file was not found');
     }
 
-    res.send(assets.html(data, assets.parse(package.interface.dependencies)));
+    res.send(assets.html(data, assets.parse(package.interface.dependencies), package.interface.assets));
   });
 });
 
