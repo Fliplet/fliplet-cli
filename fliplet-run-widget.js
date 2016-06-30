@@ -57,12 +57,14 @@ app.get('/build', function (req, res) {
 });
 
 app.get('/interface', function (req, res) {
-  fs.readFile('./interface.html', 'utf8', function (err, data) {
-    if (!data) {
+  fs.readFile('./interface.html', 'utf8', function (err, html) {
+    if (!html) {
       return res.send('The interface.html file was not found');
     }
 
-    res.send(assets.html(data, assets.parse(package.interface.dependencies), package.interface.assets));
+    html = Handlebars.compile(html)(widgetInstanceData);
+
+    res.send(assets.html(html, assets.parse(package.interface.dependencies), package.interface.assets));
   });
 });
 

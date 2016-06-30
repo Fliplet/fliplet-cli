@@ -49,6 +49,8 @@ window.ENV = {
 }
 ```
 
+---
+
 By default, the dependencies of the interface contain `fliplet-core`, which will make available the following methods of the `Fliplet` JavaScript library:
 
 ```
@@ -58,3 +60,7 @@ Promise<> Fliplet.saveWidgetData (data)
 // Tells the UI this widget can be closed, optionally passing back some data
 void Fliplet.complete(data)
 ```
+
+---
+
+The `interface.html` and `build.html` files gets compiled through *Handlebars*, and they also have available any data the widget instance has saved.
