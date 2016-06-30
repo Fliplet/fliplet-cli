@@ -65,6 +65,8 @@ Promise<> Fliplet.saveWidgetData (data)
 void Fliplet.complete(data)
 ```
 
+You can see an example of how those functions are used in the default [interface.js(https://github.com/WebooOnline/fliplet-cli/blob/master/widget-template/js/interface.js) template of your widget.
+
 ---
 
 The `interface.html` and `build.html` files gets compiled through *Handlebars*, and they also have available any data the widget instance has saved.
