@@ -1,7 +1,9 @@
-<h3>This is the output of your widget.</h3>
-
-{{#if name}}
-  <a class="btn btn-default" href="#" role="button">Hello {{name}}</a>
-{{else}}
-  <p>Try saving your name on the left hand side and see what happens!</p>
-{{/if}}
+<div class="container">
+  {{#if name}}
+    <h2>Hi {{name}}!</h2>
+    <a class="btn btn-default" href="#" role="button">It worked</a>
+  {{else}}
+    <h3>This is the output of your widget</h3>
+    <p>Try saving your <strong>name</strong> on the left hand side and see what happens!</p>
+  {{/if}}
+</div>
