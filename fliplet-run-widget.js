@@ -86,6 +86,11 @@ const host = 'http://localhost:3000';
 
 app.listen(3000, function () {
   log('[' + package.name + '] development server is up on', host);
+
+  if (process.argv.length > 2) {
+    return;
+  }
+
   setTimeout(function () {
     try {
       exec(['open', host].join(' '));

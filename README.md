@@ -59,14 +59,26 @@ By default, the dependencies of the interface contain `fliplet-core`, which will
 
 ```
 // Saves the data of a widget instance
-Promise<> Fliplet.saveWidgetData (data)
+Promise<> Fliplet.Widget.save (data)
 
 // Tells the UI this widget can be closed, optionally passing back some data
-void Fliplet.complete(data)
+Promise<> Fliplet.Widget.complete(data)
+
+// Get the list of pages of the app the widget belongs to
+Promise<> Fliplet.Pages.get()
 ```
 
 You can see an example of how those functions are used in the default [interface.js](https://github.com/WebooOnline/fliplet-cli/blob/master/widget-template/js/interface.js) template of your widget.
 
 ---
 
+### Templates
+
 The `interface.html` and `build.html` files gets compiled through *Handlebars*, and they also have available any data the widget instance has saved.
+
+The following handlebars helpers are available in the system:
+
+```
+// Compare two variables
+{{#equals foo 'bar'}}Yes it does{{/equals}}
+```
