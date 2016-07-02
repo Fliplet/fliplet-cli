@@ -31,8 +31,10 @@
                 text-transform: uppercase;
                 font-weight: normal;
                 font-size: 14px;
-                color: #999;
                 margin-bottom: 10px;
+            }
+            section h2 a {
+                color: #777;
             }
             iframe {
                 background: #FFF;
@@ -50,11 +52,11 @@
     <body>
         <div id="content">
             <section>
-                <h2>{{name}} interface</h2>
+                <h2><a href="/interface" target="_blank">{{name}} interface</a></h2>
                 <iframe src="/interface" id="iframe-interface" /></iframe>
             </section>
             <section>
-                <h2>{{name}} output</h2>
+                <h2><a href="/build" target="_blank">{{name}} output</a></h2>
                 <iframe src="/build" id="iframe-build" /></iframe>
             </section>
         </div>
