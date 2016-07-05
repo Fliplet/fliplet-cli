@@ -8,12 +8,29 @@
       ]
     }
   },
+  "fliplet-navigate": {
+    "category": "first-party",
+    "versions": {
+      "1.0": [
+        "navigate.js"
+      ]
+    }
+  },
   "bootstrap": {
     "category": "vendor",
+    "dependencies": ["jquery"],
     "versions": {
       "3.3.2": [
         "bootstrap.css",
         "bootstrap.js"
+      ]
+    }
+  },
+  "bootstrap-css": {
+    "category": "vendor",
+    "versions": {
+      "3.3.2": [
+        "bootstrap.css"
       ]
     }
   },

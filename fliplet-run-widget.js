@@ -52,6 +52,7 @@ app.get('/build', function (req, res) {
 
     res.send(assets.html({
       html: html,
+      rawDependencies: package.build.dependencies,
       dependencies: assets.parse(package.build.dependencies),
       assets: package.build.assets,
       data: widgetInstanceData
@@ -67,6 +68,7 @@ app.get('/interface', function (req, res) {
 
     res.send(assets.html({
       html: html,
+      rawDependencies: package.interface.dependencies,
       dependencies: assets.parse(package.interface.dependencies),
       assets: package.interface.assets,
       data: widgetInstanceData

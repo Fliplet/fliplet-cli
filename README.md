@@ -64,6 +64,9 @@ Promise<> Fliplet.Widget.save (data)
 // Tells the UI this widget can be closed, optionally passing back some data
 Promise<> Fliplet.Widget.complete(data)
 
+// Get the data of a widget instance, given the instance id
+Object|null Fliplet.Widget.getData(id)
+
 // Get the list of pages of the app the widget belongs to
 Promise<> Fliplet.Pages.get()
 ```
@@ -72,9 +75,20 @@ You can see an example of how those functions are used in the default [interface
 
 ---
 
+### Assets library
+
+The following assets are available in the system as depencencies for your widget:
+
+- `fliplet-core` (also includes jquery)
+- `bootstrap` (js and css; also includes jquery)
+- `bootstrap-css` (css only)
+- `jquery`
+
+You can list all their details by running `fliplet list-assets`.
+
 ### Templates
 
-The `interface.html` and `build.html` files gets compiled through *Handlebars*, and they also have available any data the widget instance has saved.
+The `interface.html` and `build.html` files gets compiled through *Handlebars*, and they also have available any data the widget instance has saved, and the widget instance id as `{{id}}`.
 
 The following handlebars helpers are available in the system:
 
