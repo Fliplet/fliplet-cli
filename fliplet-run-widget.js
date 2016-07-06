@@ -10,6 +10,9 @@ const template = require('./lib/template');
 
 const assets = require(path.join(__dirname, 'lib', 'assets'));
 
+// Load assets list when the system starts
+assets.getAssetsList();
+
 var app = express();
 
 var package;
