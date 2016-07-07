@@ -1,20 +1,24 @@
-var assets = require('./config/assets');
+const assets = require('./lib/assets');
 
-log('');
+log('Requesting up to date assets list from the server...');
 
-Object.keys(assets).forEach(function (assetName) {
-  var asset = assets[assetName];
-  var versions = Object.keys(asset.versions);
-
-  log(`• ${assetName}: ${versions.join(' ')}`);
-  log(`  -- category: ${asset.category}`);
-
-  if (asset.dependencies) {
-    log(`  -- dependencies: ${asset.dependencies.join(', ')}`);
-  }
-
-  log(`  -- includes: ${asset.versions[versions[0]].join(', ')}`);
+assets.getAssetsList().then(function (assets) {
   log('');
+
+  Object.keys(assets).forEach(function (assetName) {
+    var asset = assets[assetName];
+    var versions = Object.keys(asset.versions);
+
+    log(`• ${assetName}: ${versions.join(' ')}`);
+    log(`  -- category: ${asset.category}`);
+
+    if (asset.dependencies) {
+      log(`  -- dependencies: ${asset.dependencies.join(', ')}`);
+    }
+
+    log(`  -- includes: ${asset.versions[versions[0]].join(', ')}`);
+    log('');
+  });
 });
 
 function log() {
