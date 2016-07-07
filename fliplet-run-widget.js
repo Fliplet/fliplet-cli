@@ -42,7 +42,7 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '10MB' }));
 // --------------------------------------------------------------------------
 // AWS configuration
 
-const runWidgetHtml = template.compile(fs.readFileSync(path.join(__dirname, 'assets', 'run-widget.html'), 'utf8'));
+const runWidgetHtml = template.engine.compile(fs.readFileSync(path.join(__dirname, 'assets', 'run-widget.html'), 'utf8'));
 app.get('/', function (req, res) {
   res.send(runWidgetHtml(package));
 });
@@ -53,13 +53,19 @@ app.get('/build', function (req, res) {
       return res.send('The build.html file was not found');
     }
 
-    res.send(assets.html({
-      html: html,
-      rawDependencies: package.build.dependencies,
-      dependencies: assets.parse(package.build.dependencies),
-      assets: package.build.assets,
-      data: widgetInstanceData
-    }));
+    template.compile({
+      widgets: [{
+        id: Date.now(),
+        html: html,
+        dependencies: package.build.dependencies,
+        assets: package.build.assets,
+        data: widgetInstanceData
+      }]
+    }).then(function (html) {
+      res.send(html);
+    }, function (err) {
+      res.send(err);
+    });
   });
 });
 
@@ -69,13 +75,19 @@ app.get('/interface', function (req, res) {
       return res.send('The interface.html file was not found');
     }
 
-    res.send(assets.html({
-      html: html,
-      rawDependencies: package.interface.dependencies,
-      dependencies: assets.parse(package.interface.dependencies),
-      assets: package.interface.assets,
-      data: widgetInstanceData
-    }));
+    template.compile({
+      widgets: [{
+        id: Date.now(),
+        html: html,
+        dependencies: package.interface.dependencies,
+        assets: package.interface.assets,
+        data: widgetInstanceData
+      }]
+    }).then(function (html) {
+      res.send(html);
+    }, function (err) {
+      res.send(err);
+    });
   });
 });
 
