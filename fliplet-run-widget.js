@@ -15,6 +15,12 @@ var app = express();
 var package;
 var widgetInstanceData;
 
+const scriptTagsError = [
+  '<h2>Script tags are not allowed</h2>',
+  '<p>Script tags cannot be placed in your templates. If you need to use inline scripts, ',
+  'please reference external assets using the "assets" array in the widget.json file.</p>'
+].join('');
+
 try {
   package = require(packagePath);
   fs.statSync(packagePath);
@@ -50,6 +56,10 @@ app.get('/build', function (req, res) {
       return res.send('The build.html file was not found');
     }
 
+    if (html.indexOf('<script') !== -1) {
+      return res.send(scriptTagsError);
+    }
+
     template.compile({
       widgets: [{
         id: Date.now(),
@@ -70,6 +80,10 @@ app.get('/interface', function (req, res) {
   fs.readFile('./interface.html', 'utf8', function (err, html) {
     if (!html) {
       return res.send('The interface.html file was not found');
+    }
+
+    if (html.indexOf('<script') !== -1) {
+      return res.send(scriptTagsError);
     }
 
     template.compile({
