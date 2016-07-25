@@ -5,8 +5,8 @@
   "icon": "img/icon.png",
   "interface": {
     "dependencies": [
-      "fliplet-core:1.0",
-      "jquery"
+      "fliplet-core",
+      "fliplet-studio-ui"
     ],
     "assets": [
       "js/interface.js"
