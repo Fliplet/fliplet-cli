@@ -3,6 +3,8 @@
   "package": "{{package}}",
   "version": "1.0.0",
   "icon": "img/icon.png",
+  "tags": ["type:component", "category:general"],
+  "provider_only": false,
   "interface": {
     "dependencies": [
       "fliplet-core",
