@@ -23,6 +23,7 @@
                 height: 100%;
             }
             section {
+                position: relative;
                 width: 50%;
                 height: 100%;
                 padding: 20px 30px;
@@ -42,23 +43,49 @@
                 height: 100%;
                 border: 0;
             }
+            footer {
+                position: absolute;
+                bottom: 0;
+                left: 30px;
+                right: 30px;
+                padding: 10px;
+                border-top: 1px solid #EEE;
+                background-color: #FFF;
+            }
+            footer a {
+                display: block;
+                background-color: #00ABD1;
+                color: #FFF;
+                border-radius: 4px;
+                padding: 10px;
+                text-decoration: none;
+                text-align: center;
+            }
         </style>
-        <script>
-        window.onChildComplete = function (data) {
-            document.getElementById('iframe-build').contentWindow.location.reload();
-        }
-        </script>
     </head>
     <body>
         <div id="content">
             <section>
                 <h2><a href="/interface" target="_blank">{{name}} interface</a></h2>
                 <iframe src="/interface" id="iframe-interface" /></iframe>
+                <footer><a href="#" id="saveButton">Save</a></footer>
             </section>
             <section>
                 <h2><a href="/build" target="_blank">{{name}} output</a></h2>
                 <iframe src="/build" id="iframe-build" /></iframe>
             </section>
         </div>
+        <script>
+        window.onChildComplete = function (data) {
+            document.getElementById('iframe-build').contentWindow.location.reload();
+        }
+
+        var interface = document.getElementById('iframe-interface');
+        document.getElementById('saveButton').addEventListener('click', function (event) {
+            event.preventDefault();
+            var payload = new CustomEvent('save-widget')
+            interface.contentWindow.document.dispatchEvent(payload)
+        }, false);
+        </script>
     </body>
 </html>

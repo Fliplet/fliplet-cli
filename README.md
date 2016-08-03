@@ -40,19 +40,6 @@ js/                   // JS Assets
 img/                  // Images
 ```
 
-The interface and output of the widget have the following environment variables available:
-
-```
-window.ENV = {
-  widgetInstanceId: 1,                 // The unique ID of this widget instance
-  apiUrl: "https://api.fliplet.com/"   // The endpoint to be used for API requests
-}
-
-window.widgetData = {
-  foo: "bar"                           // Data saved through "Fliplet.saveWidgetData"
-};
-```
-
 ---
 
 By default, the dependencies of the interface contain `fliplet-core`, which will make available the following methods of the `Fliplet` JavaScript library:
@@ -64,11 +51,17 @@ Promise<> Fliplet.Widget.save (data)
 // Tells the UI this widget can be closed, optionally passing back some data
 Promise<> Fliplet.Widget.complete(data)
 
+// Function to be triggered from Fliplet Studio to save the data of the interface
+Fliplet.Widget.onSaveRequest(yourFunction)
+
 // Get the data of a widget instance, given the instance id
 Object|null Fliplet.Widget.getData(id)
 
 // Get the list of pages of the app the widget belongs to
 Promise<> Fliplet.Pages.get()
+
+// Makes an API request to the Fliplet APIs
+Promise<> Fliplet.API.request({ method, url, data })
 ```
 
 You can see an example of how those functions are used in the default [interface.js](https://github.com/WebooOnline/fliplet-cli/blob/master/widget-template/js/interface.js) template of your widget.
@@ -80,9 +73,12 @@ You can see an example of how those functions are used in the default [interface
 The following assets are available in the system as depencencies for your widget:
 
 - `fliplet-core` (also includes jquery)
+- `fliplet-studio-ui` (includes some basic style for the UI of the interface)
+- `fliplet-navigate` (includes JS functions from the `Fliplet.Navigate` namespace)
 - `bootstrap` (js and css; also includes jquery)
 - `bootstrap-css` (css only)
 - `jquery`
+- `tinymce`
 
 You can list all their details by running `fliplet list-assets`.
 
