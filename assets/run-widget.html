@@ -83,8 +83,7 @@
         var interface = document.getElementById('iframe-interface');
         document.getElementById('saveButton').addEventListener('click', function (event) {
             event.preventDefault();
-            var payload = new CustomEvent('save-widget')
-            interface.contentWindow.document.dispatchEvent(payload)
+            interface.contentWindow.postMessage('save-widget', '*');
         }, false);
         </script>
     </body>
