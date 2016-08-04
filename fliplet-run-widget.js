@@ -1,3 +1,4 @@
+const _ = require('lodash');
 const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -103,7 +104,7 @@ app.get('/interface', function (req, res) {
 });
 
 app.post('/save-widget-data', function (req, res) {
-  widgetInstanceData = req.body;
+  widgetInstanceData = _.assign({}, widgetInstanceData, req.body);
   res.status(200).send();
 });
 
