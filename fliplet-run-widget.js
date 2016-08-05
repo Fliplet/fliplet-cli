@@ -53,7 +53,7 @@ app.get('/', function (req, res) {
 
 app.get('/build', function (req, res) {
   fs.readFile('./build.html', 'utf8', function (err, html) {
-    if (!html) {
+    if (err || typeof html !== 'string') {
       return res.send('The build.html file was not found');
     }
 
