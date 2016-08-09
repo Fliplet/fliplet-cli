@@ -1,6 +1,6 @@
 const request = require('request');
 const configstore = require('./lib/configstore');
-const ENV = require('./config/env');
+const ENV = require('./lib/env').env;
 const fs = require('fs');
 const archiver = require('archiver');
 const temp = require('temp');
