@@ -8,6 +8,7 @@ program
   .command('run-widget', 'run the current widget for development')
   .command('publish-widget', 'publish the current widget on fliplet studio')
   .command('list-assets', 'gets the list of the available assets')
+  .command('env [name]', 'set the environment: dev, staging or production')
   .command('login', 'Login')
   .command('logout', 'Logout')
   .parse(process.argv);
