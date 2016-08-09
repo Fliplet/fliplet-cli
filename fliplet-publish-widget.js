@@ -1,6 +1,6 @@
 const request = require('request');
 const configstore = require('./lib/configstore');
-const ENV = require('./lib/env').env;
+const config = require('./lib/config');
 const fs = require('fs');
 const archiver = require('archiver');
 const temp = require('temp');
@@ -18,13 +18,14 @@ var output = fs.createWriteStream(tempName);
 var archive = archiver('zip');
 
 output.on('close', function() {
-  console.log('Widget package zipped');
+  console.log('Widget package zipped...');
 });
 
 archive.on('error', function(err) {
   throw err;
 });
 
+console.log('Creating zip package...');
 archive
   .bulk([
   {
@@ -37,9 +38,10 @@ archive
   .pipe(output);
 archive.finalize();
 
+console.log('Publishing...');
 request({
   method: 'POST',
-  url: ENV.api_url + 'v1/widgets?auth_token=' + auth_token,
+  url: config.api_url + 'v1/widgets?auth_token=' + auth_token,
   formData: {
     my_file: fs.createReadStream(tempName)
   }
@@ -50,7 +52,11 @@ request({
 
   body = JSON.parse(body);
 
-  console.log('The widget ' + body.widget.name + '(' + body.widget.version + ') has been imported');
+  if (response.statusCode !== 200) {
+    console.log(body);
+  } else {
+    console.log('The widget ' + body.widget.name + '(' + body.widget.version + ') has been imported');
+  }
 
   // Remove temporary file
   fs.unlinkSync(tempName);
