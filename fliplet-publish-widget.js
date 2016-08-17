@@ -39,7 +39,7 @@ archive.on('end', function(err) {
 
     body = JSON.parse(body);
 
-    if (response.statusCode !== 200) {
+    if ([200, 201].indexOf(response.statusCode) === -1) {
       console.log(body);
     } else {
       console.log('The widget ' + body.widget.name + '(' + body.widget.version + ') has been imported');
