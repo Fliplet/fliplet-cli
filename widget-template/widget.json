@@ -5,6 +5,7 @@
   "icon": "img/icon.png",
   "tags": ["type:component", "category:general"],
   "provider_only": false,
+  "references": [],
   "interface": {
     "dependencies": [
       "fliplet-core",
