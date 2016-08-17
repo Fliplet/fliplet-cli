@@ -3,7 +3,7 @@
 var program = require('commander');
 
 program
-  .version('1.7.0')
+  .version('1.7.1')
   .command('create-widget [name]', 'Create a new widget')
   .command('run-widget', 'Run the current widget for development')
   .command('publish-widget', 'Publish the current widget on fliplet studio')
