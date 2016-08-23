@@ -1,15 +1,15 @@
 {
   "name": "fliplet-cli",
-  "version": "1.7.2",
+  "version": "1.7.3",
   "description": "",
-  "main": "index.js",
+  "main": "fliplet.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Nicholas Valbusa",
   "license": "ISC",
   "bin": {
-    "fliplet": "./index.js"
+    "fliplet": "./fliplet.js"
   },
   "homepage": "https://www.fliplet.com",
   "repository": "Fliplet/fliplet-cli",
