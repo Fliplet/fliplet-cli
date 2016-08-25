@@ -12,7 +12,7 @@
             }
             body {
                 overflow-y: hidden;
-                background-color: #EEE;
+                background-color: #F2F6F7;
                 font-family: sans-serif;
             }
             html, body {
@@ -41,7 +41,10 @@
                 background: #FFF;
                 width: 100%;
                 height: 100%;
-                border: 0;
+                border: 1px solid #D9DDDE;
+            }
+            #iframe-interface {
+                background-color: #F2F6F7;
             }
             footer {
                 position: absolute;
@@ -49,8 +52,6 @@
                 left: 30px;
                 right: 30px;
                 padding: 10px;
-                border-top: 1px solid #EEE;
-                background-color: #FFF;
             }
             footer a {
                 display: block;
@@ -68,7 +69,7 @@
             <section>
                 <h2><a href="/interface" target="_blank">{{name}} interface</a></h2>
                 <iframe src="/interface" id="iframe-interface" /></iframe>
-                <footer><a href="#" id="saveButton">Save</a></footer>
+                <footer><a href="#" id="saveButton">Save &amp; Close</a></footer>
             </section>
             <section>
                 <h2><a href="/build" target="_blank">{{name}} output</a></h2>
@@ -76,15 +77,37 @@
             </section>
         </div>
         <script>
-        window.onChildComplete = function (data) {
-            document.getElementById('iframe-build').contentWindow.location.reload();
-        }
-
+        var saveButton = document.getElementById('saveButton');
         var interface = document.getElementById('iframe-interface');
-        document.getElementById('saveButton').addEventListener('click', function (event) {
+        var build = document.getElementById('iframe-build');
+
+        saveButton.addEventListener('click', function (event) {
             event.preventDefault();
             interface.contentWindow.postMessage('save-widget', '*');
         }, false);
+
+        window.addEventListener('message', receiveMessage, false);
+
+        function receiveMessage (event) {
+          if (event.data) {
+            switch (event.data.event) {
+                case 'widget-save-disable':
+                    saveButton.style.display = 'none';
+                    break;
+                case 'widget-save-enable':
+                    saveButton.style.display = 'block';
+                    break;
+                case 'widget-save-complete':
+                    interface.contentWindow.location.reload();
+                    build.contentWindow.location.reload();
+                    break;
+                case 'reload-widget-instance':
+                    build.contentWindow.location.reload();
+                    break;
+            }
+          }
+        }
+
         </script>
     </body>
 </html>
