@@ -31,11 +31,14 @@
             section h2 {
                 text-transform: uppercase;
                 font-weight: normal;
-                font-size: 14px;
+                font-size: 13px;
+                font-weight: bold;
                 margin-bottom: 10px;
             }
             section h2 a {
                 color: #777;
+                text-decoration: none;
+                border-bottom: 1px dotted #AAA;
             }
             iframe {
                 background: #FFF;
@@ -46,12 +49,16 @@
             #iframe-interface {
                 background-color: #F2F6F7;
             }
+            #iframe-build {
+                border: 40px solid #EAEAEA;
+                border-radius: 10px;
+            }
             footer {
                 position: absolute;
                 bottom: 0;
                 left: 30px;
                 right: 30px;
-                padding: 10px;
+                border-top: 1px solid #D9DDDE;
             }
             footer a {
                 display: block;
@@ -59,8 +66,10 @@
                 color: #FFF;
                 border-radius: 4px;
                 padding: 10px;
+                margin: 10px;
                 text-decoration: none;
                 text-align: center;
+                width: 150px;
             }
         </style>
     </head>
@@ -72,7 +81,7 @@
                 <footer><a href="#" id="saveButton">Save &amp; Close</a></footer>
             </section>
             <section>
-                <h2><a href="/build" target="_blank">{{name}} output</a></h2>
+                <h2><a href="/build" target="_blank">output of your component</a></h2>
                 <iframe src="/build" id="iframe-build" /></iframe>
             </section>
         </div>

@@ -42,7 +42,7 @@ img/                  // Images
 
 ---
 
-By default, the dependencies of the interface contain `fliplet-core`, which will make available the following methods of the `Fliplet` JavaScript library:
+By default, the dependencies of the interface contain [fliplet-core](https://api.fliplet.com/assets/fliplet-core/1.0/core.js), which will make available the following methods of the `Fliplet` JavaScript library and many more:
 
 ```
 // Saves the data of a widget instance
@@ -57,12 +57,20 @@ Fliplet.Widget.onSaveRequest(yourFunction)
 // Get the data of a widget instance, given the instance id
 Object|null Fliplet.Widget.getData(id)
 
+// Opens a widget provider
+Promise<> Fliplet.Widget.open('packageName', options)
+
+// Notify the parent widget about a body height changr
+Fliplet.Widget.autosize()
+
 // Get the list of pages of the app the widget belongs to
 Promise<> Fliplet.Pages.get()
 
 // Makes an API request to the Fliplet APIs
 Promise<> Fliplet.API.request({ method, url, data })
 ```
+
+The full list of methods available can be found on the source code of [fliplet-core](https://api.fliplet.com/assets/fliplet-core/1.0/core.js).
 
 You can see an example of how those functions are used in the default [interface.js](https://github.com/Fliplet/fliplet-cli/blob/master/widget-template/js/interface.js) template of your widget.
 
