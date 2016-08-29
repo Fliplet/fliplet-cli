@@ -110,6 +110,9 @@
                     interface.contentWindow.location.reload();
                     build.contentWindow.location.reload();
                     break;
+                case 'widget-display-message':
+                    alert(event.data.text);
+                    break;
                 case 'reload-widget-instance':
                     build.contentWindow.location.reload();
                     break;

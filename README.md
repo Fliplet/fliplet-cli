@@ -10,6 +10,8 @@ npm install fliplet-cli -g
 
 You can now use the command `fliplet` from the command line. Just type `fliplet` to see the available options and their example usage.
 
+By default, the CLI is using the production environment. You can change it using the `env` command, like `fliplet env staging` (dev, staging, production).
+
 ## Examples
 
 Create a new widget:
@@ -58,10 +60,13 @@ Fliplet.Widget.onSaveRequest(yourFunction)
 Object|null Fliplet.Widget.getData(id)
 
 // Opens a widget provider
-Promise<> Fliplet.Widget.open('packageName', options)
+Promise<> Fliplet.Widget.open('packageName', { selector: '#here', onEvent: function, closeOnSave: Boolean })
 
 // Notify the parent widget about a body height changr
 Fliplet.Widget.autosize()
+
+// Displays a message in Fliplet Studio
+Fliplet.Widget.displayMessage({ text: 'My text' })
 
 // Get the list of pages of the app the widget belongs to
 Promise<> Fliplet.Pages.get()
