@@ -6,6 +6,7 @@
   "tags": ["type:component", "category:general"],
   "provider_only": false,
   "references": [],
+  "html_tag": "span",
   "interface": {
     "dependencies": [
       "fliplet-core",
