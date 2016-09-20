@@ -44,40 +44,11 @@ img/                  // Images
 
 ---
 
-By default, the dependencies of the interface contain [fliplet-core](https://api.fliplet.com/assets/fliplet-core/1.0/core.js), which will make available the following methods of the `Fliplet` JavaScript library and many more:
+By default, the dependencies of the interface contain `fliplet-core`, which is only one of the packages available as part of Fliplet's JS Public APIs.
 
-```
-// Saves the data of a widget instance
-Promise<> Fliplet.Widget.save (data)
+Head to our [Documentation](https://github.com/Fliplet/fliplet-cli/wiki) to read about all the available JS APIs to be used from your components.
 
-// Tells the UI this widget can be closed, optionally passing back some data
-Promise<> Fliplet.Widget.complete(data)
-
-// Function to be triggered from Fliplet Studio to save the data of the interface
-Fliplet.Widget.onSaveRequest(yourFunction)
-
-// Get the data of a widget instance, given the instance id
-Object|null Fliplet.Widget.getData(id)
-
-// Opens a widget provider
-Promise<> Fliplet.Widget.open('packageName', { selector: '#here', onEvent: function, closeOnSave: Boolean })
-
-// Notify the parent widget about a body height changr
-Fliplet.Widget.autosize()
-
-// Displays a message in Fliplet Studio
-Fliplet.Widget.displayMessage({ text: 'My text' })
-
-// Get the list of pages of the app the widget belongs to
-Promise<> Fliplet.Pages.get()
-
-// Makes an API request to the Fliplet APIs
-Promise<> Fliplet.API.request({ method, url, data })
-```
-
-The full list of methods available can be found on the source code of [fliplet-core](https://api.fliplet.com/assets/fliplet-core/1.0/core.js).
-
-You can see an example of how those functions are used in the default [interface.js](https://github.com/Fliplet/fliplet-cli/blob/master/widget-template/js/interface.js) template of your widget.
+You can also see an example of how those APIs are used in the default [interface.js](https://github.com/Fliplet/fliplet-cli/blob/master/widget-template/js/interface.js) template of your widget.
 
 ---
 
@@ -86,12 +57,16 @@ You can see an example of how those functions are used in the default [interface
 The following assets are available in the system as depencencies for your widget:
 
 - `fliplet-core` (also includes jquery)
+- `fliplet-datasources`
+- `fliplet-media`
+- `fliplet-communicate`
 - `fliplet-studio-ui` (includes some basic style for the UI of the interface)
-- `fliplet-navigate` (includes JS functions from the `Fliplet.Navigate` namespace)
 - `bootstrap` (js and css; also includes jquery)
 - `bootstrap-css` (css only)
 - `jquery`
 - `tinymce`
+- `handlebars`
+- `lodash`
 
 You can list all their details by running `fliplet list-assets`.
 
