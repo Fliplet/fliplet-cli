@@ -1,9 +1,11 @@
 #!/usr/bin/env node
 
-var program = require('commander');
+const path = require('path');
+const package = require(path.join(__dirname, 'package.json'));
+const program = require('commander');
 
 program
-  .version('1.7.1')
+  .version(package.version)
   .command('create-widget [name]', 'Create a new widget')
   .command('run-widget', 'Run the current widget for development')
   .command('publish-widget', 'Publish the current widget on fliplet studio')
