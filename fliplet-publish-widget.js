@@ -31,7 +31,8 @@ archive.on('end', function(err) {
     url: config.api_url + 'v1/widgets?auth_token=' + auth_token,
     formData: {
       my_file: zip
-    }
+    },
+    timeout: 1000 * 60 * 5 // 5 minutes
   }, function (error, response, body) {
     if (error) {
       console.log(error);
