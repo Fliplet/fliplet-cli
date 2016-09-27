@@ -88,6 +88,7 @@ app.get('/interface', function (req, res) {
     }
 
     template.compile({
+      interface: true,
       widgets: [{
         id: Date.now(),
         html: html,
