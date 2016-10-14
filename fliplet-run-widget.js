@@ -16,10 +16,18 @@ var app = express();
 var package;
 var widgetInstanceData;
 
+const scriptTagsRegExp = /<script.+src=".+".+>/;
 const scriptTagsError = [
-  '<h2>Script tags are not allowed</h2>',
+  '<h2>Script tags to external files are not allowed</h2>',
   '<p>Script tags cannot be placed in your templates. If you need to use inline scripts, ',
   'please reference external assets using the "assets" array in the widget.json file.</p>'
+].join('');
+
+const idTagsRegExp = /<.+id=".+".+>/;
+const idTagsError = [
+  '<h2>ID attributes are not allowed</h2>',
+  '<p>HTML tags cannot contain the "id" attribute, because it might conflict if your widget ',
+  'gets added twice to a page. Please consider using classes instead.</p>'
 ].join('');
 
 try {
@@ -57,8 +65,12 @@ app.get('/build', function (req, res) {
       return res.send('The build.html file was not found');
     }
 
-    if (html.indexOf('<script') !== -1) {
+    if (html.match(scriptTagsRegExp)) {
       return res.send(scriptTagsError);
+    }
+
+    if (html.match(idTagsRegExp)) {
+      return res.send(idTagsError);
     }
 
     template.compile({
@@ -83,7 +95,7 @@ app.get('/interface', function (req, res) {
       return res.send('The interface.html file was not found');
     }
 
-    if (html.indexOf('<script') !== -1) {
+    if (html.match(scriptTagsRegExp)) {
       return res.send(scriptTagsError);
     }
 
