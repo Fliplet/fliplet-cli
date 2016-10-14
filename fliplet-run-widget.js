@@ -19,8 +19,8 @@ var widgetInstanceData;
 const scriptTagsRegExp = /<script.+src=".+".+>/;
 const scriptTagsError = [
   '<h2>Script tags to external files are not allowed</h2>',
-  '<p>Script tags cannot be placed in your templates. If you need to use inline scripts, ',
-  'please reference external assets using the "assets" array in the widget.json file.</p>'
+  '<p>Script tags to external files cannot be placed in your templates. If you need to use reference some assets, ',
+  'please reference them the "assets" array in the widget.json file.</p>'
 ].join('');
 
 const idTagsRegExp = /<.+id=".+".+>/;
