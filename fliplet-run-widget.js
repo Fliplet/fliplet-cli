@@ -23,7 +23,7 @@ const scriptTagsError = [
   'please reference them the "assets" array in the widget.json file.</p>'
 ].join('');
 
-const idTagsRegExp = /<.+id=".+".+>/;
+const idTagsRegExp = /<.+ id=".+".+>/;
 const idTagsError = [
   '<h2>ID attributes are not allowed</h2>',
   '<p>HTML tags cannot contain the "id" attribute, because it might conflict if your widget ',
