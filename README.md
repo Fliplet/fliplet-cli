@@ -87,3 +87,29 @@ The following handlebars helpers are available in the system:
 // Compare two variables
 {{#equals foo 'bar'}}Yes it does{{/equals}}
 ```
+
+---
+
+## Best practises and advices
+
+### Your widget might be dropped more than once into a page
+
+Does your code handle that? Here's a piece of advice:
+
+1. Output each widget instance ID via the `build.html` file
+
+```html
+<div data-my-widget="{{id}}">Hi!</div>
+```
+
+2. On your JS files, cycle through the instances and get the data of each instance
+
+```js
+$('[data-my-widget]').each(function () {
+  var $el = $(this);
+  var instanceId = $el.data('my-widget');
+  var data = Fliplet.Widget.getData(instanceId);
+});
+```
+
+This makes sure your widget will work correctly when is dropped more than once into a page.
