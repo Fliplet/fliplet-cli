@@ -29,6 +29,13 @@ $ fliplet run-widget
 
 Which will run your widget on [http://localhost:3000](http://localhost:3000).
 
+## Publish a widget
+
+To publish a widget on the Fliplet platform, you must be logged in by using `fliplet login` then you can use the `fliplet publish-widget` which will upload and publish your widget to the current environment (by default, production).
+
+Please note: your widget won't be published as public, but will rather kept private and visible only for the organisation you belong to.
+
+
 ## Widget development
 
 Your widget skeleton is made of the following directory structure:
