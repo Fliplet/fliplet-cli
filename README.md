@@ -113,3 +113,16 @@ $('[data-my-widget]').each(function () {
 ```
 
 This makes sure your widget will work correctly when is dropped more than once into a page.
+
+### Escape variables when necessary
+
+Templates (`build.html` and `interface.html`) get compiled through Handlebars. If you are using Handlebars yourself in the JS at runtime, you might want to escape your html template variables from getting compiled. You can prefix any curly brackets to escape the command from getting compiled:
+
+```
+<!-- this gets compiled -->
+<div id="{{id}}">{{foo}}</div>
+
+<!-- these don't -->
+<div>\{{foo}}</div>
+<template name="bar">\{{#if foo}} \{{foo}} \{{/if}}</template>
+```
