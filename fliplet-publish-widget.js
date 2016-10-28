@@ -9,9 +9,10 @@ console.log('Publishing...');
 
 var email = configstore.get('email');
 var auth_token = configstore.get('auth_token');
+var organization = configstore.get('organization');
 
 if (!email || !auth_token) {
-  console.log('You must log in first');
+  console.log('You must log in first with: fliplet login');
   return;
 }
 
@@ -26,12 +27,18 @@ archive.on('error', function(err) {
 archive.on('end', function(err) {
   var zip = fs.createReadStream(tempName);
 
+  var formData = {
+    my_file: zip
+  };
+
+  if (organization) {
+    formData.organizationId = organization.id;
+  }
+
   request({
     method: 'POST',
     url: config.api_url + 'v1/widgets?auth_token=' + auth_token,
-    formData: {
-      my_file: zip
-    },
+    formData: formData,
     timeout: 1000 * 60 * 5 // 5 minutes
   }, function (error, response, body) {
     if (error) {
@@ -41,6 +48,11 @@ archive.on('end', function(err) {
     body = JSON.parse(body);
 
     if ([200, 201].indexOf(response.statusCode) === -1) {
+      if (body.error === 'organizationId is not valid') {
+        console.log('You must set an organization you belong to with: fliplet organization');
+        return;
+      }
+
       console.log(body);
     } else {
       console.log('The widget ' + body.widget.name + '(' + body.widget.version + ') has been imported');
