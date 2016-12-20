@@ -78,7 +78,7 @@ app.get('/build', function (req, res) {
     template.compile({
       widgets: [{
         id: Date.now(),
-        uuid: widgetUUID
+        uuid: widgetUUID,
         html: html,
         dependencies: package.build.dependencies,
         assets: package.build.assets,
@@ -106,7 +106,7 @@ app.get('/interface', function (req, res) {
       interface: true,
       widgets: [{
         id: Date.now(),
-        uuid: widgetUUID
+        uuid: widgetUUID,
         html: html,
         dependencies: package.interface.dependencies,
         assets: package.interface.assets,
