@@ -16,6 +16,8 @@ var app = express();
 var package;
 var widgetInstanceData;
 
+const widgetUUID = uuid();
+
 const scriptTagsRegExp = /<script.+src=".+".+>/;
 const scriptTagsError = [
   '<h2>Script tags to external files are not allowed</h2>',
@@ -76,6 +78,7 @@ app.get('/build', function (req, res) {
     template.compile({
       widgets: [{
         id: Date.now(),
+        uuid: widgetUUID,
         html: html,
         dependencies: package.build.dependencies,
         assets: package.build.assets,
@@ -103,6 +106,7 @@ app.get('/interface', function (req, res) {
       interface: true,
       widgets: [{
         id: Date.now(),
+        uuid: widgetUUID,
         html: html,
         dependencies: package.interface.dependencies,
         assets: package.interface.assets,
@@ -144,4 +148,14 @@ app.listen(3000, function () {
 
 function log() {
   console.log.apply(this, arguments);
+}
+
+function uuid() {
+  function s4() {
+    return Math.floor((1 + Math.random()) * 0x10000)
+      .toString(16)
+      .substring(1);
+  }
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
+    s4() + '-' + s4() + s4() + s4();
 }
