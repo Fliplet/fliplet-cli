@@ -135,13 +135,13 @@ You can also use handlebars templates in your client-side code and let the syste
 2. Add a reference to `js/interface.templates.js` or `js/build.templates.js` in your build or interface assets
 3. Create your templates anywhere in the folders of your component. Please note that the folder structure will be used as namespace for your templates. They will be available under the `Fliplet.Widget.Templates` object.
 
+Files that ends with `.interface.hbs` will be compiled to the interface template file. Same applies for `.build.hbs` and the build template.
+
 e.g. given the following template:
 
 ```
 js/foo/bar.interface.hbs
 ```
-
-Files that ends with `.interface.hbs` will be compiled to the interface template file. Same applies for `.build.hbs` and the build template.
 
 The handlebars-compiled template will be available as:
 
