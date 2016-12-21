@@ -1,6 +1,6 @@
 {
   "name": "fliplet-cli",
-  "version": "1.9.6",
+  "version": "2.0.0",
   "description": "",
   "main": "fliplet.js",
   "scripts": {
@@ -19,6 +19,9 @@
     "commander": "^2.9.0",
     "configstore": "^2.1.0",
     "express": "^4.14.0",
+    "grunt": "^1.0.1",
+    "grunt-contrib-handlebars": "^1.0.0",
+    "grunt-contrib-watch": "^1.0.0",
     "handlebars": "^4.0.5",
     "lodash": "^4.16.4",
     "ncp": "^2.0.0",

@@ -126,3 +126,24 @@ Templates (`build.html` and `interface.html`) get compiled through Handlebars. I
 <div>\{{foo}}</div>
 <template name="bar">\{{#if foo}} \{{foo}} \{{/if}}</template>
 ```
+
+## Using Handlebars in your client
+
+You can also use handlebars templates in your client-side code and let the system compile them.
+
+1. Add `handlebars` in your widget.json dependencies
+2. Add a reference to `js/interface.templates.js` or `js/build.templates.js` in your build or interface assets
+3. Create your templates anywhere in the folders of your component. Please note that the folder structure will be used as namespace for your templates. They will be available under the `Fliplet.Widget.Templates` object.
+
+e.g. given the following template:
+
+```
+js/foo/bar.interface.hbs
+```
+
+The handlebars-compiled template will be available as:
+
+```
+var tpl = Fliplet.Widget.Templates['foo.bar'];
+var html = tpl({ sample: 123 })
+```
