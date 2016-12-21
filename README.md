@@ -141,6 +141,8 @@ e.g. given the following template:
 js/foo/bar.interface.hbs
 ```
 
+Files that ends with `.interface.hbs` will be compiled to the interface template file. Same applies for `.build.hbs` and the build template.
+
 The handlebars-compiled template will be available as:
 
 ```
