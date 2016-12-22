@@ -3,7 +3,13 @@ const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
-const exec = require('child_process').exec;
+const grunt = require('grunt');
+const child_process = require('child_process');
+const exec = child_process.exec;
+
+const gruntFile = require('./lib/gruntfile');
+grunt.task.init = function() {};
+gruntFile(grunt);
 
 const folderPath = process.cwd();
 const packagePath = path.join(folderPath, 'widget.json');
@@ -136,6 +142,8 @@ app.listen(3000, function () {
   if (process.argv.length > 2) {
     return;
   }
+
+  grunt.tasks(['default']);
 
   setTimeout(function () {
     try {
