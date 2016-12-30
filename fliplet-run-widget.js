@@ -55,7 +55,10 @@ log('');
 // --------------------------------------------------------------------------
 // Server configuration
 
-app.use(express.static(folderPath, { maxage: '1h' }));
+app.use(express.static(folderPath, {
+  maxage: 0,
+  etag: false
+}));
 app.use(bodyParser.json({ limit: '10MB' }));
 app.use(bodyParser.urlencoded({ extended: true, limit: '10MB' }));
 
