@@ -2,5 +2,23 @@
   "name": "{{name}}",
   "package": "{{package}}",
   "version": "1.0.0",
-  "icon": "img/icon.png"
+  "icon": "img/icon.png",
+  "dependencies": [
+    "bootstrap-css"
+  ],
+  "assets": [
+    "css/style.css"
+  ],
+  "configuration": [
+    {
+      "name": "Buttons",
+      "variables": [
+        {
+          "name": "primaryButtonColor",
+          "type": "color",
+          "default": "#00FF00"
+        }
+      ]
+    }
+  ]
 }
