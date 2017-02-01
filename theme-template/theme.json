@@ -1,0 +1,7 @@
+{
+  "name": "{{name}}",
+  "package": "{{package}}",
+  "version": "1.0.0",
+  "icon": "img/icon.png",
+  "tags": ["type:theme"]
+}
