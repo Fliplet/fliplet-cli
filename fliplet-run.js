@@ -12,8 +12,11 @@ grunt.task.init = function() {};
 gruntFile(grunt);
 
 const folderPath = process.cwd();
-const packagePath = path.join(folderPath, 'widget.json');
+const widgetPackagePath = path.join(folderPath, 'widget.json');
+const themePackagePath = path.join(folderPath, 'theme.json');
 const template = require('./lib/template');
+
+var isTheme;
 
 const assets = require(path.join(__dirname, 'lib', 'assets'));
 
@@ -39,17 +42,29 @@ const idTagsError = [
 ].join('');
 
 try {
-  package = require(packagePath);
-  fs.statSync(packagePath);
+  package = require(widgetPackagePath);
+  fs.statSync(widgetPackagePath);
 } catch (e) {
-  log('The widget definition file has not been found (or the JSON syntax is invalid).');
-  log('Are you sure you are running this command from a widget folder?');
+  try {
+    package = require(themePackagePath);
+    fs.statSync(themePackagePath);
+    isTheme = true;
+  } catch (e) {
+    log('The definition file has not been found (or the JSON syntax is invalid).');
+    log('Are you sure you are running this command from a Fliplet component folder?');
+    process.exit();
+  }
+}
+
+if (isTheme) {
+  log('The theme CLI development tools are not available yet,');
+  log('but you can still publish your theme via the "fliplet publish" command.');
   process.exit();
 }
 
 log('');
-log('Please note: if you make any change to the widget dependencies, the server needs to be restarted.')
-log('Starting up widget development server for', package.name, '(' + package.package + ')...');
+log('Please note: if you make any change to the package dependencies, the server needs to be restarted.')
+log('Starting up package development server for', package.name, '(' + package.package + ')...');
 log('');
 
 // --------------------------------------------------------------------------
