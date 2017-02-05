@@ -59,6 +59,16 @@ try {
       log('Your theme has no templates.');
       process.exit();
     }
+
+    const vars = [];
+    (package.settings.configuration || []).forEach(function (section) {
+      (section.variables || []).forEach(function (variable) {
+        vars.push(`$${variable.name}: ${variable.default};`);
+      });
+    });
+
+    package.scssConfig = vars.join("\r\n");
+
   } catch (e) {
     log('The definition file has not been found (or the JSON syntax is invalid).');
     log('Are you sure you are running this command from a Fliplet component folder?');
@@ -184,10 +194,17 @@ app.get('/__scss.css', function (req, res) {
 
   Promise.all(files.map(function (file) {
     return new Promise(function (resolve, reject) {
+      var fileData = fs.readFileSync(path.join(folderPath, file), 'utf8');
+
+      var dir = file.split('/');
+      dir.pop();
+      dir = path.join(folderPath, dir.join('/'));
+
       sass.render({
-        file: path.join(folderPath, file),
-        outputStyle: 'compressed',
-        sourceMap: false
+        data: `${package.scssConfig}\r\n${fileData}`,
+        outputStyle: 'expanded',
+        sourceMap: false,
+        includePaths: [dir]
       }, function onSassCompiled(sassError, result) {
         if (sassError) {
           return reject(sassError);
