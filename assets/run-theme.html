@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{{name}} - Fliplet Theme Development</title>
+        <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+        <style type="text/css">
+            * {
+                box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                overflow-y: hidden;
+                background-color: #F2F6F7;
+                font-family: sans-serif;
+            }
+            html, body {
+                height: 100%;
+            }
+            #content {
+                display: flex;
+                height: 100%;
+            }
+            section {
+                position: relative;
+                height: 100%;
+                padding: 20px 30px;
+            }
+
+            section:last-child {
+                flex: 1;
+            }
+
+            section h2 {
+                text-transform: uppercase;
+                font-weight: normal;
+                font-size: 13px;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+            section h2 a {
+                color: #777;
+                text-decoration: none;
+                border-bottom: 1px dotted #AAA;
+            }
+            iframe {
+                background: #FFF;
+                width: 100%;
+                height: 100%;
+                border: 1px solid #D9DDDE;
+            }
+            #iframe-interface {
+                background-color: #F2F6F7;
+                padding-bottom: 63px;
+            }
+            #iframe-build {
+                border: 40px solid #EAEAEA;
+                border-radius: 10px;
+            }
+            footer {
+                position: absolute;
+                bottom: 0;
+                left: 30px;
+                right: 30px;
+                border-top: 1px solid #D9DDDE;
+            }
+            footer a {
+                display: block;
+                background-color: #00ABD1;
+                color: #FFF;
+                border-radius: 4px;
+                padding: 10px;
+                margin: 10px;
+                text-decoration: none;
+                text-align: center;
+                width: 150px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="content">
+            <section>
+                <ul class="templates">
+                    {{#each templates}}
+                        <li>
+                            <a href="#" data-href="/templates/{{ this }}">{{ this }}</a>
+                        </li>
+                    {{/each}}
+                </ul>
+            </section>
+            <section>
+                <iframe id="iframe-build" /></iframe>
+            </section>
+        </div>
+        <script>
+        $('.templates a').click(function (event) {
+            event.preventDefault();
+            $('iframe').attr('src', $(this).data('href'));
+        }).first().click();
+        </script>
+    </body>
+</html>

@@ -49,6 +49,15 @@ try {
     package = require(themePackagePath);
     fs.statSync(themePackagePath);
     isTheme = true;
+
+    package.templates = _.filter(fs.readdirSync(folderPath), (file) => {
+      return /\.html$/.test(file);
+    });
+
+    if (!package.templates.length) {
+      log('Your theme has no templates.');
+      process.exit();
+    }
   } catch (e) {
     log('The definition file has not been found (or the JSON syntax is invalid).');
     log('Are you sure you are running this command from a Fliplet component folder?');
@@ -80,7 +89,7 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '10MB' }));
 // --------------------------------------------------------------------------
 // AWS configuration
 
-const runWidgetHtml = template.engine.compile(fs.readFileSync(path.join(__dirname, 'assets', 'run-widget.html'), 'utf8'));
+const runWidgetHtml = template.engine.compile(fs.readFileSync(path.join(__dirname, 'assets', `run-${isTheme ? 'theme' : 'widget'}.html`), 'utf8'));
 app.get('/', function (req, res) {
   res.send(runWidgetHtml(package));
 });
