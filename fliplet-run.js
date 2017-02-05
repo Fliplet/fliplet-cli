@@ -6,6 +6,7 @@ const path = require('path');
 const grunt = require('grunt');
 const child_process = require('child_process');
 const exec = child_process.exec;
+var sass; // optionally required if theme
 
 const gruntFile = require('./lib/gruntfile');
 grunt.task.init = function() {};
@@ -65,10 +66,9 @@ try {
   }
 }
 
+// Load packages for themes-only
 if (isTheme) {
-  log('The theme CLI development tools are not available yet,');
-  log('but you can still publish your theme via the "fliplet publish" command.');
-  process.exit();
+  sass = require('node-sass');
 }
 
 log('');
@@ -157,6 +157,53 @@ app.post('/save-widget-data', function (req, res) {
   widgetInstanceData = _.assign({}, widgetInstanceData, req.body);
   res.status(200).send();
 });
+
+app.get('/templates/:template', function (req, res) {
+  const tpl = fs.readFileSync(path.join(folderPath, req.params.template), 'utf8');
+
+  const assets = [`__scss.css?_=${Date.now()}`].concat(package.assets);
+
+  template.compile({
+    widgets: [{
+      id: Date.now(),
+      html: tpl,
+      dependencies: package.dependencies,
+      assets: assets.map((a) => {
+        return `/${a.replace(/^\//, '')}`;
+      })
+    }]
+  }).then(function (html) {
+    res.send(html);
+  }, function (err) {
+    res.send(err);
+  });
+});
+
+app.get('/__scss.css', function (req, res) {
+  const files = _.filter(package.assets, (a) => { return /\.scss$/.test(a) });
+
+  Promise.all(files.map(function (file) {
+    return new Promise(function (resolve, reject) {
+      sass.render({
+        file: path.join(folderPath, file),
+        outputStyle: 'compressed',
+        sourceMap: false
+      }, function onSassCompiled(sassError, result) {
+        if (sassError) {
+          return reject(sassError);
+        }
+
+        resolve(`/* ${package.package}:${file} */\r\n${result.css.toString()}`);
+      });
+    });
+  })).then(function (results) {
+    res.type('text/css');
+    res.send(results.join("\r\n"));
+  }).catch(function (err) {
+    console.error(err);
+    res.send(`/* Error compiling scss: ${err} */`);
+  });
+})
 
 // --------------------------------------------------------------------------
 // Startup configuration
