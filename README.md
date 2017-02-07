@@ -70,7 +70,9 @@ The following assets are available in the system as depencencies for your widget
 - `fliplet-studio-ui` (includes some basic style for the UI of the interface)
 - `bootstrap` (js and css; also includes jquery)
 - `bootstrap-css` (css only)
+- `bootstrap-js` (js only)
 - `jquery`
+- `moment` momentJS
 - `tinymce`
 - `handlebars`
 - `lodash`
