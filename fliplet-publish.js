@@ -55,7 +55,7 @@ archive.on('end', function(err) {
 
       console.log(body);
     } else {
-      console.log('The widget ' + body.widget.name + '(' + body.widget.version + ') has been imported');
+      console.log('The package ' + body.widget.name + '(' + body.widget.version + ') has been imported');
     }
 
     // Remove temporary file

@@ -1,6 +1,6 @@
 {
   "name": "fliplet-cli",
-  "version": "2.0.2",
+  "version": "3.0.0",
   "description": "",
   "main": "fliplet.js",
   "scripts": {
@@ -25,6 +25,7 @@
     "handlebars": "^4.0.5",
     "lodash": "^4.16.4",
     "ncp": "^2.0.0",
+    "node-sass": "^4.1.1",
     "prompt": "^1.0.0",
     "replace": "^0.3.0",
     "request": "^2.72.0",

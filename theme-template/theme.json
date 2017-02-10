@@ -1,0 +1,36 @@
+{
+  "name": "{{name}}",
+  "package": "{{package}}",
+  "version": "1.0.0",
+  "icon": "img/icon.png",
+  "dependencies": [],
+  "assets": [
+    "scss/index.scss"
+  ],
+  "settings": {
+    "configuration": [
+      {
+        "name": "Page",
+        "variables": [
+          {
+            "name": "bodyBackground",
+            "description": "The background colour of the page",
+            "type": "color",
+            "default": "#FFFFFF"
+          }
+        ]
+      },
+      {
+        "name": "Buttons",
+        "variables": [
+          {
+            "name": "primaryButtonColor",
+            "description": "The background colour for the buttons",
+            "type": "color",
+            "default": "#00FF00"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -24,16 +24,16 @@ Run your widget for development:
 
 ```
 $ cd my-form-plugin
-$ fliplet run-widget
+$ fliplet run
 ```
 
 Which will run your widget on [http://localhost:3000](http://localhost:3000).
 
 ## Publish a widget
 
-To publish a widget on the Fliplet platform, you must be logged in by using `fliplet login` then you can use the `fliplet publish-widget` which will upload and publish your widget to the current environment (by default, production).
+To publish a widget or theme on the Fliplet platform, you must be logged in by using `fliplet login` then you can use the `fliplet publish` which will upload and publish your widget or theme to the current environment (by default, production).
 
-Please note: your widget won't be published as public, but will rather kept private and visible only for the organisation you belong to.
+Please note: your widget/theme won't be published as public, but will rather kept private and visible only for the organisation you belong to.
 
 
 ## Widget development
@@ -59,11 +59,24 @@ You can also see an example of how those APIs are used in the default [interface
 
 ---
 
+## Theme development
+
+Your theme skeleton is made of the following directory structure:
+
+```
+theme.json           // The theme definition file
+css/                  // CSS Assets
+js/                   // JS Assets
+img/                  // Images
+```
+
+---
+
 ### Assets library
 
-The following assets are available in the system as depencencies for your widget:
+The following assets and many more are available in the system as depencencies for your widgets:
 
-- `fliplet-core` (also includes jquery)
+- `fliplet-core` (also includes jquery and modernizr)
 - `fliplet-datasources`
 - `fliplet-media`
 - `fliplet-communicate`
@@ -94,6 +107,8 @@ The following handlebars helpers are available in the system:
 
 ## Best practises and advices
 
+Please note: the widget instance data won't be available on the page unless your dependencies include `fliplet-core`.
+
 ### Your widget might be dropped more than once into a page
 
 Does your code handle that? Here's a piece of advice:
@@ -101,16 +116,22 @@ Does your code handle that? Here's a piece of advice:
 1. Output each widget instance ID via the `build.html` file
 
 ```html
-<div data-my-widget="{{id}}">Hi!</div>
+<div data-my-widget-id="{{id}}">Hi!</div>
 ```
 
 2. On your JS files, cycle through the instances and get the data of each instance
 
 ```js
-$('[data-my-widget]').each(function () {
+// Using jQuery
+$('[data-my-widget-id]').each(function () {
   var $el = $(this);
-  var instanceId = $el.data('my-widget');
+  var instanceId = $el.data('my-widget-id');
   var data = Fliplet.Widget.getData(instanceId);
+});
+
+// Using our helper from fliplet-core
+Fliplet.Widget.instance('my-widget', function (data) {
+
 });
 ```
 
