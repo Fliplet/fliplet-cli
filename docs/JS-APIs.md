@@ -9,7 +9,7 @@ Please note: the JS APIs are more of a **SDK** rather than a **framework**. You 
 To list out all the available packages in our system, use the `list-assets` command of the CLI:
 
 ```
-➜  ~ fliplet list-assets
+$ fliplet list-assets
 
 • fliplet-core: 1.0
   -- category: first-party
@@ -23,7 +23,7 @@ To list out all the available packages in our system, use the `list-assets` comm
 ...
 ```
 
-### First-party
+### First-party packages
 
 The different parts of our SDK are split into different packages which includes one or more functionalities. To use them, you will need to import them as dependencies in your components (or themes).
 
@@ -37,7 +37,7 @@ Our [API Documentation](API-Documentation.md) and open-source components will gi
 
 Note: dependencies can include other dependencies (e.g. `fliplet-core` also includes `jquery`).
 
-### Third-party
+### Third-party packages
 
 Our dependencies also include common Javascript libraries such as jQuery, lodash, tinymce and many others. We recommend to use them if available (rather than bundling up your own version) to ensure minimum footprint when the apps are built.
 
@@ -50,3 +50,4 @@ Our SDK uses [Javascript promises](https://developer.mozilla.org/en-US/docs/Web/
 Fliplet.Pages.get().then(function (pages) {
 
 });
+```
