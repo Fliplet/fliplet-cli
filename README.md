@@ -1,6 +1,10 @@
 # Fliplet CLI
 Command line utility for creating and running widgets to be used on the Fliplet platform.
 
+# Docs
+
+Documentation is available at [developers.fliplet.com](http://developers.fliplet.com).
+
 # Install
 With [node.js](http://nodejs.org/) and [npm](http://github.com/isaacs/npm):
 
@@ -53,7 +57,7 @@ img/                  // Images
 
 By default, the dependencies of the interface contain `fliplet-core`, which is only one of the packages available as part of Fliplet's JS Public APIs.
 
-Head to our [Documentation](https://github.com/Fliplet/fliplet-cli/wiki) to read about all the available JS APIs to be used from your components.
+Head to our [Documentation](http://developers.fliplet.com/) to read about all the available JS APIs to be used from your components.
 
 You can also see an example of how those APIs are used in the default [interface.js](https://github.com/Fliplet/fliplet-cli/blob/master/widget-template/js/interface.js) template of your widget.
 
