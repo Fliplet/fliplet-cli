@@ -7,11 +7,15 @@ $primaryBackground: #00ABD2;
 
 .page-header {
   background-color: $primaryBackground;
-  background-image: linear-gradient(120deg, darken(#00ABD2, 10%), #00ABD2);
+  background-image: linear-gradient(-120deg, darken(#00ABD2, 10%), #00ABD2);
 }
 
 .main-content {
   h1, h2, h3, h4 {
     color: $primaryBackground;
+  }
+
+  h1 {
+    text-align: center;
   }
 }
