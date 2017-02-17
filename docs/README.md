@@ -6,7 +6,7 @@ Welcome to the Developers documentation for the Fliplet Platform.
 
 - Introduction to the platform
 - [Quickstart](Quickstart.md)
-- The JS APIs
+- [The JS APIs](JS-APIs.md)
 - Building components
 - Building themes
 - Publishing

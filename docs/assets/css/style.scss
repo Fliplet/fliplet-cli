@@ -2,3 +2,15 @@
 ---
 
 @import "{{ site.theme }}";
+
+@import "config/_colors";
+
+.page-header {
+  background-color: $primaryBackground;
+}
+
+.main-content {
+  h1, h2, h3, h4 {
+    color: $primaryBackground;
+  }
+}
