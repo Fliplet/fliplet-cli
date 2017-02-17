@@ -12,6 +12,10 @@ $primaryBackground: #00ABD2;
 
 .project-name a {
   color: #FFF;
+
+  &:hover {
+    text-decoration: none;
+  }
 }
 
 .main-content {

@@ -8,7 +8,7 @@ Our development tools rely on [Node.js](https://nodejs.org) and [Npm](https://ww
 
 The [Fliplet CLI](https://www.npmjs.com/package/fliplet-cli) is available through **Npm** and can be installed from the command line:
 
-```bash
+```shell
 $ npm install -g fliplet-cli
 ```
 
@@ -16,7 +16,7 @@ Please note: on some systems you might require the `sudo` prefix in order to ins
 
 Once you have installed the CLI, typing `fliplet` in your command line should print out the available options:
 
-```bash
+```shell
 $ fliplet
 
 Usage: fliplet [options] [command]
@@ -45,7 +45,7 @@ We also regularly update the development tools, so please make sure you're runni
 
 You can see the version you have installed by running the command below:
 
-```bash
+```shell
 $ fliplet --version
 3.0.0
 ```
