@@ -1,3 +1,3 @@
-# Fliplet Developers
+# Fliplet Developers Docs
 
-TBD
+Welcome to the Developers documentation for the Fliplet Platform.
