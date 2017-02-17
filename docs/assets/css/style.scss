@@ -29,4 +29,10 @@ $primaryBackground: #00ABD2;
   color: $primaryBackground;
   font-size: 1rem;
   padding: 0.5rem 1rem;
+
+  &:hover {
+    border-color: $primaryBackground;
+    background-color: $primaryBackground;
+    color: #FFF;
+  }
 }
