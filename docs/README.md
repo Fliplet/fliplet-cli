@@ -7,7 +7,7 @@ To get a brief introduction to the technologies we use and the stack of the plat
 - [Introduction to the platform](Introduction.md)
 - [Quickstart](Quickstart.md)
 - [The JS APIs](JS-APIs.md)
-- Building components
+- [Building components](Building-components.md)
 - Building themes
 - [API Documentation](API-Documentation.md)
 - Publishing

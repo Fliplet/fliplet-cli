@@ -51,3 +51,9 @@ Fliplet.Pages.get().then(function (pages) {
 
 });
 ```
+
+Make sure you're familiar with promises before diving into building components.
+
+When you're ready, move to the next section of the documentation to start building your first component.
+
+<a href="Building-components.html" class="btn">Build a component →</a>

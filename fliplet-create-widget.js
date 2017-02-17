@@ -39,7 +39,7 @@ ncp(path.join(__dirname, 'widget-template'), folderPath, function (err) {
   log('Widget has been successfully created. To run it for development:');
   log('');
   log('    $ cd ' + packageName);
-  log('    $ fliplet run-widget');
+  log('    $ fliplet run');
   log('');
 });
 
