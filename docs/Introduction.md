@@ -45,4 +45,8 @@ The **Fliplet CLI** will enable you to develop and test components and themes on
 
 Check the [Quickstart](Quickstart.md) section for more details about getting started with the development.
 
+---
+
+In the next section we'll help you installing the development tools.
+
 <a href="Quickstart.html" class="btn">Go to quickstart →</a>
