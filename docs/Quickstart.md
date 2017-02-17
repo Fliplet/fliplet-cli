@@ -16,7 +16,7 @@ Please note: on some systems you might require the `sudo` prefix in order to ins
 
 Once you have installed the CLI, typing `fliplet` in your command line should print out the available options:
 
-```shell
+```
 $ fliplet
 
 Usage: fliplet [options] [command]
@@ -51,3 +51,7 @@ $ fliplet --version
 ```
 
 You can check the latest available version of the Fliplet CLI on the [Npm](https://www.npmjs.com/package/fliplet-cli) website.
+
+---
+
+<a href="JS-APIs.html" class="btn">Learn the JS APIs →</a>
