@@ -3,7 +3,7 @@
 
 @import "{{ site.theme }}";
 
-@import "config/_colors";
+$primaryBackground: #00ABD2;
 
 .page-header {
   background-color: $primaryBackground;
