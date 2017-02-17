@@ -4,9 +4,11 @@ The stack of Fliplet is mostly based on **Javascript** — even server-side — 
 
 We also support some preprocessors like [SASS](http://sass-lang.com/) and templating engines like [Handlebars](http://handlebarsjs.com/). You're not required to use them, but they can boost your development quite a lot when building complex components.
 
+---
+
 ## What can you build
 
-### App components
+### 1. App components
 
 App components will enable your apps to run Javascript on all screens of a Fliplet App. CSS files and HTML/Handlebars templates will also be available on all screens.
 
@@ -14,7 +16,7 @@ Typical usage:
 - Analytics
 - Global settings for apps
 
-### Page components
+### 2. Page components
 
 Page components are similar to app components, but they also display output since they can be dropped onto a page.
 A page component can be dropped more than once on a page, and can be displayed inline or as a block element.
@@ -25,7 +27,7 @@ Typical usage:
 - Video players
 - Lists
 
-### Themes
+### 3. Themes
 
 As the name suggests, themes enables you to customise any visual aspect of your apps. A Fliplet App can only be assigned to one theme.
 
