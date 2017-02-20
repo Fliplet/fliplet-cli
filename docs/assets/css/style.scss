@@ -31,6 +31,12 @@ $primaryBackground: #00ABD2;
 .btn {
   border: 2px solid $primaryBackground;
   padding: 0.5rem 1rem;
+  display: inline-block;
+
+  &:hover {
+    border-color: $primaryBackground;
+    background-color: $primaryBackground;
+  }
 
   a {
     text-decoration: none;
@@ -38,8 +44,6 @@ $primaryBackground: #00ABD2;
     font-size: 1rem;
 
     &:hover {
-      border-color: $primaryBackground;
-      background-color: $primaryBackground;
       color: #FFF;
     }
   }
