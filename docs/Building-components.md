@@ -86,7 +86,7 @@ Therefore, to recap:
 {% raw %}
 ```handlebars
 {{#if videoUrl}}
-  <video src="{{ videoUrl"></video>
+  <video src="{{ videoUrl }}"></video>
 {{/if}}
 ```
 {% endraw %}
