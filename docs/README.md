@@ -4,7 +4,6 @@ To get a brief introduction to the technologies we use and the stack of the plat
 
 ### Table of contents
 
-<span class="boxes">
 - [1. Introduction to the platform](Introduction.md)
 - [2. Quickstart](Quickstart.md)
 - [3. The JS APIs](JS-APIs.md)
@@ -14,4 +13,3 @@ To get a brief introduction to the technologies we use and the stack of the plat
 - Testing
 - [API Documentation](API-Documentation.md)
 - [Best practises and advices](Best-practises.md)
-</span>
