@@ -28,23 +28,17 @@ $primaryBackground: #00ABD2;
   }
 }
 
-.btn {
+.buttons a {
+  @extend .btn;
+
   border: 2px solid $primaryBackground;
+  color: $primaryBackground;
+  font-size: 1rem;
   padding: 0.5rem 1rem;
-  display: inline-block;
 
   &:hover {
     border-color: $primaryBackground;
     background-color: $primaryBackground;
-  }
-
-  a {
-    text-decoration: none;
-    color: $primaryBackground;
-    font-size: 1rem;
-
-    &:hover {
-      color: #FFF;
-    }
+    color: #FFF;
   }
 }

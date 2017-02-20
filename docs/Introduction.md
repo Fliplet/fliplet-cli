@@ -59,4 +59,4 @@ Check the [Quickstart](Quickstart.md) section for more details about getting sta
 In the next section we'll help you installing the development tools.
 
 [Quickstart →](Quickstart.md)
-{: .btn}
+{: .buttons}
