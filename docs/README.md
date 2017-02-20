@@ -4,14 +4,14 @@ To get a brief introduction to the technologies we use and the stack of the plat
 
 ### Table of contents
 
-<div class="boxes">
-  [1. Introduction to the platform](Introduction.md)
-  [2. Quickstart](Quickstart.md)
-  [3. The JS APIs](JS-APIs.md)
-  [4. Building components](Building-components.md)
-  [Building themes](#)
-  [Publishing](#)
-  [Testing](#)
-  [API Documentation](API-Documentation.md)
-  [Best practises and advices](Best-practises.md)
-</div>
+<span class="boxes">
+- [1. Introduction to the platform](Introduction.md)
+- [2. Quickstart](Quickstart.md)
+- [3. The JS APIs](JS-APIs.md)
+- [4. Building components](Building-components.md)
+- Building themes
+- Publishing
+- Testing
+- [API Documentation](API-Documentation.md)
+- [Best practises and advices](Best-practises.md)
+</span>
