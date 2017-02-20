@@ -27,7 +27,8 @@ The `widget.json` file defines your component as well as the **dependencies** an
 {
   "name": "my Awesome Component",
   "package": "com.example.my-awesome-component",
-  ...
+  "dependencies": [],
+  "assets": []
 }
 ```
 
@@ -35,3 +36,8 @@ The `widget.json` file defines your component as well as the **dependencies** an
 
 ---
 
+## Instances
+
+Once a component...
+
+##
