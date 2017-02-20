@@ -4,10 +4,10 @@ To get a brief introduction to the technologies we use and the stack of the plat
 
 ### Table of contents
 
-- [Introduction to the platform](Introduction.md)
-- [Quickstart](Quickstart.md)
-- [The JS APIs](JS-APIs.md)
-- [Building components](Building-components.md)
+- [1. Introduction to the platform](Introduction.md)
+- [2. Quickstart](Quickstart.md)
+- [3. The JS APIs](JS-APIs.md)
+- [4. Building components](Building-components.md)
 - Building themes
 - Publishing
 - Testing

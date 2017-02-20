@@ -1,4 +1,4 @@
-# Introduction to the platform
+# 1. Introduction to the platform
 
 The stack of Fliplet is mostly based on **Javascript** — even server-side — therefore being familiar with it will be a strong requirement in building components and themes on our platform.
 
@@ -8,7 +8,7 @@ We also support some preprocessors like [SASS](http://sass-lang.com/) and templa
 
 ## What can you build
 
-### 1. App components
+### A. App components
 
 App components will enable your apps to run Javascript on all screens of a Fliplet App. CSS files and HTML/Handlebars templates will also be available on all screens.
 
@@ -16,7 +16,7 @@ Typical usage:
 - Analytics
 - Global settings for apps
 
-### 2. Page components
+### B. Page components
 
 Page components are similar to app components, but they also display output since they can be dropped onto a page.
 A page component can be dropped more than once on a page, and can be displayed inline or as a block element.
@@ -27,7 +27,7 @@ Typical usage:
 - Video players
 - Lists
 
-### 3. Providers
+### C. Providers
 
 A provider is a particular type of component which only serves as a interface to provide data to other components.
 
@@ -36,7 +36,7 @@ Typical usage:
 - Connect a button or link to a page
 - Select data from a data source
 
-### 4. Themes
+### D. Themes
 
 As the name suggests, themes enables you to customise any visual aspect of your apps. A Fliplet App can only be assigned to one theme.
 
