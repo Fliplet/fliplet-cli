@@ -128,4 +128,5 @@ Declares `dependencies` and local `assets` to be used from the **build.html** ou
 
 ---
 
-<a href="../Building-components#the-component-definition-file" class="btn">Back to components</a>
+[Back to components](../Building-components#the-component-definition-file.md)
+{: .buttons}

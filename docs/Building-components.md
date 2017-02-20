@@ -32,7 +32,8 @@ The `widget.json` file defines your component as well as the **dependencies** an
 }
 ```
 
-<a href="components/Definition" class="btn">Read more about the widget.json</a>
+[Read more about the widget.json](components/Definition.md)
+{: .buttons}
 
 ---
 

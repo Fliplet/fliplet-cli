@@ -61,4 +61,5 @@ Example of assets for a theme:
 }
 ```
 
-<a href="JS-APIs#dependencies-packages" class="btn">Back to JS APIs and packages</a>
+[Back to JS APIs and packages](JS-APIs#dependencies-packages.md)
+{: .buttons}
