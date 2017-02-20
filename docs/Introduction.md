@@ -58,7 +58,5 @@ Check the [Quickstart](Quickstart.md) section for more details about getting sta
 
 In the next section we'll help you installing the development tools.
 
-<a href="Quickstart" class="btn">Go to quickstart →</a>
-
 [Quickstart →](Quickstart.md)
 {: .btn}
