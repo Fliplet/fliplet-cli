@@ -10,8 +10,10 @@ Does your code handle that? Here's a piece of advice:
 
 1. Output each widget instance ID via the `build.html` file
 
-```html
+```handlebars
+{% raw %}
 <div data-my-widget-id="{{id}}">Hi!</div>
+{% endraw %}
 ```
 
 2. On your JS files, cycle through the instances and get the data of each instance
@@ -38,13 +40,15 @@ This makes sure your widget will work correctly when is dropped more than once i
 
 Templates (`build.html` and `interface.html`) get compiled through Handlebars. If you are using Handlebars yourself in the JS at runtime, you might want to escape your html template variables from getting compiled. You can prefix any curly brackets to escape the command from getting compiled:
 
-```
+```handlebars
+{% raw %}
 <!-- this gets compiled -->
 <div id="{{id}}">{{foo}}</div>
 
 <!-- these don't -->
 <div>\{{foo}}</div>
 <template name="bar">\{{#if foo}} \{{foo}} \{{/if}}</template>
+{% endraw %}
 ```
 
 ---

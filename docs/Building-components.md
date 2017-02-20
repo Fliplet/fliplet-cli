@@ -73,16 +73,20 @@ Therefore, to recap:
 
 ### Sample interface.html
 
-```html
+```handlebars
+{% raw %}
 <form>
   <input type="text" name="videoUrl" value="{{ videoUrl }}" placeholder="A video url" />
 </form>
+{% endraw %}
 ```
 
 ### Sample build.html
 
-```html
+```handlebars
+{% raw %}
 {{#if videoUrl}}
   <video src="{{ videoUrl"></video>
 {{/if}}
+{% endraw %}
 ```
