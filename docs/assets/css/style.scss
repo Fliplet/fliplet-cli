@@ -10,7 +10,7 @@ $primaryBackground: #00ABD2;
   background-image: linear-gradient(-120deg, darken(#00ABD2, 10%), #00ABD2);
 }
 
-.project-name a {
+.project-name {
   color: #FFF;
 
   &:hover {
@@ -24,7 +24,7 @@ $primaryBackground: #00ABD2;
   }
 
   h1 {
-    text-align: center;
+    display: none;
   }
 }
 
