@@ -10,11 +10,11 @@ Does your code handle that? Here's a piece of advice:
 
 1. Output each widget instance ID via the `build.html` file
 
-```handlebars
 {% raw %}
+```handlebars
 <div data-my-widget-id="{{id}}">Hi!</div>
-{% endraw %}
 ```
+{% endraw %}
 
 2. On your JS files, cycle through the instances and get the data of each instance
 
