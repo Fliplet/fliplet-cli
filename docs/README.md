@@ -14,4 +14,5 @@ To get a brief introduction to the technologies we use and the stack of the plat
 - Publishing
 - Testing
 - [API Documentation](API-Documentation.md)
+- [Dependencies and assets](Dependencies-and-assets.md)
 - [Best practises and advices](Best-practises.md)

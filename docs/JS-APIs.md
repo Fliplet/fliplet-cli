@@ -37,6 +37,8 @@ Our [API Documentation](API-Documentation.md) and open-source components will gi
 
 Note: dependencies can include other dependencies (e.g. `fliplet-core` also includes `jquery`).
 
+<a href="Dependencies-and-assets" class="btn">More details on dependencies and assets →</a>
+
 ### Third-party packages
 
 Our dependencies also include common Javascript libraries such as jQuery, lodash, tinymce and many others. We recommend to use them if available (rather than bundling up your own version) to ensure minimum footprint when the apps are built.
