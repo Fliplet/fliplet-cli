@@ -32,7 +32,7 @@ The `widget.json` file defines your component as well as the **dependencies** an
 }
 ```
 
-<a href="components/Definition.html" class="btn">Read more about the widget.json</a>
+<a href="components/Definition" class="btn">Read more about the widget.json</a>
 
 ---
 
@@ -56,6 +56,8 @@ Fliplet.Widget.save({
 ```
 
 As you can see, plain Javascript objects (which can be serialized to JSON) are supported.
+
+---
 
 ## UI: Interface and Output (build)
 

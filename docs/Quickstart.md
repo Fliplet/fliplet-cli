@@ -56,4 +56,4 @@ You can check the latest available version of the Fliplet CLI on the [Npm](https
 
 In the next section, you'll learn how to interact with our system.
 
-<a href="JS-APIs.html" class="btn">Learn the JS APIs →</a>
+<a href="JS-APIs" class="btn">Learn the JS APIs →</a>
