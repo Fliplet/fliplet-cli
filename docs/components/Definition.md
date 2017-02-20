@@ -48,15 +48,15 @@ A unique string to define your component on Fliplet. It's usually named after yo
 
 e.g. Given my company website is `fliplet.com` and the component I'm developing is a YouTube Video player, I will use `com.fliplet.youtube` (or even `com.fliplet.video.youtube` or `com.fliplet.youtube-video`).
 
-## version
+## "version"
 
 The semantic version of your component.
 
-## icon
+## "icon"
 
 The relative path to the icon of your component. When available, the icon will be displayed on Fliplet Studio in different parts of the user interface.
 
-## tags
+## "tags"
 
 Tags are used by both the system and studio to filter components and organise them into different sections.
 
@@ -64,11 +64,11 @@ Tags are used by both the system and studio to filter components and organise th
 - A component becomes an **app component** when the tag `type:appComponent` is included.
 - A component becomes unlisted when the none of the two above tags have been set. Therefore, **providers** usually don't include those tags.
 
-## provider_only
+## "provider_only"
 
 When set to `true`, marks the component as a **provider** only, hence cannot be assigned to an app or a screen with an instance. You're most likely to use this with empty `tags` as specified above.
 
-## references
+## "references"
 
 Specifies to the system which settings of the component (when saved with `Fliplet.Widget.save` to an instance) reference values which should be linked and kept as references.
 
@@ -112,17 +112,17 @@ You can use the following references when describing the behaviour of your compo
 }
 ```
 
-## html_tag
+## "html_tag"
 
 App and page components can optionally output html via the `build.html` template. When doing that, the output is wrapped around a main html tag which also holds some metadata about the component instance. Your definition can specify which tag you want to use. This is mainly to be used with `div` and `span` to declare whether your output is block or inline.
 
 Having said that, **any html tag** is allowed to be specified.
 
-## interface
+## "interface"
 
 Declares `dependencies` and local `assets` to be used from the **interface.html**. Please read our documentation about [dependencies and assets](../Dependencies-and-assets) for more details.
 
-## build
+## "build"
 
 Declares `dependencies` and local `assets` to be used from the **build.html** output. Please read our documentation about [dependencies and assets](../Dependencies-and-assets) for more details.
 

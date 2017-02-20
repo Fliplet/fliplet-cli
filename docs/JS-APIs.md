@@ -37,7 +37,7 @@ Our [API Documentation](API-Documentation.md) and open-source components will gi
 
 Note: dependencies can include other dependencies (e.g. `fliplet-core` also includes `jquery`).
 
-<a href="Dependencies-and-assets" class="btn">More details on dependencies and assets →</a>
+<a href="Dependencies-and-assets" class="btn">Read more on dependencies and assets →</a>
 
 ### Third-party packages
 
@@ -55,6 +55,8 @@ Fliplet.Pages.get().then(function (pages) {
 ```
 
 Make sure you're familiar with promises before diving into building components.
+
+---
 
 When you're ready, move to the next section of the documentation to start building your first component.
 

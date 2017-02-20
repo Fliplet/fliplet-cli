@@ -2,13 +2,15 @@
 
 Both **components** and **themes** can specify a list of dependencies and local assets which should be used when rendering it.
 
+---
+
 ## Dependencies
 
 A list of packages which are required in order for the component or theme to work. These will be included before any declared asset.
 
 Still confused? We've got you covered. Find out more on the [JS APIs](JS-APIs) part of these docs.
 
-Example on dependencies:
+Example of dependencies:
 
 ```json
 {
