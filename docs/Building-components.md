@@ -69,3 +69,19 @@ Therefore, to recap:
 
 - `interface.html` defines the interface for app components, page components and providers
 - `build.html` defines the output of an app or page component
+
+### Sample interface.html
+
+```html
+<form>
+  <input type="text" name="videoUrl" value="{{ videoUrl }}" placeholder="A video url" />
+</form>
+```
+
+### Sample build.html
+
+```html
+{{#if videoUrl}}
+  <video src="{{ videoUrl"></video>
+{{/if}}
+```
