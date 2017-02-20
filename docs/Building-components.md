@@ -38,6 +38,6 @@ The `widget.json` file defines your component as well as the **dependencies** an
 
 ## Instances
 
-Once a component...
+Once a component is dropped onto a page (or an app component is added as an add-on), an instance of such component will be created in the system for the app.
 
-##
+A component instance (internally called `Widget Instance`) can save settings for the instance of the component.

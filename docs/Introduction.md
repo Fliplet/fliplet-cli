@@ -27,7 +27,16 @@ Typical usage:
 - Video players
 - Lists
 
-### 3. Themes
+### 3. Providers
+
+A provider is a particular type of component which only serves as a interface to provide data to other components.
+
+Typical usage:
+- Select an image from the media library
+- Connect a button or link to a page
+- Select data from a data source
+
+### 4. Themes
 
 As the name suggests, themes enables you to customise any visual aspect of your apps. A Fliplet App can only be assigned to one theme.
 

@@ -50,4 +50,4 @@ e.g. Given my company website is `fliplet.com` and the component I'm developing 
 
 ---
 
-<a href="../Building-components.html" class="btn">Back to components</a>
+<a href="../Building-components.html#the-component-definition-file" class="btn">Back to components</a>
