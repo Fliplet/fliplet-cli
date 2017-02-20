@@ -41,3 +41,29 @@ The `widget.json` file defines your component as well as the **dependencies** an
 Once a component is dropped onto a page (or an app component is added as an add-on), an instance of such component will be created in the system for the app.
 
 A component instance (internally called `Widget Instance`) can save settings for the instance of the component.
+
+Components can save their settings through our JS APIs (available via the `fliplet-core` package):
+
+```js
+Fliplet.Widget.save({
+  someValue: true,
+  otherValue: 1,
+  supportsObjects: {
+    a: 'Hello',
+    b: 'World'
+  }
+});
+```
+
+As you can see, plain Javascript objects (which can be serialized to JSON) are supported.
+
+## UI: Interface and Output (build)
+
+**All components** can define a **html interface** where their settings for the instance can be configured. An interface is made of a HTML page (which is compiled via Handlebars from the engine) and any number of assets (JS, CSS, etc).
+
+In addition, **app and page components** should also define a **html output** (internally called `build`) to be displayed in the page when they are dropped in.
+
+Therefore, to recap:
+
+- `interface.html` defines the interface for app components, page components and providers
+- `build.html` defines the output of an app or page component
