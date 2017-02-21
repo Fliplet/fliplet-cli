@@ -2,6 +2,8 @@
 
 Components interfaces can send events to Fliplet Studio using a event emitter bus provided with the `fliplet-core` dependency.
 
+---
+
 ## Tells the parent window the height of the component interface has changed
 
 This is particularly useful when the height of your interface has dramatically changed and you want to make sure the parent windows is aware of that.
@@ -13,6 +15,8 @@ When a component is a provider, the parent window will be the component which is
 Fliplet.Widget.autosize()
 ```
 
+---
+
 ## Refresh the screen preview frame
 
 Particularly useful after saving a component instance configuration, if you require the screen to be reloaded.
@@ -20,6 +24,8 @@ Particularly useful after saving a component instance configuration, if you requ
 ```js
 Fliplet.Studio.emit('reload-page-preview');
 ```
+
+---
 
 ## Tells the parent window a component is done
 
@@ -33,3 +39,4 @@ The typical use is to call `complete()` shortly after a component instance has s
 Fliplet.Widget.save({ foo: 'bar' }).then(function onSave() {
   Fliplet.Widget.complete();
 });
+```
