@@ -86,5 +86,14 @@ Here's a sample of the interface for the button component:
 
 ---
 
+## Including providers
+
+Components can include other components (if marked as providers) to add more functionalities or gather data from different sources.
+
+[Read more on using providers](Using-Providers.md)
+{: .buttons}
+
+---
+
 [Back to building components](../Building-components#the-component-definition-file.md)
 {: .buttons}
