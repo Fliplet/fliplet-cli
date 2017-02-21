@@ -57,7 +57,7 @@ var data = Fliplet.Widget.getData();
 
 ## UI design
 
-Although it isn't required, we recommend using our design patterns and styles when developing widgets. We have made a nice package called `fliplet-studio-ui` which contains most of the styles we use on our interfaces.
+Although it isn't required, we recommend using our design patterns and styles when developing components. We have made a nice package called `fliplet-studio-ui` which contains most of the styles we use on our interfaces.
 
 Here's a sample of the interface for the button component:
 
