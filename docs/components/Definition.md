@@ -130,5 +130,5 @@ Declares `dependencies` and local `assets` to be used from the **build.html** ou
 
 ---
 
-[Back to components](../Building-components#sample-interfacehtml.md)
+[Back to components](../Building-components.md#the-component-definition-file)
 {: .buttons}
