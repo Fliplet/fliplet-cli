@@ -1,4 +1,4 @@
-# Sending events to Fliplet Studio or the parent component
+# Sending events between components
 
 Components interfaces can send events to Fliplet Studio using a event emitter bus provided with the `fliplet-core` dependency.
 
@@ -20,3 +20,16 @@ Particularly useful after saving a component instance configuration, if you requ
 ```js
 Fliplet.Studio.emit('reload-page-preview');
 ```
+
+## Tells the parent window a component is done
+
+```js
+Fliplet.Widget.complete();
+```
+
+The typical use is to call `complete()` shortly after a component instance has saved its settings:
+
+```js
+Fliplet.Widget.save({ foo: 'bar' }).then(function onSave() {
+  Fliplet.Widget.complete();
+});
