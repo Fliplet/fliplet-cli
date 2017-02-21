@@ -15,4 +15,5 @@ To get a brief introduction to the technologies we use and the stack of the plat
 - Testing
 - [API Documentation](API-Documentation.md)
 - [Dependencies and assets](Dependencies-and-assets.md)
+- [Sending events to Fliplet Studio and other components](Event-emitter.md)
 - [Best practises and advices](Best-practises.md)

@@ -4,7 +4,7 @@
 
 A widget instance data won't be available on the page unless your dependencies include `fliplet-core`.
 
-## Your component might be dropped more than once into a page
+## Your component can be dropped more than once into a page
 
 Does your code handle that? Here's a piece of advice:
 
