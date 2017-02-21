@@ -14,7 +14,7 @@ Both page components and app components can have an interface, although it is no
 
 The interface consists in a html template which gets parsed and compiled via [Handlebars](http://handlebarsjs.com/), plus any other asset (like CSS and JS files, though they don't get compiled).
 
-Your template will get available in the view all settings that have been previously saved in the instance as handlebars variables. You can also print the component unique id using the `{{ id }}` variable.
+Your template will get available in the view all settings that have been previously saved in the instance as handlebars variables. You can also print the component unique id using the {% raw %}`{{ id }}`{% endraw %} variable.
 
 Example:
 
@@ -47,7 +47,7 @@ Fliplet.Widget.save({
 
 Your component interface can be reopened if the component output is clicked via the screen preview by the Fliplet Studio user. Once the interface is reopened, you're responsible for reading the previously saved settings and repopulate your interface.
 
-Data for the interface can be retrieved using the `Fliplet.Widget.getData` of `fliplet-core` as follows:
+Data for the interface can be retrieved using the `Fliplet.Widget.getData` method from `fliplet-core` as follows:
 
 ```js
 var data = Fliplet.Widget.getData();
