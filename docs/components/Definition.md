@@ -2,6 +2,8 @@
 
 The `widget.json` file defines your component as well as the **dependencies** and **assets** it needs in order to run.
 
+Please note: if you make changes to the `widget.json` file, restart the development server (`fliplet run`) to apply the changes you made.
+
 Let's have a look at an example and we'll explain how each section works:
 
 ```json

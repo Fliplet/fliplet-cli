@@ -17,6 +17,15 @@ interface.html
 build.html
 ```
 
+To run your component, simply navigate to its folder and use the `run` command:
+
+```
+cd my-awesome-component
+fliplet run
+```
+
+The above command will run the development server at [http://localhost:3000](http://localhost:3000).
+
 We'll first focus on the `widget.json`, which is the definition of your component. If you're used to npm, it's similar to the `package.json` file for npm modules.
 
 ## The component definition file
@@ -31,6 +40,8 @@ The `widget.json` file defines your component as well as the **dependencies** an
   "assets": []
 }
 ```
+
+Please note: if you make changes to the `widget.json` file, restart the development server (`fliplet run`) to apply the changes you made.
 
 [Read more about the widget.json](components/Definition.md)
 {: .buttons}
@@ -81,6 +92,11 @@ Therefore, to recap:
 ```
 {% endraw %}
 
+[Jump to the interface documentation](components/Interface.md)
+{: .buttons}
+
+---
+
 ### Sample build.html
 
 {% raw %}
@@ -93,5 +109,3 @@ Therefore, to recap:
 
 ---
 
-[Read more on the interface](components/Interface.md)
-{: .buttons}
