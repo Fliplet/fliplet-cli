@@ -120,7 +120,7 @@ Having said that, **any html tag** is allowed to be specified.
 
 ## "interface"
 
-Declares `dependencies` and local `assets` to be used from the **interface.html**. Please read our documentation about [dependencies and assets](../Dependencies-and-assets) for more details.
+Declares `dependencies` and local `assets` to be used from the [interface.html](Interface.md). Please read our documentation about [dependencies and assets](../Dependencies-and-assets) for more details.
 
 ## "build"
 
@@ -128,5 +128,5 @@ Declares `dependencies` and local `assets` to be used from the **build.html** ou
 
 ---
 
-[Back to components](../Building-components#the-component-definition-file.md)
+[Back to components](../Building-components#sample-interfacehtml.md)
 {: .buttons}

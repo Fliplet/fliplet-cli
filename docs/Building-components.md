@@ -68,7 +68,7 @@ In addition, **app and page components** should also define a **html output** (i
 
 Therefore, to recap:
 
-- `interface.html` defines the interface for app components, page components and providers
+- [interface.html](components/Interface.md) defines the interface for app components, page components and providers
 - `build.html` defines the output of an app or page component
 
 ### Sample interface.html
@@ -92,3 +92,6 @@ Therefore, to recap:
 {% endraw %}
 
 ---
+
+[Read more on the interface](components/Interface.md)
+{: .buttons}
