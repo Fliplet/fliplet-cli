@@ -80,7 +80,7 @@ In addition, **app and page components** should also define a **html output** (i
 Therefore, to recap:
 
 - [interface.html](components/Interface.md) defines the interface for app components, page components and providers
-- `build.html` defines the output of an app or page component
+- [build.html](components/Build-output.Md) defines the output of an app or page component
 
 ### Sample interface.html
 
@@ -106,6 +106,9 @@ Therefore, to recap:
 {{/if}}
 ```
 {% endraw %}
+
+[Jump to the build (output) documentation](components/Build-output.md)
+{: .buttons}
 
 ---
 

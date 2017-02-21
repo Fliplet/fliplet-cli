@@ -95,5 +95,7 @@ Components can include other components (if marked as providers) to add more fun
 
 ---
 
-[Back to building components](../Building-components#the-component-definition-file.md)
+Once you're familiar with the above documentation on the component interface, have a read to the next section which covers the output of components.
+
+[Next: output of components (build.html)](../Build-output.md)
 {: .buttons}
