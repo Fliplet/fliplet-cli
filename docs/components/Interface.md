@@ -55,6 +55,35 @@ var data = Fliplet.Widget.getData();
 // data.foo is 'bar'
 ```
 
+## UI design
+
+Although it isn't required, we recommend using our design patterns and styles when developing widgets. We have made a nice package called `fliplet-studio-ui` which contains most of the styles we use on our interfaces.
+
+Here's a sample of the interface for the button component:
+
+{% raw %}
+```handlebars
+<div>
+  <form class="form-horizontal">
+    <header>
+      <p>Configure your primary button</p>
+      <a id="help_tip" href="#">Need help?</a>
+    </header>
+
+    <div class="form-group clearfix">
+      <div class="col-sm-4 control-label">
+        <label for="primaryButtonLabel">Button label</label>
+      </div>
+      <div class="col-sm-8">
+        <input type="text" name="name" class="form-control" id="primaryButtonLabel" placeholder="Label" value="{{#if label}}{{label}}{{else}}Primary button{{/if}}" required />
+      </div>
+    </div>
+
+  </form>
+</div>
+```
+{% endraw %}
+
 ---
 
 [Back to building components](../Building-components#the-component-definition-file.md)
