@@ -8,6 +8,7 @@
     "scss/index.scss"
   ],
   "settings": {
+    "inherits": [],
     "configuration": [
       {
         "name": "Page",
