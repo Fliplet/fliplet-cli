@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const path = require('path');
 const grunt = require('grunt');
 const child_process = require('child_process');
+const casual = require('casual');
 const exec = child_process.exec;
 var sass; // optionally required if theme
 
@@ -15,9 +16,11 @@ gruntFile(grunt);
 const folderPath = process.cwd();
 const widgetPackagePath = path.join(folderPath, 'widget.json');
 const themePackagePath = path.join(folderPath, 'theme.json');
+const menuPackagePath = path.join(folderPath, 'menu.json');
 const template = require('./lib/template');
 
 var isTheme;
+var isMenu;
 
 const assets = require(path.join(__dirname, 'lib', 'assets'));
 
@@ -70,9 +73,15 @@ try {
     package.scssConfig = vars.join("\r\n");
 
   } catch (e) {
-    log('The definition file has not been found (or the JSON syntax is invalid).');
-    log('Are you sure you are running this command from a Fliplet component folder?');
-    process.exit();
+    try {
+      package = require(menuPackagePath);
+      fs.statSync(menuPackagePath);
+      isMenu = true;
+    } catch (e) {
+      log('The definition file has not been found (or the JSON syntax is invalid).');
+      log('Are you sure you are running this command from a Fliplet component folder?');
+      process.exit();
+    }
   }
 }
 
@@ -99,7 +108,10 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '10MB' }));
 // --------------------------------------------------------------------------
 // AWS configuration
 
-const runWidgetHtml = template.engine.compile(fs.readFileSync(path.join(__dirname, 'assets', `run-${isTheme ? 'theme' : 'widget'}.html`), 'utf8'));
+const templateName = isTheme ? 'theme' : (isMenu ? 'menu' : 'widget');
+const templateHtml = fs.readFileSync(path.join(__dirname, 'assets', `run-${templateName}.html`), 'utf8');
+const runWidgetHtml = template.engine.compile(templateHtml);
+
 app.get('/', function (req, res) {
   res.send(runWidgetHtml(package));
 });
@@ -116,6 +128,20 @@ app.get('/build', function (req, res) {
 
     if (html.match(idTagsRegExp)) {
       return res.send(idTagsError);
+    }
+
+    if (isMenu) {
+      widgetInstanceData = {
+        canGoBack: casual.boolean,
+        title: casual.catch_phrase,
+        appVersion: casual.integer(1, 99),
+        pages: casual.array_of_digits(casual.integer(1, 20)).map(() => {
+          return {
+            label: casual.catch_phrase,
+            action: JSON.stringify({ action: 'page' })
+          }
+        })
+      }
     }
 
     template.compile({

@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>{{name}} - Fliplet Menu Development</title>
+        <style type="text/css">
+            * {
+                box-sizing: border-box; -moz-box-sizing: border-box; -webkit-box-sizing: border-box;
+                margin: 0;
+                padding: 0;
+            }
+            body {
+                overflow-y: hidden;
+                background-color: #F2F6F7;
+                font-family: sans-serif;
+            }
+            html, body {
+                height: 100%;
+            }
+            #content {
+                display: flex;
+                height: 100%;
+            }
+            section {
+                position: relative;
+                width: 100%;
+                height: 100%;
+                padding: 20px 30px;
+            }
+            section h2 {
+                text-transform: uppercase;
+                font-weight: normal;
+                font-size: 13px;
+                font-weight: bold;
+                margin-bottom: 10px;
+            }
+            section h2 a {
+                color: #777;
+                text-decoration: none;
+                border-bottom: 1px dotted #AAA;
+            }
+            iframe {
+                background: #FFF;
+                width: 100%;
+                height: 100%;
+                border: 1px solid #D9DDDE;
+            }
+            #iframe-build {
+                border: 40px solid #EAEAEA;
+                border-radius: 10px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="content">
+            <section>
+                <h2><a href="/build" target="_blank">output of your menu</a> (<a href="javascript:location.reload()">Update random data</a>)</h2>
+                <iframe src="/build" id="iframe-build" /></iframe>
+            </section>
+        </div>
+    </body>
+</html>

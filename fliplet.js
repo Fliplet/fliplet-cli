@@ -6,8 +6,9 @@ const program = require('commander');
 
 program
   .version(package.version)
-  .command('create-widget [name]', 'Create a new widget.')
+  .command('create-widget [name]', 'Create a new component.')
   .command('create-theme [name]', 'Create a new theme.')
+  .command('create-menu [name]', 'Create a new menu.')
   .command('run', 'Run the current widget or theme for development.')
   .command('publish', 'Publish the current widget or theme on fliplet studio.')
   .command('list-assets', 'Gets the list of the available assets in the system.')

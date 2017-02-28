@@ -1,7 +1,7 @@
 {
   "name": "fliplet-cli",
-  "version": "3.0.3",
-  "description": "Development tools to build components and themes on Fliplet",
+  "version": "3.1.0",
+  "description": "Development tools to build components, themes and menus on Fliplet",
   "main": "fliplet.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -16,6 +16,7 @@
   "dependencies": {
     "archiver": "^1.0.1",
     "body-parser": "^1.15.2",
+    "casual": "^1.5.10",
     "commander": "^2.9.0",
     "configstore": "^2.1.0",
     "express": "^4.14.0",
