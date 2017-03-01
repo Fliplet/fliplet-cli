@@ -8,7 +8,9 @@
   "references": [],
   "html_tag": "div",
   "build": {
-    "dependencies": [],
+    "dependencies": [
+      "fliplet-menu"
+    ],
     "assets": []
   },
   "settings": {

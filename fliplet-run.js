@@ -165,8 +165,10 @@ app.get('/build', function (req, res) {
       page,
       widgets: [{
         id: Date.now(),
+        name: package.name,
         uuid: widgetUUID,
         html: html,
+        htmlTag: package.html_tag,
         dependencies: package.build.dependencies,
         assets: package.build.assets,
         settings: package.settings,

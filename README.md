@@ -89,8 +89,6 @@ js/                 // JS Assets
 img/                // Images
 ```
 
-Please note: menus include the `fliplet-menu` dependency, which cannot be removed as it is assed from the engine at runtime.
-
 ---
 
 ### Assets library
