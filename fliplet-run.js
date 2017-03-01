@@ -117,6 +117,9 @@ app.get('/', function (req, res) {
 });
 
 app.get('/build', function (req, res) {
+  var topMenu;
+  var page;
+
   fs.readFile('./build.html', 'utf8', function (err, html) {
     if (err || typeof html !== 'string') {
       return res.send('The build.html file was not found');
@@ -131,27 +134,44 @@ app.get('/build', function (req, res) {
     }
 
     if (isMenu) {
-      widgetInstanceData = {
+      topMenu = {
+        id: 'pages',
         canGoBack: casual.boolean,
         title: casual.catch_phrase,
-        appVersion: casual.integer(1, 99),
         pages: casual.array_of_digits(casual.integer(1, 20)).map(() => {
           return {
             label: casual.catch_phrase,
             action: JSON.stringify({ action: 'page' })
           }
         })
-      }
+      };
+
+      page = {
+        id: Date.now(),
+        dependencies: [],
+        html: [
+          '<!-- SAMPLE PAGE CONTENT -->',
+          `<h2>${casual.title}</h2>`,
+          `<h3>${casual.sentences(3)}</h3>`,
+          `<p>${casual.description}</p>`,
+          `<p>${casual.description}</p>`,
+          `<a href="#" class="btn btn-primary">${casual.title}</a>`
+        ].join('\r\n')
+      };
     }
 
     template.compile({
+      topMenu,
+      page,
       widgets: [{
         id: Date.now(),
         uuid: widgetUUID,
         html: html,
         dependencies: package.build.dependencies,
         assets: package.build.assets,
-        data: widgetInstanceData
+        settings: package.settings,
+        data: widgetInstanceData,
+        tags: package.tags
       }]
     }).then(function (html) {
       res.send(html);
