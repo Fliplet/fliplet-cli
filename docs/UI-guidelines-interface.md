@@ -4,6 +4,28 @@ You are not required to use these style guidelines, but if you want your compone
 
 We always include Bootstrap as the framework to build responsive interfaces as part of the `fliplet-studio-ui` dependency. (Learn more about dependencies [here](Dependencies-and-assets.md))
 
+## Basic styles
+
+In the settings of our components we use the following basic styles:
+
+Primary colour: `#00abd2`
+Secondary colour: `#aaaaaa`
+Text: `#333333`
+Headings
+```html
+<h2><small>Heading</small></h2>
+```
+Heading primary colour: `#14505e`
+Heading secondary colour: `#777777`
+Label colour: `#14505e`
+Helper text class:
+```css
+.text-helper {
+  margin-top: 0.5em;
+  font-size: 0.8em;
+}
+```
+
 ## Component's header
 
 We always start with a small header for the component that is always visible at the top.  
@@ -37,11 +59,101 @@ header a {
 
 ---
 
+## Buttons
+
+We use Bootstrap's button classes but we tweak the styles to make them look our own.  
+Primary button classes: `.btn.btn-primary`
+Secondary button classes: `.btn.btn-default`
+Danger button classes: `.btn.btn-danger`
+Link text button classes: `.btn.btn-link`
+
+**General**
+
+```css
+.btn {
+  border-radius: 6px;
+  line-height: 44px;
+  padding: 0 15px;
+  border: none;
+}
+```
+
+**Primary button**
+
+```css
+.btn-primary {
+  color: #FFF;
+  background-color: #00abd2;
+  border-bottom: 2px solid #0087a6;
+}
+.btn-primary:active,
+.btn-primary:active:focus,
+.btn-primary:active:hover,
+.btn-primary:focus,
+.btn-primary:hover {
+  color: #FFF;
+  background-color: #0087a6;
+  border-color: #0087a6;
+  outline: none;
+}
+```
+
+**Secondary button**
+
+```css
+.btn-default {
+  color: #333;
+  background-color: #e4e9eb;
+  border-bottom: 2px solid #cfd3d5;
+}
+.btn-default:active,
+.btn-default:active:focus,
+.btn-default:active:hover,
+.btn-default:focus,
+.btn-default:hover {
+  color: #333;
+  background-color: #cfd3d5;
+  border-color: #cfd3d5;
+  outline: none;
+}
+```
+
+**Danger button**
+
+```css
+.btn-danger {
+  color: #FFF;
+  background-color: #d9534f;
+  border-bottom: 2px solid #c9302c;
+}
+.btn-danger:active,
+.btn-danger:active:focus,
+.btn-danger:active:hover,
+.btn-danger:focus,
+.btn-danger:hover {
+  color: #FFF;
+  background-color: #c9302c;
+  border-color: #c9302c;
+  outline: none;
+}
+```
+
+**Link text button**
+
+```css
+.btn-link,
+a {
+  color: #00abd1;
+}
+```
+
+---
+
 ## Component's form fields
 
 In our components we use the following form fields:
 - [Input field](#input-field)
-- [Color picker](#color-picker)
+- [Colour picker](#colour-picker)
 - [Drop-down list](#drop-down-list)
 - [Radio buttons](#radio-buttons)
 - [Checkboxes](#checkboxes)
@@ -93,7 +205,7 @@ that bootstrap columns have by default */
 }
 ```
 
-If you want to use a input field without a label, all you need to do is to remove the label `<div>` and your markup should look like this:
+If you want to use an input field without a label, all you need to do is remove the label `<div>` and your markup should look like this:
 
 ```html
 <div class="form-group clearfix">
@@ -103,9 +215,9 @@ If you want to use a input field without a label, all you need to do is to remov
 </div>
 ```
 
-### Color picker
+### Colour picker
 
-For color pickers we use Bootstrap's input field with an addon.  
+For colour pickers we use Bootstrap's input field with an addon.  
 Here is an example:
 
 ```html
@@ -133,31 +245,31 @@ that bootstrap columns have by default */
 }
 /* Changes the input field */
 .form-control {
-    border-radius: 6px;
-    border: 1px solid #e4e9eb;
-    color: #333;
-    height: 44px;
-    line-height: 44px;
-    padding: 0 15px;
-    -webkit-box-shadow: none;
-    box-shadow: none;
+  border-radius: 6px;
+  border: 1px solid #e4e9eb;
+  color: #333;
+  height: 44px;
+  line-height: 44px;
+  padding: 0 15px;
+  -webkit-box-shadow: none;
+  box-shadow: none;
 }
 .form-control:focus {
-    border-color: #00abd2;
-    -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(0, 171, 210, .6);
-    box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(0, 171, 210, .6);
+  border-color: #00abd2;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(0, 171, 210, .6);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, .075), 0 0 8px rgba(0, 171, 210, .6);
 }
 /* Changes to the addon */
 .input-group .form-control {
-    height: 46px;
+  height: 46px;
 }
 
 .input-group-addon {
-    border-radius: 6px;
+  border-radius: 6px;
 }
 ```
 
-If you want to use a input field without a label, all you need to do is to remove the label `<div>` and your markup should look like this:
+If you want to use an input field without a label, all you need to do is remove the label `<div>` and your markup should look like this:
 
 ```html
 <div class="form-group clearfix">
@@ -209,61 +321,61 @@ Now to style the drop-down to look like ours, use the following CSS:
 
 ```css
 .select-proxy-display {
-    width: 100%;
-    height: 44px;
-    margin: 0 auto;
-    padding: 0 44px 0 0;
-    background: #fff;
-    border: 1px solid #e4e9eb;
-    border-radius: 6px;
-    cursor: pointer;
-    outline: 0;
-    font-weight: 400;
-    line-height: 44px;
-    position: relative;
-    color: #333;
+  width: 100%;
+  height: 44px;
+  margin: 0 auto;
+  padding: 0 44px 0 0;
+  background: #fff;
+  border: 1px solid #e4e9eb;
+  border-radius: 6px;
+  cursor: pointer;
+  outline: 0;
+  font-weight: 400;
+  line-height: 44px;
+  position: relative;
+  color: #333;
 }
 .select-proxy-display > .hidden-select {
-    position: absolute;
-    top: -1px;
-    bottom: -1px;
-    left: 0;
-    right: 0;
-    cursor: pointer;
-    opacity: 0;
-    z-index: 1;
+  position: absolute;
+  top: -1px;
+  bottom: -1px;
+  left: 0;
+  right: 0;
+  cursor: pointer;
+  opacity: 0;
+  z-index: 1;
 }
 .select-proxy-display > .select-value-proxy {
-    position: absolute;
-    left: 0;
-    top: 0;
-    right: 42px;
-    bottom: 0;
-    padding-left: 15px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+  position: absolute;
+  left: 0;
+  top: 0;
+  right: 42px;
+  bottom: 0;
+  padding-left: 15px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 .select-proxy-display > .icon {
-    position: absolute;
-    width: 44px;
-    top: -1px;
-    right: -1px;
-    bottom: -1px;
-    background-color: #00abd2;
-    text-align: center;
-    line-height: 44px;
-    font-size: 18px;
-    color: #FFF;
-    border-top-right-radius: 6px;
-    border-bottom-right-radius: 6px;
-    border-left: 1px solid #e4e9eb;
+  position: absolute;
+  width: 44px;
+  top: -1px;
+  right: -1px;
+  bottom: -1px;
+  background-color: #00abd2;
+  text-align: center;
+  line-height: 44px;
+  font-size: 18px;
+  color: #FFF;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  border-left: 1px solid #e4e9eb;
 }
 ```
 
 **Dynamically appending options**
 
-If you are using one of these drop-downs with dynamic data to create the `<option>` then we recommend start the `<select>` disabled by adding the `disable` attribute to it, also remove the all the `<option>` and in the `span.select-value-proxy` default it to "-- Please wait...".  
+If you are using one of these drop-downs with dynamic data to create the `<option>` then we recommend start the `<select>` disabled by adding the `disable` attribute to it, also remove all the `<option>` and in the `span.select-value-proxy` default it to "-- Please wait...".  
 Here is the markup for it:
 
 ```html
@@ -305,14 +417,258 @@ Fliplet.DataSources.getById(dataSourceId).then(function (dataSource) {
 });
 ```
 
-When it comes to CSS you just need add a couple of extra things.  
+When it comes to CSS you just need to add a couple of extra things.  
 If you add the following the drop-down will look like a disabled field.
 
 ```css
 .select-proxy-display > .hidden-select[disabled] ~ .icon {
-    background-color: #aaa;
+  background-color: #aaa;
 }
 .select-proxy-display > .hidden-select[disabled] ~ .select-value-proxy {
-    background: #e4e9eb;
+  background: #e4e9eb;
+}
+```
+
+### Radio buttons
+
+For radio buttons we have two different styles depending on what we want to achieve.  
+If we want to achieve a list of more than 3 options that might also have sub-settings under each option, then we would use the more traditional style.  
+If we want to achieve a toggle like look with 3 or less options then we would use a more button like style.
+
+**Traditional style**
+
+Here is the markup to achieve the more traditional style with our branding:
+
+```html
+<div class="form-group clearfix">
+  <div class="col-sm-4 control-label">
+    <label>In what order do you want do display your data?</label>
+  </div>
+  <div class="col-sm-8">
+    <div class="radio">
+      <input type="radio" id="alphabetical" name="is_alphabetical" value="true" checked>
+      <label for="alphabetical">
+        <span class="check"><i class="fa fa-circle"></i></span> Alphabetically
+      </label>
+    </div>
+    <div class="radio">
+      <input type="radio" id="order" name="is_alphabetical" value="false">
+      <label for="order">
+        <span class="check"><i class="fa fa-circle"></i></span> In the order as loaded
+      </label>
+    </div>
+  </div>
+</div>
+```
+
+The CSS to achieve this list goes as follows:
+
+```css
+.radio input {
+  display: none;
+}
+.radio label {
+  padding-left: 30px;
+  color: #333;
+}
+.radio label > span.check {
+  position: absolute;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #e4e9eb;
+  border-radius: 50%;
+  background-color: #FFFFFF;
+  padding-left: 0;
+  margin-bottom: 0;
+  text-align: center;
+}
+.radio input[type="radio"]:checked + label > span.check {
+  background-color: #00abd2;
+}
+.radio label > span.check > i.fa {
+  display: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  line-height: 18px;
+  font-size: 10px;
+}
+.radio input[type="radio"]:checked + label span.check > i.fa {
+  display: block;
+  color: #FFF;
+}
+```
+
+**Button like style**
+
+Here is the markup to achieve the button like style with our branding:
+
+```html
+<div class="form-group clearfix inline-radio">
+  <div class="col-sm-4 control-label">
+    <label for="swipe-to-save">Enable this awesome option?</label>
+  </div>
+  <div class="col-sm-8">
+    <div class="radio-buttons clearfix">
+      <div class="radio">
+        <input type="radio" id="enable-yes" name="enable_option" value="show">
+        <label for="enable-yes">Yes</label>
+      </div>
+      <div class="radio">
+        <input type="radio" id="enable-no" name="enable_option" value="no-show">
+        <label for="enable-no">No</label>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+The CSS to achieve this list goes as follows:
+
+```css
+.inline-radio .radio input {
+  display: none;
+}
+.inline-radio .radio {
+  float: left;
+  margin: 0;
+}
+.inline-radio .radio label {
+  position: relative;
+  height: 44px;
+  line-height: 44px;
+  border: 1px solid #e4e9eb;
+  border-radius: 0;
+  background-color: #FFFFFF;
+  padding: 0 15px;
+  margin-left: 0;
+  margin-bottom: 0;
+}
+.inline-radio .radio:first-child label {
+  border-right: none;
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+.inline-radio .radio:last-child label {
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+}
+.inline-radio .radio input[type="radio"]:checked + label {
+  background-color: #00abd2;
+  color: #FFF;
+}
+```
+
+In both cases we hide the radio input field and we style the label to look like what we want. The trick is again to use the `<label>` `for` attribute to trigger the radio input.
+
+### Checkboxes
+
+Here is the markup to achieve the checkboxes with our branding:
+
+```html
+<div class="form-group clearfix">
+  <div class="col-sm-4 control-label">
+    <label for="show_subtitle">Show a subtitle in the main list?</label>
+  </div>
+  <div class="col-sm-8">
+    <div class="checkbox">
+      <input type="checkbox" id="show_subtitle">
+      <label for="show_subtitle">
+        <span class="check"><i class="fa fa-check"></i></span> Yes, please
+      </label>
+    </div>
+  </div>
+</div>
+```
+
+The CSS to achieve this list goes as follows:
+
+```css
+.checkbox input {
+  display: none;
+}
+.checkbox label {
+  padding-left: 30px;
+  color: #333;
+}
+.checkbox label > span.check {
+  position: absolute;
+  left: 0;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #e4e9eb;
+  border-radius: 4px;
+  background-color: #FFFFFF;
+  padding-left: 0;
+  margin-bottom: 0;
+  text-align: center;
+}
+.checkbox input[type="checkbox"]:checked + label > span.check {
+  background-color: #00abd2;
+}
+.checkbox label > span.check > i.fa {
+  display: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 2px;
+}
+.checkbox input[type="checkbox"]:checked + label span.check > i.fa {
+  display: block;
+  color: #FFF;
+}
+```
+
+We hide the checkbox input field and we style the label to look like what we want. The trick is again to use the `<label>` `for` attribute to trigger the checkbox input.
+
+## Tabs
+
+If you need to categorise your component's settings then you should use our tabbed system.  
+Again, we use Bootstrap's tabbed system and we style it to look like we want it.
+
+Here is a quick example of the markup:
+
+```html
+<ul class="nav nav-tabs" role="tablist">
+  <li role="presentation" class="active" id="general-settings"><a href="#settings-tab" aria-controls="general-settings" role="tab" data-toggle="tab">General Settings</a></li>
+  <li role="presentation" class="" id="more-settings"><a href="#more-settings-tab" aria-controls="more-settings" role="tab" data-toggle="tab">More Settings</a></li>
+</ul>
+
+<div class="tab-content">
+  <div role="tabpanel" class="tab-pane active" id="settings-tab">
+    <!-- Content here -->
+  </div>
+  <div role="tabpanel" class="tab-pane" id="more-settings-tab">
+    <!-- Content here -->
+  </div>
+</div>
+```
+
+To make the tabs look like our own tabs, use the following CSS:
+
+```css
+.nav-tabs > li.disabled {
+  pointer-events: none;
+}
+.nav-tabs > li.disabled > a {
+  color: #999 !important;
+}
+.nav > li > a,
+.nav > li > a:focus,
+.nav > li > a:hover {
+  color: #333 !important;
+  border: 0;
+  border-bottom: 4px solid transparent;
+  background: none;
+}
+.nav-tabs > li.active > a,
+.nav-tabs > li.active > a:focus,
+.nav-tabs > li.active > a:hover {
+  color: #333;
+  border: 0;
+  border-bottom: 4px solid #00abd2;
+  background: none;
 }
 ```
