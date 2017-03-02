@@ -26,37 +26,6 @@ Helper text class:
 }
 ```
 
-## Component's header
-
-We always start with a small header for the component that is always visible at the top.  
-Here is an example:
-
-```html
-<header>
-  <p>Configure your Primary button</p>
-  <a id="help_tip" href="#">Need help?</a>
-</header>
-```
-
-We use the following CSS to style the header:
-
-```css
-header {
-  display: flex;
-  font-size: 1em;
-  border-bottom: 1px solid #e3e9eb;
-  margin-bottom: 3rem;
-  padding-bottom: 1.5em;
-}
-header p {
-  flex: 1;
-  margin: 0 1.4rem 0 0;
-}
-header a {
-  text-decoration: none;
-}
-```
-
 ---
 
 ## Buttons
@@ -144,6 +113,39 @@ Link text button classes: `.btn.btn-link`
 .btn-link,
 a {
   color: #00abd1;
+}
+```
+
+---
+
+## Component's header
+
+We always start with a small header for the component that is always visible at the top.  
+Here is an example:
+
+```html
+<header>
+  <p>Configure your Primary button</p>
+  <a id="help_tip" href="#">Need help?</a>
+</header>
+```
+
+We use the following CSS to style the header:
+
+```css
+header {
+  display: flex;
+  font-size: 1em;
+  border-bottom: 1px solid #e3e9eb;
+  margin-bottom: 3rem;
+  padding-bottom: 1.5em;
+}
+header p {
+  flex: 1;
+  margin: 0 1.4rem 0 0;
+}
+header a {
+  text-decoration: none;
 }
 ```
 
