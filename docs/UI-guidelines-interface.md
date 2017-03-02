@@ -31,9 +31,9 @@ Helper text class:
 ## Buttons
 
 We use Bootstrap's button classes but we tweak the styles to make them look our own.  
-Primary button classes: `.btn.btn-primary`
-Secondary button classes: `.btn.btn-default`
-Danger button classes: `.btn.btn-danger`
+Primary button classes: `.btn.btn-primary`  
+Secondary button classes: `.btn.btn-default`  
+Danger button classes: `.btn.btn-danger`  
 Link text button classes: `.btn.btn-link`
 
 **General**
@@ -48,6 +48,8 @@ Link text button classes: `.btn.btn-link`
 ```
 
 **Primary button**
+
+![Primary button](assets/img/ui-interface/button-primary.png)
 
 ```css
 .btn-primary {
@@ -69,6 +71,8 @@ Link text button classes: `.btn.btn-link`
 
 **Secondary button**
 
+![Secondary button](assets/img/ui-interface/button-default.png)
+
 ```css
 .btn-default {
   color: #333;
@@ -89,6 +93,8 @@ Link text button classes: `.btn.btn-link`
 
 **Danger button**
 
+![Danger button](assets/img/ui-interface/button-danger.png)
+
 ```css
 .btn-danger {
   color: #FFF;
@@ -108,6 +114,8 @@ Link text button classes: `.btn.btn-link`
 ```
 
 **Link text button**
+
+![Link text button](assets/img/ui-interface/button-link.png)
 
 ```css
 .btn-link,
@@ -161,6 +169,8 @@ In our components we use the following form fields:
 - [Checkboxes](#checkboxes)
 
 ### Input field
+
+![Input field](assets/img/ui-interface/input.png)
 
 As we use Bootstrap, this is how our input fields markup with a label look like:
 
@@ -218,6 +228,8 @@ If you want to use an input field without a label, all you need to do is remove 
 ```
 
 ### Colour picker
+
+![Colour picker](assets/img/ui-interface/color-picker.png)
 
 For colour pickers we use Bootstrap's input field with an addon.  
 Here is an example:
@@ -285,6 +297,8 @@ If you want to use an input field without a label, all you need to do is remove 
 ```
 
 ### Drop-down list
+
+![Drop-down list](assets/img/ui-interface/dropdown.png)
 
 HTML Select aren't easy to style, some HTML and CSS magic needs to be applied. If you want yours to look like ours do the following:
 
@@ -395,6 +409,8 @@ Here is the markup for it:
 </div>
 ```
 
+![Drop-down list disabled](assets/img/ui-interface/disabled-dropdown.png)
+
 Then in the JavaScript after you add the dynamic `<option>` you need to remove the `disabled` attribute and trigger a change.  
 Here is an example where we append the column names of a Data Source:
 
@@ -434,12 +450,14 @@ If you add the following the drop-down will look like a disabled field.
 ### Radio buttons
 
 For radio buttons we have two different styles depending on what we want to achieve.  
-If we want to achieve a list of more than 3 options that might also have sub-settings under each option, then we would use the more traditional style.  
-If we want to achieve a toggle like look with 3 or less options then we would use a more button like style.
+- If we want to achieve a list of more than 3 options that might also have sub-settings under each option - We would use the more traditional style.  
+If we want to achieve a toggle look with 3 or less options - We would use a button like style.
 
 **Traditional style**
 
-Here is the markup to achieve the more traditional style with our branding:
+![Traditional style](assets/img/ui-interface/radio.png)
+
+Here is the markup to achieve the traditional style with our branding:
 
 ```html
 <div class="form-group clearfix">
@@ -505,6 +523,8 @@ The CSS to achieve this list goes as follows:
 
 **Button like style**
 
+![Button like style](assets/img/ui-interface/toggle-radio.png)
+
 Here is the markup to achieve the button like style with our branding:
 
 ```html
@@ -567,6 +587,8 @@ In both cases we hide the radio input field and we style the label to look like 
 
 ### Checkboxes
 
+![Checkboxes](assets/img/ui-interface/checkbox.png)
+
 Here is the markup to achieve the checkboxes with our branding:
 
 ```html
@@ -626,6 +648,8 @@ The CSS to achieve this list goes as follows:
 We hide the checkbox input field and we style the label to look like what we want. The trick is again to use the `<label>` `for` attribute to trigger the checkbox input.
 
 ## Tabs
+
+![Tabs](assets/img/ui-interface/tabs.png)
 
 If you need to categorise your component's settings then you should use our tabbed system.  
 Again, we use Bootstrap's tabbed system and we style it to look like we want it.
