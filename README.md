@@ -1,9 +1,11 @@
 # Fliplet CLI
 Command line utility for creating and running widgets to be used on the Fliplet platform.
 
-# Docs
+# Documentation
 
-Documentation is available at [developers.fliplet.com](http://developers.fliplet.com).
+**Extensive documentation** is available at [developers.fliplet.com](http://developers.fliplet.com).
+
+---
 
 # Install
 With [node.js](http://nodejs.org/) and [npm](http://github.com/isaacs/npm):
@@ -18,36 +20,36 @@ By default, the CLI is using the production environment. You can change it using
 
 ## Examples
 
-Create a new widget:
+Create a new component:
 
 ```
 $ fliplet create-widget "My Form Plugin"
 ```
 
-Run your widget for development:
+Run your component for development:
 
 ```
 $ cd my-form-plugin
 $ fliplet run
 ```
 
-Which will run your widget on [http://localhost:3000](http://localhost:3000).
+Which will run the local development tools on [http://localhost:3000](http://localhost:3000).
 
-## Publish a widget
+## Publishing your work
 
-To publish a widget or theme on the Fliplet platform, you must be logged in by using `fliplet login` then you can use the `fliplet publish` which will upload and publish your widget or theme to the current environment (by default, production).
+To publish a component, theme or menu on the Fliplet platform, you must be logged in by using `fliplet login` then you can use the `fliplet publish` which will upload and publish your component, theme or menu to the current environment (by default, production).
 
 Please note: your widget/theme won't be published as public, but will rather kept private and visible only for the organisation you belong to.
 
 
-## Widget development
+## Component development
 
-Your widget skeleton is made of the following directory structure:
+Your component skeleton is made of the following directory structure:
 
 ```
-build.html            // The output of the widget when running inside an app
-interface.html        // The interface of the widget on Fliplet Studio
-widget.json           // The widget definition file
+build.html            // The output of the component when running inside an app
+interface.html        // The interface of the component on Fliplet Studio
+widget.json           // The component definition file
 css/                  // CSS Assets
 js/                   // JS Assets
 img/                  // Images
@@ -68,10 +70,23 @@ You can also see an example of how those APIs are used in the default [interface
 Your theme skeleton is made of the following directory structure:
 
 ```
-theme.json           // The theme definition file
-css/                  // CSS Assets
-js/                   // JS Assets
-img/                  // Images
+theme.json          // The theme definition file
+css/                // CSS Assets
+js/                 // JS Assets
+img/                // Images
+```
+
+---
+
+## Menu development
+
+Your menu skeleton is made of the following directory structure:
+
+```
+menu.json           // The menu definition file
+css/                // CSS Assets
+js/                 // JS Assets
+img/                // Images
 ```
 
 ---

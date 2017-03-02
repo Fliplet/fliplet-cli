@@ -1,0 +1,43 @@
+<!-- HEADER -->
+<div class="fl-viewport-header">
+  {{#if canGoBack}}
+    <span class="nav-left fl-menu-back" data-fl-navigate-back>
+      <i class="fa fa-chevron-left" aria-hidden="true"></i> <span class="btn-label">Back</span>
+    </span>
+  {{/if}}
+  <span class="nav-title">
+    <span>{{title}}</span>
+  </span>
+  {{#if pages}}
+    <span class="nav-right" data-fl-toggle-menu=".fl-menu" class="nav-right">
+      <i class="fa fa-bars" aria-hidden="true"></i>
+    </span>
+  {{/if}}
+</div>
+<!-- END OF HEADER -->
+
+<!-- MENU OVERLAY -->
+<div class="fl-menu fl-app-menu">
+  <div class="fl-menu-overlay"></div>
+  <div class="fl-menu-panel">
+    <div class="fl-menu-foot">
+      <div class="fl-app-menu-toolbar">
+        <div class="copyright">
+            Version {{appVersion}} -
+            <a href="http://fliplet.com/">Built using Fliplet</a>
+        </div>
+      </div>
+    </div>
+    <div class="fl-menu-body has-no-logo">
+      <div class="fl-list-default">
+        <ul class="main-menu">
+            {{#each pages}}
+                <li class="linked" data-fl-navigate='{{{action}}}'><i class="fa fa-angle-right" aria-hidden="true"></i><span class="internal-link buttonControl">{{label}}</span></li>
+            {{/each}}
+        </ul>
+      </div>
+      <div class="fl-app-menu-logo"></div>
+    </div>
+  </div>
+</div>
+<!-- END OF MENU OVERLAY -->
