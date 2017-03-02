@@ -170,7 +170,7 @@ If you want to use a input field without a label, all you need to do is to remov
 </div>
 ```
 
-### Color picker
+### Drop-down list
 
 HTML Select aren't easy to style, some HTML and CSS magic needs to be applied. If you want yours to look like ours do the following:
 
