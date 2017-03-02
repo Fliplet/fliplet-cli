@@ -9,9 +9,14 @@
   "html_tag": "div",
   "build": {
     "dependencies": [
-      "fliplet-menu"
+      "bootstrap",
+      "font-awesome",
+      "fliplet-core"
     ],
-    "assets": []
+    "assets": [
+      "css/menu.css",
+      "js/menu.js"
+    ]
   },
   "settings": {
     "position": "top"

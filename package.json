@@ -1,6 +1,6 @@
 {
   "name": "fliplet-cli",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "Development tools to build components, themes and menus on Fliplet",
   "main": "fliplet.js",
   "scripts": {
