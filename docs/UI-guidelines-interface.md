@@ -8,16 +8,16 @@ We always include Bootstrap as the framework to build responsive interfaces as p
 
 In the settings of our components we use the following basic styles:
 
-Primary colour: `#00abd2`
-Secondary colour: `#aaaaaa`
-Text: `#333333`
-Headings
+Primary colour: `#00abd2`  
+Secondary colour: `#aaaaaa`  
+Text: `#333333`  
+Headings:
 ```html
 <h2><small>Heading</small></h2>
 ```
-Heading primary colour: `#14505e`
-Heading secondary colour: `#777777`
-Label colour: `#14505e`
+Heading primary colour: `#14505e`  
+Heading secondary colour: `#777777`  
+Label colour: `#14505e`  
 Helper text class:
 ```css
 .text-helper {
