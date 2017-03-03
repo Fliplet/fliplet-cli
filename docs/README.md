@@ -10,7 +10,7 @@ To get a brief introduction to the technologies we use and the stack of the plat
   * [Quickstart](Quickstart.md)
   * [The JS APIs](JS-APIs.md)
 2. [Building components](Building-components.md)
-  - Building themes
+  - [Building themes](Building-themes.md)
   - Building menus
 3. [Publishing](Publishing.md)
 4. Testing
