@@ -2,6 +2,7 @@ const _ = require('lodash');
 const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
+const op = require('openport');
 const path = require('path');
 const grunt = require('grunt');
 const child_process = require('child_process');
@@ -273,24 +274,34 @@ app.get('/__scss.css', function (req, res) {
 // --------------------------------------------------------------------------
 // Startup configuration
 
-const host = 'http://localhost:3000';
-
-app.listen(3000, function () {
-  log('[' + package.name + '] development server is up on', host);
-
-  if (process.argv.length > 2) {
+op.find({
+  startingPort: 3000,
+  endingPort: 4000
+}, function(err, port) {
+  if(err) {
+    console.log(err);
     return;
   }
 
-  grunt.tasks(['default']);
+  const host = `http://localhost:${port}`;
 
-  setTimeout(function () {
-    try {
-      exec(['open', host].join(' '));
-    } catch (e) {
-      // nothing really
+  app.listen(port, function () {
+    log('[' + package.name + '] development server is up on', host);
+
+    if (process.argv.length > 2) {
+      return;
     }
-  }, 500);
+
+    grunt.tasks(['default']);
+
+    setTimeout(function () {
+      try {
+        exec(['open', host].join(' '));
+      } catch (e) {
+        // nothing really
+      }
+    }, 500);
+  });
 });
 
 function log() {
