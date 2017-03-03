@@ -1,4 +1,4 @@
-# 4. Building components
+# Building components
 
 To start creating a component, use the CLI to generate a boilerplate including the basic things you'll need:
 
@@ -27,6 +27,10 @@ fliplet run
 The above command will run the development server at [http://localhost:3000](http://localhost:3000). The local development server uses sample data to speed up your development, so you don't have to worry about creating apps, screens, data, etc.
 
 We'll first focus on the `widget.json`, which is the definition of your component. If you're used to npm, it's similar to the `package.json` file for npm modules.
+
+## Including external libraries
+
+Components should never include script/link tags to reference external assets (like **vendor libraries**), but rather define them as `assets` via the `widget.json` file. Check the section below for more details.
 
 ## The component definition file
 

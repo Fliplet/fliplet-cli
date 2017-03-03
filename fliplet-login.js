@@ -1,15 +1,25 @@
 const auth = require('./lib/auth');
 const prompt = require('prompt');
 
-console.log('Please type your login details');
+console.log('Please type your Fliplet Studio login details.');
+
 prompt.start();
 prompt.get([
-  'email',
+  {
+    name: 'email',
+    required: true
+  },
   {
     name: 'password',
-    hidden: true
+    hidden: true,
+    replace: '*',
+    required: true
   }
 ], function (err, result) {
+  if (!result) {
+    return;
+  }
+
   auth.login({
     email: result.email,
     password: result.password

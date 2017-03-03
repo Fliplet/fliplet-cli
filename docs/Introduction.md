@@ -42,6 +42,12 @@ As the name suggests, themes enables you to customise any visual aspect of your 
 
 A theme consists in CSS (or SCSS) and Javascript files.
 
+### E. Menus
+
+Menus allow you to change the default header / top bar you in all Fliplet apps. It also contains the styles for when the hamburger menu is tapped and the list of the menu screens is presented to the user.
+
+A menu consists in a handlebars template, and optionally CSS and Javascript files.
+
 ---
 
 ## Development tools

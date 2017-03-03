@@ -1,4 +1,4 @@
-# 2. Quickstart
+# Quickstart
 
 ## 1. Install Node.js
 

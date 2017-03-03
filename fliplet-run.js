@@ -2,9 +2,11 @@ const _ = require('lodash');
 const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
+const op = require('openport');
 const path = require('path');
 const grunt = require('grunt');
 const child_process = require('child_process');
+const casual = require('casual');
 const exec = child_process.exec;
 var sass; // optionally required if theme
 
@@ -15,9 +17,11 @@ gruntFile(grunt);
 const folderPath = process.cwd();
 const widgetPackagePath = path.join(folderPath, 'widget.json');
 const themePackagePath = path.join(folderPath, 'theme.json');
+const menuPackagePath = path.join(folderPath, 'menu.json');
 const template = require('./lib/template');
 
 var isTheme;
+var isMenu;
 
 const assets = require(path.join(__dirname, 'lib', 'assets'));
 
@@ -70,9 +74,15 @@ try {
     package.scssConfig = vars.join("\r\n");
 
   } catch (e) {
-    log('The definition file has not been found (or the JSON syntax is invalid).');
-    log('Are you sure you are running this command from a Fliplet component folder?');
-    process.exit();
+    try {
+      package = require(menuPackagePath);
+      fs.statSync(menuPackagePath);
+      isMenu = true;
+    } catch (e) {
+      log('The definition file has not been found (or the JSON syntax is invalid).');
+      log('Are you sure you are running this command from a Fliplet component folder?');
+      process.exit();
+    }
   }
 }
 
@@ -99,12 +109,18 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '10MB' }));
 // --------------------------------------------------------------------------
 // AWS configuration
 
-const runWidgetHtml = template.engine.compile(fs.readFileSync(path.join(__dirname, 'assets', `run-${isTheme ? 'theme' : 'widget'}.html`), 'utf8'));
+const templateName = isTheme ? 'theme' : (isMenu ? 'menu' : 'widget');
+const templateHtml = fs.readFileSync(path.join(__dirname, 'assets', `run-${templateName}.html`), 'utf8');
+const runWidgetHtml = template.engine.compile(templateHtml);
+
 app.get('/', function (req, res) {
   res.send(runWidgetHtml(package));
 });
 
 app.get('/build', function (req, res) {
+  var topMenu;
+  var page;
+
   fs.readFile('./build.html', 'utf8', function (err, html) {
     if (err || typeof html !== 'string') {
       return res.send('The build.html file was not found');
@@ -118,14 +134,47 @@ app.get('/build', function (req, res) {
       return res.send(idTagsError);
     }
 
+    if (isMenu) {
+      topMenu = {
+        id: 'pages',
+        canGoBack: casual.boolean,
+        title: casual.catch_phrase,
+        pages: casual.array_of_digits(casual.integer(1, 20)).map(() => {
+          return {
+            label: casual.catch_phrase,
+            action: JSON.stringify({ action: 'page' })
+          }
+        })
+      };
+
+      page = {
+        id: Date.now(),
+        dependencies: [],
+        html: [
+          '<!-- SAMPLE PAGE CONTENT -->',
+          `<h2>${casual.title}</h2>`,
+          `<h3>${casual.sentences(3)}</h3>`,
+          `<p>${casual.description}</p>`,
+          `<p>${casual.description}</p>`,
+          `<a href="#" class="btn btn-primary">${casual.title}</a>`
+        ].join('\r\n')
+      };
+    }
+
     template.compile({
+      topMenu,
+      page,
       widgets: [{
         id: Date.now(),
+        name: package.name,
         uuid: widgetUUID,
         html: html,
+        htmlTag: package.html_tag,
         dependencies: package.build.dependencies,
         assets: package.build.assets,
-        data: widgetInstanceData
+        settings: package.settings,
+        data: widgetInstanceData,
+        tags: package.tags
       }]
     }).then(function (html) {
       res.send(html);
@@ -225,24 +274,34 @@ app.get('/__scss.css', function (req, res) {
 // --------------------------------------------------------------------------
 // Startup configuration
 
-const host = 'http://localhost:3000';
-
-app.listen(3000, function () {
-  log('[' + package.name + '] development server is up on', host);
-
-  if (process.argv.length > 2) {
+op.find({
+  startingPort: 3000,
+  endingPort: 4000
+}, function(err, port) {
+  if(err) {
+    console.log(err);
     return;
   }
 
-  grunt.tasks(['default']);
+  const host = `http://localhost:${port}`;
 
-  setTimeout(function () {
-    try {
-      exec(['open', host].join(' '));
-    } catch (e) {
-      // nothing really
+  app.listen(port, function () {
+    log('[' + package.name + '] development server is up on', host);
+
+    if (process.argv.length > 2) {
+      return;
     }
-  }, 500);
+
+    grunt.tasks(['default']);
+
+    setTimeout(function () {
+      try {
+        exec(['open', host].join(' '));
+      } catch (e) {
+        // nothing really
+      }
+    }, 500);
+  });
 });
 
 function log() {

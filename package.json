@@ -1,7 +1,7 @@
 {
   "name": "fliplet-cli",
-  "version": "3.0.3",
-  "description": "Development tools to build components and themes on Fliplet",
+  "version": "3.1.4",
+  "description": "Command line utility for creating and running components, themes and menus to be used on the Fliplet platform.",
   "main": "fliplet.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -16,6 +16,7 @@
   "dependencies": {
     "archiver": "^1.0.1",
     "body-parser": "^1.15.2",
+    "casual": "^1.5.10",
     "commander": "^2.9.0",
     "configstore": "^2.1.0",
     "express": "^4.14.0",
@@ -26,6 +27,7 @@
     "lodash": "^4.16.4",
     "ncp": "^2.0.0",
     "node-sass": "^4.1.1",
+    "openport": "0.0.4",
     "prompt": "^1.0.0",
     "replace": "^0.3.0",
     "request": "^2.72.0",

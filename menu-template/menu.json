@@ -1,0 +1,24 @@
+{
+  "name": "{{name}}",
+  "package": "{{package}}",
+  "version": "1.0.0",
+  "icon": "img/icon.png",
+  "tags": ["type:menu"],
+  "provider_only": false,
+  "references": [],
+  "html_tag": "div",
+  "build": {
+    "dependencies": [
+      "bootstrap",
+      "font-awesome",
+      "fliplet-core"
+    ],
+    "assets": [
+      "css/menu.css",
+      "js/menu.js"
+    ]
+  },
+  "settings": {
+    "position": "top"
+  }
+}

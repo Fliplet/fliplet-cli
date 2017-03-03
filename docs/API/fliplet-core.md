@@ -460,7 +460,18 @@ Fliplet.Navigate.confirm(options)
 
 ## Analytics
 
-TBD
+### Enable/disable tracking
+The app might have an analytics widget active, although you can also prompt the user if he accpets tracking.
+
+```js
+Fliplet.Analytics.enableTracking()
+Fliplet.Analytics.enableTracking()
+```
+
+### Check tracking status
+```js
+Fliplet.Analytics.isTrackingEnabled()
+````
 
 ---
 
