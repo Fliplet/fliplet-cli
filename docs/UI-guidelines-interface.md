@@ -1,8 +1,8 @@
-# UI guidelines for component interfaces
+# UI guidelines for component's interfaces
 
 You are not required to use these style guidelines, but if you want your component to fit the overall style of Fliplet's components we recommend you use them.  
 
-We always include Bootstrap as the framework to build responsive interfaces as part of the `fliplet-studio-ui` dependency. (Learn more about dependencies [here](Dependencies-and-assets.md))
+We always include Bootstrap, as the framework to build responsive interfaces, as part of the `fliplet-studio-ui` dependency. (Learn more about dependencies [here](Dependencies-and-assets.md))
 
 ## Basic styles
 
@@ -213,8 +213,8 @@ Fliplet.DataSources.getById(dataSourceId).then(function (dataSource) {
 ### Radio buttons
 
 For radio buttons we have two different styles depending on what we want to achieve.  
-- If we want to achieve a list of more than 3 options that might also have sub-settings under each option - We would use the more traditional style.  
-If we want to achieve a toggle look with 3 or less options - We would use a button like style.
+- If you want to achieve a list of more than 3 options that might also have sub-settings under each option - You should use the more traditional style.  
+- If you want to achieve a toggle look with 3 or less options - you should use a button like style.
 
 **Traditional style**
 
@@ -320,3 +320,31 @@ Here is a quick example of the markup:
   </div>
 </div>
 ```
+
+---
+
+## Loading animation
+
+![Loading animation](assets/img/ui-interface/loading-interface.png)
+
+If you need to use a loading animation in you component's output here is how you can achieve it:
+
+```html
+<!-- Hidden loading animation -->
+<div class="loader-holder">
+  <div class="loader">Loading...</div>
+  <p>Loading...</p>
+</div>
+```
+```html
+<!-- Show loading animation -->
+<div class="loader-holder animated">
+  <div class="loader">Loading...</div>
+  <p>Loading...</p>
+</div>
+```
+
+---
+
+[Read more on UI guidelines for component's output](UI-guidelines-build.md)
+{: .buttons}
