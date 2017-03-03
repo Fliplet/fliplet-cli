@@ -331,15 +331,15 @@ If you need to use a loading animation in you component's output here is how you
 
 ```html
 <!-- Hidden loading animation -->
-<div class="loader-holder">
-  <div class="loader">Loading...</div>
+<div class="spinner-holder">
+  <div class="spinner-overlay">Loading...</div>
   <p>Loading...</p>
 </div>
 ```
 ```html
 <!-- Show loading animation -->
-<div class="loader-holder animated">
-  <div class="loader">Loading...</div>
+<div class="spinner-holder animated">
+  <div class="spinner-overlay">Loading...</div>
   <p>Loading...</p>
 </div>
 ```

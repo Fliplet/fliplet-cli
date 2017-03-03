@@ -121,40 +121,40 @@ If you need to use a loading animation in you component's output here is how you
 
 ```html
 <!-- Hidden loading animation -->
-<div class="loader-holder">
-  <div class="loader">Loading...</div>
+<div class="spinner-holder">
+  <div class="spinner-overlay">Loading...</div>
 </div>
 ```
 ```html
 <!-- Show loading animation -->
-<div class="loader-holder animated">
-  <div class="loader">Loading...</div>
+<div class="spinner-holder animated">
+  <div class="spinner-overlay">Loading...</div>
 </div>
 ```
 
 Use the following CSS to make it look like ours:
 
 ```css
-.login-loader-holder {
+.spinner-holder {
 	overflow: hidden;
 }
 
-.loader {
+.spinner-overlay {
 	display: none;
 }
 
-.login-loader-holder.animated .loader {
+.spinner-holder.animated .spinner-overlay {
 	display: block;
 }
 
-.loader,
-.loader:after {
+.spinner-overlay,
+.spinner-overlay:after {
 	border-radius: 50%;
 	width: 10em;
 	height: 10em;
 }
 
-.loader {
+.spinner-overlay {
 	margin: 2px auto;
 	font-size: 2px;
 	position: relative;
