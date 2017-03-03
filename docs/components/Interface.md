@@ -84,6 +84,9 @@ Here's a sample of the interface for the button component:
 ```
 {% endraw %}
 
+[Read more on UI Guidelines](../UI-guidelines-interface.md)
+{: .buttons}
+
 ---
 
 ## Including providers
