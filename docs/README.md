@@ -19,6 +19,6 @@ To get a brief introduction to the technologies we use and the stack of the plat
   - [Using providers](components/Using-Providers.md)
   - [Dependencies and assets](Dependencies-and-assets.md)
   - [Sending events between components](Event-emitter.md)
-  - UI guidelines for component interfaces](UI-guidelines-interface.md)
-  - UI guidelines for component output](UI-guidelines-build.md)
+  - [UI guidelines for component interfaces](UI-guidelines-interface.md)
+  - [UI guidelines for component output](UI-guidelines-build.md)
   - [Best practises and advices](Best-practises.md)
