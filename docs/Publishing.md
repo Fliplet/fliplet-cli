@@ -51,5 +51,3 @@ You are now ready to publish components, themes and menus on Fliplet.
 
 [Back](README.md)
 {: .buttons}
-
----
