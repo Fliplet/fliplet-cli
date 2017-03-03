@@ -1,4 +1,4 @@
-# 4. Building components
+# Building components
 
 To start creating a component, use the CLI to generate a boilerplate including the basic things you'll need:
 

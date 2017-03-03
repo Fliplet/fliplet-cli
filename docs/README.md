@@ -6,15 +6,16 @@ To get a brief introduction to the technologies we use and the stack of the plat
 
 ### Table of contents
 
-- [1. Introduction to the platform](Introduction.md)
-- [2. Quickstart](Quickstart.md)
-- [3. The JS APIs](JS-APIs.md)
-- [4. Building components](Building-components.md)
-- Building themes
-- Building menus
-- [Publishing](Publishing.md)
-- Testing
-- [API Documentation](API-Documentation.md)
-- [Dependencies and assets](Dependencies-and-assets.md)
-- [Sending events between components](Event-emitter.md)
-- [Best practises and advices](Best-practises.md)
+1. [Introduction to the platform](Introduction.md)
+  * [Quickstart](Quickstart.md)
+  * [The JS APIs](JS-APIs.md)
+2. [Building components](Building-components.md)
+  - Building themes
+  - Building menus
+3. [Publishing](Publishing.md)
+4. Testing
+5. [API Documentation](API-Documentation.md)
+6. Going forward
+  - [Dependencies and assets](Dependencies-and-assets.md)
+  - [Sending events between components](Event-emitter.md)
+  - [Best practises and advices](Best-practises.md)
