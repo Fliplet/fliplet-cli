@@ -1,6 +1,8 @@
-# Publishing
+# Publishing components, themes and menus
 
-Publishing components on the Fliplet platform is done via the CLI command `publish` as follows:
+**Please note: by default, the CLI is using the production environment. You can change it using the `env` command, like `fliplet env staging` (dev, staging, production).**
+
+Publishing your work on the Fliplet platform is done via the CLI command `publish` as follows:
 
 ```
 $ cd my-awesome-component
