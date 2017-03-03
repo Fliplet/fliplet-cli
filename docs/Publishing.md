@@ -24,3 +24,32 @@ prompt: password:  ***********
 
 Logged in successfully. You can now publish widgets.
 ```
+
+Furthermore, in order for you to publish you have to set a target `organizationId` for your component.
+
+First, read your organizations (once you have logged in):
+
+```
+$ fliplet list-organizations
+
+Requesting up to date organizations list from the server...
+
+• 123: Sample organization
+```
+
+Then, simply set which organization you want to use:
+
+```
+$ fliplet organization 123
+
+Organization set.
+```
+
+You are now ready to publish components, themes and menus on Fliplet.
+
+---
+
+[Back](README.md)
+{: .buttons}
+
+---
