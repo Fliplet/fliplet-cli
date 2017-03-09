@@ -15,6 +15,7 @@ const authToken = configstore.get('auth_token');
 global.interfaceBrowser = Nightmare({ show: true });
 global.buildBrowser = Nightmare({ show: true });
 global.expect = require('chai').expect;
+global.should = require('chai').should;
 global.casual = require('casual');
 
 // Instantiate a Mocha instance.
@@ -85,6 +86,7 @@ publish.run()
     global.interfaceUrl = `${config.api_url}v1/widget-instances/${widgetInstance.id}/interface?auth_token=${authToken}`;
     global.buildUrl = `${config.api_url}v1/apps/${app.id}/pages/${page.id}/preview?auth_token=${authToken}`;
     global.widgetInstance = widgetInstance;
+    global.buildSelector = `[data-fl-widget-instance][data-id="${widgetInstance.id}"]`;
 
     visit()
       .then(function () {
