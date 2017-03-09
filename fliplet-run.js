@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const configstore = require('./lib/configstore');
 const fs = require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
@@ -29,6 +30,7 @@ var app = express();
 
 var package;
 var widgetInstanceData;
+var runningPort;
 
 const widgetUUID = uuid();
 
@@ -92,7 +94,7 @@ if (isTheme) {
 }
 
 log('');
-log('Please note: if you make any change to the package dependencies, the server needs to be restarted.')
+log('Please note: if you make any change to the package json file, the server needs to be restarted.')
 log('Starting up package development server for', package.name, '(' + package.package + ')...');
 log('');
 
@@ -194,16 +196,20 @@ app.get('/interface', function (req, res) {
       return res.send(scriptTagsError);
     }
 
+    const widgets = getRunningWidgets();
+
+    widgets.unshift({
+      id: Date.now(),
+      uuid: widgetUUID,
+      html: html,
+      dependencies: package.interface.dependencies,
+      assets: package.interface.assets,
+      data: widgetInstanceData
+    });
+
     template.compile({
       interface: true,
-      widgets: [{
-        id: Date.now(),
-        uuid: widgetUUID,
-        html: html,
-        dependencies: package.interface.dependencies,
-        assets: package.interface.assets,
-        data: widgetInstanceData
-      }]
+      widgets
     }).then(function (html) {
       res.send(html);
     }, function (err) {
@@ -283,10 +289,17 @@ op.find({
     return;
   }
 
+  runningPort = port;
+
   const host = `http://localhost:${port}`;
 
   app.listen(port, function () {
     log('[' + package.name + '] development server is up on', host);
+
+    // mark this widget as running
+    const runningPackages = configstore.get('runningPackages') || {};
+    runningPackages[package.package] = { port: runningPort };
+    configstore.set('runningPackages', runningPackages);
 
     if (process.argv.length > 2) {
       return;
@@ -303,6 +316,30 @@ op.find({
     }, 500);
   });
 });
+
+['exit', 'SIGINT', 'uncaughtException'].forEach(function (signal) {
+  process.on(signal, function () {
+    // mark this widget as not running
+    const runningPackages = configstore.get('runningPackages') || {};
+    delete runningPackages[package.package];
+    configstore.set('runningPackages', runningPackages);
+
+    process.exit();
+  });
+});
+
+function getRunningWidgets() {
+  const runningPackages = configstore.get('runningPackages') || {};
+
+  return _.reject(Object.keys(runningPackages), package.package).map(function (packageName) {
+    const data = runningPackages[packageName];
+
+    return {
+      id: packageName,
+      data
+    };
+  });
+}
 
 function log() {
   console.log.apply(this, arguments);
