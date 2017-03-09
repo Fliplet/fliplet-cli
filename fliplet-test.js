@@ -59,6 +59,22 @@ let app;
 let page;
 let widgetInstance;
 
+// Change package name to avoid using an existing one on the environment
+const fileName = './widget.json';
+const file = require(`${process.cwd()}/widget.json`);
+const packageName = file.package;
+const tags = file.tags;
+file.package = `${casual.domain}.${casual.unix_time}`;
+file.tags = [];
+fs.writeFileSync(fileName, JSON.stringify(file, null, 2));
+
+function restoreWidgetJson() {
+  // Restore widget.json file
+  file.package = packageName;
+  file.tags = tags;
+  fs.writeFileSync(fileName, JSON.stringify(file, null, 2));
+}
+
 publish.run()
   .then(function (testWidget) {
     widget = testWidget.widget;
@@ -102,6 +118,8 @@ publish.run()
 
         mocha.run()
           .on('end', function () {
+            restoreWidgetJson();
+
             // Close any open browsers
             interfaceBrowser.end().then(function () {});
             buildBrowser.end().then(function () {});
@@ -127,4 +145,9 @@ publish.run()
           });
       });
   })
-  .catch(console.log);
+  .catch(function (error) {
+    console.log('Something went wrong.');
+    console.log(error);
+
+    restoreWidgetJson();
+  });
