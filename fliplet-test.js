@@ -15,6 +15,7 @@ const authToken = configstore.get('auth_token');
 global.interfaceBrowser = Nightmare({ show: true });
 global.buildBrowser = Nightmare({ show: true });
 global.expect = require('chai').expect;
+global.casual = require('casual');
 
 // Instantiate a Mocha instance.
 const mocha = new Mocha({
