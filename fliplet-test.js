@@ -41,6 +41,7 @@ Nightmare.action('save', function (done) {
 
     // Wait some time so the refresh really happens
     // TODO: Use .wait with some conditional on both browsers instead
+    // TODO: update widgetInstance with new data
     setTimeout(done, 2000);
   })
 });
