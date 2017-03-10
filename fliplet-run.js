@@ -93,10 +93,11 @@ if (isTheme) {
   sass = require('node-sass');
 }
 
-log('');
+log();
 log('Please note: if you make any change to the package json file, the server needs to be restarted.')
 log('Starting up package development server for', package.name, '(' + package.package + ')...');
-log('');
+log();
+log();
 
 // --------------------------------------------------------------------------
 // Server configuration
@@ -114,6 +115,16 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '10MB' }));
 const templateName = isTheme ? 'theme' : (isMenu ? 'menu' : 'widget');
 const templateHtml = fs.readFileSync(path.join(__dirname, 'assets', `run-${templateName}.html`), 'utf8');
 const runWidgetHtml = template.engine.compile(templateHtml);
+
+let runningWidgets = getRunningWidgets();
+if (runningWidgets.length) {
+  log('Just so you know, these packages are also running on your machine:');
+  runningWidgets.forEach((w) => { log(`• ${w.id} -> http://localhost:${w.data.port}`) });
+  log();
+}
+
+// --------------------------------------------------------------------------
+// Routes
 
 app.get('/', function (req, res) {
   res.send(runWidgetHtml(package));
@@ -295,6 +306,7 @@ op.find({
 
   app.listen(port, function () {
     log('[' + package.name + '] development server is up on', host);
+    log();
 
     // mark this widget as running
     const runningPackages = configstore.get('runningPackages') || {};
