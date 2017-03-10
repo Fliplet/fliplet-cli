@@ -33,7 +33,7 @@ Fliplet.Widget.instance('my-component', function (data) {
 
 As you can see above, the method accepts two parameters: the `data-[name]-id` attribute you define in the output, and a callback function to be executed.
 
-This is by design: **your widget can be dropped more than once into a screen**, hence you are responsive for reading the data of each instance given the unique instance id ({% raw %}`{{ id }}`{% endraw %}) you use in the output.
+This is by design: **your widget can be dropped more than once into a screen**, hence you are responsible for reading the data of each instance given the unique instance id ({% raw %}`{{ id }}`{% endraw %}) you use in the output.
 
 Here's an example to let you understand how a screen can look like when your widget is dropped to a page more than once:
 
