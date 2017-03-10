@@ -219,6 +219,7 @@ app.get('/interface', function (req, res) {
     });
 
     template.compile({
+      development: true,
       interface: true,
       provider: !!req.query.providerId,
       providerId: req.query.providerId,
