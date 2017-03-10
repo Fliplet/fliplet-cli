@@ -119,7 +119,7 @@ const runWidgetHtml = template.engine.compile(templateHtml);
 let runningWidgets = getRunningWidgets();
 if (runningWidgets.length) {
   log('Just so you know, these packages are also running on your machine:');
-  runningWidgets.forEach((w) => { log(`• ${w.id} -> http://localhost:${w.data.port}`) });
+  runningWidgets.forEach((w) => { log(`• ${w.id} -> ${w.data.url}`) });
   log();
 }
 
@@ -312,7 +312,7 @@ op.find({
 
     // mark this widget as running
     const runningPackages = configstore.get('runningPackages') || {};
-    runningPackages[package.package] = { port: runningPort };
+    runningPackages[package.package] = { url: `http://localhost:${runningPort}` };
     configstore.set('runningPackages', runningPackages);
 
     if (process.argv.length > 2) {
