@@ -53,7 +53,7 @@ describe('WHEN start component', function() {
 
   describe('Build', function() {
     it('should have message to configure widget', function(done) {
-      const selector = `${buildSelector} h3`;
+      const selector = ``${buildSelector} h3``;
       buildBrowser
         .evaluate(function (selector) {
           return document.querySelector(selector).textContent;
