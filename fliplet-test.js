@@ -77,7 +77,8 @@ function restoreWidgetJson() {
 }
 
 publish.run()
-  .then(function (testWidget) {
+  .then(function (testWidget) {`
+    restoreWidgetJson();
     widget = testWidget.widget;
     return api.app.post();
   })
@@ -119,8 +120,6 @@ publish.run()
 
         mocha.run()
           .on('end', function () {
-            restoreWidgetJson();
-
             // Close any open browsers
             interfaceBrowser.end().then(function () {});
             buildBrowser.end().then(function () {});
