@@ -210,7 +210,7 @@ app.get('/interface', function (req, res) {
     const widgets = getRunningWidgets();
 
     widgets.unshift({
-      id: Date.now(),
+      id: req.query.providerId || Date.now(),
       uuid: widgetUUID,
       html: html,
       dependencies: package.interface.dependencies,
@@ -220,6 +220,8 @@ app.get('/interface', function (req, res) {
 
     template.compile({
       interface: true,
+      provider: !!req.query.providerId,
+      providerId: req.query.providerId,
       widgets
     }).then(function (html) {
       res.send(html);
