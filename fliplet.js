@@ -11,6 +11,7 @@ program
   .command('create-menu [name]', 'Create a new menu.')
   .command('run', 'Run the current widget or theme for development.')
   .command('publish', 'Publish the current widget or theme on fliplet studio.')
+  .command('test', 'Run tests on the current widget or theme on fliplet studio.')
   .command('list-assets', 'Gets the list of the available assets in the system.')
   .command('list-organizations', 'Gets the list of the available organizations in the system.')
   .command('organization [id]', 'Set current working organization. Use without id to reset.')

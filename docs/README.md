@@ -13,7 +13,7 @@ To get a brief introduction to the technologies we use and the stack of the plat
   - [Building themes](Building-themes.md)
   - Building menus
 3. [Publishing](Publishing.md)
-4. Testing
+4. [Testing](Testing-components.md)
 5. [API Documentation](API-Documentation.md)
 6. UI Guidelines
   - [Guidelines for component interfaces](UI-guidelines-interface.md)

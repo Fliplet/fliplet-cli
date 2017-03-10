@@ -1,6 +1,6 @@
 {
   "name": "fliplet-cli",
-  "version": "3.2.1",
+  "version": "3.2.2",
   "description": "Command line utility for creating and running components, themes and menus to be used on the Fliplet platform.",
   "main": "fliplet.js",
   "scripts": {
@@ -17,6 +17,7 @@
     "archiver": "^1.0.1",
     "body-parser": "^1.15.2",
     "casual": "^1.5.10",
+    "chai": "^3.5.0",
     "commander": "^2.9.0",
     "configstore": "^2.1.0",
     "express": "^4.14.0",
@@ -25,12 +26,15 @@
     "grunt-contrib-watch": "^1.0.0",
     "handlebars": "^4.0.5",
     "lodash": "^4.16.4",
+    "mocha": "^3.2.0",
     "ncp": "^2.0.0",
+    "nightmare": "^2.10.0",
     "node-sass": "^4.1.1",
     "openport": "0.0.4",
     "prompt": "^1.0.0",
     "replace": "^0.3.0",
     "request": "^2.72.0",
+    "request-promise": "^4.1.1",
     "temp": "^0.8.3"
   }
 }
