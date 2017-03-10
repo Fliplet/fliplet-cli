@@ -26,7 +26,7 @@ You should include your tests under `tests` folder of the widget.
 ## Available to write your tests
 
 - interfaceBrowser - A Nightmare instance of your widget interface.
-- buildBroser - A Nightmare instance of your widget instance build.
+- buildBrowser - A Nightmare instance of your widget instance build.
 - interfaceUrl - The url for the interface.
 - buildUrl - The ural for your widget instance build.
 - widgetInstance - The widgetInstance as it was saved on the database.
