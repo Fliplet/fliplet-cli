@@ -294,6 +294,8 @@ Fliplet.Apps.get().then(function (apps) {
 });
 ```
 
+**Note**: when returning apps, the API will return both **V1** and **V2** apps created with Fliplet. Most likely, you want to filter and use V2 apps only. This can be done by filtering out apps where the boolean `app.legacy` is `true`.
+
 ## Pages
 
 ### Get the list of pages of the current app
