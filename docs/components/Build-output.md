@@ -15,7 +15,7 @@ Example:
 
 {% raw %}
 ```handlebars
-<video src="{{ baz }}" data-my-component-id="{{ id }}"></video>
+<video src="{{ url }}" data-my-component-id="{{ id }}"></video>
 ```
 {% endraw %}
 
@@ -34,6 +34,22 @@ Fliplet.Widget.instance('my-component', function (data) {
 As you can see above, the method accepts two parameters: the `data-[name]-id` attribute you define in the output, and a callback function to be executed.
 
 This is by design: **your widget can be dropped more than once into a screen**, hence you are responsive for reading the data of each instance given the unique instance id ({% raw %}`{{ id }}`{% endraw %}) you use in the output.
+
+Here's an example to let you understand how a screen can look like when your widget is dropped to a page more than once:
+
+```html
+<video src="//foo.mp4" data-my-component-id="1"></video>
+<video src="//bar.mp4" data-my-component-id="2"></video>
+<video src="//baz.mp4" data-my-component-id="3"></video>
+```
+
+```js
+Fliplet.Widget.instance('my-component', console.log);
+
+// { id: 1, url: 'foo.mp4' }
+// { id: 2, url: 'bar.mp4' }
+// { id: 3, url: 'baz.mp4' }
+```
 
 ---
 

@@ -22,8 +22,8 @@ Example:
 ```handlebars
 <p>{{ foo }}</p>
 
-{{#if baz}}
-  <video src="{{ baz }}" data-my-component-id="{{ id }}"></video>
+{{#if url}}
+  <video src="{{ url }}" data-my-component-id="{{ id }}"></video>
 {{/if}}
 ```
 {% endraw %}
@@ -36,7 +36,7 @@ Saving an instance settings is done using the public method `Fliplet.Widget.save
 // Returns a promise
 Fliplet.Widget.save({
   foo: 'bar',
-  baz: 1,
+  url: 'funny-cats.mp4,
   hello: {
     world: true
   }
