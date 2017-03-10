@@ -6,8 +6,8 @@ App components are not required to output any HTML, though when they do you can 
 
 The typical workflow is:
 
-1) Interface saves some data via `Fliplet.Widget.getData()`
-2) `build.html` gets compiled using the above data and the page/screen gets the updated HTML
+1. Interface saves some data via `Fliplet.Widget.getData()`
+2. `build.html` gets compiled using the above data and the page/screen gets the updated HTML
 
 Your template will get available in the view all settings that have been previously saved in the instance as handlebars variables. You can also print the component unique id using the {% raw %}`{{ id }}`{% endraw %} variable.
 
