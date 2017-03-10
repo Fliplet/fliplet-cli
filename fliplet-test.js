@@ -65,7 +65,7 @@ const fileName = './widget.json';
 const file = require(`${process.cwd()}/widget.json`);
 const packageName = file.package;
 const tags = file.tags;
-file.package = `${casual.domain}.${casual.unix_time}`;
+file.package = test.${packageName}.${casual.unix_time}`;
 file.tags = [];
 fs.writeFileSync(fileName, JSON.stringify(file, null, 2));
 
