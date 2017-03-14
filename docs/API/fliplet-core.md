@@ -194,16 +194,18 @@ var myProvider = Fliplet.Widget.open('com.fliplet.link', {
     if (event === 'interface-validate') {
       Fliplet.Widget.toggleSaveButton(data.isValid === true);
     }
+
+    // return true to stop propagation up to studio or parent components
   }
 });
 
 myProvider.then(function (data) {
-  //
+  // data will contain the result
 });
 
 // You can also resolve an array of providers
-Fliplet.Widget.all([myProvider]).then(function () {
-
+Fliplet.Widget.all([myProvider]).then(function (results) {
+  // results is an array with data from all providers you resolved
 });
 ```
 
@@ -215,11 +217,11 @@ Optionally attach an event handler to be called when the "save" button will be c
 
 ```js
 Fliplet.Widget.onSaveRequest(function () {
-  // Save data when the save button is clicked
-  Fliplet.Widget.save({ foo: 1 }).then(function () {
-    // Closes this widget interface
-    Fliplet.Widget.complete();
-  });
+  // Save data when the save button in studio is clicked
+  return Fliplet.Widget.save({ foo: 1 });
+}).then(function onSave() {
+  // Closes this widget interface
+  Fliplet.Widget.complete();
 });
 ```
 
