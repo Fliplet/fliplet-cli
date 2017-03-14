@@ -135,10 +135,16 @@ The widget instance ID might change overtime when an app is published. If you ne
 var uuid = Fliplet.Widget.getUUID(1);
 ```
 
-### Display a message in Fliplet Studio
+### Display an error message in Fliplet Studio
 
 ```js
-Fliplet.Widget.displayMessage({ text: 'Hello world' });
+Fliplet.Widget.displayMessage({ text: 'The email is not valid' });
+```
+
+### Sets the widget interface info message in Fliplet Studio
+
+```js
+Fliplet.Widget.info('2 files selected');
 ```
 
 ### Toggle the save button
@@ -149,6 +155,16 @@ Fliplet.Widget.toggleSaveButton(true);
 
 // Disable the button
 Fliplet.Widget.toggleSaveButton(false);
+```
+
+### Toggle the cancel button
+
+```js
+// Enable the button
+Fliplet.Widget.toggleCancelButton(true);
+
+// Disable the button
+Fliplet.Widget.toggleCancelButton(false);
 ```
 
 ### Autosize
