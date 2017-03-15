@@ -209,6 +209,14 @@ app.get('/interface', function (req, res) {
 
     const widgets = getRunningWidgets();
 
+    if (req.query.data) {
+      try {
+        widgetInstanceData = JSON.parse(req.query.data);
+      } catch (e) {
+        console.warn(e);
+      }
+    }
+
     widgets.unshift({
       id: req.query.providerId || Date.now(),
       uuid: widgetUUID,
