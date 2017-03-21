@@ -228,13 +228,13 @@ Here is the markup to achieve the traditional style with our branding:
     <label>In what order do you want do display your data?</label>
   </div>
   <div class="col-sm-8">
-    <div class="radio">
+    <div class="radio radio-icon">
       <input type="radio" id="alphabetical" name="is_alphabetical" value="true" checked>
       <label for="alphabetical">
         <span class="check"><i class="fa fa-circle"></i></span> Alphabetically
       </label>
     </div>
-    <div class="radio">
+    <div class="radio radio-icon">
       <input type="radio" id="order" name="is_alphabetical" value="false">
       <label for="order">
         <span class="check"><i class="fa fa-circle"></i></span> In the order as loaded
@@ -257,11 +257,11 @@ Here is the markup to achieve the button like style with our branding:
   </div>
   <div class="col-sm-8">
     <div class="radio-buttons clearfix">
-      <div class="radio">
+      <div class="radio radio-icon">
         <input type="radio" id="enable-yes" name="enable_option" value="show">
         <label for="enable-yes">Yes</label>
       </div>
-      <div class="radio">
+      <div class="radio radio-icon">
         <input type="radio" id="enable-no" name="enable_option" value="no-show">
         <label for="enable-no">No</label>
       </div>
@@ -284,7 +284,7 @@ Here is the markup to achieve the checkboxes with our branding:
     <label for="show_subtitle">Show a subtitle in the main list?</label>
   </div>
   <div class="col-sm-8">
-    <div class="checkbox">
+    <div class="checkbox checkbox-icon">
       <input type="checkbox" id="show_subtitle">
       <label for="show_subtitle">
         <span class="check"><i class="fa fa-check"></i></span> Yes, please

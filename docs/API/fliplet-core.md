@@ -135,10 +135,16 @@ The widget instance ID might change overtime when an app is published. If you ne
 var uuid = Fliplet.Widget.getUUID(1);
 ```
 
-### Display a message in Fliplet Studio
+### Display an error message in Fliplet Studio
 
 ```js
-Fliplet.Widget.displayMessage({ text: 'Hello world' });
+Fliplet.Widget.displayMessage({ text: 'The email is not valid' });
+```
+
+### Sets the widget interface info message in Fliplet Studio
+
+```js
+Fliplet.Widget.info('2 files selected');
 ```
 
 ### Toggle the save button
@@ -149,6 +155,16 @@ Fliplet.Widget.toggleSaveButton(true);
 
 // Disable the button
 Fliplet.Widget.toggleSaveButton(false);
+```
+
+### Toggle the cancel button
+
+```js
+// Enable the button
+Fliplet.Widget.toggleCancelButton(true);
+
+// Disable the button
+Fliplet.Widget.toggleCancelButton(false);
 ```
 
 ### Autosize
@@ -178,16 +194,18 @@ var myProvider = Fliplet.Widget.open('com.fliplet.link', {
     if (event === 'interface-validate') {
       Fliplet.Widget.toggleSaveButton(data.isValid === true);
     }
+
+    // return true to stop propagation up to studio or parent components
   }
 });
 
 myProvider.then(function (data) {
-  //
+  // data will contain the result
 });
 
 // You can also resolve an array of providers
-Fliplet.Widget.all([myProvider]).then(function () {
-
+Fliplet.Widget.all([myProvider]).then(function (results) {
+  // results is an array with data from all providers you resolved
 });
 ```
 
@@ -199,11 +217,11 @@ Optionally attach an event handler to be called when the "save" button will be c
 
 ```js
 Fliplet.Widget.onSaveRequest(function () {
-  // Save data when the save button is clicked
-  Fliplet.Widget.save({ foo: 1 }).then(function () {
-    // Closes this widget interface
-    Fliplet.Widget.complete();
-  });
+  // Save data when the save button in studio is clicked
+  return Fliplet.Widget.save({ foo: 1 });
+}).then(function onSave() {
+  // Closes this widget interface
+  Fliplet.Widget.complete();
 });
 ```
 
@@ -293,6 +311,8 @@ Fliplet.Apps.get().then(function (apps) {
 
 });
 ```
+
+**Note**: when returning apps, the API will return both **V1** and **V2** apps created with Fliplet. Most likely, you want to filter and use V2 apps only. This can be done by filtering out apps where the boolean `app.legacy` is `true`.
 
 ## Pages
 

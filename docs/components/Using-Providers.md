@@ -24,6 +24,8 @@ var myProvider = Fliplet.Widget.open('com.fliplet.link', {
     if (event === 'interface-validate') {
       Fliplet.Widget.toggleSaveButton(data.isValid === true);
     }
+
+    // return true to stop propagation up to studio or parent components
   }
 });
 
