@@ -147,6 +147,16 @@ Fliplet.Widget.displayMessage({ text: 'The email is not valid' });
 Fliplet.Widget.info('2 files selected');
 ```
 
+### Toggle the wide mode on the interface
+
+```js
+// Enable the wide mode
+Fliplet.Studio.emit('widget-mode-wide');
+
+// Disable the wide mode
+Fliplet.Studio.emit('widget-mode-default');
+```
+
 ### Toggle the save button
 
 ```js

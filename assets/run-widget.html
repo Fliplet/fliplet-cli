@@ -23,6 +23,7 @@
                 height: 100%;
             }
             section {
+                transition: width 0.3s, opacity 0.3s;
                 position: relative;
                 width: 50%;
                 height: 100%;
@@ -46,6 +47,13 @@
                 height: 100%;
                 border: 1px solid #D9DDDE;
             }
+            #content.wide section:first-child {
+                width: 75%;
+            }
+            #content.wide section:last-child {
+                width: 25%;
+                opacity: 0;
+            }
             #iframe-interface {
                 background-color: #F2F6F7;
                 padding-bottom: 63px;
@@ -60,6 +68,8 @@
                 left: 30px;
                 right: 30px;
                 border-top: 1px solid #D9DDDE;
+                display: flex;
+                align-items: center;
             }
             footer a {
                 display: block;
@@ -72,14 +82,26 @@
                 text-align: center;
                 width: 150px;
             }
+            footer a.disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+            footer p {
+                opacity: 0.5;
+                font-size: 12px;
+            }
         </style>
+        <script src="https://code.jquery.com/jquery-2.2.4.min.js" crossorigin="anonymous"></script>
     </head>
     <body>
         <div id="content">
             <section>
                 <h2><a href="/interface" target="_blank">{{name}} interface</a></h2>
                 <iframe src="/interface" id="iframe-interface" /></iframe>
-                <footer><a href="#" id="saveButton">Save &amp; Close</a></footer>
+                <footer>
+                    <a href="#" id="saveButton">Save &amp; Close</a>
+                    <p id="infoLabel"></p>
+                </footer>
             </section>
             <section>
                 <h2><a href="/build" target="_blank">output of your component</a></h2>
@@ -87,25 +109,42 @@
             </section>
         </div>
         <script>
-        var saveButton = document.getElementById('saveButton');
-        var interface = document.getElementById('iframe-interface');
-        var build = document.getElementById('iframe-build');
+        $(document).ready(function () {
+            var $saveButton = $('#saveButton');
+            var $infoLabel = $('#infoLabel');
 
-        saveButton.addEventListener('click', function (event) {
-            event.preventDefault();
-            interface.contentWindow.postMessage('save-widget', '*');
-        }, false);
+            var interface = document.getElementById('iframe-interface');
+            var build = document.getElementById('iframe-build');
 
-        window.addEventListener('message', receiveMessage, false);
+            $saveButton.click(function (event) {
+                event.preventDefault();
+                interface.contentWindow.postMessage('save-widget', '*');
+            });
 
-        function receiveMessage (event) {
-          if (event.data) {
+            window.addEventListener('message', receiveMessage, false);
+
+            function receiveMessage (event) {
             switch (event.data.event) {
                 case 'widget-save-disable':
-                    saveButton.style.display = 'none';
+                    $saveButton.addClass('disabled');
                     break;
                 case 'widget-save-enable':
-                    saveButton.style.display = 'block';
+                    $saveButton.removeClass('disabled');
+                    break;
+                case 'widget-info-label-update':
+                    $infoLabel.text(event.data.text);
+                    break;
+                case 'widget-save-label-update':
+                    $saveButton.text(event.data.text);
+                    break;
+                case 'widget-save-label-reset':
+                    $saveButton.text('Save & Close');
+                    break;
+                case 'widget-mode-wide':
+                    $('#content').addClass('wide');
+                    break;
+                case 'widget-mode-default':
+                    $('#content').removeClass('wide');
                     break;
                 case 'widget-save-complete':
                     interface.contentWindow.location.reload();
@@ -117,9 +156,9 @@
                 case 'reload-widget-instance':
                     build.contentWindow.location.reload();
                     break;
+                }
             }
-          }
-        }
+        });
 
         </script>
     </body>
