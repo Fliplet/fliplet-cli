@@ -7,6 +7,7 @@ The `fliplet-core` package contains the following namespaces:
 - [App](#app)
 - [Apps](#apps)
 - [Environment](#environment)
+- [Hooks](#hooks)
 - [Navigate](#navigate)
 - [Navigator](#navigator)
 - [Organizations](#organizations)
@@ -38,6 +39,33 @@ var appId = Fliplet.Env.get('appId');
 
 ```js
 Fliplet.Env.set('appId', 2);
+```
+
+## Hooks
+
+### Register a callback for a hook
+
+```js
+Fliplet.Hooks.on('beforeFormSubmit', function (data) {
+  console.log('just got', data);
+
+  data.foo = 2;
+
+  return Promise.resolve('bar'); // you can return a promise if your hook is async
+});
+```
+
+### Run a hook
+
+```js
+var data = { foo: 1 };
+
+Fliplet.Hooks.run('beforeFormSubmit', data).then(function (results) {
+  // results[0] is "bar"
+  // data.foo is 2
+}, function onError (err) {
+  // woop woop, an hook fired a rejection!
+});
 ```
 
 ## User
