@@ -118,7 +118,11 @@ publish.run()
           );
         });
 
-        mocha.run()
+        mocha.run(function(failures) {
+          process.on('exit', function () {
+            process.exit(failures);  // exit with non-zero status if there were failures
+          });
+        })
           .on('end', function () {
             // Close any open browsers
             interfaceBrowser.end().then(function () {});
@@ -142,7 +146,8 @@ publish.run()
                 console.log('Widget Tested but failed to clean environment.');
                 console.log(error);
               });
-          });
+          })
+        ;
       });
   })
   .catch(function (error) {
