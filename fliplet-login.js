@@ -1,7 +1,20 @@
-const auth = require('./lib/auth');
+const path = require('path');
+const package = require(path.join(__dirname, 'package.json'));
 const prompt = require('prompt');
+const program = require('commander');
 
-console.log('Please type your Fliplet Studio login details.');
+const auth = require('./lib/auth');
+
+
+program
+  .version(package.version)
+  .option('-u, --username <username>', 'Sets the username')
+  .option('-p, --password <password>', 'Sets the password')
+  .parse(process.argv);
+
+if (program.username && program.password) {
+  return login(program.username, program.password);
+}
 
 prompt.start();
 prompt.get([
@@ -20,14 +33,15 @@ prompt.get([
     return;
   }
 
-  auth.login({
-    email: result.email,
-    password: result.password
-  })
+  login(result.email, result.password);
+});
+
+function login(email, password) {
+  auth.login({ email, password })
     .then(function(login) {
       console.log('Logged in successfully. You can now publish widgets.');
     })
     .catch(function (error) {
       console.log(error);
     });
-});
+}
