@@ -1,0 +1,11 @@
+dependencies:
+  pre:
+    - npm install fliplet-cli -g
+
+test:
+  override:
+    - fliplet env staging
+    - fliplet login -u $TEST_USER -p $TEST_PASSWORD
+    - fliplet organization $TEST_ORGANIZATION
+    - fliplet create-widget awesome-widget
+    - cd awesome-widget && fliplet test
