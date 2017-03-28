@@ -11,7 +11,7 @@ To get a brief introduction to the technologies we use and the stack of the plat
   * [The JS APIs](JS-APIs.md)
 2. [Building components](Building-components.md)
   - [Building themes](Building-themes.md)
-  - Building menus
+  - [Building menus](Building-menus.md)
 3. [Publishing](Publishing.md)
 4. [Testing](Testing-components.md)
 5. [API Documentation](API-Documentation.md)
