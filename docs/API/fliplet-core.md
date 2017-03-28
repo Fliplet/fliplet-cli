@@ -514,6 +514,19 @@ Fliplet.Navigate.confirm(options)
   });
 ```
 
+### Open a gallery
+We are using [PhotoSwipe](http://photoswipe.com/).  
+Note: You need to add `photoswipe` on your dependencies list to use this.
+```js
+var options = {
+  images: [
+    { title: 'Foo', url: 'http://lorempixel.com/1280/720/' },
+    { url: 'http://lorempixel.com/400/200/' }
+  ]
+};
+Fliplet.Navigate.previewImages(options);
+```
+
 ---
 
 ## Analytics
