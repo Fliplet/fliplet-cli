@@ -231,6 +231,7 @@ app.get('/interface', function (req, res) {
       interface: true,
       provider: !!req.query.providerId,
       providerId: req.query.providerId,
+      providerMode: req.query.providerModes,
       widgets
     }).then(function (html) {
       res.send(html);
