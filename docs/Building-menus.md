@@ -4,7 +4,7 @@ Before building menus, we recommend reading the documentation about [creating co
 
 A menu consist in:
 - CSS and Javascript assets.
-- A
+- A `build.html` handlebars template with the output of the menu
 
 
 Menus can also specify whether they appear at the top of the HTML (right after the body tag is opened) or at the bottom before the body tag gets closed. This can be configured through the `settings.position` on the `menu.json` file as we do on the [default menu](https://github.com/Fliplet/fliplet-menu-default/blob/master/menu.json#L22).
@@ -45,5 +45,15 @@ The `build.html` output of menus gets compiled with some built-in variables at r
 - **title** `String` - The title of the current page
 - **pages** `Array` - An array of the page of the menu
 - **appVersion** `String` - The current version of the app
+
+Each **page** in **pages** will have a **label** `String` and a **action** `JSON String` with the navigation details. Most likely, this is what you will do in your template:
+
+{% raw %}
+```handlebars
+{{#each pages}}
+  <a href="#" data-fl-navigate='{{{action}}}'>{{label}}</li>
+{{/each}}
+```
+{% endraw %}
 
 ---
