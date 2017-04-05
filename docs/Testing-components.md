@@ -31,7 +31,7 @@ You should include your tests under `tests` folder of the widget.
 - buildUrl - The ural for your widget instance build.
 - widgetInstance - The widgetInstance as it was saved on the database.
 - buildSelector - A querySelector to select the all block of your build HTML.
-
+- interfaceBrowser.save() - Method to save your settings on the widget interface 
 
 ## Sample test
 
@@ -53,7 +53,7 @@ describe('WHEN start component', function() {
 
   describe('Build', function() {
     it('should have message to configure widget', function(done) {
-      const selector = ``${buildSelector} h3``;
+      const selector = `${buildSelector} h3`;
       buildBrowser
         .evaluate(function (selector) {
           return document.querySelector(selector).textContent;
