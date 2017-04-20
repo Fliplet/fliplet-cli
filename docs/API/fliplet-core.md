@@ -304,6 +304,16 @@ var settings = Fliplet.App.Settings.getAll();
 var datum = Fliplet.App.Settings.get('foo');
 ```
 
+### Get the logs for an app
+
+```js
+Fliplet.App.Logs.get({
+  where: { type: 'jobs' }
+}).then(function (logs) {
+  // logs<Array>
+});
+```
+
 ### Save or update some settings of the current app
 
 ```js
@@ -515,13 +525,13 @@ Fliplet.Navigate.confirm(options)
 ```
 
 ### Open a gallery
-We are using [PhotoSwipe](http://photoswipe.com/).  
+We are using [PhotoSwipe](http://photoswipe.com/).
 Note: You need to add `photoswipe` on your dependencies list to use this.
 ```js
 var data = {
   images: [
-    { 
-      title: 'Foo', 
+    {
+      title: 'Foo',
       path: '/foo.jpg', // On native platform if present, path is used instead of web url
       url: 'http://lorempixel.com/1280/720/'
     },
