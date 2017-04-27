@@ -4,6 +4,20 @@ As most of our stack is made of Javascript — and you will be using it quite a 
 
 Please note: the JS APIs are more of a **SDK** rather than a **framework**. You are mostly free to choose how to build your components and themes and which framework to use (or not).
 
+---
+
+## How to use them
+
+Our JS APIs can be used when developing components and themes, but also when writing custom code for your screens in Fliplet Studio.
+
+Adding our dependencies to your screen only takes a few seconds. Just browse to the screen you want to add the package to, then click on the **Developer options** and add the **package name** in the **screen dependencies** section as shown:
+
+![Dependencies](https://d2ppvlu71ri8gs.cloudfront.net/items/1D122h0u091N0W0p363j/Screen%20Shot%202017-04-27%20at%2019.04.19.png)
+
+Then, click the save button and you're good to go! You can now use the methods that the package is exposing.
+
+**Note: Don't forget to separate different packages by a comma.**
+
 ## Dependencies (packages)
 
 To list out all the available packages in our system, use the `list-assets` command of the CLI:
