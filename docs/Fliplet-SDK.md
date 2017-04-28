@@ -27,7 +27,7 @@ Other dependencies can be included by providing a comma-separated list of the pa
 e.g. `packages?lodash,fliplet-datasources,fliplet-media`
 
 ```html
-<script type="text/javascript" src="http://api.fliplet.dev/sdk.js?packages=fliplet-media&auth_token=123"></script>
+<script type="text/javascript" src="https://cdn.api.fliplet.com/sdk.js?packages=fliplet-media&auth_token=123"></script>
 ```
 
 **Note:** `fliplet-core` is included by default, hence doesn't need to be listed.
