@@ -18,6 +18,8 @@ Simply include a script tag to our JS SDK with your auth token (although it's no
 </script>
 ```
 
+Please note that all code uding the JS APIs should run once the `Fliplet()` promise is resolved (like the above example) to ensure all files have been loaded.
+
 ## Include other dependencies
 
 Other dependencies can be included by providing a comma-separated list of the package names via the `packages` query parameter.
@@ -27,3 +29,10 @@ e.g. `packages?lodash,fliplet-datasources,fliplet-media`
 ```html
 <script type="text/javascript" src="http://api.fliplet.dev/sdk.js?packages=fliplet-media&auth_token=123"></script>
 ```
+
+**Note:** `fliplet-core` is included by default, hence doesn't need to be listed.
+
+---
+
+[Back](README.md)
+{: .buttons}
