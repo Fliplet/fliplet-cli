@@ -9,7 +9,7 @@ The Fliplet SDK enables you to use all the JS APIs outside of our environment. T
 Simply include a script tag to our JS SDK with your auth token (although it's not strictly required to use the JS APIs).
 
 ```html
-<script type="text/javascript" src="http://api.fliplet.dev/sdk.js?auth_token=123"></script>
+<script type="text/javascript" src="https://cdn.api.fliplet.com/sdk.js?auth_token=123"></script>
 
 <script type="text/javascript">
   Fliplet().then(function () {
