@@ -201,6 +201,16 @@ Fliplet.Widget.toggleSaveButton(true);
 Fliplet.Widget.toggleSaveButton(false);
 ```
 
+### Set & reset the save button label
+
+```js
+// Set the button label
+Fliplet.Widget.setSaveButtonLabel('Pick');
+
+// Reset the button label (to 'Save & Close')
+Fliplet.Widget.resetSaveButtonLabel();
+```
+
 ### Toggle the cancel button
 
 ```js
@@ -209,6 +219,16 @@ Fliplet.Widget.toggleCancelButton(true);
 
 // Disable the button
 Fliplet.Widget.toggleCancelButton(false);
+```
+
+### Set & reset the cancel button label
+
+```js
+// Set the button label
+Fliplet.Widget.setCancelButtonLabel('No thanks');
+
+// Reset the button label (to 'Save & Close')
+Fliplet.Widget.resetCancelButtonLabel();
 ```
 
 ### Autosize
