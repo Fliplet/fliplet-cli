@@ -28,13 +28,13 @@ If you're looking for other namespaces, make sure to check the [Media](Fliplet-M
 
 ### Get an environment variable
 
-These variables are usually available on components and providers: 
-- `development` - `true / false` if using CLI or not, 
-- `interact` - `true / false` if you are in edit mode in studio, 
-- `preview` - `true / false` if you are in preview mode in studio,  
-- `platform` - One off: `'web' / 'native'`, 
+These variables are usually available on components and providers:
+- `development` - `true / false` if using CLI or not,
+- `interact` - `true / false` if you are in edit mode in studio,
+- `preview` - `true / false` if you are in preview mode in studio,
+- `platform` - One off: `'web' / 'native'`,
 - `mode` - One off: `'preview' / 'view' / 'interact'`
-plus this self explanatory ones: `provider`, `organizationId`, `appId`, `user`. 
+plus this self explanatory ones: `provider`, `organizationId`, `appId`, `user`.
 
 
 ```js
@@ -104,6 +104,15 @@ Fliplet.User.setUserDetails({
 
 ```js
 Fliplet.Studio.emit('foo', { bar: 1 });
+```
+
+### Navigate to a page in Fliplet Studio
+
+```js
+Fliplet.Studio.emit('navigate', {
+  name: 'appSettingsGeneral', // route name
+  params: { appId: 11 } // parameters to pass to the route
+});
 ```
 
 ## API
