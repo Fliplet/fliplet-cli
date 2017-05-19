@@ -1,10 +1,6 @@
 {
   "name": "fliplet-cli",
-<<<<<<< HEAD
-  "version": "3.3.6",
-=======
-  "version": "3.6.0",
->>>>>>> master
+  "version": "3.6.1",
   "description": "Command line utility for creating and running components, themes and menus to be used on the Fliplet platform.",
   "main": "fliplet.js",
   "scripts": {
