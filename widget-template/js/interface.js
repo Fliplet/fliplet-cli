@@ -1,14 +1,18 @@
-$('form').submit(function (event) {
-  event.preventDefault();
+Fliplet().then(function () {
+  $(window).on('resize', Fliplet.Widget.autosize);
 
-  Fliplet.Widget.save({
-    username: $('input').val()
-  }).then(function () {
-    Fliplet.Widget.complete();
+  $('form').submit(function (event) {
+    event.preventDefault();
+
+    Fliplet.Widget.save({
+      username: $('input').val()
+    }).then(function () {
+      Fliplet.Widget.complete();
+    });
   });
-});
 
-// Fired from Fliplet Studio when the external save button is clicked
-Fliplet.Widget.onSaveRequest(function () {
-  $('form').submit();
+  // Fired from Fliplet Studio when the external save button is clicked
+  Fliplet.Widget.onSaveRequest(function () {
+    $('form').submit();
+  });
 });
