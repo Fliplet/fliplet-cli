@@ -1,6 +1,7 @@
 const _ = require('lodash');
 const auth = require('./lib/auth');
 const organizations = require('./lib/organizations');
+const config = require('./lib/config');
 
 const organizationId = Number(process.argv[2]);
 
