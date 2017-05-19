@@ -24,7 +24,7 @@ Please note that all code uding the JS APIs should run once the `Fliplet()` prom
 
 Other dependencies can be included by providing a comma-separated list of the package names via the `packages` query parameter.
 
-e.g. `packages?lodash,fliplet-datasources,fliplet-media`
+e.g. `packages=lodash,fliplet-datasources,fliplet-media`
 
 ```html
 <script type="text/javascript" src="https://cdn.api.fliplet.com/sdk.js?packages=fliplet-media&auth_token=123"></script>
