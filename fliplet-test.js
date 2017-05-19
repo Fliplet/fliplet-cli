@@ -8,7 +8,13 @@ const path = require('path');
 const config = require('./lib/config');
 const publish = require('./lib/publish');
 const api = require('./lib/api');
-const authToken = config.data.user.auth_token;
+const user = config.data.user || {};
+const authToken = user.auth_token;
+
+if (!authToken) {
+  console.log('You must log in first with: fliplet login');
+  return;
+}
 
 // Globals to be used on Mocha tests
 global.interfaceBrowser = Nightmare({ show: true });
