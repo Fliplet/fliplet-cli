@@ -5,7 +5,6 @@ const program = require('commander');
 
 const auth = require('./lib/auth');
 
-
 program
   .version(package.version)
   .option('-u, --username <username>', 'Sets the username')

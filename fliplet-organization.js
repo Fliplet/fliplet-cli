@@ -1,12 +1,13 @@
 const _ = require('lodash');
 const auth = require('./lib/auth');
 const organizations = require('./lib/organizations');
-const configstore = require('./lib/configstore');
+const config = require('./lib/config');
 
 const organizationId = Number(process.argv[2]);
+
 if (!organizationId) {
   console.log('Organization reset');
-  return configstore.delete('organization');
+  return config.set('organization', null);
 }
 
 organizations.getOrganizationsList()
@@ -14,7 +15,7 @@ organizations.getOrganizationsList()
     var organization = _.find(organizations, { id: organizationId });
 
     if (organization) {
-      configstore.set('organization', organization);
+      config.set('organization', organization);
       console.log(`Organization set to ${organization.name}`);
       return;
     }
@@ -23,7 +24,7 @@ organizations.getOrganizationsList()
       .then(function(isAdmin) {
         if (isAdmin) {
           organization = { id: organizationId };
-          configstore.set('organization', organization);
+          config.set('organization', organization);
           console.log(`Organization set.`);
           return;
         }

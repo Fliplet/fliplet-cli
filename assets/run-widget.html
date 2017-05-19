@@ -143,11 +143,8 @@
                 case 'widget-save-label-reset':
                     $saveButton.text('Save & Close');
                     break;
-                case 'widget-mode-wide':
-                    $('#content').addClass('wide');
-                    break;
-                case 'widget-mode-default':
-                    $('#content').removeClass('wide');
+                case 'widget-mode':
+                    $('#content').toggleClass('wide', event.data.value === 'wide');
                     break;
                 case 'widget-save-complete':
                     interface.contentWindow.location.reload();
