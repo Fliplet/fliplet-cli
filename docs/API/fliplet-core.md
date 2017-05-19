@@ -349,6 +349,16 @@ Fliplet.App.Logs.get({
 });
 ```
 
+### Create a log for an app
+
+```js
+Fliplet.App.Logs.create({
+  foo: "bar"
+}).then(function (log) {
+  // log<Object>
+});
+```
+
 ### Save or update some settings of the current app
 
 ```js
