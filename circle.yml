@@ -1,6 +1,6 @@
 dependencies:
   pre:
-    - npm install fliplet-cli -g
+    - npm link
 
 test:
   override:
