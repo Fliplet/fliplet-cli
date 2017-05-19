@@ -5,11 +5,10 @@ const Mocha = require('mocha');
 const fs = require('fs');
 const path = require('path');
 
-const configstore = require('./lib/configstore');
 const config = require('./lib/config');
 const publish = require('./lib/publish');
 const api = require('./lib/api');
-const authToken = configstore.get('auth_token');
+const authToken = config.data.user.auth_token;
 
 // Globals to be used on Mocha tests
 global.interfaceBrowser = Nightmare({ show: true });
