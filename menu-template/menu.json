@@ -7,6 +7,15 @@
   "provider_only": false,
   "references": [],
   "html_tag": "div",
+  "interface": {
+    "dependencies": [
+      "fliplet-core",
+      "fliplet-studio-ui"
+    ],
+    "assets": [
+      "js/settings.js"
+    ]
+  },
   "build": {
     "dependencies": [
       "bootstrap",
