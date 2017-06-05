@@ -14,11 +14,12 @@ To get a brief introduction to the technologies we use and the stack of the plat
   - [Building menus](Building-menus.md)
 3. [Publishing](Publishing.md)
 4. [Testing](Testing-components.md)
-5. [API Documentation](API-Documentation.md)
-6. UI Guidelines
+5. [Working with your components](Cloning-widgets.md)
+6. [API Documentation](API-Documentation.md)
+7. UI Guidelines
   - [Guidelines for component interfaces](UI-guidelines-interface.md)
   - [Guidelines for component output](UI-guidelines-build.md)
-7. Going forward
+8. Going forward
   - [Using providers](components/Using-Providers.md)
   - [Dependencies and assets](Dependencies-and-assets.md)
   - [Sending events between components](Event-emitter.md)
