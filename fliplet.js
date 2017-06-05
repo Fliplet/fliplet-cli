@@ -12,6 +12,8 @@ program
   .command('run', 'Run the current widget or theme for development.')
   .command('publish', 'Publish the current widget or theme on fliplet studio.')
   .command('test', 'Run tests on the current widget or theme on fliplet studio.')
+  .command('list', 'List widgets you can download for editing.')
+  .command('clone [package]', 'Downloads a widget locally, given its ID or package name')
   .command('list-assets', 'Gets the list of the available assets in the system.')
   .command('list-organizations', 'Gets the list of the available organizations in the system.')
   .command('organization [id]', 'Set current working organization. Use without id to reset.')
