@@ -112,7 +112,7 @@ app.use(bodyParser.urlencoded({ extended: true, limit: '10MB' }));
 // --------------------------------------------------------------------------
 // AWS configuration
 
-const templateName = isTheme ? 'theme' : (isMenu ? 'menu' : 'widget');
+const templateName = isTheme ? 'theme' : 'widget';
 const templateHtml = fs.readFileSync(path.join(__dirname, 'assets', `run-${templateName}.html`), 'utf8');
 const runWidgetHtml = template.engine.compile(templateHtml);
 
