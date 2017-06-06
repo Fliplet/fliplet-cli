@@ -454,6 +454,7 @@ Fliplet.Storage.set('key', value).then(function () {});
 ```js
 Fliplet.Storage.get('key').then(function (value) {});
 Fliplet.Storage.get('key', { defaults: { defaultProperty: 'defaultValue' } }).then(function (value) {});
+Fliplet.Storage.get('key', { defaults: 'defaultValue' }).then(function (value) {});
 ```
 
 You can optionally provide a default value in case the key has not been assigned a value yet.

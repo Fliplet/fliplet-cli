@@ -5,7 +5,7 @@ const config = require('./lib/config');
 const user = config.data.user || {};
 const email = user.email
 const auth_token = user.auth_token;
-const organization = config.organization;
+const organization = config.data.organization;
 
 if (!email || !auth_token) {
   console.error('You must be logged in to perform this action');

@@ -8,7 +8,7 @@ const config = require('./lib/config');
 const user = config.data.user || {};
 const email = user.email
 const auth_token = user.auth_token;
-const organization = config.organization;
+const organization = config.data.organization;
 const widgetId = process.argv[2];
 
 if (!widgetId) {
