@@ -13,7 +13,7 @@ const authToken = user.auth_token;
 
 if (!authToken) {
   console.log('You must log in first with: fliplet login');
-  return;
+  process.exit(1);
 }
 
 // Globals to be used on Mocha tests
