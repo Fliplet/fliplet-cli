@@ -20,3 +20,7 @@ You can now use the command `fliplet` from the command line. Just type `fliplet`
 ---
 
 Please refer to our [documentation](http://developers.fliplet.com) for all details about creating components, themes and menus on Fliplet via the `fliplet-cli`.
+
+# Publish to npm
+
+Creata a release tag from master. Eg: v3.7.5    
