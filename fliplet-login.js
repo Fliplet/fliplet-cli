@@ -42,5 +42,6 @@ function login(email, password) {
     })
     .catch(function (error) {
       console.log(error);
+      process.exit(1);
     });
 }

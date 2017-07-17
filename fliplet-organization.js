@@ -30,11 +30,14 @@ organizations.getOrganizationsList()
         }
 
         console.log(`You do not belong to that organization. List organizations you belong with: fliplet list-organizations`);
+        process.exit(1);
       })
       .catch(function (error) {
         console.log(error);
+        process.exit(1);
       });
   })
   .catch(function onGetOrganizationsError(error) {
     log(error);
+    process.exit(1);
   });
