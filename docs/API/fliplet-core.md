@@ -12,6 +12,7 @@ The `fliplet-core` package contains the following namespaces:
 - [Navigator](#navigator)
 - [Organizations](#organizations)
 - [Pages](#pages)
+- [Profile](#profile)
 - [Storage](#storage)
 - [Studio](#studio)
 - [User](#user)
@@ -442,7 +443,14 @@ Fliplet.App.Orientation.unlock()
 It's a wrapper for the [namespaced storage](#namespaced) for the current app.
 
 ```js
-Fliplet.App.Storage()
+Fliplet.App.Storage.set(key, val)
+```
+
+### Profile
+It's a wrapper for the [namespaced storage](#namespaced) for the user profile.
+
+```js
+Fliplet.User.set('firstName', 'John')
 ```
 
 ## Apps
