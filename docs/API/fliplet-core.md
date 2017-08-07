@@ -338,7 +338,7 @@ Fliplet.Organization.Settings.getAll()
 ### Set settings. Current settings are extended with this ones.
 
 ```js
-Fliplet.Organization.Settings.set({ 
+Fliplet.Organization.Settings.set({
   user: 'foo',
   _password: 'bar' // Settings start with _ are encrypted
 })
@@ -450,8 +450,19 @@ Fliplet.App.Storage.set(key, val)
 It's a wrapper for the [namespaced storage](#namespaced) for the user profile.
 
 ```js
-Fliplet.User.set('firstName', 'John')
+Fliplet.Profile.set('firstName', 'John')
+Fliplet.Profile.get('firstName') // returns 'John'
 ```
+
+The following variables are reserved for common use.
+
+* `email`
+* `firstName`
+* `lastName`
+* `name`
+* `department`
+* `company`
+* `phone`
 
 ## Apps
 
