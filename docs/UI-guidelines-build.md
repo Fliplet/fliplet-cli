@@ -1,6 +1,6 @@
 # UI guidelines for component's output
 
-You are not required to use these style guidelines, but if you want your component to fit the overall style of Fliplet's components we recommend you use them.  
+You are not required to use these style guidelines, but if you want your component to fit the overall style of Fliplet's components we recommend you use them.
 
 We always include Bootstrap, as the framework to build responsive interfaces, as a dependency in our component's, but you are not required to do the same, it's optional. (Learn more about dependencies [here](Dependencies-and-assets.md))
 
@@ -8,15 +8,15 @@ We always include Bootstrap, as the framework to build responsive interfaces, as
 
 Our component's output use the following basic styles:
 
-Primary colour: `#337ab7`  
-Secondary colour: `#d2d2d2`  
-Text: `#333333`  
+Primary colour: `#337ab7`
+Secondary colour: `#d2d2d2`
+Text: `#333333`
 
 ---
 
 ## Buttons
 
-We use Bootstrap's button classes but we tweak the styles to make them look our own.  
+We use Bootstrap's button classes but we tweak the styles to make them look our own.
 
 **Primary button**
 
@@ -200,5 +200,5 @@ We use the following custom animation to make it spin:
 
 ---
 
-[Read more on UI guidelines for component's interfaces](UI-guidelines-build.md)
+[Back](README.md)
 {: .buttons}
