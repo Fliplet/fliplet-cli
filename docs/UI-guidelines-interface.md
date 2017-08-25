@@ -1,6 +1,6 @@
 # UI guidelines for component's interfaces
 
-You are not required to use these style guidelines, but if you want your component to fit the overall style of Fliplet's components we recommend you use them.  
+You are not required to use these style guidelines, but if you want your component to fit the overall style of Fliplet's components we recommend you use them.
 
 We always include Bootstrap, as the framework to build responsive interfaces, as part of the `fliplet-studio-ui` dependency. (Learn more about dependencies [here](Dependencies-and-assets.md))
 
@@ -8,9 +8,9 @@ We always include Bootstrap, as the framework to build responsive interfaces, as
 
 In the settings of our components we use the following basic styles:
 
-Primary colour: `#00abd2`  
-Secondary colour: `#aaaaaa`  
-Text: `#333333`  
+Primary colour: `#00abd2`
+Secondary colour: `#aaaaaa`
+Text: `#333333`
 Headings:
 ```html
 <h2><small>Heading</small></h2>
@@ -21,7 +21,7 @@ Helper text class: `.text-helper`
 
 ## Buttons
 
-We use Bootstrap's button classes but we tweak the styles to make them look our own.  
+We use Bootstrap's button classes but we tweak the styles to make them look our own.
 
 **Primary button**
 
@@ -52,7 +52,7 @@ Link text button classes: `.btn.btn-link`
 
 ## Component's header
 
-We always start with a small header for the component that is always visible at the top.  
+We always start with a small header for the component that is always visible at the top.
 Here is an example:
 
 ```html
@@ -104,7 +104,7 @@ If you want to use an input field without a label, all you need to do is remove 
 
 ![Colour picker](assets/img/ui-interface/color-picker.png)
 
-For colour pickers we use Bootstrap's input field with an addon.  
+For colour pickers we use Bootstrap's input field with an addon.
 Here is an example:
 
 ```html
@@ -159,14 +159,14 @@ HTML Select aren't easy to style, some HTML and CSS magic needs to be applied. I
 </div>
 ```
 
-The trick here is to hide the `<select>` and use a `<label>` to look like a drop-down. We trigger the drop-down using the `for` attribute in the label that matches the `<select>` `id` attribute.  
+The trick here is to hide the `<select>` and use a `<label>` to look like a drop-down. We trigger the drop-down using the `for` attribute in the label that matches the `<select>` `id` attribute.
 We will then use some JavaScript to update the `span.select-value-proxy` text to match the text of the option selected in the drop-down list.
 
 You don't need to worry about the JavaScript bit as it is part of our system.
 
 **Dynamically appending options**
 
-If you are using one of these drop-downs with dynamic data to create the `<option>` then we recommend start the `<select>` disabled by adding the `disable` attribute to it, also remove all the `<option>` and in the `span.select-value-proxy` default it to _"-- Please wait..."_.  
+If you are using one of these drop-downs with dynamic data to create the `<option>` then we recommend start the `<select>` disabled by adding the `disable` attribute to it, also remove all the `<option>` and in the `span.select-value-proxy` default it to _"-- Please wait..."_.
 Here is the markup for it:
 
 ```html
@@ -186,7 +186,7 @@ Here is the markup for it:
 
 ![Drop-down list disabled](assets/img/ui-interface/disabled-dropdown.png)
 
-Then in the JavaScript after you add the dynamic `<option>` you need to remove the `disabled` attribute and trigger a change.  
+Then in the JavaScript after you add the dynamic `<option>` you need to remove the `disabled` attribute and trigger a change.
 Here is an example where we append the column names of a Data Source:
 
 ```js
@@ -212,8 +212,8 @@ Fliplet.DataSources.getById(dataSourceId).then(function (dataSource) {
 
 ### Radio buttons
 
-For radio buttons we have two different styles depending on what we want to achieve.  
-- If you want to achieve a list of more than 3 options that might also have sub-settings under each option - You should use the more traditional style.  
+For radio buttons we have two different styles depending on what we want to achieve.
+- If you want to achieve a list of more than 3 options that might also have sub-settings under each option - You should use the more traditional style.
 - If you want to achieve a toggle look with 3 or less options - you should use a button like style.
 
 **Traditional style**
@@ -300,7 +300,7 @@ We hide the checkbox input field and we style the label to look like what we wan
 
 ![Tabs](assets/img/ui-interface/tabs.png)
 
-If you need to categorise your component's settings then you should use our tabbed system.  
+If you need to categorise your component's settings then you should use our tabbed system.
 Again, we use Bootstrap's tabbed system and we style it to look like we want it.
 
 Here is a quick example of the markup:
@@ -346,5 +346,5 @@ If you need to use a loading animation in you component's output here is how you
 
 ---
 
-[Read more on UI guidelines for component's output](UI-guidelines-build.md)
+[Back](README.md)
 {: .buttons}
