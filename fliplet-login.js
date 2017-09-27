@@ -9,10 +9,11 @@ program
   .version(package.version)
   .option('-u, --username <username>', 'Sets the username')
   .option('-p, --password <password>', 'Sets the password')
+  .option('-c, --code <code>', 'Sets the 2FA code')
   .parse(process.argv);
 
 if (program.username && program.password) {
-  return login(program.username, program.password);
+  return login(program.username, program.password, program.code);
 }
 
 prompt.start();
@@ -35,13 +36,29 @@ prompt.get([
   login(result.email, result.password);
 });
 
-function login(email, password) {
-  auth.login({ email, password })
+function login(email, password, twofactor) {
+  auth.login({ email, password, twofactor })
     .then(function(login) {
       console.log('Logged in successfully. You can now publish widgets.');
     })
     .catch(function (error) {
-      console.log(error);
+      if (error.response.statusCode && error.response.statusCode === 428) {
+        prompt.start();
+        return prompt.get([
+          {
+            name: 'twofactor',
+            required: true
+          }
+        ], function (err, result) {
+          if (!result) {
+            return;
+          }
+
+          login(email, password, result.twofactor);
+        });
+      }
+
+      console.log('Error:', error.response && error.response.body);
       process.exit(1);
     });
 }
