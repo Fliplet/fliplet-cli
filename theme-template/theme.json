@@ -8,19 +8,11 @@
     "scss/index.scss"
   ],
   "settings": {
-    "inherits": [],
+    "inherits": ["com.fliplet.theme.default"],
+    "defaults": {
+      "bodyBackground": "#EEEEEE"
+    },
     "configuration": [
-      {
-        "name": "Page",
-        "variables": [
-          {
-            "name": "bodyBackground",
-            "description": "The background colour of the page",
-            "type": "color",
-            "default": "#FFFFFF"
-          }
-        ]
-      },
       {
         "name": "Buttons",
         "variables": [

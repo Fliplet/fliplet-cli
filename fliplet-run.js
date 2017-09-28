@@ -70,15 +70,15 @@ try {
     const vars = [];
     package.scssVars = {};
 
+    const defaultValues = _.forIn(package.settings.defaults || {}, function (val, key) {
+      package.scssVars[key] = val;
+    });
+
     (package.settings.configuration || []).forEach(function (section) {
       (section.variables || []).forEach(function (variable) {
-        vars.push(`$${variable.name}: ${variable.default};`);
         package.scssVars[variable.name] = variable.default;
       });
     });
-
-    package.scssConfig = vars.join("\r\n");
-
   } catch (e) {
     try {
       package = require(menuPackagePath);
@@ -275,6 +275,14 @@ app.get('/__scss.css', function (req, res) {
   const files = _.filter(package.assets, (a) => { return /\.scss$/.test(a) });
   let inheritedThemes;
 
+  let scssConfig = [];
+
+  _.forIn(package.scssVars, (function (val, key) {
+    scssConfig.push(`$${key}: ${val};`);
+  }));
+
+  scssConfig = scssConfig.join('\r\n');
+
   return api.widget.compileThemes({
     inherits: package.settings.inherits || [],
     instanceValues: package.scssVars || {}
@@ -290,7 +298,7 @@ app.get('/__scss.css', function (req, res) {
         dir = path.join(folderPath, dir.join('/'));
 
         sass.render({
-          data: `${inheritedThemes.vars}\r\n${package.scssConfig}\r\n${fileData}`,
+          data: `${inheritedThemes.vars}\r\n${scssConfig}\r\n${fileData}`,
           outputStyle: 'expanded',
           sourceMap: false,
           includePaths: [dir]
