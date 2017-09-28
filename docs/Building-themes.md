@@ -70,3 +70,15 @@ Themes can inherit properties and assets from other themes by listing their pack
   "inherits": ["com.fliplet.theme.default"]
 }
 ```
+
+### Providing defaults
+
+If you want to provide default values for the configurations of the theme you inherit, like your branding options, you can define them as key/values of the `defaults` object in the settings of the theme:
+
+```
+{
+  "defaults": {
+    "bodyBackground": "#FF0000"
+  }
+}
+```
