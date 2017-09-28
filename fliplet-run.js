@@ -253,11 +253,15 @@ app.post('/save-widget-data', function (req, res) {
 app.get('/templates/:template', function (req, res) {
   const tpl = fs.readFileSync(path.join(folderPath, req.params.template), 'utf8');
 
-  const assets = [`__scss.css?_=${Date.now()}`].concat(package.assets);
+  let assets = [`__scss.css?_=${Date.now()}`].concat(package.assets);
 
   api.themes.assets({
     inherits: package.settings.inherits || [],
   }).then(function (result) {
+    assets = _.map(_.reject(result.renderingAssets || {}, (asset) => {
+      return /\.scss$/.test(asset.name);
+    }), 'url').concat(assets);
+
     return template.compile({
       widgets: [{
         id: Date.now(),
