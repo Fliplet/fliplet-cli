@@ -82,3 +82,13 @@ If you want to provide default values for the configurations of the theme you in
   }
 }
 ```
+
+### Partially showing inherited configurations
+
+When you inherit from one or more themes, all their configurations will be available unless `showInheritedConfigurations` is set to `false` or an array. If it's set as an array you can include the name of the configuration groups or single options you want to display to the user:
+
+```
+{
+  "showInheritedConfigurations": ["General layouts", "introBodyBackground"]
+}
+```

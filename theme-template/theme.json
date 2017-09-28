@@ -9,6 +9,7 @@
   ],
   "settings": {
     "inherits": ["com.fliplet.theme.default"],
+    "showInheritedConfigurations": true,
     "defaults": {
       "bodyBackground": "#EEEEEE"
     },
