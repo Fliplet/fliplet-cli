@@ -255,15 +255,19 @@ app.get('/templates/:template', function (req, res) {
 
   const assets = [`__scss.css?_=${Date.now()}`].concat(package.assets);
 
-  template.compile({
-    widgets: [{
-      id: Date.now(),
-      html: tpl,
-      dependencies: package.dependencies,
-      assets: assets.map((a) => {
-        return `/${a.replace(/^\//, '')}`;
-      })
-    }]
+  api.themes.assets({
+    inherits: package.settings.inherits || [],
+  }).then(function (result) {
+    return template.compile({
+      widgets: [{
+        id: Date.now(),
+        html: tpl,
+        dependencies: package.dependencies,
+        assets: assets.map((a) => {
+          return `/${a.replace(/^\//, '')}`;
+        })
+      }]
+    });
   }).then(function (html) {
     res.send(html);
   }, function (err) {
@@ -283,7 +287,7 @@ app.get('/__scss.css', function (req, res) {
 
   scssConfig = scssConfig.join('\r\n');
 
-  return api.widget.compileThemes({
+  return api.themes.compile({
     inherits: package.settings.inherits || [],
     instanceValues: package.scssVars || {}
   }).then(function (result) {
