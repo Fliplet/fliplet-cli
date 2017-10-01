@@ -1,4 +1,5 @@
 const _ = require('lodash');
+const api = require('./lib/api');
 const configstore = require('./lib/configstore');
 const fs = require('fs');
 const express = require('express');
@@ -67,14 +68,17 @@ try {
     }
 
     const vars = [];
-    (package.settings.configuration || []).forEach(function (section) {
-      (section.variables || []).forEach(function (variable) {
-        vars.push(`$${variable.name}: ${variable.default};`);
-      });
+    package.scssVars = {};
+
+    const defaultValues = _.forIn(package.settings.defaults || {}, function (val, key) {
+      package.scssVars[key] = val;
     });
 
-    package.scssConfig = vars.join("\r\n");
-
+    (package.settings.configuration || []).forEach(function (section) {
+      (section.variables || []).forEach(function (variable) {
+        package.scssVars[variable.name] = variable.default;
+      });
+    });
   } catch (e) {
     try {
       package = require(menuPackagePath);
@@ -249,17 +253,25 @@ app.post('/save-widget-data', function (req, res) {
 app.get('/templates/:template', function (req, res) {
   const tpl = fs.readFileSync(path.join(folderPath, req.params.template), 'utf8');
 
-  const assets = [`__scss.css?_=${Date.now()}`].concat(package.assets);
+  let assets = [`__scss.css?_=${Date.now()}`].concat(package.assets);
 
-  template.compile({
-    widgets: [{
-      id: Date.now(),
-      html: tpl,
-      dependencies: package.dependencies,
-      assets: assets.map((a) => {
-        return `/${a.replace(/^\//, '')}`;
-      })
-    }]
+  api.themes.assets({
+    inherits: package.settings.inherits || [],
+  }).then(function (result) {
+    assets = _.map(_.reject(result.renderingAssets || {}, (asset) => {
+      return /\.scss$/.test(asset.name);
+    }), 'url').concat(assets);
+
+    return template.compile({
+      widgets: [{
+        id: Date.now(),
+        html: tpl,
+        dependencies: package.dependencies,
+        assets: assets.map((a) => {
+          return `/${a.replace(/^\//, '')}`;
+        })
+      }]
+    });
   }).then(function (html) {
     res.send(html);
   }, function (err) {
@@ -269,31 +281,51 @@ app.get('/templates/:template', function (req, res) {
 
 app.get('/__scss.css', function (req, res) {
   const files = _.filter(package.assets, (a) => { return /\.scss$/.test(a) });
+  let inheritedThemes;
 
-  Promise.all(files.map(function (file) {
-    return new Promise(function (resolve, reject) {
-      var fileData = fs.readFileSync(path.join(folderPath, file), 'utf8');
+  let scssConfig = [];
 
-      var dir = file.split('/');
-      dir.pop();
-      dir = path.join(folderPath, dir.join('/'));
+  _.forIn(package.scssVars, (function (val, key) {
+    scssConfig.push(`$${key}: ${val};`);
+  }));
 
-      sass.render({
-        data: `${package.scssConfig}\r\n${fileData}`,
-        outputStyle: 'expanded',
-        sourceMap: false,
-        includePaths: [dir]
-      }, function onSassCompiled(sassError, result) {
-        if (sassError) {
-          return reject(sassError);
-        }
+  scssConfig = scssConfig.join('\r\n');
 
-        resolve(`/* ${package.package}:${file} */\r\n${result.css.toString()}`);
+  return api.themes.compile({
+    inherits: package.settings.inherits || [],
+    instanceValues: package.scssVars || {}
+  }).then(function (result) {
+    inheritedThemes = result;
+  }).then(function () {
+    return Promise.all(files.map(function (file) {
+      return new Promise(function (resolve, reject) {
+        var fileData = fs.readFileSync(path.join(folderPath, file), 'utf8');
+
+        var dir = file.split('/');
+        dir.pop();
+        dir = path.join(folderPath, dir.join('/'));
+
+        sass.render({
+          data: `${inheritedThemes.vars}\r\n${scssConfig}\r\n${fileData}`,
+          outputStyle: 'expanded',
+          sourceMap: false,
+          includePaths: [dir]
+        }, function onSassCompiled(sassError, result) {
+          if (sassError) {
+            return reject(sassError);
+          }
+
+          resolve(`/* ${package.package}:${file} */\r\n${result.css.toString()}`);
+        });
       });
-    });
-  })).then(function (results) {
+    }));
+  }).then(function (css) {
+    if (inheritedThemes.css) {
+      css = [inheritedThemes.css, css.join("\r\n")];
+    }
+
     res.type('text/css');
-    res.send(results.join("\r\n"));
+    res.send(css.join("\r\n"));
   }).catch(function (err) {
     console.error(err);
     res.send(`/* Error compiling scss: ${err} */`);
