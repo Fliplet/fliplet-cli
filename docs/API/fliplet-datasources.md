@@ -43,7 +43,7 @@ Once you get a **connection**, you can use the following methods to **find, inse
 ## Fetch all records from a data source
 
 ```js
-// user "find" with no options to get all entries
+// use "find" with no options to get all entries
 connection.find().then(function (records) {
 
 });
