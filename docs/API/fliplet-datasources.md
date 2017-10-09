@@ -21,7 +21,7 @@ Fliplet.DataSources.create({
   name: 'foo',
   organizationId: 1 // optional
 }).then(function (dataSource) {
-
+  // created
 });
 ```
 
@@ -30,17 +30,38 @@ Fliplet.DataSources.create({
 ```js
 // All options are optional
 var options = {
-  offline: true/false // By default on native platform it connects to offline DB. Set this option to false to connect to api's
-
+  offline: true // By default on native platform it connects to offline DB. Set this option to false to connect to api's
 }
-Fliplet.DataSources.connect(1, options).then(function (connection) {
+
+Fliplet.DataSources.connect(dataSourceId, options).then(function (connection) {
   // check below for usages of the connection
 });
 ```
 
-Once you get a connection, you can use the following methods to find, insert, update and delete data.
+Once you get a **connection**, you can use the following methods to **find, insert, update and delete data**.
 
-### Select records from a data source
+## Fetch all records from a data source
+
+```js
+// user "find" with no options to get all entries
+connection.find().then(function (records) {
+
+});
+```
+
+Full example:
+
+```js
+Fliplet.DataSources.connect(1).then(function (connection) {
+  return connection.find();
+}).then(function (records) {
+  records.forEach(function (row) {
+    $('foo').append(row.data.bar)
+  });
+});
+```
+
+## Find for specific records
 
 ```js
 connection.find({
@@ -60,6 +81,7 @@ var options = {
   attributes: ["name", "country"],
   dataSourceEntryId: 123
 };
+
 connection.query(options).then(function (records) {
 
 });
