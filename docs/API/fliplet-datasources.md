@@ -33,15 +33,14 @@ var options = {
   offline: true // By default on native platform it connects to offline DB. Set this option to false to connect to api's
 }
 
-// assuming 1 is the dataSourceId
-Fliplet.DataSources.connect(1, options).then(function (connection) {
+Fliplet.DataSources.connect(dataSourceId, options).then(function (connection) {
   // check below for usages of the connection
 });
 ```
 
-Once you get a *connection*, you can use the following methods to *find, insert, update and delete data*.
+Once you get a **connection**, you can use the following methods to **find, insert, update and delete data**.
 
-### Fetch all records from a data source
+## Fetch all records from a data source
 
 ```js
 // user "find" with no options to get all entries
