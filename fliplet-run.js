@@ -33,6 +33,11 @@ var package;
 var widgetInstanceData;
 var runningPort;
 
+const dummyApp = {
+  id: casual.integer(1, 99999),
+  name: casual.title
+};
+
 const widgetUUID = uuid();
 
 const scriptTagsRegExp = /<script.+src=".+".+>/;
@@ -181,6 +186,7 @@ app.get('/build', function (req, res) {
     template.compile({
       topMenu,
       page,
+      app: dummyApp,
       widgets: [{
         id: Date.now(),
         name: package.name,
@@ -233,6 +239,7 @@ app.get('/interface', function (req, res) {
     template.compile({
       development: true,
       interface: true,
+      app: dummyApp,
       provider: !!req.query.providerId,
       providerId: req.query.providerId,
       providerMode: req.query.providerMode,
