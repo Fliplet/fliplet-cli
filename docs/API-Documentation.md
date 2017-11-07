@@ -16,7 +16,11 @@ Head to the [JS APIs](JS-APIs.md) section of the docs to read more about using t
 - [Fliplet Themes](API/fliplet-themes.md) (`fliplet-themes`)
 - [Fliplet Studio UI](UI-guidelines-interface.md) (`fliplet-studio-ui`)
 
-# Private JS APIs
+---
+
+## Private JS APIs
+
+These APIs are currently undocumented and reserved for internal use. They are usually available to components in the system hence don't require the user to access them directly.
 
 - Fliplet Runtime
 - Fliplet Interact
