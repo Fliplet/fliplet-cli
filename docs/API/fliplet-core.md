@@ -331,7 +331,7 @@ Fliplet.Organizations.get().then(function (organizations) {
 ```js
 Fliplet.Organization.Settings.getAll()
   .then(function (settings) {
-    // Your code  
+    // Your code
   });
 ```
 
@@ -343,7 +343,7 @@ Fliplet.Organization.Settings.set({
   _password: 'bar' // Settings start with _ are encrypted
 })
   .then(function(settings) {
-    // Your code  
+    // Your code
   });
 ```
 
@@ -352,7 +352,7 @@ Fliplet.Organization.Settings.set({
 ```js
 Fliplet.Organization.Settings.get('foo')
   .then(function (value) {
-    // Your code  
+    // Your code
   })
 ```
 
@@ -362,7 +362,7 @@ Fliplet.Organization.Settings.get('foo')
 Fliplet.Organization.Settings.isSet('_password')
   .then(function(isSet) {
     if (isSet) {
-      // Your code  
+      // Your code
     }
   });
 ```
@@ -372,7 +372,7 @@ Fliplet.Organization.Settings.isSet('_password')
 ```js
 Fliplet.Organization.Settings.unset(['user','_password'])
   .then(function (currentSettings) {
-    // Your code  
+    // Your code
   })
 ```
 
@@ -439,7 +439,7 @@ Fliplet.App.Orientation.lock(newOrientation)
 Fliplet.App.Orientation.unlock()
 ```
 
-### Storage
+### App Storage
 It's a wrapper for the [namespaced storage](#namespaced) for the current app.
 
 ```js
@@ -451,7 +451,10 @@ It's a wrapper for the [namespaced storage](#namespaced) for the user profile.
 
 ```js
 Fliplet.Profile.set('firstName', 'John')
-Fliplet.Profile.get('firstName') // returns 'John'
+
+Fliplet.Profile.get('firstName').then(function (value) {
+  // value is 'John'
+})
 ```
 
 The following variables are reserved for common use.

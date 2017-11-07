@@ -10,15 +10,22 @@ Head to the [JS APIs](JS-APIs.md) section of the docs to read more about using t
 
 - [Fliplet Core](API/fliplet-core.md) (`fliplet-core`)
 - [Fliplet Communicate](API/fliplet-communicate.md) (`fliplet-communicate`)
+- [Fliplet Session](API/fliplet-session.md) (`fliplet-session`)
 - [Fliplet Data Sources](API/fliplet-datasources.md) (`fliplet-datasources`)
 - [Fliplet Media](API/fliplet-media.md) (`fliplet-media`)
 - [Fliplet Themes](API/fliplet-themes.md) (`fliplet-themes`)
 - [Fliplet Studio UI](UI-guidelines-interface.md) (`fliplet-studio-ui`)
 
-# Private JS APIs
+---
+
+## Private JS APIs
+
+These APIs are currently undocumented and reserved for internal use. They are usually available to components in the system hence don't require the user to access them directly.
 
 - Fliplet Runtime
 - Fliplet Interact
 - Fliplet Menu
 - Fliplet Native
 - Fliplet Security
+- Fliplet App Submissions
+- Fliplet Chat
