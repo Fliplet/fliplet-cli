@@ -562,9 +562,10 @@ myNamespaceStorage.getAll().then(function(data) {})
 ```
 
 #### Remove
-Remove a key from the namespaced storage
+Remove a key or list of keys from the namespaced storage
 ```js
 myNamespaceStorage.remove('bar')
+myNamespaceStorage.remove(['foo', 'bar'])
 ```
 
 #### Clear
