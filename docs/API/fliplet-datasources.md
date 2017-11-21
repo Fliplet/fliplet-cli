@@ -49,11 +49,18 @@ connection.find().then(function (records) {
 });
 ```
 
+```js
+// use limit and offset for pagination
+connection.find({ limit: 50, offset: 10 }).then(function (records) {
+
+});
+```
+
 Full example:
 
 ```js
 Fliplet.DataSources.connect(1).then(function (connection) {
-  return connection.find();
+  return connection.find({ limit: 1000 });
 }).then(function (records) {
   records.forEach(function (row) {
     $('foo').append(row.data.bar)
@@ -65,7 +72,8 @@ Fliplet.DataSources.connect(1).then(function (connection) {
 
 ```js
 connection.find({
-  where: { name: 'John' }
+  where: { name: 'John' },
+  limit: 1
 }).then(function (records) {
 
 });
