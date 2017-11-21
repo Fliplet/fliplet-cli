@@ -18,6 +18,12 @@ Head to the [JS APIs](JS-APIs.md) section of the docs to read more about using t
 
 ---
 
+## Public JS APIs from Fliplet Components
+
+- [Fliplet Form Builder](API/components/form-builder.md)
+
+---
+
 ## Private JS APIs
 
 These APIs are currently undocumented and reserved for internal use. They are usually available to components in the system hence don't require the user to access them directly.
