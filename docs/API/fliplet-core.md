@@ -594,10 +594,22 @@ Fliplet.Navigate.back();
 Fliplet.Navigate.url('http://fliplet.com');
 ```
 
-### Navigate the app to a specific screen (with query variables), given its id
+### Navigate the app to a specific screen by its ID
+
+To find out the ID of a page, you can use Fliplet Studio (it's displayed on the browser bar) or simply run `Fliplet.Env.get('pageId')` from any page.
 
 ```js
-Fliplet.Navigate.screen(1, { query: '?param1=value1' });
+// Navigate to the screen with ID 1
+Fliplet.Navigate.screen(1);
+
+// Navigate to the screen with ID 2, optionally passing some more details
+Fliplet.Navigate.screen(2, { query: '?foo=bar' });
+
+// Navigate to the screen with ID 3, using a slide transition
+Fliplet.Navigate.screen(3, { transition: 'slide.right' });
+
+// Navigate to the screen with ID 4, using a fade transition
+Fliplet.Navigate.screen(4, { transition: 'fade' });
 ```
 
 ### Navigate using the options given by the link provider
