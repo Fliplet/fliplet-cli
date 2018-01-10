@@ -84,6 +84,14 @@ Here's a sample of the interface for the button component:
 ```
 {% endraw %}
 
+### Referencing assets on interface.html
+
+{% raw %}
+```handlebars
+<img src="{{ asset 'img/image.png' }}"/>
+```
+{% endraw %}
+
 [Read more on UI Guidelines](../UI-guidelines-interface.md)
 {: .buttons}
 
