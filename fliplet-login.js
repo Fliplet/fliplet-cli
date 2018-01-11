@@ -42,7 +42,7 @@ function login(email, password, twofactor) {
       console.log('Logged in successfully. You can now publish widgets.');
     })
     .catch(function (error) {
-      if (error.response.statusCode && error.response.statusCode === 428) {
+      if (error.response && error.response.statusCode && error.response.statusCode === 428) {
         prompt.start();
         return prompt.get([
           {
@@ -58,7 +58,7 @@ function login(email, password, twofactor) {
         });
       }
 
-      console.log('Error:', error.response && error.response.body);
+      console.log('Error:', error.error || error.response && error.response.body);
       process.exit(1);
     });
 }
