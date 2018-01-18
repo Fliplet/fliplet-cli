@@ -632,8 +632,8 @@ Fliplet.Navigate.to(data);
 
 ```js
 var options = {
-  title: 'Foo',
-  message: 'Bar',
+  popupTitle: 'Foo',
+  popupMessage: 'Bar',
 };
 Fliplet.Navigate.popup(options);
 ```
