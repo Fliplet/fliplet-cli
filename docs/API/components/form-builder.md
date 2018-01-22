@@ -8,5 +8,14 @@ Fliplet.FormBuilder.get().then(function (form) {
 
   // set the input value
   form.field('foo').val('bar');
+
+  // registers a callback to be fired whenever the field value changes
+  form.field('foo').change(function (val) {
+
+    // only show / enable this field when val is "bar"
+    // works like jQuery "toggle", which evaluates the argument as a "truthy" boolean.
+    form.field('barbaz').toggle(val === 'bar');
+
+  });
 });
 ```
