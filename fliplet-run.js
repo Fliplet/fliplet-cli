@@ -224,12 +224,6 @@ function renderInterface (req, res) {
 
     const data = req.query.data || (req.body && req.body.__widgetData);
 
-    try {
-      widget.data = data ? JSON.parse(data) : req.body;
-    } catch (e) {
-      return res.status(400).send(`The JSON data is invalid: ${e}`);
-    }
-
     if (data) {
       try {
         widgetInstanceData = data ? JSON.parse(data) : req.body;
