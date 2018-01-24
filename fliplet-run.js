@@ -207,7 +207,10 @@ app.get('/build', function (req, res) {
   });
 });
 
-app.get('/interface', function (req, res) {
+app.get('/interface', renderInterface);
+app.post('/interface', renderInterface);
+
+function renderInterface (req, res) {
   fs.readFile('./interface.html', 'utf8', function (err, html) {
     if (!html) {
       return res.send('The interface.html file was not found');
@@ -219,9 +222,11 @@ app.get('/interface', function (req, res) {
 
     const widgets = getRunningWidgets();
 
-    if (req.query.data) {
+    const data = req.query.data || (req.body && req.body.__widgetData);
+
+    if (data) {
       try {
-        widgetInstanceData = JSON.parse(req.query.data);
+        widgetInstanceData = data ? JSON.parse(data) : req.body;
       } catch (e) {
         console.warn(e);
       }
@@ -250,7 +255,7 @@ app.get('/interface', function (req, res) {
       res.send(err);
     });
   });
-});
+}
 
 app.post('/save-widget-data', function (req, res) {
   widgetInstanceData = _.assign({}, widgetInstanceData, req.body);
