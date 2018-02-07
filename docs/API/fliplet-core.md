@@ -99,6 +99,25 @@ Fliplet.User.setUserDetails({
 });
 ```
 
+### Set (extend) the user preferences
+
+```js
+// promise will resolve with all user preferences
+Fliplet.User.Preferences.set({
+  foo: 'bar',
+  baz: { barbaz: true }
+});
+```
+
+### Get the user preferences
+
+```js
+// promise will resolve with all user preferences
+Fliplet.User.Preferences.get().then(function (preferences) {
+  // preferences.foo
+});
+```
+
 ## Studio
 
 ### Forward an event to Fliplet Studio
