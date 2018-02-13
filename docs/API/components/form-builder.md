@@ -83,6 +83,12 @@ Fliplet.FormBuilder.get()
 
 ```js
 Fliplet.Hooks.on('beforeFormSubmit', function(data) {
-  // Your code here
+  // add your code here
+
+  // e.g. mutate the data before it's sent
+  data.foo = 'bar'
+
+  // return a promise if this callback should be async.
+  // reject the promise to stop the form from submitting the data
 });
 ```
