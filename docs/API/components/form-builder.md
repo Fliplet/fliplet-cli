@@ -7,8 +7,14 @@
 Retries the first or a specific form instance.
 
 ```js
-// the "get()" accepts the form name in case you have multiple forms on the page
-Fliplet.FormBuilder.get(name)
+// Gets the first form instance
+Fliplet.FormBuilder.get()
+  .then(function (form) {
+    // Use form to perform various actions
+  });
+
+// Gets the form instance named 'foo'
+Fliplet.FormBuilder.get('foo')
   .then(function (form) {
     // Use form to perform various actions
   });
