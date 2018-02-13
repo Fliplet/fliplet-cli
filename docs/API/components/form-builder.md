@@ -4,7 +4,7 @@
 
 ### `Fliplet.FormBuilder.get()`
 
-Retries the first or a specific form chartInstances
+Retries the first or a specific form instance.
 
 ```js
 // the "get()" accepts the form name in case you have multiple forms on the page
