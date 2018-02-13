@@ -4,7 +4,7 @@
 
 ### `Fliplet.FormBuilder.get()`
 
-Retries the first or a specific form instance.
+Retrieves the first or a specific form instance.
 
 ```js
 // Gets the first form instance
@@ -24,7 +24,7 @@ Fliplet.FormBuilder.get('foo')
 
 ### `.field(name)`
 
-Retrieve a form field.
+Retrieves a form field.
 
 ```js
 Fliplet.FormBuilder.get()
@@ -82,5 +82,7 @@ Fliplet.FormBuilder.get()
 ### `beforeSubmit`
 
 ```js
-Fliplet.Hooks.on('beforeFormSubmit')
+Fliplet.Hooks.on('beforeFormSubmit', function(data) {
+  // Your code here
+});
 ```
