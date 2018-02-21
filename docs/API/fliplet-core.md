@@ -674,8 +674,6 @@ Fliplet.Navigate.confirm(options)
   });
 ```
 
-```
-
 ### Open a prompt dialog
 
 ```js
