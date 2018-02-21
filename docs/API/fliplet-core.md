@@ -674,6 +674,26 @@ Fliplet.Navigate.confirm(options)
   });
 ```
 
+```
+
+### Open a prompt dialog
+
+```js
+var options = {
+  title: 'Foo',
+  message: 'Bar',
+  labels: ['Send','Cancel'], // Native only (defaults to [OK,Cancel])
+  default: 'Foo Bar'
+};
+Fliplet.Navigate.prompt(options)
+  .then(function(input) {
+    if (!input) {
+      return console.log('Canceled or left empty!');
+    }
+    console.log(input);
+  });
+```
+
 ### Open a gallery
 We are using [PhotoSwipe](http://photoswipe.com/).
 Note: You need to add `photoswipe` on your dependencies list to use this.
