@@ -15,6 +15,7 @@ Head to the [JS APIs](JS-APIs.md) section of the docs to read more about using t
 - [Fliplet Media](API/fliplet-media.md) (`fliplet-media`)
 - [Fliplet Themes](API/fliplet-themes.md) (`fliplet-themes`)
 - [Fliplet Studio UI](UI-guidelines-interface.md) (`fliplet-studio-ui`)
+- [Fliplet Audio](API/fliplet-audio.md) (`fliplet-audio`)
 - [Fliplet Audio Player](API/fliplet-audio-player.md) (`fliplet-audio-player`)
 
 ---

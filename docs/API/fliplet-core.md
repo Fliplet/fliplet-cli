@@ -655,6 +655,21 @@ Fliplet.Navigate.screen(3, { transition: 'slide.right' });
 Fliplet.Navigate.screen(4, { transition: 'fade' });
 ```
 
+Here's a list of transitions you can use:
+
+- `none` - No transition
+- `fade` - Fade in
+- `slide.left` - Slide Left
+- `slide.right` - Slide Right
+- `slide.up` - Slide Up
+- `slide.down` - Slide Down
+- `flip.left` - Flip from Left / Slide Right (Windows)
+- `flip.right` - Flip from Right / Slide Left (Windows)
+- `flip.up` - Flip from Top / Slide Up (Windows)
+- `flip.down` - Flip from Bottom / Slide Down (Windows)
+- `curl.up` - Curl Up (iOS) / Slide Up (Android/Windows)
+- `curl.down` - Curl Down (iOS) / Slide Down (Android/Windows)
+
 ### Navigate using the options given by the link provider
 
 When using the `com.fliplet.link` provider to get the navigation details, the function below can be used to parse such details.
