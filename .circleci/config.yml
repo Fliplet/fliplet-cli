@@ -1,0 +1,27 @@
+version: 2
+jobs:
+  build:
+    steps:
+      - checkout
+      - run: npm install
+      - run: npm link && echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
+      - run: fliplet env staging
+      - run: fliplet login -u $TEST_USER -p $TEST_PASSWORD
+      - run: fliplet organization $TEST_ORGANIZATION
+      - run: fliplet create-widget awesome-widget
+      - run: cd awesome-widget && fliplet test
+  publish:
+    steps:
+      - run: npm publish
+
+workflows:
+  version: 2
+  build-and-publish:
+    jobs:
+      - build
+      - publish:
+          requires:
+            - build
+          filters:
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*/
