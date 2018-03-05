@@ -11,6 +11,14 @@ $lightBackground: #f2f6f7;
   background-image: linear-gradient(-120deg, $lightBackground, $lightBackground);
   padding: 0;
 
+  .logo {
+    display: block;
+    width: 100px;
+    height: 40px;
+    background: url(/assets/img/logo.png) no-repeat left center;
+    background-size: contain;
+  }
+
   .content {
     text-align: left;
     max-width: 64rem;
@@ -66,10 +74,14 @@ $lightBackground: #f2f6f7;
 @media screen and (max-width: 64em) and (min-width: 42em) {
   .page-header {
     padding: 0;
+  }
 
-    .content: {
-      padding: 3rem 4rem;
-    }
+  .page-header .content: {
+    padding: 3rem 4rem;
+  }
+
+  .page-header .content .logo {
+    display: none;
   }
 }
 
@@ -80,5 +92,9 @@ $lightBackground: #f2f6f7;
 
   .page-header .content {
     padding: 2rem 1rem;
+  }
+
+  .page-header .content .logo {
+    display: none;
   }
 }
