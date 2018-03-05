@@ -8,6 +8,7 @@ The `fliplet-core` package contains the following namespaces:
 - [Apps](#apps)
 - [Environment](#environment)
 - [Hooks](#hooks)
+- [Modal](#modal)
 - [Navigate](#navigate)
 - [Navigator](#navigator)
 - [Organizations](#organizations)
@@ -96,6 +97,28 @@ Fliplet.Hooks.run('beforeFormSubmit', data).then(function (results) {
   // data.foo is 2
 }, function onError (err) {
   // woop woop, an hook fired a rejection!
+});
+```
+
+## Modal
+
+We use [Bootbox](http://bootboxjs.com/) under the hood for Modals, hence check their documentation for the full set of options you can pass.
+
+### Display a confirmation message
+
+```js
+Fliplet.Modal.confirm({ message: 'Are you sure?'}).then(function (result) {
+  if (result) {
+    // user pressed yes
+  }
+});
+```
+
+### Display an alert message
+
+```js
+Fliplet.Modal.alert({ message: 'Thanks for confirming'}).then(function () {
+  // fired when the user pressed "OK"
 });
 ```
 
