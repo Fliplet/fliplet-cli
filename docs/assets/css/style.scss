@@ -76,9 +76,9 @@ $lightBackground: #f2f6f7;
 @media screen and (max-width: 42em) {
   .page-header {
     padding: 0;
+  }
 
-    .content: {
-      padding: 2rem 1rem;
-    }
+  .page-header .content {
+    padding: 2rem 1rem;
   }
 }
