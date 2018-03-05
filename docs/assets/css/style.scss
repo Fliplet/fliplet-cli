@@ -9,11 +9,13 @@ $lightBackground: #f2f6f7;
 .page-header {
   background-color: $lightBackground;
   background-image: linear-gradient(-120deg, $lightBackground, $lightBackground);
+  padding: 0;
 
   .content {
     text-align: left;
     max-width: 64rem;
     margin: 0 auto;
+    padding: 2rem 6rem;
   }
 }
 
@@ -58,5 +60,25 @@ $lightBackground: #f2f6f7;
 @media screen and (min-width: 64em) {
   .page-header {
     padding: 3rem 6rem;
+  }
+}
+
+@media screen and (max-width: 64em) and (min-width: 42em) {
+  .page-header {
+    padding: 0;
+
+    .content: {
+      padding: 3rem 4rem;
+    }
+  }
+}
+
+@media screen and (max-width: 42em) {
+  .page-header {
+    padding: 0;
+
+    .content: {
+      padding: 2rem 1rem;
+    }
   }
 }
