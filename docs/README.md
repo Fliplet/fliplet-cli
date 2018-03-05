@@ -1,4 +1,4 @@
-# Fliplet Developers Docs
+# Developers Documentation
 
 Welcome to the developers documentation for the **Fliplet Platform**. Here you can learn how to extend your Fliplet Apps by creating new components (also known as widgets) and visual themes.
 
