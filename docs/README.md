@@ -7,11 +7,12 @@ To get a brief introduction to the technologies we use and the stack of the plat
 ### Table of contents
 
 1. [Introduction to the platform](Introduction.md)
-  * [Quickstart](Quickstart.md)
-  * [The JS APIs](JS-APIs.md)
-2. [Building components](Building-components.md)
-  - [Building themes](Building-themes.md)
-  - [Building menus](Building-menus.md)
+  - [Quickstart](Quickstart.md)
+  - [The JS APIs](JS-APIs.md)
+2. Building components
+  - [Components](Building-components.md)
+  - [Themes](Building-themes.md)
+  - [Menus](Building-menus.md)
 3. [Publishing](Publishing.md)
 4. [Testing](Testing-components.md)
 5. [Working with your components](Cloning-widgets.md)
@@ -19,9 +20,9 @@ To get a brief introduction to the technologies we use and the stack of the plat
 7. UI Guidelines
   - [Guidelines for component interfaces](UI-guidelines-interface.md)
   - [Guidelines for component output](UI-guidelines-build.md)
-8. Going forward
+8. Advanced documentation
   - [Using providers](components/Using-Providers.md)
-  - [Dependencies and assets](Dependencies-and-assets.md)
+  - [Dependencies and assets when building themes and components](Dependencies-and-assets.md)
   - [Sending events between components](Event-emitter.md)
   - [Best practises and advices](Best-practises.md)
   - [Using the JS APIs externally](Fliplet-SDK.md)
