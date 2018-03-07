@@ -1,5 +1,7 @@
 # Best practises and advices
 
+Got stuck building components or found some nasty bugs? Here's a few tips that might help you dealing with basic issues during the development of components on our platform.
+
 ## Instance data
 
 A widget instance data won't be available on the page unless your dependencies include `fliplet-core`.

@@ -16,7 +16,8 @@ Head to the [JS APIs](JS-APIs.md) section of the docs to read more about using t
 - [Fliplet Themes](API/fliplet-themes.md) (`fliplet-themes`)
 - [Fliplet Studio UI](UI-guidelines-interface.md) (`fliplet-studio-ui`)
 - [Fliplet Audio](API/fliplet-audio.md) (`fliplet-audio`)
-- [Fliplet Audio Player](API/fliplet-audio-player.md) (`fliplet-audio-player`)
+- [Fliplet Audio Player](API/fliplet-audio-player.md) (`fliplet-audio-player`) (Beta)
+- [Fliplet Database](API/fliplet-database.md) (`fliplet-database`) (Beta)
 
 ---
 
@@ -29,6 +30,7 @@ Head to the [JS APIs](JS-APIs.md) section of the docs to read more about using t
 ## Public JS APIs for third-party integrations
 
 - [Single Sign-on with SAML2](API/integrations/sso-saml2.md)
+- Single Sign-on with OAuth2 (Coming soon)
 
 ---
 

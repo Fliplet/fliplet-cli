@@ -492,6 +492,14 @@ Fliplet.App.Settings.unset(['foo', 'hello']).then(function () {
 });
 ```
 
+### Check if your app is running in preview mode
+
+Use the following snippet to check if your app is running inside Fliplet Viewer (or Fliplet Studio) or it's the production version from the App Store / Play Store / Web apps.
+
+```js
+var isPreview = Fliplet.App.isPreview(true);
+```
+
 ### Lock the device orientation
 
 ```js
@@ -506,14 +514,17 @@ Fliplet.App.Orientation.unlock()
 ```
 
 ### App Storage
-It's a wrapper for the [namespaced storage](#namespaced) for the current app.
+
+Use this to store arbitrary keys in the app storage for later use.
+Note: this is a [namespaced storage](#namespaced) wrapper using `Fliplet.Storage` for the current app.
 
 ```js
 Fliplet.App.Storage.set(key, val)
 ```
 
 ### Profile
-It's a wrapper for the [namespaced storage](#namespaced) for the user profile.
+
+A [namespaced storage](#namespaced) for the user profile.
 
 ```js
 Fliplet.Profile.set('firstName', 'John')
@@ -523,7 +534,7 @@ Fliplet.Profile.get('firstName').then(function (value) {
 })
 ```
 
-The following variables are reserved for common use.
+The following variables are reserved for common use and publicly accessible.
 
 * `email`
 * `firstName`
@@ -604,30 +615,32 @@ Fliplet.Storage.remove('key', value).then(function () {});
 ```
 
 ### Namespaced
-Gives you the hability to namespace your data
+
+Gives you the ability to namespace your data.
 
 ```js
 var myNamespaceStorage = Fliplet.Storage.Namespace('foo');
 ```
 
-#### Set
+#### Set data
 ```js
 myNamespaceStorage.set('bar', 'my data')
 ```
 
-#### Get
-Get a key
+#### Get data
+
 ```js
 myNamespaceStorage.get('bar').then(function(value) {})
 ```
 
-#### Get all
-Get all keys
+#### Get all data
+
 ```js
 myNamespaceStorage.getAll().then(function(data) {})
 ```
 
 #### Remove
+
 Remove a key or list of keys from the namespaced storage
 ```js
 myNamespaceStorage.remove('bar')
@@ -635,6 +648,7 @@ myNamespaceStorage.remove(['foo', 'bar'])
 ```
 
 #### Clear
+
 Clear all namespaced storage
 ```js
 myNamespaceStorage.clear()
