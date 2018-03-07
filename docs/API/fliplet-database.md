@@ -16,8 +16,8 @@ The JSON file must declare keys for each collection (or dataSource):
 
 ```json
 {
-    "1": [ { id: 123, a: 1 }, { id: 456, b: 2 } ],
-    "2": [ { id: 789, a: 3 }, { id: 912, b: 4 } ]
+    "1": [ { "id": 123, "name": "John" }, { "id": 456, "name": "Emma" } ],
+    "2": [ { "id": 789, "name": "Alex" }, { "id": 912, "name": "Nick" } ]
 }
 ```
 
