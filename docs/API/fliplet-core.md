@@ -682,13 +682,16 @@ To find out the ID of a page, you can use Fliplet Studio (it's displayed on the 
 // Navigate to the screen with ID 1
 Fliplet.Navigate.screen(1);
 
-// Navigate to the screen with ID 2, optionally passing some more details
+// Navigate to the screen with ID 2 optionally passing some more details
 Fliplet.Navigate.screen(2, { query: '?foo=bar' });
 
-// Navigate to the screen with ID 3, using a slide transition
+// Navigate to the screen with ID 3 using a slide transition
 Fliplet.Navigate.screen(3, { transition: 'slide.right' });
 
-// Navigate to the screen with ID 4, using a fade transition
+// Navigate to the screen with ID 3 specifying the transition duration (defaults to 500ms)
+Fliplet.Navigate.screen(3, { duration: 250 });
+
+// Navigate to the screen with ID 4 using a fade transition
 Fliplet.Navigate.screen(4, { transition: 'fade' });
 ```
 
