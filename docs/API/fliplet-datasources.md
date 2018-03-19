@@ -68,7 +68,7 @@ Fliplet.DataSources.connect(1).then(function (connection) {
 });
 ```
 
-## Find for specific records
+## Find specific records
 
 ```js
 connection.find({
@@ -79,20 +79,46 @@ connection.find({
 });
 ```
 
-### Query a data source
+Querying options are based on the [Sift.js](https://github.com/Fliplet/sift.js) operators, which mimic MongoDB querying operators. Here's the supported operators:
+
+- `$in`, `$nin`, `$exists`, `$gte`, `$gt`, `$lte`, `$lt`, `$eq`, `$ne`, `$mod`, `$all`, `$and`, `$or`, `$nor`, `$not`, `$size`, `$type`, `$regex`, `$elemMatch`
+
+A few examples to get you started:
 
 ```js
-// All options are optional
-var options = {
-  type: "select" // select(default)/update/delete
-  where: { name: 'John' },
-  attributes: ["name", "country"],
-  dataSourceEntryId: 123
-};
-
-connection.query(options).then(function (records) {
-
+// Find records where column "sum" is greater than 10 and column "name" is either "Nick" or "Tony"
+connection.find({
+  where: {
+    sum: { $gt: 10 },
+    name: { $in: ['Nick', 'Tony'] }
+  }
 });
+
+// Find records where column "email" matches the domain "example.org"
+connection.find({
+  where: {
+    email: { $regex: /example\.org$/i }
+  }
+});
+
+// Nested queries using the $or operator: find records where either "name" is "Nick" or "address" is "UK" and "name" is "Tony"
+connection.find({
+  where: {
+    $or: [
+      { name: 'Nick' },
+      { address: 'UK', name: 'Tony' }
+    ]
+  }
+});
+
+// Find records where the column "country" is not "Germany" or "France" and "createdAt" is on or after a specific date
+connection.find({
+  where: {
+    country: { $nin: ['Germany', 'France'] },
+    createdAt: { $gte: '2018-03-20' }
+  }
+});
+
 ```
 
 ### Find a record by its ID
