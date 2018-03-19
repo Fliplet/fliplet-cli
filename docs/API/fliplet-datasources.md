@@ -86,7 +86,8 @@ Querying options are based on the [Sift.js](https://github.com/Fliplet/sift.js) 
 A few examples to get you started:
 
 ```js
-// Find records where column "sum" is greater than 10 and column "name" is either "Nick" or "Tony"
+// Find records where column "sum" is greater than 10 and column "name"
+// is either "Nick" or "Tony"
 connection.find({
   where: {
     sum: { $gt: 10 },
@@ -101,7 +102,8 @@ connection.find({
   }
 });
 
-// Nested queries using the $or operator: find records where either "name" is "Nick" or "address" is "UK" and "name" is "Tony"
+// Nested queries using the $or operator: find records where either "name" is "Nick"
+// or "address" is "UK" and "name" is "Tony"
 connection.find({
   where: {
     $or: [
@@ -111,7 +113,8 @@ connection.find({
   }
 });
 
-// Find records where the column "country" is not "Germany" or "France" and "createdAt" is on or after a specific date
+// Find records where the column "country" is not "Germany" or "France"
+// and "createdAt" is on or after a specific date
 connection.find({
   where: {
     country: { $nin: ['Germany', 'France'] },
