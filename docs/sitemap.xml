@@ -6,4 +6,177 @@
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
 <!-- created with Free Online Sitemap Generator www.xml-sitemaps.com -->
 
+
+<url>
+  <loc>http://developers.fliplet.com/</loc>
+  <lastmod>2018-03-21T18:12:14+00:00</lastmod>
+  <priority>1.00</priority>
+</url>
+<url>
+  <loc>http://developers.fliplet.com/Introduction.html</loc>
+  <lastmod>2018-03-21T18:12:14+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://developers.fliplet.com/Quickstart.html</loc>
+  <lastmod>2018-03-21T18:12:14+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://developers.fliplet.com/JS-APIs.html</loc>
+  <lastmod>2018-03-21T18:12:14+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://developers.fliplet.com/Building-components.html</loc>
+  <lastmod>2018-03-21T18:12:14+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://developers.fliplet.com/Building-themes.html</loc>
+  <lastmod>2018-03-21T18:12:14+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://developers.fliplet.com/Building-menus.html</loc>
+  <lastmod>2018-03-21T18:12:14+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://developers.fliplet.com/Publishing.html</loc>
+  <lastmod>2018-03-21T18:12:14+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://developers.fliplet.com/Testing-components.html</loc>
+  <lastmod>2018-03-21T18:12:14+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://developers.fliplet.com/Cloning-widgets.html</loc>
+  <lastmod>2018-03-21T18:12:14+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://developers.fliplet.com/API-Documentation.html</loc>
+  <lastmod>2018-03-21T18:12:14+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://developers.fliplet.com/UI-guidelines-interface.html</loc>
+  <lastmod>2018-03-21T18:12:14+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://developers.fliplet.com/UI-guidelines-build.html</loc>
+  <lastmod>2018-03-21T18:12:14+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://developers.fliplet.com/components/Using-Providers.html</loc>
+  <lastmod>2018-03-21T18:12:14+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://developers.fliplet.com/Dependencies-and-assets.html</loc>
+  <lastmod>2018-03-21T18:12:14+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://developers.fliplet.com/Event-emitter.html</loc>
+  <lastmod>2018-03-21T18:12:14+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://developers.fliplet.com/Best-practises.html</loc>
+  <lastmod>2018-03-21T18:12:14+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://developers.fliplet.com/Fliplet-SDK.html</loc>
+  <lastmod>2018-03-21T18:12:14+00:00</lastmod>
+  <priority>0.80</priority>
+</url>
+<url>
+  <loc>http://developers.fliplet.com/Dependencies-and-assets</loc>
+  <lastmod>2018-03-21T18:12:14+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://developers.fliplet.com/components/Definition.html</loc>
+  <lastmod>2018-03-21T18:12:14+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://developers.fliplet.com/components/Interface.html</loc>
+  <lastmod>2018-03-21T18:12:14+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://developers.fliplet.com/components/Build-output.html</loc>
+  <lastmod>2018-03-21T18:12:14+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://developers.fliplet.com/API/fliplet-core.html</loc>
+  <lastmod>2018-03-21T18:12:14+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://developers.fliplet.com/API/fliplet-communicate.html</loc>
+  <lastmod>2018-03-21T18:12:14+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://developers.fliplet.com/API/fliplet-session.html</loc>
+  <lastmod>2018-03-21T18:12:14+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://developers.fliplet.com/API/fliplet-datasources.html</loc>
+  <lastmod>2018-03-21T18:12:14+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://developers.fliplet.com/API/fliplet-media.html</loc>
+  <lastmod>2018-03-21T18:12:14+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://developers.fliplet.com/API/fliplet-themes.html</loc>
+  <lastmod>2018-03-21T18:12:14+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://developers.fliplet.com/API/fliplet-audio.html</loc>
+  <lastmod>2018-03-21T18:12:14+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://developers.fliplet.com/API/fliplet-audio-player.html</loc>
+  <lastmod>2018-03-21T18:12:14+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://developers.fliplet.com/API/fliplet-database.html</loc>
+  <lastmod>2018-03-21T18:12:14+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://developers.fliplet.com/API/components/form-builder.html</loc>
+  <lastmod>2018-03-21T18:12:14+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://developers.fliplet.com/API/integrations/sso-saml2.html</loc>
+  <lastmod>2018-03-21T18:12:14+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+<url>
+  <loc>http://developers.fliplet.com/JS-APIs</loc>
+  <lastmod>2018-03-21T18:12:14+00:00</lastmod>
+  <priority>0.64</priority>
+</url>
+
+
 </urlset>
