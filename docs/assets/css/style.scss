@@ -189,7 +189,13 @@ ul > li > ul {
 
   .blocks a {
     width: 100%;
-    margin-left: 0;
+  }
+
+  .blocks a:first-child {
     margin-right: 0;
+  }
+
+  .blocks a:last-child {
+    margin-left: 0;
   }
 }
