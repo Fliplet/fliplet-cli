@@ -24,6 +24,8 @@ The following namespaces are publicly available under this package. Please click
 - [User](#user)
 - [Widget](#widget)
 
+---
+
 The `fliplet-core` package also contains the following methods:
 
 - [guid](#guid)
