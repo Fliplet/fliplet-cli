@@ -96,7 +96,9 @@ Fliplet.FormBuilder.get()
 
 ## Hooks
 
-### `beforeSubmit`
+### beforeFormSubmit
+
+Capture data when the form is submitted. You can modify the data and also avoid data from being saved to a data source or continuing its flow.
 
 ```js
 Fliplet.Hooks.on('beforeFormSubmit', function(data) {
@@ -106,6 +108,6 @@ Fliplet.Hooks.on('beforeFormSubmit', function(data) {
   data.foo = 'bar'
 
   // return a promise if this callback should be async.
-  // reject the promise to stop the form from submitting the data
+  // reject the promise to stop the form from submitting the data or continuing
 });
 ```
