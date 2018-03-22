@@ -10,6 +10,18 @@ p {
   line-height: 1.8;
 }
 
+ol {
+  line-height: 1.8;
+}
+
+ol > li {
+  font-weight: bold;
+}
+
+ol > li > ul {
+  font-weight: normal;
+}
+
 .page-header {
   background-color: $lightBackground;
   background-image: linear-gradient(-120deg, $lightBackground, $lightBackground);
@@ -55,6 +67,7 @@ p {
 
   h2 {
     font-weight: bold;
+    font-size: 34px;
   }
 
   h3 {
