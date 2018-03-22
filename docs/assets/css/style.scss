@@ -101,6 +101,20 @@ ul > li > ul {
   }
 }
 
+.blocks {
+  display: flex;
+}
+
+.blocks a {
+  text-decoration: none;
+  width: 50%;
+  padding: 10px;
+}
+
+.blocks a div {
+  
+}
+
 @media screen and (min-width: 64em) {
   .page-header {
     padding: 0;

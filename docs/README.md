@@ -1,6 +1,23 @@
 # Developers Documentation
 
-Welcome to the developers documentation for the **Fliplet Platform**. Here you can learn how to extend your Fliplet Apps by creating new components (also known as widgets) and visual themes.
+Welcome to the developers documentation for the **Fliplet Platform**. Here you can learn how to extend your Fliplet Apps and also how to create new components, themes and menus.
+
+{% raw %}
+<section class="blocks">
+  <a href="/API-Documentation.html">
+    <div>
+      <h4>Read JS API Documentation</h4>
+      <p>Learn how to use our toolsets and enrich your apps</p>
+    </div>
+  </a>
+  <a href="/Building-components.html">
+    <div>
+      <h4>Build components</h4>
+      <p>Use our CLI tool to create great new features on Fliplet</p>
+    </div>
+  </a>
+</section>
+{% endraw %}
 
 To get a brief introduction to the technologies we use and the stack of the platform, we recommend having a quick read at the **[Introduction to the platform](Introduction.md)** page of the documentation.
 
