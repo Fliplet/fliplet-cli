@@ -45,14 +45,14 @@ Once you get a **connection**, you can use the following methods to **find, inse
 ```js
 // use "find" with no options to get all entries
 connection.find().then(function (records) {
-
+  // records is an array
 });
 ```
 
 ```js
 // use limit and offset for pagination
 connection.find({ limit: 50, offset: 10 }).then(function (records) {
-
+  // records is an array
 });
 ```
 
@@ -63,7 +63,8 @@ Fliplet.DataSources.connect(1).then(function (connection) {
   return connection.find({ limit: 1000 });
 }).then(function (records) {
   records.forEach(function (row) {
-    $('foo').append(row.data.bar)
+    // do something for each row, e.g. append it to a html tag
+    $('.foo').append(row.data.bar)
   });
 });
 ```
@@ -75,7 +76,7 @@ connection.find({
   where: { name: 'John' },
   limit: 1
 }).then(function (records) {
-
+  // records is an array
 });
 ```
 
@@ -128,7 +129,7 @@ connection.find({
 
 ```js
 connection.findById(1).then(function (record) {
-
+  // records is the found object
 });
 ```
 
