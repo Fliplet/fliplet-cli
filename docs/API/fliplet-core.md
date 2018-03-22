@@ -10,6 +10,7 @@ The following namespaces are publicly available under this package. Please click
 - [API](#api)
 - [App](#app)
 - [Apps](#apps)
+- [Encode](#encode)
 - [Environment](#environment)
 - [Hooks](#hooks)
 - [Modal](#modal)
@@ -24,9 +25,19 @@ The following namespaces are publicly available under this package. Please click
 - [Widget](#widget)
 
 The `fliplet-core` package also contains the following methods:
-- [guid](#guid)
 
-If you're looking for other namespaces, make sure to check the [Media](Fliplet-Media-JS-APIs) or [Data Sources](Fliplet-DataSources-JS-APIs) dependencies.
+- [guid](#guid)
+- [compile](#compile)
+
+If you're looking for other namespaces, make sure to check popular ones the [Media](Fliplet-Media-JS-APIs) or [Data Sources](Fliplet-DataSources-JS-APIs) dependencies.
+
+One more thing: `Fliplet` is also a function returning a promise which can be used to ensure your code runs when all plugins and features have loaded on the screen:
+
+```js
+Fliplet().then(function () {
+  // code running here will have all dependencies and plugins available
+});
+```
 
 ---
 
@@ -816,8 +827,28 @@ Fliplet.Analytics.isTrackingEnabled()
 
 ---
 
+## Encode
+
+### Encode data to base64
+
+```js
+var encoded = Fliplet.Encode.base64('mystring');
+```
+
+---
+
 ## guid
+
 Generates a global unique identifier with a format like: `"2682df5f-2679-7de5-c04c-d212f4314897"`
+
 ```js
 var guid = Fliplet.guid()
+```
+
+## compile
+
+Compiles a string with a handlebars-like template replacement.
+
+```js
+var compiledString = Fliplet.compile('Hello {{name}}', { name: 'Nick' });
 ```
