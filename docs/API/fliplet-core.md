@@ -28,9 +28,9 @@ The following namespaces are publicly available under this package. Please click
 
 The `fliplet-core` package also contains the following methods:
 
-- [compile](#Compile)
-- [encode](#Encode)
-- [guid](#Guid)
+- [compile](#compile)
+- [encode](#encode)
+- [guid](#guid)
 
 If you're looking for other namespaces, make sure to check popular ones the [Media](Fliplet-Media-JS-APIs) or [Data Sources](Fliplet-DataSources-JS-APIs) dependencies.
 
