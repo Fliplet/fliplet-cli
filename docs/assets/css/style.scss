@@ -16,6 +16,9 @@ ol {
 
 ol > li {
   font-weight: bold;
+  border-bottom: 1px dashed #CCC;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
 ol > li > ul {
