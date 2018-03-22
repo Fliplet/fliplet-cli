@@ -4,7 +4,7 @@ Once you have published a component on Fliplet, its source can be retrieved at a
 
 Simply use the `clone` command to download a copy of the source code, given a component package name:
 
-```shell
+```
 $ fliplet clone com.fliplet.primary-button
 
 Cloning widget Primary Button (com.fliplet.primary-button).
@@ -17,7 +17,7 @@ Done! Widget cloned to "widget-primary-button".
 
 You can also list all components you have got access to, by using the `list` command as follows:
 
-```shell
+```
 $ fliplet list
 
 Here's the widgets you have access to and can be downloaded:
