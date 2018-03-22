@@ -1,4 +1,4 @@
-# API Documentation
+# JS API Documentation
 
 Feeling lost? Head to the [JS APIs](JS-APIs.md) section of the docs to read more about using these packages in your Fliplet apps, components and themes.
 
