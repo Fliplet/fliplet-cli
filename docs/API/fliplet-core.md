@@ -56,10 +56,10 @@ These variables are usually available on app screens as long as components and p
 - `organizationId` - the user's organization id
 - `appId` - the current app id
 - `user` - the current user
-- `development` - `true / false` if using CLI or not,
-- `interact` - `true / false` if you are in edit mode in studio,
-- `preview` - `true / false` if you are in preview mode in studio,
-- `platform` - either `'web'` or `'native'`,
+- `development` - `true / false` if using CLI or not
+- `interact` - `true / false` if you are in edit mode in Studio
+- `preview` - `true / false` if you are in preview mode in Studio
+- `platform` - either `'web'` or `'native'`
 - `mode` - `'preview' / 'view' / 'interact'`
 - `provider` - `true / false` whether the context is running in provider mode
 
