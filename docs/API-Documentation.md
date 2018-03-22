@@ -1,8 +1,6 @@
 # API Documentation
 
-### How to include and use the JS APIs
-
-Head to the [JS APIs](JS-APIs.md) section of the docs to read more about using these packages.
+Feeling lost? Head to the [JS APIs](JS-APIs.md) section of the docs to read more about using these packages in your Fliplet apps, components and themes.
 
 ---
 
