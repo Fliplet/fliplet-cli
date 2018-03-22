@@ -108,11 +108,27 @@ ul > li > ul {
 .blocks a {
   text-decoration: none;
   width: 50%;
-  padding: 10px;
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
 
-.blocks a div {
-  
+.blocks a:first-child {
+  margin-right: 10px;
+}
+
+.blocks a:last-child {
+  margin-left: 10px;
+}
+
+.blocks div {
+  border: 1px solid #DDD;
+  padding: 15px;
+  border-radius: 7px;
+  background: #EEE;
+}
+
+.blocks div p {
+  margin-bottom: 0;
 }
 
 @media screen and (min-width: 64em) {
