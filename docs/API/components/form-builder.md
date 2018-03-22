@@ -36,7 +36,7 @@ Retrieves a form field.
 Fliplet.FormBuilder.get()
   .then(function (form) {
     // Gets the field named 'foo'
-    // form.field('foo');
+    var field = form.field('foo');
   });
 ```
 
