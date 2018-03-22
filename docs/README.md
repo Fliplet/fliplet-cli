@@ -7,13 +7,13 @@ Welcome to the developers documentation for the **Fliplet Platform**. Here you c
   <a href="/API-Documentation.html">
     <div>
       <h4>Read JS API Documentation</h4>
-      <p>Learn how to use our toolsets and enrich your apps</p>
+      <p>Learn how to use our toolsets and enrich your apps in a few seconds.</p>
     </div>
   </a>
   <a href="/Building-components.html">
     <div>
       <h4>Build components</h4>
-      <p>Use our CLI tool to create great new features on Fliplet</p>
+      <p>Use our CLI tool to create great new features in your organisation apps.</p>
     </div>
   </a>
 </section>
