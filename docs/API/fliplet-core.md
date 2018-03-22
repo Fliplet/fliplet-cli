@@ -70,6 +70,8 @@ These variables are usually available on app screens as long as components and p
 Fliplet.Env.set('appId', 2);
 ```
 
+---
+
 ## Hooks
 
 ### Register a callback for a hook
@@ -121,6 +123,8 @@ Fliplet.Hooks.run('beforeFormSubmit', data).then(function (results) {
 });
 ```
 
+---
+
 ## Modal
 
 We use [Bootbox](http://bootboxjs.com/) under the hood for Modals, hence check their documentation for the full set of options you can pass.
@@ -142,6 +146,8 @@ Fliplet.Modal.alert({ message: 'Thanks for confirming'}).then(function () {
   // fired when the user pressed "OK"
 });
 ```
+
+---
 
 ## User
 
@@ -186,6 +192,8 @@ Fliplet.User.Preferences.get().then(function (preferences) {
 });
 ```
 
+---
+
 ## Studio
 
 ### Forward an event to Fliplet Studio
@@ -203,6 +211,8 @@ Fliplet.Studio.emit('navigate', {
 });
 ```
 
+---
+
 ## API
 
 ### Make an API request to the Fliplet APIs
@@ -217,6 +227,8 @@ Fliplet.API.request({
   console.log(response);
 });
 ```
+
+---
 
 ## Widget
 
@@ -403,6 +415,8 @@ Fliplet.Widget.save({ foo: 1 }).then(function () {
 Fliplet.Widget.complete();
 ```
 
+---
+
 ## Organizations
 
 ### Get the user organizations
@@ -462,6 +476,8 @@ Fliplet.Organization.Settings.unset(['user','_password'])
     // Your code
   })
 ```
+
+---
 
 ## App
 
@@ -565,6 +581,8 @@ The following variables are reserved for common use and publicly accessible.
 * `company`
 * `phone`
 
+---
+
 ## Apps
 
 ### Get the list of apps the user has got access to
@@ -577,6 +595,8 @@ Fliplet.Apps.get().then(function (apps) {
 
 **Note**: when returning apps, the API will return both **V1** and **V2** apps created with Fliplet. Most likely, you want to filter and use V2 apps only. This can be done by filtering out apps where the boolean `app.legacy` is `true`.
 
+---
+
 ## Pages
 
 ### Get the list of pages of the current app
@@ -586,6 +606,8 @@ Fliplet.Pages.get().then(function (appPages) {
 
 });
 ```
+
+---
 
 ## Navigator
 
@@ -601,15 +623,22 @@ var isOnline = Fliplet.Navigator.isOnline();
 Fliplet.Navigator.onReady().then(function () {
   // your code
 });
+
+// you can also use this shorthand
+Fliplet().then(function () {
+  // your code
+});
 ```
 
-### Wait for the cordova plugins to be ready before running some code
+### Wait for Cordova plugins to be ready before running some code
 
 ```js
 Fliplet.Navigator.onPluginsReady().then(function () {
   // your code
 });
 ```
+
+---
 
 ## Storage
 
@@ -674,6 +703,8 @@ Clear all namespaced storage
 ```js
 myNamespaceStorage.clear()
 ```
+
+---
 
 ## Navigate
 
@@ -745,7 +776,6 @@ var data = {
 
 Fliplet.Navigate.to(data);
 ```
-
 
 ### Open a popup
 
