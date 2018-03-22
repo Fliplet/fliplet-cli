@@ -111,3 +111,23 @@ Fliplet.Hooks.on('beforeFormSubmit', function(data) {
   // reject the promise to stop the form from submitting the data or continuing
 });
 ```
+
+### afterFormSubmit
+
+Runs when a form has been submitted and has finished its processing.
+
+```js
+Fliplet.Hooks.on('afterFormSubmit', function() {
+  // form data has been saved and submitted
+});
+```
+
+### onFormSubmitError
+
+Runs when a form has could not be submitted.
+
+```js
+Fliplet.Hooks.on('onFormSubmitError', function(error) {
+  // form encountered an error when saving or submitting
+});
+```
