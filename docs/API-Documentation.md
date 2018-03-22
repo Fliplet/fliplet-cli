@@ -1,12 +1,14 @@
 # API Documentation
 
-## How to include and use the JS APIs
+### How to include and use the JS APIs
 
 Head to the [JS APIs](JS-APIs.md) section of the docs to read more about using these packages.
 
 ---
 
-## Public JS APIs
+## Documentation for public JS APIs
+
+These JS APIs falls into the most common category and almost all apps, components and themes use at least one of them. All apps include `fliplet-core` by default, and any other can easily be included on your app screens via Fliplet Studio.
 
 - [Fliplet Core](API/fliplet-core.md) (`fliplet-core`)
 - [Fliplet Communicate](API/fliplet-communicate.md) (`fliplet-communicate`)
@@ -21,13 +23,13 @@ Head to the [JS APIs](JS-APIs.md) section of the docs to read more about using t
 
 ---
 
-## Public JS APIs from Fliplet Components
+## Documentation for Fliplet Components
 
 - [Fliplet Form Builder](API/components/form-builder.md)
 
 ---
 
-## Public JS APIs for third-party integrations
+## Documentation for third-party integrations
 
 - [Single Sign-on with SAML2](API/integrations/sso-saml2.md)
 - Single Sign-on with OAuth2 (Coming soon)
