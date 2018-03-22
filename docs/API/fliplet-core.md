@@ -28,8 +28,9 @@ The following namespaces are publicly available under this package. Please click
 
 The `fliplet-core` package also contains the following methods:
 
-- [guid](#guid)
-- [compile](#compile)
+- [compile](#Compile)
+- [encode](#Encode)
+- [guid](#Guid)
 
 If you're looking for other namespaces, make sure to check popular ones the [Media](Fliplet-Media-JS-APIs) or [Data Sources](Fliplet-DataSources-JS-APIs) dependencies.
 
@@ -832,6 +833,22 @@ Fliplet.Analytics.isTrackingEnabled()
 
 ---
 
+## Compile
+
+Compiles a string with a handlebars-like template replacement.
+
+```js
+var compiledString = Fliplet.compile('Hello {{name}}', { name: 'Nick' });
+```
+
+## Guid
+
+Generates a global unique identifier with a format like: `"2682df5f-2679-7de5-c04c-d212f4314897"`
+
+```js
+var guid = Fliplet.guid()
+```
+
 ## Encode
 
 ### Encode data to base64
@@ -841,19 +858,3 @@ var encoded = Fliplet.Encode.base64('mystring');
 ```
 
 ---
-
-## guid
-
-Generates a global unique identifier with a format like: `"2682df5f-2679-7de5-c04c-d212f4314897"`
-
-```js
-var guid = Fliplet.guid()
-```
-
-## compile
-
-Compiles a string with a handlebars-like template replacement.
-
-```js
-var compiledString = Fliplet.compile('Hello {{name}}', { name: 'Nick' });
-```
