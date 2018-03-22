@@ -173,4 +173,14 @@ ul > li > ul {
   .page-header .content .logo {
     display: none;
   }
+
+  .blocks {
+    flex-direction: column;
+  }
+
+  .blocks a {
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+  }
 }
