@@ -14,19 +14,21 @@ ol, ul {
   line-height: 1.8;
 }
 
-ol > li, ul > li {
+ol > li,
+ul > li {
   font-weight: bold;
   border-bottom: 1px dashed #CCC;
   padding-top: 10px;
   padding-bottom: 10px;
 }
 
-ol > li > ul {
+ol > li > ul > li {
   font-weight: normal;
   border-bottom: 0;
 }
 
-ol > li > ul, ul > li > ul {
+ol > li > ul,
+ul > li > ul {
   font-weight: normal;
 }
 
