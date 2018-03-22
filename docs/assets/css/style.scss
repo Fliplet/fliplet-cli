@@ -22,6 +22,11 @@ ul > li {
   padding-bottom: 10px;
 }
 
+ol > li:only-child,
+ul > li:only-child {
+  border-bottom: 0;
+}
+
 ol > li > ul > li {
   font-weight: normal;
   border-bottom: 0;
