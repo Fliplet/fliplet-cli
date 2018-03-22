@@ -60,7 +60,8 @@ Fliplet.FormBuilder.get()
   .then(function (form) {
     // registers a callback to be fired whenever the field value changes
     form.field('foo').change(function (val) {
-    })
+
+    });
   });
 ```
 
@@ -74,6 +75,22 @@ Fliplet.FormBuilder.get()
     form.field('foo').toggle(); // Toggles field visibility
     form.field('bar').toggle(true); // Shows field
     form.field('baz').toggle(false); // Hides field
+  });
+```
+
+Show and hide fields based on another field value
+
+```js
+Fliplet.FormBuilder.get()
+  .then(function (form) {
+    // registers a callback to be fired whenever the field value changes
+    form.field('foo').change(function (val) {
+      // shows the field "bar" when the value of "foo" is greater than 10
+      form.field('bar').toggle(val > 10);
+
+      // shows the field "baz" when the value of "foo" is 50
+      form.field('baz').toggle(val === 50);
+    });
   });
 ```
 
