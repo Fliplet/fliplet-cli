@@ -60,7 +60,7 @@ Fliplet.FormBuilder.get()
   .then(function (form) {
     // registers a callback to be fired whenever the field value changes
     form.field('foo').change(function (val) {
-
+      // do stuff with "val"
     });
   });
 ```
