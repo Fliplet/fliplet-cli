@@ -10,18 +10,18 @@ p {
   line-height: 1.8;
 }
 
-ol {
+ol, ul {
   line-height: 1.8;
 }
 
-ol > li {
+ol > li, ul > li {
   font-weight: bold;
   border-bottom: 1px dashed #CCC;
   padding-top: 10px;
   padding-bottom: 10px;
 }
 
-ol > li > ul {
+ol > li > ul, ul > li > ul {
   font-weight: normal;
 }
 
