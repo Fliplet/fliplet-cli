@@ -1,6 +1,10 @@
 # Fliplet Form Builder JS APIs
 
+These public JS APIs will be automatically available in your screens once a **Form Builder** component is dropped into such screens.
+
 ## Retrieve an instance
+
+Since you can have many forms into a screen, we provide a handy function to grab a specific instance by its form name or the first one available in the page when no input parameter is given.
 
 ### `Fliplet.FormBuilder.get()`
 
@@ -20,9 +24,11 @@ Fliplet.FormBuilder.get('foo')
   });
 ```
 
+The `form` instance variable above makes available the following instance methods.
+
 ## Instance methods
 
-### `.field(name)`
+### `form.field(String)`
 
 Retrieves a form field.
 
@@ -36,7 +42,7 @@ Fliplet.FormBuilder.get()
 
 ## Field methods
 
-### `.val()`
+### `form.val()`
 
 Gets or sets the value of a field.
 
@@ -51,7 +57,7 @@ Fliplet.FormBuilder.get()
   });
 ```
 
-### `.change()`
+### `form.change(Function)`
 
 Attaches event listeners to a field changed.
 
@@ -65,7 +71,7 @@ Fliplet.FormBuilder.get()
   });
 ```
 
-### `.toggle()`
+### `form.toggle(Boolean)`
 
 Show and hide a field.
 
