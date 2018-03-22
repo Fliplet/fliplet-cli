@@ -1,6 +1,10 @@
 # Fliplet Core JS APIs
 
-The `fliplet-core` package contains the following namespaces:
+"Fliplet Core" is our most important package and it's included on all screens of your apps as long as all widgets that have declared it in their dependencies.
+
+This package enables you to read and write data in the device storage, navigate to different screens as long as dozens of other different interactions and features.
+
+The following namespaces are publicly available under this package. Please click on any of them to see their documentation and public methods:
 
 - [Analytics](#analytics)
 - [API](#api)
@@ -19,7 +23,7 @@ The `fliplet-core` package contains the following namespaces:
 - [User](#user)
 - [Widget](#widget)
 
-The `fliplet-core` package contains the following methods:
+The `fliplet-core` package also contains the following methods:
 - [guid](#guid)
 
 If you're looking for other namespaces, make sure to check the [Media](Fliplet-Media-JS-APIs) or [Data Sources](Fliplet-DataSources-JS-APIs) dependencies.
