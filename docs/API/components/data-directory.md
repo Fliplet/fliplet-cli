@@ -31,9 +31,9 @@ Fliplet.Hooks.on('flDirectoryBeforeGetData', function onBeforeGetData(data) {
   data.config.cache = false;
 
   // Define the "getData" promise to manually fetching data. 
-  // In this example we connect to a datasource with ID 123
   data.config.getData = function () {
-    Fliplet.DataSources.connect(123).then(function(connection) {
+    // In this example we connect to a datasource with ID 123
+    return Fliplet.DataSources.connect(123).then(function(connection) {
       // Get all entries in the data source matching a specific condition
       return connection.find({ where: { foo: 'bar' } })
     }).then(function (entries) {
