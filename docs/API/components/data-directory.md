@@ -11,7 +11,9 @@ Fliplet.Hooks.on('flDirectoryBeforeGetData', function onBeforeGetData(data) {
 });
 ```
 
-This can be useful to overwrite the directory data by providing a function returning a promise resolving with the new data:
+### Overwriting data to be rendered
+
+The  `flDirectoryBeforeGetData` hook explained above can be useful to overwrite the directory data by providing a function returning a promise resolving with the new data:
 
 ```js
 Fliplet.Hooks.on('flDirectoryBeforeGetData', function onBeforeGetData(data) {
