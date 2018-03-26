@@ -10,10 +10,10 @@ Welcome to the developers documentation for the **Fliplet Platform**. Here you c
       <p>Learn how to use our Javascript helpers and enrich your apps in just a few seconds.</p>
     </div>
   </a>
-  <a href="/Building-components.html">
+  <a href="/API/components/form-builder.html">
     <div>
-      <h4>Build components</h4>
-      <p>Use our new CLI tool to create great new features in your organisation apps.</p>
+      <h4>Interact with your forms</h4>
+      <p>Use our hooks and functions to extend the functionalities of forms built with our Form Builder.</p>
     </div>
   </a>
 </section>
