@@ -47,3 +47,21 @@ Fliplet.Hooks.on('flDirectoryBeforeGetData', function onBeforeGetData(data) {
   });
 });
 ```
+
+## Running code before the directory is initialised
+
+```js
+// Register the event
+document.addEventListener('flDirectoryBeforeInit', function(e) {
+  // Get the directory instance
+  document.querySelector('.directory-list').classList.add('loading');
+  var directory = e.detail.context;
+
+  for(var i = 0; i < directory.data.length; i++) {
+    // Modify data in the directory with a sample "formatCurrency" function we have defined elsewhere
+    directory.data[i]['AmountInUSD'] = formatCurrency(directory.data[i]['AmountInUSD'], '$');
+  }
+
+  e.stopPropagation();
+});
+```
