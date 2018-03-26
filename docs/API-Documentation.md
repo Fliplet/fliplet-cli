@@ -24,6 +24,7 @@ These JS APIs falls into the most common category and almost all apps, component
 ## Documentation for Fliplet Components
 
 - [Fliplet Form Builder](API/components/form-builder.md)
+- [Fliplet Data Directory](API/components/data-directory.md)
 
 ---
 
