@@ -32,19 +32,21 @@ Fliplet.Hooks.on('flDirectoryBeforeGetData', function onBeforeGetData(data) {
 
   // Define the "getData" promise to manually fetching data. 
   // In this example we connect to a datasource with ID 123
-  data.config.getData = Fliplet.DataSources.connect(123).then(function(connection) {
-    // Get all entries in the data source matching a specific condition
-    return connection.find({ where: { foo: 'bar' } })
-  }).then(function (entries) {
-    // Apply some transformations to the data before sending it back to the directory
-    var entries = result.map(function(entries) {
-      entries.data.dataSourceEntryId = entries.id;
-      return entries.data;
-    });
+  data.config.getData = function () {
+    Fliplet.DataSources.connect(123).then(function(connection) {
+      // Get all entries in the data source matching a specific condition
+      return connection.find({ where: { foo: 'bar' } })
+    }).then(function (entries) {
+      // Apply some transformations to the data before sending it back to the directory
+      var entries = result.map(function(entries) {
+        entries.data.dataSourceEntryId = entries.id;
+        return entries.data;
+      });
 
-    // Return the data to be rendered on the directory
-    return entries;
-  });
+      // Return the data to be rendered on the directory
+      return entries;
+    });
+  };
 });
 ```
 
