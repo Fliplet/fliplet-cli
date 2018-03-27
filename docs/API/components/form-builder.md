@@ -55,6 +55,8 @@ Fliplet.FormBuilder.get().then(function (form) {
 });
 ```
 
+---
+
 ### `form.instance`
 
 Property that references a `Vue` object with more advanced properties of the form. For example, you can loop all form fields using the `instance.fields` array:
@@ -65,7 +67,9 @@ Fliplet.FormBuilder.get().then(function (form) {
     // field is an object with "type", "name" and "value"
   });
 });
-``` 
+```
+
+--- 
 
 ### `form.field(String)`
 
