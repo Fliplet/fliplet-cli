@@ -637,6 +637,17 @@ Fliplet.Navigator.onPluginsReady().then(function () {
 });
 ```
 
+### Get the device/user location
+
+```js
+Fliplet.Navigator.location().then(function (position) {
+  // position.coords.latitude
+  // position.coords.longitude
+}).catch(function (error) {
+  // User didn't allow to share the location
+});
+```
+
 ---
 
 ## Storage
