@@ -38,9 +38,9 @@ Fliplet.Hooks.on('flDirectoryBeforeGetData', function onBeforeGetData(data) {
       return connection.find({ where: { foo: 'bar' } })
     }).then(function (entries) {
       // Apply some transformations to the data before sending it back to the directory
-      var entries = result.map(function(entries) {
-        entries.data.dataSourceEntryId = entries.id;
-        return entries.data;
+      var entries = result.map(function(entry) {
+        entry.data.dataSourceEntryId = entry.id;
+        return entry.data;
       });
 
       // Return the data to be rendered on the directory
