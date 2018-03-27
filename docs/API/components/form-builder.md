@@ -28,16 +28,42 @@ The `form` instance variable above makes available the following instance method
 
 ## Instance methods
 
-### `form.field(String)`
+### `form.load(Function)`
 
-Retrieves a form field.
+Allows to overwrite all form field values with new data. Useful if you manually want to populate the form based on your data.
 
 ```js
-Fliplet.FormBuilder.get()
-  .then(function (form) {
-    // Gets the field named 'foo'
-    var field = form.field('foo');
+Fliplet.FormBuilder.get().then(function (form) {
+  form.load(function () {
+    return {
+      Name: 'Nick',
+      Email: 'nick@example.org'
+    };
   });
+});
+```
+
+You can also return a `Promise` if you're loading the data asynchronously. In the following example we are populating a form from an entry in a Fliplet data source:
+
+```js
+Fliplet.FormBuilder.get().then(function (form) {
+  form.load(function () {
+    return Fliplet.DataSources.connect(133).then(function (connection) {
+      return connection.findById(456);
+    });
+  });
+});
+```
+
+### `form.field(String)`
+
+Retrieves a form field by its ID (defined in Fliplet Studio interface).
+
+```js
+Fliplet.FormBuilder.get().then(function (form) {
+  // Get the field with ID 'foo'
+  var field = form.field('foo');
+});
 ```
 
 ## Field methods
