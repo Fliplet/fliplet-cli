@@ -99,6 +99,8 @@ Fliplet.FormBuilder.get()
   });
 ```
 
+--- 
+
 ### `form.change(Function)`
 
 Attaches event listeners to a field changed.
@@ -112,6 +114,8 @@ Fliplet.FormBuilder.get()
     });
   });
 ```
+
+--- 
 
 ### `form.toggle(Boolean)`
 
@@ -160,6 +164,8 @@ Fliplet.Hooks.on('beforeFormSubmit', function(data) {
 });
 ```
 
+--- 
+
 ### afterFormSubmit
 
 Runs when a form has been submitted and has finished its processing.
@@ -169,6 +175,8 @@ Fliplet.Hooks.on('afterFormSubmit', function() {
   // form data has been saved and submitted
 });
 ```
+
+--- 
 
 ### onFormSubmitError
 
