@@ -24,3 +24,28 @@ Please refer to our [documentation](http://developers.fliplet.com) for all detai
 # Publish to npm
 
 Creata a release tag from master. Eg: v3.7.5    
+
+---
+
+# Docs
+
+Install depencencies:
+
+```
+gem install bundler
+bundle install
+```
+
+Run Jekyll locally:
+
+```
+bundle exec jekyll serve
+```
+
+Then the website should be up and running at http://127.0.0.1:4000/
+
+## Update Algolia search index
+
+```
+ALGOLIA_API_KEY=<API_KEY> bundle exec jekyll algolia
+```

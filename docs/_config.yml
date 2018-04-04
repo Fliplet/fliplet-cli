@@ -1,1 +1,4 @@
 theme: jekyll-theme-cayman
+algolia:
+  application_id: '8GRBFEV21Y'
+  index_name: 'docs'
