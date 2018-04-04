@@ -1,4 +1,4 @@
-# Fliplet Media JS APIs
+# Media JS APIs
 
 The `fliplet-media` package contains the following namespaces:
 

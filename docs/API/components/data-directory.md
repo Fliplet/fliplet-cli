@@ -1,4 +1,4 @@
-# Fliplet Data Directory JS APIs
+# Data Directory JS APIs
 
 These public JS APIs will be automatically available in your screens once a **Data Directory** component is dropped into such screens.
 

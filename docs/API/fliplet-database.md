@@ -1,4 +1,4 @@
-# Fliplet Database JS APIs
+# Database JS APIs
 
 Note: this is a **beta** version for early adopters. Features might change without notice before the stable release.
 

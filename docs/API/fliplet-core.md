@@ -1,4 +1,4 @@
-# Fliplet Core JS APIs
+# Core JS APIs
 
 "Fliplet Core" is our most important package and it's included on all screens of your apps as long as all widgets that have declared it in their dependencies.
 

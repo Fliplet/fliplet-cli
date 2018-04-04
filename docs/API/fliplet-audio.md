@@ -1,4 +1,4 @@
-# Fliplet Audio JS APIs
+# Audio JS APIs
 
 The `fliplet-audio` package contains the following namespaces:
 

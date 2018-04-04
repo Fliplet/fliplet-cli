@@ -1,4 +1,4 @@
-# Fliplet Session JS APIs
+# Session JS APIs
 
 The `fliplet-session` package contains the following namespaces:
 

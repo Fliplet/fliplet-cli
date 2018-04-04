@@ -1,4 +1,4 @@
-# Fliplet Form Builder JS APIs
+# Form Builder JS APIs
 
 These public JS APIs will be automatically available in your screens once a **Form Builder** component is dropped into such screens.
 

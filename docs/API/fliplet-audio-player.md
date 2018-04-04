@@ -1,4 +1,4 @@
-# Fliplet Audio Player JS APIs
+# Audio Player JS APIs
 
 ## Install
 

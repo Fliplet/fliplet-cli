@@ -1,4 +1,4 @@
-# Fliplet Theme JS APIs
+# Theme JS APIs
 
 ## Get the list of available themes
 

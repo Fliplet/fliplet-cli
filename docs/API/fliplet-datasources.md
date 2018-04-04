@@ -1,4 +1,4 @@
-# Fliplet DataSources JS APIs
+# DataSources JS APIs
 
 The `fliplet-datasources` package contains the following namespaces:
 

@@ -1,4 +1,4 @@
-# Fliplet Communicate JS APIs
+# Communicate JS APIs
 
 The `fliplet-communicate` package contains the following namespaces:
 
