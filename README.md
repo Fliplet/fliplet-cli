@@ -46,6 +46,8 @@ Then the website should be up and running at http://127.0.0.1:4000/
 
 ## Update Algolia search index
 
+Run this command from the `docs` folder:
+
 ```
 ALGOLIA_API_KEY=<API_KEY> bundle exec jekyll algolia
 ```
