@@ -6,7 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#157878">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.3/dist/instantsearch.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.3/dist/instantsearch-theme-algolia.min.css">
     <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
+    <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.3"></script>
   </head>
   <body>
     <section class="page-header">
@@ -14,6 +17,13 @@
         <a class="logo" href="/" title="Fliplet"></a>
         <a href="/" class="project-name">{{ page.title }}</a>
         <h2 class="project-tagline">developers.fliplet.com</h2>
+        
+        <div id="search">
+          <!-- SearchBox widget will appear here -->
+        </div>
+        <div id="hits">
+          <!-- Hits widget will appear here -->
+        </div>
       </div>
       <!--{% if site.github.is_project_page %}
         <a href="{{ site.github.repository_url }}" class="btn">View on GitHub</a>
@@ -35,6 +45,7 @@
       </footer>
     </section>
 
+    <script src="/assets/js/index.js"></script>
     <script>
 (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/eo99qllm';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);window.intercomSettings = window.intercomSettings || {};
 window.intercomSettings.app_id = 'eo99qllm';
