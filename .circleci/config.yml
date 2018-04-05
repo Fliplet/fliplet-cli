@@ -4,6 +4,7 @@ jobs:
     machine: true
     steps:
       - checkout
+      - run: cd docs && bundle exec jekyll algolia
       - run: npm install
       - run: npm link && echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
       - run: fliplet env staging
