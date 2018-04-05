@@ -15,6 +15,7 @@ var search = instantsearch({
 search.addWidget(
   instantsearch.widgets.searchBox({
     container: '#search',
+    reset: false,
     placeholder: 'Type to search'
   })
 );
