@@ -28,3 +28,8 @@ Fliplet.Media.Audio('https://path/to/file.mp3').then(function (audio) {
   });
 })
 ```
+
+---
+
+[Back to API documentation](../API-Documentation.md)
+{: .buttons}

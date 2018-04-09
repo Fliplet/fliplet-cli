@@ -27,3 +27,8 @@ The latter method returns an object with two public methods:
 
 - `find(query)` Returns an array of results. Query using [Sift.js](https://github.com/crcn/sift.js/tree/master) operators.
 - `findById(id)` Returns a single record by its ID
+
+---
+
+[Back to API documentation](../API-Documentation.md)
+{: .buttons}

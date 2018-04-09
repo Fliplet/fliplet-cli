@@ -199,3 +199,8 @@ connection.import(FormData).then(function onSuccess() {});
 ```js
 connection.removeById(1).then(function onRemove() {});
 ```
+
+---
+
+[Back to API documentation](../API-Documentation.md)
+{: .buttons}

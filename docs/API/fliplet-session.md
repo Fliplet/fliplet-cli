@@ -47,3 +47,8 @@ Fliplet.Session.destroy().then(function onSessionDestroyed() {
 
 });
 ```
+
+---
+
+[Back to API documentation](../API-Documentation.md)
+{: .buttons}

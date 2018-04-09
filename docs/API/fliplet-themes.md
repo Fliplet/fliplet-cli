@@ -13,3 +13,8 @@ Fliplet.Themes.get().then(function (themes) {
 ```js
 var value = Fliplet.Themes.Current.get('keyName');
 ```
+
+---
+
+[Back to API documentation](../API-Documentation.md)
+{: .buttons}

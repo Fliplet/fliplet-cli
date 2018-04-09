@@ -87,3 +87,8 @@ The following links might help you and your IT to configure the integration. Ple
 - [Configuring SAML2 on Azure Active Directory](https://docs.microsoft.com/en-us/azure/active-directory/active-directory-saas-custom-apps)
 - [Configuring SAML2 on ADFS 2.0](https://www.replicon.com/help/configuring-adfs-20-to-work-with-saml-20)
 - [Configuring SAML2 on Salesforce](https://help.salesforce.com/articleView?id=sso_saml.htm&type=5)
+
+---
+
+[Back to API documentation](../../API-Documentation.md)
+{: .buttons}

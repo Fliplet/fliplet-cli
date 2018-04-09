@@ -39,7 +39,8 @@ const options = {
 Fliplet.Communicate.sendSMS(options);
 ```
 
-##### Twilio
+#### Twilio
+
 ```js
 const options = {
   provider: "twilio"
@@ -57,5 +58,9 @@ const options = {
 Fliplet.Communicate.sendSMS(options);
 ```
 
-Let us know if you want to use another SMS provider.
-We'll check if we can integrate it on our system.
+Let us know if you require to use another SMS provider and we'll check whether we can integrate it on our system.
+
+---
+
+[Back to API documentation](../API-Documentation.md)
+{: .buttons}

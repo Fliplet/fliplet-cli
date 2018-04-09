@@ -187,3 +187,8 @@ Fliplet.Hooks.on('onFormSubmitError', function(error) {
   // form encountered an error when saving or submitting
 });
 ```
+
+---
+
+[Back to API documentation](../../API-Documentation.md)
+{: .buttons}

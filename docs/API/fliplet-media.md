@@ -100,3 +100,8 @@ Fliplet.Media.Files.getCachedImages({
   */
 });
 ```
+
+---
+
+[Back to API documentation](../API-Documentation.md)
+{: .buttons}

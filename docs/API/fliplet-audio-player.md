@@ -15,3 +15,8 @@ Declare these specific audio tags in the HTML of your screen. You can use any ta
 These tags will be picked up automatically by the framework and converted into audio player.
 
 If you need to add more tags at runtime, simply run `Fliplet.Media.Audio.Player.init()` to convert any new tag into an audio player.
+
+---
+
+[Back to API documentation](../API-Documentation.md)
+{: .buttons}

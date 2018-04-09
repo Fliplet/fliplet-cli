@@ -67,3 +67,8 @@ document.addEventListener('flDirectoryBeforeInit', function(e) {
   e.stopPropagation();
 });
 ```
+
+---
+
+[Back to API documentation](../../API-Documentation.md)
+{: .buttons}
