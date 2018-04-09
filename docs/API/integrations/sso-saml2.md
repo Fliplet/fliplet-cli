@@ -82,5 +82,8 @@ Don't forget to add `fliplet-session` as a dependency of your screen (or app) to
 
 ## Third-party reference docs
 
+The following links might help you and your IT to configure the integration. Please use the link depending on the backend system you use:
+
 - [Configuring SAML2 on Azure Active Directory](https://docs.microsoft.com/en-us/azure/active-directory/active-directory-saas-custom-apps)
+- [Configuring SAML2 on ADFS 2.0](https://www.replicon.com/help/configuring-adfs-20-to-work-with-saml-20)
 - [Configuring SAML2 on Salesforce](https://help.salesforce.com/articleView?id=sso_saml.htm&type=5)
