@@ -1,6 +1,6 @@
 # Single Sign-on with SAML2
 
-Fliplet offers **secure single sign-on** to your apps through the **SAML2** standard. Setting it up usually requires IT/backend support from your system administrators for the initial configuration phase only.
+Fliplet offers **secure Single Sign-On (SSO)** to your apps through the **SAML2** standard. Setting it up usually requires IT/backend support from your system administrators for the initial configuration phase only.
 
 ## Getting started
 
