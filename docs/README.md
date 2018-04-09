@@ -43,3 +43,5 @@ To get a brief introduction to the technologies we use and the stack of the plat
   - [Sending events between components](Event-emitter.md)
   - [Best practises and advices](Best-practises.md)
   - [Using the JS APIs externally](Fliplet-SDK.md)
+9. Integrations
+  - [Single Sign-on with SAML2](API/integrations/sso-saml2.md)
