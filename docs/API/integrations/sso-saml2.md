@@ -34,13 +34,19 @@ Once you have given the above to your IT, they should be able to configure the i
 
 When everything is set up, clicking the sign in button on the Fliplet app should redirect the user to your login screen. Once a login succeed, the user will be redirected back to the Fliplet app at the screen you selected in the component configuration.
 
+### Adding more security to your app
+
+Once the integration is all working, you can secure your app by requiring a valid SAML2 session to all screens except the login one. This only takes a few seconds via the **App security** tab of your app settings:
+
+![SAML2](../../assets/img/saml/3.png)
+
 ---
 
 ## The integration flow explained
 
 1. User clicks a login button on a Fliplet app and gets redirected to the client's login page.
 2. User logs in with his/her organisation credentials (not Fliplet credentials) and gets redirected back to Fliplet servers.
-3. Fliplet servers validates the login request and when valid redirects the user back to the Fliplet app and to the relevant page.
+3. Fliplet servers validate the login request and redirects the user back to the Fliplet app and to the relevant page.
 
 ---
 
