@@ -42,6 +42,8 @@ Your IT might ask you what data should be exposed to the Fliplet app with the in
 - `given_name`
 - `surname`
 
+These can be used to enhance your Fliplet app user experience by displaying them on your app screens once the user has logged in. This is described further below on this document.
+
 ### Adding more security to your app
 
 Once the integration is all working, you can secure your app by requiring a valid SAML2 session to all screens except the login one. This only takes a few seconds via the **App security** tab of your app settings:
