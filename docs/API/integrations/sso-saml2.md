@@ -1,8 +1,8 @@
 # Single Sign-on with SAML2
 
-Fliplet Apps offer secure single sign-on through the SAML2 standard. Setting it up on your app usually requires IT/backend support from your system administrators for the initial configuration phase only.
+Fliplet offers **secure single sign-on** to your apps through the **SAML2** standard. Setting it up usually requires IT/backend support from your system administrators for the initial configuration phase only.
 
-## Get started
+## Getting started
 
 Create a new Fliplet app or use your existing one then drop the **SAML2 component** into your screen:
 
@@ -18,13 +18,15 @@ The first thing you'll need is to **press the copy the link to the metadata XML*
 https://api.fliplet.com/v1/session/providers/saml2/metadata?appId=123
 ```  
 
-Please note that the `appId=123` will change depending on your Fliplet app id. The metadata also contains a few other things you will need to provide to your team, such as:
+Please note that the `appId=123` will change depending on your Fliplet app id. If your system does not allow importing the above XML, you can still configure the integration by manually getting the fields to use from the XML. These are the ones you will need and how to find them:
 
-1. **Entity ID** (or Identifier) this field has a fixed value and it's `https://api.fliplet.com/v1/session/providers/saml2/metadata`
-2. **Reply URL** (or Assertion URL) which depends on your appId like the first URL. Here's a sample value for it: `https://api.fliplet.com/v1/session/providers/saml2/callback?appId=2197`
-2. Service Provider **[Certificate](../../assets/misc/saml2-certificate.txt)** (PEM String format)
+1. **Entity ID** (or Identifier) this field has a fixed value and it's `https://api.fliplet.com/v1/session/providers/saml2/metadata` for any Fliplet app
+2. **Reply URL** (or Assertion URL) is dynamic and depends on your Flipler App ID. Here's a sample value for it: `https://api.fliplet.com/v1/session/providers/saml2/callback?appId=123`
+2. Service Provider Certificate (PEM String format): [Download](../../assets/misc/saml2-certificate.txt)
 
-Once you have given the above to your IT, they should be configure to configure the integration and come back to you with a few details which you will need to paste on the configuration interface:
+Note: the three fields above can also be retrieved from the metadata XML under the following paths: `SingleSignOnService`, `SingleLogoutService`, `X509Certificate`.
+
+Once you have given the above to your IT, they should be able to configure the integration and come back to you with a few details which you will need to paste back on the Fliplet SAML2 component configuration interface:
 
 - **Single sign-on login** URL
 - **Single sign-on logout** URL
@@ -34,7 +36,7 @@ When everything is set up, clicking the sign in button on the Fliplet app should
 
 ---
 
-## Integration flow
+## The integration flow explained
 
 1. User clicks a login button on a Fliplet app and gets redirected to the client's login page.
 2. User logs in with his/her organisation credentials (not Fliplet credentials) and gets redirected back to Fliplet servers.
@@ -65,3 +67,4 @@ Don't forget to add `fliplet-session` as a dependency of your screen (or app) to
 ## Third-party reference docs
 
 - [Configuring SAML2 on Azure Active Directory](https://docs.microsoft.com/en-us/azure/active-directory/active-directory-saas-custom-apps)
+- [Configuring SAML2 on Salesforce](https://help.salesforce.com/articleView?id=sso_saml.htm&type=5)
