@@ -15,6 +15,7 @@ jobs:
   publish:
     machine: true
     steps:
+      - checkout
       - run: npm publish
 
 workflows:
