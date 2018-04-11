@@ -130,6 +130,8 @@ if (runningWidgets.length) {
   log('Just so you know, these packages are also running on your machine:');
   runningWidgets.forEach((w) => { log(`• ${w.id} -> ${w.data.url}`) });
   log();
+  log('If you think this is an error, run "fliplet cleanup" to reset the local state.');
+  log();
 }
 
 // --------------------------------------------------------------------------
