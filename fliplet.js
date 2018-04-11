@@ -20,4 +20,5 @@ program
   .command('env [name]', 'Set the environment: dev, staging or production.')
   .command('login', 'Log in with your Fliplet Studio account.')
   .command('logout', 'Log out from Fliplet Studio.')
+  .command('cleanup', 'Reset the local state of the CLI.')
   .parse(process.argv);
