@@ -8,23 +8,23 @@ Feeling lost? Head to the [JS APIs](JS-APIs.md) section of the docs to read more
 
 These JS APIs falls into the most common category and almost all apps, components and themes use at least one of them. All apps include `fliplet-core` by default, and any other can easily be included on your app screens via Fliplet Studio.
 
-- [Fliplet Core](API/fliplet-core.md) (`fliplet-core`)
-- [Fliplet Communicate](API/fliplet-communicate.md) (`fliplet-communicate`)
-- [Fliplet Session](API/fliplet-session.md) (`fliplet-session`)
-- [Fliplet Data Sources](API/fliplet-datasources.md) (`fliplet-datasources`)
-- [Fliplet Media](API/fliplet-media.md) (`fliplet-media`)
-- [Fliplet Themes](API/fliplet-themes.md) (`fliplet-themes`)
-- [Fliplet Studio UI](UI-guidelines-interface.md) (`fliplet-studio-ui`)
 - [Fliplet Audio](API/fliplet-audio.md) (`fliplet-audio`)
 - [Fliplet Audio Player](API/fliplet-audio-player.md) (`fliplet-audio-player`) (Beta)
+- [Fliplet Communicate](API/fliplet-communicate.md) (`fliplet-communicate`)
+- [Fliplet Core](API/fliplet-core.md) (`fliplet-core`)
+- [Fliplet Data Sources](API/fliplet-datasources.md) (`fliplet-datasources`)
 - [Fliplet Database](API/fliplet-database.md) (`fliplet-database`) (Beta)
+- [Fliplet Media](API/fliplet-media.md) (`fliplet-media`)
+- [Fliplet Session](API/fliplet-session.md) (`fliplet-session`)
+- [Fliplet Studio UI](UI-guidelines-interface.md) (`fliplet-studio-ui`)
+- [Fliplet Themes](API/fliplet-themes.md) (`fliplet-themes`)
 
 ---
 
 ## Documentation for Fliplet Components
 
-- [Fliplet Form Builder](API/components/form-builder.md)
 - [Fliplet Data Directory](API/components/data-directory.md)
+- [Fliplet Form Builder](API/components/form-builder.md)
 
 ---
 
