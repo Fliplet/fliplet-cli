@@ -29,6 +29,12 @@ Creata a release tag from master. Eg: v3.7.5
 
 # Docs
 
+Navigate to the `docs` directory
+
+```
+cd docs
+```
+
 Install depencencies:
 
 ```
