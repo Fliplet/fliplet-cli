@@ -16,8 +16,10 @@ These JS APIs falls into the most common category and almost all apps, component
 - [Fliplet Database](API/fliplet-database.md) (`fliplet-database`) (Beta)
 - [Fliplet Media](API/fliplet-media.md) (`fliplet-media`)
 - [Fliplet Session](API/fliplet-session.md) (`fliplet-session`)
+- [Fliplet Social Share](API/fliplet-social-share.md) (`fliplet-social`)
 - [Fliplet Studio UI](UI-guidelines-interface.md) (`fliplet-studio-ui`)
 - [Fliplet Themes](API/fliplet-themes.md) (`fliplet-themes`)
+- [Fliplet UI](API/fliplet-ui.md) (`fliplet-pages`)
 
 ---
 

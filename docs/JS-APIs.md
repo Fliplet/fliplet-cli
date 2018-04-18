@@ -18,7 +18,7 @@ Please refer to the specific `json` file in order to add dependencies to compone
 
 Adding our dependencies to apps screens only takes a few seconds. Just browse to the screen you want to add the package to, then click on the **Developer options** and add the **package name** in the **screen dependencies** section as shown:
 
-![Dependencies](https://d2ppvlu71ri8gs.cloudfront.net/items/1D122h0u091N0W0p363j/Screen%20Shot%202017-04-27%20at%2019.04.19.png)
+![Dependencies](assets/img/dependencies.png)
 
 Then, click the save button and you're good to go! You can now use the methods that the package is exposing.
 
