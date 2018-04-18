@@ -110,7 +110,7 @@ Fliplet.UI.Toast({
           .then(function(){
             Fliplet.UI.Toast(title);
           });
-        return 
+        return false;
       }
     }
   ]
