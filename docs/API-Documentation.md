@@ -2,6 +2,8 @@
 
 Feeling lost? Head to the [JS APIs](JS-APIs.md) section of the docs to read more about using these packages in your Fliplet apps, components and themes.
 
+Are you rather looking for our **RESTful APIs** for complex backend integrations? Jump to their [documentation](REST-API-Documentation.md) to read more.
+
 ---
 
 ## Documentation for public JS APIs
