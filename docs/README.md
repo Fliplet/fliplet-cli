@@ -6,8 +6,14 @@ Welcome to the developers documentation for the **Fliplet Platform**. Here you c
 <section class="blocks">
   <a href="/API-Documentation.html">
     <div>
-      <h4>Read JS API Documentation</h4>
+      <h4>JS API Documentation</h4>
       <p>Learn how to use our Javascript helpers and enrich your apps in just a few seconds.</p>
+    </div>
+  </a>
+  <a href="/REST-API-Documentation.html">
+    <div>
+      <h4>REST API Documentation</h4>
+      <p>Integrate your backend with our easy-to-use industry standard APIs.</p>
     </div>
   </a>
   <a href="/API/components/form-builder.html">
