@@ -1,10 +1,10 @@
 # Authenticating with the APIs
 
-The entrypoint to use for all requests is ​https://api.fliplet.com​. Alternatively, US clients can use ​https://us.api.fliplet.com​ to get faster execution and response when their data resides in the US region. If you’re unsure about this, please get in touch with us.
+The entrypoint to use for all requests is ​[https://api.fliplet.com​](https://api.fliplet.com​). Alternatively, US clients can use ​[https://us.api.fliplet.com​](https://us.api.fliplet.com​) to get faster execution and response when their data resides in the US region. If you’re unsure about this, please get in touch with us.
 
-All requests must be made via ​SSL​ to the above HTTPS-only endpoint.
+All requests must be made via ​**SSL​** to the above HTTPS-only endpoint.
 
-All our APIs uses ​RESTful​ web services which supports both JSON and url-encoded parameters as body of POST requests. 
+All our APIs uses ​RESTful​ web services which supports both **JSON** and url-encoded parameters as body of POST requests. 
 
 The request body size ​limit​ on all endpoints is set to 1​ GB​, which is then a hard limit for uploaded files.
 
