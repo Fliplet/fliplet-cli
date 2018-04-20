@@ -1,22 +1,25 @@
 # Fliplet Data Sources REST APIs
 
-- [Authentication](#authentication)
-- [Access roles](#access-roles)
-- [Entities](#entities)
+Table of contents
+
+1. [Authentication](#authentication)
+2. [Access roles](#access-roles)
+3. [Entities](#entities)
   * [Data Source](#data-source)
   * [Data Source Entry](#data-source-entry)
-- [Endpoints](#endpoints)
+4. [Endpoints](#endpoints)
   * [Get the data sources belonging to an app or organisation](#get-the-data-sources-belonging-to-an-app-or-organisation)
   * [Get a data source by its ID](#get-a-data-source-by-its-id)
   * [Create a data source](#create-a-data-source)
   * [Update a data source attributes](#update-a-data-source-attributes)
-  * [`PUT v1/data-sources/:dataSourceId`](#put-v1data-sourcesdatasourceid)
   * [Delete a data source and its entries from the system](#delete-a-data-source-and-its-entries-from-the-system)
   * [Bulk-import entries for a data source](#bulk-import-entries-for-a-data-source)
   * [Run queries on a data source](#run-queries-on-a-data-source)
   * [Get a data source entry by its ID](#get-a-data-source-entry-by-its-id)
   * [Insert a new entry to a data source](#insert-a-new-entry-to-a-data-source)
   * [Insert a new entry with files into a data source](#insert-a-new-entry-with-files-into-a-data-source)
+
+---
 
 ## Authentication
 
