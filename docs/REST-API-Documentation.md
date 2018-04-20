@@ -1,3 +1,9 @@
 # REST API Documentation
 
-- [Fliplet Data Sources](REST-API/fliplet-datasources.md) (`fliplet-datasources`)
+## Fliplet Data Sources
+
+Read and write data to our virtual tables.
+
+[View documentation](REST-API/fliplet-datasources.md)
+
+---
