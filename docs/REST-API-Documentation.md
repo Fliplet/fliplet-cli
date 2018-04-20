@@ -18,8 +18,6 @@ Read and write data to our virtual tables and enhance your Fliplet apps. This is
 [View documentation for Data Sources »](REST-API/fliplet-datasources.md)
 {: .buttons}
 
----
-
 ### Fliplet Apps
 
 Read and update your apps data.
