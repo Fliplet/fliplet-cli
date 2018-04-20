@@ -7,7 +7,7 @@ Welcome to the developers documentation for the **Fliplet Platform**. Here you c
   <a href="/API-Documentation.html">
     <div>
       <h4>JavaScript API Documentation</h4>
-      <p>Learn how to use our Javascript helpers and enrich apps within seconds.</p>
+      <p>Learn how to use our SDK and enrich apps within seconds.</p>
     </div>
   </a>
   <a href="/REST-API-Documentation.html">
@@ -18,8 +18,8 @@ Welcome to the developers documentation for the **Fliplet Platform**. Here you c
   </a>
   <a href="/API/components/form-builder.html">
     <div>
-      <h4>Interact with a Form</h4>
-      <p>Use our hooks and functions to extend your forms built with our Form Builder.</p>
+      <h4>Interact with your app's forms</h4>
+      <p>Use hooks and functions to extend forms built via the Form Builder.</p>
     </div>
   </a>
 </section>
