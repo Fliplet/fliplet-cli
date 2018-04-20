@@ -22,7 +22,7 @@ Read and write data to our virtual tables and enhance your Fliplet apps. This is
 
 ### Fliplet Apps
 
-Read and update your apps data
+Read and update your apps data.
 
 [View documentation for Apps »](REST-API/fliplet-apps.md)
 {: .buttons}
