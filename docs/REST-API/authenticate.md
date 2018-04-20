@@ -1,28 +1,28 @@
 # Authenticating with the APIs
 
-The entrypoint to use for all requests is ​[https://api.fliplet.com​](https://api.fliplet.com​). Alternatively, US clients can use ​[https://us.api.fliplet.com​](https://us.api.fliplet.com​) to get faster execution and response when their data resides in the US region. If you’re unsure about this, please get in touch with us.
+The entrypoint to use for all requests is ​**[https://api.fliplet.com​](https://api.fliplet.com​)**. Alternatively, US clients can use ​**[https://us.api.fliplet.com​](https://us.api.fliplet.com​)** to get faster execution and response when their data resides in the US region. If you’re unsure about this, please get in touch with us.
 
 All requests must be made via ​**SSL​** to the above HTTPS-only endpoint.
 
-All our APIs uses ​RESTful​ web services which supports both **JSON** and url-encoded parameters as body of POST requests. 
+All our APIs uses **​RESTful​ web services** which supports both **JSON** and url-encoded parameters as body of POST requests. 
 
-The request body size ​limit​ on all endpoints is set to 1​ GB​, which is then a hard limit for uploaded files.
+The request **body size ​limit​** on all endpoints is set to **1​ GB​**, which is then a hard limit for uploaded files.
 
-All requests must contain the authentication token in the request headers ​or​ as a GET parameter. Alternatively, it can also be sent as a cookie, although sending it in the headers is preferred for security.
+**All requests must contain the authentication token** in the request headers ​or​ as a GET parameter. Alternatively, it can also be sent as a cookie, although sending it in the headers is preferred for security.
 
-**As a header:**
+**Option 1) as a header**
 ```
-Auth-token: abcdefg123456789
-```
-
-**As a GET parameter:**
-```
-?auth_token=abcdefg123456789
+Auth-token: eu--abcdefg123456789
 ```
 
-**As a request cookie:**
+**Option 2) as a GET parameter**
 ```
-Cookie: auth_token=abcdefg123456789;
+?auth_token=eu--abcdefg123456789
+```
+
+**Option 3) as a request cookie**
+```
+Cookie: auth_token=eu--abcdefg123456789;
 ```
 
 If the provided token has been revoked, an error message will be returned as follows:
