@@ -65,6 +65,8 @@ Data Sources belongs to an ​organisation​ and optionally to an ​app​, ca
 
 Represents a row of a Data Source. It can store complex objects with nested values (using JSON) rather than simple values.
 
+---
+
 ## Endpoints
 
 ### Get the data sources belonging to an app or organisation
@@ -106,7 +108,7 @@ Response  (Status code: 200 OK):
 
 ### Get a data source by its ID
 
-#### GET v1/data-sources/:dataSourceId
+#### `GET v1/data-sources/:dataSourceId`
 
 ```json
 {
@@ -174,7 +176,7 @@ Response  (Status code: 201 Created):
 
 ### Update a data source attributes
 
-### PUT v1/data-sources/:dataSourceId
+### `PUT v1/data-sources/:dataSourceId`
 
 Request body:
 
@@ -247,7 +249,7 @@ Request body (JSON):
 {
   "type": "select",
   "where": {
-    "email: "john.doe@example.org"
+    "email": "john.doe@example.org"
   }
 }
 ```
