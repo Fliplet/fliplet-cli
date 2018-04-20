@@ -33,15 +33,16 @@ To get a brief introduction to the technologies we use and the stack of the plat
 3. [Publishing](Publishing.md)
 4. [Testing](Testing-components.md)
 5. [Working with your components](Cloning-widgets.md)
-6. [API Documentation](API-Documentation.md)
-7. UI Guidelines
+6. [JS API Documentation](API-Documentation.md)
+7. [REST API Documentation](REST-API-Documentation.md)
+8. UI Guidelines
   - [Guidelines for component interfaces](UI-guidelines-interface.md)
   - [Guidelines for component output](UI-guidelines-build.md)
-8. Advanced documentation
+9. Advanced documentation
   - [Using providers](components/Using-Providers.md)
   - [Dependencies and assets when building themes and components](Dependencies-and-assets.md)
   - [Sending events between components](Event-emitter.md)
   - [Best practises and advices](Best-practises.md)
   - [Using the JS APIs externally](Fliplet-SDK.md)
-9. Integrations
+10. Integrations
   - [Single Sign-on with SAML2](API/integrations/sso-saml2.md)
