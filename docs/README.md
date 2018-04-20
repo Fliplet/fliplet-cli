@@ -7,7 +7,7 @@ Welcome to the developers documentation for the **Fliplet Platform**. Here you c
   <a href="/API-Documentation.html">
     <div>
       <h4>JavaScript API Documentation</h4>
-      <p>Learn how to use our Javascript helpers and enrich your apps in just a few seconds.</p>
+      <p>Learn how to use our Javascript helpers and enrich apps within seconds.</p>
     </div>
   </a>
   <a href="/REST-API-Documentation.html">
