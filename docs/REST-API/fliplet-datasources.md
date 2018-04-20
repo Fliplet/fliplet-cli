@@ -6,7 +6,7 @@ Please head to the [how to authenticate](authenticate.md) page of the documentat
 
 ---
 
-## Preliminary details
+## Access roles
 
 Data sources requires ​roles​ to be accessed to. Roles can have multiple permissions: **create, read, update, delete, query**. We call them ​`crudq​`. Once you create a data source, your user automatically gets all these permissions assigned to it, since you own the data source.
 
