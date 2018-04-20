@@ -2,11 +2,17 @@
 
 ## Preliminary details
 
-- The entrypoint to use for all requests is ​https://api.fliplet.com​. Alternatively, US clients can use ​https://us.api.fliplet.com​ to get faster execution and response when their data resides in the US region. If you’re unsure about this, please get in touch with us.
-- All requests must be made via ​SSL​ to the above HTTPS-only endpoint.
-- All our APIs uses ​RESTful​ web services which supports both JSON and url-encoded parameters as body of POST requests. 
-- The request body size ​limit​ on all endpoints is set to 1​ GB​, which is then a hard limit for uploaded files.
-- Data sources requires ​roles​ to be accessed to. Roles can have multiple permissions: create, read, update, delete, query. We call them ​crudq​. Once you create a data source, your user automatically gets all these permissions assigned to it, since you own the data source.
+The entrypoint to use for all requests is ​https://api.fliplet.com​. Alternatively, US clients can use ​https://us.api.fliplet.com​ to get faster execution and response when their data resides in the US region. If you’re unsure about this, please get in touch with us.
+
+All requests must be made via ​SSL​ to the above HTTPS-only endpoint.
+
+All our APIs uses ​RESTful​ web services which supports both JSON and url-encoded parameters as body of POST requests. 
+
+The request body size ​limit​ on all endpoints is set to 1​ GB​, which is then a hard limit for uploaded files.
+
+Data sources requires ​roles​ to be accessed to. Roles can have multiple permissions: **create, read, update, delete, query**. We call them ​`crudq​`. Once you create a data source, your user automatically gets all these permissions assigned to it, since you own the data source.
+
+---
 
 ## Authentication
 
@@ -29,21 +35,26 @@ Cookie: auth_token=abcdefg123456789;
 
 If the provided token has been revoked, an error message will be returned as follows:
 
-```
-{"error":"not authorised","message":"The auth_token provided doesn't belong
- to any user."}
+```json
+{
+  "error": "not authorised",
+  "message":"The auth_token provided doesn't belong to any user."
+}
 ```
 
-## How to create a token
+## How to create an authentication token
 
-1. Login to Fliplet Studio
+1. Login to Fliplet Studio with your account
 2. Edit the app you want to have API access to
 3. Go to ‘App Settings’
 4. Go to ‘App tokens’ tab of app settings
 5. Create a new token
+
 Note: The token does not expire, but can be revoked at any time should you want to (e.g. when unauthorised access is found or your token has been compromised).
 
 ## Entities
+
+Before heading deep into describing the API endpoints, let's describe what a **Data Source** and **Data Source Entry** are.
 
 ### Data Source
 
