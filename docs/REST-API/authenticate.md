@@ -1,4 +1,4 @@
-# Authenticating with Fliplet REST APIs
+# Authenticating with the APIs
 
 The entrypoint to use for all requests is ​https://api.fliplet.com​. Alternatively, US clients can use ​https://us.api.fliplet.com​ to get faster execution and response when their data resides in the US region. If you’re unsure about this, please get in touch with us.
 
