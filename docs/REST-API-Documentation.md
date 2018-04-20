@@ -2,6 +2,8 @@
 
 ## 1. Authentication
 
+All our APIs require your client to authenticate when accessing the endpoints. Please check how to before heading to the reference for specific features.
+
 [How to authenticate »](REST-API/authenticate.md)
 {: .buttons}
 
