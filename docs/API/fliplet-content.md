@@ -132,9 +132,5 @@ Delete existing entries.
   * **id** (Number) ID for the data source entry to be deleted.
   * **content** (Boolean) An object containing the content to match for deleting. This can use JSON-based queries.
 
-## Related
-
-* [`Fliplet.Profile.Content()`](fliplet-profile-content.md)
-
 [Back to API documentation](../API-Documentation.md)
 {: .buttons}
