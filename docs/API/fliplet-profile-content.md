@@ -4,9 +4,14 @@
 
 The `fliplet-content` package contains helpers to create and manage content specific to the user.
 
-When **content** is created using `Fliplet.Profile.Content()`, a record is stored in the specified data source with the content **attributed to the user**.
+When **content** is created using `Fliplet.Profile.Content()`, a record is stored in the specified data source with the content **attributed to the user**. This means the following:
 
-See [`Fliplet.Profile.Content()`](fliplet-profile-content.md) for more information on what features can be built with these helpers.
+* Content **created** will be attributed to the user.
+* Only content created by the same user can be **queried**.
+* Only content created by the same user can be **updated**.
+* Only content created by the same user can be **deleted**.
+
+See [`Fliplet.Content()`](fliplet-content.md) for more information on what features can be built with these helpers.
 
 To build these features, create an instance with `Fliplet.Profile.Content()` and use the returned object to call the available methods.
 
