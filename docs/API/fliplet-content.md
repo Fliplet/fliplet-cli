@@ -4,7 +4,7 @@
 
 * [`Fliplet.Profile.Content()`](fliplet-profile-content.md)
 
-(Returns **`Object`**)
+(Returns **`Promise`**)
 
 The `fliplet-content` package contains helpers to create and manage content using data sources.
 
@@ -17,7 +17,7 @@ When **content** is created using `Fliplet.Content()`, a record is stored in the
 * Liking a piece of content with a thumb-up
 * etc.
 
-To build these features, create an instance with `Fliplet.Content()` and use the returned object to call the available methods.
+To build these features, create an instance with `Fliplet.Content()` and use the returned object in the promise resolving function to call the available methods.
 
 ```js
 Fliplet.Content(dataSourceId)
@@ -38,27 +38,29 @@ Fliplet.Content(options)
 ### Share a page with a URL
 
 ```js
-var content = Fliplet.Content({dataSourceId: 2});
-content.create({
-  pageId: 3
-}, {
-  public: true
-}).then(function(entry){
-  entry.data.publicSlug; // return the slug that can be used for sharing via a http://apps.fliplet.com/r/{{publicSlug}} URL
+Fliplet.Content({dataSourceId: 2}).then(function (content) {
+  content.create({
+    pageId: 3
+  }, {
+    public: true
+  }).then(function(entry){
+    entry.data.publicSlug; // return the slug that can be used for sharing via a http://apps.fliplet.com/r/{{publicSlug}} URL
+  });  
 });
 ```
 
 ### Count number of times a directory entry is tagged
 
 ```js
-var content = Fliplet.Content({dataSourceId: 2});
-content.query({
-  content: {
-    pageId: 3282,
-    dataSourceEntryId: 5234,
-  }
-}).then(function(rows){
-  rows; // returns all the data source entries related to the specified content
+Fliplet.Content({dataSourceId: 2}).then(function (content) {
+  content.query({
+    content: {
+      pageId: 3282,
+      dataSourceEntryId: 5234,
+    }
+  }).then(function(rows){
+    rows; // returns all the data source entries related to the specified content
+  });
 });
 ```
 
@@ -91,9 +93,11 @@ Query for content entries. The result entries are passed as the first parameter 
 ```
 
 * **options** (Object) A map of options to pass to the method.
-  * **content** (Object) An object containing the content to query for. This can use JSON-based queries.
-  * **settings** (Object) An object containing the settings to query for. This can use JSON-based queries.
-  * **action** (Object) An object containing the action to query for. This can use JSON-based queries.
+  * **where** (Object) A map of `WHERE` clauses to use for the query.
+    * **content** (Object) An object containing the content to query for. This can use JSON-based queries.
+    * **settings** (Object) An object containing the settings to query for. This can use JSON-based queries.
+    * **action** (Object) An object containing the action to query for. This can use JSON-based queries.
+  * **exact** (Boolean) If `true`, only entries with exact `content` matches will be returned. (**Default**: `true`)
 
 ### `.update()`
 
@@ -103,7 +107,7 @@ Update existing entries with new data.
 
 #### Notes
 
-* `options.id` or `options.content` must be passed to query for the entries to be updated.
+* `options.id` or `options.where` must be passed to query for the entries to be updated.
 
 ```js
 .update(data, options)
@@ -116,7 +120,11 @@ Update existing entries with new data.
   * **public** (Boolean) Use this property to turn on/off public visibility of the sharead content
 * **options** (Object) A map of options to pass to the method.
   * **id** (Number) ID for the data source entry to be updated.
-  * **content** (Object) An object containing the content to match for updating. This can use JSON-based queries.
+  * **where** (Object) A map of `WHERE` clauses to use for the query.
+    * **content** (Object) An object containing the content to query for updating. This can use JSON-based queries.
+    * **settings** (Object) An object containing the settings to query for updating. This can use JSON-based queries.
+    * **action** (Object) An object containing the action to query for updating. This can use JSON-based queries.
+  * **exact** (Boolean) If `true`, only entries with exact `content` matches will be updated. (**Default**: `true`)
 
 ### `.delete()`
 
@@ -130,7 +138,11 @@ Delete existing entries.
 
 * **options** (Object) A map of options to pass to the method.
   * **id** (Number) ID for the data source entry to be deleted.
-  * **content** (Boolean) An object containing the content to match for deleting. This can use JSON-based queries.
+  * **where** (Object) A map of `WHERE` clauses to use for the query.
+    * **content** (Object) An object containing the content to query for deleting. This can use JSON-based queries.
+    * **settings** (Object) An object containing the settings to query for deleting. This can use JSON-based queries.
+    * **action** (Object) An object containing the action to query for deleting. This can use JSON-based queries.
+  * **exact** (Boolean) If `true`, only entries with exact `content` matches will be deleted. (**Default**: `true`)
 
 [Back to API documentation](../API-Documentation.md)
 {: .buttons}
