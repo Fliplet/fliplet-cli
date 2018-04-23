@@ -10,7 +10,7 @@ The `fliplet-content` package contains helpers to create and manage content usin
 
 When **content** is created using `Fliplet.Content()`, a record is stored in the specified data source. This can be used to aggregate all the content being created via different users, screens and apps.
 
-**Contents** created with `Fliplet.Content` can be used to create features such as:
+**Contents** created with `Fliplet.Content()` can be used to create features such as:
 
 * Saving a search configuration
 * Bookmarking a page/directory entry
