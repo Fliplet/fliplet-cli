@@ -3,6 +3,7 @@
 The `fliplet-datasources` package contains the following namespaces:
 
 - [Data Sources](#data-sources)
+- [Database](#database)
 
 ---
 
@@ -199,6 +200,38 @@ connection.import(FormData).then(function onSuccess() {});
 ```js
 connection.removeById(1).then(function onRemove() {});
 ```
+
+---
+
+## Database
+
+Note: native apps already make use of this functionality to automatically access the offline database when using data sources JS APIs, therefore you should not need to interact with the database directly unless you require very advanced usage.
+
+## Opening a local JSON file as database
+
+```js
+Fliplet.DataSources.Database('dataSources.db').then(function (db) {
+  return db.dataSource(2).find();
+}).then(function (results) {
+
+});
+```
+
+The JSON file must declare keys for each collection (or dataSource):
+
+```json
+{
+    "1": [ { "id": 123, "name": "John" }, { "id": 456, "name": "Emma" } ],
+    "2": [ { "id": 789, "name": "Alex" }, { "id": 912, "name": "Nick" } ]
+}
+```
+
+The `db` object exposes a `dataSource()` public method which requires a valid top-level key from the JSON.
+
+The latter method returns an object with two public methods:
+
+- `find(query)` Returns an array of results. Query using [Sift.js](https://github.com/crcn/sift.js/tree/master) operators.
+- `findById(id)` Returns a single record by its ID
 
 ---
 
