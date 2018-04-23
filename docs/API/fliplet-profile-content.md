@@ -1,66 +1,27 @@
-# `Fliplet.Content()`
-
-## Related
-
-* [`Fliplet.Profile.Content()`](fliplet-profile-content.md)
+# `Fliplet.Profile.Content()`
 
 (Returns **`Object`**)
 
-The `fliplet-content` package contains helpers to create and manage content using data sources.
+The `fliplet-content` package contains helpers to create and manage content specific to the user.
 
-When **content** is created using `Fliplet.Content()`, a record is stored in the specified data source. This can be used to aggregate all the content being created via different users, screens and apps.
+When **content** is created using `Fliplet.Profile.Content()`, a record is stored in the specified data source with the content **attributed to the user**.
 
-**Contents** created with `Fliplet.Content` can be used to create features such as:
+See [`Fliplet.Profile.Content()`](fliplet-profile-content.md) for more information on what features can be built with these helpers.
 
-* Saving a search configuration
-* Bookmarking a page/directory entry
-* Liking a piece of content with a thumb-up
-* etc.
-
-To build these features, create an instance with `Fliplet.Content()` and use the returned object to call the available methods.
+To build these features, create an instance with `Fliplet.Profile.Content()` and use the returned object to call the available methods.
 
 ```js
-Fliplet.Content(dataSourceId)
+Fliplet.Profile.Content(dataSourceId)
 ```
 
 * **dataSourceId** (Number) The data source ID where the content will be stored.
 
 ```js
-Fliplet.Content(options)
+Fliplet.Profile.Content(options)
 ```
 
 * **options** (Object) A map of options to pass to the constructor.
   * **dataSourceId** (Number) The data source ID where the content will be stored.
-  * **user** (Object) The user object to be used to identify a specific user. If set, content created will be stored with the provided user object. Query, update and delete actions will only work if the user object matches.
-
-## Examples
-
-### Share a page with a URL
-
-```js
-var content = Fliplet.Content({dataSourceId: 2});
-content.create({
-  pageId: 3
-}, {
-  public: true
-}).then(function(entry){
-  entry.data.publicSlug; // return the slug that can be used for sharing via a http://apps.fliplet.com/r/{{publicSlug}} URL
-});
-```
-
-### Count number of times a directory entry is tagged
-
-```js
-var content = Fliplet.Content({dataSourceId: 2});
-content.query({
-  content: {
-    pageId: 3282,
-    dataSourceEntryId: 5234,
-  }
-}).then(function(rows){
-  rows; // returns all the data source entries related to the specified content
-});
-```
 
 ## Methods
 
