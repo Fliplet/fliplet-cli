@@ -27,6 +27,8 @@ document.addEventListener('backbutton', function () {
 }, false);
 ```
 
+Please ensure you avoid putting it on screens that can go back to screens you don't want users to access. If you'd prefer to transition to another screen, please check the docs for [Fliplet.Navigate](API/fliplet-core.md#navigate).
+
 ---
 
 [Back to home](README.md)
