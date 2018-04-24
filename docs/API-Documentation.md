@@ -13,6 +13,7 @@ These JS APIs falls into the most common category and almost all apps, component
 - [Fliplet Audio](API/fliplet-audio.md) (`fliplet-audio`)
 - [Fliplet Audio Player](API/fliplet-audio-player.md) (`fliplet-audio-player`) (Beta)
 - [Fliplet Communicate](API/fliplet-communicate.md) (`fliplet-communicate`)
+- [Fliplet Content](API/fliplet-content.md) (`fliplet-content`)
 - [Fliplet Core](API/fliplet-core.md) (`fliplet-core`)
 - [Fliplet Data Sources](API/fliplet-datasources.md) (`fliplet-datasources`)
 - [Fliplet Database](API/fliplet-database.md) (`fliplet-database`) (Beta)
@@ -20,6 +21,7 @@ These JS APIs falls into the most common category and almost all apps, component
 - [Fliplet Session](API/fliplet-session.md) (`fliplet-session`)
 - [Fliplet Studio UI](UI-guidelines-interface.md) (`fliplet-studio-ui`)
 - [Fliplet Themes](API/fliplet-themes.md) (`fliplet-themes`)
+- [Fliplet UI](API/fliplet-ui.md) (`fliplet-pages`)
 
 ---
 
