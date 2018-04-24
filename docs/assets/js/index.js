@@ -20,13 +20,18 @@ search.addWidget(
   })
 );
 
+search.templatesConfig.helpers.headingTitle = function(text, render) {
+  var tmp = render(text).split(',');
+  return render(tmp[tmp.length-1]);
+};
+
 search.addWidget(
   instantsearch.widgets.hits({
     container: '#hits',
     templates: {
       item: [
-        '<a href="{{{url}}}#{{{anchor}}}"><h4>{{{_highlightResult.title.value}}}</h4>',
-        '<p>{{{_highlightResult.content.value}}}</p><hr /><span>{{{headings}}} <strong>({{{anchor}}})</strong></span></a>'
+        '<a href="{{{url}}}#{{{anchor}}}"><h4>{{#helpers.headingTitle}}{{headings}}{{/helpers.headingTitle}}</h4>',
+        '<p>{{{_highlightResult.content.value}}}</p><hr /><span><strong>{{{_highlightResult.title.value}}}</strong> ({{{anchor}}})</span></a>'
       ].join(''),
       empty: 'We didn\'t find any result under our documentation for your query.'
     }

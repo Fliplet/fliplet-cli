@@ -45,7 +45,7 @@
       </footer>
     </section>
 
-    <script src="/assets/js/index.js"></script>
+    <script src="{{ '/assets/js/index.js?v=' | append: site.github.build_revision | relative_url }}"></script>
     <script>
 (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/eo99qllm';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);window.intercomSettings = window.intercomSettings || {};
 window.intercomSettings.app_id = 'eo99qllm';
