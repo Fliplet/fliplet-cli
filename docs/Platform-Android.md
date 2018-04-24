@@ -8,7 +8,13 @@ Fliplet uses `Modernizr` to expose boolean flags which can help you targeting a 
 if (Modernizr.android) {
   // code here will only run on Android devices
 }
+
+if (Fliplet.Env.is('native')) {
+  // code here will run on Android, iOS and Windows devices but not on web
+}
 ```
+
+---
 
 ## Enable the use of back button
 
@@ -16,6 +22,7 @@ Fliplet apps by default prevent the device back button from navigating to the pr
 
 ```js
 document.addEventListener('backbutton', function () {
+  // this code will run when the hardware/software back button is pressed
   Fliplet.Navigate.back();
 }, false);
 ```
