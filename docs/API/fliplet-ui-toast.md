@@ -41,7 +41,9 @@ Fliplet.UI.Toast(options)
 
 * **options** (Object) A map of options to pass to the constructor.
   * **type** (String) (`minimal` or `regular`) Use this to determine the type of Toast notification to generate. (**Default**: `minimal`)
-  * **position** (String) (`top` or `bottom`) Use this to configure the placement of the Toast notification. By default, `minimal` Toast notifications are displayed at the `bottom` and `regular` Toast notifications are displayed at the `top`.
+  * **position** (String) (`top`, `center` or `bottom`) Use this to configure the placement of the Toast notification. By default, `minimal` Toast notifications are displayed at the `bottom` and `regular` Toast notifications are displayed at the `top`. Toast UIs positioned in the center are automatically resized to the size of the content instead of a set width.
+  * **overlay** (Boolean) If `true`, an 60% opaque black overlay will be added behind the Toast UI. Clicking/tapping on the overlay will have the same effect as clicking/tapping on the Toast UI itself. (**Default**: `false`)
+  * **tapToDismiss** (Boolean) If `true`, the Toast UI and overlay (if applicable) will be dismissed when user clicks/taps on the Toast UI and overlay. (**Default**: `true`)
   * **duration** (String, Number or Boolean) (`short`, `long`, `none` or `false`) Pass a number to determine how long (in milliseconds) the Toast notification will be on screen before it is automatically dismissed. If the string `none` or boolean value `false` is passed, the Toast notification will remain visible until `.dismiss()` is called to dismiss the notification. The keywrods `short` and `long` can also be used to set the duration to `2000` and `4000` milliseconds respectiverly. (**Default**: `4000`)
   * **title** (String) The `regular` Toast notification design allows an optional title to be included.
   * **body** (String) Content to be displayed in the Toast notification. `regular` Toast notifications will truncate this to 3 lines. `minimal` Toast notifications will truncate this to 2 lines.
