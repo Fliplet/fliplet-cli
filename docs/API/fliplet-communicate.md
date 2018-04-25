@@ -58,6 +58,12 @@ Fliplet.Communicate.sendSMS(options);
 
 Let us know if you require to use another SMS provider and we'll check whether we can integrate it on our system.
 
+## Compose an email
+
+```js 
+// TBC
+```
+
 ## Share a URL
 
 ```js 
