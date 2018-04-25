@@ -1,14 +1,13 @@
 # Communicate JS APIs
 
-The `fliplet-communicate` package contains the following namespaces:
+The `fliplet-communicate` package contains the namespace `Fliplet.Communicate` and a set of helper methods for sending communications from the app.
 
-- [Communicate](#communicate)
+- [`.sendEmail()`](#send-an-email) - Sends an HTML formatted email
+- [`.sendSMS()`](#send-an-sms) - Sends an SMS message
+- [`.composeEmail()`](#compose-an-email) - Composes an email on the device
+- [`.shareURL()`](#share-a-url) - Share a URL 
 
----
-
-## Communicate
-
-### Send an email
+## Send an email
 
 ```js
 const options = {
@@ -22,12 +21,11 @@ const options = {
 };
 
 Fliplet.Communicate.sendEmail(options);
-
 ```
 
-### Send a SMS
+## Send an SMS
 
-#### Default provider
+### Default provider
 ```js
 const options = {
   data: {
@@ -39,7 +37,7 @@ const options = {
 Fliplet.Communicate.sendSMS(options);
 ```
 
-#### Twilio
+### Twilio
 
 ```js
 const options = {
@@ -59,6 +57,12 @@ Fliplet.Communicate.sendSMS(options);
 ```
 
 Let us know if you require to use another SMS provider and we'll check whether we can integrate it on our system.
+
+## Share a URL
+
+```js 
+Fliplet.Communicate.shareURL('https://maps.google.com/?addr=N1+9PF');
+```
 
 ---
 

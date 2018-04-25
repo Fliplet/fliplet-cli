@@ -127,3 +127,8 @@ Fliplet.UI.Toast({
   ]
 })
 ```
+
+---
+
+[Back to Fliplet.UI](./fliplet-ui.md)
+{: .buttons}
