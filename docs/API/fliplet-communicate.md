@@ -58,16 +58,23 @@ Fliplet.Communicate.sendSMS(options);
 
 Let us know if you require to use another SMS provider and we'll check whether we can integrate it on our system.
 
-## Compose an email
-
-```js 
-// TBC
-```
-
 ## Share a URL
+
+(Returns **`Promise`**)
+
+Lets users share a URL. The Promise is resolved when the action is completed or dismissed. The URL is passed to the resolving function, or is `undefined` if the action is cancelled.
 
 ```js 
 Fliplet.Communicate.shareURL('https://maps.google.com/?addr=N1+9PF');
+```
+
+Optionally provide a target to enure the share popover appears in the right place on iPads.
+
+```js 
+Fliplet.Communicate.shareURL({
+  url: 'https://maps.google.com/?addr=N1+9PF',
+  target: '#target'
+});
 ```
 
 ---
