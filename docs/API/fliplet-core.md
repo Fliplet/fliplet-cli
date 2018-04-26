@@ -671,7 +671,7 @@ You can optionally provide a default value in case the key has not been assigned
 ### Remove data
 
 ```js
-Fliplet.Storage.remove('key', value).then(function () {});
+Fliplet.Storage.remove('key').then(function () {});
 ```
 
 ### Namespaced
