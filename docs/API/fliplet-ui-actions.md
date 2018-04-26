@@ -4,11 +4,6 @@
 
 Show a sheet of options the user can choose from.
 
-* iOS uses the native `UIActionSheet`
-* Android uses the native `AlertDialog`
-* Windows 10 uses the native `Popup`
-* Web uses a custom dialog to simulate the native UIs
-
 If an action is chosen, the Promise is resolved when the specified action is completed or resolved with the 0-based index provided as the first parameter. The Promise is also resolved when user chooses to cancel and dismiss the action sheet. In this case, the index provided in the resolving function will be `undefined`.
 
 ## Screenshots
