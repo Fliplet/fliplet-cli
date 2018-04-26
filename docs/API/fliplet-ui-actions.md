@@ -9,7 +9,7 @@ Show a sheet of options the user can choose from.
 * WP8 uses the native `Popup`
 * Web uses a custom dialog (TBC)
 
-If an action is chosen, the Promise is resolved when the specified action is completed or resolved with the 1-based index provided as the first parameter. The Promise is also resolved when user chooses to cancel and dismiss the action sheet. In this case, the index provided in the resolving function will be `undefined`.
+If an action is chosen, the Promise is resolved when the specified action is completed or resolved with the 0-based index provided as the first parameter. The Promise is also resolved when user chooses to cancel and dismiss the action sheet. In this case, the index provided in the resolving function will be `undefined`.
 
 ## Screenshots
 
@@ -25,8 +25,8 @@ Fliplet.UI.Actions(options)
   * **title** (String) A title that appears above the options.
   * **labels** (Array) Options to show the user. Each label object contains the following properties:
     * **label** (String) Option label to show the user.
-    * **action** (Object or Function) If an object is provided the object will be passed to `Fliplet.Navigate.to()` and executed accordingly. If a function is provided, the function will be run with the 1-based index of the label as the first parameter.
-  * **cancel** (Boolean or String) (**Default**: `Cancel`) Unless this is `false` or an empty string, a cancel button will be added at the bottom with the provided string used as the button label.
+    * **action** (Object or Function) If an object is provided the object will be passed to `Fliplet.Navigate.to()` and executed accordingly. If a function is provided, the function will be run with the 0-based index of the label as the first parameter.
+  * **cancel** (Boolean or String) Unless this is `false` or an empty string, a cancel button will be added at the bottom with the provided string used as the button label. (**Default**: `Cancel`)
 
 ## Properties
 
@@ -41,7 +41,7 @@ The toast instance returned in the promise resolving function will contain the f
 ```js
 var mapUrl = 'https://maps.google.com/?addr=N1+9PF';
 Fliplet.UI.Actions({
-  title: '',
+  title: 'What do you want with this address?',
   labels: [
     {
       label: 'Open in Google Maps',
@@ -53,14 +53,14 @@ Fliplet.UI.Actions({
     {
       label: 'Share URL',
       action: function (i) {
-        // i will be 2
+        // i will be 1
         Fliplet.Communicate.shareURL(mapUrl);
       }
     }
   ],
   cancel: 'Dismiss'
 }).then(function(i){
-  // i will be 1 or 2 depending on users's choice
+  // i will be 0 or 1 depending on users's choice
   // ...or undefined if user chooses chooses "Dismiss"
 });
 ```
