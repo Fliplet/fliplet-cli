@@ -68,6 +68,41 @@ document.addEventListener('flDirectoryBeforeInit', function(e) {
 });
 ```
 
+## Query parameters
+
+Use the following query parameters when linking to a directory screen.
+
+* `action` (String) (`filter` or `search`) The action to execute when opening the directory screen.
+  * `filter` Open filter mode
+  * `search` Open search mode
+* `field` (String - Optional) When the `action` parameter is set to `filter`, use the `field` parameter to determine which field the filter mode should be activated with. If left unset, users will be able to choose the field through the directory filter interface. This parameter is case sensitive.
+* `value` (String - Optional) The value to run the filter or search mode with. When the search result returns only 1 entry, the entry will be automatically opened. This parameter is case insensitive.
+
+### Example 1
+
+Open filter mode.
+
+```
+?action=filter
+```
+
+### Example 2
+
+Open the filter mode with all possible values of the "Country" field.
+
+```
+?action=filter&field=Country
+```
+
+### Example 3
+
+Search the directory with the keyword "engineer"
+
+```
+?action=search&value=engineering
+```
+
+
 ---
 
 [Back to API documentation](../../API-Documentation.md)
