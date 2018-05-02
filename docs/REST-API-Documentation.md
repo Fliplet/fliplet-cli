@@ -18,6 +18,13 @@ Read and write data to our virtual tables and enhance your Fliplet apps. This is
 [View documentation for Data Sources »](REST-API/fliplet-datasources.md)
 {: .buttons}
 
+### Fliplet Media
+
+Upload files to Fliplet for use in Fliplet apps.
+
+[View documentation for Media »](REST-API/fliplet-media.md)
+{: .buttons}
+
 ### Fliplet Apps
 
 Read and update your apps data.
