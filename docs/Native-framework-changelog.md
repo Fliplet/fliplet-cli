@@ -3,6 +3,7 @@
 ## Version 2.1.3 (May 1, 2018)
 
 - Social share plugin added
+- Fixes for camera not allowing the user to take pictures and causing the device to crash on certain devices
 
 ---
 
