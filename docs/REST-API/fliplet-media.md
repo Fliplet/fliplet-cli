@@ -1,7 +1,5 @@
 # Fliplet Media REST APIs
 
----
-
 ## Authentication
 
 Please head to the [how to authenticate](authenticate.md) page of the documentation to read more about how you can authorise your client to make API requests to Fliplet.
