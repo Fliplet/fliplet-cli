@@ -81,7 +81,6 @@ Update existing entries with new data.
   * **content** (Object) The existing `content` will be replaced by the provided `content` with a new hash created.
   * **settings** (Object) The existing `settings` will be replaced by the provided `settings`.
   * **action** (Object) The existing `action` will be replaced by the provided `action`.
-  * **public** (Boolean) Use this property to turn on/off public visibility of the sharead content
 * **options** (Object) A map of options to pass to the method.
   * **id** (Number) ID for the data source entry to be updated.
   * **where** (Object) A map of `WHERE` clauses to use for the query.
@@ -89,6 +88,7 @@ Update existing entries with new data.
     * **settings** (Object) An object containing the settings to query for updating. This can use JSON-based queries.
     * **action** (Object) An object containing the action to query for updating. This can use JSON-based queries.
   * **exact** (Boolean) If `true`, only entries with exact `content` matches will be updated. (**Default**: `true`)
+  * **public** (Boolean) Use this property to turn on/off public visibility of the sharead content
 
 ### `.delete()`
 
