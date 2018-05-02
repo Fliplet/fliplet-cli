@@ -164,6 +164,16 @@ Sample response:
 }
 ```
 
+--- 
+
+## Stream the contents of a file
+
+## `GET v1/media/files/:id/contents`
+
+Also accepts `size` query parameter to downscale images, like `size=medium` or `size=640x480` or `size=640>?`.
+
+This endpoint is meant to be called directly from the client since the file is streamed back to the requester.
+
 ---
 
 ## Download contents of a folder or a list of files as a ZIP package
