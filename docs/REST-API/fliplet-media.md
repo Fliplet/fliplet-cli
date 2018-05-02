@@ -166,6 +166,14 @@ Sample response:
 
 ---
 
+## Delete a folder
+
+#### `DELETE v1/media/folders/:id`
+
+Deletes a media folder given its ID.
+
+---
+
 ## Delete a file
 
 #### `DELETE v1/media/files/:id`
