@@ -139,6 +139,6 @@ Responds with `{ "files": []}` containing the uploaded files.
 
 #### `DELETE v1/media/files/:id`
 
-Deletes a media file given its ID
+Deletes a media file given its ID.
 
 ---
