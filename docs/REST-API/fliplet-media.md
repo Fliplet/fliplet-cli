@@ -92,6 +92,7 @@ Request body:
   "parentId": 123,
   "organizationId": 456
 }
+```
 
 Sample response:
 
