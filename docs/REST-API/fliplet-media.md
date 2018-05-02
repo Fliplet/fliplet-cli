@@ -132,7 +132,37 @@ Content-Type: image/jpeg
 ------WebKitFormBoundarynULsOMhLnEjL9Ao8--
 ```
 
-Responds with `{ "files": []}` containing the uploaded files.
+Sample response:
+
+```json
+{
+  "files": [
+    {
+      "id": 5,
+      "name": "foo.jpg",
+      "contentType": "image/jpeg",
+      "path": "apps/2/foo.jpg",
+      "url": "https://cdn.fliplet.com/apps/2/foo.jpg",
+      "thumbnail": "https://cdn.fliplet.com/apps/2/foo-t.jpg",
+      "size": [
+        500,
+        375
+      ],
+      "isEncrypted": null,
+      "versions": {},
+      "isOrganizationMedia": true,
+      "createdAt": "2017-12-11T17:58:13.245Z",
+      "updatedAt": "2017-12-11T17:58:13.245Z",
+      "appId": 789,
+      "dataSourceEntryId": null,
+      "dataTrackingId": null,
+      "mediaFolderId": null,
+      "userId": 123,
+      "organizationId": 456
+    }
+  ]
+}
+```
 
 ---
 
