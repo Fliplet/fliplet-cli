@@ -52,5 +52,6 @@ To get a brief introduction to the technologies we use and the stack of the plat
   - [Using the JS APIs externally](Fliplet-SDK.md)
 10. Platform-specific advanced functionalities
   - [Android](Platform-Android.md)
+  - [Framework Changelog](Native-framework-changelog.md)
 11. Integrations
   - [Single Sign-on with SAML2](API/integrations/sso-saml2.md)
