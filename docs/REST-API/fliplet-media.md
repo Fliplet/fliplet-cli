@@ -166,6 +166,16 @@ Sample response:
 
 ---
 
+## Download contents of a folder or a list of files as a ZIP package
+
+### `GET v1/media/zip?folderId=33&files=1359,5336`
+
+Requires a list of files IDs as a GET query parameter like `files=1,2,3` or list of folders IDs as `folders=1,2,3` plus optionally the parent folder id as `folderId=456`.
+
+This endpoint is meant to be called directly from the client since the zip file is streamed back to the requester.
+
+---
+
 ## Delete a folder
 
 #### `DELETE v1/media/folders/:id`
