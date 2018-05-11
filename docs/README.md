@@ -44,14 +44,16 @@ To get a brief introduction to the technologies we use and the stack of the plat
 8. UI Guidelines
   - [Guidelines for component interfaces](UI-guidelines-interface.md)
   - [Guidelines for component output](UI-guidelines-build.md)
-9. Advanced documentation
+9. Theme variables
+  - [Use theme settings in your custom CSS](Theme-Settings-In-CSS.md)
+10. Advanced documentation
   - [Using providers](components/Using-Providers.md)
   - [Dependencies and assets when building themes and components](Dependencies-and-assets.md)
   - [Sending events between components](Event-emitter.md)
   - [Best practises and advices](Best-practises.md)
   - [Using the JS APIs externally](Fliplet-SDK.md)
-10. Platform-specific advanced functionalities
+11. Platform-specific advanced functionalities
   - [Android](Platform-Android.md)
   - [Framework Changelog](Native-framework-changelog.md)
-11. Integrations
+12. Integrations
   - [Single Sign-on with SAML2](API/integrations/sso-saml2.md)
