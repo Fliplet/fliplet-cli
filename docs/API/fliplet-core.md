@@ -616,6 +616,18 @@ Fliplet.Pages.get().then(function (appPages) {
 var isOnline = Fliplet.Navigator.isOnline();
 ```
 
+### Add event listeners to when the device goes online/offline
+
+```js
+Fliplet.Navigator.onOnline(function(){
+  console.log('Device just came online.');
+});
+
+Fliplet.Navigator.onOffline(function(){
+  console.log('Device just went offline.');
+});
+```
+
 ### Wait for the device to be ready before running some code
 
 ```js
