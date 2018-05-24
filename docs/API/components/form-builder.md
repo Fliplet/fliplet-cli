@@ -146,6 +146,19 @@ Fliplet.FormBuilder.get()
   });
 ```
 
+---
+
+### `form.options(Array)`
+
+Programmatically sets the options of a dropdown or radio or checkbox field.
+
+```js
+Fliplet.FormBuilder.get()
+  .then(function (form) {
+    form.field('foo').options(['John', 'Nick', 'Tony']);
+  });
+```
+
 ## Hooks
 
 ### beforeFormSubmit
