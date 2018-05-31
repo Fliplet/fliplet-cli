@@ -2,7 +2,7 @@
 
 (Returns **`Promise`**)
 
-Create a non-obtrusive dialog that that disappears after a few seconds (unless configured otherwise). This provides a simple mechanism to provide feedback about an operation while allowing users to continue using the app.
+Create a non-obtrusive dialog that disappears after a few seconds (unless configured otherwise). This provides a simple mechanism to provide feedback about an operation while allowing users to continue using the app.
 
 There are 2 different types of Toast notifications, **minimal** and **regular**.
 
