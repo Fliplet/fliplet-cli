@@ -649,6 +649,22 @@ Fliplet.Navigator.onPluginsReady().then(function () {
 });
 ```
 
+### Get the current device information
+
+```js
+var device = Fliplet.Navigator.device();
+
+/*
+"device" is an object containing these keys:
+
+{
+  manufacturer: 'Apple',
+  model: 'iPhone',
+  platform: 'iOS',
+  uuid: 'df25dad2-0716-40e9-2c38-acf41a25cf5b'
+}
+```
+
 ### Get the device/user location
 
 ```js
@@ -659,6 +675,20 @@ Fliplet.Navigator.location().then(function (position) {
   // User didn't allow to share the location
 });
 ```
+
+### Show a local notification to the user
+
+```
+Fliplet.Navigator.Notifications.schedule({
+  title: 'Hello world',
+  text: 'Lorem ipsum dolor sit amet',
+  icon: 'https://path/to/icon.jpg'
+});
+```
+
+For the full available options, please check the [local notifications cordova plugin](https://github.com/katzer/cordova-plugin-local-notifications).
+
+Note: compared to native devices, web support for local notifications is limited despite being available.
 
 ---
 
