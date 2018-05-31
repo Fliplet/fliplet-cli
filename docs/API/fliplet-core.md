@@ -678,7 +678,7 @@ Fliplet.Navigator.location().then(function (position) {
 
 ### Show a local notification to the user
 
-```
+```js
 Fliplet.Navigator.Notifications.schedule({
   title: 'Hello world',
   text: 'Lorem ipsum dolor sit amet',
