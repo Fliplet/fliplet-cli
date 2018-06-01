@@ -60,22 +60,92 @@ Let us know if you require to use another SMS provider and we'll check whether w
 
 ## Share a URL
 
+### Screenshots
+
+**Native apps**
+
+Native apps will use the operating systems' built-in features to integrate with any other apps installed on the device.
+
+<table>
+  <tr>
+    <th width="50%">iOS</th>
+    <th width="50%">Android</th>
+  </tr>
+  <tr>
+    <td><img src="../assets/img/share-native-ios.png" /></td>
+    <td><img src="../assets/img/share-native-android.png" /></td>
+  </tr>
+</table>
+
+**Web apps**
+
+Web apps will show users a URL to copy and provide icons to share the URL with popular servives.
+
+<table>
+  <tr>
+    <th width="66.5%">Desktop</th>
+    <th width="33.5%">Mobile</th>
+  </tr>
+  <tr>
+    <td><img src="../assets/img/share-web-desktop.png" /></td>
+    <td><img src="../assets/img/share-web-mobile.png" /></td>
+  </tr>
+</table>
+
+### Fliplet.Communicate.shareURL()
+
 (Returns **`Promise`**)
 
-Lets users share a URL. The Promise is resolved when the action is completed or dismissed. The URL is passed to the resolving function, or is `undefined` if the action is cancelled.
+Lets users share a URL. The Promise is resolved when the action is completed or dismissed. The share options are passed to the reoslving function, with an additional `completed` property to signify if an action was completed or cancelled.
 
 ```js 
-Fliplet.Communicate.shareURL('https://maps.google.com/?addr=N1+9PF');
+// A simple way to share a URL
+Fliplet.Communicate.shareURL('https://maps.google.com/?addr=EC2A+4DN');
+
+// Add an optional message for apps that support the sharing a URL with a message
+Fliplet.Communicate.shareURL({
+  url: 'https://maps.google.com/?addr=EC2A+4DN',
+  message: 'Drop by and say hi!'
+});
 ```
 
-Optionally provide a target to enure the share popover appears in the right place on iPads.
+**Recommendation:** Optionally provide a target to enure the share popover appears in the right place on iPads.
 
 ```js 
 Fliplet.Communicate.shareURL({
-  url: 'https://maps.google.com/?addr=N1+9PF',
+  url: 'https://maps.google.com/?addr=EC2A+4DN',
   target: '#target'
 });
 ```
+
+[jsSocials](http://js-socials.com/docs/#custom-share) is used in web apps to let users share URLs using the following services:
+
+* Email (`email`)
+* LinkedIn (`linkedin`)
+* Twitter (`twitter`)
+* Facebook (`facebook`)
+
+Optionally provide an array of services in `shares` to use any of the services supported by jsSocials (see **Example** below).
+
+**Example**
+
+```js
+Fliplet.Communicate.shareURL({
+  url: 'https://maps.google.com/?addr=EC2A+4DN',
+  shares: [
+    'email', 'twitter', 'facebook', 'googleplus', 'linkedin',
+    'pinterest', 'stumbleupon', 'pocket', 'whatsapp', 'viber',
+    'messenger', 'vkontakte', 'telegram', 'line'
+  ]
+});
+```
+
+**Note:** The following services only work on native devices if the app is installed.
+
+* WhatsApp (`whatsapp`)
+* Viber (`viber`)
+* Facebook Messenger (`messenger`)
+* Telegram (`telegram`)
 
 ---
 
