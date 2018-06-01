@@ -110,11 +110,10 @@ Fliplet.UI.Toast('App updated');
 ```js
 // Data Source 0 is not found, and will trigger an error
 Fliplet.DataSources.connect(0)
-  .then(funciton (connection) {
+  .then(function (connection) {
     return connection.find();
   })
   .catch(function (error) {
-    console.error(error);
     Fliplet.UI.Toast({
       message: 'Error loading data',
       actions: [
