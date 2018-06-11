@@ -20,6 +20,9 @@ if (Fliplet.Env.is('native')) {
 
 If you're using Fliplet Automated App Build system with an Apple Enterprise account and want to manually provide your certificate, we will need its P12 key. Please follow [this](aab/create-p12-certificate.md) steps to generate one with your Apple account.
 
+[How to generate a P12 certificate](aab/create-p12-certificate.md)
+{: .buttons}
+
 ---
 
 [Back to home](README.md)
