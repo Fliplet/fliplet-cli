@@ -37,6 +37,8 @@ Fliplet.Content(options)
 
 ### Share a page with a URL
 
+This example uses the [`Fliplet.Communicate.shareURL()`](fliplet-communicate.md#share-a-url) API to share the URL once it's generated.
+
 ```js
 Fliplet.Content({dataSourceId: 2}).then(function (content) {
   content.create({
@@ -44,7 +46,10 @@ Fliplet.Content({dataSourceId: 2}).then(function (content) {
   }, {
     public: true
   }).then(function(entry){
-    entry.data.publicSlug; // return the slug that can be used for sharing via a http://apps.fliplet.com/r/{{publicSlug}} URL
+    // entry.data.publicSlug returns a slug that can be used for sharing via a http://apps.fliplet.com/r/{{publicSlug}} URL
+    var url = Fliplet.Env.get('appsUrl') + 'r/' + entry.data.publicSlug;
+    // Show UI to share the URL
+    Fliplet.Communicate.shareURL(url);
   });  
 });
 ```
