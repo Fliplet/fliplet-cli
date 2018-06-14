@@ -203,5 +203,19 @@ Fliplet.Hooks.on('onFormSubmitError', function(error) {
 
 ---
 
+## Events
+
+### Reset (clear button pressed)
+
+This event is fired when the clear button is pressed or the form is cleared programmatically.
+
+```js
+Fliplet.FormBuilder.on('reset', function () {
+
+});
+```
+
+---
+
 [Back to API documentation](../../API-Documentation.md)
 {: .buttons}
