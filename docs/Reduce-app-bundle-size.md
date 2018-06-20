@@ -35,8 +35,14 @@ Example 1: skip any PDF file from being bundled and also the media file with ID 
 { "type": "mediaFile", "value": 123 }
 ```
 
-The value can also accept an array of IDS:
+---
+
+Note: the `value` field can also accept an array of values to be matched by "OR":
 
 ```json
-{ "type": "mediaFile", "value": [123, 456, 789] }
+[
+  { "type": "mediaFile", "value": [123, 456, 789] },
+  { "type": "extension", "value": ["doc", "docx"] },
+  { "type": "contentType", "value": ["application/pdf"] }
+]
 ```
