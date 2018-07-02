@@ -706,6 +706,8 @@ Fliplet.Storage.set('key', value);
 // You can also wait for this to be saved on disk with a promise, if necessary
 Fliplet.Storage.set('key', value).then(function () {
   // this runs when the variable has been saved to disk
+}).catch(function (error) {
+  // this runs when an error was triggered and the data could not be saved
 });
 ```
 
@@ -719,6 +721,8 @@ Fliplet.Storage.get('key').then(function (value) {
 // you can also provide default properties to return when not set
 Fliplet.Storage.get('key', { defaults: { foo: 'bar' } }).then(function (value) {
   // here you can use the "value"
+}).catch(function (error) {
+  // this runs when an error was triggered and the data could not be read
 });
 ```
 
