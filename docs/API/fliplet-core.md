@@ -697,15 +697,25 @@ Note: compared to native devices, web support for local notifications is limited
 ### Store data
 
 ```js
-Fliplet.Storage.set('key', value).then(function () {});
+Fliplet.Storage.set('key', value);
+
+// You can also wait for this to be saved on disk with a promise, if necessary
+Fliplet.Storage.set('key', value).then(function () {
+  // this runs when the variable has been saved to disk
+});
 ```
 
 ### Read data
 
 ```js
-Fliplet.Storage.get('key').then(function (value) {});
-Fliplet.Storage.get('key', { defaults: { defaultProperty: 'defaultValue' } }).then(function (value) {});
-Fliplet.Storage.get('key', { defaults: 'defaultValue' }).then(function (value) {});
+Fliplet.Storage.get('key').then(function (value) {
+  // here you can use the "value"
+});
+
+// you can also provide default properties to return when not set
+Fliplet.Storage.get('key', { defaults: { foo: 'bar' } }).then(function (value) {
+  // here you can use the "value"
+});
 ```
 
 You can optionally provide a default value in case the key has not been assigned a value yet.
@@ -713,7 +723,12 @@ You can optionally provide a default value in case the key has not been assigned
 ### Remove data
 
 ```js
-Fliplet.Storage.remove('key').then(function () {});
+Fliplet.Storage.remove('key');
+
+// You can also wait for this to be removed from the disk with a promise, if necessary
+Fliplet.Storage.remove('key').then(function () {
+  // this runs when the variable has been removed from to disk
+});
 ```
 
 ### Namespaced
