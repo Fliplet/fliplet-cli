@@ -53,6 +53,7 @@ To get a brief introduction to the technologies we use and the stack of the plat
   - [Best practises and advices](Best-practises.md)
   - [Using the JS APIs externally](Fliplet-SDK.md)
   - [Reduce your app's bundle size](Reduce-app-bundle-size.md)
+  - [Securing your screens](Screen-security.md)
 11. Platform-specific advanced functionalities
   - [iOS](Platform-iOS.md)
   - [Android](Platform-Android.md)
