@@ -694,6 +694,10 @@ Note: compared to native devices, web support for local notifications is limited
 
 ## Storage
 
+The `Storage` JS APIs allow you to save and read data to and from the device or browser. You can save values such as **numbers**, **booleans**, **strings** and also **objects** (as long as they can be serialized via **JSON**).
+
+Please note that all these methods (`set`, `get` and `remove`) are asynchronous and the result is returned via promises. You don't need to wait for the promise when you use `set` and `remove` but you surely will need it when you use the `get` method to read a variable.
+
 ### Store data
 
 ```js
