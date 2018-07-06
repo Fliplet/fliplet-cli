@@ -2,6 +2,8 @@
 
 We regularly update our framework to support new features. If you have an older framework version but need to use a newer feature, your app will need to be rebuilt. You can check your apps framework in the 'About this app' section.
 
+## Latest versions (3.x)
+
 ### Version 3.8.5 (June 8, 2018)
 
 - SQLite plugin removed
@@ -20,7 +22,7 @@ We regularly update our framework to support new features. If you have an older 
 
 ---
 
-## Legacy versions
+## Legacy versions (2.x)
 
 Please note that these versions have limited support for newer Fliplet features. We encourage you to submit a new native update to your apps via the App Store or Google Play if you have users still running these versions of your app.
 
