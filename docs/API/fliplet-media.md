@@ -4,6 +4,7 @@ The `fliplet-media` package contains the following namespaces:
 
 - [Folders](#folders)
 - [Files](#files)
+- [Authentication](#authentication)
 
 ---
 
@@ -99,6 +100,20 @@ Fliplet.Media.Files.getCachedImages({
   ]
   */
 });
+```
+
+---
+
+## Authentication
+
+Media files might require an auth token to be accessed if your organization has encryption enabled. We have a little helper available to do the heavy lifting for you, just pass any media file url or even a string with many URLs in it and they'll get patched automatically:
+
+```js
+// Authenticate a URL by passing the mediaFile URL
+var authenticatedUrl = Fliplet.Media.authenticate(mediaFile.url);
+
+// Authenticate all URLs found in a String
+var authenticatedHtml = Fliplet.Media.authenticate('<img src="https://api.fliplet.com/v1/media/files/123/contents/Foo.jpg" />');
 ```
 
 ---
