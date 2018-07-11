@@ -126,7 +126,15 @@ Handlebars.registerHelper('addAuthentication', function(str) {
 });
 ```
 
-And then use it as simple as `{{{addAuthentication sampleUrl}}}`.
+And then use it in your directory templates like:
+
+{% raw %}
+```handlebars
+<img src="{{{addAuthentication someFileUrl}}}" />
+
+<p>{{{addAuthentication someContent}}}</p>
+```
+{% endraw %}
 
 ---
 
