@@ -4,7 +4,8 @@ These public JS APIs will be automatically available in your screens once **Push
 
 ## Ask the user to subscribe for push notifications
 
-The `ask()` method will automatically take care of asking the user whether he wants to subscribe for push notifications and then create a subscription.
+The `ask()` method will automatically take care of asking the user whether he wants to subscribe for push notifications and then create a subscription. If the user is already subscribed, the method will resolve silently with the user's `subscriptionId`.
+If the user has decided not to subscribe, the promise will be rejected.
 
 ```js
 Fliplet.Widget.get('PushNotifications').ask();
@@ -13,7 +14,8 @@ Fliplet.Widget.get('PushNotifications').ask();
 The above code returns a Promise which you can use to control state flow and provide errors if necessary:
 
 ```js
-Fliplet.Widget.get('PushNotifications').ask().then(function () {
+// this might display an "Allow" popup to the user
+Fliplet.Widget.get('PushNotifications').ask().then(function (subscriptionId) {
   // the user subscribed for push
 }).catch(function (error) {
   // here you can present the error to the user if necessary
