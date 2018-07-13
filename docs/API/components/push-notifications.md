@@ -61,3 +61,4 @@ Fliplet.User.unsubscribe(appId).then(function () {
 Fliplet.User.getPushToken({}).then(function (token) {
   // make use of the token here
 });
+```
