@@ -21,21 +21,7 @@ Fliplet.Widget.get('PushNotifications').ask().then(function () {
 });
 ```
 
-## Get the Fliplet push subscription ID of the user
-
-```js
-Fliplet.User.getSubscriptionId().then(function (subscriptionId) {
-  // get the push subscription ID of the user
-})
-```
-
-## Unsubscribe the user from push notifications
-
-```js
-Fliplet.User.unsubscribe(appId).then(function () {
-  // unsubscribed successfully
-});
-```
+---
 
 ## Reset the user's push notification settings 
 
@@ -46,6 +32,28 @@ Fliplet.Widget.get('PushNotifications').reset().then(function () {
   // resetted successfully
 });
 ```
+
+---
+
+## Get the Fliplet push subscription ID of the user
+
+```js
+Fliplet.User.getSubscriptionId().then(function (subscriptionId) {
+  // get the push subscription ID of the user
+})
+```
+
+---
+
+## Unsubscribe the user from push notifications
+
+```js
+Fliplet.User.unsubscribe(appId).then(function () {
+  // unsubscribed successfully
+});
+```
+
+---
 
 ## Get the push notification token of the user
 
