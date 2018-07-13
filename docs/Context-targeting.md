@@ -55,7 +55,7 @@ Fliplet adds some custom tests to Modernizr to help detect and target the follow
 
 For faster development, use these utility classes for showing and hiding content by various contexts.
 
-**Note: These only work for the custom Fliplet Modernizr tests.**
+**Note: These only work for the custom Fliplet Modernizr tests. When editing apps in Studio, these classes will be disabled so that all the available content is visible for editing.**
 
 ### Available classes
 
