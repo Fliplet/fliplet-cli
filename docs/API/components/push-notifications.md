@@ -39,6 +39,8 @@ Fliplet.Widget.get('PushNotifications').reset().then(function () {
 
 ## Get the Fliplet push subscription ID of the user
 
+If you want to send push notifications to Fliplet devices using our infrastructure, you most likely want to get the Fliplet subscription ID of a user.
+
 ```js
 Fliplet.User.getSubscriptionId().then(function (subscriptionId) {
   // get the push subscription ID of the user
