@@ -35,13 +35,21 @@ Fliplet.User.getSubscriptionId().then(function (subscriptionId) {
 Fliplet.User.unsubscribe(appId).then(function () {
   // unsubscribed successfully
 });
+```
 
 ## Reset the user's push notification settings 
 
 Use the `reset()` method to clear the local settings on whether the user has decided not to subscribe for push notifications. This method is useful if you want to present the `ask()` popup once again even if the user did decide not to subscribe in the past.
 
 ```js
-Fliplet.Widget.get('PushNotifications').reset();
+Fliplet.Widget.get('PushNotifications').reset().then(function () {
+  // resetted successfully
+});
 ```
 
-Like other methods, the above `reset()` function returns a promise.
+## Get the push notification token of the user
+
+```js
+Fliplet.User.getPushToken({}).then(function (token) {
+  // make use of the token here
+});
