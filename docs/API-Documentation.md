@@ -30,6 +30,7 @@ These JS APIs falls into the most common category and almost all apps, component
 - [Fliplet Accordions](API/components/accordions.md)
 - [Fliplet Data Directory](API/components/data-directory.md)
 - [Fliplet Form Builder](API/components/form-builder.md)
+- [Fliplet Push Notifications](API/components/push-notifications.md)
 
 ---
 
