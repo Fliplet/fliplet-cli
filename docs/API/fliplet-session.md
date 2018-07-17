@@ -12,7 +12,7 @@ The `fliplet-session` package contains the following namespaces:
 
 ```js
 Fliplet.Session.get().then(function onSessionRetrieved(session) {
-
+  // console.log(session);
 });
 ```
 
@@ -20,7 +20,7 @@ Fliplet.Session.get().then(function onSessionRetrieved(session) {
 
 ```js
 Fliplet.Session.get(key).then(function onSessionKeyRetrieved(value) {
-
+  // console.log(value);
 });
 ```
 
@@ -28,7 +28,7 @@ Fliplet.Session.get(key).then(function onSessionKeyRetrieved(value) {
 
 ```js
 Fliplet.Session.set({ foo: 'bar' }).then(function onSessionUpdated() {
-
+  // session data has been set
 });
 ```
 
@@ -36,7 +36,7 @@ Fliplet.Session.set({ foo: 'bar' }).then(function onSessionUpdated() {
 
 ```js
 Fliplet.Session.clear().then(function onSessionCleared() {
-
+  // session has been cleared
 });
 ```
 
@@ -44,7 +44,7 @@ Fliplet.Session.clear().then(function onSessionCleared() {
 
 ```js
 Fliplet.Session.destroy().then(function onSessionDestroyed() {
-
+  // session has been destroyed
 });
 ```
 
@@ -54,7 +54,7 @@ Fliplet.Session.destroy().then(function onSessionDestroyed() {
 
 If your app contains a login component (either DataSource, SAML2 or Fliplet) you can use the session to check whether the user is logged in and in its data:
 
-```
+```js
 Fliplet.Session.get().then(function(session) {
   if (session && session.entries) {
     // the user is logged in;
@@ -81,7 +81,7 @@ Fliplet.Session.get().then(function(session) {
 
 Data for the connected account(s) can also be read and used as necessary:
 
-```
+```js
 Fliplet.Session.get().then(function(session) {
   if (session && session.entries && session.entries.dataSource) {
     // the user is logged in against a Fliplet dataSource
