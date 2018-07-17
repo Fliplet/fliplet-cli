@@ -73,9 +73,6 @@ Fliplet.Session.get().then(function(session) {
     if (session.entries.flipletLogin) {
       // user is logged in with a Fliplet Studio account
     }
-
-    var userData = session.entries.dataSource.data;
-    // use as necessary
   } else {
     // not logged in
   }
