@@ -81,13 +81,28 @@ Fliplet.Session.get().then(function(session) {
 
 Data for the connected account(s) can also be read and used as necessary:
 
+#### Example for dataSource login
+
 ```js
 Fliplet.Session.get().then(function(session) {
   if (session && session.entries && session.entries.dataSource) {
     // the user is logged in against a Fliplet dataSource
 
     var userData = session.entries.dataSource.data;
-    console.log(userData.email); // print the user's email
+    // userData will contain all data found on the connected dataSource row
+  }
+});
+```
+
+#### Example for Fliplet Studio login
+
+```js
+Fliplet.Session.get().then(function(session) {
+  if (session && session.entries && session.entries.dataSource) {
+    // the user is logged in against a Fliplet Studio account
+
+    var userData = session.entries.flipletLogin;
+    // userData contains id, email, firstName, lastName, fullName, userRoleId, legacyId
   }
 });
 ```
