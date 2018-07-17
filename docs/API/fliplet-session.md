@@ -79,7 +79,7 @@ Fliplet.Session.get().then(function(session) {
 });
 ```
 
-Data for the connected account can also be read and used as necessary:
+Data for the connected account(s) can also be read and used as necessary:
 
 ```
 Fliplet.Session.get().then(function(session) {
