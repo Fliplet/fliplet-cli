@@ -52,7 +52,7 @@ Fliplet.Session.destroy().then(function onSessionDestroyed() {
 
 ### Read details about connected accounts
 
-If your app contains a login component (either DataSource, SAML2 or Fliplet) you can use the session to check whether the user is logged in and in its data:
+If your app contains a login component (either DataSource, SAML2 or Fliplet) you can use the session to check whether the user is logged in and in and some of the connected account(s) details:
 
 ```js
 Fliplet.Session.get().then(function(session) {
