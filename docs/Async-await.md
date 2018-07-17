@@ -10,7 +10,7 @@ Fliplet.Storage.get('foo').then(function (result) {
 });
 ```
 
-**Promises** are great, but they make the code less programmatic hence more difficult to read and maintain. If you don't need to support **Internet Explorer 11**, there's a nice new feature of Javascript you can use right now in your Fliplet apps to make your code more readable and it's called `await/async`.
+**Promises** are great, but they make the code less procedural hence more difficult to read and maintain. If you don't need to support **Internet Explorer 11**, there's a nice new feature of Javascript you can use right now in your Fliplet apps to make your code more readable and it's called `await/async`.
 
 ## The "await" keyword
 
