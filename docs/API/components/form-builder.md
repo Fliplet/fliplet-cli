@@ -55,6 +55,32 @@ Fliplet.FormBuilder.get().then(function (form) {
 });
 ```
 
+#### Retrieve information of signed in user
+
+`form.load` can also be used in conjunction with `Fliplet.Session` to populate a form with the logged user's data:
+
+
+```js
+Fliplet.FormBuilder.get().then(function (form) {
+  form.load(function () {
+    return Fliplet.Session.passport().data().then(function (response) {
+      // response.user.id
+      // response.user.email
+      // response.user.firstName
+      // response.user.lastName
+
+      // Simply return the user when your fields have the same name as the user's columns
+      return response.user;
+
+      // Otherwise, you can do some basic mapping:
+      return {
+        'Email address': response.user.email
+      };
+    });
+  });
+});
+```
+
 ---
 
 ### `form.instance`
