@@ -55,7 +55,7 @@ Fliplet.FormBuilder.get().then(function (form) {
 });
 ```
 
-#### Retrieve information of signed in user
+<strong>Retrieve information of signed in user:</strong>
 
 `form.load` can also be used in conjunction with `Fliplet.Session` to populate a form with the logged user's data:
 
