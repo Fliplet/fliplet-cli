@@ -7,6 +7,7 @@ This package enables you to read and write data in the device storage, navigate 
 The following namespaces are publicly available under this package. Please click on any of them to see their documentation and public methods:
 
 - [Analytics](#analytics)
+- [App Analytics](#app-analytics)
 - [API](#api)
 - [App](#app)
 - [Apps](#apps)
