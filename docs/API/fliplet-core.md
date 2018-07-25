@@ -932,9 +932,89 @@ Fliplet.Analytics.enableTracking()
 ```
 
 ### Check tracking status
+
 ```js
 Fliplet.Analytics.isTrackingEnabled()
 ````
+
+---
+
+## App Analytics
+
+### Tracking an event
+
+`Fliplet.App.Analytics.track(type, data)`
+
+- Event is expected to be either `event` or `pageView`.
+
+```js
+Fliplet.App.Analytics.track('event', {
+  label: 'News Item 123'
+});
+
+// shorthand for tracking events
+Fliplet.App.Analytics.event({
+  label: 'News Item 123'
+});
+
+// shorthand for tracking pageviews
+Fliplet.App.Analytics.pageView({
+  label: 'News Item 123',
+  day: moment().format('YYYY-MM-DD')
+});
+```
+
+The system takes care of creating an analytics session for the user and track it and also track when a new session should be created.
+
+
+### Manually resetting the analytics session id
+
+```js
+Fliplet.App.Analytics.Session.reset();
+```
+
+### Fetch aggregated logs
+
+```js
+Fliplet.App.Analytics.get({
+  aggregate: {
+    // filter for only logs that match the contents of the object
+    filter: { label: 'News Item 123' },
+
+    // group results by a single field and saving the count into a field named "fooCount"
+    group: { field: 'label', sum: 'fooCount' },
+
+    // sort by "fooCount" DESC
+    sort: { fooCount: -1 }
+  }
+}).then(function (logs) {
+
+});
+```
+
+Another example:
+
+```js
+// 1. track a pageview
+Fliplet.App.Analytics.pageView({
+  label: 'News Item 123',
+  day: moment().format('YYYY-MM-DD')
+});
+
+// 2. fetch pageviews by day and label
+Fliplet.App.Analytics.get({
+  where: { type: 'app.analytics.pageView' },
+  aggregate: {
+    // group results by day and label
+    group: { fields: ['day', 'label'], sum: 'count' },
+
+    // sort by day
+    sort: { day: 1 }
+  }
+}).then(function (logs) {
+
+});
+```
 
 ---
 
