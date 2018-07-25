@@ -942,15 +942,20 @@ Fliplet.Analytics.isTrackingEnabled()
 
 ## App Analytics
 
-### Tracking an event
+### Tracking an event for app analytics
 
-`Fliplet.App.Analytics.track(type, data)`
-
-- Event is expected to be either `event` or `pageView`.
+Analytics for apps can be tracked by providing a type (either `event` or `pageView` and a optional JSON `data` object to be stored against the event).
 
 ```js
+// Track an event
 Fliplet.App.Analytics.track('event', {
-  label: 'News Item 123'
+  label: 'Click on News Item'
+});
+
+// Track a page view
+Fliplet.App.Analytics.track('pageView', {
+  label: 'Page 123 / News Item 456',
+  foo: 'bar'
 });
 
 // shorthand for tracking events
@@ -960,7 +965,7 @@ Fliplet.App.Analytics.event({
 
 // shorthand for tracking pageviews
 Fliplet.App.Analytics.pageView({
-  label: 'News Item 123',
+  label: 'Page 123',
   day: moment().format('YYYY-MM-DD')
 });
 ```
@@ -975,6 +980,8 @@ Fliplet.App.Analytics.Session.reset();
 ```
 
 ### Fetch aggregated logs
+
+Here's how you can use our powerful JS APIs to do some heavylifting for you and return aggregated records instead of having to group them manually when displaying charts for app analytics:
 
 ```js
 Fliplet.App.Analytics.get({
