@@ -89,7 +89,9 @@ Response  (Status code: 200 OK):
 
 ### Get a data source by its ID
 
-#### `GET v1/data-sources/:dataSourceId`
+#### `GET v1/data-sources/<dataSourceId>`
+
+e.g. `v1/data-sources/123`
 
 ```json
 {
@@ -157,7 +159,9 @@ Response  (Status code: 201 Created):
 
 ### Update a data source attributes
 
-### `PUT v1/data-sources/:dataSourceId`
+### `PUT v1/data-sources/<dataSourceId>`
+
+e.g. `v1/data-sources/123`
 
 Request body:
 
@@ -192,7 +196,9 @@ Response (Status code: 200 OK):
 
 ### Delete a data source and its entries from the system
 
-#### `DELETE v1/data-sources/:dataSourceId`
+#### `DELETE v1/data-sources/<dataSourceId>`
+
+e.g. `v1/data-sources/123`
 
 Response status code: 200 (no body)
 
@@ -200,7 +206,9 @@ Response status code: 200 (no body)
 
 ### Bulk-import entries for a data source
 
-#### `POST v1/data-sources/:dataSourceId/data`
+#### `POST v1/data-sources/<dataSourceId>/data`
+
+e.g. `v1/data-sources/123/data`
 
 Note: this endpoint will replace all entries in the data source with the given ones, unless the "append=true" GET/POST parameter is given.
 
@@ -222,7 +230,9 @@ Response status code: 200 OK (no body)
 
 ### Run queries on a data source
 
-#### `POST v1/data-sources/:dataSourceId/data/query`
+#### `POST v1/data-sources/<dataSourceId>/data/query`
+
+e.g. `v1/data-sources/123/data/query`
 
 Request body (JSON):
 
@@ -259,7 +269,9 @@ Response (Status code: 200 OK):
 
 ### Get a data source entry by its ID
 
-#### `GET v1/data-sources/:dataSourceId/data/:entryId`
+#### `GET v1/data-sources/<dataSourceId>/data/<entryId>`
+
+e.g. `v1/data-sources/123/data/456`
 
 Response (Status code: 200 OK):
 
@@ -281,9 +293,11 @@ Response (Status code: 200 OK):
 
 ### Insert a new entry to a data source
 
-#### `PUT v1/data-sources/:dataSourceId/data`
+#### `PUT v1/data-sources/<dataSourceId>/data`
 
-Note: when sending files, this endpoint supports a multipart body request. All files sent will be uploaded to the relevant Fliplet bucket and optionally encrypted when enabled from the organisation. The created entry will get its files input field names replaced with the URL where the file has been stored. 
+e.g. `v1/data-sources/123/data`
+
+Note: when sending files, this endpoint supports a multipart body request. All files sent will be uploaded to the relevant Fliplet bucket and optionally encrypted when enabled from the organisation. The created entry will get its files input field names replaced with the URL where the file has been stored.
 
 Request body:
 
@@ -313,7 +327,9 @@ Response  (Status code: 201 Created):
 
 ### Insert a new entry with files into a data source
 
-#### `PUT v1/data-sources/:dataSourceId/data`
+#### `PUT v1/data-sources/<dataSourceId>/data`
+
+e.g. `v1/data-sources/123/data/456`
 
 Request must be made as **multipart**.
 
