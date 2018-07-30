@@ -162,11 +162,13 @@ Sample response:
 }
 ```
 
---- 
+---
 
 ## Stream the contents of a file
 
-## `GET v1/media/files/:id/contents`
+## `GET v1/media/files/<id>/contents`
+
+e.g. `v1/media/files/123/contents`
 
 Also accepts `size` query parameter to downscale images, like `size=medium` or `size=640x480` or `size=640>?`.
 
@@ -188,6 +190,8 @@ This endpoint is meant to be called directly from the client since the zip file 
 
 #### `DELETE v1/media/folders/:id`
 
+e.g. `v1/media/folders/123`
+
 Deletes a media folder given its ID.
 
 ---
@@ -195,6 +199,8 @@ Deletes a media folder given its ID.
 ## Delete a file
 
 #### `DELETE v1/media/files/:id`
+
+e.g. `v1/media/files/123`
 
 Deletes a media file given its ID.
 
