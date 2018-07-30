@@ -188,7 +188,7 @@ This endpoint is meant to be called directly from the client since the zip file 
 
 ## Delete a folder
 
-#### `DELETE v1/media/folders/:id`
+#### `DELETE v1/media/folders/<id>`
 
 e.g. `v1/media/folders/123`
 
@@ -198,7 +198,7 @@ Deletes a media folder given its ID.
 
 ## Delete a file
 
-#### `DELETE v1/media/files/:id`
+#### `DELETE v1/media/files/<id>`
 
 e.g. `v1/media/files/123`
 
