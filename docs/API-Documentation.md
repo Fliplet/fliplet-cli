@@ -6,7 +6,7 @@ Are you rather looking for our **RESTful APIs** for complex backend integrations
 
 ---
 
-## Documentation for public JS APIs
+## Public JS APIs
 
 These JS APIs falls into the most common category and almost all apps, components and themes use at least one of them. All apps include `fliplet-core` by default, and any other can easily be included on your app screens via Fliplet Studio.
 
@@ -22,10 +22,11 @@ These JS APIs falls into the most common category and almost all apps, component
 - [Fliplet Studio UI](UI-guidelines-interface.md) (`fliplet-studio-ui`)
 - [Fliplet Themes](API/fliplet-themes.md) (`fliplet-themes`)
 - [Fliplet UI](API/fliplet-ui.md) (`fliplet-pages`)
+- [Like Buttons](API/like-buttons.md) (`fliplet-like:0.2`)
 
 ---
 
-## Documentation for Fliplet Components
+## Fliplet Components
 
 - [Fliplet Accordions](API/components/accordions.md)
 - [Fliplet Data Directory](API/components/data-directory.md)
@@ -34,7 +35,7 @@ These JS APIs falls into the most common category and almost all apps, component
 
 ---
 
-## Documentation for third-party integrations
+## Third-party integrations
 
 - [Single Sign-on with SAML2](API/integrations/sso-saml2.md)
 - Single Sign-on with OAuth2 (Coming soon)
