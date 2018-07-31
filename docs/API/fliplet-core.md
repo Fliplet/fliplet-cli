@@ -925,11 +925,11 @@ Fliplet.Navigate.previewImages(data);
 ## Analytics
 
 ### Enable/disable tracking
-The app might have an analytics widget active, although you can also prompt the user if he accpets tracking.
+The app might have an analytics widget active, although you can also prompt the user if they accept tracking.
 
 ```js
 Fliplet.Analytics.enableTracking()
-Fliplet.Analytics.enableTracking()
+Fliplet.Analytics.disableTracking()
 ```
 
 ### Check tracking status
