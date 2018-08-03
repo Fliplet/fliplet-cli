@@ -42,6 +42,12 @@ These JS APIs falls into the most common category and almost all apps, component
 
 ---
 
+## Third-party libraries
+
+- [Handlebars](API/libraries/handlebars.md)
+
+---
+
 ## Private JS APIs
 
 These APIs are currently undocumented and reserved for internal use. They are usually available to components in the system hence don't require the user to access them directly.

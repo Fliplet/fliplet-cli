@@ -1,4 +1,4 @@
-# Best practises and advices
+# Best practises and advices when building components
 
 Got stuck building components or found some nasty bugs? Here's a few tips that might help you dealing with basic issues during the development of components on our platform.
 
@@ -56,6 +56,8 @@ Templates (`build.html` and `interface.html`) get compiled through Handlebars. I
 ---
 
 ## Using Handlebars in your client
+
+**Note: this documentation only applies to building components. If you need to use Handlebars in your apps, please refer to the "using handlebars" documentation**.
 
 You can also use handlebars templates in your client-side code and let the system compile them.
 
