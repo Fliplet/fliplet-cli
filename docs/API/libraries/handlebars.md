@@ -1,10 +1,6 @@
 # Using Handlebars in your apps
 
-To use [Handlebars](https://handlebarsjs.com/) in your apps, you just need to include `handlebars` package in your screen or app's dependencies via Fliplet Studio.
-
-Once you do so, the `Handlebars` command will be available in your screens.
-
-Here's a quick example following the official Handlebars docs:
+All screens of your Fliplet app already include [Handlebars](https://handlebarsjs.com/) hence you can start using it straight away. Here's a quick example following the official Handlebars docs:
 
 ```js
 // Compile a template in JavaScript by using Handlebars.compile
