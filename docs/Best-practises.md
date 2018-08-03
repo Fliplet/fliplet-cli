@@ -55,9 +55,9 @@ Templates (`build.html` and `interface.html`) get compiled through Handlebars. I
 
 ---
 
-## Using Handlebars in your client
+## Using Handlebars in your widget clent-side code
 
-**Note: this documentation only applies to building components. If you need to use Handlebars in your apps, please refer to the "using handlebars" documentation**.
+**Note: this documentation only applies to building components. If you need to use Handlebars in your apps, please refer to the "[using handlebars](API/libraries/handlebars)" documentation**.
 
 You can also use handlebars templates in your client-side code and let the system compile them.
 
