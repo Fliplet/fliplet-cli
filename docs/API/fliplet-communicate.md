@@ -96,7 +96,7 @@ Web apps will show users a URL to copy and provide icons to share the URL with p
 
 (Returns **`Promise`**)
 
-Lets users share a URL. The Promise is resolved when the action is completed or dismissed. The share options are passed to the reoslving function, with an additional `completed` property to signify if an action was completed or cancelled.
+`Fliplet.Communicate.shareURL()` lets users share a URL. The Promise is resolved when the action is completed or dismissed. The share options are passed to the reoslving function, with an additional `completed` property to signify if an action was completed or cancelled.
 
 ```js 
 // A simple way to share a URL
@@ -127,7 +127,9 @@ Fliplet.Communicate.shareURL({
 
 Optionally provide an array of services in `shares` to use any of the services supported by jsSocials (see **Example** below).
 
-**Example**
+## Examples
+
+### Share a URL
 
 ```js
 Fliplet.Communicate.shareURL({
@@ -146,6 +148,10 @@ Fliplet.Communicate.shareURL({
 * Viber (`viber`)
 * Facebook Messenger (`messenger`)
 * Telegram (`telegram`)
+
+### Share a page in a Fliplet app
+
+See [documentation for `Fliplet.Content`](fliplet-content.md#share-a-page-with-a-url).
 
 ---
 
