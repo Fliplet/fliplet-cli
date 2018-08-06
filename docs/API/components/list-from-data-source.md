@@ -28,10 +28,39 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function onBeforeGetData(data) {
 });
 ```
 
-Let's take a look at a complete example injecting data from a data source to the list component:
+Let's take a look at a complete example injecting data from a data source to the list component with custom filter and without data trasnformations:
+```js
+Fliplet.Hooks.on('flListDataBeforeGetData', function onBeforeGetData(data) {
+  // data is an object with the component configuration and the component container
+  // data.config
+  // data.container
+
+  // disable caching the data so it's always retrieved from the server
+  data.config.cache = false;
+
+  // Define the "getData" promise to manually fetching data. 
+  data.config.getData = function () {
+    // In this example we connect to a datasource with ID 123
+    // Change the ID to your data source ID
+    return Fliplet.DataSources.connect(123)
+      .then(function(connection) {
+      // Get all entries in the data source matching a specific condition
+      return connection.find({
+        where: { 'column': 'value' }
+      });
+    });
+  };
+});
+```
+
+Now, let's have a look at another complete example injecting data from a data source to the list component with a custom filter and with data transformations:
 
 ```js
 Fliplet.Hooks.on('flListDataBeforeGetData', function onBeforeGetData(data) {
+  // data is an object with the component configuration and the component container
+  // data.config
+  // data.container
+
   // disable caching the data so it's always retrieved from the server
   data.config.cache = false;
 
@@ -43,20 +72,17 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function onBeforeGetData(data) {
       // Get all entries in the data source matching a specific condition
       return connection.find({
         where: {
-          foo: 'bar'
+          'column': 'value'
         }
       })
     }).then(function (entries) {
-      // In here you can optionally do transformations to the data
-      // If you don't require to do any transformation, you don't even need this last ".then()"
-
       // Apply some transformations to the data before sending it back to the list component
       var entries = result.map(function(entry) {
         entry.data.dataSourceEntryId = entry.id;
         return entry.data;
       });
 
-      // Return the data to be rendered on the directory
+      // Return the data to be rendered on the list component
       return entries;
     });
   };
