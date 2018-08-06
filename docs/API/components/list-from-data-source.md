@@ -46,7 +46,7 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function onBeforeGetData(data) {
       .then(function(connection) {
       // Get all entries in the data source matching a specific condition
       return connection.find({
-        where: { 'column': 'value' }
+        where: { column: 'value' }
       });
     });
   };
@@ -72,7 +72,7 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function onBeforeGetData(data) {
       // Get all entries in the data source matching a specific condition
       return connection.find({
         where: {
-          'column': 'value'
+          column: 'value'
         }
       })
     }).then(function (entries) {
