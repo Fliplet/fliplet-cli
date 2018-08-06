@@ -28,7 +28,7 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function onBeforeGetData(data) {
 });
 ```
 
-Let's take a look at a complete example injecting data from a data source to the list component with custom filter and without data trasnformations:
+Let's take a look at a complete example injecting data from a data source to the list component with custom filter and without data transformations:
 ```js
 Fliplet.Hooks.on('flListDataBeforeGetData', function onBeforeGetData(data) {
   // data is an object with the component configuration and the component container
