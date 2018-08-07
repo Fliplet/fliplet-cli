@@ -55,13 +55,13 @@ Fliplet.UI.Toast(options)
 
 ## Properties
 
-The toast instance returned in the promise resolving function will contain the following properties.
+The toast instance returned as the first parameter in the promise resolving. The instance object contains the following properties.
 
 * **data** (Object) A data object containing the configuration fro the Toast notification.
 
 ## Methods
 
-The toast instance returned in the promise resolving function will contain the following methods.
+The toast instance returned as the first parameter in the promise resolving. The instance object contains the following methods.
 
 ### `.dismiss()`
 
