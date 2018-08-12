@@ -96,7 +96,7 @@ Web apps will show users a URL to copy and provide icons to share the URL with p
 
 (Returns **`Promise`**)
 
-`Fliplet.Communicate.shareURL()` lets users share a URL. The Promise is resolved when the action is completed or dismissed. The share options are passed to the reoslving function, with an additional `completed` property to signify if an action was completed or cancelled.
+`Fliplet.Communicate.shareURL()` lets users share a URL. The Promise is resolved when the action is completed or dismissed. The share options are passed to the resolving function, with an additional `completed` property to signify if an action was completed or cancelled.
 
 ```js 
 // A simple way to share a URL
