@@ -954,7 +954,7 @@ Fliplet.App.Analytics.track('event', {
 
 // Track a page view
 Fliplet.App.Analytics.track('pageView', {
-  label: 'Page 123 / News Item 456',
+  label: 'Page 123',
   foo: 'bar'
 });
 
@@ -965,8 +965,7 @@ Fliplet.App.Analytics.event({
 
 // shorthand for tracking pageviews
 Fliplet.App.Analytics.pageView({
-  label: 'Page 123',
-  day: moment().format('YYYY-MM-DD')
+  label: 'Page 123'
 });
 ```
 
@@ -981,22 +980,35 @@ Fliplet.App.Analytics.Session.reset();
 
 ### Fetch aggregated logs
 
-Here's how you can use our powerful JS APIs to do some heavylifting for you and return aggregated records instead of having to group them manually when displaying charts for app analytics:
+Here's how you can use our powerful JS APIs to do some heavylifting for you and return aggregated records instead of having to group them manually when displaying charts for app analytics.
+
+Properties of the `get` function:
+
+- where (sequelize where condition)
+- group (for grouping data, described below)
+- limit (number)
+- attributes (array of strings, fields to extract. Cannot be used when grouping)
+- order (array of arrays, check below for usage)
+
+When aggregating data with "group", this parameter must be an array of objects or strings.
+
+- If you pass a string, it must be the database column name in the logs table. Keep in mind that all data stored by JS APIs is saved into "data", so you will be required to use "data.foo" and so on. On the other hand, "createdAt" is a root column of the table.
+- If you pass an object, you can specify the PostgreSQL native function to run (via fn) as well as any parameter (e.g. part), then the target column with col and also an target alias using as (this is optional).
+
+Let's make an example by aggregating data by a `data.label` column and then by hour:
 
 ```js
-Fliplet.App.Analytics.get({
-  aggregate: {
-    // filter for only logs that match the contents of the object
-    filter: { label: 'News Item 123' },
-
-    // group results by a single field and saving the count into a field named "fooCount"
-    group: { field: 'label', sum: 'fooCount' },
-
-    // sort by "fooCount" DESC
-    sort: { fooCount: -1 }
-  }
-}).then(function (logs) {
-
+Fliplet.Apps.Analytics.get(appId, {
+  group: [
+    'data.label'.
+    { fn: 'date_trunc', part: 'hour', col: 'createdAt', as: 'hour' }
+  ],
+  where: {
+    data { foo: 'bar' }
+  },
+  order: [ [ 'label', 'ASC' ], [ 'hour', 'ASC' ] ]
+}).then(function (results) {
+  // console.log(results)
 });
 ```
 
@@ -1005,22 +1017,26 @@ Another example:
 ```js
 // 1. track a pageview
 Fliplet.App.Analytics.pageView({
-  label: 'News Item 123',
-  day: moment().format('YYYY-MM-DD')
+  label: 'News Item 123'
 });
 
-// 2. fetch pageviews by day and label
-Fliplet.App.Analytics.get({
-  where: { type: 'app.analytics.pageView' },
-  aggregate: {
-    // group results by day and label
-    group: { fields: ['day', 'label'], sum: 'count' },
+// 2. fetch pageviews by hour
+Fliplet.Apps.Analytics.get(appId, {
+  group: [
+    { fn: 'date_trunc', part: 'hour', col: 'createdAt', as: 'hour' }
+  ]
+}).then(function (results) {
+  // console.log(results)
+});
+```
 
-    // sort by day
-    sort: { day: 1 }
-  }
-}).then(function (logs) {
+### Fetch aggregated logs
 
+Works the same as the above `get` method, but returns just a number of results:
+
+```js
+Fliplet.Apps.Analytics.count(appId, { group: [ 'data._userEmail' ] }).then(function (count) {
+  // console.log(count)
 });
 ```
 
