@@ -1030,9 +1030,9 @@ Fliplet.Apps.Analytics.get(appId, {
 });
 ```
 
-### Fetch aggregated logs
+### Fetch matched logs count
 
-Works the same as the above `get` method, but returns just a number of results:
+`count` works exactly the same as the above `get` method, but returns just a number of results:
 
 ```js
 Fliplet.Apps.Analytics.count(appId, { group: [ 'data._userEmail' ] }).then(function (count) {
