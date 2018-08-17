@@ -967,8 +967,22 @@ Fliplet.App.Analytics.event({
 Fliplet.App.Analytics.pageView('My sample page');
 ```
 
-The system takes care of creating an analytics session for the user and track it and also track when a new session should be created.
+The system takes care of creating an analytics session for the user and track it and also track when a new session should be created. Furthermore, the following data gets added automatically to each event or pageView you track:
 
+- `_platform` (String, `web` or `native`)
+- `_os` (String, operative system)
+- `_trackingId` (String, a unique hash for the user session. This changes every 30 minutes for the user.)
+- `_pageId` (Number, the screen ID where the event has been tracked)
+- `_pageName` (String, the screen name where the event has been tracked)
+
+When tracking events via `Fliplet.App.Analytics.event` you can overwrite these variables by passing a new value:
+
+```js
+Fliplet.App.Analytics.event({
+  _os: 'Ubuntu',
+  _pageName: 'My other page'
+});
+```
 
 ### Manually resetting the analytics session id
 
