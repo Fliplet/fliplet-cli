@@ -964,9 +964,7 @@ Fliplet.App.Analytics.event({
 });
 
 // shorthand for tracking pageviews
-Fliplet.App.Analytics.pageView({
-  label: 'Page 123'
-});
+Fliplet.App.Analytics.pageView('My sample page');
 ```
 
 The system takes care of creating an analytics session for the user and track it and also track when a new session should be created.
