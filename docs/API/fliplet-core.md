@@ -974,6 +974,7 @@ The system takes care of creating an analytics session for the user and track it
 - `_trackingId` (String, a unique hash for the user session. This changes every 30 minutes for the user.)
 - `_pageId` (Number, the screen ID where the event has been tracked)
 - `_pageName` (String, the screen name where the event has been tracked)
+- `_userEmail` (String, the email of the logged user when using a login system like SAML2, Fliplet Data Sources or Fliplet Login)
 
 When tracking events via `Fliplet.App.Analytics.event` you can overwrite these variables by passing a new value:
 
@@ -1039,6 +1040,26 @@ Fliplet.Apps.Analytics.get(appId, {
   ]
 }).then(function (results) {
   // console.log(results)
+});
+```
+
+And one more:
+
+```
+// fetch a list of users with their page views count (ordered by most active to less active user)
+Fliplet.Apps.Analytics.get(appId, {
+  group: [
+    'data._userEmail'
+  ],
+  where: {
+    type: ['app.analytics.pageView'],
+    createdAt: {
+      $gte: moment(startDate).startOf('day').unix()*1000,
+      $lte: moment(endDate).endOf('day').unix()*1000
+    }
+  }
+}).then(function (results) {
+  results = _.sortBy(results, 'count').reverse();
 });
 ```
 
