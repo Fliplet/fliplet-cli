@@ -54,7 +54,7 @@ var appId = Fliplet.Env.get('appId');
 
 These variables are usually available on app screens as long as components and providers:
 
-- `apiUrl` - the URL of Fliplet APIs
+- `apiUrl` - the URL of Fliplet APIs (fixed value of https://api.fliplet.com/)
 - `appFonts` - array of fonts uploaded for the current app
 - `appHooks` - array of security hooks that have been set up the current app
 - `appId` - the current app id
@@ -63,6 +63,7 @@ These variables are usually available on app screens as long as components and p
 - `appSettings` - object with public settings for the current app
 - `appUpdatedAt` - timestamp set to the last time a change has been made via Fliplet Studio to the current app
 - `appVersion` - number pointing to the app's version (when using Fliplet Viewer, its value will be `(DEV)`)
+- `appsUrl` - string with a fixed value for https://apps.fliplet.com/
 - `development` - `true / false` true when if developing via the Fliplet CLI
 - `interact` - `true / false` true when you are in edit mode in Fliplet Studio
 - `masterAppId` - when called from a live app, returns the ID of the master app seen through Fliplet Studio
