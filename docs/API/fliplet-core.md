@@ -55,7 +55,17 @@ var appId = Fliplet.Env.get('appId');
 These variables are usually available on app screens as long as components and providers:
 
 - `organizationId` - the user's organization id
+- `organizationName` - the user's organization name
 - `appId` - the current app id
+- `appName` - the current app name
+- `appPages` - array of pages for the current app
+- `appFonts` - array of fonts uploaded for the current app
+- `appSettings` - object with public settings for the current app
+- `masterAppId` - when called from a live app, returns the ID of the master app seen through Fliplet Studio
+- `pageId` - the current page id
+- `pageMasterId` - when called from a live app, returns the ID of the master page seen through Fliplet Studio
+- `pageTitle` - the current page (screen) title
+- `pageSettings` - object with public settings for the current page
 - `user` - the current user
 - `development` - `true / false` if using CLI or not
 - `interact` - `true / false` if you are in edit mode in Studio
