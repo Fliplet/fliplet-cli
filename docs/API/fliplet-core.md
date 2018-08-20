@@ -988,7 +988,7 @@ The system takes care of creating an analytics session for the user and track it
 - `_os` (String, operative system)
 - `_trackingId` (String, a unique hash for the user session. This changes every 30 minutes for the user.)
 - `_pageId` (Number, the screen ID where the event has been tracked)
-- `_pageName` (String, the screen name where the event has been tracked)
+- `_pageTitle` (String, the screen name where the event has been tracked)
 - `_userEmail` (String, the email of the logged user when using a login system like SAML2, Fliplet Data Sources or Fliplet Login)
 
 When tracking events via `Fliplet.App.Analytics.event` you can overwrite these variables by passing a new value:
@@ -996,7 +996,7 @@ When tracking events via `Fliplet.App.Analytics.event` you can overwrite these v
 ```js
 Fliplet.App.Analytics.event({
   _os: 'Ubuntu',
-  _pageName: 'My other page'
+  _pageTitle: 'My other page'
 });
 ```
 
