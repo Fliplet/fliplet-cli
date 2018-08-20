@@ -54,25 +54,29 @@ var appId = Fliplet.Env.get('appId');
 
 These variables are usually available on app screens as long as components and providers:
 
-- `organizationId` - the user's organization id
-- `organizationName` - the user's organization name
+- `apiUrl` - the URL of Fliplet APIs
+- `appFonts` - array of fonts uploaded for the current app
+- `appHooks` - array of security hooks that have been set up the current app
 - `appId` - the current app id
 - `appName` - the current app name
 - `appPages` - array of pages for the current app
-- `appFonts` - array of fonts uploaded for the current app
 - `appSettings` - object with public settings for the current app
+- `appUpdatedAt` - timestamp set to the last time a change has been made via Fliplet Studio to the current app
+- `appVersion` - number pointing to the app's version (when using Fliplet Viewer, its value will be `(DEV)`)
+- `development` - `true / false` true when if developing via the Fliplet CLI
+- `interact` - `true / false` true when you are in edit mode in Fliplet Studio
 - `masterAppId` - when called from a live app, returns the ID of the master app seen through Fliplet Studio
+- `mode` - `'preview' / 'view' / 'interact'`
+- `organizationName` - the user's organization name
+- `organizationId` - the user's organization id
 - `pageId` - the current page id
 - `pageMasterId` - when called from a live app, returns the ID of the master page seen through Fliplet Studio
 - `pageTitle` - the current page (screen) title
 - `pageSettings` - object with public settings for the current page
-- `user` - the current user
-- `development` - `true / false` if using CLI or not
-- `interact` - `true / false` if you are in edit mode in Studio
-- `preview` - `true / false` if you are in preview mode in Studio
 - `platform` - either `'web'` or `'native'`
-- `mode` - `'preview' / 'view' / 'interact'`
 - `provider` - `true / false` whether the context is running in provider mode
+- `preview` - `true / false` true when you are in preview mode in Fliplet Studio
+- `user` - the current user
 
 ### Set an environment variable
 
