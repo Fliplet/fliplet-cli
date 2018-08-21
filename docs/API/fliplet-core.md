@@ -1010,7 +1010,17 @@ Fliplet.App.Analytics.Session.reset();
 
 Here's how you can use our powerful JS APIs to do some heavylifting for you and return aggregated records instead of having to group them manually when displaying charts for app analytics.
 
-Properties of the `get` function:
+**Note**: fetching aggregating logs is available both under the current app's namespace (`Fliplet.App`) and the apps namespace (`Fliplet.Apps`), please check for the difference between the two:
+
+```js
+// Fetch analytics for the current app
+Fliplet.App.Analytics.get(query);
+
+// Fetch analytics for a specific app
+Fliplet.Apps.Analytics.get(appId, query);
+```
+
+The `query` parameter is optional; when given, it must be an object with the following (all optional) attributes:
 
 - where (sequelize where condition)
 - group (for grouping data, described below)
@@ -1060,7 +1070,7 @@ Fliplet.Apps.Analytics.get(appId, {
 
 And one more:
 
-```
+```js
 // fetch a list of users with their page views count (ordered by most active to less active user)
 Fliplet.Apps.Analytics.get(appId, {
   group: [
