@@ -1010,7 +1010,17 @@ Fliplet.App.Analytics.Session.reset();
 
 Here's how you can use our powerful JS APIs to do some heavylifting for you and return aggregated records instead of having to group them manually when displaying charts for app analytics.
 
-Properties of the `get` function:
+**Note**: fetching aggregating logs is available both under the namespace **for the current app** (`Fliplet.App`) and **for all apps** (`Fliplet.Apps`), each have different behaviors and parameter requirements:
+
+```js
+// Fetch analytics for the current app
+Fliplet.App.Analytics.get(query);
+
+// Fetch analytics for a specific app
+Fliplet.Apps.Analytics.get(appId, query);
+```
+
+The `query` parameter is optional; when given, it must be an object with the following (all optional) attributes:
 
 - where (sequelize where condition)
 - group (for grouping data, described below)
@@ -1028,13 +1038,12 @@ Let's make an example by aggregating data by a `data.label` column and then by h
 ```js
 Fliplet.Apps.Analytics.get(appId, {
   group: [
-    'data.label'.
+    'data.label',
     { fn: 'date_trunc', part: 'hour', col: 'createdAt', as: 'hour' }
   ],
   where: {
-    data { foo: 'bar' }
-  },
-  order: [ [ 'label', 'ASC' ], [ 'hour', 'ASC' ] ]
+    data: { foo: 'bar' }
+  }
 }).then(function (results) {
   // console.log(results)
 });
@@ -1060,7 +1069,10 @@ Fliplet.Apps.Analytics.get(appId, {
 
 And one more:
 
-```
+```js
+var startDate = '2018-08-01';
+var endDate = '2018-08-30';
+
 // fetch a list of users with their page views count (ordered by most active to less active user)
 Fliplet.Apps.Analytics.get(appId, {
   group: [
@@ -1069,8 +1081,8 @@ Fliplet.Apps.Analytics.get(appId, {
   where: {
     type: ['app.analytics.pageView'],
     createdAt: {
-      $gte: moment(startDate).startOf('day').unix()*1000,
-      $lte: moment(endDate).endOf('day').unix()*1000
+      $gte: moment(startDate, 'YYYY-MM-DD').startOf('day').unix()*1000,
+      $lte: moment(endDate, 'YYYY-MM-DD').endOf('day').unix()*1000
     }
   }
 }).then(function (results) {
