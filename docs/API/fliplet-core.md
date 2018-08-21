@@ -1038,13 +1038,12 @@ Let's make an example by aggregating data by a `data.label` column and then by h
 ```js
 Fliplet.Apps.Analytics.get(appId, {
   group: [
-    'data.label'.
+    'data.label',
     { fn: 'date_trunc', part: 'hour', col: 'createdAt', as: 'hour' }
   ],
   where: {
-    data { foo: 'bar' }
-  },
-  order: [ [ 'label', 'ASC' ], [ 'hour', 'ASC' ] ]
+    data: { foo: 'bar' }
+  }
 }).then(function (results) {
   // console.log(results)
 });
@@ -1071,6 +1070,9 @@ Fliplet.Apps.Analytics.get(appId, {
 And one more:
 
 ```js
+var startDate = '2018-08-01';
+var endDate = '2018-08-30';
+
 // fetch a list of users with their page views count (ordered by most active to less active user)
 Fliplet.Apps.Analytics.get(appId, {
   group: [
@@ -1079,8 +1081,8 @@ Fliplet.Apps.Analytics.get(appId, {
   where: {
     type: ['app.analytics.pageView'],
     createdAt: {
-      $gte: moment(startDate).startOf('day').unix()*1000,
-      $lte: moment(endDate).endOf('day').unix()*1000
+      $gte: moment(startDate, 'YYYY-MM-DD').startOf('day').unix()*1000,
+      $lte: moment(endDate, 'YYYY-MM-DD').endOf('day').unix()*1000
     }
   }
 }).then(function (results) {
