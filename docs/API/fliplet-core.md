@@ -17,6 +17,7 @@ The following namespaces are publicly available under this package. Please click
 - [Modal](#modal)
 - [Navigate](#navigate)
 - [Navigator](#navigator)
+- [Notifications](#notitications)
 - [Organizations](#organizations)
 - [Pages](#pages)
 - [Profile](#profile)
@@ -691,6 +692,10 @@ Fliplet.Navigator.location().then(function (position) {
   // User didn't allow to share the location
 });
 ```
+
+---
+
+## Notifications
 
 ### Show a local notification to the user
 
