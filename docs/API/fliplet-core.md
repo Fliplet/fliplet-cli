@@ -1031,8 +1031,10 @@ The `query` parameter is optional; when given, it must be an object with the fol
 - `where` (sequelize where condition)
 - `group` (for grouping data, described below)
 - `limit` (number)
-- `attributes` (array of strings, fields to extract. Cannot be used when grouping)
 - `order` (array of arrays, check below for usage)
+- `aggregate` (object to define post-querying filtering, see below for usage)
+
+---
 
 #### `attributes`
 
@@ -1049,6 +1051,25 @@ Use when you only want to select a few attributes or you need to apply a distinc
 ```js
 [ { distinctCount: true, col: 'data._analyticsTrackingId', as: 'sessionsCount' } ]
 ```
+
+---
+
+#### `where`
+
+Sequelize where condition for the query.
+
+```js
+{
+  data: { foo: 'bar' },
+  type: ['app.analytics.pageView'],
+  createdAt: {
+    $gte: moment().startOf('day').unix()*1000,
+    $lte: moment().endOf('day').unix()*1000
+  }
+}
+```
+
+---
 
 #### `group`
 
@@ -1123,6 +1144,25 @@ Fliplet.App.Analytics.get({
   limit: 3
 })
 ```
+
+---
+
+#### `limit`
+
+Number of records to return. Defaults to `250`.
+
+
+---
+
+#### `order`
+
+Define the ascending or descending order of returned records, sorting by specific column(s).
+
+```js
+[ ['data.label', 'DESC'], ['sessionsCount', 'ASC'] ]
+```
+
+---
 
 ### Fetch logs count
 
