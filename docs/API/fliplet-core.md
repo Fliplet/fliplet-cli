@@ -1013,7 +1013,7 @@ Fliplet.App.Analytics.Session.reset();
 
 ### Fetch aggregated logs
 
-Here's how you can use our powerful JS APIs to do some heavylifting for you and return aggregated records instead of having to group them manually when displaying charts for app analytics.
+Here's how you can use our powerful JS APIs to do some heavylifting for you and return aggregated logs instead of having to group them manually when displaying charts for app analytics.
 
 **Note**: fetching aggregating logs is available both under the namespace **for the current app** (`Fliplet.App`) and **for all apps** (`Fliplet.Apps`), each have different behaviors and parameter requirements:
 
@@ -1027,12 +1027,13 @@ Fliplet.Apps.Analytics.get(appId, query);
 
 The `query` parameter is optional; when given, it must be an object with the following (all optional) attributes:
 
+- `aggregate` (object to define post-querying filtering, see below for usage)
 - `attributes` (array of attributes to select)
-- `where` (sequelize where condition)
 - `group` (for grouping data, described below)
 - `limit` (number)
 - `order` (array of arrays, check below for usage)
-- `aggregate` (object to define post-querying filtering, see below for usage)
+- `period` (object to define how chunks of data should be grouped chronologically)
+- `where` (sequelize where condition)
 
 ---
 
@@ -1160,6 +1161,22 @@ Define the ascending or descending order of returned records, sorting by specifi
 
 ```js
 [ ['data.label', 'DESC'], ['sessionsCount', 'ASC'] ]
+```
+
+---
+
+#### `period`
+
+Define how data should be grouped into periods of time.
+
+- `duration`: can be either `week`, `day`, `hour`, `minute` or a specific time in **seconds**
+- `col`: defines the target column to use for the date comparison.
+
+```js
+{
+  duration: 'hour',  // size of the data point
+  col: 'createdAt'   // target column
+}
 ```
 
 ---
