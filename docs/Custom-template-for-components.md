@@ -14,7 +14,7 @@ If you need to customise how a component look â€” and CSS itself is not enough â
 ```
 {% endraw %}
 
-Let's make a hands-on example customising a primary button. First, let's take a look at its default output on the open source github repository: https://github.com/Fliplet/fliplet-widget-primary-button/blob/master/build.html
+Let's make a hands-on example customising a **primary button**. First, let's take a look at its default output on the [open source github repository](https://github.com/Fliplet/fliplet-widget-primary-button/blob/master/build.html):
 
 {% raw %}
 ```handlebars
@@ -22,7 +22,7 @@ Let's make a hands-on example customising a primary button. First, let's take a 
 ```
 {% endraw %}
 
-As you can see, the widget declares a `{{id}}` and `{{label}}` that we must use to keep the component behaviour. We could then customise this widget instance html as follows:
+As you can see, the widget declares a {% raw %}`{{id}}`{% endraw %} and {% raw %}`{{label}}`endraw that we must use to keep the component behaviour. We could then customise this widget instance html as follows:
 
 {% raw %}
 ```handlebars
