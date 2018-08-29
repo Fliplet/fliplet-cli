@@ -991,7 +991,7 @@ The system takes care of creating an analytics session for the user and track it
 
 - `_platform` (String, `web` or `native`)
 - `_os` (String, operative system)
-- `_trackingId` (String, a unique hash for the user session. This changes every 30 minutes for the user.)
+- `_analyticsSessionId` (String, a unique hash for the user session. This changes every 30 minutes for the user.)
 - `_pageId` (Number, the screen ID where the event has been tracked)
 - `_pageTitle` (String, the screen name where the event has been tracked)
 - `_userEmail` (String, the email of the logged user when using a login system like SAML2, Fliplet Data Sources or Fliplet Login)
@@ -1013,7 +1013,7 @@ Fliplet.App.Analytics.Session.reset();
 
 ### Fetch aggregated logs
 
-Here's how you can use our powerful JS APIs to do some heavylifting for you and return aggregated records instead of having to group them manually when displaying charts for app analytics.
+Here's how you can use our powerful JS APIs to do some heavylifting for you and return aggregated logs instead of having to group them manually when displaying charts for app analytics.
 
 **Note**: fetching aggregating logs is available both under the namespace **for the current app** (`Fliplet.App`) and **for all apps** (`Fliplet.Apps`), each have different behaviors and parameter requirements:
 
@@ -1027,11 +1027,52 @@ Fliplet.Apps.Analytics.get(appId, query);
 
 The `query` parameter is optional; when given, it must be an object with the following (all optional) attributes:
 
-- where (sequelize where condition)
-- group (for grouping data, described below)
-- limit (number)
-- attributes (array of strings, fields to extract. Cannot be used when grouping)
-- order (array of arrays, check below for usage)
+- `aggregate` (object to define post-querying filtering, see below for usage)
+- `attributes` (array of attributes to select)
+- `group` (for grouping data, described below)
+- `limit` (number)
+- `order` (array of arrays, check below for usage)
+- `period` (object to define how chunks of data should be grouped chronologically)
+- `where` (sequelize where condition)
+
+---
+
+#### `attributes`
+
+Use when you only want to select a few attributes or you need to apply a distinct count.
+
+**Selecting attributes:**
+
+```js
+['createdAt', 'data']
+```
+
+**Applying a distinct count:**
+
+```js
+[ { distinctCount: true, col: 'data._analyticsTrackingId', as: 'sessionsCount' } ]
+```
+
+---
+
+#### `where`
+
+Sequelize where condition for the query.
+
+```js
+{
+  data: { foo: 'bar' },
+  type: ['app.analytics.pageView'],
+  createdAt: {
+    $gte: moment().startOf('day').unix()*1000,
+    $lte: moment().endOf('day').unix()*1000
+  }
+}
+```
+
+---
+
+#### `group`
 
 When aggregating data with "group", this parameter must be an array of objects or strings.
 
@@ -1048,7 +1089,9 @@ Fliplet.Apps.Analytics.get(appId, {
   ],
   where: {
     data: { foo: 'bar' }
-  }
+  },
+  order: [['data.label', 'DESC']],
+  limit: 5
 }).then(function (results) {
   // console.log(results)
 });
@@ -1093,9 +1136,52 @@ Fliplet.Apps.Analytics.get(appId, {
 }).then(function (results) {
   results = _.sortBy(results, 'count').reverse();
 });
+
+// fetch a list of most active users by their number of sessions
+Fliplet.App.Analytics.get({
+  group: ['data._userEmail'],
+  order: [['sessionsCount', 'DESC']],
+  attributes: [ { distinctCount: true, col: 'data._analyticsTrackingId', as: 'sessionsCount' } ],
+  limit: 3
+})
 ```
 
-### Fetch matched logs count
+---
+
+#### `limit`
+
+Number of records to return. Defaults to `250`.
+
+
+---
+
+#### `order`
+
+Define the ascending or descending order of returned records, sorting by specific column(s).
+
+```js
+[ ['data.label', 'DESC'], ['sessionsCount', 'ASC'] ]
+```
+
+---
+
+#### `period`
+
+Define how data should be grouped into periods of time.
+
+- `duration`: can be either `week`, `day`, `hour`, `minute` or a specific time in **seconds**
+- `col`: defines the target column to use for the date comparison.
+
+```js
+{
+  duration: 'hour',  // size of the data point
+  col: 'createdAt'   // target column
+}
+```
+
+---
+
+### Fetch logs count
 
 `count` works exactly the same as the above `get` method, but returns just a number of results:
 
