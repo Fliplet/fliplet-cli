@@ -5,7 +5,8 @@ The `fliplet-communicate` package contains the namespace `Fliplet.Communicate` a
 - [`.sendEmail()`](#send-an-email) - Sends an HTML formatted email
 - [`.sendSMS()`](#send-an-sms) - Sends an SMS message
 - [`.composeEmail()`](#compose-an-email) - Composes an email on the device
-- [`.shareURL()`](#share-a-url) - Share a URL 
+- [`.shareURL()`](#share-a-url) - Share a URL
+- [`.sendPushNotification()`](#send-push-notifications) - Send push notifications
 
 ## Send an email
 
@@ -22,6 +23,8 @@ const options = {
 
 Fliplet.Communicate.sendEmail(options);
 ```
+
+---
 
 ## Send an SMS
 
@@ -57,6 +60,8 @@ Fliplet.Communicate.sendSMS(options);
 ```
 
 Let us know if you require to use another SMS provider and we'll check whether we can integrate it on our system.
+
+---
 
 ## Share a URL
 
@@ -98,7 +103,7 @@ Web apps will show users a URL to copy and provide icons to share the URL with p
 
 `Fliplet.Communicate.shareURL()` lets users share a URL. The Promise is resolved when the action is completed or dismissed. The share options are passed to the resolving function, with an additional `completed` property to signify if an action was completed or cancelled.
 
-```js 
+```js
 // A simple way to share a URL
 Fliplet.Communicate.shareURL('https://maps.google.com/?addr=EC2A+4DN');
 
@@ -111,7 +116,7 @@ Fliplet.Communicate.shareURL({
 
 **Recommendation:** Optionally provide a target to enure the share popover appears in the right place on iPads.
 
-```js 
+```js
 Fliplet.Communicate.shareURL({
   url: 'https://maps.google.com/?addr=EC2A+4DN',
   target: '#target'
@@ -152,6 +157,29 @@ Fliplet.Communicate.shareURL({
 ### Share a page in a Fliplet app
 
 See [documentation for `Fliplet.Content`](fliplet-content.md#share-a-page-with-a-url).
+
+---
+
+## Send push notifications
+
+(Returns **`Promise`**)
+
+Available options:
+
+- `title` (required, the title of the notification)
+- `body` (required, the message of the notification)
+- `sandbox` (optional, when `true`, notifications are only sent to people using Fliplet Viewer. This is useful for testing.)
+- `subscription` (optional, an array of **push subscription IDs** to target specific users. These IDs can be found in the "About this app" section of Fliplet apps, accessible via the top menu)
+- `badge` (optional, sets the badge on iOS to a specific number)
+
+```js
+Fliplet.Communicate.sendPushNotification(appId, {
+  title: 'Lorem ipsum',
+  body: 'Irure sed ad do dolor ad ut ut anim.'
+});
+```
+
+**Note**: only app publishers and editors are allowed to send push notifications.
 
 ---
 
