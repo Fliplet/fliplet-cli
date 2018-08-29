@@ -22,7 +22,7 @@ Let's make a hands-on example customising a **primary button**. First, let's tak
 ```
 {% endraw %}
 
-As you can see, the widget declares a {% raw %}`{{id}}`{% endraw %} and {% raw %}`{{label}}`endraw that we must use to keep the component behaviour. We could then customise this widget instance html as follows:
+As you can see, the widget declares a {% raw %}`{{id}}`{% endraw %} and {% raw %}`{{label}}`{% endraw %} that we must use to keep the component behaviour. We could then customise this widget instance html as follows:
 
 {% raw %}
 ```handlebars
