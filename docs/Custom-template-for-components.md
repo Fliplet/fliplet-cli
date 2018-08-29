@@ -2,7 +2,7 @@
 
 Fliplet components are usually rendered into an app screen with the `{{{ widget 123 }}}` syntax, where `123` would be the ID of the component.
 
-If you need to customise how a component look — and CSS itself is not enough — you can customise the component template by changing the widget declaration tag to a handlebars block by prefixing "widget" with a hashtag and also add a closure tag. You also must use just two curly brackets to enclose the tags instead of three:
+If you need to customise how a component look — and CSS itself is not enough — you can customise the component template by changing the widget declaration tag to a handlebars block by prefixing the `widget` word with a hashtag and also add a closure tag. You also must use only **two curly brackets** to enclose the tags instead of three:
 
 {% raw %}
 ```handlebars
@@ -34,7 +34,7 @@ As you can see, the widget declares a `{{id}}` and `{{label}}` that we must use 
 ```
 {% endraw %}
 
-Note: `data-primary-button-id="{{id}}"` is required by the primary button javascript code to make the link work. Each widget might have different ways of attaching events and handlers based on dom classes, nodes or attributes.
+Note: {% raw %}`data-primary-button-id="{{id}}"`{% endraw %} is required by the primary button javascript code to make the link work. Each widget might have different ways of attaching events and handlers based on dom classes, nodes or attributes.
 
 ![img](https://cl.ly/0j451L1O3b2V/Image%202018-05-25%20at%201.48.42%20PM.png)
 
