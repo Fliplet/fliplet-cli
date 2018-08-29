@@ -1,6 +1,6 @@
 # Custom templates for components
 
-Fliplet components are usually rendered into an app screen with the `{{{ widget 123 }}}` syntax, where `123` would be the ID of the component.
+Fliplet components are usually rendered into an app screen with the {% raw %}`{{{ widget 123 }}}`{% endraw %} syntax, where `123` would be the ID of the component.
 
 If you need to customise how a component look — and CSS itself is not enough — you can customise the component template by changing the widget declaration tag to a handlebars block by prefixing the `widget` word with a hashtag and also add a closure tag. You also must use only **two curly brackets** to enclose the tags instead of three:
 
