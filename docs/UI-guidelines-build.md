@@ -200,5 +200,48 @@ We use the following custom animation to make it spin:
 
 ---
 
+## Tables
+
+Large tables can sometimes create unexpected behaviors in your apps across different screen sizes. Tables could be considered large if there are too many columns or column(s) that include large amounts of content.
+
+In Fliplet, tables can be displayed in 3 display types: **Responsive**, **Scrollable** and **Hybrid**.
+
+| | Small tables | Large tables |
+| --- | --- | --- |
+| **Responsive** | Occupies 100% of container width | Visible beyond the container |
+| **Scrollable** | Occupy as much of the container width as necessary | Scrollable horizontally |
+| **Hybrid** | Occupies 100% of container width | Scrollable horizontally |
+
+Regardless of the table display type, column widths are automatically adjusted depending on the content.
+
+By default, all tables are displayed in the **Responsive** display type.
+
+### Scrollable tables
+
+ To use tables in the **Scrollable** display type, use `.table-scrollable` or  `.table-*-scrollable` on each `<table></table>` element as outlined below depending on the amount of content in the table.
+
+|  | **Extra-small devices**<br>Phones (<640px) | **Small devices**<br>Tablets (≥640px) | **Medium devices**<br>Tablets/Desktops (≥992px) | **Large devices**<br>Tablets/Desktops (≥1200px) |
+| --- | --- | --- | --- | --- |
+| `.table-scrollable` | Scrollable | Scrollable | Scrollable | Scrollable |
+| `.table-md-scrollable` | Scrollable | Scrollable | Scrollable | Responsive  |
+| `.table-sm-scrollable` | Scrollable | Scrollable | Responsive | Responsive |
+| `.table-xs-scrollable` | Scrollable | Responsive | Responsive | Responsive |
+
+### Hybrid tables
+
+To use tables in the **Hybrid** display type, add a `<div class="table-hybrid-container"></div>` around the table.
+
+For example:
+
+```html
+<div class="table-hybrid-container">
+  <table>
+    [...]
+  </table>
+</div>
+```
+
+---
+
 [Back](README.md)
 {: .buttons}
