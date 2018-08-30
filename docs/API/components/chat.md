@@ -14,9 +14,9 @@ Use the following query parameter when linking to a screen with chat.
 
 ## Default users in user directory
 
-If you want to select the users to be shown in the directory, add a column to your users data source and name the column `flDefaultChatUser` and write an `X` on each of the users' row that should be listed in the users directory.
+By default the chat component will list all the users from a data source in the users directory.
 
-_By default the users directory in the chat component will display all the users from a data source._
+If you want to list only selected users in the directory, add a column to your users data source, add a column named `flDefaultChatUser` and write an `X` for each users that you would like listed in the user directory.
 
 ---
 
