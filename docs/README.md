@@ -56,6 +56,7 @@ To get a brief introduction to the technologies we use and the stack of the plat
   - [Reduce your app's bundle size](Reduce-app-bundle-size.md)
   - [Securing your screens](Screen-security.md)
   - [Using async/await for more readable promises](Async-await.md)
+  - [Custom HTML template for components](Custom-template-for-components.md)
 11. Platform-specific advanced functionalities
   - [iOS](Platform-iOS.md)
   - [Android](Platform-Android.md)

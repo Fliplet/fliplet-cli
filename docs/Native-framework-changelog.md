@@ -4,9 +4,9 @@ We regularly update our framework to support new features. If you have an older 
 
 ## Latest versions (3.x)
 
-### Version 3.8.5 (June 8, 2018)
+### Version 3.8.5 (August 29, 2018)
 
-- SQLite plugin removed (iOS-only)
+- SQLite plugin removed
 
 ---
 

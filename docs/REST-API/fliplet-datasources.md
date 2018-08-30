@@ -341,7 +341,6 @@ curl -X PUT \
   -H 'auth-token: eu--123456789' \
   -H 'cache-control: no-cache' \
   -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
-  -H 'postman-token: 78b97954-a7b2-c4c2-c5da-bdbca513beb1' \
   -F foo=bar \
   -F baz=@/path/to/file.jpg
 ```

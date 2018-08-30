@@ -48,12 +48,14 @@ You can also return a `Promise` if you're loading the data asynchronously. In th
 ```js
 Fliplet.FormBuilder.get().then(function (form) {
   form.load(function () {
-    return Fliplet.DataSources.connect(133).then(function (connection) {
+    return Fliplet.DataSources.connect(123).then(function (connection) {
       return connection.findById(456);
     });
   });
 });
 ```
+
+For more details, check the JS API documentation on the `Fliplet.DataSources` namespace.
 
 <strong>Retrieve information of signed in user:</strong>
 
@@ -95,7 +97,7 @@ Fliplet.FormBuilder.get().then(function (form) {
 });
 ```
 
---- 
+---
 
 ### `form.field(String)`
 
@@ -125,7 +127,7 @@ Fliplet.FormBuilder.get()
   });
 ```
 
---- 
+---
 
 ### `form.change(Function)`
 
@@ -141,7 +143,7 @@ Fliplet.FormBuilder.get()
   });
 ```
 
---- 
+---
 
 ### `form.toggle(Boolean)`
 
@@ -203,7 +205,7 @@ Fliplet.Hooks.on('beforeFormSubmit', function(data) {
 });
 ```
 
---- 
+---
 
 ### afterFormSubmit
 
@@ -215,7 +217,7 @@ Fliplet.Hooks.on('afterFormSubmit', function() {
 });
 ```
 
---- 
+---
 
 ### onFormSubmitError
 
