@@ -245,5 +245,28 @@ Fliplet.FormBuilder.on('reset', function () {
 
 ---
 
+## Examples
+
+### Updating data source entries
+
+```js
+var dataSourceId = 123;
+var entryId = 456;
+
+Fliplet.DataSources.connect(dataSourceId).then(function (connection) {
+  // 1. Load the form in edit mode from a dataSource
+  Fliplet.FormBuilder.get().then(function (form) {
+    form.load(function () {
+      return connection.findById(entryId);
+    });
+  });
+
+  // 2. Bind a hook to update the data once the form is submitted:
+  Fliplet.Hooks.on('beforeFormSubmit', function(data) {
+    return connection.update(entryId, data);
+  });
+});
+```
+
 [Back to API documentation](../../API-Documentation.md)
 {: .buttons}
