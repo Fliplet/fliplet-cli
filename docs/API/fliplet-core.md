@@ -822,6 +822,16 @@ Fliplet.Navigate.back();
 Fliplet.Navigate.url('http://fliplet.com');
 ```
 
+The above will use the "in app" browser by default, so your users won't leave from the app. If you wish to use the device's system browser, you can pass `inAppBrowser: false` in the configuration as follows:
+
+```js
+Fliplet.Navigate.url({
+  url: 'http://fliplet.com',
+  inAppBrowser: false
+});
+```
+
+
 ### Navigate the app to a specific screen by its ID
 
 To find out the ID of a page, you can use Fliplet Studio (it's displayed on the browser bar) or simply run `Fliplet.Env.get('pageId')` from any page.
