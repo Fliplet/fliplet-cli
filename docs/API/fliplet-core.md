@@ -822,7 +822,7 @@ Fliplet.Navigate.back();
 Fliplet.Navigate.url('http://fliplet.com');
 ```
 
-The above will use the "in app" browser by default, so your users won't leave from the app. If you wish to use the device's system browser, you can pass `inAppBrowser: false` in the configuration as follows:
+The above will use the in-app browser by default, so your users won't leave from the app. If you wish to use the device's system browser, you can pass `inAppBrowser: false` in the configuration as follows:
 
 ```js
 Fliplet.Navigate.url({
