@@ -1171,11 +1171,13 @@ Define how data should be grouped into periods of time.
 
 - `duration`: can be either `week`, `day`, `hour`, `minute` or a specific time in **seconds**
 - `col`: defines the target column to use for the date comparison.
+- `count`: if `true`, only returns a count for the matched records; if `false`, returns a `data` array with a list of matched records
 
 ```js
 {
   duration: 'hour',  // size of the data point
-  col: 'createdAt'   // target column
+  col: 'createdAt',  // target column
+  count: true        // return count only
 }
 ```
 
