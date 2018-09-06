@@ -823,7 +823,7 @@ Fliplet.Navigate.back();
 Fliplet.Navigate.url('http://fliplet.com');
 ```
 
-The above will use the in-app browser by default, so your users won't leave from the app. If you wish to use the device's system browser, you can pass `inAppBrowser: false` in the configuration as follows:
+The above will use the in-app browser by default so your users won't leave from the app. If you wish to use the device's system browser, you can pass `inAppBrowser: false` in the configuration as follows:
 
 ```js
 Fliplet.Navigate.url({
@@ -832,6 +832,11 @@ Fliplet.Navigate.url({
 });
 ```
 
+The in-app browser contains a **Share** feature that lets your users share the URL through other features on the phone. You can disable this by adding the following line as custom JavaScript code.
+
+```js
+Fliplet.Navigate.defaults.disableShare = true;
+```
 
 ### Navigate the app to a specific screen by its ID
 
