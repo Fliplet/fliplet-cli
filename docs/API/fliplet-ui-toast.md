@@ -114,18 +114,21 @@ Fliplet.DataSources.connect(0)
     return connection.find();
   })
   .catch(function (error) {
+    var actions = [];
+    var message = Fliplet.parseError(error);
+    if (message) {
+      actions.push({
+        label: 'Details',
+        action: function () {
+          Fliplet.UI.Toast({
+            message: message
+          });
+        }
+      });
+    }
     Fliplet.UI.Toast({
       message: 'Error loading data',
-      actions: [
-        {
-          label: 'Details',
-          action: function () {
-            Fliplet.UI.Toast({
-              html: error.message || error
-            });
-          }
-        }
-      ]
+      actions: actions
     });
   });
 ```
