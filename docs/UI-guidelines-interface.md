@@ -69,7 +69,7 @@ Here is an example:
 In our components we use the following form fields:
 - [Input field](#input-field)
 - [Colour picker](#colour-picker)
-- [Drop-down list](#drop-down-list)
+- [Dropdown list](#dropdown-list)
 - [Radio buttons](#radio-buttons)
 - [Checkboxes](#checkboxes)
 
@@ -134,9 +134,9 @@ If you want to use an input field without a label, all you need to do is remove 
 </div>
 ```
 
-### Drop-down list
+### Dropdown list
 
-![Drop-down list](assets/img/ui-interface/dropdown.png)
+![Dropdown list](assets/img/ui-interface/dropdown.png)
 
 If you want to add styled `<select>` dropdowns that follow Fliplet's UI styles, use the following markup:
 
@@ -164,7 +164,7 @@ If you are using one of these dropdowns with dynamic data to create the dropdown
 </label>
 ```
 
-![Drop-down list disabled](assets/img/ui-interface/disabled-dropdown.png)
+![Dropdown list disabled](assets/img/ui-interface/disabled-dropdown.png)
 
 After the dynamic `<option>` options are added, remove the `disabled` attribute.
 
@@ -173,21 +173,22 @@ Here is an example where we append the column names of a Data Source:
 ```js
 Fliplet.DataSources.getById(dataSourceId).then(function (dataSource) {
   var options = [];
-  options.push('<option value="">-- Select a column</option>');
+  var $dropdown = $('#drop-down');
 
+  // Populate dropdown with options
+  options.push('<option value="">-- Select a column</option>');
   dataSource.columns.forEach(function (c) {
     options.push('<option value="' + c + '">' + c + '</option>');
   });
+  $dropdown.html(options.join(''));
 
-  $('#drop-down').html(options.join(''));
+  // Removes disabled attribute to allow the user to use the drop-down
+  $dropdown.prop('disabled', false);
 
   // When loading the saved data
   if (data.columnName) {
-    $('#drop-down').val(data.columnName);
+    $dropdown.val(data.columnName);
   }
-
-  // Removes disabled attribute to allow the user to use the drop-down
-  $('#drop-down').prop('disabled', false);
 });
 ```
 
