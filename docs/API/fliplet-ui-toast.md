@@ -115,13 +115,13 @@ Fliplet.DataSources.connect(0)
   })
   .catch(function (error) {
     var actions = [];
-    var message = Fliplet.parseError(error);
-    if (message) {
+    var details = Fliplet.parseError(error);
+    if (details) {
       actions.push({
         label: 'Details',
         action: function () {
           Fliplet.UI.Toast({
-            message: message
+            message: details
           });
         }
       });
