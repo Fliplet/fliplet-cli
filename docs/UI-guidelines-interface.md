@@ -138,75 +138,56 @@ If you want to use an input field without a label, all you need to do is remove 
 
 ![Drop-down list](assets/img/ui-interface/dropdown.png)
 
-HTML Select aren't easy to style, some HTML and CSS magic needs to be applied. If you want yours to look like ours do the following:
+If you want to add styled `<select>` dropdowns that follow Fliplet's UI styles, use the following markup:
 
 ```html
-<div class="form-group clearfix">
-  <div class="col-sm-4 control-label">
-    <label>An awesome drop-down list</label>
-  </div>
-  <div class="col-sm-8">
-    <label for="drop-down" class="select-proxy-display">
-      <span class="icon fa fa-chevron-down"></span>
-      <span class="select-value-proxy">-- Select an option</span>
-      <select id="drop-down" data-label="select" class="hidden-select form-control">
-        <option value="">-- Select an option</option>
-        <option value="1">Option 1</option>
-        <option value="2">Option 2</option>
-      </select>
-    </label>
-  </div>
-</div>
+<label for="drop-down" class="select-proxy-display">
+  <select id="drop-down" class="hidden-select form-control">
+    <option value="">-- Select an option</option>
+    <option value="1">Option 1</option>
+    <option value="2">Option 2</option>
+  </select>
+  <span class="icon fa fa-chevron-down"></span>
+</label>
 ```
-
-The trick here is to hide the `<select>` and use a `<label>` to look like a drop-down. We trigger the drop-down using the `for` attribute in the label that matches the `<select>` `id` attribute.
-We will then use some JavaScript to update the `span.select-value-proxy` text to match the text of the option selected in the drop-down list.
-
-You don't need to worry about the JavaScript bit as it is part of our system.
 
 **Dynamically appending options**
 
-If you are using one of these drop-downs with dynamic data to create the `<option>` then we recommend start the `<select>` disabled by adding the `disable` attribute to it, also remove all the `<option>` and in the `span.select-value-proxy` default it to _"-- Please wait..."_.
-Here is the markup for it:
+If you are using one of these dropdowns with dynamic data to create the dropdown `<option>` options, start with the `<select>` element disabled and a single `<option>-- Please wait...</option>` element.
 
 ```html
-<div class="form-group clearfix">
-  <div class="col-sm-4 control-label">
-    <label>An awesome drop-down list</label>
-  </div>
-  <div class="col-sm-8">
-    <label for="drop-down" class="select-proxy-display">
-      <span class="icon fa fa-chevron-down"></span>
-      <span class="select-value-proxy">-- Please wait...</span>
-      <select id="drop-down" data-label="select" class="hidden-select form-control" disabled></select>
-    </label>
-  </div>
-</div>
+<label for="drop-down" class="select-proxy-display">
+  <select id="drop-down" data-label="select" class="hidden-select form-control" disabled>
+    <option>-- Please wait...</option>
+  </select>
+  <span class="icon fa fa-chevron-down"></span>
+</label>
 ```
 
 ![Drop-down list disabled](assets/img/ui-interface/disabled-dropdown.png)
 
-Then in the JavaScript after you add the dynamic `<option>` you need to remove the `disabled` attribute and trigger a change.
+After the dynamic `<option>` options are added, remove the `disabled` attribute.
+
 Here is an example where we append the column names of a Data Source:
 
 ```js
 Fliplet.DataSources.getById(dataSourceId).then(function (dataSource) {
-  $('#drop-down').html('<option value="">-- Select a column</option>');
+  var options = [];
+  options.push('<option value="">-- Select a column</option>');
 
   dataSource.columns.forEach(function (c) {
-    $('#drop-down').append('<option value="' + c + '">' + c + '</option>');
+    options.push('<option value="' + c + '">' + c + '</option>');
   });
+
+  $('#drop-down').html(options.join(''));
 
   // When loading the saved data
   if (data.columnName) {
     $('#drop-down').val(data.columnName);
   }
 
-  // Trigger a change to update the .select-value-proxy text
-  $('#drop-down').trigger('change');
-
   // Removes disabled attribute to allow the user to use the drop-down
-  $('#drop-down').prop('disabled', '');
+  $('#drop-down').prop('disabled', false);
 });
 ```
 
