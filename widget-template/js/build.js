@@ -2,7 +2,7 @@
 var mySampleCoreLibrary = new Fliplet.Registry.get('{{safeName}}:1.0:core');
 
 // This function will run for each instance found in the page
-Fliplet.Widget.instance('{{safeName}}', function (data) {
+Fliplet.Widget.instance('{{safeName}}-1-0', function (data) {
   // The HTML element for each instance. You can use $(element) to use jQuery functions on it
   var element = this;
 
