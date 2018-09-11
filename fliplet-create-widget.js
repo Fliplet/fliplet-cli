@@ -10,6 +10,7 @@ if (process.argv.length < 3) {
 }
 
 const widgetName = process.argv[2];
+const safeName = widgetName.trim().toLowerCase().replace(/ /g, '-').replace(/[^A-z0-9-]/g, '');
 const packageName = widgetName.trim().replace(/ /g, '-').toLowerCase();
 const folderPath = path.join(process.cwd(), packageName);
 
@@ -23,6 +24,14 @@ ncp(path.join(__dirname, 'widget-template'), folderPath, function (err) {
   replace({
     regex: '{{name}}',
     replacement: widgetName,
+    paths: [folderPath],
+    recursive: true,
+    silent: true
+  });
+
+  replace({
+    regex: '{{safeName}}',
+    replacement: safeName,
     paths: [folderPath],
     recursive: true,
     silent: true
