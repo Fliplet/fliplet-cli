@@ -782,6 +782,8 @@ myNamespaceStorage.get('bar').then(function(value) {})
 
 #### Get all data
 
+**Note** This is only available for namespaced storage
+
 ```js
 myNamespaceStorage.getAll().then(function(data) {})
 ```
@@ -789,12 +791,25 @@ myNamespaceStorage.getAll().then(function(data) {})
 #### Remove
 
 Remove a key or list of keys from the namespaced storage
+
 ```js
 myNamespaceStorage.remove('bar')
+```
+
+**Note** If you need to remove multiple storage keys at once, you must pass an array of keys
+
+```js
+// Correct
 myNamespaceStorage.remove(['foo', 'bar'])
+
+// Incorrect - This will result in only the last one being removed
+myNamespaceStorage.remove('foo')
+myNamespaceStorage.remove('bar')
 ```
 
 #### Clear
+
+**Note** This is only available for namespaced storage
 
 Clear all namespaced storage
 ```js
