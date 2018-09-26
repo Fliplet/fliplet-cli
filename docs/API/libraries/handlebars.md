@@ -64,9 +64,7 @@ Fliplet apps are loaded with the following helpers.
    - `urls` An array of image URLs
 - `auth` outputs an authenticated URL for any encrypted assets stored by Fliplet, e.g. `{{auth url}}`
    - `url` URL to be authenticated
-- `moment` outputs a date/time value based on the provided format, e.g. `{{moment timestamp "MMM Do YY"}}`
-   - `timestamp` Timestamp to be parsed
-   - The second parameter is a string that represents the format [as documented by Handlebars](https://momentjs.com/docs/#/parsing/string-format/)
+- `moment` outputs a date/time value based on the provided format, e.g. `{{moment timestamp format="MMM Do YY"}}` to format a date, or `{{moment timestamp inputFormat="H:mm" format="h:mm a"}}` to format a timestamp based on a specific input format. See [github.com](https://github.com/Fliplet/handlebars-helper-moment/blob/master/README.md) for the full documentation.
 - `nl2br` changes any new lines or carriage returns in the value to a `<br>` tag, adding a new line to the HTML output, e.g. `{{nl2br str}}`
    - `str` String to be parsed for new lines
 - `toJSONString` changes any objects to a JSON string, e.g. `{{toJSONString obj}}`
