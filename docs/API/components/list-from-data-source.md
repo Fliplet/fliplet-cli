@@ -89,6 +89,135 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function onBeforeGetData(data) {
 });
 ```
 
+## Filter or Search the list on load
+With the List (from data source) you can programatically load the list with filters applied, a search value applied, and even add a new pre-filter.  
+_(pre-filter is a filter applied before the list is rendered - this won't override the filters added in component settings, it will run after those)_
+
+This can be achieved by setting a persistant variable using the `Fliplet.App.Storage`. [Read more here](../../API/fliplet-core.md#app-storage)  
+The persistant variable, by default, will be removed automatically after running.
+```js
+Fliplet.App.Storage.set('flDynamicListQuery:simple-list', { ... });
+```
+### List layouts
+The key of the persistant variable includes the layout name of the List (from data source).  
+Here is a list of all the layouts available in the List (from data source) component:
+- Small Expandable Cards: `small-cards`
+- Cards with Description: `news-feed`
+- Agenda: `agenda`
+- Small Horizontal Cards: `small-h-cards`
+- Simple List: `simple-list`
+
+### Search
+#### **By value**
+`search` - Object  
+`value` - String  
+When using by value only, it will search on the fields defined in the component's settings.
+
+```js
+Fliplet.App.Storage.set('flDynamicListQuery:simple-list', {
+  search: {
+    value: "business apps"
+  }
+});
+```
+#### **By column and value**
+`search` - Object  
+`value` - String  
+`column` - String/Array  
+When defining the `column` key, the field defined in the component's settings will be overriden.
+
+```js
+Fliplet.App.Storage.set('flDynamicListQuery:simple-list', {
+  search: {
+    column: "Title",
+    value: "business apps"
+  }
+});
+
+Fliplet.App.Storage.set('flDynamicListQuery:simple-list', {
+  search: {
+    column: ["Title", "Category"],
+    value: "business apps"
+  }
+});
+```
+### Filter
+`filter` - Object  
+`value` - String/Array  
+You must still define the columns that contain the filter values in the settings of the component.
+
+```js
+// Applying one filter
+Fliplet.App.Storage.set('flDynamicListQuery:simple-list', {
+  filter: {
+    value: "Apps"
+  }
+});
+
+// Applying multiple filters
+Fliplet.App.Storage.set('flDynamicListQuery:simple-list', {
+  filter:{
+    value: ["Apps", "London"]
+  }
+});
+```
+### Pre-filter
+`prefilter` - Array  
+`column` - String  
+`logic` - String  
+`value` - String  
+
+```js
+Fliplet.App.Storage.set('flDynamicListQuery:simple-list', {
+  prefilter: [
+    {
+      column: "Title",
+      logic: "contains",
+      value: "apps"
+    }
+  ]
+});
+```
+#### **Operators for the `logic` key**
+- Equal: `==`
+- Not equal: `!=`
+- Greater than: `>`
+- Greater than or equal: `>=`
+- Less than: `<`
+- Less than or equal: `<=`
+- Contains: `contains`
+- Not contains: `notcontain`
+- RegExp: `regex`
+
+### Chain features
+A pre-filter and a search
+```js
+Fliplet.App.Storage.set('flDynamicListQuery:simple-list', {
+  prefilter: [
+    {
+      column: "Title",
+      logic: "contains",
+      value: "apps"
+    }
+  ],
+  search: {
+    column: ["Title", "Category"],
+    value: "business apps"
+  }
+});
+```
+
+### Other options
+`previousScreen` - Boolean/Function (Default: `false`) - When set to `true` or defined as a `function`, closing a detail view of a list item, will navigate to the previous screen. _We recommend only using this option when you know there will only be on entry as a result_  
+`persist` - Boolean (Default: `false`) - When set to `true` the persistant variable will never be removed, until you remove it programatically.
+```js
+Fliplet.App.Storage.set('flDynamicListQuery:simple-list', {
+  search: { ... },
+  previousScreen: true,
+  persist: true
+});
+```
+
 
 ---
 
