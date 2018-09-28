@@ -44,24 +44,6 @@ LikeButton({
 });
 ```
 
-The `LikeButton()` function returns an object that can be used to capture `liked` and `unliked`events.
-
-For example:
-
-```js
-var btn = LikeButton({
-  target: '#target',
-  dataSourceId: 12345,
-  content: {
-    pageId: Fliplet.Env.get('pageId')
-  }
-});
-
-btn.on('liked', function(data){
-  console.log('Liked. New like count: ' + data.count);
-})
-```
-
 ## Usage
 
 ```
@@ -92,7 +74,56 @@ LikeButton(options)
   * `likeWrapper` (String) HTML to use when wrapping the like button. **Default**: `<a class="btn btn-like" href="#"></a>`
   * `likedWrapper` (String) HTML to use when wrapping the liked button. **Default**: `<a class="btn btn-like" href="#"></a>`
 
-  ---
+## Methods
 
-  [Back to API documentation](../API-Documentation.md)
-  {: .buttons}
+The `LikeButton()` function returns an object with the following methods.
+
+For example:
+
+```js
+var btn = LikeButton({
+  target: '#target',
+  dataSourceId: 12345,
+  content: {
+    pageId: Fliplet.Env.get('pageId')
+  }
+});
+
+// Capture 'liked' event
+btn.on('liked', function(data){
+  console.log('Liked. New like count: ' + data.count);
+});
+
+// Capture 'unliked' event
+btn.on('unliked', function(data){
+  console.log('Unliked. New like count: ' + data.count);
+});
+
+// Programmatically trigger like
+// Returns a Promise that resolves with the latest count
+btn.like();
+
+// Programmatically trigger unlike
+// Returns a Promise that resolves with the latest count
+btn.unlike();
+
+// Programmatically toggle like
+// Returns a Promise that resolves with the latest count
+btn.toggleLike();
+btn.toggleLike(true); // Same as btn.like()
+btn.toggleLike(false); // Same as btn.unlike()
+
+// Get like count
+btn.getCount();
+
+// Get like status
+btn.isLiked();
+
+// Get target (returns jQuery object)
+btn.getTarget();
+```
+
+---
+
+[Back to API documentation](../API-Documentation.md)
+{: .buttons}
