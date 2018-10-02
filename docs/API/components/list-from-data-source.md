@@ -102,10 +102,10 @@ The persistant variable is namespaced with `flDynamicListQuery:` plus the list l
 ### List layouts
 The key of the persistant variable includes the layout name of the List (from data source).  
 Here is a list of all the layouts available in the List (from data source) component:
-- `small-cards` Small Expandable Cards
+- `small-card` Small Expandable Cards
 - `news-feed` Cards with Description
 - `agenda` Agenda
-- `small-h-cards` Small Horizontal Cards
+- `small-h-card` Small Horizontal Cards
 - `simple-list` Simple List
 
 Let's have a look at how to use the feature.
