@@ -113,7 +113,7 @@ Let's have a look at how to use the feature.
 Fliplet.App.Storage.set('flDynamicListQuery:simple-list', options);
 ```
 - **options** (Object) A map of options to pass as the value of the persistant variable.
-  - **prefilter** (Object) Use this if you want to pre-filter your list.
+  - **prefilter** (Array) (Array of objects) Use this if you want to pre-filter your list.
     - **column** (String) [Required] The name of the column that you want to use to filter by.
     - **logic** (String) [Required] The logic operator for the filtering. _See the possible logic operators below._
     - **value** (String) [Required] The value that will determine the filter.
