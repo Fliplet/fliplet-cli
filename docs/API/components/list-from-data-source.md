@@ -110,7 +110,6 @@ Here is a list of all the layouts available in the List (from data source) compo
 
 Let's have a look at how to use the feature.
 ```js
-// Search by value only
 Fliplet.App.Storage.set('flDynamicListQuery:simple-list', options);
 ```
 - **options** (Object) A map of options to pass as the value of the persistant variable.
