@@ -27,9 +27,9 @@ Creata a release tag from master. Eg: v3.7.5
 
 ---
 
-# Docs
+# Documentation
 
-Navigate to the `docs` directory
+You can view Fliplet documentation at [http://developers.fliplet.com](http://developers.fliplet.com) or also get a copy of such website running locally on your machine. To do so, navigate to the `docs` directory, install the ruby dependencies described below and run the `Jekyll` server: 
 
 ```
 cd docs
