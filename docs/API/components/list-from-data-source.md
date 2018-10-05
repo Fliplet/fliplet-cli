@@ -127,6 +127,7 @@ Fliplet.App.Storage.set('flDynamicListQuery:simple-list', options);
   - **filter** (Object) Use this if you want to load your list with one or multiple filters applied.
     - **value** (String or Array) [Required] A value or list of values containing the filters that you want activated on load.
   - **previousScreen** (Boolean or Function) Use this if you want to return to the previous screen when closing a list item. _We recommend only using this option when you know there will only be on entry as a result._ (**Default**: `false`)
+    - NOTE: To use as a function, just define the content on the function as a string.
   - **persist** (Boolean) Use this if you want to prevent the persistant variable from being deleted. (**Default**: `false`)
 
 Let's see a few examples on how to use all these options: 
