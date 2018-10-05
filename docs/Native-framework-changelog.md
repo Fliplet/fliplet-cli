@@ -4,6 +4,10 @@ We regularly update our framework to support new features. If you have an older 
 
 ## Latest versions (3.x)
 
+### Version 3.9.0 (October 3, 2018)
+
+- Barcode scanner plugin added
+
 ### Version 3.8.5 (August 29, 2018)
 
 - SQLite plugin removed
