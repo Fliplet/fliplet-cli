@@ -18,9 +18,9 @@ If you're using Fliplet Automated App Build system with an Apple Enterprise acco
   - Click Continue within Keychain Access to complete the CSR generating process.
 8. Back to the Apple website on your browser, click continue and then **select the .certSigningRequest file saved on your Mac** to upload it, then click continue.
 9. Your certificate will be ready for download. Download it on your Mac then click on it to install it on Keychain Access.
-10. Expand the imported certificate like the picture below, right click on the private key and click export:
+10. Expand the imported certificate like the picture below to make sure it contains the private key, right click on the certificate and click export:
 
-![img](https://cl.ly/1v273Y1p2S0N/Image%202018-06-11%20at%207.26.14%20PM.png)
+![Export certificate](../assets/img/p12-export.png)
 
 11. When prompted to choose a password, leave it blank and continue.
 12. You then will be prompted to type in the password of your local user (the one on your Mac) to finish exporting the certificate.
