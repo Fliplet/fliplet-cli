@@ -60,8 +60,9 @@ Fliplet apps are loaded with the following helpers.
 
 ### Expression Helpers
 
-- `images` outputs multiple `<img>` tags based on the URLs provided, e.g. `{{images urls}}`
-   - `urls` An array of image URLs
+- `images` (or `image`) outputs multiple `<img>` tags based on the URLs provided, e.g. `{{images url}}`
+   - `url` A single image URL or an array of image URLs
+   - `join` (optional) Add a `join` parameter to set a custom string used to separate multiple image tags, e.g. `{{images url join="<br>"}}`
 - `auth` outputs an authenticated URL for any encrypted assets stored by Fliplet, e.g. `{{auth url}}`
    - `url` URL to be authenticated
 - `moment` outputs a date/time value based on the provided format, e.g. `{{moment timestamp format="MMM Do YY"}}` to format a date, or `{{moment timestamp inputFormat="H:mm" format="h:mm a"}}` to format a timestamp based on a specific input format. See [github.com](https://github.com/Fliplet/handlebars-helper-moment/blob/master/README.md) for the full documentation.
