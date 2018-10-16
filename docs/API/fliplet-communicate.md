@@ -24,6 +24,14 @@ const options = {
 Fliplet.Communicate.sendEmail(options);
 ```
 
+Note: input `options` might get their value altered by the function as a result of the Handlebars compilation process. If you want to preserve the input object original value, please make a copy as follows:
+
+```js
+// Here we're using lodash "extend" method to make a copy of our options
+// before they're sent to the "sendEmail" function.
+Fliplet.Communicate.sendEmail(_.extend({}, options));
+```
+
 ---
 
 ## Send an SMS
