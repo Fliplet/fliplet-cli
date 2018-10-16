@@ -24,7 +24,25 @@ const options = {
 Fliplet.Communicate.sendEmail(options);
 ```
 
-Note: input `options` might get their value altered by the function as a result of the Handlebars compilation process. If you want to preserve the input object original value, please make a copy as follows:
+You can also use Handlebars in your options if you want the template to be compiled with other data:
+
+{% raw %}
+```js
+const options = {
+  to: [{
+    email: "{{ emailTo }}"
+  }],
+  html: "<p>Hi {{ userName }}</p>"
+};
+
+Fliplet.Communicate.sendEmail(options, {
+  emailTo: 'john@example.com',
+  userName: 'John Doe'
+});
+```
+{% endraw %}
+
+Note: input `options` will get their value altered by the function as a result of the Handlebars compilation process. If you want to preserve the input object original value, please make a copy as follows:
 
 ```js
 // Here we're using lodash "extend" method to make a copy of our options
