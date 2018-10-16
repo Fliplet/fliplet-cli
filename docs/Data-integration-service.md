@@ -1,22 +1,22 @@
 # Data integration service
 
-<img src="https://user-images.githubusercontent.com/574210/47022527-fe18c500-d15d-11e8-87db-bcfb4da8153d.png" width="371" height="65" />
-
-Fliplet Agent (Data integration service) is a command line utility to synchronize data to and from Fliplet Servers.
+**Fliplet Agent (Data integration service)** is a command line utility to synchronize data to and from Fliplet Servers.
 
 ---
 
 ## Install
 
-Please install [node.js](http://nodejs.org/) and [npm](http://npmjs.com) to get started. On Windows, you can access the Node.js shell from the **Start menu** > **Node.js command prompt**.
+Please install [node.js](http://nodejs.org/) (which also comes bundled with the popular package manager [npm](http://npmjs.com)) on your computer to get started.
 
-Then, run this simple command from the shell to install the Fliplet Agent on your machine:
+Once installed, on Windows you can access the Node.js shell from the **Start menu** > **Node.js command prompt**.
+
+Then, run this simple command to install the Fliplet Agent on your machine via the npm package manager:
 
 ```bash
 npm install fliplet-agent -g
 ```
 
-You can now use the command `fliplet-agent` from the command line. Just type `fliplet-agent` to see the available options and their example usage.
+You can now use the command `fliplet-agent` from the command line. Just type `fliplet-agent` to ensure the software is installed and also see the available options and their example usage.
 
 ---
 
@@ -30,7 +30,7 @@ npm update -g
 
 ## Get started
 
-Create a simple file with with `.yml` extension (or grab a [sample copy here](https://raw.githubusercontent.com/Fliplet/fliplet-agent/master/sample.yml)) with the following configuration details and replace with your own settings where appropriate:
+Create a simple file with with `.yml` extension (or grab a [sample copy here](https://raw.githubusercontent.com/Fliplet/fliplet-agent/master/sample.yml)) somewhere in your filesystem with the following configuration details and replace with your own settings where appropriate:
 
 ```yml
 # Fliplet API authorisation token taken from Fliplet Studio
@@ -44,13 +44,13 @@ database_password: 123456
 database_port: 5432
 database_name: eu
 
-# SQL Server only. Remove if necessary.
+# SQL Server only. Remove these lines if necessary.
 database_domain: sampleDomainName
 database_instance: sampleInstanceName
 database_encrypt: true
 
-# Description of your operation (will be printed out in the logs).
-description: Push my users to Fliplet
+# Description of the operation (will be printed out in the logs).
+description: Push my users to Fliplet every 15 minutes
 
 # Frequency of running using unix cronjob syntax.
 # This example runs the sync every 15 minutes.
@@ -90,9 +90,17 @@ Once you have a configuration file like the one above saved on disk, starting th
 fliplet-agent start ./path/to/configurationFile.yml
 ```
 
-Sample output below:
+e.g. if your file is in the current folder and it's named `sample.yml`, you would simply write:
+
+```bash
+fliplet-agent start sample.yml
+```
+
+Once you do so, the software will run and produce an output similar to the one below:
 
 ![sample](https://user-images.githubusercontent.com/574210/45174672-c12aeb80-b20b-11e8-806e-bda5f0e521b0.png)
+
+Any error found in your configuration will be printed out for you to look at.
 
 ### Test the integration
 
