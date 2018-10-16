@@ -6,9 +6,15 @@
 
 ## Install
 
-Please install [node.js](http://nodejs.org/) (which also comes bundled with the popular package manager [npm](http://npmjs.com)) on your computer to get started.
+Our software runs on **Node.js**, a popular open-source and cross-platform software.
 
-Once installed, on **Windows** you can access the Node.js shell from the **Start menu** > **Node.js command prompt** while on **Mac OSX** and **Unix systems** you should be able to use your shell and have the `npm` command available.
+Please install [node.js](http://nodejs.org/) (which also comes bundled with the popular package manager [npm](http://npmjs.com)) on your computer as a pre-requisite to get started.
+
+Once you have installed Node.js, please open the shell to continue and install our agent:
+
+- **Windows**: access the Node.js shell from **Start menu** > **Node.js command prompt**
+- **Mac OSX**: access the shell of your computer from **Applications** > **Utilities** > **Terminal**
+- **Unix**: access the shell of your computer
 
 Then, run this simple command to install the Fliplet Agent on your machine via the npm package manager:
 
