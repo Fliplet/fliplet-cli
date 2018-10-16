@@ -24,7 +24,7 @@ const options = {
 Fliplet.Communicate.sendEmail(options);
 ```
 
-You can also use Handlebars in your options if you want the template to be compiled with other data:
+You can also `{{ variables }}` expressions in your options if you want the template to be compiled with other data:
 
 {% raw %}
 ```js
@@ -35,6 +35,8 @@ const options = {
   html: "<p>Hi {{ userName }}</p>"
 };
 
+// This will compile any string template in your options
+// with the input data passed as second parameter of the function.
 Fliplet.Communicate.sendEmail(options, {
   emailTo: 'john@example.com',
   userName: 'John Doe'
