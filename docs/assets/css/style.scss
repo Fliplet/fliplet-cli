@@ -166,6 +166,7 @@ ul > li > ul {
       h4 {
         color: #153c49;
         font-size: 22px;
+        font-weight: normal;
         margin: 0 0 10px 0;
       }
 
@@ -181,8 +182,12 @@ ul > li > ul {
       }
 
       span {
-        font-size: 12px;
+        font-size: 15px;
         color: rgba(21, 60, 73, 0.4);
+
+        strong {
+          color: #153c49;
+        }
       }
 
       &:hover {

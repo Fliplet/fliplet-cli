@@ -30,8 +30,8 @@ search.addWidget(
     container: '#hits',
     templates: {
       item: [
-        '<a href="{{{url}}}#{{{anchor}}}"><h4>{{#helpers.headingTitle}}{{headings}}{{/helpers.headingTitle}}</h4>',
-        '<p>{{{_highlightResult.content.value}}}</p><hr /><span><strong>{{{_highlightResult.title.value}}}</strong> ({{{anchor}}})</span></a>'
+        '<a href="{{{url}}}#{{{anchor}}}"><span><strong>{{{_highlightResult.title.value}}}</strong> ({{{anchor}}})</span><hr /><h4>{{#helpers.headingTitle}}{{headings}}{{/helpers.headingTitle}}</h4>',
+        '<p>{{{_highlightResult.content.value}}}</p></a>'
       ].join(''),
       empty: 'We didn\'t find any result under our documentation for your query.'
     }
