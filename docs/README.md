@@ -62,4 +62,5 @@ To get a brief introduction to the technologies we use and the stack of the plat
   - [Android](Platform-Android.md)
   - [Framework Changelog](Native-framework-changelog.md)
 12. Integrations
+  - [Fliplet Agent (Data Integration Service)](Data-integration-service.md)
   - [Single Sign-on with SAML2](API/integrations/sso-saml2.md)
