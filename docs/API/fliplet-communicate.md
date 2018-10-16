@@ -45,7 +45,7 @@ Fliplet.Communicate.sendEmail(options, {
 ```
 {% endraw %}
 
-Note: input `options` will get their value altered by the function as a result of the Handlebars compilation process. If you want to preserve the input object original value, please make a copy as follows:
+Note: input `options` will get their value altered by the function as a result of the compilation process. If you want to preserve the input object original value, please make a copy as follows:
 
 ```js
 // Here we're using lodash "extend" method to make a copy of our options
