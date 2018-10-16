@@ -24,7 +24,8 @@ const options = {
 Fliplet.Communicate.sendEmail(options);
 ```
 
-You can also `{{ variables }}` expressions in your options if you want the template to be compiled with other data:
+
+You can also {% raw %}`{{ variables }}`{% endraw %} expressions in your options if you want the template to be compiled with other data:
 
 {% raw %}
 ```js
