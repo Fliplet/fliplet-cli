@@ -71,6 +71,10 @@ database_name: eu
 # database_instance: sampleInstanceName
 # database_encrypt: true
 
+# ODBC Native driver only: uncomment this and install the driver on your computer
+# by pasting this command to the terminal: "npm install sequelize-odbc-mssql -g"
+# database_native_odbc: true
+
 # Description of the operation (will be printed out in the logs).
 description: Push my users to Fliplet every 15 minutes
 
@@ -83,18 +87,17 @@ sync_on_init: true
 # You can find many examples here https://crontab.guru/examples.html
 # When testing, if you have init sync enabled your agent will sync as soon as it is run
 # so restarting the agent is the fastest way to test if the configuration is working.
-# A few examples:
-# '*/15 * * * *' # every 15 minutes
-# '0 */2 * * *'  # every 2 hours
-# '0 8 * * *'    # every day at 8am
-# '0 0 * * 0'    # every week
-frequency: '*/15 * * * *'
+# A few examples here below. Feel free to uncomment the line you need:
+# frequency: '0 */2 * * *'  # every 2 hours
+# frequency: '0 8 * * *'    # every day at 8am
+# frequency: '0 0 * * 0'    # every week
+frequency: '*/15 * * * *' # every 15 minutes
 
 # The query to run to fetch the data to be pushed to Fliplet.
 # The column names must match the data source or new columns will be added,
 # use SQL "AS" to map database columns to Fliplet data source column names
 # and avoid new columns from being created.
-query: SELECT id, email, fullName, updatedAt FROM users;
+query: SELECT id, email as 'Email', fullName as 'Full Name', updatedAt FROM users;
 
 # Define which column should be used as primary key
 # to understand whether a record already exists on the Fliplet Data Source.
