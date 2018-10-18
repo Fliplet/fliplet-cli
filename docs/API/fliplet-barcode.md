@@ -1,5 +1,9 @@
 # `Fliplet.Barcode`
 
+## Install
+
+Add the `fliplet-barcode` dependency to your screen or app resources.
+
 ## Fliplet.Barcode.scan()
 
 (Returns **`Promise`**)
