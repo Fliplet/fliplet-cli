@@ -4,6 +4,14 @@
 
 ---
 
+## Before you start
+
+To synchronize your data with Fliplet servers you will need an authorisation token generated via Fliplet Studio from an organisation admin account.
+
+To generate a token, please follow the docs [here](REST-API/authenticate.md).
+
+---
+
 ## Install
 
 Our software runs on **Node.js**, a popular open-source and cross-platform software.
@@ -39,34 +47,53 @@ npm update -g
 Create a simple file with with `.yml` extension (or grab a [sample copy here](https://raw.githubusercontent.com/Fliplet/fliplet-agent/master/sample.yml)) somewhere in your filesystem with the following configuration details and replace with your own settings where appropriate:
 
 ```yml
-# Fliplet API authorisation token taken from Fliplet Studio
+# Fliplet API authorisation token taken from Fliplet Studio. More documentation available at:
+# https://developers.fliplet.com/REST-API/authenticate.html#how-to-create-an-authentication-token
 auth_token: eu--123456789
 
-# Database connection settings
-database_driver: postgres
+# Define the ID of the target Fliplet Data Source where data will be pushed to.
+# This ID can be retrieved from the "Manage app data" section of Fliplet Studio
+# under the settings tab
+datasource_id: 123
+
+# Database connection settings below
+
+# Possible values for the driver are: mysql, sqlite, postgres, mssql
+database_driver: mssql
 database_host: localhost
-database_username: postgres
+database_username: sampleuser
 database_password: 123456
 database_port: 5432
 database_name: eu
 
-# SQL Server only. Remove these lines if necessary.
-database_domain: sampleDomainName
-database_instance: sampleInstanceName
-database_encrypt: true
+# MSSQL Server only: uncomment if you need to use these variables.
+# database_domain: sampleDomainName
+# database_instance: sampleInstanceName
+# database_encrypt: true
 
 # Description of the operation (will be printed out in the logs).
 description: Push my users to Fliplet every 15 minutes
-
-# Frequency of running using unix cronjob syntax.
-# This example runs the sync every 15 minutes.
-frequency: '*/15 * * * *'
 
 # If set to true, the sync will also run when the script starts.
 # Otherwise, it will only run according to the frequency setting above.
 sync_on_init: true
 
-# The query to run to fetch the data to be pushed to Fliplet
+# Frequency of running using unix cronjob syntax.
+# Syntax is [Minute] [Hour] [Day of month] [Month of year] [Day of week]
+# You can find many examples here https://crontab.guru/examples.html
+# When testing, if you have init sync enabled your agent will sync as soon as it is run
+# so restarting the agent is the fastest way to test if the configuration is working.
+# A few examples:
+# '*/15 * * * *' # every 15 minutes
+# '0 */2 * * *'  # every 2 hours
+# '0 8 * * *'    # every day at 8am
+# '0 0 * * 0'    # every week
+frequency: '*/15 * * * *'
+
+# The query to run to fetch the data to be pushed to Fliplet.
+# The column names must match the data source or new columns will be added,
+# use SQL "AS" to map database columns to Fliplet data source column names
+# and avoid new columns from being created.
 query: SELECT id, email, fullName, updatedAt FROM users;
 
 # Define which column should be used as primary key
@@ -85,15 +112,12 @@ timestamp_column: updatedAt
 # the record has been flagged as deleted on your database and should
 # be removed from the Fliplet Data Source when the column value is not null.
 delete_column: deletedAt
-
-# Define the ID of the target Fliplet Data Source
-datasource_id: 123
 ```
 
-Once you have a configuration file like the one above saved on disk, starting the agent is as simple as running the following command from your shell:
+Once you have a configuration file like the one above saved on disk, starting the agent is as simple as running the `start` command from your shell. While you are setting up the configuration we also suggest using the `--test` option to perform a dry run and test out the integration without actually sending data to Fliplet servers:
 
 ```bash
-fliplet-agent start ./path/to/configurationFile.yml
+fliplet-agent start ./path/to/configurationFile.yml --test
 ```
 
 e.g. if your file is in the current folder and it's named `sample.yml`, you would simply write:
@@ -107,14 +131,6 @@ Once you do so, the software will run and produce an output similar to the one b
 ![sample](https://user-images.githubusercontent.com/574210/45174672-c12aeb80-b20b-11e8-806e-bda5f0e521b0.png)
 
 Any error found in your configuration will be printed out for you to look at.
-
-### Test the integration
-
-To perform a dry run and test the integration without actually committing changes to Fliplet servers, use the `--test` option:
-
-```bash
-fliplet-agent start ./path/to/configurationFile.yml --test
-```
 
 ---
 
@@ -138,6 +154,7 @@ module.exports.config = {
   authToken: 'eu--123456789',
 
   // Database connection settings (using Sequelize format)
+  // http://docs.sequelizejs.com/
   database: {
     url: 'postgres://user@host:port/dbName',
     dialect: 'postgres'
