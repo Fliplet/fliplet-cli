@@ -129,7 +129,9 @@ e.g. if your file is in the current folder and it's named `sample.yml`, you woul
 fliplet-agent start sample.yml
 ```
 
-Once you do so, the software will run and produce an output similar to the one below:
+**Note: on Windows we do recommend using an absolute path to the config file to avoid errors when the file is loaded by the software.**
+
+Once you start the agent with the above command an output similar to the one below will be produced:
 
 ![sample](https://user-images.githubusercontent.com/574210/45174672-c12aeb80-b20b-11e8-806e-bda5f0e521b0.png)
 
@@ -156,11 +158,29 @@ module.exports.config = {
   // Fliplet authorisation token from Fliplet Studio
   authToken: 'eu--123456789',
 
+  // Set to true to test the integration without sending any data to Fliplet servers
+  isDryRun: false,
+
+  // If set to true, operations will run when the script starts.
+  // Otherwise, they will just run according to their frequency.
+  syncOnInit: true,
+
   // Database connection settings (using Sequelize format)
   // http://docs.sequelizejs.com/
   database: {
-    url: 'postgres://user@host:port/dbName',
-    dialect: 'postgres'
+    dialect: 'mssql',
+    host: 'localhost',
+    username: 'foo',
+    password: 'bar',
+    port: 1234,
+    database: 'myDatabaseName',
+
+    // MSSQL Server only
+    dialectOptions: {
+      domain: 'myDomain',
+      instanceName: 'myInstanceName',
+      encrypt: false
+    }
   }
 };
 
