@@ -37,7 +37,7 @@ var options = {
     {
       type: "text/plain",
       name: "myfile.txt",
-      content: "ZXhhbXBsZSBmaWxl"
+      content: "Hello World"
     }
   ],
   images: [
