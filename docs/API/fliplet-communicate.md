@@ -17,7 +17,7 @@ Available options:
 - `from_email`: the sender's email address
 - `from_name`: the sender's name
 - `html`: html string for the email body
-- `headers`: key:value object
+- `headers`: "key:value" object with headers to add to the email
 - `attachments`: array of attachments
 - `images`: array of images
 
