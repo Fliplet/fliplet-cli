@@ -14,7 +14,6 @@ Available options:
 
 - `to`: array of recipients for "to", "cc" or "bcc"
 - `subject`: subject of the email
-- `from_email`: the sender's email address
 - `from_name`: the sender's name
 - `html`: html string for the email body
 - `headers`: "key:value" object with headers to add to the email
@@ -28,7 +27,6 @@ var options = {
   ],
   html: "<p>Some HTML content</p>",
   subject: "My subject",
-  from_email: "message.from_email@example.com",
   from_name: "Example Name",
   headers: {
     "Reply-To": "message.reply@example.com"
