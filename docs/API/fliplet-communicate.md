@@ -10,29 +10,58 @@ The `fliplet-communicate` package contains the namespace `Fliplet.Communicate` a
 
 ## Send an email
 
+Available options:
+
+- `to`: array of recipients for "to", "cc" or "bcc"
+- `subject`: subject of the email
+- `from_email`: the sender's email address
+- `from_name`: the sender's name
+- `html`: html string for the email body
+- `headers`: key:value object
+- `attachments`: array of attachments
+- `images`: array of images
+
 ```js
-const options = {
-  to: [{
-    email: "john@example.org",
-    name: "John",
-    type: "to"
-  }],
+var options = {
+  to: [
+    { email: "john@example.org", name: "John", type: "to" }
+  ],
   html: "<p>Some HTML content</p>",
-  subject: "My subject"
+  subject: "My subject",
+  from_email: "message.from_email@example.com",
+  from_name: "Example Name",
+  headers: {
+    "Reply-To": "message.reply@example.com"
+  },
+  attachments: [
+    {
+      type: "text/plain",
+      name: "myfile.txt",
+      content: "ZXhhbXBsZSBmaWxl"
+    }
+  ],
+  images: [
+    {
+      type: "image/png",
+      name: "test.png",
+      content: "insert_base64_content_here"
+    }
+  ]
 };
 
+// Returns a promise
 Fliplet.Communicate.sendEmail(options);
 ```
+
+More options can be found on the official documentation for [Mandrill](https://mandrillapp.com/api/docs/messages.JSON.html), the email provider Fliplet relies on.
 
 
 You can also {% raw %}`{{ variables }}`{% endraw %} expressions in your options if you want the template to be compiled with other data:
 
 {% raw %}
 ```js
-const options = {
-  to: [{
-    email: "{{ emailTo }}"
-  }],
+var options = {
+  to: [ { email: "{{ emailTo }}", type: "to" } ],
   html: "<p>Hi {{ userName }}</p>"
 };
 
