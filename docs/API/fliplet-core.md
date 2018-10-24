@@ -853,7 +853,7 @@ The in-app browser contains a **Share** feature that lets your users share the U
 Fliplet.Navigate.defaults.disableShare = true;
 ```
 
-#### Register a hook to be fired before navigating to a URL
+### Register a hook to be fired before navigating to a URL
 
 ```js
 Fliplet.Hooks.on('beforeNavigateToURL', function (data) {
