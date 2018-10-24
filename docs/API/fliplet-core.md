@@ -853,6 +853,21 @@ The in-app browser contains a **Share** feature that lets your users share the U
 Fliplet.Navigate.defaults.disableShare = true;
 ```
 
+#### Register a hook to be fired before navigating to a URL
+
+```js
+Fliplet.Hooks.on('beforeNavigateToURL', function (data) {
+  // You can return a promise if you need async to be carried out
+  // before the InAppBrowser is opened.
+
+  // You can also change any of the input data if you need to
+  data.url = 'http://example.org';
+
+  // If you want to stop execution and don't open the browser, simply return a promise rejection:
+  return Promise.reject('Handled by my hook');
+});
+```
+
 ### Navigate the app to a specific screen by its ID
 
 To find out the ID of a page, you can use Fliplet Studio (it's displayed on the browser bar) or simply run `Fliplet.Env.get('pageId')` from any page.
