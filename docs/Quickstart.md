@@ -29,16 +29,21 @@ Usage: fliplet [options] [command]
 
 Commands:
 
-  create-widget [name]  Create a new widget.
+  create-widget [name]  Create a new component.
   create-theme [name]   Create a new theme.
+  create-menu [name]    Create a new menu.
   run                   Run the current widget or theme for development.
   publish               Publish the current widget or theme on fliplet studio.
+  test                  Run tests on the current widget or theme on fliplet studio.
+  list                  List widgets you can download for editing.
+  clone [package]       Downloads a widget locally, given its ID or package name
   list-assets           Gets the list of the available assets in the system.
   list-organizations    Gets the list of the available organizations in the system.
   organization [id]     Set current working organization. Use without id to reset.
   env [name]            Set the environment: dev, staging or production.
   login                 Log in with your Fliplet Studio account.
   logout                Log out from Fliplet Studio.
+  cleanup               Reset the local state of the CLI.
   help [cmd]            display help for [cmd]
 
 Options:
