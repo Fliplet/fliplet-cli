@@ -855,6 +855,13 @@ Fliplet.Navigate.defaults.disableShare = true;
 
 ### Register a hook to be fired before navigating to a URL
 
+You can register a function to be called whenever your app is about to navigate to a URL. This is useful if you want to make changes to any of the given parameters (prior to the navigation), or you need to run custom code or you simply want to completely stop the URL from opening.
+
+The `data` object shown below will contain the following keys:
+
+- `url` The url to be opened
+- `inAppBrowser` whether the link should be forced to open (or not) with the in-app internet browser
+
 ```js
 Fliplet.Hooks.on('beforeNavigateToURL', function (data) {
   // You can return a promise if you need async to be carried out
@@ -865,6 +872,16 @@ Fliplet.Hooks.on('beforeNavigateToURL', function (data) {
 
   // If you want to stop execution and don't open the browser, simply return a promise rejection:
   return Promise.reject('Handled by my hook');
+});
+```
+
+Let's make one further example where we simply force all linkedin.com and twitter.com URLs to open with the system browser (so that the installed app gets opened) instead of the in-app browser:
+
+```js
+Fliplet.Hooks.on('beforeNavigateToURL', function (data) {
+  if (data.url.match(/linkedin\.com|twitter\.com/)) {
+    data.inAppBrowser = false;
+  }
 });
 ```
 
