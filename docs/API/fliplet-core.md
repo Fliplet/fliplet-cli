@@ -859,8 +859,8 @@ You can register a function to be called whenever your app is about to navigate 
 
 The `data` object shown below will contain the following keys:
 
-- `url` The url to be opened
-- `inAppBrowser` whether the link should be forced to open (or not) with the in-app internet browser
+- `url` (**String**) The url to be opened
+- `inAppBrowser` (**Boolean**) whether the link should be forced to open (or not) with the in-app internet browser
 
 ```js
 Fliplet.Hooks.on('beforeNavigateToURL', function (data) {
