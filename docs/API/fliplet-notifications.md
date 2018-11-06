@@ -21,6 +21,9 @@ instance.update(1, {
   pushNotification: { payload: {}, delayUntilTimestamp: 123 }
 })
 
+// remove a notification by id
+notification.remove(1)
+
 // subscribe to notifications
 // each message contains id, createdAt, updatedAt, data, isUpdate, isDeleted, isFirstBatch
 // it can also contain readStatus { readAt: Timestamp }
