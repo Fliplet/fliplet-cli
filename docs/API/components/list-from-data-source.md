@@ -94,12 +94,11 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function onBeforeGetData(data) {
 Fliplet.Hooks.on('flListDataBeforeDeleteEntry', function onBeforeDeleteEntry(data) {
   // data - (Object) Contains "entryId", "config", "container"
   // data.entryId - (Number) ID of the entry that is going to be deleted
-  // data.config - (Object) Entire configuration object of the component
-  // data.container - (Object) DOM element of the container of the component
+  // data.config - (Object) Entire component's configuration object
+  // data.container - (Object) DOM element
 
   data.config.deleteData = function(id) {
-    // Resolve Promise
-    // Always resolve entry ID
+    // Resolve Promise with the entry ID
     return Promise.resolve(id);
   };
 });
