@@ -89,6 +89,21 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function onBeforeGetData(data) {
 });
 ```
 
+## Run a hook before deleting an entry
+```js
+Fliplet.Hooks.on('flListDataBeforeDeleteEntry', function onBeforeDeleteEntry(data) {
+  // data - (Object) Contains "entryId", "config", "container"
+  // data.entryId - (Number) ID of the entry that is going to be deleted
+  // data.config - (Object) Entire component's configuration object
+  // data.container - (Object) DOM element
+
+  data.config.deleteData = function(id) {
+    // Resolve Promise with the entry ID
+    return Promise.resolve(id);
+  };
+});
+```
+
 ## Persistent Variable Queries
 With the **List (from data source)** you can programatically load a specific list item, apply filters and/or search, and even add a new pre-filter.  
 _(pre-filter is a filter applied before the list is rendered - this won't override the filters added in component settings)_
