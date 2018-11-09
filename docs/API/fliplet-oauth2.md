@@ -6,7 +6,7 @@ The `fliplet-oauth2` package contains helpers for standardizing requests to OAut
 
 **Note: The Fliplet OAuth2 library is Currently in beta and only works in native apps. We suggest specifying the library version using `fliplet-oauth2:0.1` when including the Fliplet OAuth2 library to avoid the functionality breaking as the feature undergoes further development.**
 
-To configure a connection with an OAuth2 provider, initialize a connection with `Fliplet.OAuth2.init()` using a key-value object and use `Fliplet.OAuth2(name)` with the specified connection name to access the available methods.
+To configure a connection with an OAuth2 provider, initialize a connection with `Fliplet.OAuth2.init()` using a key-value object and use `Fliplet.OAuth2(provider)` with the specified provider name to access the available methods.
 
 ```js
 Fliplet.OAuth2.init(providers);
