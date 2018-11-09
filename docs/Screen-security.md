@@ -33,6 +33,8 @@ if (server && page.id !== loginScreen && !isAllowed) {
 }
 ```
 
+---
+
 ### Whitelist or Blacklist access by IP address
 
 Using the `ipRangeCheck` function you can write a custom rule to check if the user's IP address is within a range:
