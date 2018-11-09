@@ -92,4 +92,4 @@ Sample error page for the above code:
 
 ![img](https://user-images.githubusercontent.com/574210/48259419-2b345c80-e418-11e8-9430-c66b7ec7dfb5.png)
 
-More docs on the `ipRangeCheck` function can be found [here](https://github.com/danielcompton/ip-range-check)
+More docs on the `ipRangeCheck` function can be found [here](https://github.com/danielcompton/ip-range-check#ipv4)
