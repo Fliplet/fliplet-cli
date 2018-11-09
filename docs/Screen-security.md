@@ -16,6 +16,7 @@ If you need more control on your security rules, you can also write your custom 
 - `client` (Boolean) `true` when the security rule is being checked for a native app on iOS/Android/Windows
 - `page` (Object `{ id: Number }`) the page that is running the security rule
 - `session` (Object) the user's session, when available. Contains the same attributes found in the `v1/session` endpoint
+- `ipRangeCheck` (Function) please check the next section on IP address whitelisting/blacklisting for usage
 
 Here follows an example that protects all pages (aside from the `loginScreen`) from being accessed unless the user is logged in against a **dataSource** and the column `foo` of his user has value `bar`.
 
