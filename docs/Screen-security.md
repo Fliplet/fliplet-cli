@@ -31,3 +31,65 @@ if (server && page.id !== loginScreen && !isAllowed) {
   navigate = { action: 'screen', page: loginScreen, transition: 'slide.left' };
 }
 ```
+
+### Whitelist or Blacklist access by IP address
+
+Using the `ipRangeCheck` function you can write a custom rule to check if the user's IP address is within a range:
+
+```js
+if (server && !ipRangeCheck(ipAddress, "170.18.0.1/24")) {
+  error = 'Not in range'
+  errorMessage = 'Please come to the office if you need to use this app'
+}
+```
+
+Or blacklist a single IP (note the missing `!` negation in the block condition):
+
+```js
+if (server && ipRangeCheck(ipAddress, "170.18.0.1/24")) {
+  error = 'You are blacklisted'
+  errorMessage = 'Nothing to see here.'
+}
+```
+
+Or redirect to another screen:
+
+```js
+if (server && !ipRangeCheck(ipAddress, "170.18.0.1/24")) {
+  navigate = { page: 123, action: 'screen' }
+
+  // this is optional and it's sent as a GET query to the screen
+  errorMessage = 'IP is not in range, please come to the office'
+}
+```
+
+Or redirect to another screen:
+
+```js
+if (server && !ipRangeCheck(ipAddress, "170.18.0.1/24")) {
+  navigate = { url: 'https://fliplet.com' }
+}
+```
+
+Note: `ipRangeCheck` always returns `true` when run on the `client`.
+
+Since app hooks allow javascript code in the custom rule, you're free to declare the list of whitelisted IPs as follows:
+
+```js
+var allowed = [
+  "102.1.5.2/24",
+  "192.168.1.0/24",
+  "106.1.180.84"
+]
+
+if (!ipRangeCheck(ipAddress, allowed)) {
+  error = 'Can\'t view the app from there.'
+  errorMessage = 'Your IP address ' + ipAddress + ' is not in range. Please come to the office!'
+}
+```
+
+Sample error page for the above code:
+
+![img](https://user-images.githubusercontent.com/574210/48259419-2b345c80-e418-11e8-9430-c66b7ec7dfb5.png)
+
+More docs on the `ipRangeCheck` function can be found [here](https://github.com/danielcompton/ip-range-check)
