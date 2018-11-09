@@ -53,9 +53,9 @@ Fliplet.OAuth2('github').login()
 
 *Note: The provider name as configured through `Fliplet.OAuth2.configure()` is passed to `Fliplet.OAuth2()` to make sure the correct connection configurations are used.*
 
-The Fliplet OAuth2 library will manage authentication tokens and any token refreshing (if supported) before making API calls. If the token is invalid or missing, user will be redirected to the login page with a `tokenInvalid=true` or `tokenMissing=true` query parameter respectively.
+The Fliplet OAuth2 library will manage authentication tokens and any token refreshing (if supported) before making API calls. If the token is invalid or missing, the user will be redirected to the login page with a `tokenInvalid=true` or `tokenMissing=true` query parameter respectively.
 
-The login page can process these query parameters via `Fliplet.Navigste.query` to customize the user experience accordingly.
+The login page can process these query parameters via `Fliplet.Navigate.query` to customize the user experience accordingly.
 
 ```js
 Fliplet.OAuth2('github').api('user')
@@ -78,7 +78,7 @@ Fliplet.OAuth2.configure(providers)
 ```
 
 * **provider** (String) **Required** A provider name. The provider name is used when making OAuth2 requests.
-* **configuration** (Object) **Required** A key-value map of options to confgigure providers with. Each object can contain the following details.
+* **configuration** (Object) **Required** A key-value map of options to configure providers with. Each object can contain the following details.
   * **authUrl** (String) **Required** Authorization URL as supplied by the OAuth2 provider.
   * **grantType** (String) `implicit|explicit` **Required** Implicit (token) or Explicit (code) Grant flow to be used when logging in.
   * **grantUrl** (String) Grant URL as supplied by the OAuth2 provider. Required if an *Explicit Grant* flow is used when calling `.login()`.
@@ -119,7 +119,7 @@ Fliplet.OAuth2(provider).logout()
 
 (Returns **`Promise`**)
 
-Get the current status of sessions with all providers. This is does not validate any sessions which may have expired. Sessions are returned in the Promise resolving function as key-value objects.
+Get the current status of sessions with all providers. This does not validate any sessions which may have expired. Sessions are returned in the Promise resolving function as key-value objects.
 
 ```js
 Fliplet.OAuth2().getAuthResponse()
@@ -131,7 +131,7 @@ Fliplet.OAuth2().getAuthResponse()
 
 Make calls to the API for getting and posting data.
 
-*Note: The Fliplet OAuth2 library will manage authentication tokens and any token refreshing (if supported) before making API calls. If the token is invalid or missing, user will be redirected to the login page with a `tokenInvalid=true` or `tokenMissing=true` query parameter respectively.*
+*Note: The Fliplet OAuth2 library will manage authentication tokens and any token refreshing (if supported) before making API calls. If the token is invalid or missing, the user will be redirected to the login page with a `tokenInvalid=true` or `tokenMissing=true` query parameter respectively.*
 
 ```js
 Fliplet.OAuth2(provider).api(path)
