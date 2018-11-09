@@ -9,7 +9,13 @@ The `fliplet-oauth2` package contains helpers for standardizing requests to OAut
 To configure a connection with an OAuth2 provider, initialize a connection with `Fliplet.OAuth2.init()` using a key-value object and use `Fliplet.OAuth2(provider)` with the specified provider name to access the available methods.
 
 ```js
+// Initialize providers
 Fliplet.OAuth2.init(providers);
+// Make API requests using configured provider
+Fliplet.OAuth2(provider).api(path)
+  .then(function (response) {
+    // Process response from API provider as necessary
+  });
 ```
 
 ## Examples
@@ -56,11 +62,10 @@ The Fliplet OAuth2 library will manage authentication tokens and any token refre
 The login page can process these query parameters via `Fliplet.Navigste.query` to customize the user experience accordingly.
 
 ```js
-Fliplet.OAuth2('github').api({
-  path: 'user'
-}).then(function (response) {
-  // Process response from API provider as necessary
-});
+Fliplet.OAuth2('github').api('user')
+  .then(function (response) {
+    // Process response from API provider as necessary
+  });
 ```
 
 ## Methods
