@@ -141,6 +141,11 @@ Fliplet.App.Storage.set('flDynamicListQuery:simple-list', options);
     - **column** (String or Array) The column or columns where the `value` will be searched for. _If the `column` is defined, it will override the component's settings._
   - **filter** (Object) Use this if you want to load your list with one or multiple filters applied.
     - **value** (String or Array) [Required] A value or list of values containing the filters that you want activated on load.
+    - **hideControls** (Boolean) Use this option to hide or show the filters buttons when the page loads (**Default**: `true`)
+  - **goBack** (Object) Use this if you want to set a new back button or hijack the top bar's back button
+    - **enableButton** (Boolean) This will render a new button at the top of the component that will trigger a `Fliplet.Navigate.back()` (**Default**: `false`)
+    - **hijackBack** (Boolean) This will hijack the action of the back button (arrow left) on the top bar menu (**Default**: `false`)
+    - **action** (Function) The function will be executed before the user is returned to the previous screen. The function must be written as a `String`, because functions can't be saved to `Fliplet.Storage`.
   - **previousScreen** (Boolean or Function) If you want to return to the previous screen when closing a list item, set to true or write a function. The function will be executed before the user is returned to the previous screen. We recommend only using this option when you know there will only be one entry as a result. (**Default**: false)
   - **persist** (Boolean) Use this if you want to prevent the persistant variable from being deleted. (**Default**: `false`)
 
@@ -224,7 +229,10 @@ Fliplet.App.Storage.set('flDynamicListQuery:simple-list', {
 ```js
 Fliplet.App.Storage.set('flDynamicListQuery:simple-list', {
   search: { ... },
-  previousScreen: true,
+  goBack: {
+    enableButton: true,
+    action: "(function () { console.log('run code') })"
+  },
   persist: true
 });
 ```
