@@ -231,7 +231,7 @@ Fliplet.App.Storage.set('flDynamicListQuery:simple-list', {
   search: { ... },
   goBack: {
     enableButton: true,
-    action: `(function () { console.log('run code') })`
+    action: "(function () { console.log('run code') })"
   },
   persist: true
 });
