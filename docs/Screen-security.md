@@ -85,11 +85,13 @@ var allowed = [
   "106.1.180.84"
 ]
 
-if (!ipRangeCheck(ipAddress, allowed)) {
+if (server && !ipRangeCheck(ipAddress, allowed)) {
   error = 'Can\'t view the app from there.'
   errorMessage = 'Your IP address ' + ipAddress + ' is not in range. Please come to the office!'
 }
 ```
+
+Note: this feature only works on webapps. Please target them using the `server` boolean flag as shown above in the examples.
 
 Sample error page for the above code:
 
