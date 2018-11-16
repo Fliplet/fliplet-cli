@@ -143,7 +143,12 @@ Fliplet.Hooks.run('beforeFormSubmit', data).then(function (results) {
 
 ## Modal
 
-We use [Bootbox](http://bootboxjs.com/) under the hood for Modals, hence check their documentation for the full set of options you can pass.
+**Please note**: this JS API is only available in widget interfaces when developing for Fliplet Studio. If you're looking for adding modals and confirmation windows to your Fliplet Apps, please look for the following JS APIs instead:
+
+- [Fliplet.UI.Actions](https://developers.fliplet.com/API/fliplet-ui-actions.html)
+- [Fliplet.UI.Toast](https://developers.fliplet.com/API/fliplet-ui-toast.html)
+
+When using Modal windows on widget interfaces, we use [Bootbox](http://bootboxjs.com/) under the hood hence make sure to check their documentation for the full set of options you can pass.
 
 ### Display a confirmation message
 
