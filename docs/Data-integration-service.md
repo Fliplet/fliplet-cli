@@ -143,7 +143,7 @@ Any error found in your configuration will be printed out for you to look at.
 
 On Windows you can install any number instances of the agent to run as a service on your machine. Behind the scene we use [node-windows](https://github.com/coreybutler/node-windows) to make this happen, however this comes bundled with the Fliplet Agent already hence installing the latter as a service is just about running this command:
 
-```bash
+```
 fliplet-agent install C:\path\to\sample.yml
 ```
 
@@ -157,7 +157,7 @@ Just click "**Yes**" to grant access to the software to install the service on y
 
 Likewise, you can manage the service by accessing the Windows "Services" application. To remove the service, simply run the `uninstall` command as below:
 
-```bash
+```
 fliplet-agent uninstall C:\path\to\sample.yml
 ```
 
