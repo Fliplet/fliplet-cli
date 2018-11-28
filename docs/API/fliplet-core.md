@@ -77,7 +77,7 @@ These variables are usually available on app screens as long as components and p
 - `pageSettings` - object with public settings for the current page
 - `platform` - either `'web'` or `'native'`
 - `provider` - `true / false` whether the context is running in provider mode
-- `preview` - `true / false` true when you are in preview mode in Fliplet Studio
+- `preview` - `true / false` true when you are in edit or preview mode in Fliplet Studio
 - `user` - the current user
 
 ### Set an environment variable
