@@ -67,9 +67,9 @@ LikeButton(options)
       * `prepend` Like button is prepended to the `target` element(s)
       * `html` Like button is set as the content of the `target` element(s)
     * (Function) Use a custom function to add the button to the container. Return `false` to avoid adding the button entirely. **Note**: `target` is not required if `addType` is a function.
-  * `likeLabel` (String) Label of button to use when the rendering the like button before it's liked. **Default**: `<i class="fa fa-thumbs-o-up"></i> Like {{#if count}}{{count}}{{/if}}` The string will be used as a Handlebars template with the following variables:
+  * `likeLabel` (String) Label of button to use when the rendering the like button before it's liked. **Default**: {% raw %}`<i class="fa fa-thumbs-o-up"></i> Like {{#if count}}{{count}}{{/if}}`{% endraw %} The string will be used as a Handlebars template with the following variables:
     * `count` Number of likes
-  * `likedLabel` (String) Label of button to use when the rendering the like button after it's liked. **Default**: `<i class="fa fa-thumbs-up"></i> Like {{#if count}}{{count}}{{/if}}` The string will be used as a Handlebars template with the following variables:
+  * `likedLabel` (String) Label of button to use when the rendering the like button after it's liked. **Default**: {% raw %}`<i class="fa fa-thumbs-up"></i> Like {{#if count}}{{count}}{{/if}}`{% endraw %} The string will be used as a Handlebars template with the following variables:
     * `count` Number of likes
   * `likeWrapper` (String) HTML to use when wrapping the like button. **Default**: `<a class="btn btn-like" href="#"></a>`
   * `likedWrapper` (String) HTML to use when wrapping the liked button. **Default**: `<a class="btn btn-like" href="#"></a>`

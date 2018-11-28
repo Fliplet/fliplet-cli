@@ -148,8 +148,47 @@ ul > li > ul {
   color: rgba(81, 234, 255, 0.6);
 }
 
+.search-handle {
+  transition: opacity 0.5s;
+  position: fixed;
+  top: 18px;
+  right: 20px;
+  background-color: lighten(#1b2233, 20%);
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 23px;
+  border-radius: 50%;
+  color: #FFF;
+  text-decoration: none;
+  opacity: 0;
+  pointer-events: none;
+
+  i {
+    text-decoration: none;
+  }
+
+  &:hover {
+    background-color: #1b2233;
+    text-decoration: none;
+  }
+
+  .has-scrolled & {
+    opacity: 1;
+    pointer-events: all;
+  }
+}
+
 .ais-search-box--input {
+  transition: border 1s;
   color: #153c49;
+
+  &.in-focus {
+    border-color: #1b2233;
+    border-width: 2px;
+  }
 }
 
 .ais-hits {
@@ -264,5 +303,9 @@ ul > li > ul {
 
   .blocks a:last-child {
     margin-left: 0;
+  }
+
+  .search-handle {
+    display: none;
   }
 }
