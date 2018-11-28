@@ -7,11 +7,16 @@
     <meta name="theme-color" content="#153c49">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.3/dist/instantsearch.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" crossorigin="anonymous">
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.3/dist/instantsearch-theme-algolia.min.css">
     <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
     <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.3"></script>
   </head>
   <body>
+    <a href="#" class="search-handle">
+      <i class="fas fa-search"></i>
+    </a>
     <section class="page-header">
       <div class="content">
         <a class="logo" href="/" title="Fliplet"></a>
@@ -45,6 +50,7 @@
       </footer>
     </section>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="{{ '/assets/js/index.js?v=' | append: site.github.build_revision | relative_url }}"></script>
     <script>
 (function(){var w=window;var ic=w.Intercom;if(typeof ic==="function"){ic('reattach_activator');ic('update',intercomSettings);}else{var d=document;var i=function(){i.c(arguments)};i.q=[];i.c=function(args){i.q.push(args)};w.Intercom=i;function l(){var s=d.createElement('script');s.type='text/javascript';s.async=true;s.src='https://widget.intercom.io/widget/eo99qllm';var x=d.getElementsByTagName('script')[0];x.parentNode.insertBefore(s,x);window.intercomSettings = window.intercomSettings || {};

@@ -39,3 +39,29 @@ search.addWidget(
 );
 
 search.start();
+
+// ---------------------------------------------
+
+var $window = $(window);
+var $html = $('html');
+
+function onScroll() {
+  var scrollTop = $window.scrollTop();
+  $html.toggleClass('has-scrolled', scrollTop > 250);
+}
+
+$window.scroll(onScroll);
+onScroll();
+
+$('.search-handle').click(function (event) {
+  event.preventDefault();
+
+  $("html, body").stop().animate({scrollTop:0}, 500, 'swing', function() {
+    $('.ais-search-box--input').focus().addClass('in-focus');
+    $('.ais-search-box').addClass('animated shake');
+  });
+});
+
+$('body').on('blur', '.ais-search-box--input', function () {
+  $(this).removeClass('in-focus');
+});
