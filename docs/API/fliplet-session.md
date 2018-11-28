@@ -40,7 +40,19 @@ Fliplet.Session.clear().then(function onSessionCleared() {
 });
 ```
 
+### Log out the user from a session passport
+
+The `logout()` function requires the first parameter to be the passport type to log out from. Valid inputs are `saml2`, `dataSource` and `flipletLogin`.
+
+```js
+Fliplet.Session.logout('saml2').then(function () {
+  // here you can redirect (or else) once log out is acknowledged from the server
+});
+```
+
 ### Destroys the current session
+
+Note: you should not use this on webapps since users won't be able to log in back.
 
 ```js
 Fliplet.Session.destroy().then(function onSessionDestroyed() {
@@ -58,7 +70,7 @@ If your app contains a login component (either DataSource, SAML2 or Fliplet) you
 Fliplet.Session.get().then(function(session) {
   if (session && session.entries) {
     // the user is logged in;
-    
+
     // you can also check for which login type
     if (session.entries.dataSource) {
       // user is logged in against a Fliplet dataSource
