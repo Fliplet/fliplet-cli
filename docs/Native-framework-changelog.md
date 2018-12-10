@@ -6,7 +6,7 @@ We regularly update our framework to support new features. If you have an older 
 
 ### Version 3.9.1 (December 10, 2018)
 
-- Fixed file download error saving
+- Fixed an issue which caused some apps to crash when applying app updates under certain conditions
 
 ### Version 3.9.0 (October 3, 2018)
 
