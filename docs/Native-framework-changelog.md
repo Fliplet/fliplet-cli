@@ -4,6 +4,10 @@ We regularly update our framework to support new features. If you have an older 
 
 ## Latest versions (3.x)
 
+### Version 3.9.1 (December 10, 2018)
+
+- Fixed an issue which caused some apps to crash when applying app updates under certain conditions
+
 ### Version 3.9.0 (October 3, 2018)
 
 - Barcode scanner plugin added
