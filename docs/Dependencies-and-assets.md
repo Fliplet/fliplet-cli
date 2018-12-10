@@ -42,7 +42,7 @@ Example of assets for a component:
   "build": {
     "assets": [
       "vendor/datepicker.js",
-      "js/interface.js",
+      "js/build.js",
       "css/style.css",
       "css/fonts/open-sans.ttf"
     ]
@@ -58,6 +58,23 @@ Example of assets for a theme:
     "vendor/datepicker.js",
     "css/index.scss"
   ]
+}
+```
+
+For page components you can also define `appAssets` that needs to be injected to all screens of the app when your component is dropped on any of the screens:
+
+```json
+{
+  "build": {
+    "assets": [
+      "js/page.js",
+      "css/page.css"
+    ],
+    "appAssets": [
+      "js/app.js",
+      "css/app.css"
+    ]
+  }
 }
 ```
 
