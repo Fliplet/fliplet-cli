@@ -33,6 +33,21 @@ if (server && page.id !== loginScreen && !isAllowed) {
 }
 ```
 
+When running your security code on mobile devices you can also make use of the Javascript variables available in the browser, like `Modernizr` and `Fliplet.Env`.
+
+As an example, targeting an iOS or Android device can be achieved like this:
+
+```js
+// this rule only runs on mobile devices
+if (client) {
+  if (Modernizr.iOS) {
+    // this will only run on iOS
+  } else if (Modernizr.Android) {
+    // this will only run on Android
+  }
+}
+```
+
 ---
 
 ### Whitelist or Blacklist access by IP address
