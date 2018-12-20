@@ -34,7 +34,7 @@ Service providers sometimes allow you to define domains that can use their APIs.
 
 ## 2. Configure the service with an `Access-Control-Allow-Origin` header
 
-Similar to the first method, the responses from the requested resource should contain an `Access-Control-Allow-Origin` header. The value of which could be a list of domains such as `http://domain1.example, http://domain2.example` or as mentioned above, we recommend setting it as `*` if possible.
+Similar to the first method, the responses from the requested resource should contain an `Access-Control-Allow-Origin` header. The value of which could be a list of domains such as `http://domain1.example, http://domain2.example`. For reasons mentioned above, we recommend setting it as `*` if possible.
 
 ## 3. Use a proxy service
 
