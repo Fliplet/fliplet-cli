@@ -28,10 +28,10 @@ Flipet.OAuth2.configure('github', {
   grantType: 'implicit', // as supported by OAuth2 service provider
   grantUrl: 'https://github.com/login/oauth/access_token', // from OAuth2 service provider
   baseUrl: 'https://api.github.com/', // from OAuth2 service provider
-  clientId: '4c867cd2a96541883322', // from OAuth2 service provider
-  clientSecret: '5f66b7a07842570936512097ec255721b259b16a', // from OAuth2 service provider
+  clientId: 'uztcbv3bwtkxmmej1lxv', // from OAuth2 service provider
+  clientSecret: 'jepbrhknlxjxriltyjrtprbevdfclnagn2uc1dsq', // from OAuth2 service provider
   redirectUrl: 'https://fliplet.com/oauth2-success', // as configured with OAuth2 service provider
-  state: 'FeeIUo0hJv6K5l9-1', // optional state parameter during login
+  state: 'cbv3bwhJv6K5l9-1', // optional state parameter during login
   loginPageId: 12345, // page ID where login page is found
   postLoginPageId: 12346 // page ID where users are redirected to after login
 });
