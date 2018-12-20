@@ -45,7 +45,7 @@ Flipet.OAuth2.configure('github', {
 // Start login process
 Fliplet.OAuth2('github').login()
   .then(function () {
-    // Successfull logged in
+    // Successfully logged in
   });
 ```
 
