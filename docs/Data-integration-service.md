@@ -279,7 +279,7 @@ module.exports.config = {
 module.exports.setup = (agent) => {
   // Example pulling data from a 3rd party JSON API endpoint
   agent.push({
-    description: 'Pushes data from my table to Fliplet',
+    description: 'Pushes data from an API to Fliplet',
     frequency: '* * * * *',
     source: (axios) => axios.get('https://jsonplaceholder.typicode.com/todos'),
     primaryColumnName: 'id',
@@ -289,9 +289,9 @@ module.exports.setup = (agent) => {
 
   // Example with hardcoded data
   agent.push({
-    description: 'Pushes data from my table to Fliplet',
+    description: 'Pushes data from my static data to Fliplet',
     frequency: '* * * * *',
-    // Example pulling data from an API endpoint
+    // Example pulling from static data
     source() {
       return Promise.resolve([ { id: 1, foo: 'bar' }, { id: 2, bar: 'baz' } ]);
     },
@@ -302,9 +302,9 @@ module.exports.setup = (agent) => {
 
   // Example reading from a JSON file
   agent.push({
-    description: 'Pushes data from my table to Fliplet',
+    description: 'Pushes data from a local JSON file to Fliplet',
     frequency: '* * * * *',
-    // Example pulling data from an API endpoint
+    // Example pulling data from a local JSON file
     source() {
       const fs = require('fs');
       const contents = fs.readFileSync('./path/to/file.json', 'utf8');
