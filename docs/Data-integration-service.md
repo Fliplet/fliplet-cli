@@ -292,7 +292,7 @@ module.exports.setup = (agent) => {
     description: 'Pushes data from my table to Fliplet',
     frequency: '* * * * *',
     // Example pulling data from an API endpoint
-    source: () => {
+    source() {
       return Promise.resolve([ { id: 1, foo: 'bar' }, { id: 2, bar: 'baz' } ]);
     },
     primaryColumnName: 'id',
@@ -305,7 +305,7 @@ module.exports.setup = (agent) => {
     description: 'Pushes data from my table to Fliplet',
     frequency: '* * * * *',
     // Example pulling data from an API endpoint
-    source: () => {
+    source() {
       const fs = require('fs');
       const contents = fs.readFileSync('./path/to/file.json', 'utf8');
       const data = JSON.parse(contents);
