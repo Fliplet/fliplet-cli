@@ -261,7 +261,7 @@ fliplet-agent start ./path/to/configurationFile.js
 When using the Fliplet Agent in advanced mode via a Javascript file you can choose whether the input data to be sent to Fliplet needs to be manually pulled from a third party system rather than a database. As an example, you can read data from a file or an API. When doing so, keep these few points in mind:
 
 1. If you don't have a local database to connect from, you can skip entirely the `database` key defined in the `module.exports.config`.
-2. Use `source(restClient){}` instead of `sourceQuery(db){}` in the definition as described in the example below.
+2. Use `source(axios){}` instead of `sourceQuery(db){}` in the definition as described in the example below. As you can see, the first parameter is the popular [axios](https://github.com/axios/axios) library to make HTTP requests.
 
 ```js
 module.exports.config = {
@@ -281,7 +281,7 @@ module.exports.setup = (agent) => {
   agent.push({
     description: 'Pushes data from my table to Fliplet',
     frequency: '* * * * *',
-    source: (rest) => rest.get('https://jsonplaceholder.typicode.com/todos'),
+    source: (axios) => axios.get('https://jsonplaceholder.typicode.com/todos'),
     primaryColumnName: 'id',
     timestampColumnName: 'updatedAt',
     targetDataSourceId: 123
