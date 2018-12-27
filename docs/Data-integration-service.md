@@ -277,7 +277,8 @@ module.exports.config = {
 };
 
 module.exports.setup = (agent) => {
-  // Example pulling data from a 3rd party JSON API endpoint
+
+  // 1. Example pulling data from a 3rd party JSON API endpoint
   agent.push({
     description: 'Pushes data from an API to Fliplet',
     frequency: '* * * * *',
@@ -287,11 +288,10 @@ module.exports.setup = (agent) => {
     targetDataSourceId: 123
   });
 
-  // Example with hardcoded data
+  // 2. Example pulling hardcoded data
   agent.push({
     description: 'Pushes data from my static data to Fliplet',
     frequency: '* * * * *',
-    // Example pulling from static data
     source() {
       return Promise.resolve([ { id: 1, foo: 'bar' }, { id: 2, bar: 'baz' } ]);
     },
@@ -300,11 +300,10 @@ module.exports.setup = (agent) => {
     targetDataSourceId: 123
   });
 
-  // Example reading from a JSON file
+  // 3. Example reading from a local JSON file
   agent.push({
     description: 'Pushes data from a local JSON file to Fliplet',
     frequency: '* * * * *',
-    // Example pulling data from a local JSON file
     source() {
       const fs = require('fs');
       const contents = fs.readFileSync('./path/to/file.json', 'utf8');
