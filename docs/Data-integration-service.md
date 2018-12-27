@@ -256,4 +256,64 @@ fliplet-agent start ./path/to/configurationFile.js
 
 ---
 
-In the future, support for pulling data and a two-ways data sync will be made available.
+## Manually defining the input data to sync
+
+When using the Fliplet Agent in advanced mode via a Javascript file you can choose whether the input data to be sent to Fliplet needs to be manually pulled from a third party system rather than a database. As an example, you can read data from a file or an API. When doing so, keep these few points in mind:
+
+1. If you don't have a local database to connect from, you can skip entirely the `database` key defined in the `module.exports.config`.
+2. Use `source(restClient){}` instead of `sourceQuery(db){}` in the definition as described in the example below.
+
+```js
+module.exports.config = {
+  // Fliplet authorisation token from Fliplet Studio
+  authToken: 'eu--123456789',
+
+  // Set to true to test the integration without sending any data to Fliplet servers
+  isDryRun: false,
+
+  // If set to true, operations will run when the script starts.
+  // Otherwise, they will just run according to their frequency.
+  syncOnInit: true
+};
+
+module.exports.setup = (agent) => {
+  // Example pulling data from a 3rd party JSON API endpoint
+  agent.push({
+    description: 'Pushes data from my table to Fliplet',
+    frequency: '* * * * *',
+    source: (rest) => rest.get('https://jsonplaceholder.typicode.com/todos'),
+    primaryColumnName: 'id',
+    timestampColumnName: 'updatedAt',
+    targetDataSourceId: 123
+  });
+
+  // Example with hardcoded data
+  agent.push({
+    description: 'Pushes data from my table to Fliplet',
+    frequency: '* * * * *',
+    // Example pulling data from an API endpoint
+    source: () => {
+      return Promise.resolve([ { id: 1, foo: 'bar' }, { id: 2, bar: 'baz' } ]);
+    },
+    primaryColumnName: 'id',
+    timestampColumnName: 'updatedAt',
+    targetDataSourceId: 123
+  });
+
+  // Example reading from a JSON file
+  agent.push({
+    description: 'Pushes data from my table to Fliplet',
+    frequency: '* * * * *',
+    // Example pulling data from an API endpoint
+    source: () => {
+      const fs = require('fs');
+      const contents = fs.readFileSync('./path/to/file.json', 'utf8');
+      const data = JSON.parse(contents);
+      return Promise.resolve(data);
+    },
+    primaryColumnName: 'id',
+    timestampColumnName: 'updatedAt',
+    targetDataSourceId: 123
+  });
+};
+```
