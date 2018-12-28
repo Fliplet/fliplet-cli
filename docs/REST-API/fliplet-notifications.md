@@ -27,10 +27,10 @@ When dealing with app notifications, there's a few things you should keep in min
 
 Optional query parameters:
 
-- **limit** (number, defaults to 100)
+- **limit** (number, defaults to `100`)
 - **order** (string, defaults to "orderAt")
 - **direction** (string, defaults to "DESC")
-- **count** (boolean, defaults to false. When `true`, only the total count of matched notifations is returned)
+- **count** (boolean, defaults to `false`. When `true`, only the total count of matched notifications is returned)
 - **recipientId** (guid string to identify the requester for marking read receipts)
 - **includeDeleted** (boolean, whether deleted notifications should be returned)
 - **where** (object, sequelize "where" query condition)
