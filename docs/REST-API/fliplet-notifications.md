@@ -19,7 +19,7 @@ When dealing with app notifications, there's a few things you should keep in min
 
 App notifications can optionally send a notification. When doing so, you should provide the `payload` and optionally a list of subscriptions IDs to target and a delay for the notification. The following sample can be used as described in the endpoints for creating or updating an app notification:
 
-```
+```json
 {
   "pushNotification": {
     "payload": {
