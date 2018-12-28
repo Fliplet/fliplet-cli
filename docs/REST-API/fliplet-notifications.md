@@ -81,7 +81,7 @@ Required parameters:
 Optional parameters:
 - **scope** (array of json objects)
 - **status** (string, defaults to `draft`. Use `published` to make the notification visible to live apps)
-- **orderAt** (number, defaults to null)
+- **orderAt** (number, defaults to the current time)
 - **pushNotification** (json object containing payload, subscriptions, delayUntilTimestamp)
 
 Sample request body:
@@ -113,7 +113,7 @@ Optional parameters:
 - **extendData** (boolean, defaults to `false` (replace). When `true`, the input data will be merged with the existing notification data instead of replacing it)
 - **scope** (array of json objects)
 - **status** (string, defaults to `draft`. Use `published` to make the notification visible to live apps)
-- **orderAt** (datetime, defaults to null)
+- **orderAt** (datetime, defaults to the current time)
 - **pushNotification** (json object containing payload, subscriptions, delayUntilTimestamp)
 
 ---
