@@ -25,6 +25,13 @@ Upload files to Fliplet for use in Fliplet apps.
 [View documentation for Media »](REST-API/fliplet-media.md)
 {: .buttons}
 
+### Fliplet Notifications
+
+Create and manage a notification inbox for the users of your Fliplet apps.
+
+[View documentation for Notifications »](REST-API/fliplet-notifications.md)
+{: .buttons}
+
 ### Fliplet Apps
 
 Read and update your apps data.
