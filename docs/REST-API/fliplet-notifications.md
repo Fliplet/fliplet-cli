@@ -36,7 +36,7 @@ App notifications can optionally send a notification. When doing so, you should 
 
 ## Endpoints
 
-### Get the notifications for a specific list of scopes
+### Get the notifications
 
 #### `GET/POST v1/apps/:id/notifications`
 
@@ -53,6 +53,14 @@ Optional query parameters:
 
 Please note that when making the request as `GET`, supplying the `where` and `scope` parameters is not supported. Therefore, in most occasions you'll need to make a POST request so that you can filter notifications by query and/or a list of scopes.
 
+Request body:
+```json
+{
+  "limit": 50,
+  "scope": [{ "topic": "company-updates" }]
+}
+```
+
 Response:
 
 ```json
@@ -60,9 +68,9 @@ Response:
   "notifications": [
     {
       "id": 123,
-      "data": { "foo": "bar", "message": "Hi John and Google fans!" },
+      "data": { "foo": "bar", "message": "Hi John and company fans!" },
       "scope": [
-        { "topic": "google" },
+        { "topic": "company-updates" },
         { "dataSourceId": 123, "email": "john@example.org" }
       ],
       "status": "draft",
