@@ -27,14 +27,14 @@ When dealing with app notifications, there's a few things you should keep in min
 
 Optional query parameters:
 
-- limit (number, defaults to 100)
-- order (string, defaults to "orderAt")
-- direction (string, defaults to "DESC")
-- count (boolean, defaults to false. When `true`, only the total count of matched notifations is returned)
-- recipientId (guid string to identify the requester for marking read receipts)
-- includeDeleted (boolean, whether deleted notifications should be returned)
-- where (object, sequelize "where" query condition)
-- scope (array, list of scopes to fetch from)
+- **limit** (number, defaults to 100)
+- **order** (string, defaults to "orderAt")
+- **direction** (string, defaults to "DESC")
+- **count** (boolean, defaults to false. When `true`, only the total count of matched notifations is returned)
+- **recipientId** (guid string to identify the requester for marking read receipts)
+- **includeDeleted** (boolean, whether deleted notifications should be returned)
+- **where** (object, sequelize "where" query condition)
+- **scope** (array, list of scopes to fetch from)
 
 Please note that when making the request as `GET`, supplying the `where` and `scope` parameters is not supported. Therefore, in most occasions you'll need to make a POST request so that you can filter notifications by query and/or a list of scopes.
 
@@ -76,13 +76,13 @@ Response:
 #### `PUT v1/apps/:id/notifications`
 
 Required parameters:
-- data (json object)
+- **data** (json object)
 
 Optional parameters:
-- scope (array of json objects)
-- status (defaults to `draft`. Use `published` to make the notification visible to live apps)
-- orderAt (number, defaults to null)
-- pushNotification (json object containing payload, subscriptions, delayUntilTimestamp)
+- **scope** (array of json objects)
+- **status** (string, defaults to `draft`. Use `published` to make the notification visible to live apps)
+- **orderAt** (number, defaults to null)
+- **pushNotification** (json object containing payload, subscriptions, delayUntilTimestamp)
 
 Sample request body:
 
@@ -109,12 +109,12 @@ Sample request body:
 #### `PUT v1/apps/:id/notifications/:id`
 
 Optional parameters:
-- data (json object)
-- extendData (boolean, defaults to `false` (replace). When `true`, the input data will be merged with the existing notification data instead of replacing it)
-- scope (array of json objects)
-- status (defaults to `draft`. Use `published` to make the notification visible to live apps)
-- orderAt (datetime, defaults to null)
-- pushNotification (json object containing payload, subscriptions, delayUntilTimestamp)
+- **data** (json object)
+- **extendData** (boolean, defaults to `false` (replace). When `true`, the input data will be merged with the existing notification data instead of replacing it)
+- **scope** (array of json objects)
+- **status** (string, defaults to `draft`. Use `published` to make the notification visible to live apps)
+- **orderAt** (datetime, defaults to null)
+- **pushNotification** (json object containing payload, subscriptions, delayUntilTimestamp)
 
 ---
 
@@ -129,7 +129,7 @@ Optional parameters:
 #### `POST v1/apps/:id/notifications/mark-as-read`
 
 Required parameters:
-- recipientId (guid string to identify your user)
-- entries (array of notification IDs)
+- **recipientId** (guid string to identify your user)
+- **entries** (array of notification IDs)
 
 ---
