@@ -23,24 +23,26 @@ Response  (Status code: 200 OK):
 ```json
 {
   "apps": [
-    "id": 123,
-    "name": "My App",
-    "icon": "https://path/to/icon.png",
-    "version": null,
-    "settings": {},
-    "releases": [],
-    "dependencies": [],
-    "slug": null,
-    "createdAt": "2017-11-28T10:25:19.003Z",
-    "updatedAt": "2017-11-28T10:25:19.493Z",
-    "deletedAt": null,
-    "organizationId": 1234,
-    "startingPageId": 567,
-    "productionAppId": null,
-    "appUser": {
-      "appRoleId": 1,
-      "appId": 123,
-      "userId": 456
+    {
+      "id": 123,
+      "name": "My App",
+      "icon": "https://path/to/icon.png",
+      "version": null,
+      "settings": {},
+      "releases": [],
+      "dependencies": [],
+      "slug": null,
+      "createdAt": "2017-11-28T10:25:19.003Z",
+      "updatedAt": "2017-11-28T10:25:19.493Z",
+      "deletedAt": null,
+      "organizationId": 1234,
+      "startingPageId": 567,
+      "productionAppId": null,
+      "appUser": {
+        "appRoleId": 1,
+        "appId": 123,
+        "userId": 456
+      }
     }
   ]
 }
