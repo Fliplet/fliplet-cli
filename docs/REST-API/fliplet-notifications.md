@@ -17,6 +17,21 @@ When dealing with app notifications, there's a few things you should keep in min
 
 ## Push notifications
 
+App notifications can optionally send a notification. When doing so, you should provide the `payload` and optionally a list of subscriptions IDs to target and a delay for the notification. The following sample can be used as described in the endpoints for creating or updating an app notification:
+
+```
+{
+  "pushNotification": {
+    "payload": {
+      "title": "New article",
+      "body": "John has posted a new article on the news page. Go check it out!"
+    },
+    "subscriptions": [123],
+    "delayUntilTimestamp": 1577836800
+  }
+}
+```
+
 ---
 
 ## Endpoints
