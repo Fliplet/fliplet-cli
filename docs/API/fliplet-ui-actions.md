@@ -29,7 +29,9 @@ Fliplet.UI.Actions(options)
   * **title** (String) A title that appears above the options.
   * **labels** (Array) Options to show the user. Each label object contains the following properties:
     * **label** (String) Option label to show the user.
-    * **action** (Object or Function) If an object is provided the object will be passed to `Fliplet.Navigate.to()` and executed accordingly, unless the object has a key `type` with the value `copyText`, in this case the object will be passed to `clipboardjs` library, which will also expect the key `text` with the value to be copied. If a function is provided, the function will be run with the 0-based index of the label as the first parameter.
+    * **action** (Object or Function)
+      * (Object) If the object contains a `type` key with a value of `copyText`, the value for `text` will be copied ot the clipboard. Otherwisem the object will be passed to `Fliplet.Navigate.to()` and executed accordingly.
+      * (Function) If a function is provided, the function will be run with the 0-based index of the label as the first parameter.
   * **cancel** (Boolean or String) Unless this is `false` or an empty string, a cancel button will be added at the bottom with the provided string used as the button label. (**Default**: `Cancel`)
 
 ## Properties
