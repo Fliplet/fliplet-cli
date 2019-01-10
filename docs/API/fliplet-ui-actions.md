@@ -87,9 +87,6 @@ Fliplet.UI.Actions({
     }
   ],
   cancel: 'Dismiss'
-}).then(function(i){
-  // i will be 0 or 1 depending on users's choice
-  // ...or undefined if user chooses chooses "Dismiss"
 });
 ```
 
