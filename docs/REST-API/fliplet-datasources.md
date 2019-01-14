@@ -31,11 +31,16 @@ Please head to the [how to authenticate](authenticate.md) page of the documentat
 
 Data sources requires ​roles​ to be accessed to. Roles can have multiple permissions: **create, read, update, delete, query**. We call them ​`crudq​`. Once you create a data source, your user automatically gets all these permissions assigned to it, since you own the data source.
 
-If the app token (or user token) you're using doesn't have access to one of your organisation data sources, you will need to grant him permissions via Fliplet Studio. Go to the **App data** section, then find the data source you want to add the user to and click the **Add new user** button to grant access to a user to the specific data source:
+If the app token you're using doesn't have access to one of your organisation data sources, you will need to grant permissions to it via Fliplet Studio:
 
-![img](https://cl.ly/424df3be19c0/Image%2525202019-01-14%252520at%2525203.24.56%252520PM.png)
+1. Go to the **App settings** *(1)* >> **App tokens** *(2)* screen
+2. Copy the **numerical app token** ID *(3)* for the token you need to add access to
+2. Go to the **App data** *(4)* section, then find the data source you want to add the user to
+3. Click the **Add new user** *(5)* button to grant access to a user to the specific data source and when asked paste the ID you got above, then the list of permissions to add (e.g. `crudq`) as described a few lines above.
 
-To add a user, you will be asked for its **User ID** (which can be found by accessing the [https://api.fliplet.com/v1/user](https://api.fliplet.com/v1/user) endpoint with a valid auth token) and the list of permissions to add (e.g. `crudq`) as described a few lines above.
+![img1](https://cl.ly/9a01714eb200/Image%2525202019-01-14%252520at%2525203.37.14%252520PM.png)
+
+![img2](https://cl.ly/971aaeb5c6de/Image%2525202019-01-14%252520at%2525203.39.58%252520PM.png)
 
 ---
 
