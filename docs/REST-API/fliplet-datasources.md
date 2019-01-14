@@ -35,7 +35,7 @@ If the app token (or user token) you're using doesn't have access to one of your
 
 ![img](https://cl.ly/424df3be19c0/Image%2525202019-01-14%252520at%2525203.24.56%252520PM.png)
 
-To add a user, you will be asked for its **User ID** (which can be found by accessing the https://api.fliplet.com/v1/user endpoint with a valid auth token) and the list of permissions to add (e.g. `crudq`) as described a few lines above.
+To add a user, you will be asked for its **User ID** (which can be found by accessing the [https://api.fliplet.com/v1/user](https://api.fliplet.com/v1/user) endpoint with a valid auth token) and the list of permissions to add (e.g. `crudq`) as described a few lines above.
 
 ---
 
