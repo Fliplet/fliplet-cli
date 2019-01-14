@@ -35,8 +35,9 @@ If the app token you're using doesn't have access to one of your organisation da
 
 1. Go to the **App settings** *(1)* >> **App tokens** *(2)* screen
 2. Copy the **numerical app token** ID *(3)* for the token you need to add access to
-2. Go to the **App data** *(4)* section, then find the data source you want to add the user to
-3. Click the **Add new user** *(5)* button to grant access to a user to the specific data source and when asked paste the ID you got above, then the list of permissions to add (e.g. `crudq`) as described a few lines above.
+2. Go to the **App data** *(4)* section, then click on the data source you want to add the user to
+3. Click the **User permissions** *(5)* tab
+4. **Add new user** *(6)* button to grant access to a user to the specific data source and when asked paste the ID you got above, then the list of permissions to add (e.g. `crudq`) as described a few lines above.
 
 ![img1](https://cl.ly/9a01714eb200/Image%2525202019-01-14%252520at%2525203.37.14%252520PM.png)
 
