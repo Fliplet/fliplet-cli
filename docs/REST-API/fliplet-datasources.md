@@ -33,7 +33,7 @@ Data sources requires ​roles​ to be accessed to. Roles can have multiple per
 
 If the app token you're using doesn't have access to one of your organisation data sources, you will need to grant permissions to it via Fliplet Studio:
 
-1. Go to the **App settings** *(1)* >> **App tokens** *(2)* screen
+1. Go to the **App settings** *(1)* >> **App tokens** *(2)* section of Fliplet Studio
 2. Copy the **numerical app token** ID *(3)* for the token you need to add access to
 2. Go to the **App data** *(4)* section, then click on the data source you want to add the user to
 3. Click the **User permissions** *(5)* tab
