@@ -86,12 +86,12 @@ Fliplet.OAuth2.configure(services)
 * **service** (String) **Required** A service name. The service name is used when making `Fliplet.OAuth2` requests.
 * **configuration** (Object) **Required** A key-value map of options to configure multiple services with. Each object can contain the following details.
   * **authUrl** (String) **Required** Authorization URL as supplied by the OAuth2 service.
-  * **grantType** (String) `implicit|explicit` **Required** Implicit (token) or Explicit (code) Grant flow to be used when logging in.
+  * **grantType** (String) `token|code` **Required** Implicit (token) or Explicit (code) grant flow to be used when logging in. **Default**: `token`
   * **grantUrl** (String) Grant URL as supplied by the OAuth2 service. Required if an *Explicit Grant* flow is used when calling `.login()`.
   * **baseUrl** (String) Base URL for API requests. API requests made with a full URL will ignore the `baseUrl`. If `baseUrl` is not provided, API requests are expected to be called using a full URL.
   * **clientId** (String) **Required** Client ID as supplied by the OAuth2 service.
   * **clientSecret** (String) **Required** Client Secret as supplied by the OAuth2 service.
-  * **redirectUrl** (String) **Required** Full page URL where users will be redirected to after a successful login through the OAuth2 service. It's also called *authorization callback URL* by some OAuth2 services. Fliplet provides `https://fliplet.com/oauth2-success` to show a generic login success message. You may use any custom page as necessary.
+  * **redirectUrl** (String) **Required** Full page URL where users will be redirected to after a successful login through the OAuth2 service. It's also called *authorization callback URL* by some OAuth2 services. Fliplet provides `https://api.fliplet.com/v1/auth/sso-success` to show a generic login success message. You may use any custom page as necessary.
   * **state** (String) `state` is an optional parameter that, if provided, is returned by the OAuth2 service during the redirect step for additional verification during login.
   * **scope** (String) A comma separated string of scopes as provided by the OAuth2 service.
   * **refresh** (Boolean) Indicates that the OAuth2 service supports refreshing access tokens to keep them valid. **Default**: `false`
@@ -139,7 +139,7 @@ Fliplet.OAuth2(service).getAuthResponse()
 
 Make calls to the API for getting and posting data.
 
-*Note: The Fliplet OAuth2 library will manage authentication tokens and any token refreshing (if supported) before making API calls. If the token is invalid or missing, the user will be redirected to the login page with a `tokenInvalid=true` or `tokenMissing=true` query parameter respectively.*
+*Note: The Fliplet OAuth2 library will manage authentication tokens and any token refreshing (if configured) before making API calls.*
 
 ```js
 Fliplet.OAuth2(service).api(path)
