@@ -31,9 +31,7 @@ Flipet.OAuth2.configure('github', {
   clientId: 'uztcbv3bwtkxmmej1lxv', // from OAuth2 service provider
   clientSecret: 'jepbrhknlxjxriltyjrtprbevdfclnagn2uc1dsq', // from OAuth2 service provider
   redirectUrl: 'https://fliplet.com/oauth2-success', // as configured with OAuth2 service provider
-  state: 'cbv3bwhJv6K5l9-1', // optional state parameter during login
-  loginPageId: 12345, // page ID where login page is found
-  postLoginPageId: 12346 // page ID where users are redirected to after login
+  state: 'cbv3bwhJv6K5l9-1' // optional state parameter during login
 });
 ```
 
@@ -44,8 +42,8 @@ Flipet.OAuth2.configure('github', {
 ```js
 // Start login process
 Fliplet.OAuth2('github').login()
-  .then(function () {
-    // Successfully logged in
+  .then(function (response) {
+    // Authentication response is cached and returned
   });
 ```
 
@@ -53,7 +51,7 @@ Fliplet.OAuth2('github').login()
 
 *Note: The service name as configured through `Fliplet.OAuth2.configure()` is passed to `Fliplet.OAuth2()` to make sure the correct connection configurations are used.*
 
-The Fliplet OAuth2 library will manage authentication tokens and any token refreshing (if supported) before making API calls. If the token is invalid or missing, the user will be redirected to the login page with a `tokenInvalid=true` or `tokenMissing=true` query parameter respectively.
+The Fliplet OAuth2 library will manage authentication tokens and any token refreshing (if configured) before making API calls.
 
 The login page can process these query parameters via `Fliplet.Navigate.query` to customize the user experience accordingly.
 
@@ -95,10 +93,8 @@ Fliplet.OAuth2.configure(services)
   * **clientSecret** (String) **Required** Client Secret as supplied by the OAuth2 service.
   * **redirectUrl** (String) **Required** Full page URL where users will be redirected to after a successful login through the OAuth2 service. It's also called *authorization callback URL* by some OAuth2 services. Fliplet provides `https://fliplet.com/oauth2-success` to show a generic login success message. You may use any custom page as necessary.
   * **state** (String) `state` is an optional parameter that, if provided, is returned by the OAuth2 service during the redirect step for additional verification during login.
-  * **loginPageId** (Number) Page ID of login page.
-  * **postLoginPagseId** (Number) Page ID of page to redirect to if user is logged in.
   * **scope** (String) A comma separated string of scopes as provided by the OAuth2 service.
-  * **verifyRedirectUrl** (Function) An optional function that takes the redirect URL after login, and confirms if the URL is valid. The URL is passed as the first parameter and the function can either return a value or a Promise. If a Promise is returned, the URL is considered valid if the Promise resolves. If the Promise rejects, the URL is considered invalid.
+  * **refresh** (Boolean) Indicates that the OAuth2 service supports refreshing access tokens to keep them valid. **Default**: `false`
 * **services** **Required** (Object) A key-value map of service configurations to configure multiple services in one go. Each service configuration should use the service name as the key and a configuration that follows the specification as outlined for the `configuration` parameter above.
 
 ### `Fliplet.OAuth2().login()`
@@ -156,6 +152,25 @@ Fliplet.OAuth2(service).api(options)
   * **path** (String) **Required** A relative path to the service base URL as configued in `Fliplet.OAuth2.configure()` or a full URL. If a full URL is provided the base URL will be ignored.
   * **method** (String) `get|post|put|delete` HTTP request method to use. **Default**: `GET`
   * **data** (Object) A JSON object of data, FormData, HTMLInputElement, HTMLFormElment to be sent along with a `get`, `post` or `put` request. **Default**: `null`
+
+### `Fliplet.OAuth2().on()`
+
+(Returns **`null`**)
+
+Add event listeners to OAuth2 responses.
+
+```js
+Fliplet.Oauth2(service).on(eventName, fn)
+```
+
+* **eventName** (String) See **Events** below.
+* **fn** (Function) Event handler function to execute when event is fired.
+
+## Events
+
+* **auth.login** User is successfully logged in. The authentication response is passed to the event handler function.
+* **auth.fail** User fails to log in. The error response is passed to the event handler function.
+* **auth.logout** User is successfully logged out.
 
 [Back to API documentation](../API-Documentation.md)
 {: .buttons}
