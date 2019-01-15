@@ -83,8 +83,8 @@ In addition, **app and page components** should also define a **html output** (i
 
 Therefore, to recap:
 
-- [interface.html](components/Interface.md) defines the interface for app components, page components and providers
-- [build.html](components/Build-output.Md) defines the output of an app or page component
+- [interface.html](components/Interface) defines the interface for app components, page components and providers
+- [build.html](components/Build-output) defines the output of an app or page component
 
 ### Sample interface.html
 

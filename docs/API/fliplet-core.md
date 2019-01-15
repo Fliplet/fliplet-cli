@@ -33,7 +33,7 @@ The `fliplet-core` package also contains the following methods:
 - [compile](#compile)
 - [guid](#guid)
 
-If you're looking for other namespaces, make sure to check popular ones the [Media](Fliplet-Media-JS-APIs) or [Data Sources](Fliplet-DataSources-JS-APIs) dependencies.
+If you're looking for other namespaces, make sure to check popular ones the [Media](fliplet-media) or [Data Sources](fliplet-datasources) dependencies.
 
 One more thing: `Fliplet` is also a function returning a promise which can be used to ensure your code runs when all plugins and features have loaded on the screen:
 
