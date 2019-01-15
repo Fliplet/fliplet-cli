@@ -17,7 +17,7 @@ The following namespaces are publicly available under this package. Please click
 - [Modal](#modal)
 - [Navigate](#navigate)
 - [Navigator](#navigator)
-- [Notifications](#notitications)
+- [Notifications](#notifications)
 - [Organizations](#organizations)
 - [Pages](#pages)
 - [Profile](#profile)
