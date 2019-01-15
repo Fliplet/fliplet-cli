@@ -174,6 +174,8 @@ Fliplet.Modal.alert({ message: 'Thanks for confirming'}).then(function () {
 
 ### Get the user auth token
 
+Retrive the auth token for the current user.
+
 ```js
 var userAuthToken = Fliplet.User.getAuthToken();
 ```
