@@ -152,6 +152,8 @@ When using Modal windows on widget interfaces, we use [Bootbox](http://bootboxjs
 
 ### Display a confirmation message
 
+Displays a confirmation message in Fliplet Studio from a Fliplet Widget interface.
+
 ```js
 Fliplet.Modal.confirm({ message: 'Are you sure?'}).then(function (result) {
   if (result) {
@@ -161,6 +163,8 @@ Fliplet.Modal.confirm({ message: 'Are you sure?'}).then(function (result) {
 ```
 
 ### Display an alert message
+
+Displays an alert message in Fliplet Studio from a Fliplet Widget interface.
 
 ```js
 Fliplet.Modal.alert({ message: 'Thanks for confirming'}).then(function () {
@@ -955,12 +959,15 @@ Fliplet.Navigate.popup(options);
 
 ### Open a confirm dialog
 
+Displays a native confirmation dialog.
+
 ```js
 var options = {
   title: 'Foo',
   message: 'Bar',
   labels: ['Agree','No'] // Native only (defaults to [OK,Cancel])
 };
+
 Fliplet.Navigate.confirm(options)
   .then(function(result) {
     if (!result) {
