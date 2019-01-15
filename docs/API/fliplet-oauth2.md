@@ -2,7 +2,7 @@
 
 The `fliplet-oauth2` package contains helpers for standardizing requests to OAuth2 web services with a client-side integration.
 
-**Note: The Fliplet OAuth2 library is currently in beta and only works in native apps. We suggest specifying the library version using `fliplet-oauth2:0.1` when including the Fliplet OAuth2 library to avoid the functionality breaking as the feature undergoes further development.**
+**Note: The Fliplet OAuth2 library is currently in beta. We suggest specifying the library version using `fliplet-oauth2:0.1` when including the Fliplet OAuth2 library to avoid the functionality breaking when new versions of the feature are released.**
 
 To configure an OAuth2 service provider, call `Fliplet.OAuth2.configure()` with the service specificaions and use `Fliplet.OAuth2(service)` with the specified service name to access the available methods, e.g. `Fliplet.OAuth2(service).api(path)`.
 
@@ -86,9 +86,10 @@ Fliplet.OAuth2.configure(services)
 * **service** (String) **Required** A service name. The service name is used when making `Fliplet.OAuth2` requests.
 * **configuration** (Object) **Required** A key-value map of options to configure multiple services with. Each object can contain the following details.
   * **authUrl** (String) **Required** Authorization URL as supplied by the OAuth2 service.
-  * **grantType** (String) `token|code` **Required** Implicit (token) or Explicit (code) grant flow to be used when logging in. **Default**: `token`
+  * **grantType** (String) `token|code` **Required** Choose to use *implicit* (token) or *explicit* (code) grant flow to be used when logging in. **Default**: `token`
   * **grantUrl** (String) Grant URL as supplied by the OAuth2 service. Required if an *Explicit Grant* flow is used when calling `.login()`.
   * **baseUrl** (String) Base URL for API requests. API requests made with a full URL will ignore the `baseUrl`. If `baseUrl` is not provided, API requests are expected to be called using a full URL.
+  * **useProxy** (Boolean) Set as `true` to use Fliplet's proxy when granting access token using the *explicit* the grant flow and when making API requests. This may be necessary if the service is not configured to work with cross-domain AJAX requests. See **[AJAX cross domain and cross-origin requests](../AJAX-cross-domain.md)** for more information. **Default**: `false`
   * **clientId** (String) **Required** Client ID as supplied by the OAuth2 service.
   * **clientSecret** (String) **Required** Client Secret as supplied by the OAuth2 service.
   * **redirectUrl** (String) **Required** Full page URL where users will be redirected to after a successful login through the OAuth2 service. It's also called *authorization callback URL* by some OAuth2 services. Fliplet provides `https://api.fliplet.com/v1/auth/sso-success` to show a generic login success message. You may use any custom page as necessary.
