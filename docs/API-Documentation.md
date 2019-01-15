@@ -57,9 +57,11 @@ These JS APIs falls into the most common category and almost all apps, component
 These APIs are currently undocumented and reserved for internal use. They are usually available to components in the system hence don't require the user to access them directly.
 
 - Fliplet App Submissions
+- Fliplet App Logs
 - Fliplet Chat
 - Fliplet Interact
 - Fliplet Menu
 - Fliplet Native
+- Fliplet Pages
 - Fliplet Runtime
 - Fliplet Security
