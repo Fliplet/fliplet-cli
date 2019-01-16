@@ -20,11 +20,12 @@ These JS APIs falls into the most common category and almost all apps, component
 - [Fliplet Database](API/fliplet-database.md) (`fliplet-database`) (Beta)
 - [Fliplet Media](API/fliplet-media.md) (`fliplet-media`)
 - [Fliplet Notifications](API/fliplet-notifications.md) (`fliplet-notifications`)
+- [Fliplet OAuth2](API/fliplet-oauth2.md) (`fliplet-oauth2`) (Beta)
 - [Fliplet Session](API/fliplet-session.md) (`fliplet-session`)
 - [Fliplet Studio UI](UI-guidelines-interface.md) (`fliplet-studio-ui`)
 - [Fliplet Themes](API/fliplet-themes.md) (`fliplet-themes`)
 - [Fliplet UI](API/fliplet-ui.md) (`fliplet-pages`)
-- [Like Buttons](API/like-buttons.md) (`fliplet-like:0.2`)
+- [Like Buttons](API/like-buttons.md) (`fliplet-like:0.2`) (Beta)
 
 ---
 
