@@ -85,15 +85,15 @@ Fliplet.OAuth2.configure(services)
 
 * **service** (String) **Required** A service name. The service name is used when making `Fliplet.OAuth2` requests.
 * **configuration** (Object) **Required** A key-value map of options to configure multiple services with. Each object can contain the following details.
+  * **clientId** (String) **Required** Client ID as supplied by the OAuth2 service.
+  * **clientSecret** (String) **Required** Client Secret as supplied by the OAuth2 service.
+  * **redirectUrl** (String) **Required** Full page URL where users will be redirected to after a successful login through the OAuth2 service. It's also called *authorization callback URL* by some OAuth2 services. Fliplet provides `https://api.fliplet.com/v1/auth/sso-callback` to show a generic login success message. You may use any custom page as necessary.
   * **authUrl** (String) **Required** Authorization URL as supplied by the OAuth2 service.
   * **grantType** (String) `token|code` **Required** Choose to use *implicit* (token) or *explicit* (code) grant flow to be used when logging in. **Default**: `token`
   * **grantUrl** (String) Grant URL as supplied by the OAuth2 service. Required if an *explicit grant* flow is used when calling `.login()`.
   * **grantData** (Object) A mapping object of data to pass to `grantUrl` when requesting an access token via the *explicit grant* flow.
   * **baseUrl** (String) Base URL for API requests. API requests made with a full URL will ignore the `baseUrl`. If `baseUrl` is not provided, API requests are expected to be called using a full URL.
   * **useProxy** (Boolean) Set as `true` to use Fliplet's proxy when granting access token using the *explicit* the grant flow and when making API requests. This may be necessary if the service is not configured to work with cross-domain AJAX requests. See **[AJAX cross domain and cross-origin requests](../AJAX-cross-domain.md)** for more information. **Default**: `false`
-  * **clientId** (String) **Required** Client ID as supplied by the OAuth2 service.
-  * **clientSecret** (String) **Required** Client Secret as supplied by the OAuth2 service.
-  * **redirectUrl** (String) **Required** Full page URL where users will be redirected to after a successful login through the OAuth2 service. It's also called *authorization callback URL* by some OAuth2 services. Fliplet provides `https://api.fliplet.com/v1/auth/sso-callback` to show a generic login success message. You may use any custom page as necessary.
   * **state** (String) `state` is an optional parameter that, if provided, is returned by the OAuth2 service during the redirect step for additional verification during login.
   * **scope** (String) A comma separated string of scopes as provided by the OAuth2 service.
   * **refresh** (Boolean) Indicates that the OAuth2 service supports refreshing access tokens to keep them valid. **Default**: `false`
@@ -121,7 +121,7 @@ Logout and remove session with a specific service.
 Fliplet.OAuth2(service).logout()
 ```
 
-* **service** (String) Service name as configured in `Fliplet.OAuth2.configure()`. The currently active session in the specified service will be removed after the user has successfully logged out.
+* **service** (String) **Required** Service name as configured in `Fliplet.OAuth2.configure()`. The currently active session in the specified service will be removed after the user has successfully logged out.
 
 ### `Fliplet.OAuth2().getAuthResponse()`
 
@@ -133,7 +133,7 @@ Get the current status of sessions with a selected service. This does not valida
 Fliplet.OAuth2(service).getAuthResponse()
 ```
 
-* **service** (String) Service name as configured in `Fliplet.OAuth2.configure()`.
+* **service** (String) **Required** Service name as configured in `Fliplet.OAuth2.configure()`.
 
 ### `Fliplet.OAuth2().api()`
 
@@ -165,6 +165,7 @@ Add event listeners to OAuth2 responses.
 Fliplet.Oauth2(service).on(eventName, fn)
 ```
 
+* **service** (String) **Required** Service name as configured in `Fliplet.OAuth2.configure()`.
 * **eventName** (String) See **Events** below.
 * **fn** (Function) Event handler function to execute when event is fired.
 
