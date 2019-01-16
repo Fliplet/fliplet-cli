@@ -89,7 +89,7 @@ Fliplet.OAuth2.configure(services)
   * **clientSecret** (String) **Required** Client Secret as supplied by the OAuth2 service.
   * **redirectUrl** (String) **Required** Full page URL where users will be redirected to after a successful login through the OAuth2 service. It's also called *authorization callback URL* by some OAuth2 services. Fliplet provides `https://api.fliplet.com/v1/auth/sso-callback` to show a generic login success message. You may use any custom page as necessary.
   * **authUrl** (String) **Required** Authorization URL as supplied by the OAuth2 service.
-  * **grantType** (String) `token|code` **Required** Choose to use *implicit* (token) or *explicit* (code) grant flow to be used when logging in. **Default**: `token`
+  * **grantType** (String) `token|code` **Required** Choose to use *implicit* (`token`) or *explicit* (`code`) grant flow to be used when logging in. **Default**: `token`
   * **grantUrl** (String) Grant URL as supplied by the OAuth2 service. Required if an *explicit grant* flow is used when calling `.login()`.
   * **grantData** (Object) A mapping object of data to pass to `grantUrl` when requesting an access token via the *explicit grant* flow.
   * **baseUrl** (String) Base URL for API requests. API requests made with a full URL will ignore the `baseUrl`. If `baseUrl` is not provided, API requests are expected to be called using a full URL.
