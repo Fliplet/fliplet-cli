@@ -92,7 +92,7 @@ Fliplet.OAuth2.configure(services)
   * **useProxy** (Boolean) Set as `true` to use Fliplet's proxy when granting access token using the *explicit* the grant flow and when making API requests. This may be necessary if the service is not configured to work with cross-domain AJAX requests. See **[AJAX cross domain and cross-origin requests](../AJAX-cross-domain.md)** for more information. **Default**: `false`
   * **clientId** (String) **Required** Client ID as supplied by the OAuth2 service.
   * **clientSecret** (String) **Required** Client Secret as supplied by the OAuth2 service.
-  * **redirectUrl** (String) **Required** Full page URL where users will be redirected to after a successful login through the OAuth2 service. It's also called *authorization callback URL* by some OAuth2 services. Fliplet provides `https://api.fliplet.com/v1/auth/sso-success` to show a generic login success message. You may use any custom page as necessary.
+  * **redirectUrl** (String) **Required** Full page URL where users will be redirected to after a successful login through the OAuth2 service. It's also called *authorization callback URL* by some OAuth2 services. Fliplet provides `https://api.fliplet.com/v1/auth/sso-callback` to show a generic login success message. You may use any custom page as necessary.
   * **state** (String) `state` is an optional parameter that, if provided, is returned by the OAuth2 service during the redirect step for additional verification during login.
   * **scope** (String) A comma separated string of scopes as provided by the OAuth2 service.
   * **refresh** (Boolean) Indicates that the OAuth2 service supports refreshing access tokens to keep them valid. **Default**: `false`
