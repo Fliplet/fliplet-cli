@@ -87,7 +87,8 @@ Fliplet.OAuth2.configure(services)
 * **configuration** (Object) **Required** A key-value map of options to configure multiple services with. Each object can contain the following details.
   * **authUrl** (String) **Required** Authorization URL as supplied by the OAuth2 service.
   * **grantType** (String) `token|code` **Required** Choose to use *implicit* (token) or *explicit* (code) grant flow to be used when logging in. **Default**: `token`
-  * **grantUrl** (String) Grant URL as supplied by the OAuth2 service. Required if an *Explicit Grant* flow is used when calling `.login()`.
+  * **grantUrl** (String) Grant URL as supplied by the OAuth2 service. Required if an *explicit grant* flow is used when calling `.login()`.
+  * **grantData** (Object) A mapping object of data to pass to `grantUrl` when requesting an access token via the *explicit grant* flow.
   * **baseUrl** (String) Base URL for API requests. API requests made with a full URL will ignore the `baseUrl`. If `baseUrl` is not provided, API requests are expected to be called using a full URL.
   * **useProxy** (Boolean) Set as `true` to use Fliplet's proxy when granting access token using the *explicit* the grant flow and when making API requests. This may be necessary if the service is not configured to work with cross-domain AJAX requests. See **[AJAX cross domain and cross-origin requests](../AJAX-cross-domain.md)** for more information. **Default**: `false`
   * **clientId** (String) **Required** Client ID as supplied by the OAuth2 service.
