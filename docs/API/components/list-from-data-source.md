@@ -15,6 +15,8 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function onBeforeGetData(data) {
 
 The  `flListDataBeforeGetData` hook explained above can be useful to overwrite the list data by declaring a function at the `data.config.getData` path returning a promise which resolves with the new data:
 
+**Note: `data.config.getData` must return an array of objects. Each object must contain both `id` and `data` properties. If you are integrating with a third-party API, it may be necessary to map the returned response using `Array.prototype.map()` or `_.map()` from lodash to restructure the response.**
+
 ```js
 Fliplet.Hooks.on('flListDataBeforeGetData', function onBeforeGetData(data) {
   // data is an object with the component configuration and the component container
@@ -23,7 +25,16 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function onBeforeGetData(data) {
 
   // Define the "getData" promise to return the new data
   data.config.getData = function() {
-    return Promise.resolve([{ id: 1, name: 'Nick' }, { id: 2, name: 'Tony' }]);
+    return Promise.resolve([
+      {
+        id: 1,
+        data: { name: 'Nick' }
+      },
+      {
+        id: 2,
+        data: { name: 'Tony' }
+      }
+    ]);
   };
 });
 ```
@@ -38,7 +49,7 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function onBeforeGetData(data) {
   // disable caching the data so it's always retrieved from the server
   data.config.cache = false;
 
-  // Define the "getData" promise to manually fetching data. 
+  // Define the "getData" promise to manually fetching data.
   data.config.getData = function () {
     // In this example we connect to a datasource with ID 123
     // Change the ID to your data source ID
@@ -64,7 +75,7 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function onBeforeGetData(data) {
   // disable caching the data so it's always retrieved from the server
   data.config.cache = false;
 
-  // Define the "getData" promise to manually fetching data. 
+  // Define the "getData" promise to manually fetching data.
   data.config.getData = function () {
     // In this example we connect to a datasource with ID 123
     // Change the ID to your data source ID
@@ -105,17 +116,17 @@ Fliplet.Hooks.on('flListDataBeforeDeleteEntry', function onBeforeDeleteEntry(dat
 ```
 
 ## Persistent Variable Queries
-With the **List (from data source)** you can programatically load a specific list item, apply filters and/or search, and even add a new pre-filter.  
+With the **List (from data source)** you can programatically load a specific list item, apply filters and/or search, and even add a new pre-filter.
 _(pre-filter is a filter applied before the list is rendered - this won't override the filters added in component settings)_
 
-This can be achieved by setting a persistant variable using the `Fliplet.App.Storage`. [Read more here](../../API/fliplet-core.md#app-storage)  
+This can be achieved by setting a persistant variable using the `Fliplet.App.Storage`. [Read more here](../../API/fliplet-core.md#app-storage)
 The persistant variable, by default, will be removed automatically after running.
 ```js
 Fliplet.App.Storage.set('flDynamicListQuery:simple-list', { ... });
 ```
 The persistant variable is namespaced with `flDynamicListQuery:` plus the list layout name. Below are all the layout names you can use.
 ### List layouts
-The key of the persistant variable includes the layout name of the List (from data source).  
+The key of the persistant variable includes the layout name of the List (from data source).
 Here is a list of all the layouts available in the List (from data source) component:
 - `small-card` Small Expandable Cards
 - `news-feed` Cards with Description
@@ -149,7 +160,7 @@ Fliplet.App.Storage.set('flDynamicListQuery:simple-list', options);
   - **previousScreen** (Boolean or Function) If you want to return to the previous screen when closing a list item, set to true or write a function. The function will be executed before the user is returned to the previous screen. We recommend only using this option when you know there will only be one entry as a result. (**Default**: false)
   - **persist** (Boolean) Use this if you want to prevent the persistant variable from being deleted. (**Default**: `false`)
 
-Let's see a few examples on how to use all these options: 
+Let's see a few examples on how to use all these options:
 
 ### Open specific list item
 ```js
