@@ -61,14 +61,14 @@ Please note that these versions have limited support for newer Fliplet features.
 
 ### Version 2.1.0 (Dec 13, 2017)
 
-- Improvements and bugfixes
-- Enhanced logging for debugging
+- **All platforms**: Improvements and bugfixes
+- **All platforms**: Enhanced logging for debugging
 
 ---
 
 ### Version 2.0.1 (Jun 19, 2017)
 
-- Improvements and bugfixes
+- **All platforms**: Improvements and bugfixes
 
 ---
 
