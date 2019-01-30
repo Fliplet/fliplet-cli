@@ -2,20 +2,30 @@
 
 We regularly update our framework to support new features. If you have an older framework version but need to use a newer feature, your app will need to be rebuilt. You can check your apps framework in the 'About this app' section.
 
-## Latest versions (3.x)
+## Latest versions (3.9.x)
 
 ### Version 3.9.2 (January 30, 2018)
 
 - **iOS**: Fixes an issue on iPhone X/XS/XR/XS Max running iOS 12 where the screen content is sometimes shifted after dismissing the keyboard
 - **All platforms**: Fixes an issue where apps don't check for updates until up to 30 seconds after app launch
 
+---
+
 ### Version 3.9.1 (December 10, 2018)
 
 - **All platforms**: Fixed an issue which caused some apps to crash when applying app updates under certain conditions
 
+---
+
 ### Version 3.9.0 (October 3, 2018)
 
 - **All platforms**: Barcode scanner plugin added
+
+---
+
+## Deprecated versions (prior to 3.9)
+
+Please note that these versions have limited support for newer Fliplet features. We encourage you to submit a new native update to your apps via the App Store or Google Play if you have users still running these versions of your app.
 
 ### Version 3.8.5 (August 29, 2018)
 
@@ -34,10 +44,6 @@ We regularly update our framework to support new features. If you have an older 
 - **All platforms**: Local notifications cordova plugin added
 
 ---
-
-## Legacy versions (2.x)
-
-Please note that these versions have limited support for newer Fliplet features. We encourage you to submit a new native update to your apps via the App Store or Google Play if you have users still running these versions of your app.
 
 ### Version 2.1.3 (May 1, 2018)
 
