@@ -6,32 +6,32 @@ We regularly update our framework to support new features. If you have an older 
 
 ### Version 3.9.2 (January 30, 2018)
 
-- Fixes an issue on iPhone X/XS/XR/XS Max running iOS 12 where the screen content is sometimes shifted after dismissing the keyboard
-- Fixes an issue where apps don't check for updates until up to 30 seconds after app launch
+- **iOS**: Fixes an issue on iPhone X/XS/XR/XS Max running iOS 12 where the screen content is sometimes shifted after dismissing the keyboard
+- **All platforms**: Fixes an issue where apps don't check for updates until up to 30 seconds after app launch
 
 ### Version 3.9.1 (December 10, 2018)
 
-- Fixed an issue which caused some apps to crash when applying app updates under certain conditions
+- **All platforms**: Fixed an issue which caused some apps to crash when applying app updates under certain conditions
 
 ### Version 3.9.0 (October 3, 2018)
 
-- Barcode scanner plugin added
+- **All platforms**: Barcode scanner plugin added
 
 ### Version 3.8.5 (August 29, 2018)
 
-- SQLite plugin removed
+- **All platforms**: SQLite plugin removed
 
 ---
 
 ### Version 3.8.4 (May 31, 2018)
 
-- Insomnia cordova plugin added
+- **All platforms**: Insomnia cordova plugin added
 
 ---
 
 ### Version 3.8.3 (May 29, 2018)
 
-- Local notifications cordova plugin added
+- **All platforms**: Local notifications cordova plugin added
 
 ---
 
@@ -41,21 +41,21 @@ Please note that these versions have limited support for newer Fliplet features.
 
 ### Version 2.1.3 (May 1, 2018)
 
-- Social share cordova plugin added
-- Fixes for camera not allowing the user to take pictures and causing the device to crash on certain devices
+- **All platforms**: Social share cordova plugin added
+- **Android**: Fixes for camera not allowing the user to take pictures and causing the device to crash on certain devices
 
 ---
 
 ### Version 2.1.2 (Feb 19, 2018)
 
-- Bugfixes
+- **All platforms**: Bugfixes
 
 ---
 
 ### Version 2.1.1 (Feb 14, 2018)
 
-- Various updates to Cordova plugins
-- Audio plugin added
+- **All platforms**: Various updates to Cordova plugins
+- **All platforms**: Audio plugin added
 
 ---
 
