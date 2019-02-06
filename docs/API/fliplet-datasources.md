@@ -200,6 +200,17 @@ connection.import(FormData).then(function onSuccess() {});
 connection.removeById(1).then(function onRemove() {});
 ```
 
+## Configurable operations
+
+### Automatically generate a unique ID for your entries
+
+You can instruct the system to automatically generate a [GUID](https://en.wikipedia.org/wiki/Universally_unique_identifier) (also known as UUID) to all entries you insert by simply defining the `guid` key for a data source definition in Fliplet Studio (under the "App Data" section) and specifying the target column:
+
+```json
+{ "guid": "myPrimaryGuidColumn" }
+```
+When this is set, all entries will automatically get a random 36-characters GUID once they get saved in the data source.
+
 ---
 
 [Back to API documentation](../API-Documentation.md)
