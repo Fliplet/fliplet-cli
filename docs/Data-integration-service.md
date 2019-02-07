@@ -53,7 +53,9 @@ auth_token: eu--123456789
 
 # Define the ID of the target Fliplet Data Source where data will be pushed to.
 # This ID can be retrieved from the "Manage app data" section of Fliplet Studio
-# under the settings tab
+# under the settings tab. Don't forget to give access to this data source to your token.
+# More documentation is available at:
+# https://developers.fliplet.com/REST-API/fliplet-datasources.html#access-roles
 datasource_id: 123
 
 # Database connection settings below
@@ -114,7 +116,8 @@ timestamp_column: updatedAt
 # Define which (optional) column should be used to compare whether
 # the record has been flagged as deleted on your database and should
 # be removed from the Fliplet Data Source when the column value is not null.
-delete_column: deletedAt
+# Uncomment the following line to enable the feature.
+# delete_column: deletedAt
 ```
 
 Once you have a configuration file like the one above saved on disk, starting the agent is as simple as running the `start` command from your shell. While you are setting up the configuration we also suggest using the `--test` option to perform a dry run and test out the integration without actually sending data to Fliplet servers:
