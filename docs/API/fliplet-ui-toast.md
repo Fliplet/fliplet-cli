@@ -70,7 +70,7 @@ The toast instance returned in the promise resolving function will contain the f
 Dismisses the Toast notification. The promise is fulfilled when the Toast notification is removed from the page.
 
 ```js
-Flipet.UI.Toast.dismiss()
+Fliplet.UI.Toast.dismiss()
 ```
 
 ### `Fliplet.UI.Toast.open()`
@@ -80,19 +80,19 @@ Flipet.UI.Toast.dismiss()
 Runs an action associated with the active Toast notification. The promise is fulfilled when the Toast notification is removed from the page or when the action is is executed. The promise is rejected if there is no active Toast notification.
 
 ```js
-Flipet.UI.Toast.open(index)
+Fliplet.UI.Toast.open(index)
 ```
 
 * **index** (Number) A 0-based index referencing the call-to-action to execute. If an `index` is not provided or is invalid, no actions will be executed.
 
-### `Flipet.UI.Toast.setProgress()`
+### `Fliplet.UI.Toast.setProgress()`
 
 (Returns **Promise**)
 
 If a progress bar is present, sets the progress bar to the given progress for the active Toast notification. The promise is fulfilled when the progress bar has stopped transitioning to the new progress point. The promise is rejected if there is no active Toast notification.
 
 ```js
-Flipet.UI.Toast.setProgress(percent)
+Fliplet.UI.Toast.setProgress(percent)
 ```
 
 * **percent** (Number) A number between 0 and 1 that is used to set the progress bar, where 1 implies a 100% progress.
