@@ -61,7 +61,45 @@ The toast instance returned as the first parameter in the promise resolving. The
 
 ## Methods
 
-The toast instance returned as the first parameter in the promise resolving. The instance object contains the following methods.
+`Fliplet.UI.Toast` contains the following methods:
+
+### `Fliplet.UI.Toast.dismiss()`
+
+(Returns **Promise**)
+
+Dismisses the Toast notification. The promise is fulfilled when the Toast notification is removed from the page.
+
+```js
+Fliplet.UI.Toast.dismiss()
+```
+
+### `Fliplet.UI.Toast.open()`
+
+(Returns **Promise**)
+
+Runs an action associated with the active Toast notification. The promise is fulfilled when the Toast notification is removed from the page or when the action is is executed. The promise is rejected if there is no active Toast notification.
+
+```js
+Fliplet.UI.Toast.open(index)
+```
+
+* **index** (Number) A 0-based index referencing the call-to-action to execute. If an `index` is not provided or is invalid, no actions will be executed.
+
+### `Fliplet.UI.Toast.setProgress()`
+
+(Returns **Promise**)
+
+If a progress bar is present, sets the progress bar to the given progress for the active Toast notification. The promise is fulfilled when the progress bar has stopped transitioning to the new progress point. The promise is rejected if there is no active Toast notification.
+
+```js
+Fliplet.UI.Toast.setProgress(percent)
+```
+
+* **percent** (Number) A number between 0 and 1 that is used to set the progress bar, where 1 implies a 100% progress.
+
+---
+
+The toast instance is returned as the first parameter in the promise resolving. The instance object contains the following methods.
 
 ### `.dismiss()`
 
@@ -77,7 +115,7 @@ Dismisses the Toast notification. The promise is fulfilled when the Toast notifi
 
 (Returns **Promise**)
 
-Opens the Toast notification by executing one of the call-to-actions. The promise is fulfilled when the Toast notification is removed from the page.
+Opens the Toast notification by executing one of the call-to-actions. The promise is fulfilled when the Toast notification is removed from the page or when the action is executed.
 
 ```js
 .open(index)
