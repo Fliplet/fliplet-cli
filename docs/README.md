@@ -50,10 +50,18 @@ To get a brief introduction to the technologies we use and the stack of the plat
   - [Using providers](components/Using-Providers.md)
   - [Dependencies and assets when building themes and components](Dependencies-and-assets.md)
   - [Sending events between components](Event-emitter.md)
+  - [Context targeting](Context-targeting.md)
   - [Best practises and advices](Best-practises.md)
   - [Using the JS APIs externally](Fliplet-SDK.md)
+  - [Reduce your app's bundle size](Reduce-app-bundle-size.md)
+  - [Securing your apps](App-security.md)
+  - [Using async/await for more readable promises](Async-await.md)
+  - [Custom HTML template for components](Custom-template-for-components.md)
+  - [Making AJAX across different domains](AJAX-cross-domain.md)
 11. Platform-specific advanced functionalities
+  - [iOS](Platform-iOS.md)
   - [Android](Platform-Android.md)
   - [Framework Changelog](Native-framework-changelog.md)
 12. Integrations
+  - [Fliplet Agent (Data Integration Service)](Data-integration-service.md)
   - [Single Sign-on with SAML2](API/integrations/sso-saml2.md)

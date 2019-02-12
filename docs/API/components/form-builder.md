@@ -48,8 +48,36 @@ You can also return a `Promise` if you're loading the data asynchronously. In th
 ```js
 Fliplet.FormBuilder.get().then(function (form) {
   form.load(function () {
-    return Fliplet.DataSources.connect(133).then(function (connection) {
+    return Fliplet.DataSources.connect(123).then(function (connection) {
       return connection.findById(456);
+    });
+  });
+});
+```
+
+For more details, check the JS API documentation on the `Fliplet.DataSources` namespace.
+
+<strong>Retrieve information of signed in user:</strong>
+
+`form.load` can also be used in conjunction with `Fliplet.Session` to populate a form with the logged user's data:
+
+
+```js
+Fliplet.FormBuilder.get().then(function (form) {
+  form.load(function () {
+    return Fliplet.Session.passport().data().then(function (response) {
+      // response.user.id
+      // response.user.email
+      // response.user.firstName
+      // response.user.lastName
+
+      // Simply return the user when your fields have the same name as the user's columns
+      return response.user;
+
+      // Otherwise, you can do some basic mapping:
+      return {
+        'Email address': response.user.email
+      };
     });
   });
 });
@@ -69,7 +97,7 @@ Fliplet.FormBuilder.get().then(function (form) {
 });
 ```
 
---- 
+---
 
 ### `form.field(String)`
 
@@ -99,7 +127,7 @@ Fliplet.FormBuilder.get()
   });
 ```
 
---- 
+---
 
 ### `form.change(Function)`
 
@@ -115,7 +143,7 @@ Fliplet.FormBuilder.get()
   });
 ```
 
---- 
+---
 
 ### `form.toggle(Boolean)`
 
@@ -177,7 +205,7 @@ Fliplet.Hooks.on('beforeFormSubmit', function(data) {
 });
 ```
 
---- 
+---
 
 ### afterFormSubmit
 
@@ -189,7 +217,7 @@ Fliplet.Hooks.on('afterFormSubmit', function() {
 });
 ```
 
---- 
+---
 
 ### onFormSubmitError
 
@@ -202,6 +230,43 @@ Fliplet.Hooks.on('onFormSubmitError', function(error) {
 ```
 
 ---
+
+## Events
+
+### Reset (clear button pressed)
+
+This event is fired when the clear button is pressed or the form is cleared programmatically.
+
+```js
+Fliplet.FormBuilder.on('reset', function () {
+
+});
+```
+
+---
+
+## Examples
+
+### Updating data source entries
+
+```js
+var dataSourceId = 123;
+var entryId = 456;
+
+Fliplet.DataSources.connect(dataSourceId).then(function (connection) {
+  // 1. Load the form in edit mode from a dataSource
+  Fliplet.FormBuilder.get().then(function (form) {
+    form.load(function () {
+      return connection.findById(entryId);
+    });
+  });
+
+  // 2. Bind a hook to update the data once the form is submitted:
+  Fliplet.Hooks.on('beforeFormSubmit', function(data) {
+    return connection.update(entryId, data);
+  });
+});
+```
 
 [Back to API documentation](../../API-Documentation.md)
 {: .buttons}

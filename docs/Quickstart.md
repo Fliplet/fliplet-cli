@@ -1,5 +1,11 @@
 # Quickstart
 
+Our primary development tool is called [Fliplet CLI](https://github.com/Fliplet/fliplet-cli) (Command Line Interface), it's written in [Node.js](https://nodejs.org) and is available through [Npm](https://www.npmjs.com/package/fliplet-cli).
+
+This means in order to start the development you will need to install [Node.js](https://nodejs.org) on your machine.
+
+The **Fliplet CLI** will enable you to develop and test components and themes on your machine, without having to rely on our APIs or even be connected to the internet while coding.
+
 ## 1. Install Node.js
 
 Our development tools rely on [Node.js](https://nodejs.org) and [Npm](https://www.npmjs.com). Please install Node.js on your machine before running the next steps.
@@ -23,16 +29,21 @@ Usage: fliplet [options] [command]
 
 Commands:
 
-  create-widget [name]  Create a new widget.
+  create-widget [name]  Create a new component.
   create-theme [name]   Create a new theme.
-  run                   Run the current widget or theme for development.
-  publish               Publish the current widget or theme on fliplet studio.
+  create-menu [name]    Create a new menu.
+  run                   Run the current component or theme for development.
+  publish               Publish the current component or theme on fliplet studio.
+  test                  Run tests on the current component or theme on fliplet studio.
+  list                  List components you can download for editing.
+  clone [package]       Downloads a component locally, given its ID or package name
   list-assets           Gets the list of the available assets in the system.
   list-organizations    Gets the list of the available organizations in the system.
   organization [id]     Set current working organization. Use without id to reset.
   env [name]            Set the environment: dev, staging or production.
   login                 Log in with your Fliplet Studio account.
   logout                Log out from Fliplet Studio.
+  cleanup               Reset the local state of the CLI.
   help [cmd]            display help for [cmd]
 
 Options:

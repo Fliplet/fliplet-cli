@@ -5,23 +5,82 @@ The `fliplet-communicate` package contains the namespace `Fliplet.Communicate` a
 - [`.sendEmail()`](#send-an-email) - Sends an HTML formatted email
 - [`.sendSMS()`](#send-an-sms) - Sends an SMS message
 - [`.composeEmail()`](#compose-an-email) - Composes an email on the device
-- [`.shareURL()`](#share-a-url) - Share a URL 
+- [`.shareURL()`](#share-a-url) - Share a URL
+- [`.sendPushNotification()`](#send-push-notifications) - Send push notifications
 
 ## Send an email
 
+Available options:
+
+- `to`: array of recipients for "to", "cc" or "bcc"
+- `subject`: subject of the email
+- `from_name`: the sender's name
+- `html`: html string for the email body
+- `headers`: "key:value" object with headers to add to the email
+- `attachments`: array of attachments
+- `images`: array of images
+
 ```js
-const options = {
-  to: [{
-    email: "john@example.org",
-    name: "John",
-    type: "to"
-  }],
+var options = {
+  to: [
+    { email: "john@example.org", name: "John", type: "to" }
+  ],
   html: "<p>Some HTML content</p>",
-  subject: "My subject"
+  subject: "My subject",
+  from_name: "Example Name",
+  headers: {
+    "Reply-To": "message.reply@example.com"
+  },
+  attachments: [
+    {
+      type: "text/plain",
+      name: "myfile.txt",
+      content: "Hello World"
+    }
+  ],
+  images: [
+    {
+      type: "image/png",
+      name: "test.png",
+      content: "insert_base64_content_here"
+    }
+  ]
 };
 
+// Returns a promise
 Fliplet.Communicate.sendEmail(options);
 ```
+
+More options can be found on the official documentation for [Mandrill](https://mandrillapp.com/api/docs/messages.JSON.html), the email provider Fliplet relies on.
+
+
+You can also {% raw %}`{{ variables }}`{% endraw %} expressions in your options if you want the template to be compiled with other data:
+
+{% raw %}
+```js
+var options = {
+  to: [ { email: "{{ emailTo }}", type: "to" } ],
+  html: "<p>Hi {{ userName }}</p>"
+};
+
+// This will compile any string template in your options
+// with the input data passed as second parameter of the function.
+Fliplet.Communicate.sendEmail(options, {
+  emailTo: 'john@example.com',
+  userName: 'John Doe'
+});
+```
+{% endraw %}
+
+Note: input `options` will get their value altered by the function as a result of the compilation process. If you want to preserve the input object original value, please make a copy as follows:
+
+```js
+// Here we're using lodash "extend" method to make a copy of our options
+// before they're sent to the "sendEmail" function.
+Fliplet.Communicate.sendEmail(_.extend({}, options));
+```
+
+---
 
 ## Send an SMS
 
@@ -57,6 +116,8 @@ Fliplet.Communicate.sendSMS(options);
 ```
 
 Let us know if you require to use another SMS provider and we'll check whether we can integrate it on our system.
+
+---
 
 ## Share a URL
 
@@ -96,9 +157,9 @@ Web apps will show users a URL to copy and provide icons to share the URL with p
 
 (Returns **`Promise`**)
 
-Lets users share a URL. The Promise is resolved when the action is completed or dismissed. The share options are passed to the reoslving function, with an additional `completed` property to signify if an action was completed or cancelled.
+`Fliplet.Communicate.shareURL()` lets users share a URL. The Promise is resolved when the action is completed or dismissed. The share options are passed to the resolving function, with an additional `completed` property to signify if an action was completed or cancelled.
 
-```js 
+```js
 // A simple way to share a URL
 Fliplet.Communicate.shareURL('https://maps.google.com/?addr=EC2A+4DN');
 
@@ -111,7 +172,7 @@ Fliplet.Communicate.shareURL({
 
 **Recommendation:** Optionally provide a target to enure the share popover appears in the right place on iPads.
 
-```js 
+```js
 Fliplet.Communicate.shareURL({
   url: 'https://maps.google.com/?addr=EC2A+4DN',
   target: '#target'
@@ -127,7 +188,9 @@ Fliplet.Communicate.shareURL({
 
 Optionally provide an array of services in `shares` to use any of the services supported by jsSocials (see **Example** below).
 
-**Example**
+## Examples
+
+### Share a URL
 
 ```js
 Fliplet.Communicate.shareURL({
@@ -146,6 +209,33 @@ Fliplet.Communicate.shareURL({
 * Viber (`viber`)
 * Facebook Messenger (`messenger`)
 * Telegram (`telegram`)
+
+### Share a page in a Fliplet app
+
+See [documentation for `Fliplet.Content`](fliplet-content.md#share-a-page-with-a-url).
+
+---
+
+## Send push notifications
+
+(Returns **`Promise`**)
+
+Available options:
+
+- `title` (required, the title of the notification)
+- `body` (required, the message of the notification)
+- `sandbox` (optional, when `true`, notifications are only sent to people using Fliplet Viewer. This is useful for testing.)
+- `subscription` (optional, an array of **push subscription IDs** to target specific users. These IDs can be found in the "About this app" section of Fliplet apps, accessible via the top menu)
+- `badge` (optional, sets the badge on iOS to a specific number)
+
+```js
+Fliplet.Communicate.sendPushNotification(appId, {
+  title: 'Lorem ipsum',
+  body: 'Irure sed ad do dolor ad ut ut anim.'
+});
+```
+
+**Note**: only app publishers and editors are allowed to send push notifications.
 
 ---
 

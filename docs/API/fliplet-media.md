@@ -4,6 +4,7 @@ The `fliplet-media` package contains the following namespaces:
 
 - [Folders](#folders)
 - [Files](#files)
+- [Authentication](#authentication)
 
 ---
 
@@ -100,6 +101,40 @@ Fliplet.Media.Files.getCachedImages({
   */
 });
 ```
+
+---
+
+## Authentication
+
+Media files might require an auth token to be accessed if your organization has encryption enabled. We have a little helper available to do the heavy lifting for you, just pass any media file url or even a string with many URLs in it and they'll get patched automatically:
+
+```js
+// Authenticate a URL by passing the mediaFile URL
+var authenticatedUrl = Fliplet.Media.authenticate(mediaFile.url);
+
+// Authenticate all URLs found in a String
+var authenticatedHtml = Fliplet.Media.authenticate('<img src="https://api.fliplet.com/v1/media/files/123/contents/Foo.jpg" />');
+```
+
+Please note that using the above requires the `fliplet-media` dependency on the app's screen to be available.
+
+If you're using Handlebars to print out your URLs, you might want to create your own Handlebars helper in your screen custom code as follows:
+
+```js
+Handlebars.registerHelper('addAuthentication', function(str) {
+  return new Handlebars.SafeString(Fliplet.Media.authenticate(str));
+});
+```
+
+And then use it in your directory templates like:
+
+{% raw %}
+```handlebars
+<img src="{{{addAuthentication someFileUrl}}}" />
+
+<p>{{{addAuthentication someContent}}}</p>
+```
+{% endraw %}
 
 ---
 

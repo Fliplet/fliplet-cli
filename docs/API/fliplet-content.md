@@ -1,9 +1,5 @@
 # `Fliplet.Content()`
 
-## Related
-
-* [`Fliplet.Profile.Content()`](fliplet-profile-content.md)
-
 (Returns **`Promise`**)
 
 The `fliplet-content` package contains helpers to create and manage content using data sources.
@@ -33,6 +29,10 @@ Fliplet.Content(options)
   * **dataSourceId** (Number) The data source ID where the content will be stored.
   * **user** (Object) The user object to be used to identify a specific user. If set, content created will be stored with the provided user object. Query, update and delete actions will only work if the user object matches.
 
+## Related
+
+* [`Fliplet.Profile.Content()`](fliplet-profile-content.md) - Use `Fliplet.Profile,Content()` to create and manage content specific to the user.
+
 ## Examples
 
 ### Share a page with a URL
@@ -50,7 +50,7 @@ Fliplet.Content({dataSourceId: 2}).then(function (content) {
     var url = Fliplet.Env.get('appsUrl') + 'r/' + entry.data.publicSlug;
     // Show UI to share the URL
     Fliplet.Communicate.shareURL(url);
-  });  
+  });
 });
 ```
 

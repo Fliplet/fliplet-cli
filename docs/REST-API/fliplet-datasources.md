@@ -31,6 +31,18 @@ Please head to the [how to authenticate](authenticate.md) page of the documentat
 
 Data sources requires ​roles​ to be accessed to. Roles can have multiple permissions: **create, read, update, delete, query**. We call them ​`crudq​`. Once you create a data source, your user automatically gets all these permissions assigned to it, since you own the data source.
 
+If the app token you're using doesn't have access to one of your organisation data sources, you will need to grant permissions to it via Fliplet Studio:
+
+1. Go to the **App settings**<sup>1</sup> >> **App tokens**<sup>2</sup> section of Fliplet Studio
+2. Copy the **numerical app token ID**<sup>3</sup> for the token you need to add access to
+2. Go to the **App data**<sup>4</sup> section, then click on the data source you want to add the user to
+3. Click the **User permissions**<sup>5</sup> tab
+4. **Add new user**<sup>6</sup> button to grant access to a user to the specific data source and when asked paste the ID you got above, then the list of permissions to add (e.g. `crudq`) as described a few lines above.
+
+![img1](https://cl.ly/9a01714eb200/Image%2525202019-01-14%252520at%2525203.37.14%252520PM.png)
+
+![img2](https://cl.ly/971aaeb5c6de/Image%2525202019-01-14%252520at%2525203.39.58%252520PM.png)
+
 ---
 
 ## Entities
@@ -89,7 +101,9 @@ Response  (Status code: 200 OK):
 
 ### Get a data source by its ID
 
-#### `GET v1/data-sources/:dataSourceId`
+#### `GET v1/data-sources/<dataSourceId>`
+
+e.g. `v1/data-sources/123`
 
 ```json
 {
@@ -157,7 +171,9 @@ Response  (Status code: 201 Created):
 
 ### Update a data source attributes
 
-### `PUT v1/data-sources/:dataSourceId`
+### `PUT v1/data-sources/<dataSourceId>`
+
+e.g. `v1/data-sources/123`
 
 Request body:
 
@@ -192,7 +208,9 @@ Response (Status code: 200 OK):
 
 ### Delete a data source and its entries from the system
 
-#### `DELETE v1/data-sources/:dataSourceId`
+#### `DELETE v1/data-sources/<dataSourceId>`
+
+e.g. `v1/data-sources/123`
 
 Response status code: 200 (no body)
 
@@ -200,7 +218,9 @@ Response status code: 200 (no body)
 
 ### Bulk-import entries for a data source
 
-#### `POST v1/data-sources/:dataSourceId/data`
+#### `POST v1/data-sources/<dataSourceId>/data`
+
+e.g. `v1/data-sources/123/data`
 
 Note: this endpoint will replace all entries in the data source with the given ones, unless the "append=true" GET/POST parameter is given.
 
@@ -222,7 +242,9 @@ Response status code: 200 OK (no body)
 
 ### Run queries on a data source
 
-#### `POST v1/data-sources/:dataSourceId/data/query`
+#### `POST v1/data-sources/<dataSourceId>/data/query`
+
+e.g. `v1/data-sources/123/data/query`
 
 Request body (JSON):
 
@@ -259,7 +281,9 @@ Response (Status code: 200 OK):
 
 ### Get a data source entry by its ID
 
-#### `GET v1/data-sources/:dataSourceId/data/:entryId`
+#### `GET v1/data-sources/<dataSourceId>/data/<entryId>`
+
+e.g. `v1/data-sources/123/data/456`
 
 Response (Status code: 200 OK):
 
@@ -281,9 +305,11 @@ Response (Status code: 200 OK):
 
 ### Insert a new entry to a data source
 
-#### `PUT v1/data-sources/:dataSourceId/data`
+#### `PUT v1/data-sources/<dataSourceId>/data`
 
-Note: when sending files, this endpoint supports a multipart body request. All files sent will be uploaded to the relevant Fliplet bucket and optionally encrypted when enabled from the organisation. The created entry will get its files input field names replaced with the URL where the file has been stored. 
+e.g. `v1/data-sources/123/data`
+
+Note: when sending files, this endpoint supports a multipart body request. All files sent will be uploaded to the relevant Fliplet bucket and optionally encrypted when enabled from the organisation. The created entry will get its files input field names replaced with the URL where the file has been stored.
 
 Request body:
 
@@ -313,7 +339,9 @@ Response  (Status code: 201 Created):
 
 ### Insert a new entry with files into a data source
 
-#### `PUT v1/data-sources/:dataSourceId/data`
+#### `PUT v1/data-sources/<dataSourceId>/data`
+
+e.g. `v1/data-sources/123/data/456`
 
 Request must be made as **multipart**.
 
@@ -325,7 +353,6 @@ curl -X PUT \
   -H 'auth-token: eu--123456789' \
   -H 'cache-control: no-cache' \
   -H 'content-type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW' \
-  -H 'postman-token: 78b97954-a7b2-c4c2-c5da-bdbca513beb1' \
   -F foo=bar \
   -F baz=@/path/to/file.jpg
 ```

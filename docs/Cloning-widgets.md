@@ -39,7 +39,7 @@ To download a widget, type: fliplet clone <packageName>
 
 ---
 
-To publish a component on Fliplet, please refer to the [publishing](../Publishing.md) documentation.
+To publish a component on Fliplet, please refer to the [publishing](Publishing) documentation.
 
 ---
 

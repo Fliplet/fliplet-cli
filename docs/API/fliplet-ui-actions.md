@@ -29,7 +29,9 @@ Fliplet.UI.Actions(options)
   * **title** (String) A title that appears above the options.
   * **labels** (Array) Options to show the user. Each label object contains the following properties:
     * **label** (String) Option label to show the user.
-    * **action** (Object or Function) If an object is provided the object will be passed to `Fliplet.Navigate.to()` and executed accordingly. If a function is provided, the function will be run with the 0-based index of the label as the first parameter.
+    * **action** (Object or Function)
+      * (Object) If the object contains a `type` key with a value of `copyText`, the value for `text` will be copied ot the clipboard. Otherwise, the object will be passed to `Fliplet.Navigate.to()` and executed accordingly.
+      * (Function) If a function is provided, the function will be run with the 0-based index of the label as the first parameter.
   * **cancel** (Boolean or String) Unless this is `false` or an empty string, a cancel button will be added at the bottom with the provided string used as the button label. (**Default**: `Cancel`)
 
 ## Properties
@@ -66,6 +68,25 @@ Fliplet.UI.Actions({
 }).then(function(i){
   // i will be 0 or 1 depending on users's choice
   // ...or undefined if user chooses chooses "Dismiss"
+});
+```
+
+### Copy a Google Maps address
+
+```js
+var mapUrl = 'https://maps.google.com/?addr=N1+9PF';
+Fliplet.UI.Actions({
+  title: 'What do you want with this address?',
+  labels: [
+    {
+      label: 'Copy address',
+      action: {
+        type: 'copyText',
+        text: mapUrl
+      }
+    }
+  ],
+  cancel: 'Dismiss'
 });
 ```
 

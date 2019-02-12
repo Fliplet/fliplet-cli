@@ -35,6 +35,9 @@ Let's have a look at an example and we'll explain how each section works:
     ],
     "assets": [
       "css/build.css"
+    ],
+    "appAssets": [
+      "css/app.css"
     ]
   }
 }
@@ -127,6 +130,8 @@ Declares `dependencies` and local `assets` to be used from the [interface.html](
 ## "build"
 
 Declares `dependencies` and local `assets` to be used from the **build.html** output. Please read our documentation about [dependencies and assets](../Dependencies-and-assets) for more details.
+
+For page components you can also define `appAssets` that needs to be injected to all screens of the app when your component is dropped on any of the screens.
 
 ---
 

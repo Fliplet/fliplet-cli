@@ -22,12 +22,6 @@ jobs:
 
 workflows:
   version: 2
-  build-and-publish:
+  build:
     jobs:
       - build
-      - publish:
-          requires:
-            - build
-          filters:
-            tags:
-              only: /v[0-9]+(\.[0-9]+)*/

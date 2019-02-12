@@ -55,7 +55,7 @@ Fliplet.UI.Toast(options)
 
 ## Properties
 
-The toast instance returned in the promise resolving function will contain the following properties.
+The toast instance returned as the first parameter in the promise resolving. The instance object contains the following properties.
 
 * **data** (Object) A data object containing the configuration fro the Toast notification.
 
@@ -99,7 +99,7 @@ Fliplet.UI.Toast.setProgress(percent)
 
 ---
 
-The toast instance returned in the promise resolving function of the constructor will contain the following methods.
+The toast instance is returned as the first parameter in the promise resolving. The instance object contains the following methods.
 
 ### `.dismiss()`
 
@@ -152,18 +152,20 @@ Fliplet.DataSources.connect(0)
     return connection.find();
   })
   .catch(function (error) {
+    var actions = [];
+    if (error) {
+      actions.push({
+        label: 'Details',
+        action: function () {
+          Fliplet.UI.Toast({
+            message: Fliplet.parseError(error)
+          });
+        }
+      });
+    }
     Fliplet.UI.Toast({
       message: 'Error loading data',
-      actions: [
-        {
-          label: 'Details',
-          action: function () {
-            Fliplet.UI.Toast({
-              html: error.message || error
-            });
-          }
-        }
-      ]
+      actions: actions
     });
   });
 ```

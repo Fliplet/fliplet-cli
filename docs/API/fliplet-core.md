@@ -1,12 +1,13 @@
 # Core JS APIs
 
-"Fliplet Core" is our most important package and it's included on all screens of your apps as long as all widgets that have declared it in their dependencies.
+"Fliplet Core" is our most important package and it's included on all screens of your apps. If you're developing a component, make sure to include `fliplet-core` in your dependencies to make use of these JS APIs.
 
 This package enables you to read and write data in the device storage, navigate to different screens as long as dozens of other different interactions and features.
 
 The following namespaces are publicly available under this package. Please click on any of them to see their documentation and public methods:
 
 - [Analytics](#analytics)
+- [App Analytics](#app-analytics)
 - [API](#api)
 - [App](#app)
 - [Apps](#apps)
@@ -16,6 +17,7 @@ The following namespaces are publicly available under this package. Please click
 - [Modal](#modal)
 - [Navigate](#navigate)
 - [Navigator](#navigator)
+- [Notifications](#notifications)
 - [Organizations](#organizations)
 - [Pages](#pages)
 - [Profile](#profile)
@@ -31,7 +33,7 @@ The `fliplet-core` package also contains the following methods:
 - [compile](#compile)
 - [guid](#guid)
 
-If you're looking for other namespaces, make sure to check popular ones the [Media](Fliplet-Media-JS-APIs) or [Data Sources](Fliplet-DataSources-JS-APIs) dependencies.
+If you're looking for other namespaces, make sure to check popular ones the [Media](fliplet-media) or [Data Sources](fliplet-datasources) dependencies.
 
 One more thing: `Fliplet` is also a function returning a promise which can be used to ensure your code runs when all plugins and features have loaded on the screen:
 
@@ -53,15 +55,30 @@ var appId = Fliplet.Env.get('appId');
 
 These variables are usually available on app screens as long as components and providers:
 
-- `organizationId` - the user's organization id
+- `apiUrl` - the URL of Fliplet APIs (fixed value of https://api.fliplet.com/)
+- `appFonts` - array of fonts uploaded for the current app
+- `appHooks` - array of security hooks that have been set up the current app
 - `appId` - the current app id
-- `user` - the current user
-- `development` - `true / false` if using CLI or not
-- `interact` - `true / false` if you are in edit mode in Studio
-- `preview` - `true / false` if you are in preview mode in Studio
-- `platform` - either `'web'` or `'native'`
+- `appName` - the current app name
+- `appPages` - array of pages for the current app
+- `appSettings` - object with public settings for the current app
+- `appUpdatedAt` - timestamp set to the last time a change has been made via Fliplet Studio to the current app
+- `appVersion` - number pointing to the app's version (when using Fliplet Viewer, its value will be `(DEV)`)
+- `appsUrl` - string with a fixed value for https://apps.fliplet.com/
+- `development` - `true / false` true when if developing via the Fliplet CLI
+- `interact` - `true / false` true when you are in edit mode in Fliplet Studio
+- `masterAppId` - when called from a live app, returns the ID of the master app seen through Fliplet Studio
 - `mode` - `'preview' / 'view' / 'interact'`
-- `provider` - `true / false` whether the context is running in provider mode
+- `organizationName` - the user's organization name
+- `organizationId` - the user's organization id
+- `pageId` - the current page id
+- `pageMasterId` - when called from a live app, returns the ID of the master page seen through Fliplet Studio
+- `pageTitle` - the current page (screen) title
+- `pageSettings` - object with public settings for the current page
+- `platform` - either `'web'` or `'native'`
+- `provider` - `true / false` whether the current component (widget) is running in provider mode
+- `preview` - `true / false` true when you are in edit or preview mode in Fliplet Studio
+- `user` - the current user
 
 ### Set an environment variable
 
@@ -126,9 +143,16 @@ Fliplet.Hooks.run('beforeFormSubmit', data).then(function (results) {
 
 ## Modal
 
-We use [Bootbox](http://bootboxjs.com/) under the hood for Modals, hence check their documentation for the full set of options you can pass.
+**Please note**: this JS API is only available in widget interfaces when developing for Fliplet Studio. If you're looking for adding modals and confirmation windows to your Fliplet Apps, please look for the following JS APIs instead:
+
+- [Fliplet.UI.Actions](https://developers.fliplet.com/API/fliplet-ui-actions.html)
+- [Fliplet.UI.Toast](https://developers.fliplet.com/API/fliplet-ui-toast.html)
+
+When using Modal windows on widget interfaces, we use [Bootbox](http://bootboxjs.com/) under the hood hence make sure to check their documentation for the full set of options you can pass.
 
 ### Display a confirmation message
+
+Displays a confirmation message in Fliplet Studio from a Fliplet Widget interface.
 
 ```js
 Fliplet.Modal.confirm({ message: 'Are you sure?'}).then(function (result) {
@@ -139,6 +163,8 @@ Fliplet.Modal.confirm({ message: 'Are you sure?'}).then(function (result) {
 ```
 
 ### Display an alert message
+
+Displays an alert message in Fliplet Studio from a Fliplet Widget interface.
 
 ```js
 Fliplet.Modal.alert({ message: 'Thanks for confirming'}).then(function () {
@@ -151,6 +177,8 @@ Fliplet.Modal.alert({ message: 'Thanks for confirming'}).then(function () {
 ## User
 
 ### Get the user auth token
+
+Retrive the auth token for the current user.
 
 ```js
 var userAuthToken = Fliplet.User.getAuthToken();
@@ -614,6 +642,12 @@ Fliplet.Pages.get().then(function (appPages) {
 
 ```js
 var isOnline = Fliplet.Navigator.isOnline();
+
+if (isOnline) {
+  // device is online
+} else {
+  // device is offline
+}
 ```
 
 ### Add event listeners to when the device goes online/offline
@@ -631,13 +665,8 @@ Fliplet.Navigator.onOffline(function(){
 ### Wait for the device to be ready before running some code
 
 ```js
-Fliplet.Navigator.onReady().then(function () {
-  // your code
-});
-
-// you can also use this shorthand
 Fliplet().then(function () {
-  // your code
+  // put your code here to ensure all scripts and plugins have been loaded
 });
 ```
 
@@ -676,6 +705,10 @@ Fliplet.Navigator.location().then(function (position) {
 });
 ```
 
+---
+
+## Notifications
+
 ### Show a local notification to the user
 
 ```js
@@ -694,18 +727,36 @@ Note: compared to native devices, web support for local notifications is limited
 
 ## Storage
 
+The `Storage` JS APIs allow you to save and read data to and from the device or browser. You can save values such as **numbers**, **booleans**, **strings** and also **objects** (as long as they can be serialized via **JSON**).
+
+Please note that all these methods (`set`, `get` and `remove`) are asynchronous and the result is returned via promises. You don't need to wait for the promise when you use `set` and `remove` but you surely will need it when you use the `get` method to read a variable.
+
 ### Store data
 
 ```js
-Fliplet.Storage.set('key', value).then(function () {});
+Fliplet.Storage.set('key', value);
+
+// You can also wait for this to be saved on disk with a promise, if necessary
+Fliplet.Storage.set('key', value).then(function () {
+  // this runs when the variable has been saved to disk
+}).catch(function (error) {
+  // this runs when an error was triggered and the data could not be saved
+});
 ```
 
 ### Read data
 
 ```js
-Fliplet.Storage.get('key').then(function (value) {});
-Fliplet.Storage.get('key', { defaults: { defaultProperty: 'defaultValue' } }).then(function (value) {});
-Fliplet.Storage.get('key', { defaults: 'defaultValue' }).then(function (value) {});
+Fliplet.Storage.get('key').then(function (value) {
+  // here you can use the "value"
+});
+
+// you can also provide default properties to return when not set
+Fliplet.Storage.get('key', { defaults: { foo: 'bar' } }).then(function (value) {
+  // here you can use the "value"
+}).catch(function (error) {
+  // this runs when an error was triggered and the data could not be read
+});
 ```
 
 You can optionally provide a default value in case the key has not been assigned a value yet.
@@ -713,7 +764,12 @@ You can optionally provide a default value in case the key has not been assigned
 ### Remove data
 
 ```js
-Fliplet.Storage.remove('key').then(function () {});
+Fliplet.Storage.remove('key');
+
+// You can also wait for this to be removed from the disk with a promise, if necessary
+Fliplet.Storage.remove('key').then(function () {
+  // this runs when the variable has been removed from to disk
+});
 ```
 
 ### Namespaced
@@ -737,6 +793,8 @@ myNamespaceStorage.get('bar').then(function(value) {})
 
 #### Get all data
 
+**Note** This is only available for namespaced storage
+
 ```js
 myNamespaceStorage.getAll().then(function(data) {})
 ```
@@ -744,12 +802,25 @@ myNamespaceStorage.getAll().then(function(data) {})
 #### Remove
 
 Remove a key or list of keys from the namespaced storage
+
 ```js
 myNamespaceStorage.remove('bar')
+```
+
+**Note** If you need to remove multiple storage keys at once, you must pass an array of keys
+
+```js
+// Correct
 myNamespaceStorage.remove(['foo', 'bar'])
+
+// Incorrect - This will result in only the last one being removed
+myNamespaceStorage.remove('foo')
+myNamespaceStorage.remove('bar')
 ```
 
 #### Clear
+
+**Note** This is only available for namespaced storage
 
 Clear all namespaced storage
 ```js
@@ -776,6 +847,53 @@ Fliplet.Navigate.back();
 
 ```js
 Fliplet.Navigate.url('http://fliplet.com');
+```
+
+The above will use the in-app browser by default so your users won't leave from the app. If you wish to use the device's system browser, you can pass `inAppBrowser: false` in the configuration as follows:
+
+```js
+Fliplet.Navigate.url({
+  url: 'http://fliplet.com',
+  inAppBrowser: false
+});
+```
+
+The in-app browser contains a **Share** feature that lets your users share the URL through other features on the phone. You can disable this by adding the following line as custom JavaScript code.
+
+```js
+Fliplet.Navigate.defaults.disableShare = true;
+```
+
+### Register a hook to be fired before navigating to a URL
+
+You can register a function to be called whenever your app is about to navigate to a URL. This is useful if you want to make changes to any of the given parameters (prior to the navigation), or you need to run custom code or you simply want to completely stop the URL from opening.
+
+The `data` object shown below will contain the following keys:
+
+- `url` (**String**) The url to be opened
+- `inAppBrowser` (**Boolean**) whether the link should be forced to open (or not) with the in-app internet browser
+
+```js
+Fliplet.Hooks.on('beforeNavigateToURL', function (data) {
+  // You can return a promise if you need async to be carried out
+  // before the InAppBrowser is opened.
+
+  // You can also change any of the input data if you need to
+  data.url = 'http://example.org';
+
+  // If you want to stop execution and don't open the browser, simply return a promise rejection:
+  return Promise.reject('Handled by my hook');
+});
+```
+
+Let's make one further example where we simply force all linkedin.com and twitter.com URLs to open with the system browser (so that the installed app gets opened) instead of the in-app browser:
+
+```js
+Fliplet.Hooks.on('beforeNavigateToURL', function (data) {
+  if (data.url.match(/linkedin\.com|twitter\.com/)) {
+    data.inAppBrowser = false;
+  }
+});
 ```
 
 ### Navigate the app to a specific screen by its ID
@@ -841,12 +959,15 @@ Fliplet.Navigate.popup(options);
 
 ### Open a confirm dialog
 
+Displays a native confirmation dialog.
+
 ```js
 var options = {
   title: 'Foo',
   message: 'Bar',
   labels: ['Agree','No'] // Native only (defaults to [OK,Cancel])
 };
+
 Fliplet.Navigate.confirm(options)
   .then(function(result) {
     if (!result) {
@@ -901,17 +1022,253 @@ Fliplet.Navigate.previewImages(data);
 ## Analytics
 
 ### Enable/disable tracking
-The app might have an analytics widget active, although you can also prompt the user if he accpets tracking.
+The app might have an analytics widget active, although you can also prompt the user if they accept tracking.
 
 ```js
 Fliplet.Analytics.enableTracking()
-Fliplet.Analytics.enableTracking()
+Fliplet.Analytics.disableTracking()
 ```
 
 ### Check tracking status
+
 ```js
 Fliplet.Analytics.isTrackingEnabled()
 ````
+
+---
+
+## App Analytics
+
+### Tracking an event for app analytics
+
+Analytics for apps can be tracked by providing a type (either `event` or `pageView` and a optional JSON `data` object to be stored against the event).
+
+```js
+// Track an event
+Fliplet.App.Analytics.track('event', {
+  label: 'Click on News Item'
+});
+
+// Track a page view
+Fliplet.App.Analytics.track('pageView', {
+  label: 'Page 123',
+  foo: 'bar'
+});
+
+// shorthand for tracking events
+Fliplet.App.Analytics.event({
+  label: 'News Item 123'
+});
+
+// shorthand for tracking pageviews
+Fliplet.App.Analytics.pageView('My sample page');
+```
+
+The system takes care of creating an analytics session for the user and track it and also track when a new session should be created. Furthermore, the following data gets added automatically to each event or pageView you track:
+
+- `_platform` (String, `web` or `native`)
+- `_os` (String, operative system)
+- `_analyticsSessionId` (String, a unique hash for the user session. This changes every 30 minutes for the user.)
+- `_pageId` (Number, the screen ID where the event has been tracked)
+- `_pageTitle` (String, the screen name where the event has been tracked)
+- `_userEmail` (String, the email of the logged user when using a login system like SAML2, Fliplet Data Sources or Fliplet Login)
+
+When tracking events via `Fliplet.App.Analytics.event` you can overwrite these variables by passing a new value:
+
+```js
+Fliplet.App.Analytics.event({
+  _os: 'Ubuntu',
+  _pageTitle: 'My other page'
+});
+```
+
+### Manually resetting the analytics session id
+
+```js
+Fliplet.App.Analytics.Session.reset();
+```
+
+### Fetch aggregated logs
+
+Here's how you can use our powerful JS APIs to do some heavylifting for you and return aggregated logs instead of having to group them manually when displaying charts for app analytics.
+
+**Note**: fetching aggregating logs is available both under the namespace **for the current app** (`Fliplet.App`) and **for all apps** (`Fliplet.Apps`), each have different behaviors and parameter requirements:
+
+```js
+// Fetch analytics for the current app
+Fliplet.App.Analytics.get(query);
+
+// Fetch analytics for a specific app
+Fliplet.Apps.Analytics.get(appId, query);
+```
+
+The `query` parameter is optional; when given, it must be an object with the following (all optional) attributes:
+
+- `aggregate` (object to define post-querying filtering, see below for usage)
+- `attributes` (array of attributes to select)
+- `group` (for grouping data, described below)
+- `limit` (number)
+- `order` (array of arrays, check below for usage)
+- `period` (object to define how chunks of data should be grouped chronologically)
+- `where` (sequelize where condition)
+
+---
+
+#### `attributes`
+
+Use when you only want to select a few attributes or you need to apply a distinct count.
+
+**Selecting attributes:**
+
+```js
+['createdAt', 'data']
+```
+
+**Applying a distinct count:**
+
+```js
+[ { distinctCount: true, col: 'data._analyticsTrackingId', as: 'sessionsCount' } ]
+```
+
+---
+
+#### `where`
+
+Sequelize where condition for the query.
+
+```js
+{
+  data: { foo: 'bar' },
+  type: ['app.analytics.pageView'],
+  createdAt: {
+    $gte: moment().startOf('day').unix()*1000,
+    $lte: moment().endOf('day').unix()*1000
+  }
+}
+```
+
+---
+
+#### `group`
+
+When aggregating data with "group", this parameter must be an array of objects or strings.
+
+- If you pass a string, it must be the database column name in the logs table. Keep in mind that all data stored by JS APIs is saved into "data", so you will be required to use "data.foo" and so on. On the other hand, "createdAt" is a root column of the table.
+- If you pass an object, you can specify the PostgreSQL native function to run (via fn) as well as any parameter (e.g. part), then the target column with col and also an target alias using as (this is optional).
+
+Let's make an example by aggregating data by a `data.label` column and then by hour:
+
+```js
+Fliplet.Apps.Analytics.get(appId, {
+  group: [
+    'data.label',
+    { fn: 'date_trunc', part: 'hour', col: 'createdAt', as: 'hour' }
+  ],
+  where: {
+    data: { foo: 'bar' }
+  },
+  order: [['data.label', 'DESC']],
+  limit: 5
+}).then(function (results) {
+  // console.log(results)
+});
+```
+
+Another example:
+
+```js
+// 1. track a pageview
+Fliplet.App.Analytics.pageView({
+  label: 'News Item 123'
+});
+
+// 2. fetch pageviews by hour
+Fliplet.Apps.Analytics.get(appId, {
+  group: [
+    { fn: 'date_trunc', part: 'hour', col: 'createdAt', as: 'hour' }
+  ]
+}).then(function (results) {
+  // console.log(results)
+});
+```
+
+And one more:
+
+```js
+var startDate = '2018-08-01';
+var endDate = '2018-08-30';
+
+// fetch a list of users with their page views count (ordered by most active to less active user)
+Fliplet.Apps.Analytics.get(appId, {
+  group: [
+    'data._userEmail'
+  ],
+  where: {
+    type: ['app.analytics.pageView'],
+    createdAt: {
+      $gte: moment(startDate, 'YYYY-MM-DD').startOf('day').unix()*1000,
+      $lte: moment(endDate, 'YYYY-MM-DD').endOf('day').unix()*1000
+    }
+  }
+}).then(function (results) {
+  results = _.sortBy(results, 'count').reverse();
+});
+
+// fetch a list of most active users by their number of sessions
+Fliplet.App.Analytics.get({
+  group: ['data._userEmail'],
+  order: [['sessionsCount', 'DESC']],
+  attributes: [ { distinctCount: true, col: 'data._analyticsTrackingId', as: 'sessionsCount' } ],
+  limit: 3
+})
+```
+
+---
+
+#### `limit`
+
+Number of records to return. Defaults to `250`.
+
+
+---
+
+#### `order`
+
+Define the ascending or descending order of returned records, sorting by specific column(s).
+
+```js
+[ ['data.label', 'DESC'], ['sessionsCount', 'ASC'] ]
+```
+
+---
+
+#### `period`
+
+Define how data should be grouped into periods of time.
+
+- `duration`: can be either `week`, `day`, `hour`, `minute` or a specific time in **seconds**
+- `col`: defines the target column to use for the date comparison.
+- `count`: if `true`, only returns a count for the matched records; if `false`, returns a `data` array with a list of matched records
+
+```js
+{
+  duration: 'hour',  // size of the data point
+  col: 'createdAt',  // target column
+  count: true        // return count only
+}
+```
+
+---
+
+### Fetch logs count
+
+`count` works exactly the same as the above `get` method, but returns just a number of results:
+
+```js
+Fliplet.Apps.Analytics.count(appId, { group: [ 'data._userEmail' ] }).then(function (count) {
+  // console.log(count)
+});
+```
 
 ---
 
