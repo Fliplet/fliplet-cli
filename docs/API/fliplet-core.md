@@ -734,7 +734,7 @@ Please note that all these methods (`set`, `get` and `remove`) are asynchronous 
 We currently allow storing settings to the current app but also to apps you have installed in your device (e.g. when running via the App List component or Fliplet Viewer). Please make sure to use the correct storage depending on the case:
 
 - `Fliplet.App.Storage` writes and reads data for the current app; this is most likely what you want to use.
-- `Fliplet.Storage` writes and reads to a global storage which is shared across your apps
+- `Fliplet.Storage` writes and reads to a global storage which is shared across your apps.
 
 Both namespaces have the same methods for reading, setting and removing data as explained in the sections below.
 
