@@ -731,13 +731,20 @@ The `Storage` JS APIs allow you to save and read data to and from the device or 
 
 Please note that all these methods (`set`, `get` and `remove`) are asynchronous and the result is returned via promises. You don't need to wait for the promise when you use `set` and `remove` but you surely will need it when you use the `get` method to read a variable.
 
+We currently allow storing settings to the current app but also to apps you have installed in your device (e.g. when running via the App List component or Fliplet Viewer). Please make use to use the correct storage depending on the case:
+
+- `Fliplet.App.Storage` writes and reads data for the current app; this is most likely what you want to use.
+- `Fliplet.Storage` writes and reads to a global storage which is shared across your apps
+
+Both namespaces have the same methods for reading, setting and removing data as explained in the sections below.
+
 ### Store data
 
 ```js
-Fliplet.Storage.set('key', value);
+Fliplet.App.Storage.set('key', value);
 
 // You can also wait for this to be saved on disk with a promise, if necessary
-Fliplet.Storage.set('key', value).then(function () {
+Fliplet.App.Storage.set('key', value).then(function () {
   // this runs when the variable has been saved to disk
 }).catch(function (error) {
   // this runs when an error was triggered and the data could not be saved
@@ -747,12 +754,12 @@ Fliplet.Storage.set('key', value).then(function () {
 ### Read data
 
 ```js
-Fliplet.Storage.get('key').then(function (value) {
+Fliplet.App.Storage.get('key').then(function (value) {
   // here you can use the "value"
 });
 
 // you can also provide default properties to return when not set
-Fliplet.Storage.get('key', { defaults: { foo: 'bar' } }).then(function (value) {
+Fliplet.App.Storage.get('key', { defaults: { foo: 'bar' } }).then(function (value) {
   // here you can use the "value"
 }).catch(function (error) {
   // this runs when an error was triggered and the data could not be read
@@ -764,31 +771,31 @@ You can optionally provide a default value in case the key has not been assigned
 ### Remove data
 
 ```js
-Fliplet.Storage.remove('key');
+Fliplet.App.Storage.remove('key');
 
 // You can also wait for this to be removed from the disk with a promise, if necessary
-Fliplet.Storage.remove('key').then(function () {
+Fliplet.App.Storage.remove('key').then(function () {
   // this runs when the variable has been removed from to disk
 });
 ```
 
-### Namespaced
+### Namespaced storage
 
-Gives you the ability to namespace your data.
+You can also create a private namespaced storage which is nor shared with the `Fliplet.App.Storage` neither with the global `Fliplet.Storage`:
 
 ```js
-var myNamespaceStorage = Fliplet.Storage.Namespace('foo');
+var myPrivateStorage = Fliplet.Storage.Namespace('foo');
 ```
 
 #### Set data
 ```js
-myNamespaceStorage.set('bar', 'my data')
+myPrivateStorage.set('bar', 'my data')
 ```
 
 #### Get data
 
 ```js
-myNamespaceStorage.get('bar').then(function(value) {})
+myPrivateStorage.get('bar').then(function(value) {})
 ```
 
 #### Get all data
