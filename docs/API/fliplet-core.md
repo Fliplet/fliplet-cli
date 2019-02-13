@@ -731,7 +731,7 @@ The `Storage` JS APIs allow you to save and read data to and from the device or 
 
 Please note that all these methods (`set`, `get` and `remove`) are asynchronous and the result is returned via promises. You don't need to wait for the promise when you use `set` and `remove` but you surely will need it when you use the `get` method to read a variable.
 
-We currently allow storing settings to the current app but also to apps you have installed in your device (e.g. when running via the App List component or Fliplet Viewer). Please make use to use the correct storage depending on the case:
+We currently allow storing settings to the current app but also to apps you have installed in your device (e.g. when running via the App List component or Fliplet Viewer). Please make sure to use the correct storage depending on the case:
 
 - `Fliplet.App.Storage` writes and reads data for the current app; this is most likely what you want to use.
 - `Fliplet.Storage` writes and reads to a global storage which is shared across your apps
