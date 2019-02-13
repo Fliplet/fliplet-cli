@@ -5,7 +5,7 @@ As you might know most of Fliplet JS APIs use **Promises** when the result of su
 Take the following example:
 
 ```js
-Fliplet.Storage.get('foo').then(function (result) {
+Fliplet.App.Storage.get('foo').then(function (result) {
 
 });
 ```
@@ -17,7 +17,7 @@ Fliplet.Storage.get('foo').then(function (result) {
 By prefixing a promise with the `await` keyword, you can wait for the result of such promise before your code continues:
 
 ```js
-var result = await Fliplet.Storage.get('foo');
+var result = await Fliplet.App.Storage.get('foo');
 ```
 
 This means you can use the `result` straight away. Let's take a look at a more complex example:
@@ -37,8 +37,8 @@ When using `await`, errors can be caught in the more traditional **try/catch** w
 
 ```js
 try {
-  var result1 = await Fliplet.Storage.get('foo');
-  var result2 = await Fliplet.Storage.get('bar');
+  var result1 = await Fliplet.App.Storage.get('foo');
+  var result2 = await Fliplet.App.Storage.get('bar');
 } catch (err) {
   // woops! one of the above promises failed
   console.error(err);
