@@ -1,4 +1,4 @@
-# `Fliplet.UI.ErrorToast()`
+# `Fliplet.UI.Toast.error()`
 
 (Returns **`undefined`**)
 
@@ -8,14 +8,14 @@ to view the detailed error message that is typically more technical.
 ## Usage
 
 ```js
-Fliplet.UI.ErrorToast(error, message)
+Fliplet.UI.Toast.error(error, message)
 ```
 
 * **error** (Any) Error object to be parsed
 * **message** (String) An optional initial message to be shown to the user (**Default**: `Unexpected error`)
 
 ```js
-Fliplet.UI.ErrorToast(error, options)
+Fliplet.UI.Toast.error(error, options)
 ```
 
 * **error** (Any) Error object to be parsed
@@ -25,18 +25,20 @@ Fliplet.UI.ErrorToast(error, options)
 
 ## Examples
 
-### Display a Toast notification for an unknown error
+### Use a Toast notification to manage a data source connection error
 
 ```js
-Fliplet.UI.ErrorToast(error);
-```
-
-### Display a Toast notification for an unknown error with a suitable initial message
-
-```js
-Fliplet.UI.ErrorToast(error, {
-  message: 'Error registering user'
-});
+// Data Source 0 is not found, and will trigger an error
+Fliplet.DataSources.connect(0)
+  .then(function (connection) {
+    return connection.find();
+  })
+  .catch(function (error) {
+    Fliplet.UI.Toast.error({
+      message: 'Error loading data',
+      error: error
+    });
+  });
 ```
 
 ---
