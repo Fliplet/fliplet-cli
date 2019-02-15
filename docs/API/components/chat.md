@@ -10,7 +10,7 @@ Fliplet.Hooks.on('beforeChatContactsRendering', function onBeforeChatContactsRen
 });
 ```
 
-### Overwriting data to be rendered
+## Overwriting data to be rendered
 
 The  `beforeChatContactsRendering` hook explained above can be useful to modify the contacts list data. In the example below we will add the url from files in the File Manager, by comparing their name to the name entered in the data source's column called "Image". The code seems complex because we are also taking into consideration that the data source column can contain urls, base64 strings and file ids:
 
@@ -65,6 +65,22 @@ Fliplet.Hooks.on('beforeChatContactsRendering', function onBeforeChatContactsRen
 });
 ```
 
+---
+
+## Create a public chat channel
+
+Channels can be created by simply running this simple snippet via custom code (or by running it in the console). Make sure to change the channel name with the actual words you want to use:
+
+```js
+// Creates a chat public channel
+Fliplet.DataSources.create({
+  appId: Fliplet.Env.get('appId'),
+  type: 'conversation',
+  name: 'My channel name',
+  definition: { participants: [], group: { public: true } },
+  bundle: false
+})
+```
 
 ---
 
