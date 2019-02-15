@@ -1,6 +1,6 @@
 # Chat JS APIs
 
-These public JS APIs will be automatically available in your screens once a **Chat layout** component is used.
+These public JS APIs will be automatically available in your screens once a **Chat layout** component is used. You can also include these by manually adding the `fliplet-chat` dependency to your app.
 
 ## Run a hook before the contacts are rendered
 
@@ -9,6 +9,8 @@ Fliplet.Hooks.on('beforeChatContactsRendering', function onBeforeChatContactsRen
   return data;
 });
 ```
+
+---
 
 ## Overwriting data to be rendered
 
