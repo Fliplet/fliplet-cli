@@ -155,6 +155,12 @@ connection.append([
 });
 ```
 
+Using `connection.append(entriesArray)` also triggers "**insert** "hooks for each created entry. This can be turned off (it defaults to `true` via the options second parameter) as follows:
+
+```js
+connection.append([{ name: 'Nick' }], { runHooks: false })
+```
+
 ### Insert a single record into the data source
 
 ```js
