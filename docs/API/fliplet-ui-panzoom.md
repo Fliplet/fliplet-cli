@@ -150,3 +150,8 @@ The `marker` instance variable above makes available the following instance meth
 - **currentZoom**: (Number) [Required] A number of the current zoom level
 - **baseZoom**: (Number) [Required] A number of the base zoom level
 - **duration**: (Number) [Optional] A number for the animation duration - Set it to `0` if you want no animation
+
+---
+
+[Back to Fliplet.UI](./fliplet-ui.md)
+{: .buttons}
