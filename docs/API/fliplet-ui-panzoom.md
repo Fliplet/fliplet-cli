@@ -6,14 +6,14 @@ You can also add the dependency `fliplet-ui-panzoom` in Developer options -> Res
 ## Create an instance
 `Fliplet.UI.PanZoom.create(selector, options)`
 
-- **selector** (String | HTML DOM | jQuery DOM Object) [Required] Defines which element will have pan/zoom function
+- **selector** (String \| HTML DOM \| jQuery DOM Object) [Required] Defines which element will have pan/zoom function
 - **options** (Object) An object containing the options for the pan/zoom functionality (**Default**: `{}`)
   - **baseZoom** (Number) The amount of zoom applied when initialized (**Default**: `1`)
   - **doubleTapZoom**: (Number) The amount of zoom the element will zoom in, when it is double tapped (**Default**: `2`)
   - **minZoom**: (Number) The minimum zoom value (**Default**: `1`)
   - **maxZoom**: (Number) The maximum zoom value (**Default**: `4`)
   - **animDuration**: (Number) The zoom in and out animation duration in seconds (**Default**: `0.1`)
-  - **force3D**: (Boolean | 'auto') If `true` it will force the content to use 3D acceleration. If value is `'auto'`, it will use 3D acceleration while zooming or panning and resets removes 3D acceleration after zooming or panning is complete. (**Default**: `true`)
+  - **force3D**: (Boolean \| 'auto') If `true` it will force the content to use 3D acceleration. If value is `'auto'`, it will use 3D acceleration while zooming or panning and resets removes 3D acceleration after zooming or panning is complete. (**Default**: `true`)
   - **zoomStep**: (Number) Determines how much scale you want to add or remove in the image when zooming (**Default**: `0.5`)
   - **allowDrag**: (Boolean) If `true`, it allows dragging the content when it is larger than its parent holder. (**Default**: `true`)
   - **allowZoom**: (Boolean) If `true`, it allows content zooming. (**Default**: `true`)
@@ -104,7 +104,7 @@ To see how to create the marker go to [Create a marker](fliplet-ui-panzoom.md#cr
 ### Delete a marker(s)
 `flPanZoom.markers.remove(id, option)`
 
-- **id**: (Number | Object | Array) [Required] If a `Number` it will delete the marker with the same ID. If an `Object` it will check if the object contains the `id` property and delete the marker with the same ID. If an `Array` of `Object` it will iterate through the array of objects and check if each object contains the `id` property and delete the markers with the same ID.
+- **id**: (Number \| Object \| Array) [Required] If a `Number` it will delete the marker with the same ID. If an `Object` it will check if the object contains the `id` property and delete the marker with the same ID. If an `Array` of `Object` it will iterate through the array of objects and check if each object contains the `id` property and delete the markers with the same ID.
 - **option**: (Object) An object containing options for different outcomes when deleting a marker
   - **keepInDom**: (Boolean) If `true` the marker HTML element won't be removed from the DOM (**Default**: `false`)
 
@@ -112,7 +112,7 @@ To see how to create the marker go to [Create a marker](fliplet-ui-panzoom.md#cr
 ### Create a marker
 `Fliplet.UI.PanZoom.Markers.create(selector, options)`
 
-- **selector** (String | HTML DOM | jQuery DOM Object) [Required] Defines which element will have marker functions
+- **selector** (String \| HTML DOM \| jQuery DOM Object) [Required] Defines which element will have marker functions
 - **options** (Object) An object containing the options for the marker functionality (**Default**: `{}`)
   - **x**: (Number) [Required] The X value for the horizontal coordinates of the marker
   - **y**: (Number) [Required] The Y value for the vertical coordinates of the marker
