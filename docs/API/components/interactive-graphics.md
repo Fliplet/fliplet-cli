@@ -94,7 +94,7 @@ Fliplet.Hooks.on('flInteractiveGraphicsLabelClick', fn);
 Using the available hooks, component instance configuration can be used to modify component data and behavior. The available configuration properties are listed below:
 
 - `cache` (Boolean) Set to `false` to always retrieve data from the server. **Default**: `true`.
-- `getData` (Promise) Function used to return an array of entries. Each entry must include the following properties, which the `Fliplet.DataSources` JS API follows:
+- `getData` (Promise) Function used to return an array of entries. Each entry must include the following properties, which the `Fliplet.DataSources` JS API follows. **Note** This function is best set using the `flInteractiveGraphicsBeforeGetData` hook.
   - `id` (Number) Entry ID
   - `data` (Object) Entry data
 
