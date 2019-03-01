@@ -37,6 +37,7 @@ These JS APIs falls into the most common category and almost all apps, component
 - [Fliplet Form Builder](API/components/form-builder.md)
 - [Fliplet Chat](API/components/chat.md)
 - [Fliplet Push Notifications](API/components/push-notifications.md)
+- [Fliplet Interactive Graphics](API/components/interactive-graphics.md)
 
 ---
 
