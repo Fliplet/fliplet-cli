@@ -100,7 +100,7 @@ Using the available hooks, component instance configuration can be used to modif
 
 ## Examples
 
-### Use custom data for the mapping
+### Use custom data for the mapping markers onto the graphics
 
 ```js
 Fliplet.Hooks.on('flInteractiveGraphicsBeforeGetData', function onBeforeGetData(data) {
