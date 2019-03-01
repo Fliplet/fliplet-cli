@@ -328,5 +328,19 @@ If you need to use a loading animation in you component's output here is how you
 
 ---
 
+## Launch a help video
+
+If you have a help video that how to use the component you can launch the video in Fliplet's video tutorials overlay by adding the following:
+
+```js
+$('.help').on('click', function () {
+  Fliplet.Studio.emit('open-help-video', {
+    code: 'm2f2VWGfqSQ' // The code in a video URL after the query '?v=' - https://www.youtube.com/watch?v=m2f2VWGfqSQ
+  });
+});
+```
+
+---
+
 [Back](README.md)
 {: .buttons}
