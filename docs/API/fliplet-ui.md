@@ -5,3 +5,4 @@
 * [Actions](fliplet-ui-actions.md)
 * [Toast](fliplet-ui-toast.md)
    * [Error Toast](fliplet-ui-toast-error.md)
+* [PanZoom](fliplet-ui-panzoom.md)
