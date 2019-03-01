@@ -100,6 +100,63 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function onBeforeGetData(data) {
 });
 ```
 
+## Run a hook to set a function to run before opening a detail view
+```js
+Fliplet.Hooks.on('flListDataBeforeGetData', function onBeforeOpenDetails(data) {
+  // data - (Object) Contains "id", "config", "container"
+  // data.config - (Object) Entire component's configuration object
+  // data.container - (Object) DOM element
+
+  // Define the "beforeOpen" promise
+  data.config.beforeOpen = function () {
+    // Code doesn't expect anything in return
+    // This means developers can do whatever they want
+
+    // If you return 'data' that will become the new data used in the component
+
+    return Promise.resolve();
+  };
+});
+```
+
+## Run a hook to set a function to run before showing the detail view, but after opening
+```js
+Fliplet.Hooks.on('flListDataBeforeGetData', function onBeforeShowDetails(data) {
+  // data - (Object) Contains "data", "src", "config"
+  // data.config - (Object) Entire component's configuration object
+  // data.src - (Object) DOM elements for the detail view
+  // data.data - (Object) Entry data
+
+  // Define the "beforeShowDetails" promise
+  data.config.beforeShowDetails = function () {
+    // Your code here
+
+    // Resolve Promise with the "data"
+    return Promise.resolve(data);
+  };
+});
+```
+
+## Run a hook to set a function to run after showing the detail view
+```js
+Fliplet.Hooks.on('flListDataBeforeGetData', function onAfterShowDetails(data) {
+  // data - (Object) Contains "data", "src", "config"
+  // data.config - (Object) Entire component's configuration object
+  // data.src - (Object) DOM elements for the detail view
+  // data.data - (Object) Entry data
+
+  // Define the "afterShowDetails" promise
+  data.config.afterShowDetails = function () {
+    // Code doesn't expect anything in return
+    // This means developers can do whatever they want
+
+    // If you return 'data' that will become the new data used in the component
+
+    return Promise.resolve();
+  };
+});
+```
+
 ## Run a hook before deleting an entry
 ```js
 Fliplet.Hooks.on('flListDataBeforeDeleteEntry', function onBeforeDeleteEntry(data) {
@@ -112,6 +169,19 @@ Fliplet.Hooks.on('flListDataBeforeDeleteEntry', function onBeforeDeleteEntry(dat
     // Resolve Promise with the entry ID
     return Promise.resolve(id);
   };
+});
+```
+
+## Run a hook before delete confirmation pop up shows
+```js
+Fliplet.Hooks.on('flListDataBeforeDeleteConfirmation', function onBeforeDeleteConfirmation(data) {
+  // data - (Object) Contains "entryId", "config", "container"
+  // data.entryId - (Number) ID of the entry that is going to be deleted
+  // data.config - (Object) Entire component's configuration object
+  // data.container - (Object) DOM element
+
+  // Code doesn't expect anything in return
+  // This means developers can do whatever they want
 });
 ```
 
