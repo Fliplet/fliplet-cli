@@ -1,64 +1,106 @@
 # Interactive Graphics JS APIs
 
-These public JS APIs will be automatically available in your screens once a **Interactive graphics** component is dropped into such screens.
+These public JS APIs are available in screens where an **Interactive Graphics** component is present.
 
 ## Hooks
-The Interactive graphics component exposes a few hooks that you can use to modify the data and behaviour of the component, here are the hooks and their specific life cycle:
 
-**Before getting data source data**  
-`flInteractiveGraphicsBeforeGetData`
+The Interactive Graphics component exposes hooks that you can use to modify the component data and behavior. Here are the hooks and their specific life cycle:
 
-**Before rendering the maps and markers**  
-`flInteractiveGraphicsBeforeRender`
+- `flInteractiveGraphicsBeforeGetData` Fired before getting data source data
+- `flInteractiveGraphicsBeforeRender` Before rendering the maps and markers
+- `flInteractiveGraphicsLabelClick` After everything is rendered and the user clicks on the marker label
 
-**After everything is rendered and the user clicks on the marker label**  
-`flInteractiveGraphicsLabelClick`
+### `flInteractiveGraphicsBeforeGetData`
 
-## Hooks options
-### flInteractiveGraphicsBeforeGetData
-Data available:
+This hook is fired before getting data source data.
 
-- **data** - Object containing properties listed below
-  - **id** - (Number) The component's ID
-  - **uuid** - (String) The component's UUID
-  - **config** - (Object) The component's configuration settings
-  - **container** - (DOM) The component's DOM selector
+```js
+Fliplet.Hooks.on('flInteractiveGraphicsBeforeGetData', fn);
+```
 
-#### Setting new data
-As a developer you can use this hook to get the data manually and modify the data before passing it to the component. You can do that by defining the following.
-- **data.config.getData** - (Promise) Required to return an `Array` on entries
+#### Parameters
 
-### flInteractiveGraphicsBeforeRender
-Data available:
+- **fn** (Function((Object) `data`)) Callback function with an object parameter
+  - **data** (Object) Object containing properties listed below
+    - **id** (Number) Component instance ID. This differs between master and production apps.
+    - **uuid** (String) Component instance UUID. This is consistent between master and production apps.
+    - **config** (Object) Component instance configuration.
+    - **container** (DOM) Component instance container element.
 
-- **data** - Object containing properties listed below
-  - **id** - (Number) The component's ID
-  - **uuid** - (String) The component's UUID
-  - **config** - (Object) The component's configuration settings
-  - **container** - (DOM) The component's DOM selector
-  - **markers** - (Array) The list of markers and their data
+### `flInteractiveGraphicsBeforeRender`
 
-As a developer you can use this hook to load the map with a specific marker selected (this will also automatically select the correct map for the selected marker), or load a specific marker. You can do that by returning the following:
+This hook is fired before rendering the maps and markers. You can use this hook to load the map with a specific marker selected. This will automatically select the correct map for the specified marker.
 
-- `{ markerId: 1234 }` - Select a marker by ID
-- `{ markerId: 1234 }` - Select a marker by Name
-- `{ mapName: 'Map one' }` - Select a map
+```js
+Fliplet.Hooks.on('flInteractiveGraphicsBeforeRender', fn);
+```
 
-### flInteractiveGraphicsLabelClick
-Data available:
+#### Usage
 
-- **data** - Object containing properties listed below
-  - **id** - (Number) The component's ID
-  - **uuid** - (String) The component's UUID
-  - **config** - (Object) The component's configuration settings
-  - **container** - (DOM) The component's DOM selector
-  - **selectedMarker** - (Object) The selected marker data
+**Select a marker by ID**
 
-Nothing is expected to be returned, the developer can write what should happen when the label is clicked
+```js
+Fliplet.Hooks.on('flInteractiveGraphicsBeforeRender', function () {
+  return { markerId: 1234 };
+});
+```
 
-## Usage
+**Select a marker by name**
 
-### Run a hook before getting the markers data
+```js
+Fliplet.Hooks.on('flInteractiveGraphicsBeforeRender', function () {
+  return { markerName: 'Marker name' };
+});
+```
+
+**Select a map by name**
+
+```js
+Fliplet.Hooks.on('flInteractiveGraphicsBeforeRender', function () {
+  return { mapName: 'Map one' };
+});
+```
+
+#### Parameters
+
+- **fn** (Function((Object) `data`)) Callback function with an object parameter
+  - **data** (Object) Object containing properties listed below
+    - **id** (Number) Component instance ID. This differs between master and production apps.
+    - **uuid** (String) Component instance UUID. This is consistent between master and production apps.
+    - **config** (Object) Component instance configuration.
+    - **container** (DOM) Component instance container element.
+    - **markers** (Array) List of markers and associated data.
+
+### `flInteractiveGraphicsLabelClick`
+
+This hook is fired after everything is rendered and the user clicks on the marker label. Nothing is expected to be returned.
+
+```js
+Fliplet.Hooks.on('flInteractiveGraphicsLabelClick', fn);
+```
+
+#### Parameters
+
+- **fn** (Function((Object) `data`)) Callback function with an object parameter
+  - **data** (Object) Object containing properties listed below
+    - **id** (Number) Component instance ID. This differs between master and production apps.
+    - **uuid** (String) Component instance UUID. This is consistent between master and production apps.
+    - **config** (Object) Component instance configuration.
+    - **container** (DOM) Component instance container element.
+    - **selectedMarker** (Object) Selected marker data.
+
+## Configuration
+
+Using the available hooks, component instance configuration can be used to modify component data and behavior. The available configuration properties are listed below:
+
+- `cache` (Boolean) Set to `false` to always retrieve data from the server. **Default**: `true`.
+- `getData` (Promise) Function used to return an array of entries. Each entry must include the following properties, which the `Fliplet.DataSources` JS API follows:
+  - `id` (Number) Entry ID
+  - `data` (Object) Entry data
+
+## Examples
+
+### Use custom data for the mapping
 
 ```js
 Fliplet.Hooks.on('flInteractiveGraphicsBeforeGetData', function onBeforeGetData(data) {
@@ -67,7 +109,7 @@ Fliplet.Hooks.on('flInteractiveGraphicsBeforeGetData', function onBeforeGetData(
 
   // Define the "getData" promise to manually fetching data
   data.config.getData = function () {
-    // In this example we connect to a datasource with ID 123
+    // In this example we connect to a data source with ID 123
     // Change the ID to your data source ID
     return Fliplet.DataSources.connect(123)
       .then(function(connection) {
@@ -80,32 +122,26 @@ Fliplet.Hooks.on('flInteractiveGraphicsBeforeGetData', function onBeforeGetData(
 });
 ```
 
-### Run a hook before rendering the map and markers
-#### Example to initialize on a specific marker by ID
+### Initialize the component with a specific marker or map
 
 ```js
+// Select marker with ID 1234
 Fliplet.Hooks.on('flInteractiveGraphicsBeforeRender', function onBeforeRender(data) {
   return { markerId: 1234 };
 });
-```
 
-#### Example to initialize on a specific marker by Name
-
-```js
+// Select marker with name 'Marker one'
 Fliplet.Hooks.on('flInteractiveGraphicsBeforeRender', function onBeforeRender(data) {
-  return { markerName: 'marker one' };
+  return { markerName: 'Marker one' };
+});
+
+// Select map with name 'Map one'
+Fliplet.Hooks.on('flInteractiveGraphicsBeforeRender', function onBeforeRender(data) {
+  return { mapName: 'Map one' };
 });
 ```
 
-#### Example to initialize on a specific map
-
-```js
-Fliplet.Hooks.on('flInteractiveGraphicsBeforeRender', function onBeforeRender(data) {
-  return { mapName: 'marker one' };
-});
-```
-
-### Run a hook when the marker label is clicked
+### Navigate to a screen when a marker is clicked
 
 ```js
 Fliplet.Hooks.on('flInteractiveGraphicsLabelClick', function onLabelClick(data) {
