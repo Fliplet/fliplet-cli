@@ -163,24 +163,49 @@ connection.append([{ name: 'Nick' }], { runHooks: false })
 
 ### Insert a single record into the data source
 
-To insert a record into a data source, use the `connection.insert` method by passing the data to be inserted as a JSON object.
+To insert a record into a data source, use the `connection.insert` method by passing the data to be inserted as a **JSON** object or a **FormData** object.
 
 ```js
+// Using a JSON object
 connection.insert({
   id: 3,
   name: 'Bill'
 });
+
+// Using a FormData object
+connection.insert(FormData);
 ```
 
 **Note**: the `dataSourceId` and `dataSourceEntryId` are **reserved keys** and should not be used in the input JSON.
 
-You can also pass a `FormData` object to upload files using a multipart request. When uploading files, you can also specify the MediaFolder where files should be stored to:
+The second parameter of the `connection.insert` function accepts various options as described below:
+
+- `folderId` (Number)
+- `ack` (Boolean)
+
+#### Options: folderId
+
+When `FormData` is used as first parameter, your record gets uploaded using a multipart request. If your FormData contains files, you can specify the **MediaFolder** where files should be stored to using the `folderId` parameter:
 
 ```js
 connection.insert(FormData, {
-  mediaFolderId: 123
+  folderId: 123
 });
 ```
+
+#### Options: ack
+
+If you want to make sure the local (offline) database on the device also gets updated as soon as the server receives your record you can use the `ack` (which abbreviates the word **acknowledge**) parameter:
+
+```js
+connection.insert({ foo: 'bar' }, {
+  // this ensure the local database gets updated straight away, without
+  // waiting for silent updates (which can take up to 30 seconds to be received).
+  ack: true
+});
+```
+
+---
 
 ### Update a record
 
