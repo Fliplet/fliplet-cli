@@ -180,8 +180,8 @@ connection.insert(FormData);
 
 The second parameter of the `connection.insert` function accepts various options as described below:
 
-- `folderId` (Number)
-- `ack` (Boolean)
+- [folderId](#options-folderid) (Number)
+- [ack](#options-ack) (Boolean)
 
 #### **Options: folderId**
 
