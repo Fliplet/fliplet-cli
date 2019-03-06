@@ -37,7 +37,7 @@ Fliplet.Content(options)
 
 ### Share a page with a URL
 
-This example uses the [`Fliplet.Communicate.shareURL()`](fliplet-communicate.md#share-a-url) API to share the URL once it's generated.
+This example uses the [`Fliplet.Communicate.shareURL()`](fliplet-communicate.md#share-a-url) API to share the URL once it's generated. This means the `fliplet-communicate` dependency also needs to be added.
 
 ```js
 Fliplet.Content({dataSourceId: 2}).then(function (content) {

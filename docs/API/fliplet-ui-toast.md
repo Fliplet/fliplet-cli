@@ -143,33 +143,6 @@ If a progress bar is present, sets the progress bar to the given progress. The p
 Fliplet.UI.Toast('App updated');
 ```
 
-### Use a Toast notification to show error messages
-
-```js
-// Data Source 0 is not found, and will trigger an error
-Fliplet.DataSources.connect(0)
-  .then(function (connection) {
-    return connection.find();
-  })
-  .catch(function (error) {
-    var actions = [];
-    if (error) {
-      actions.push({
-        label: 'Details',
-        action: function () {
-          Fliplet.UI.Toast({
-            message: Fliplet.parseError(error)
-          });
-        }
-      });
-    }
-    Fliplet.UI.Toast({
-      message: 'Error loading data',
-      actions: actions
-    });
-  });
-```
-
 ### Displays a regular Toast notification, then a minimal Toast notification
 
 ```js
@@ -189,6 +162,10 @@ Fliplet.UI.Toast({
   ]
 })
 ```
+
+## Related
+
+* [Error Toast](fliplet-ui-error-toast.md)
 
 ---
 
