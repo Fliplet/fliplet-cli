@@ -163,12 +163,16 @@ connection.append([{ name: 'Nick' }], { runHooks: false })
 
 ### Insert a single record into the data source
 
+To insert a record into a data source, use the `connection.insert` method by passing the data to be inserted as a JSON object.
+
 ```js
 connection.insert({
   id: 3,
   name: 'Bill'
 });
 ```
+
+**Note**: the `dataSourceId` and `dataSourceEntryId` are **reserved keys** and should not be used in the input JSON.
 
 You can also pass a `FormData` object to upload files using a multipart request. When uploading files, you can also specify the MediaFolder where files should be stored to:
 
