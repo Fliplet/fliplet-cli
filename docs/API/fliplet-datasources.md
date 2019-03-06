@@ -183,7 +183,7 @@ The second parameter of the `connection.insert` function accepts various options
 - `folderId` (Number)
 - `ack` (Boolean)
 
-#### Options: folderId
+#### **Options: folderId**
 
 When `FormData` is used as first parameter, your record gets uploaded using a multipart request. If your FormData contains files, you can specify the **MediaFolder** where files should be stored to using the `folderId` parameter:
 
@@ -193,7 +193,7 @@ connection.insert(FormData, {
 });
 ```
 
-#### Options: ack
+#### **Options: ack**
 
 If you want to make sure the local (offline) database on the device also gets updated as soon as the server receives your record you can use the `ack` (which abbreviates the word **acknowledge**) parameter:
 
