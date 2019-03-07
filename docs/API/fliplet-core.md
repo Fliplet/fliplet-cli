@@ -753,16 +753,37 @@ Fliplet.App.Storage.set('key', value).then(function () {
 
 ### Read data
 
+Use the `Fliplet.App.Storage.get()` method to read one or more values from the device storage for the current app. The input parameter can either be a `String` when looking for a single key or an `Array` when you need to lookup for more than one.
+
 ```js
-Fliplet.App.Storage.get('key').then(function (value) {
+// Read a single key from the app's storage
+Fliplet.App.Storage.get('foo').then(function (value) {
   // here you can use the "value"
 });
 
-// you can also provide default properties to return when not set
-Fliplet.App.Storage.get('key', { defaults: { foo: 'bar' } }).then(function (value) {
-  // here you can use the "value"
+// Read multiple keys from the app's storage
+Fliplet.App.Storage.get(['foo', 'bar']).then(function (values) {
+  // values will be an object containing "foo" and "bar":
+  // - values.foo
+  // - values.bar
 }).catch(function (error) {
-  // this runs when an error was triggered and the data could not be read
+  // this block is optional and it runs when an error was triggered and the data could not be read
+});
+
+// You can also provide default properties to return when the key is not set.
+// This also works when the input key is an array.
+Fliplet.App.Storage.get('key', { defaults: 123 }).then(function (value) {
+  // here you can use the "value"
+});
+
+// Providing default properties also works when the value is an object.
+Fliplet.App.Storage.get('key', { defaults: { hello: 'world' } }).then(function (value) {
+  // here you can use the "value"
+});
+
+// Providing default properties also works when the input key is an array.
+Fliplet.App.Storage.get(['foo', 'bar'], { defaults: { foo: '1', bar: 'baz' } }).then(function (value) {
+  // here you can use the "value"
 });
 ```
 
