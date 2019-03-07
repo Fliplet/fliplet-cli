@@ -767,24 +767,28 @@ Fliplet.App.Storage.get(['foo', 'bar']).then(function (values) {
   // - values.foo
   // - values.bar
 }).catch(function (error) {
-  // this block is optional and it runs when an error was triggered and the data could not be read
+  // this block is optional and it runs when an error was triggered
+  // and the data could not be read
 });
 
 // You can also provide default properties to return when the key is not set.
 // This also works when the input key is an array.
-Fliplet.App.Storage.get('key', { defaults: 123 }).then(function (value) {
-  // here you can use the "value"
-});
+Fliplet.App.Storage.get('key', { defaults: 123 })
+  .then(function (value) {
+    // here you can use the "value"
+  });
 
 // Providing default properties also works when the value is an object.
-Fliplet.App.Storage.get('key', { defaults: { hello: 'world' } }).then(function (value) {
-  // here you can use the "value"
-});
+Fliplet.App.Storage.get('key', { defaults: { hello: 'world' } })
+  .then(function (value) {
+    // here you can use the "value"
+  });
 
 // Providing default properties also works when the input key is an array.
-Fliplet.App.Storage.get(['foo', 'bar'], { defaults: { foo: '1', bar: 'baz' } }).then(function (value) {
-  // here you can use the "value"
-});
+Fliplet.App.Storage.get(['foo', 'bar'], { defaults: { foo: '1', bar: 'baz' } })
+  .then(function (value) {
+    // here you can use the "value"
+  });
 ```
 
 You can optionally provide a default value in case the key has not been assigned a value yet.
