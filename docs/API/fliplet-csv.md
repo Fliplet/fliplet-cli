@@ -93,5 +93,5 @@ Fliplet.CSV.email(data, options);
 
 ---
 
-[Back to Fliplet.UI](./fliplet-ui.md)
+[Back to API documentation](../API-Documentation.md)
 {: .buttons}
