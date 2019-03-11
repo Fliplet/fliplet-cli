@@ -28,6 +28,14 @@ Fliplet.CSV.encode([
   { 'Column 1', 'abc', 'Column 2': 'def' }
 ]);
 
+// Pick specific columns from a collection of entries
+Fliplet.CSV.encode([
+  { 'Column 1', 'foo', 'Column 2': 'bar', 'Column 3': 'baz' },
+  { 'Column 1', 'abc', 'Column 2': 'def', 'Column 3': 'ghi' }
+], {
+  columns: ['Column 3', 'Column 1'] // Show only the specified columns, in given order
+});
+
 // Specifying fields and data explicitly
 Fliplet.CSV.encode({
   fields: ['Column 1', 'Column 2'],
