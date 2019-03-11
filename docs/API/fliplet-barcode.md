@@ -6,7 +6,7 @@ Add the `fliplet-barcode` dependency to your screen or app resources.
 
 ## Fliplet.Barcode.scan()
 
-(Returns **`Promise`**)
+(Returns `Promise`)
 
 Scan a QR code or barcode.
 
