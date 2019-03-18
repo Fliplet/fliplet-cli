@@ -76,7 +76,7 @@ Channels can be created by simply running this simple snippet via custom code (o
 ```js
 // Creates a chat public channel
 Fliplet.DataSources.create({
-  appId: Fliplet.Env.get('appId'),
+  appId: Fliplet.Env.get('masterAppId'),
   type: 'conversation',
   name: 'My channel name',
   definition: { participants: [], group: { public: true } },
