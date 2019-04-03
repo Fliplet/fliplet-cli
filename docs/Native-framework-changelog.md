@@ -4,10 +4,11 @@ We regularly update our framework to support new features. If you have an older 
 
 ## Latest versions (3.9.x)
 
-### Version 3.9.2 (January 30, 2019)
+### Version 3.9.2 (January 25, 2019)
 
-- **iOS**: Fixes an issue on iPhone X/XS/XR/XS Max running iOS 12 where the screen content is sometimes shifted after dismissing the keyboard
+- **All platforms**: Support for push notifications deep linking
 - **All platforms**: Fixes an issue where apps don't check for updates until up to 30 seconds after app launch
+- **iOS**: Fixes an issue on iPhone X/XS/XR/XS Max running iOS 12 where the screen content is sometimes shifted after dismissing the keyboard
 
 ---
 
