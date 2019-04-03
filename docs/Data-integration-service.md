@@ -42,6 +42,26 @@ If you need to update the agent to the latest version available on npm, run the 
 npm update -g
 ```
 
+### Releases changelog
+
+#### 1.3.0 (April 3rd, 2019)
+
+- Support for installing the Agent as a Windows service
+
+#### 1.2.2 (Feb 8th, 2019)
+
+- Fixes when deleting columns with non-numeric primary keys
+
+#### 1.2.1 (Dec 28th, 2018)
+
+- Added User-Agent to all outgoing requests to improve security
+
+#### 1.2.0 (Dec 27th, 2018)
+
+- Support for pulling data via external APIs or from File System
+
+---
+
 ## Get started
 
 Create a simple file with with `.yml` extension (or grab a [sample copy here](https://raw.githubusercontent.com/Fliplet/fliplet-agent/master/sample.yml)) somewhere in your filesystem with the following configuration details and replace with your own settings where appropriate:
