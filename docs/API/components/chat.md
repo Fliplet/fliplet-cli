@@ -80,8 +80,13 @@ Fliplet.DataSources.create({
   type: 'conversation',
   name: 'My channel name',
   definition: { participants: [], group: { public: true } },
-  bundle: false
-})
+  bundle: false,
+  hooks: [{
+    runOn: ['insert'],
+    type: 'push-message',
+    appId: Fliplet.Env.get('appId')
+  }]
+});
 ```
 
 ---
