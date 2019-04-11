@@ -4,6 +4,10 @@ We regularly update our framework to support new features. If you have an older 
 
 ## Latest versions (3.9.x)
 
+### Version 3.9.3 (April 11, 2019)
+
+- **All platforms**: Stability improvements during the download of in-app updates.
+
 ### Version 3.9.2 (January 25, 2019)
 
 - **All platforms**: Support for push notifications deep linking
