@@ -16,21 +16,17 @@ We regularly update our framework to support new features. If you have an older 
 
 ---
 
+## Deprecated versions (apps built before 2019)
+
+Please note that these versions have limited support for newer Fliplet features. We encourage you to submit a new native update to your apps via the App Store or Google Play if you have users still running these versions of your app.
+
 ### Version 3.9.1 (December 10, 2018)
 
 - **All platforms**: Fixed an issue which caused some apps to crash when applying app updates under certain conditions
 
----
-
 ### Version 3.9.0 (October 3, 2018)
 
 - **All platforms**: Barcode scanner plugin added
-
----
-
-## Deprecated versions (prior to 3.9)
-
-Please note that these versions have limited support for newer Fliplet features. We encourage you to submit a new native update to your apps via the App Store or Google Play if you have users still running these versions of your app.
 
 ### Version 3.8.5 (August 29, 2018)
 
