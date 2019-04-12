@@ -44,6 +44,10 @@ npm update -g
 
 ### Releases changelog
 
+#### 1.3.1 (April 12th, 2019)
+
+- Security patch for the following third-party packages: **Sequelize**, **js-yaml**.
+
 #### 1.3.0 (April 3rd, 2019)
 
 - Support for installing the Agent as a Windows service
