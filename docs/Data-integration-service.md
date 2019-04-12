@@ -50,19 +50,19 @@ npm update -g
 
 #### 1.3.0 (April 3rd, 2019)
 
-- Support for installing the Agent as a Windows service
+- Support for installing the Agent as a **Windows service**.
 
 #### 1.2.2 (Feb 8th, 2019)
 
-- Fixes when deleting columns with non-numeric primary keys
+- Fixes when deleting columns with non-numeric primary keys.
 
 #### 1.2.1 (Dec 28th, 2018)
 
-- Added User-Agent to all outgoing requests to improve security
+- Added **User-Agent** to all outgoing requests to improve security.
 
 #### 1.2.0 (Dec 27th, 2018)
 
-- Support for pulling data via external APIs or from File System
+- Support for pulling data via **external APIs** or from **File System**.
 
 ---
 
