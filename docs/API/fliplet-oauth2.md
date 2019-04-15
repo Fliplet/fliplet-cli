@@ -30,7 +30,7 @@ Flipet.OAuth2.configure('github', {
   baseUrl: 'https://api.github.com/', // from OAuth2 service provider
   clientId: 'uztcbv3bwtkxmmej1lxv', // from OAuth2 service provider
   clientSecret: 'jepbrhknlxjxriltyjrtprbevdfclnagn2uc1dsq', // from OAuth2 service provider
-  redirectUrl: 'https://fliplet.com/oauth2-success', // as configured with OAuth2 service provider
+  redirectUrl: 'https://api.fliplet.com/v1/auth/sso-callback', // as configured with OAuth2 service provider
   state: 'cbv3bwhJv6K5l9-1' // optional state parameter during login
 });
 ```
