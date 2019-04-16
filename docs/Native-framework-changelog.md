@@ -4,6 +4,12 @@ We regularly update our framework to support new features. If you have an older 
 
 ## Latest versions (3.9.x)
 
+### Version 3.9.4 (April 16, 2019)
+
+- **Android**: Support for Google Analytics data reporting on all versions of Android.
+
+---
+
 ### Version 3.9.3 (April 11, 2019)
 
 - **All platforms**: Stability improvements during the download of in-app updates.
