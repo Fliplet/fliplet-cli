@@ -4,10 +4,17 @@ We regularly update our framework to support new features. If you have an older 
 
 ## Latest versions (3.9.x)
 
-### Version 3.9.5 (April 25, 2019)
+### Version 3.9.6 (April 30, 2019)
 
 - **iOS**: Improvements when playing audio files
+
+---
+
+### Version 3.9.5 (April 25, 2019)
+
 - **iOS**: Stability improvements during boot time and when performing in-app updates
+
+---
 
 ### Version 3.9.4 (April 16, 2019)
 
