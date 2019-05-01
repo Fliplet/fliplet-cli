@@ -4,7 +4,11 @@ Feeling lost? Head to the [JS APIs](JS-APIs.md) section of the docs to read more
 
 Are you rather looking for our **RESTful APIs** for complex backend integrations? Jump to their [documentation](REST-API-Documentation.md) to read more.
 
----
+- [Public JS APIs](#public-js-apis)
+- [Fliplet Components](#fliplet-components)
+- [Third-party integrations](#third-party-integrations)
+- [Third-party libraries](#third-party-libraries)
+- [Private JS APIs](#private-js-apis)
 
 ## Public JS APIs
 

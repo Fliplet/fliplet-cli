@@ -3,8 +3,8 @@
 The `fliplet-communicate` package contains the namespace `Fliplet.Communicate` and a set of helper methods for sending communications from the app.
 
 - [`.sendEmail()`](#send-an-email) - Sends an HTML formatted email
-- [`.sendSMS()`](#send-an-sms) - Sends an SMS message
 - [`.composeEmail()`](#compose-an-email) - Composes an email on the device
+- [`.sendSMS()`](#send-an-sms) - Sends an SMS message
 - [`.shareURL()`](#share-a-url) - Share a URL
 - [`.sendPushNotification()`](#send-push-notifications) - Send push notifications
 
@@ -15,7 +15,7 @@ Available options:
 - `to`: array of recipients for "to", "cc" or "bcc"
 - `subject`: subject of the email
 - `from_name`: the sender's name
-- `html`: html string for the email body
+- `html`: HTML string for the email body
 - `headers`: "key:value" object with headers to add to the email
 - `attachments`: array of attachments
 - `images`: array of images
@@ -23,7 +23,8 @@ Available options:
 ```js
 var options = {
   to: [
-    { email: "john@example.org", name: "John", type: "to" }
+    { email: "john@example.org", name: "John", type: "to" },
+    { email: "jane@example.org", name: "Jane", type: "cc" }
   ],
   html: "<p>Some HTML content</p>",
   subject: "My subject",
@@ -51,7 +52,7 @@ var options = {
 Fliplet.Communicate.sendEmail(options);
 ```
 
-More options can be found on the official documentation for [Mandrill](https://mandrillapp.com/api/docs/messages.JSON.html), the email provider Fliplet relies on.
+More options can be found on the [official Mandrill documentation](https://mandrillapp.com/api/docs/messages.JSON.html), the email provider Fliplet relies on.
 
 
 You can also {% raw %}`{{ variables }}`{% endraw %} expressions in your options if you want the template to be compiled with other data:
@@ -78,6 +79,37 @@ Note: input `options` will get their value altered by the function as a result o
 // Here we're using lodash "extend" method to make a copy of our options
 // before they're sent to the "sendEmail" function.
 Fliplet.Communicate.sendEmail(_.extend({}, options));
+```
+
+---
+
+## Compose an email
+
+Compose an email on the device.
+
+```js
+Fliplet.Communicate.composeEmail(options, data);
+```
+
+* **options** (Object) A map of options to pass to the function. The following properties found on the [official Mandrill documentation](https://mandrillapp.com/api/docs/messages.JSON.html) are supported:
+  * **to** (Array) array of recipients for "to", "cc" or "bcc"
+  * **subject** (String) subject of the email
+  * **html** (String) HTML email body
+  * **body** (String) Plaintext email body. Note: If **html** and **body** are both set, **html** will be used.
+* **data** (Array) An optional array of Base64 strings for the files to be attached. This only works on native devices. Each Base64 string should start with the format `data:%mimeType%;base64,`, e.g. `data:text/csv;base64,`, `data:image/png;base64,` etc.
+
+```js
+var options = {
+  to: [
+    { email: "john@example.org", name: "John", type: "to" },
+    { email: "jane@example.org", name: "Jane", type: "cc" }
+  ],
+  html: "<p>Some HTML content</p>",
+  subject: "My subject"
+};
+
+// Returns a promise
+Fliplet.Communicate.composeEmail(options);
 ```
 
 ---
