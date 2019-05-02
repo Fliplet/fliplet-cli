@@ -1,29 +1,42 @@
-# List (from data source) JS APIs
+# List (from data source)
 
-These public JS APIs will be automatically available in your screens once a **List (from data source)** component is dropped into such screens.
+- [Hooks](#hooks)
+- [Configurations](#configurations)
+- [Query parameters](#query-parameters)
 
-## Run a hook before the list is rendered
+## Hooks
+
+The **List (from data source)** component exposes hooks that you can use to modify the component data and behavior. Here are the hooks and their specific life cycle:
+
+- [`flListDataBeforeGetData`](#fllistdatabeforegetdata)
+- [`flListDataAfterGetData`](#fllistdataaftergetdata)
+- [`flListDataBeforeDeleteConfirmation`](#fllistdatabeforedeleteconfirmation)
+- [`flListDataBeforeDeleteEntry`](#fllistdatabeforedeleteentry)
+
+### `flListDataBeforeGetData`
+
+The hook is run before data is retrieved for rendering.
 
 ```js
-Fliplet.Hooks.on('flListDataBeforeGetData', function onBeforeGetData(data) {
-  // insert your code here
-  // return a promise if this hook should be async
-});
+Fliplet.Hooks.on('flListDataBeforeGetData', fn);
 ```
 
-### Overwriting data to be rendered
+#### Parameters
 
-The  `flListDataBeforeGetData` hook explained above can be useful to overwrite the list data by declaring a function at the `data.config.getData` path returning a promise which resolves with the new data:
+- **fn** (Function(`data`) Callback function with an object parameter.
+  - **data** (Object) A map of data containing the following.
+    - **config** (Object) Configuration used to initialize the component.
+    - **id** (Number) Component instance ID.
+    - **uuid** (String) Component instance UUID.
+    - **container** (jQuery object) jQuery object for the component container element.
 
-**Note: `data.config.getData` must return an array of objects. Each object must contain both `id` and `data` properties. If you are integrating with a third-party API, it may be necessary to map the returned response using `Array.prototype.map()` or `_.map()` from lodash to restructure the response.**
+#### Usage
+
+**Overwriting data to be rendered**
 
 ```js
-Fliplet.Hooks.on('flListDataBeforeGetData', function onBeforeGetData(data) {
-  // data is an object with the component configuration and the component container
-  // data.config
-  // data.container
 
-  // Define the "getData" promise to return the new data
+Fliplet.Hooks.on('flListDataBeforeGetData', function (data) {
   data.config.getData = function() {
     return Promise.resolve([
       {
@@ -39,155 +52,166 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function onBeforeGetData(data) {
 });
 ```
 
-Let's take a look at a complete example injecting data from a data source to the list component with custom filter and without data transformations:
-```js
-Fliplet.Hooks.on('flListDataBeforeGetData', function onBeforeGetData(data) {
-  // data is an object with the component configuration and the component container
-  // data.config
-  // data.container
+*Note: `data.config.getData` must return an array of objects. Each object must contain both `id` and `data` properties.*
 
-  // disable caching the data so it's always retrieved from the server
-  data.config.cache = false;
 
-  // Define the "getData" promise to manually fetching data.
-  data.config.getData = function () {
-    // In this example we connect to a datasource with ID 123
-    // Change the ID to your data source ID
-    return Fliplet.DataSources.connect(123)
-      .then(function(connection) {
-      // Get all entries in the data source matching a specific condition
-      return connection.find({
-        where: { column: 'value' }
-      });
-    });
-  };
-});
-```
+### `flListDataAfterGetData`
 
-Now, let's have a look at another complete example injecting data from a data source to the list component with a custom filter and with data transformations:
+The hook is run after data is retrieved for rendering.
 
 ```js
-Fliplet.Hooks.on('flListDataBeforeGetData', function onBeforeGetData(data) {
-  // data is an object with the component configuration and the component container
-  // data.config
-  // data.container
-
-  // disable caching the data so it's always retrieved from the server
-  data.config.cache = false;
-
-  // Define the "getData" promise to manually fetching data.
-  data.config.getData = function () {
-    // In this example we connect to a datasource with ID 123
-    // Change the ID to your data source ID
-    return Fliplet.DataSources.connect(123).then(function(connection) {
-      // Get all entries in the data source matching a specific condition
-      return connection.find({
-        where: {
-          column: 'value'
-        }
-      })
-    }).then(function (entries) {
-      // Apply some transformations to the data before sending it back to the list component
-      var entries = result.map(function(entry) {
-        entry.data.dataSourceEntryId = entry.id;
-        return entry.data;
-      });
-
-      // Return the data to be rendered on the list component
-      return entries;
-    });
-  };
-});
+Fliplet.Hooks.on('flListDataAfterGetData', fn);
 ```
 
-## Run a hook to set a function to run before opening a detail view
+#### Parameters
+
+- **fn** (Function(`data`) Callback function with an object parameter.
+  - **data** (Object) A map of data containing the following.
+    - **config** (Object) Configuration used to initialize the component.
+    - **id** (Number) Component instance ID.
+    - **uuid** (String) Component instance UUID.
+    - **container** (jQuery object) jQuery object for the component container element.
+    - **entryId** (Number) Data source entry ID of the record to be deleted.
+
+### `flListDataBeforeDeleteConfirmation`
+
+The hook is run before delete confirmation pop up shows.
+
 ```js
-Fliplet.Hooks.on('flListDataBeforeGetData', function onBeforeOpenDetails(data) {
-  // data - (Object) Contains "id", "config", "container"
-  // data.config - (Object) Entire component's configuration object
-  // data.container - (Object) DOM element
-
-  // Define the "beforeOpen" promise
-  data.config.beforeOpen = function () {
-    // Code doesn't expect anything in return
-    // This means developers can do whatever they want
-
-    // If you return 'data' that will become the new data used in the component
-
-    return Promise.resolve();
-  };
-});
+Fliplet.Hooks.on('flListDataBeforeDeleteConfirmation', fn);
 ```
 
-## Run a hook to set a function to run before showing the detail view, but after opening
+#### Parameters
+
+- **fn** (Function(`data`) Callback function with an object parameter.
+  - **data** (Object) A map of data containing the following.
+    - **config** (Object) Configuration used to initialize the component.
+    - **id** (Number) Component instance ID.
+    - **uuid** (String) Component instance UUID.
+    - **container** (jQuery object) jQuery object for the component container element.
+    - **entryId** (Number) Data source entry ID of the record to be deleted.
+
+### `flListDataBeforeDeleteEntry`
+
+The hook is run before deleting an entry.
+
 ```js
-Fliplet.Hooks.on('flListDataBeforeGetData', function onBeforeShowDetails(data) {
-  // data - (Object) Contains "data", "src", "config"
-  // data.config - (Object) Entire component's configuration object
-  // data.src - (Object) DOM elements for the detail view
-  // data.data - (Object) Entry data
-
-  // Define the "beforeShowDetails" promise
-  data.config.beforeShowDetails = function () {
-    // Your code here
-
-    // Resolve Promise with the "data"
-    return Promise.resolve(data);
-  };
-});
+Fliplet.Hooks.on('flListDataBeforeDeleteConfirmation', fn);
 ```
 
-## Run a hook to set a function to run after showing the detail view
-```js
-Fliplet.Hooks.on('flListDataBeforeGetData', function onAfterShowDetails(data) {
-  // data - (Object) Contains "data", "src", "config"
-  // data.config - (Object) Entire component's configuration object
-  // data.src - (Object) DOM elements for the detail view
-  // data.data - (Object) Entry data
+#### Parameters
 
-  // Define the "afterShowDetails" promise
-  data.config.afterShowDetails = function () {
-    // Code doesn't expect anything in return
-    // This means developers can do whatever they want
+- **fn** (Function((`data`)) Callback function with an object parameter.
+  - **data** (Object) A map of data containing the following.
+    - **config** (Object) Configuration used to initialize the component.
+    - **id** (Number) Component instance ID.
+    - **uuid** (String) Component instance UUID.
+    - **container** (jQuery object) jQuery object for the component container element.
+    - **entryId** (Number) Data source entry ID of the record to be deleted.
 
-    // If you return 'data' that will become the new data used in the component
+#### Usage
 
-    return Promise.resolve();
-  };
-});
-```
+**Before deleting an entry**
 
-## Run a hook before deleting an entry
 ```js
 Fliplet.Hooks.on('flListDataBeforeDeleteEntry', function onBeforeDeleteEntry(data) {
-  // data - (Object) Contains "entryId", "config", "container"
-  // data.entryId - (Number) ID of the entry that is going to be deleted
-  // data.config - (Object) Entire component's configuration object
-  // data.container - (Object) DOM element
-
   data.config.deleteData = function(id) {
-    // Resolve Promise with the entry ID
-    return Promise.resolve(id);
+    // Execute a custom third-party entry deletion operation
+    return $.ajax({
+      url: 'http://example.com/api/entry/' + id,
+      method: 'DELETE'
+    });
   };
 });
 ```
 
-## Run a hook before delete confirmation pop up shows
-```js
-Fliplet.Hooks.on('flListDataBeforeDeleteConfirmation', function onBeforeDeleteConfirmation(data) {
-  // data - (Object) Contains "entryId", "config", "container"
-  // data.entryId - (Number) ID of the entry that is going to be deleted
-  // data.config - (Object) Entire component's configuration object
-  // data.container - (Object) DOM element
+## Configuration
 
-  // Code doesn't expect anything in return
-  // This means developers can do whatever they want
-});
+Using the available hooks, component instance configuration can be used to modify component data and behavior. The available configuration properties are listed below:
+
+- `getData` (Function(`data`)) Function used to retrieve data. Each entry must include the following properties, which the `Fliplet.DataSources` JS API follows. **Note** This function is best set using the [`flListDataBeforeGetData`](#fllistdatabeforegetdata) hook and must return a Promise.
+  - `id` (Number) Entry ID
+  - `data` (Object) Entry data
+- `beforeOpen` (Function(`data`)) Function executed before loading entry details. The `data` parameter contains the following properties. Return a rejected Promise if you need to stop the entry from opening.
+  - `config` (Object) Configuration used to initialize the component
+  - `entry` (Object) Entry being opened
+  - `entryId` (Object) ID for entry being opened
+  - `entryTitle` (Object) Title for entry being opened
+- `beforeShowDetails` (Function(`data`)) Function executed before showing the entry detail view, after the entry detail data is ready. The `data` parameter contains the following properties. Return a rejected Promise if you need to stop the entry from opening.
+  - `src` (String) HTML source for the detail view template
+  - `data` (Object) Data being used for rendering the detail view template
+- `afterShowDetails` (Function(`data`)) Function executed after the entry detail view is shown. The `data` parameter contains the following properties.
+  - `config` (Object) Configuration used to initialize the component
+  - `src` (String) HTML source for the detail view template
+  - `data` (Object) Data being used for rendering the detail view template
+- `deleteData` (Function(`data`)) Function used to delete an entry. The `data` parameter contains the following properties.
+  - `entryId`
+  - `config` (Object) Configuration used to initialize the component
+  - `id` (Number) Component instance ID
+  - `uuid` (String) Component instance UUID
+  - `container` (jQuery object) jQuery object for the component container element
+- `searchData` (Function(`data`)) Function used to execute a data search. The `data` parameter contains the following properties.
+  - `config` (object) Configuration used to initialize the component
+  - `query` (String) Query string entered by user
+
+## Query parameters
+
+When navigating to a screen that contains a **List (from data source)** component, you can use queries to execut logic accordingly, e.g. load a specific list item, apply filters and/or search, or add a new pre-filter.
+
+Use the following query parameters when linking to a screen with **List (from data source)** components.
+
+- **dynamicListOpenId** Entry ID to be opened after the list is rendered.
+- **dynamicListSearchValue** Search term to be applied after the list is rendered. Search will be executed according to the component configuration or custom configuration. If only one entry is found, the entry will be automatically opened.
+- **dynamicListSearchColumn** Column to execute a search against. If provided, the component configuration will be ignored. (Optional)
+- **dynamicListFilterValue** A comma-separated list of filter options to select.
+- **dynamicListFilterHideControls** (`true|false`) Hide the filter controls when filter values are applied from the query. (Default: `false`)
+- **dynamicListPrefilterColumn** Pre-filter list based on the provided list of comma-separated column names.
+- **dynamicListPrefilterValue** Pre-filter list based on the provided list of comma-separatedvalues for the column names.
+- **dynamicListPrefilterLogic** Pre-filter list based on the provided list of comma-separated logic operators to be applied on the columns and values. The valid operators are:
+
+| Operator | URL encoded operator | Description |
+| == | == | == |
+| `==` | `%3D%3D` | Equals |
+| `!=` | `%21%3D` |Not equal |
+| `>` | `%3E` | Greater than |
+| `>=` | `%3E%3D` | Greater than or equal |
+| `<` | `%3C` | Less than |
+| `<=` | `%3C%3D` | Less than or equal |
+| `contains` | `contains` | Contains |
+| `notcontain` | `notcontain` | Not contain |
+| `regex` | `regex` | RegExp |
+
+### Examples
+
+**Open entry with ID 123**
+
+```
+dynamicListOpenId=123
 ```
 
-## Persistent Variable Queries
-With the **List (from data source)** you can programatically load a specific list item, apply filters and/or search, and even add a new pre-filter.
-_(pre-filter is a filter applied before the list is rendered - this won't override the filters added in component settings)_
+**Execute a search with the search term "hello"**
+
+```
+dynamicListSearchValue=hellow
+```
+
+**Render with a filter and hide the filter bar**
+
+```
+dynamicListFilterValue=England,Monthly&dynamicListFilterHideControls=true
+```
+
+**Load only data that match names containing John and age less than 29**
+
+```
+dynamicListPrefilterColumn=Name,Age&dynamicListPrefilterValue=John,29&dynamicListPrefilterLogic=contains,%3C
+```
+
+## Persistent Variable Queries (deprecated)
+
+**The Persistent Variable Queries method has been deprecated.**
+
+With the **List (from data source)** you can programatically load a specific list item, apply filters and/or search, and even add a new pre-filter. _(pre-filter is a filter applied before the list is rendered - this won't override the filters added in component settings)_
 
 This can be achieved by setting a persistant variable using the `Fliplet.App.Storage`. [Read more here](../../API/fliplet-core.md#app-storage)
 The persistant variable, by default, will be removed automatically after running.
@@ -337,16 +361,16 @@ Fliplet.App.Storage.set('flDynamicListQuery:simple-list', {
 ```
 
 #### **Operators for the `logic` key**
-- `==` Equal
+
+- `==` Equals
 - `!=` Not equal
 - `>` Greater than
 - `>=` Greater than or equal
 - `<` Less than
 - `<=` Less than or equal
 - `contains` Contains
-- `notcontain` Not contains
+- `notcontain` Not contain
 - `regex` RegExp
-
 
 ---
 
