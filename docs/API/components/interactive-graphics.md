@@ -6,9 +6,9 @@ These public JS APIs are available in screens where an **Interactive Graphics** 
 
 The Interactive Graphics component exposes hooks that you can use to modify the component data and behavior. Here are the hooks and their specific life cycle:
 
-- `flInteractiveGraphicsBeforeGetData` Fired before getting data source data
-- `flInteractiveGraphicsBeforeRender` Before rendering the maps and markers
-- `flInteractiveGraphicsLabelClick` After everything is rendered and the user clicks on the marker label
+- [`flInteractiveGraphicsBeforeGetData`](#flinteractivegraphicsbeforegetdata)
+- [`flInteractiveGraphicsBeforeRender`](#flinteractivegraphicsbeforerender)
+- [`flInteractiveGraphicsLabelClick`](#flinteractivegraphicslabelclick)
 
 ### `flInteractiveGraphicsBeforeGetData`
 
@@ -81,7 +81,7 @@ Fliplet.Hooks.on('flInteractiveGraphicsLabelClick', fn);
 
 #### Parameters
 
-- **fn** (Function((Object) `data`)) Callback function with an object parameter
+- **fn** (Function(`data`)) Callback function with an object parameter
   - **data** (Object) Object containing properties listed below
     - **id** (Number) Component instance ID. This differs between master and production apps.
     - **uuid** (String) Component instance UUID. This is consistent between master and production apps.
