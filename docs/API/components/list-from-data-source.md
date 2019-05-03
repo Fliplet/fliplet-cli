@@ -192,7 +192,7 @@ dynamicListOpenId=123
 **Execute a search with the search term "hello"**
 
 ```
-dynamicListSearchValue=hellow
+dynamicListSearchValue=hello
 ```
 
 **Render with a filter and hide the filter bar**
