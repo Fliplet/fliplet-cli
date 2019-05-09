@@ -107,7 +107,7 @@ The `.visible-*-*` classes for each context come in three variations, one for ea
 
 ---
 
-#### Programmatically show and hide elements for app templates
+### Programmatically show and hide elements for app templates
 
 Nest your selectors within the following classes (applied to the screen's `html`) to show and hide content for app templates or non-template apps:
 
