@@ -113,8 +113,8 @@ Nest your selectors within the following classes (applied to the screen's `html`
 
 |   | App template | Regular app |
 | --- | --- | ---
-| `.no-app-template` | Hidden | **Visible** |
-| `.app-template` | **Visible** | Hidden |
+| `.no-app-template` |   | **X** |
+| `.app-template` | **X** |   |
 
 Example:
 
