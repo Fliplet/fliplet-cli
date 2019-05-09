@@ -116,7 +116,7 @@ Nest your selectors within the following classes (applied to the screen's `html`
 | `.no-app-template` |   | **X** |
 | `.app-template` | **X** |   |
 
-Example:
+Example (SCSS code):
 
 ```scss
 .app-template {
