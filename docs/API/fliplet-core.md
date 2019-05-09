@@ -64,6 +64,7 @@ These variables are usually available on app screens as long as components and p
 - `appSettings` - object with public settings for the current app
 - `appUpdatedAt` - timestamp set to the last time a change has been made via Fliplet Studio to the current app
 - `appVersion` - number pointing to the app's version (when using Fliplet Viewer, its value will be `(DEV)`)
+- `appTemplate` - boolean indicating whether the app is a template
 - `appsUrl` - string with a fixed value for https://apps.fliplet.com/
 - `development` - `true / false` true when if developing via the Fliplet CLI
 - `interact` - `true / false` true when you are in edit mode in Fliplet Studio
