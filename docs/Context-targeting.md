@@ -55,7 +55,7 @@ Fliplet adds some custom tests to Modernizr to help detect and target the follow
 
 ## CSS Class to show content in Fliplet Studio while in edit mode
 
-Use the `.visible-interact` class to show your content only when is being seen in Fliplet Studio while in edit mode. Anywhere else (e.g. preview mode, web apps, iOS and Android apps) the elements will be hid.
+Use the `.visible-interact` class to show your content only when is being seen in Fliplet Studio while in edit mode. Otherwise, the elements will be hidden (e.g. preview mode, web apps, iOS and Android apps).
 
 ```html
 <div class="visible-interact">
