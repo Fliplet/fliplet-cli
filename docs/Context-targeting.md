@@ -51,7 +51,32 @@ Fliplet adds some custom tests to Modernizr to help detect and target the follow
 | Tablet `width >= 640px` | `tablet` |
 | iPhone X | `iphonex` |
 
-## Classes to show/hide content
+---
+
+## CSS Class to show content in Fliplet Studio while in edit mode
+
+Use the `.visible-interact` class to show your content only when is being seen in Fliplet Studio while in edit mode. Anywhere else (e.g. preview mode, web apps, iOS and Android apps) the elements will be hid.
+
+```html
+<div class="visible-interact">
+  <p>This will only be displayed while in Fliplet Studio in edit mode.</p>
+</div>
+```
+
+You can also use Fliplet's JS APIs to programmatically achieve the same result:
+
+```js
+if (!Fliplet.Env.get('interact')) {
+  // Hide the element when we're not in Fliplet Studio in edit mode
+  $('div').hide();
+}
+```
+
+However, we do recommend using the `.visible-interact` CSS class to avoid having the content briefly displayed on the screen before it gets hid by Javascript.
+
+---
+
+## CSS Classes to show/hide content
 
 For faster development, use these utility classes for showing and hiding content by various contexts.
 
