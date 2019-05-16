@@ -577,6 +577,12 @@ Fliplet.App.Orientation.lock(newOrientation)
 Fliplet.App.Orientation.unlock()
 ```
 
+**Note** The orientation unlock is temporary. When the following events occur, the orientation will be locked according to the original app setting, which would always be **portrait** on smartphones.
+
+1. App orientation is locked when transitioning to the next screen.
+1. App orientation is locked when exiting from the in-app browser.
+1. App orientation is locked when exiting from a full screen video playback.
+
 ### App Storage
 
 Use this to store arbitrary keys in the app storage for later use.
