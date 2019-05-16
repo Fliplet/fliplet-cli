@@ -168,7 +168,8 @@ Fliplet.FormBuilder.get()
       }).then(function (entries) {
         return _.get(_.first(entries), 'data.fullName');
       });
-    })
+    });
+
   });
 ```
 
@@ -211,7 +212,7 @@ Fliplet.FormBuilder.get()
 
 ### `field().toggle(Boolean)`
 
-Show and hide a field.
+Shows or hides a field.
 
 ```js
 Fliplet.FormBuilder.get()
@@ -222,7 +223,7 @@ Fliplet.FormBuilder.get()
   });
 ```
 
-Show and hide fields based on another field value
+Shows or hides fields based on another field's value
 
 ```js
 Fliplet.FormBuilder.get()
