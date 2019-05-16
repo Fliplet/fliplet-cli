@@ -578,17 +578,18 @@ Fliplet.App.Orientation.lock(newOrientation)
 Fliplet.App.Orientation.unlock()
 ```
 
-**Note** The orientation unlock is temporary. When the following events occur, the orientation will be locked according to the original app setting, which would always be **portrait** on smartphones.
+The orientation unlock is temporary. When the following events occur, the orientation will be re-locked according to the original app setting, which would always be **portrait** on smartphones.
 
-1. App orientation is locked when transitioning to the next screen.
 1. App orientation is locked when exiting from the in-app browser.
 1. App orientation is locked when exiting from a full screen video playback.
 
-To set a specific screen to support all orientations, add the following code to the screen HTML. However, the orientation will be locked to **portrait** on smartphones.
+To ensure a page doesn't force the orientation re-lock, add the following code to the screen HTML instead of using `Fliplet.App.Orientation.unlock()`.
 
 ```html
 <script>Fliplet.Env.get('appSettings').orientation = 'all'</script>
 ```
+
+**Note** Landscape mode in smartphones are not officially supported by Fliplet and may have layout issues due to the shortened screen height and "notches" on devices such as the iPhone X.
 
 ### App Storage
 
