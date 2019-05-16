@@ -584,6 +584,12 @@ Fliplet.App.Orientation.unlock()
 1. App orientation is locked when exiting from the in-app browser.
 1. App orientation is locked when exiting from a full screen video playback.
 
+To set a specific screen to support all orientations, add the following code to the screen HTML. However, the orientation will be locked to **portrait** on smartphones.
+
+```html
+<script>Fliplet.Env.get('appSettings').orientation = 'all'</script>
+```
+
 ### App Storage
 
 Use this to store arbitrary keys in the app storage for later use.
