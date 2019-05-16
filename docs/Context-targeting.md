@@ -75,7 +75,7 @@ Use a single or combination of the available classes for toggling content across
 #### Platforms
 
 |   | Web | Native |
-| --- | --- | --- 
+| --- | --- | ---
 | `.visible-web-*` | **Visible** | Hidden |
 | `.visible-native-*` | Hidden | **Visible** |
 | `.hidden-web` | Hidden | **Visible** |
@@ -84,7 +84,7 @@ Use a single or combination of the available classes for toggling content across
 #### Screen sizes
 
 |   | Mobile (`< 640px`) | Tablet (`>= 640px`) |
-| --- | --- | --- 
+| --- | --- | ---
 | `.visible-mobile-*` | **Visible** | Hidden |
 | `.visible-tablet-*` | Hidden | **Visible** |
 | `.hidden-mobile` | Hidden | **Visible** |
@@ -93,7 +93,7 @@ Use a single or combination of the available classes for toggling content across
 #### iPhone X
 
 |   | iPhone X | Not iPhone X |
-| --- | --- | --- 
+| --- | --- | ---
 | `.visible-iphonex-*` | **Visible** | Hidden |
 | `.hidden-iphone-x` | Hidden | **Visible** |
 
@@ -104,3 +104,42 @@ The `.visible-*-*` classes for each context come in three variations, one for ea
 | `.visible-*-block` |  `display: block;` |
 | `.visible-*-inline` |  `display: inline;` |
 | `.visible-*-inline-block` |  `display: inline-block;` |
+
+---
+
+### Programmatically show and hide elements for app templates
+
+Nest your selectors within the following classes (applied to the screen's `html`) to show and hide content for app templates or non-template apps:
+
+|   | App template | Regular app |
+| --- | --- | ---
+| `.no-app-template` |   | **X** |
+| `.app-template` | **X** |   |
+
+Example (SCSS code):
+
+```scss
+.app-template {
+  /* styles for when the app is a template */
+
+  button { display: block }
+}
+
+.no-app-template {
+  /* styles for when the app is NOT a template */
+
+  form { font-size: 10px }
+}
+```
+
+---
+
+You can also use Fliplet's JS APIs to programmatically achieve the same results
+
+```js
+var isTemplate = Fliplet.Env.get('appTemplate');
+
+if (isTemplate) {
+  $('button').show()
+}
+```
