@@ -93,7 +93,7 @@ Outer joins are similar to other joins in regards to how they are defined, but d
 connection.find({
   join: {
     MyOtherArticles: {
-      dataSourceId: 123
+      dataSourceId: 789
     }
   }
 })
