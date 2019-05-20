@@ -28,15 +28,19 @@ Left joins must be defined by specifying:
 
 Considering an example where two dataSources are created as follows:
 
+#### Articles
+
 | ID | Title                   |
 |----|-------------------------|
 | 1  | A great blog post       |
 | 2  | Something worth reading |
 
-| ArticleID | Comment text                    |
-|-----------|---------------------------------|
-| 1         | Thanks! This was worth reading. |
-| 1         | Loved it, would read it again.  |
+#### Comments
+
+| ArticleID | Comment text                    | Likes |
+|-----------|---------------------------------|-------|
+| 1         | Thanks! This was worth reading. | 5     |
+| 1         | Loved it, would read it again.  | 2     |
 
 We can simply reference the entries between the two dataSources as follows:
 
@@ -94,7 +98,7 @@ Joins can return data in several different ways:
 - A `Count` of the matched entries.
 - A `Sum` taken by counting a number in a defined column from the matching entries.
 
-### Array
+### Array (join)
 
 This is the default return behaviour for joins, hence no parameters are required.
 
@@ -124,12 +128,12 @@ Example of the returned data:
         {
           id: 3,
           dataSourceId: 123,
-          data: { ArticleID: 1, 'Comment text': 'Thanks! This was worth reading.' }
+          data: { ArticleID: 1, 'Comment text': 'Thanks! This was worth reading.', Likes: 5 }
         },
         {
           id: 4,
           dataSourceId: 123,
-          data: { ArticleID: 1, 'Comment text': 'Loved it, would read it again.' }
+          data: { ArticleID: 1, 'Comment text': 'Loved it, would read it again.', Likes: 2 }
         }
       ]
     }
@@ -137,7 +141,7 @@ Example of the returned data:
 ]
 ```
 
-### Boolean
+### Boolean (join)
 
 When the `has` parameter is set to `true`, a boolean will be returned to indicate whether at least one entry was matched from the joined entries.
 
@@ -145,7 +149,7 @@ Example input:
 
 ```js
 join: {
-  Comments: {
+  HasComments: {
     dataSourceId: 123,
     on: {
       'data.ID': 'data.ArticleID'
@@ -173,6 +177,88 @@ Example of the returned data:
     data: { Title: 'Something worth reading' },
     join: {
       HasComments: false
+    }
+  }
+]
+```
+
+### Count (join)
+
+When the `count` parameter is set to `true`, a count of the matching entries will be returned.
+
+Example input:
+
+```js
+join: {
+  NumberOfComments: {
+    dataSourceId: 123,
+    on: {
+      'data.ID': 'data.ArticleID'
+    },
+    count: true
+  }
+}
+```
+
+Example of the returned data:
+
+```js
+[
+  {
+    id: 1,
+    dataSourceId: 456,
+    data: { Title: 'A great blog post' },
+    join: {
+      NumberOfComments: 2
+    }
+  },
+  {
+    id: 2,
+    dataSourceId: 456,
+    data: { Title: 'Something worth reading' },
+    join: {
+      NumberOfComments: 0
+    }
+  }
+]
+```
+
+### Sum (join)
+
+When the `sum` parameter is set to the name of a column, a sum taken by counting the number of all matching entries for such column will be returned.
+
+Example input:
+
+```js
+join: {
+  LikesForComments: {
+    dataSourceId: 123,
+    on: {
+      'data.ID': 'data.ArticleID'
+    },
+    sum: 'Likes'
+  }
+}
+```
+
+Example of the returned data:
+
+```js
+[
+  {
+    id: 1,
+    dataSourceId: 456,
+    data: { Title: 'A great blog post' },
+    join: {
+      LikesForComments: 7
+    }
+  },
+  {
+    id: 2,
+    dataSourceId: 456,
+    data: { Title: 'Something worth reading' },
+    join: {
+      LikesForComments: 0
     }
   }
 ]
