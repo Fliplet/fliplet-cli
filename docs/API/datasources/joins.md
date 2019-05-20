@@ -6,9 +6,13 @@ Joins are defined by a name and options and any number of joins can be defined w
 
 ```js
 Fliplet.DataSources.connect(123).then(function () {
+  // 1. Extract articles from dataSource 123
   connection.find({
     join: {
+      // ... with their comments
       Comments: { options },
+
+      // ... and likes
       Likes: { options }
     }
   })
@@ -19,7 +23,7 @@ Before we dive into complete examples, let's start with the three types of joins
 
 ## Types of joins
 
-### Left join
+### Left join (default)
 
 Use this when you want to fetch additional data for your dataSource. Examples include things like getting the list of comments and liks for a list of articles.
 
@@ -81,7 +85,7 @@ connection.find({
 
 ### Outer join
 
-Use this when you want to merge entries from the joined dataSource(s) to the ones being extracted from your dataSource. The result will simply be a concatenation of both arrays.
+Use this when you want to **merge entries from the joined dataSource(s)** to the ones being extracted from your dataSource. The result will simply be **a concatenation** of both arrays.
 
 Outer joins are similar to other joins in regards to how they are defined, but don't need the `on` parameter defined since they don't need to reference entries between the two dataSources:
 
