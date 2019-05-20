@@ -232,9 +232,7 @@ Fliplet.Media.Files.Storage.cancelDownload(fileURL)
 Fliplet.Media.Files.Storage.cancelDownload([fileURL1, fileURL2, fileURL3])
 ```
 
----
-
-## Hooks
+### Hooks
 
 ```js
 Fliplet.Hooks.on('mediaFileDownloadCompleted', function (file) {
