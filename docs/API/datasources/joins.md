@@ -12,8 +12,8 @@ Fliplet.DataSources.connect(123).then(function () {
       // ... with their comments
       Comments: { options },
 
-      // ... and likes
-      Likes: { options }
+      // ... and users who posted them
+      Users: { options }
     }
   })
 })
@@ -282,6 +282,89 @@ Example of the returned data:
     }
   }
 ]
+```
+
+---
+
+## Filtering data
+
+Use the `where` parameter to define a filtering query for the data to be selected on a particular join. This support the same exact syntax as `connection.find({ where })`:
+
+```
+connection.find({
+  join: {
+    LikesForPopularComments: {
+      dataSourceId: 123,
+      on: {
+        'data.ID': 'data.ArticleID'
+      },
+      where: {
+        // only fetch a comment when it has more than 10 likes
+        Likes: { $gt: 10 }
+      }
+    }
+  }
+})
+```
+
+## Only fetch a list of attributes
+
+Use the `attributes` parameter to define which fields should only be returned from the data in the joined entries:
+
+```
+connection.find({
+  join: {
+    LikesForComments: {
+      dataSourceId: 123,
+      on: {
+        'data.ID': 'data.ArticleID'
+      },
+      // only fetch the comment text
+      attributes: ['Comment text']
+    }
+  }
+})
+```
+
+## Limit the number of returned entries
+
+Use the `limit` parameter to define how many entries should be returned at most for your join:
+
+```
+connection.find({
+  join: {
+    LikesForComments: {
+      dataSourceId: 123,
+      on: {
+        'data.ID': 'data.ArticleID'
+      },
+      // only fetch up to 5 comments at most
+      limit: 5
+    }
+  }
+})
+```
+
+## Order the entries returned
+
+Use the `order` parameter to define the order at which entries are returned for your join.
+
+Note: this parameter can be used for attributes such as "id" and "createdAt". If you need to order by actual data in your entry, use the "data." prefix (e.g. `data.Title`).
+
+```
+connection.find({
+  join: {
+    MostRecentComments: {
+      dataSourceId: 123,
+      on: {
+        'data.ID': 'data.ArticleID'
+      },
+      // only fetch the 5 most recent comments, combining order and limit
+      order: ['createdAt', 'DESC'],
+      limit: 5
+    }
+  }
+})
 ```
 
 ---
