@@ -237,6 +237,13 @@ connection.import(FormData).then(function onSuccess() {});
 connection.removeById(1).then(function onRemove() {});
 ```
 
+---
+
+## Join data from other dataSources
+
+[View documentation on how to join data from other dataSources](datasources/joins.md)
+{: .buttons}
+
 ## Configurable operations
 
 ### Automatically generate a unique ID for your entries

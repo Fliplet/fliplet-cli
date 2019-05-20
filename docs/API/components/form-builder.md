@@ -112,9 +112,74 @@ Fliplet.FormBuilder.get().then(function (form) {
 
 ## Field methods
 
-### `form.val()`
+### `field().get()`
 
-Gets or sets the value of a field.
+Gets the value of a form field.
+
+```js
+Fliplet.FormBuilder.get()
+  .then(function (form) {
+    // gets the input value
+    var value = form.field('foo').get();
+  });
+```
+
+---
+
+### `field().set()`
+
+Sets the value of a form field to one of the following:
+
+- a literal value (e.g. a String, a Number, a Boolean or an Object)
+- a value from the user's profile
+- a value from the device shared storage
+- a value from the current app's private storage
+- a value from a query parameter
+- a value as result of a function (optionally returning a promise when asynchronous)
+
+```js
+Fliplet.FormBuilder.get()
+  .then(function (form) {
+    // Sets the value to a literal value
+    form.field('field-1').set('foo');
+
+    // Sets the value to the current user's email
+    form.field('field-1').set({ source: 'profile', key: 'email' });
+
+    // Sets the value with the content of the "foo" query parameter
+    form.field('field-1').set({ source: 'query', key: 'foo' });
+
+    // Sets the value from the key named "foo" in the device shared storage
+    form.field('field-1').set({ source: 'storage', key: 'foo' });
+
+    // Sets the value from the key named "foo" in the device app's private storage
+    form.field('field-1').set({ source: 'appStorage', key: 'foo' });
+
+    // Sets the value as a result of a function
+    form.field('field-1').set(function () {
+      return 'foo' + 'bar';
+    });
+
+    // Sets the value as a result of an asynchronous method. In this example,
+    // we're populating the field with the full name of a user in a data source
+    form.field('field-1').set(function () {
+      return Fliplet.DataSources.connect(123).then(function (connection) {
+        return connection.find({ where: { email: 'foo@example.org' } });
+      }).then(function (entries) {
+        return _.get(_.first(entries), 'data.fullName');
+      });
+    });
+
+  });
+```
+
+---
+
+### `field().val()`
+
+Gets or sets the value of a form field.
+
+**Note: using `val()` is deprecated. We do recommend using the new `set()` and `get()` methods described in the sections above.**
 
 ```js
 Fliplet.FormBuilder.get()
@@ -123,13 +188,13 @@ Fliplet.FormBuilder.get()
     form.field('foo').val('bar');
 
     // gets the input value
-    return form.field('foo').val();
+    var value = form.field('foo').val();
   });
 ```
 
 ---
 
-### `form.change(Function)`
+### `field().change(Function)`
 
 Attaches event listeners to a field changed.
 
@@ -145,9 +210,9 @@ Fliplet.FormBuilder.get()
 
 ---
 
-### `form.toggle(Boolean)`
+### `field().toggle(Boolean)`
 
-Show and hide a field.
+Shows or hides a field.
 
 ```js
 Fliplet.FormBuilder.get()
@@ -158,7 +223,7 @@ Fliplet.FormBuilder.get()
   });
 ```
 
-Show and hide fields based on another field value
+Shows or hides fields based on another field's value
 
 ```js
 Fliplet.FormBuilder.get()
@@ -176,7 +241,7 @@ Fliplet.FormBuilder.get()
 
 ---
 
-### `form.options(Array)`
+### `field().options(Array)`
 
 Programmatically sets the options of a dropdown or radio or checkbox field.
 
