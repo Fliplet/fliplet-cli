@@ -290,7 +290,7 @@ Example of the returned data:
 
 Use the `where` parameter to define a filtering query for the data to be selected on a particular join. This support the same exact syntax as `connection.find({ where })`:
 
-```
+```js
 connection.find({
   join: {
     LikesForPopularComments: {
@@ -311,7 +311,7 @@ connection.find({
 
 Use the `attributes` parameter to define which fields should only be returned from the data in the joined entries:
 
-```
+```js
 connection.find({
   join: {
     LikesForComments: {
@@ -330,7 +330,7 @@ connection.find({
 
 Use the `limit` parameter to define how many entries should be returned at most for your join:
 
-```
+```js
 connection.find({
   join: {
     LikesForComments: {
@@ -351,7 +351,7 @@ Use the `order` parameter to define the order at which entries are returned for 
 
 Note: this parameter can be used for attributes such as "id" and "createdAt". If you need to order by actual data in your entry, use the "data." prefix (e.g. `data.Title`).
 
-```
+```js
 connection.find({
   join: {
     MostRecentComments: {
