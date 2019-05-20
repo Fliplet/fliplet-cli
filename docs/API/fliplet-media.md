@@ -172,10 +172,10 @@ Fliplet.Media.Files.Storage.getDownloading();
 ### Download a file
 
 ```js
-// Downloads a file (this gets added to the queue)
+// Downloads a file (this gets added to a queue and will be downloaded in background)
 Fliplet.Media.Files.Storage.download(remoteUrl);
 
-// You can also add an array of files
+// You can also add to the download queue an array of files
 Fliplet.Media.Files.Storage.download([url1, url2, url3]);
 ```
 
