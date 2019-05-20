@@ -2,14 +2,16 @@
 
 Both DataSources JS APIs and REST APIs allow you to fetch data from more than one data source using a featured called "joins" and heavily inspired by traditional joins made in SQL databases.
 
-Joins are defined by a name and options and any number of joins can be defined when fetching data:
+Joins are defined by a name and options and any number of joins can be defined when fetching data from one data source:
 
 ```js
-connection.find({
-  join: {
-    MyFirstJoin: { options },
-    MySecondJoin: { options }
-  }
+Fliplet.DataSources.connect(123).then(function () {
+  connection.find({
+    join: {
+      Comments: { options },
+      Likes: { options }
+    }
+  })
 })
 ```
 
