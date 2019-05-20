@@ -142,6 +142,8 @@ And then use it in your directory templates like:
 
 Note: this feature is currently in beta and does require apps with [version 3.9.6 or newer](https://developers.fliplet.com/Native-framework-changelog.html#version-396-april-30-2019) in order to work.
 
+As per most or Fliplet JS APIs, all the following methods **return a promise**. There is experimental support on Chrome (for webapps) and full support is only available on native platforms (iOS and Android).
+
 ### Get the list of files downloaded on the device, including files being downloaded
 
 ```js
