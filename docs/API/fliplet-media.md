@@ -138,5 +138,131 @@ And then use it in your directory templates like:
 
 ---
 
+## Download files to devices (beta)
+
+Note: this feature is currently in beta and does require apps with [version 3.9.6 or newer](https://developers.fliplet.com/Native-framework-changelog.html#version-396-april-30-2019) in order to work.
+
+### Get the list of files downloaded on the device, including files being downloaded
+
+```js
+// Get an array of downloaded filed and files pending to be downloaded
+Fliplet.Media.Files.Storage.get().then(function (files) {
+  // Each file has status (downloaded or downloading), size, downloadedAt,
+  // name and url (the original http(s) url used to download the file)
+});
+
+// Get downloaded files only
+Fliplet.Media.Files.Storage.getDownloaded();
+
+// Search for a downloaded file by url. "file" is undefined when not found
+Fliplet.Media.Files.Storage.getDownloaded(url).then(function (file) {});
+
+// Search for downloaded files by providing a filter identity sent to lodash "filter"
+Fliplet.Media.Files.Storage.getDownloaded({ size: 100 }).then(function (files) {});
+
+// Get downloading (pending) files only
+Fliplet.Media.Files.Storage.getDownloading();
+```
+
+---
+
+### Download a file
+
+```js
+// Downloads a file (this gets added to the queue)
+Fliplet.Media.Files.Storage.download(remoteUrl);
+
+// You can also add an array of files
+Fliplet.Media.Files.Storage.download([url1, url2, url3]);
+```
+
+---
+
+### Resume pending operations
+
+```js
+// Call this in your screen JS after registering hooks
+Fliplet.Media.Files.Storage.ready();
+```
+
+---
+
+### Return most appropriate URL to a file
+
+```js
+Fliplet.Media.Files.Storage.resolve(url).then(function (fileUrl) {
+  // fileUrl can be used to play an audio, display an image, etc
+});
+```
+
+
+---
+
+### Get the raw FileEntry for a local file
+
+```js
+// requires the fileName from any "file.name"
+Fliplet.Media.Files.Storage.getFile(fileName).then(function (file) {
+
+});
+```
+
+---
+
+### Deletes one or more files
+
+```js
+// Deletes a file. Requires the "file.name" or "file.url"
+Fliplet.Media.Files.Storage.delete(fileName)
+
+// Deletes an array of files
+Fliplet.Media.Files.Storage.delete([fileName1, fileName2, fileURL3])
+
+// Deletes all files
+Fliplet.Media.Files.Storage.deleteAll()
+```
+
+### Cancels one or more pending downloads
+
+```js
+// Cancels the download a file. Requires the file URL
+Fliplet.Media.Files.Storage.cancelDownload(fileURL)
+
+// Cancels the download of more files at once
+Fliplet.Media.Files.Storage.cancelDownload([fileURL1, fileURL2, fileURL3])
+```
+
+---
+
+## Hooks
+
+```js
+Fliplet.Hooks.on('mediaFileDownloadCompleted', function (file) {
+
+  // Resolve URL
+  Fliplet.Media.Files.Storage.resolve(file).then(function (url) {
+    // Add audio player
+    $('body').append('<div data-title="Offline file" data-audio-url="' + url + '"></div>');
+
+    // Init player so file can be played
+    Fliplet.Media.Audio.Player.init()
+  });
+});
+
+Fliplet.Hooks.on('mediaFileDownloadFailed', function (error) {
+ console.error('error downloading file', this, 'with error', error);
+});
+
+Fliplet.Hooks.on('mediaFileDownloadCanceled', function (fileData) {
+ console.error('canceled a download', fileData);
+});
+
+Fliplet.Hooks.on('mediaFileDownloadProgress', function (file) {
+ console.debug('progress', file.progress.loaded, 'of', file.progress.total);
+});
+```
+
+---
+
 [Back to API documentation](../API-Documentation.md)
 {: .buttons}
