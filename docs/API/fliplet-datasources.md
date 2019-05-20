@@ -244,6 +244,8 @@ connection.removeById(1).then(function onRemove() {});
 [View documentation on how to join data from other dataSources](datasources/joins.md)
 {: .buttons}
 
+---
+
 ## Configurable operations
 
 ### Automatically generate a unique ID for your entries

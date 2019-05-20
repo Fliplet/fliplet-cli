@@ -5,17 +5,17 @@ Both DataSources JS APIs and REST APIs allow you to fetch data from more than on
 Joins are defined by a name and options and any number of joins can be defined when fetching data:
 
 ```js
-{
+connection.find({
   join: {
     MyFirstJoin: { options },
     MySecondJoin: { options }
   }
-}
+})
 ```
 
 Before we dive into complete examples, let's start with the three types of joins we support.
 
-## Joins
+## Types of joins
 
 ### Left join
 
@@ -23,10 +23,10 @@ Use this when you want to fetch additional data for your dataSource. Examples in
 
 Left joins must be defined by specifying:
 
-- the target dataSource ID with the `dataSourceId` parameter
-- what data should be used to match entries from the initial dataSource to the joined dataSource, using the `on` parameter
+- the **target dataSource ID** with the `dataSourceId` parameter
+- what data should be used to **reference entries** from the initial dataSource to the joined dataSource, using the `on` parameter, where the `key` is the column name from the source table and the `value` is the column name of the target (joined) table.
 
-Considering an example where two dataSources are created as follows:
+Consider **an example** where two dataSources are created as follows:
 
 #### Articles
 
@@ -45,14 +45,16 @@ Considering an example where two dataSources are created as follows:
 We can simply reference the entries between the two dataSources as follows:
 
 ```js
-join: {
-  Comments: {
-    dataSourceId: 123,
-    on: {
-      'data.ID': 'data.ArticleID'
+connection.find({
+  join: {
+    Comments: {
+      dataSourceId: 123,
+      on: {
+        'data.ID': 'data.ArticleID'
+      }
     }
   }
-}
+})
 ```
 
 ### Inner join
@@ -62,15 +64,17 @@ Use this when the entries of your dataSource should only be returned when there 
 Inner joins are defined like left joins but with the `required` attribute set to `true`:
 
 ```js
-join: {
-  Comments: {
-    dataSourceId: 123,
-    on: {
-      'data.ID': 'data.ArticleID'
-    },
-    required: true
+connection.find({
+  join: {
+    Comments: {
+      dataSourceId: 123,
+      on: {
+        'data.ID': 'data.ArticleID'
+      },
+      required: true
+    }
   }
-}
+})
 ```
 
 ### Outer join
@@ -80,11 +84,13 @@ Use this when you want to merge entries from the joined dataSource(s) to the one
 Outer joins are similar to other joins in regards to how they are defined, but don't need the `on` parameter defined since they don't need to reference entries between the two dataSources:
 
 ```js
-join: {
-  MyOtherArticles: {
-    dataSourceId: 123
+connection.find({
+  join: {
+    MyOtherArticles: {
+      dataSourceId: 123
+    }
   }
-}
+})
 ```
 
 ---
@@ -105,14 +111,16 @@ This is the default return behaviour for joins, hence no parameters are required
 Example input:
 
 ```js
-join: {
-  Comments: {
-    dataSourceId: 123,
-    on: {
-      'data.ID': 'data.ArticleID'
+connection.find({
+  join: {
+    Comments: {
+      dataSourceId: 123,
+      on: {
+        'data.ID': 'data.ArticleID'
+      }
     }
   }
-}
+})
 ```
 
 Example of the returned data:
@@ -148,15 +156,17 @@ When the `has` parameter is set to `true`, a boolean will be returned to indica
 Example input:
 
 ```js
-join: {
-  HasComments: {
-    dataSourceId: 123,
-    on: {
-      'data.ID': 'data.ArticleID'
-    },
-    has: true
+connection.find({
+  join: {
+    HasComments: {
+      dataSourceId: 123,
+      on: {
+        'data.ID': 'data.ArticleID'
+      },
+      has: true
+    }
   }
-}
+})
 ```
 
 Example of the returned data:
@@ -189,15 +199,17 @@ When the `count` parameter is set to `true`, a count of the matching entries wi
 Example input:
 
 ```js
-join: {
-  NumberOfComments: {
-    dataSourceId: 123,
-    on: {
-      'data.ID': 'data.ArticleID'
-    },
-    count: true
+connection.find({
+  join: {
+    NumberOfComments: {
+      dataSourceId: 123,
+      on: {
+        'data.ID': 'data.ArticleID'
+      },
+      count: true
+    }
   }
-}
+})
 ```
 
 Example of the returned data:
@@ -230,15 +242,17 @@ When the `sum` parameter is set to the name of a column, a sum taken by countin
 Example input:
 
 ```js
-join: {
-  LikesForComments: {
-    dataSourceId: 123,
-    on: {
-      'data.ID': 'data.ArticleID'
-    },
-    sum: 'Likes'
+connection.find({
+  join: {
+    LikesForComments: {
+      dataSourceId: 123,
+      on: {
+        'data.ID': 'data.ArticleID'
+      },
+      sum: 'Likes'
+    }
   }
-}
+})
 ```
 
 Example of the returned data:
@@ -265,6 +279,3 @@ Example of the returned data:
 ```
 
 ---
-
-## Using joins with the DataSources JS API
-
