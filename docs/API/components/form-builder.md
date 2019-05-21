@@ -179,7 +179,7 @@ Fliplet.FormBuilder.get()
 
 Gets or sets the value of a form field.
 
-<p class="warning"><strong>DEPRECATION NOTICE:</strong> using `val()` is should be considered deprecated for new apps. We do recommend using the new `set()` and `get()` methods described in the sections above.</p>
+<p class="warning"><strong>DEPRECATION NOTICE:</strong> uses of <code>val()</code> are considered deprecated for new apps. We do recommend using the new <code>set()</code> and <code>get()</code> methods described in the sections above.</p>
 
 ```js
 Fliplet.FormBuilder.get()
