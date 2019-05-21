@@ -178,6 +178,10 @@ ul > li > ul {
   color: #FFF;
 }
 
+.warning code.success {
+  background: green;
+}
+
 .search-handle {
   transition: opacity 0.5s;
   position: fixed;
