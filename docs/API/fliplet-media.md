@@ -141,9 +141,7 @@ And then use it in your directory templates like:
 
 ## Download files to devices (beta)
 
-<p class="warning"><strong>BETA FEATURE:</strong> Please note that this feature is currently only available in beta and documentation provided below may be limited.</p>
-
-Note: this feature is currently in beta and does require apps with [version 3.9.6 or newer](https://developers.fliplet.com/Native-framework-changelog.html#version-396-april-30-2019) in order to work.
+<p class="warning"><strong>BETA FEATURE:</strong> Please note that this feature is currently only available in beta and documentation provided below may be limited. Apps support this feature from <a href="https://developers.fliplet.com/Native-framework-changelog.html#version-396-april-30-2019">version 3.9.6</a> and newer.</p>
 
 As per most or Fliplet JS APIs, all the following methods **return a promise**. There is experimental support on Chrome (for webapps) and full support is only available on native platforms (iOS and Android).
 
