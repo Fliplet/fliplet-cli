@@ -156,6 +156,14 @@ ul > li > ul {
   color: rgba(81, 234, 255, 0.6);
 }
 
+.warning {
+  background: #fdff6b;
+  padding: 15px 20px;
+  border: 1px solid #dee040;
+  border-radius: 7px;
+  color: #6c6d00;
+}
+
 .search-handle {
   transition: opacity 0.5s;
   position: fixed;
