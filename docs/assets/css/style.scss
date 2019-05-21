@@ -61,7 +61,7 @@ ul > li > ul {
 .is-beta .page-header {
   background-color: $warningColor;
   background-image: linear-gradient(0, $warningColor, lighten($warningColor, 10%));
-  border-bottom: 4px solid darken($warningColor, 15%);
+  border-bottom: 1px solid #dee040;
 }
 
 .project-name {
