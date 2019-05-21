@@ -141,7 +141,7 @@ And then use it in your directory templates like:
 
 ## Download files to devices (beta)
 
-<p class="warning"><strong>BETA FEATURE:</strong> Please note that this feature is currently only available in beta and its specifications may be subject to change before releasing it.</p>
+<p class="warning"><strong>BETA FEATURE:</strong> Please note that this feature is currently only available in beta and documentation provided below may be limited.</p>
 
 Note: this feature is currently in beta and does require apps with [version 3.9.6 or newer](https://developers.fliplet.com/Native-framework-changelog.html#version-396-april-30-2019) in order to work.
 
