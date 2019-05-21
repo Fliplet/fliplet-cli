@@ -7,6 +7,7 @@ $primaryBackground: #153c49;
 $lightBackground: #f2f6f7;
 
 $warningColor: #fdff6b;
+$warningTextColor: #6c6d00;
 
 p {
   line-height: 1.8;
@@ -169,7 +170,12 @@ ul > li > ul {
   padding: 15px 20px;
   border: 1px solid #dee040;
   border-radius: 7px;
-  color: #6c6d00;
+  color: $warningTextColor;
+}
+
+.warning code {
+  background: $warningTextColor;
+  color: #FFF;
 }
 
 .search-handle {
@@ -207,7 +213,7 @@ ul > li > ul {
 
 .is-beta .search-handle {
   background-color: $warningColor;
-  color: #6c6d00;
+  color: $warningTextColor;
 }
 
 .ais-search-box--input {
