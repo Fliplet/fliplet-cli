@@ -205,6 +205,11 @@ ul > li > ul {
   }
 }
 
+.is-beta .search-handle {
+  background-color: $warningColor;
+  color: #6c6d00;
+}
+
 .ais-search-box--input {
   transition: border 1s;
   color: #153c49;
