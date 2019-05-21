@@ -130,12 +130,12 @@ Fliplet.FormBuilder.get()
 
 Sets the value of a form field to one of the following:
 
-- a literal value (e.g. a String, a Number, a Boolean or an Object)
-- a value from the user's profile
-- a value from the device shared storage
-- a value from the current app's private storage
-- a value from a query parameter
-- a value as result of a function (optionally returning a promise when asynchronous)
+- a **literal value** (e.g. a `String`, a `Number`, a `Boolean` or an `Object`)
+- a value from the **user's profile**
+- a value from the **device shared storage**
+- a value from the **current app's private storage**
+- a value from a **query parameter**
+- a value as **result of a function** (optionally returning a promise when asynchronous)
 
 ```js
 Fliplet.FormBuilder.get()
@@ -179,7 +179,7 @@ Fliplet.FormBuilder.get()
 
 Gets or sets the value of a form field.
 
-**Note: using `val()` is deprecated. We do recommend using the new `set()` and `get()` methods described in the sections above.**
+<p class="warning"><strong>DEPRECATION NOTICE:</strong> using `val()` is should be considered deprecated for new apps. We do recommend using the new `set()` and `get()` methods described in the sections above.</p>
 
 ```js
 Fliplet.FormBuilder.get()
