@@ -353,7 +353,7 @@ connection.find({
 
 Use the `order` parameter to define the order at which entries are returned for your join.
 
-Note: this parameter can be used for attributes such as "id" and "createdAt". If you need to order by actual data in your entry, use the "data." prefix (e.g. `data.Title`).
+<p class="warning"><strong>Note:</strong> this parameter can be used for attributes such as <strong>"id"</strong> and <strong>"createdAt"</strong>. If you need to order by actual data in your entry, use the <strong>"data."</strong> prefix (such as <code>data.Title</code>).</p>
 
 ```js
 connection.find({
