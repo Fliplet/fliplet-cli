@@ -65,3 +65,7 @@ $('.search-handle').click(function (event) {
 $('body').on('blur', '.ais-search-box--input', function () {
   $(this).removeClass('in-focus');
 });
+
+if (window.isBetaFeature) {
+  $('body').addClass('is-beta');
+}

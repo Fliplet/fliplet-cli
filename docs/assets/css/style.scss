@@ -6,6 +6,8 @@
 $primaryBackground: #153c49;
 $lightBackground: #f2f6f7;
 
+$warningColor: #fdff6b;
+
 p {
   line-height: 1.8;
 }
@@ -54,6 +56,11 @@ ul > li > ul {
       background-size: contain;
     }
   }
+}
+
+.is-beta .page-header {
+  background-color: $warningColor;
+  background-image: linear-gradient(-120deg, $warningColor, lighten($warningColor, 10%));
 }
 
 .project-name {
@@ -157,7 +164,7 @@ ul > li > ul {
 }
 
 .warning {
-  background: #fdff6b;
+  background: $warningColor;
   padding: 15px 20px;
   border: 1px solid #dee040;
   border-radius: 7px;
