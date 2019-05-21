@@ -372,3 +372,6 @@ connection.find({
 ```
 
 ---
+
+[Back to DataSources general documentation](../fliplet-datasources.md)
+{: .buttons}
