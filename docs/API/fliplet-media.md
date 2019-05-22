@@ -25,7 +25,45 @@ Fliplet.Media.Folders.get().then(function (response) {
 Fliplet.Media.Folders.get({ organizationId: 1 }).then(function (response) {});
 
 // Belonging to an app
-Fliplet.Media.Folders.get({ appid: 1 }).then(function (response) {});
+Fliplet.Media.Folders.get({ appId: 1 }).then(function (response) {});
+```
+
+Sample response for the above methods:
+
+```json
+{
+  "files": [
+    {
+      "appId": null,
+      "contentType": "image/jpeg",
+      "createdAt": "2019-01-07T16:58:43.609Z",
+      "id": 1,
+      "isEncrypted": true,
+      "mediaFolderId": null,
+      "name": "Foo.jpg",
+      "organizationId": 123,
+      "path": "apps/1/2895a2611b753a74f2ae5097411579e4223-234-2632.jpg",
+      "size": [ 640, 480 ],
+      "thumbnail": "https://path/to/thumbnail.jpg",
+      "updatedAt": "2019-01-07T16:58:43.619Z",
+      "url": "https://path/to/secure-file.jpg",
+      "userId": 1
+    },
+  ],
+  "folders": [
+    {
+      "appId": null,
+      "createdAt": "2019-01-08T17:06:03.377Z",
+      "deletedAt": null,
+      "id": 1,
+      "masterMediaFolderId": null,
+      "name": "My folder",
+      "organizationId": 2,
+      "parentId": null,
+      "updatedAt": "2019-01-08T17:06:03.377Z"
+    }
+  ]
+}
 ```
 
 ### Create a new folder
