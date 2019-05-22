@@ -58,7 +58,6 @@ Sample response for the above methods:
       "createdAt": "2019-01-08T17:06:03.377Z",
       "deletedAt": null,
       "id": 1,
-      "masterMediaFolderId": null,
       "name": "My folder",
       "organizationId": 2,
       "parentId": null,
@@ -67,6 +66,8 @@ Sample response for the above methods:
   ]
 }
 ```
+
+Note: `parentId` on a folder indicates whether this folder is a subfolder of another folder. If you want to query for all subfolders of a folder, provide the `folderId` parameter to the above JS APIs with the required ID.
 
 ### Create a new folder
 
