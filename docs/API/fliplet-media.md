@@ -14,19 +14,19 @@ The `fliplet-media` package contains the following namespaces:
 ### Get the list of folders and files for your organization or a specific app
 
 ```js
-// By default, this gets all folders and files for the current app
+// By default, this gets all top-level folders and files for the current app
 Fliplet.Media.Folders.get().then(function (response) {
   // response.folders
   // response.files
 });
 
-// Get a list of files for an organisation by its ID
+// Get a list of all top-level folders and files for an organisation by its ID
 Fliplet.Media.Folders.get({ organizationId: 1 }).then(function (response) {});
 
-// Get a list of files for an app by its ID
+// Get a list of all top-level folders and files for an app by its ID
 Fliplet.Media.Folders.get({ appId: 2 }).then(function (response) {});
 
-// Get a list of files and subfolders for a folder by its ID
+// Get a list of files and subfolders for a specific folder by its ID
 Fliplet.Media.Folders.get({ folderId: 3 }).then(function (response) {});
 ```
 
