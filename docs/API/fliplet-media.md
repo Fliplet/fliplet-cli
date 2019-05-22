@@ -105,48 +105,6 @@ Fliplet.Media.Files.upload({
 Fliplet.Media.Files.delete(2).then(function onComplete() { });
 ```
 
-### Get images to offline cache
-Size options see [GM Resize docs](http://aheckmann.github.io/gm/docs.html#resize)
-files attribute on the param is an array of objects containing `name` and any other data you find useful.
-```js
-Fliplet.Media.Files.getCachedImages({
-  folderId: 456,
-  files: [{ name: 'John.jpg' }, { name: 'Alice.jpg' }],
-  size: '80x80>',
-  onProgress: function onProgress (file, data) {
-    /*
-    file = { name: 'John.jpg' }
-    data = {
-      id: 1,
-      name: 'John.jpg',
-      fileName: '1-80x80>-John.jpg',
-      path: 'url-to-your-file'
-      updatedAt: '2016-12-14T12:14:24.019Z'
-    }
-    */
-
-    // this is the best place to update the src of your img tags
-    // since the function will be called every time an image has been
-    // downloaded to the device storage
-  }
-}).then(function onFinish (images) {
-  /*
-  images [
-    {
-      file: { name: 'John.jpg'},
-      data: {
-        id: 1,
-        name: 'John.jpg',
-        fileName: '1-80x80>-John.jpg',
-        path: 'url-to-your-file'
-        updatedAt: '2016-12-14T12:14:24.019Z'
-      }
-    }
-  ]
-  */
-});
-```
-
 ---
 
 ## Authentication
@@ -163,7 +121,7 @@ var authenticatedHtml = Fliplet.Media.authenticate('<img src="https://api.fliple
 
 Please note that using the above requires the `fliplet-media` dependency on the app's screen to be available.
 
-If you're using Handlebars to print out your URLs, you might want to create your own Handlebars helper in your screen custom code as follows:
+If you're using Handlebars to print out your URLs, you can use the `auth` helper or simply create your own one:
 
 ```js
 Handlebars.registerHelper('addAuthentication', function(str) {
@@ -178,6 +136,9 @@ And then use it in your directory templates like:
 <img src="{{{addAuthentication someFileUrl}}}" />
 
 <p>{{{addAuthentication someContent}}}</p>
+
+<!-- using our default helper -->
+<p>{{{auth someContent}}}</p>
 ```
 {% endraw %}
 
