@@ -119,9 +119,15 @@ var authenticatedUrl = Fliplet.Media.authenticate(mediaFile.url);
 var authenticatedHtml = Fliplet.Media.authenticate('<img src="https://api.fliplet.com/v1/media/files/123/contents/Foo.jpg" />');
 ```
 
-Please note that using the above requires the `fliplet-media` dependency on the app's screen to be available.
+If you're using Handlebars to print out your URLs, you can use our built-in `auth` helper:
 
-If you're using Handlebars to print out your URLs, you can use the `auth` helper or simply create your own one:
+{% raw %}
+```handlebars
+<img src="{{{auth someFileUrl}}}" />
+```
+{% endraw %}
+
+You can also create your own helper if you need more control:
 
 ```js
 Handlebars.registerHelper('addAuthentication', function(str) {
@@ -135,10 +141,7 @@ And then use it in your directory templates like:
 ```handlebars
 <img src="{{{addAuthentication someFileUrl}}}" />
 
-<p>{{{addAuthentication someContent}}}</p>
-
-<!-- using our default helper -->
-<p>{{{auth someContent}}}</p>
+<p>The authenticated URL is {{{addAuthentication someContent}}}</p>
 ```
 {% endraw %}
 
