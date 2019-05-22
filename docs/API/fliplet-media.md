@@ -11,18 +11,21 @@ The `fliplet-media` package contains the following namespaces:
 
 ## Folders
 
-### Get the list of folders belonging to an organization or an app
+### Get the list of folders and files belonging to an organization or an app
 
 ```js
 // By default, belonging to the current app.
 // If not set, to the current organization
-Fliplet.Media.Folders().then(function (folders) {});
+Fliplet.Media.Folders.get().then(function (response) {
+  // response.folders
+  // response.files
+});
 
 // Belonging to an organization
-Fliplet.Media.Folders({ organizationId: 1 }).then(function (folders) {});
+Fliplet.Media.Folders.get({ organizationId: 1 }).then(function (response) {});
 
 // Belonging to an app
-Fliplet.Media.Folders({ appid: 1 }).then(function (folders) {});
+Fliplet.Media.Folders.get({ appid: 1 }).then(function (response) {});
 ```
 
 ### Create a new folder
