@@ -993,8 +993,10 @@ The `data` object shown below will contain the following keys:
 Fliplet.Hooks.on('beforePageView', function (data) {
   // You can return a promise if you need async processing to be carried out
 
-  // If you want to stop execution, simply return a promise rejection:
-  return Promise.reject({ errorMessage: 'Cannot navigate there' });
+  // If you want to stop execution, simply return a promise rejection
+  if (data.page.id === 123) {
+    return Promise.reject({ errorMessage: 'Cannot navigate to page 123' });
+  }
 });
 ```
 
