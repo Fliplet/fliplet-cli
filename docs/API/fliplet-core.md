@@ -981,6 +981,42 @@ Here's a list of transitions you can use:
 - `curl.up` - Curl Up (iOS) / Slide Up (Android/Windows)
 - `curl.down` - Curl Down (iOS) / Slide Down (Android/Windows)
 
+### Register a hook to be fired before navigating to a screen
+
+You can register a function to be called whenever your app is about to navigate to a screen. This is useful if you want to make changes to any of the given parameters (prior to the navigation), or you need to run custom code or you simply want to completely stop the screen from navigating away.
+
+The `data` object shown below will contain the following keys:
+
+- `page` (**Object** with `{ id }`) The target screen
+
+```js
+Fliplet.Hooks.on('beforePageView', function (data) {
+  // You can return a promise if you need async to be carried out
+
+  // If you want to stop execution, simply return a promise rejection:
+  return Promise.reject({ errorMessage: 'Cannot navigate there' });
+});
+```
+
+Let's make one further example where we create two specific screens, one for native apps and one for webapps. The hook to be added in Global JS will make sure users end up in the relevant screen depending on their device, regardless of what screen the device is being redirected to:
+
+```js
+var nativePageId = 123;
+var webPageId = 456;
+
+Fliplet.Hooks.on('beforePageView', function(data) {
+  // Navigate to native screen when navigating to web screen on a mobile device
+  if (Fliplet.Env.is('native') && data.page.id === webPageId) {
+    return Promise.reject({ navigate: { action: 'screen', page: nativePageId } });
+  }
+
+  // Navigate to web screen when navigating to native screen on a web browser
+  if (Fliplet.Env.is('web') && data.page.id === nativePageId) {
+    return Promise.reject({ navigate: { action: 'screen', page: webPageId } });
+  }
+});
+```
+
 ### Navigate using the options given by the link provider
 
 When using the `com.fliplet.link` provider to get the navigation details, the function below can be used to parse such details.
