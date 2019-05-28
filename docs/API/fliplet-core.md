@@ -987,7 +987,7 @@ You can register a function to be called whenever your app is about to navigate 
 
 The `data` object shown below will contain the following keys:
 
-- `page` (**Object** with `{ id }`) The target screen
+- `page` target screen, an **Object** with `{ id }`
 
 ```js
 Fliplet.Hooks.on('beforePageView', function (data) {
