@@ -983,7 +983,7 @@ Here's a list of transitions you can use:
 
 ### Register a hook to be fired before navigating to a screen
 
-You can register a function to be called whenever your app is about to navigate to a screen. This is useful if you want to make changes to any of the given parameters (prior to the navigation), or you need to run custom code or you simply want to completely stop the screen from navigating away.
+You can register a function to be called whenever your app is about to navigate to a screen (page). This is useful if you want to make changes to any of the given parameters (prior to the navigation), or you need to run custom code or you simply want to completely stop the screen from navigating away.
 
 The `data` object shown below will contain the following keys:
 
