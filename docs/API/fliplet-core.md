@@ -76,7 +76,7 @@ These variables are usually available on app screens as long as components and p
 - `pageMasterId` - when called from a live app, returns the ID of the master page seen through Fliplet Studio
 - `pageTitle` - the current page (screen) title
 - `pageSettings` - object with public settings for the current page
-- `platform` - either `'web'` or `'native'`
+- `platform` - either `'web'` or `'native'` (use [Fliplet.Env.is()](#check-the-current-apps-environment-platform) for easier checks)
 - `provider` - `true / false` whether the current component (widget) is running in provider mode
 - `preview` - `true / false` true when you are in edit or preview mode in Fliplet Studio
 - `user` - the current user
