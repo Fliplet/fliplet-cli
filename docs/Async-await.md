@@ -53,7 +53,7 @@ try {
 
 The above works because when we detect the **await** keyword in your apps and screens custom code we wrap your code into a asynchronous function, like:
 
-```
+```js
 (async function () {
   // your code which uses "await" is here
 })();
