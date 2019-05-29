@@ -55,7 +55,7 @@ var appId = Fliplet.Env.get('appId');
 
 These variables are usually available on app screens as long as components and providers:
 
-- `apiUrl` - the URL of Fliplet APIs (fixed value of https://api.fliplet.com/)
+- `apiUrl` - the base URL of Fliplet APIs (e.g. `https://api.fliplet.com/`)
 - `appFonts` - array of fonts uploaded for the current app
 - `appHooks` - array of security hooks that have been set up the current app
 - `appId` - the current app id
@@ -65,7 +65,7 @@ These variables are usually available on app screens as long as components and p
 - `appUpdatedAt` - timestamp set to the last time a change has been made via Fliplet Studio to the current app
 - `appVersion` - number pointing to the app's version (when using Fliplet Viewer, its value will be `(DEV)`)
 - `appTemplate` - boolean indicating whether the app is a template
-- `appsUrl` - string with a fixed value for https://apps.fliplet.com/
+- `appsUrl` - the base URL for Fliplet Apps (e.g. `https://apps.fliplet.com/`)
 - `development` - `true / false` true when if developing via the Fliplet CLI
 - `interact` - `true / false` true when you are in edit mode in Fliplet Studio
 - `masterAppId` - when called from a live app, returns the ID of the master app seen through Fliplet Studio
@@ -83,9 +83,25 @@ These variables are usually available on app screens as long as components and p
 
 ### Set an environment variable
 
+Through the `set()` method you can overwrite any of the above environment variables at runtime or add new ones. Please note that they will only be available until the screen navigates away to a new screen.
+
 ```js
 Fliplet.Env.set('appId', 2);
 ```
+
+### Check the current app's environment (platform)
+
+Use the `is()` method to check whether the current app is running in a `native` (e.g. iOS and Android devices) or `web` environment.
+
+```js
+if (Fliplet.Env.is('native')) {
+  // this code will run on native devices (iOS and Android) only
+}
+
+if (Fliplet.Env.is('web')) {
+  // this code will run on desktop browsers only
+}
+````
 
 ---
 
