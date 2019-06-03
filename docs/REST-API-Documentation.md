@@ -11,7 +11,7 @@ All our APIs require your client to authenticate when accessing the endpoints. P
 
 ## Using our APIs
 
-### Fliplet Data Sources
+### Data Sources
 
 Read and write data to our virtual tables and enhance your Fliplet apps. This is often used to integrate your list of contacts (e.g. from Azure Directory) with Fliplet.
 
