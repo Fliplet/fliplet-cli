@@ -1,4 +1,4 @@
-# Fliplet Apps REST APIs
+# Apps REST APIs
 
 ## Authentication
 

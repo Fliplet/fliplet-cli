@@ -1,4 +1,4 @@
-# Fliplet App Subscriptions REST APIs
+# App Subscriptions REST APIs
 
 Contains endpoints to read and manage your app's users subscribed via push notifications.
 

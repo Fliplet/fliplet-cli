@@ -1,4 +1,4 @@
-# Fliplet Notifications REST APIs
+# Notifications REST APIs
 
 ## Authentication
 

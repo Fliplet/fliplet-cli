@@ -1,4 +1,4 @@
-# Fliplet Media REST APIs
+# Media REST APIs
 
 ## Authentication
 

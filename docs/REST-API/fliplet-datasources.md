@@ -1,4 +1,4 @@
-# Fliplet Data Sources REST APIs
+# Data Sources REST APIs
 
 Table of contents
 
