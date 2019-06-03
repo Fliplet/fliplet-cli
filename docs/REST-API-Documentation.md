@@ -43,7 +43,7 @@ Read and update your apps data.
 
 Read and manage your app's users subscribed via push notifications.
 
-[View documentation for Apps »](REST-API/fliplet-app-subscriptions.md)
+[View documentation for App Subscriptions »](REST-API/fliplet-app-subscriptions.md)
 {: .buttons}
 
 ---
