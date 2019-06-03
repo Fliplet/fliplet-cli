@@ -4,9 +4,13 @@ We regularly update our framework to support new features. If you have an older 
 
 ## Latest versions (3.9.x)
 
+### Version 3.9.7 (June 3, 2019)
+
+- **iOS**: Improvements when playing remote audio files using `Fliplet.Media`
+
 ### Version 3.9.6 (April 30, 2019)
 
-- **iOS**: Improvements when playing audio files
+- **iOS**: Bugfixes for issues reported when playing audio files
 
 ---
 
