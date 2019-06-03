@@ -37,6 +37,6 @@ Response  (Status code: 200 OK):
 }
 ```
 
-<p class="warning"><strong>Note:</strong> all "DateTime" values such as the ones contained in the <code>createdAt</code> and <code>updatedAt</code> fields are in <strong>UTC</strong> format.</p>
+<p class="warning"><strong>Note:</strong> all "DateTime" values such as the ones contained in the <code>createdAt</code> and <code>updatedAt</code> fields use the <strong>ISO 8601 (UTC timezone)</strong> format.</p>
 
 ---
