@@ -4,9 +4,12 @@
 var instance = Fliplet.Notifications.init({
   batchSize: 20, // defaults to 50
   appId: 123, // defaults to current app
+  // List of scopes to fetch notifications from.
+  // This example targets a specific user and everything sent
+  // to the "news" topic.
   scope: [
     { dataSourceId: 123, email: 'john@example.org' },
-    { topic: 'android' }
+    { topic: 'news' }
   ],
   onFirstResponse: function (err, notifications) {}
 });
