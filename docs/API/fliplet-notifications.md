@@ -1,5 +1,14 @@
 # Notifications JS APIs
 
+When dealing with app notifications, there's a few things you should keep in mind:
+
+1. Notifications belong to an `app`. You can't have a notification span across multiple apps.
+2. Notifications have a default "draft" `status`, meaning they are only visible to Fliplet Studio and Fliplet Viewer users. To make them live to all users, they must be published by updating their status to "published". You can also avoid this step by simply creating your notification as published in first place.
+3. Notifications can have a `scope` which limits their visibility. If you don't create a scope, they are treated as broadcasted messages hence available to all users of your app. On the other hand, defining a scope (or a list) will make them private and available to only specific users (e.g. individual users or groups)
+4. Notifications have read receipts. To mark them as read you will need to identify your users with a GUID (`recipientId`). Fliplet apps automatically take care of this so no extra work is required from your end.
+
+App notifications can optionally send a notification. When doing so, you should provide the `payload` and optionally a list of subscriptions IDs to target and a delay for the notification.
+
 ```js
 var instance = Fliplet.Notifications.init({
   batchSize: 20, // defaults to 50
