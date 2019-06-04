@@ -4,13 +4,25 @@
 var instance = Fliplet.Notifications.init({
   batchSize: 20, // defaults to 50
   appId: 123, // defaults to current app
+  scope: [
+    { dataSourceId: 123, email: 'john@example.org' },
+    { topic: 'android' }
+  ],
   onFirstResponse: function (err, notifications) {}
 });
 
-// insert a new notification
+// insert a new notification for a specific user
 instance.insert({
-  data: { foo: 'bar' },
-  pushNotification: { payload: {}, delayUntilTimestamp: 123 }
+  data: { message: 'Hi John!' },
+  pushNotification: { payload: {}, delayUntilTimestamp: 123 },
+  scope: [
+    { dataSourceId: 123, email: 'john@example.org' }
+  ]
+})
+
+// insert a new notification broadcasting everyone
+instance.insert({
+  data: { message: 'Hi Everyone!' }
 })
 
 // update a notification by id
