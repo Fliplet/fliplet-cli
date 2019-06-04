@@ -7,7 +7,7 @@ When dealing with app notifications, there's a few things you should keep in min
 3. Notifications can have one or more **scopes** which limit their visibility. If you don't create a scope, they are treated as broadcasted messages hence available to all users of your app. On the other hand, defining a scope (or a list) will make them private and available to only specific users (e.g. individual users or groups)
 4. Notifications have read receipts. To mark them as read you will need to identify your users with a GUID (`recipientId`). Fliplet apps automatically take care of this so no extra work is required from your end.
 
-App notifications can optionally send a notification. When doing so, you should provide the `payload` and optionally a list of subscriptions IDs to target and a delay for the notification.
+App notifications can optionally send a notification. When doing so, you should provide the `pushNotification` payload, optionally a list of subscriptions IDs to target and the optional delay for the notification.
 
 ```js
 var instance = Fliplet.Notifications.init({
