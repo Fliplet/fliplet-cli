@@ -6,10 +6,16 @@
 $primaryBackground: #36344c;
 $lightBackground: #f2f6f7;
 
+$secondaryBackground: #ec5d6b;
+
 $warningColor: #fdff6b;
 $warningTextColor: #6c6d00;
 
 $sidebarWidth: 300px;
+
+a {
+  color: $secondaryBackground;
+}
 
 p {
   line-height: 1.8;
@@ -223,7 +229,7 @@ ul > li > ul {
 }
 
 .blocks a:hover div {
-  background: #1e6bb8;
+  background: lighten($primaryBackground, 20%);
 }
 
 .blocks h4 {
