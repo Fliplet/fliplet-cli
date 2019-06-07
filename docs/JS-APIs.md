@@ -22,8 +22,6 @@ Adding our dependencies to apps screens only takes a few seconds. Just browse to
 
 Then, click the save button and you're good to go! You can now use the methods that the package is exposing.
 
-**Note: Don't forget to separate different packages by a comma.**
-
 ---
 
 ## Dependencies (packages)
