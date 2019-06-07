@@ -13,7 +13,7 @@ Welcome to the developers documentation for the **Fliplet Platform**. Here you c
   <a href="/REST-API-Documentation.html">
     <div>
       <h4>REST API Documentation</h4>
-      <p>Integrate your backend with our easy-to-use industry standard APIs.</p>
+      <p>Integrate your backend with our easy-to-use RESTful APIs.</p>
     </div>
   </a>
   <a href="/API/components/form-builder.html">
