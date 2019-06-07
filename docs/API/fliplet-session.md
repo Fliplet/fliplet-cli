@@ -1,12 +1,6 @@
 # Session JS APIs
 
-The `fliplet-session` package contains the following namespaces:
-
-- [Session](#session)
-
----
-
-## Session
+## Get and set values
 
 ### Get the current session
 
@@ -40,7 +34,11 @@ Fliplet.Session.clear().then(function onSessionCleared() {
 });
 ```
 
-### Log out the user from a session passport
+---
+
+## Passports
+
+### Log out the user from a passport
 
 The `logout()` function requires the first parameter to be the passport type to log out from. Valid inputs are `saml2`, `dataSource` and `flipletLogin`.
 
@@ -50,7 +48,7 @@ Fliplet.Session.logout('saml2').then(function () {
 });
 ```
 
-### Destroys the current session
+## Destroy the current session
 
 Note: you should not use this on webapps since users won't be able to log in back.
 
@@ -62,7 +60,7 @@ Fliplet.Session.destroy().then(function onSessionDestroyed() {
 
 ---
 
-### Read details about connected accounts
+## Read details about connected accounts
 
 If your app contains a login component (either DataSource, SAML2 or Fliplet) you can use the session to check whether the user is logged in and in and some of the connected account(s) details:
 
@@ -93,7 +91,7 @@ Fliplet.Session.get().then(function(session) {
 
 Data for the connected account(s) can also be read and used as necessary:
 
-#### Example for dataSource login
+### Example for dataSource login
 
 ```js
 Fliplet.Session.get().then(function(session) {
@@ -106,7 +104,7 @@ Fliplet.Session.get().then(function(session) {
 });
 ```
 
-#### Example for Fliplet Studio login
+### Example for Fliplet Studio login
 
 ```js
 Fliplet.Session.get().then(function(session) {
