@@ -73,10 +73,11 @@ ul > li > ul {
   .list {
     margin: 20px 0 40px;
 
-    a {
+    a, p {
       display: block;
       font-size: 14px;
       color: #FFF;
+      margin: 0;
 
       &.title-H1 {
         margin-top: 20px;

@@ -45,6 +45,7 @@ search.start();
 var $window = $(window);
 var $html = $('html');
 var $toc = $('#toc');
+var $tocList = $toc.find('.list');
 
 function onScroll() {
   var scrollTop = $window.scrollTop();
@@ -72,7 +73,6 @@ if (window.isBetaFeature) {
 }
 
 if (location.pathname !== '/') {
-  $html.addClass('with-sidebar');
 
   $('.main-content h1, .main-content h2, .main-content h3, .main-content h4').each(function () {
     $title = $(this);
@@ -80,7 +80,7 @@ if (location.pathname !== '/') {
     var prefix = node === 'H4' ? '- ' : '';
 
     var $el = $('<a href="#" data-to-id="' + $title[0].id + '" class="title-' + node + '">' + prefix + $title.text() + '</a>');
-    $toc.find('.list').append($el);
+    $tocList.append($el);
 
     $el.click(function (e) {
       e.preventDefault();
@@ -91,5 +91,22 @@ if (location.pathname !== '/') {
     });
   });
 } else {
-  $html.removeClass('with-sidebar');
+  $('ol > li').each(function () {
+    var $a = $(this).find('> a');
+
+    if ($a.length) {
+      $a = $a.clone();
+      $a.addClass('title-H2');
+      $tocList.append($a);
+    } else {
+      var txt = $(this).html().split('<')[0].trim();
+      $tocList.append('<p class="title-H2">' + txt + '</p>');
+    }
+
+    $(this).find('li a').each(function () {
+      var $a = $(this).clone();
+      $a.addClass('title-H3');
+      $tocList.append($a);
+    });
+  });
 }
