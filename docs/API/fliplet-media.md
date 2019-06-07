@@ -105,6 +105,75 @@ Fliplet.Media.Files.upload({
 Fliplet.Media.Files.delete(2).then(function onComplete() { });
 ```
 
+### Search for folders and files
+
+Use the `search()` method fo find folders and files in your app or organisation or a specific folder.
+
+- You can search by `name`
+- You can filter results by `appId` or `folderId`
+- Results will include a `type` (`folder` or `file`)
+- Results will include `app` and `organisation` properties with `{ id, name }` when available
+- Results will include a `parentFolder` with `{ id, name }` which recursively include any folder up to their app or organisation folder
+
+```js
+// search by file name
+Fliplet.Media.Folders.search({ name: 'zelda' })
+
+// search by app
+Fliplet.Media.Folders.search({ appId: 123 })
+
+// search by folder
+Fliplet.Media.Folders.search({ folderId: 456 })
+```
+
+Sample response:
+
+```json
+[
+  {
+    "appId": null,
+    "contentType": "image/jpeg",
+    "createdAt": "2019-06-07T14:39:04.194Z",
+    "dataSourceEntryId": null,
+    "dataTrackingId": null,
+    "deletedAt": null,
+    "id": 267,
+    "isEncrypted": true,
+    "isOrganizationMedia": false,
+    "masterMediaFileId": null,
+    "mediaFolderId": 54,
+    "name": "Foo bar.jpg",
+    "organization": {
+      "id": 11,
+      "name": "Otro company"
+    },
+    "organizationId": 11,
+    "parentFolder": {
+      "app": {
+        "id": 147,
+        "name": "Hello world"
+      },
+      "id": 54,
+      "name": "Subfolder in app",
+      "parentFolder": {
+        "app": {
+          "id": 147,
+          "name": "Hello world"
+        },
+        "id": 53,
+        "name": "Folder in app"
+      }
+    },
+    "size": [ 4400, 2750 ],
+    "thumbnail": "https://path/to/thumbnail/54/05bbf86878931661858c42441db0c2ce614-439-6054-t.jpg",
+    "type": "file",
+    "updatedAt": "2019-06-07T14:39:04.202Z",
+    "url": "https://api.fliplet.com/v1/media/files/123/contents/hello-world.jpg",
+    "userId": 245
+  }
+]
+```
+
 ---
 
 ## Authentication
