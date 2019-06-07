@@ -107,9 +107,7 @@ Fliplet.Media.Files.delete(2).then(function onComplete() { });
 
 ---
 
-## Search
-
-### Search folders and files
+## Search folders and files
 
 Use the `search()` method fo find folders and files in your app or organisation or a specific folder.
 
