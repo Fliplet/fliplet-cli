@@ -13,7 +13,7 @@ The above code will:
  - run your tests
 
 
-## Stack to write tests
+## Tech-stack used for tests
 
 - [Nightmare](http://nightmarejs.org)
 - Expect/Should from [Chai](http://chaijs.com/)
@@ -23,15 +23,15 @@ The above code will:
 
 You should include your tests under `tests` folder of the widget.
 
-## Available to write your tests
+## Variables available when writing tests
 
-- interfaceBrowser - A Nightmare instance of your widget interface.
-- buildBrowser - A Nightmare instance of your widget instance build.
-- interfaceUrl - The url for the interface.
-- buildUrl - The ural for your widget instance build.
-- widgetInstance - The widgetInstance as it was saved on the database.
-- buildSelector - A querySelector to select the all block of your build HTML.
-- interfaceBrowser.save() - Method to save your settings on the widget interface 
+- `interfaceBrowser` - A Nightmare instance of your widget interface.
+- `buildBrowser` - A Nightmare instance of your widget instance build.
+- `interfaceUrl` - The url for the interface.
+- `buildUrl` - The ural for your widget instance build.
+- `widgetInstance` - The widgetInstance as it was saved on the database.
+- `buildSelector` - A querySelector to select the all block of your build HTML.
+- `interfaceBrowser.save()` - Method to save your settings on the widget interface
 
 ## Sample test
 
