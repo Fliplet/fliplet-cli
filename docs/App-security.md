@@ -18,7 +18,7 @@ If you need more control on your security rules, you can also write your custom 
 - `session` (Object) the user's session, when available. Contains the same attributes found in the `v1/session` endpoint
 - `ipRangeCheck` (Function) please check the next section on IP address whitelisting/blacklisting for usage
 
-Here follows an example that protects all pages (aside from the `loginScreen`) from being accessed unless the user is logged in against a **dataSource** and the column `foo` of his user has value `bar`.
+Here follows an example that protects all screens (aside from the `loginScreen`) from being accessed unless the user is logged in against a **dataSource** and the column `foo` of his user has value `bar`.
 
 When those conditions are not met, an `error` is raised and the user is redirected (see `navigate`) to the `loginScreen`:
 

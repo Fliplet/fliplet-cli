@@ -43,7 +43,7 @@ The `build.html` output of menus gets compiled with some built-in variables at r
 
 - **canGoBack** `Boolean` - True when the back button should be displayed
 - **title** `String` - The title of the current page
-- **pages** `Array` - An array of the page of the menu
+- **pages** `Array` - An array of the screens of the menu
 - **appVersion** `String` - The current version of the app
 
 Each **page** in **pages** will have a **label** `String` and a **action** `JSON String` with the navigation details. Most likely, this is what you will do in your template:
