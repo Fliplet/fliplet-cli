@@ -19,7 +19,7 @@ The following namespaces are publicly available under this package. Please click
 - [Navigator](#navigator)
 - [Notifications](#notifications)
 - [Organizations](#organizations)
-- [Pages](#pages)
+- [Screens](#screens)
 - [Profile](#profile)
 - [Storage](#storage)
 - [Studio](#studio)
@@ -654,9 +654,9 @@ Fliplet.Apps.get().then(function (apps) {
 
 ---
 
-## Pages
+## Screens
 
-### Get the list of pages of the current app
+### Get the list of screens in the current app
 
 ```js
 Fliplet.Pages.get().then(function (appPages) {
