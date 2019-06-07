@@ -9,6 +9,8 @@ $ cd my-awesome-component
 $ fliplet publish
 ```
 
+## Login with your account
+
 Publishing requires you to log in against your Fliplet Studio account:
 
 ```
@@ -26,6 +28,8 @@ prompt: password:  ***********
 
 Logged in successfully. You can now publish widgets.
 ```
+
+## Set your organization
 
 Furthermore, in order for you to publish you have to set a target `organizationId` for your component.
 
@@ -47,7 +51,13 @@ $ fliplet organization 123
 Organization set.
 ```
 
-You are now ready to publish components, themes and menus on Fliplet.
+## Publish
+
+You are now ready to publish components, themes and menus on Fliplet:
+
+```
+$ fliplet publish
+````
 
 ---
 
