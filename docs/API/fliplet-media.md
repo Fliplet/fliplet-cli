@@ -107,7 +107,9 @@ Fliplet.Media.Files.delete(2).then(function onComplete() { });
 
 ---
 
-## Search folders and files
+## Search
+
+### Search folders and files
 
 Use the `search()` method fo find folders and files in your app or organisation or a specific folder.
 
@@ -182,6 +184,8 @@ Sample response:
 
 ## Authentication
 
+### Authenticate encrypted files
+
 Media files might require an auth token to be accessed if your organization has encryption enabled. We have a little helper available to do the heavy lifting for you, just pass any media file url or even a string with many URLs in it and they'll get patched automatically:
 
 ```js
@@ -220,7 +224,7 @@ And then use it in your directory templates like:
 
 ---
 
-## Download files to devices (beta)
+## Download files to devices
 
 <p class="warning"><strong>BETA FEATURE:</strong> Please note that this feature is currently only available in beta and documentation provided below may be limited. Apps support this feature from <a href="https://developers.fliplet.com/Native-framework-changelog.html#version-396-april-30-2019">version 3.9.6</a> and newer.</p>
 
