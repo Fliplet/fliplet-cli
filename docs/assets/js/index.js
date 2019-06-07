@@ -44,6 +44,7 @@ search.start();
 
 var $window = $(window);
 var $html = $('html');
+var $toc = $('#toc');
 
 function onScroll() {
   var scrollTop = $window.scrollTop();
@@ -68,4 +69,27 @@ $('body').on('blur', '.ais-search-box--input', function () {
 
 if (window.isBetaFeature) {
   $('body').addClass('is-beta');
+}
+
+if (location.pathname !== '/') {
+  $html.addClass('with-sidebar');
+
+  $('.main-content h1, .main-content h2, .main-content h3, .main-content h4').each(function () {
+    $title = $(this);
+    var node = $title[0].tagName;
+    var prefix = node === 'H4' ? '- ' : '';
+
+    var $el = $('<a href="#" data-to-id="' + $title[0].id + '" class="title-' + node + '">' + prefix + $title.text() + '</a>');
+    $toc.find('.list').append($el);
+
+    $el.click(function (e) {
+      e.preventDefault();
+
+      var targetId = $(this).attr('data-to-id');
+
+      $("html, body").animate({ scrollTop: $('#' + targetId).offset().top - 50 }, 500);
+    });
+  });
+} else {
+  $html.removeClass('with-sidebar');
 }
