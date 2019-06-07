@@ -72,8 +72,14 @@ if (window.isBetaFeature) {
   $('body').addClass('is-beta');
 }
 
-if (location.pathname !== '/') {
+function checkIfSidebarFits() {
+  $html.toggleClass('with-sidebar', $window.width() > 900);
+}
 
+$window.resize(checkIfSidebarFits);
+checkIfSidebarFits();
+
+if (location.pathname !== '/') {
   $('.main-content h1, .main-content h2, .main-content h3, .main-content h4').each(function () {
     $title = $(this);
     var node = $title[0].tagName;
