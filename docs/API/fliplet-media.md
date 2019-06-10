@@ -83,6 +83,26 @@ Fliplet.Media.Folders.create({ name: 'foo' }).then(function (folder) { });
 Fliplet.Media.Folders.delete(1).then(function onComplete() { });
 ```
 
+### Rename a file
+
+```js
+Fliplet.Media.Folders.update(123, {
+  name: 'Foo'
+});
+```
+
+### Move file
+
+```js
+Fliplet.Media.Folders.update(123, {
+  appId: 123,         // move to an app
+  parentId: 456,      // move to a folder
+  organizationId: 789 // move to the organisation
+});
+```
+
+Note: when moving a folder out from a subfolder (and to an app or organisation), please set its `parentId` to `null`.
+
 ## Files
 
 ### Upload one or more files
@@ -104,6 +124,26 @@ Fliplet.Media.Files.upload({
 // Delete a file given its id
 Fliplet.Media.Files.delete(2).then(function onComplete() { });
 ```
+
+### Rename a file
+
+```js
+Fliplet.Media.Files.update(123, {
+  name: 'Foo'
+});
+```
+
+### Move file
+
+```js
+Fliplet.Media.Files.update(123, {
+  appId: 123,         // move to an app
+  mediaFolderId: 456, // move to a folder
+  organizationId: 789 // move to the organisation
+});
+```
+
+Note: when moving a file from a folder to an app or organisation, please set its `mediaFolderId` to `null`.
 
 ---
 
