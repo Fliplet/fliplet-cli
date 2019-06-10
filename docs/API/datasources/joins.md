@@ -9,7 +9,7 @@ Joins are defined by a unique name and their configuration options; any number o
 ```js
 Fliplet.DataSources.connect(123).then(function (connection) {
   // 1. Extract articles from dataSource 123
-  connection.find({
+  return connection.find({
     join: {
       // ... with their comments
       Comments: { options },
@@ -18,7 +18,7 @@ Fliplet.DataSources.connect(123).then(function (connection) {
       Users: { options }
     }
   })
-})
+}).then(console.log)
 ```
 
 Before we dive into complete examples, let's start with the three types of joins we support.
