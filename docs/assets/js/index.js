@@ -93,7 +93,9 @@ if (location.pathname !== '/') {
 
       var targetId = $(this).attr('data-to-id');
 
-      $("html, body").animate({ scrollTop: $('#' + targetId).offset().top - 50 }, 500);
+      $("html, body").animate({ scrollTop: $('#' + targetId).offset().top - 50 }, 500, function () {
+        location.hash = targetId;
+      });
     });
   });
 } else {
