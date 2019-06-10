@@ -83,7 +83,7 @@ Fliplet.Media.Folders.create({ name: 'foo' }).then(function (folder) { });
 Fliplet.Media.Folders.delete(1).then(function onComplete() { });
 ```
 
-### Rename a file
+### Rename a folder
 
 ```js
 Fliplet.Media.Folders.update(123, {
@@ -91,7 +91,7 @@ Fliplet.Media.Folders.update(123, {
 });
 ```
 
-### Move file
+### Move a folder
 
 ```js
 Fliplet.Media.Folders.update(123, {
@@ -133,7 +133,7 @@ Fliplet.Media.Files.update(123, {
 });
 ```
 
-### Move file
+### Move a file
 
 ```js
 Fliplet.Media.Files.update(123, {
