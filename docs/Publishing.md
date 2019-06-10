@@ -9,6 +9,8 @@ $ cd my-awesome-component
 $ fliplet publish
 ```
 
+<p class="warning"><strong>Windows users:</strong> the <code>publish</code> command must be run as an <strong>administrator</strong> in order for it to work.</p>
+
 ## Login with your account
 
 Publishing requires you to log in against your Fliplet Studio account:
