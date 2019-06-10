@@ -7,7 +7,7 @@ Both DataSources **JS APIs** and **REST APIs** allow you to **fetch data from mo
 Joins are defined by a unique name and their configuration options; any number of joins can be defined when fetching data from one data source:
 
 ```js
-Fliplet.DataSources.connect(123).then(function () {
+Fliplet.DataSources.connect(123).then(function (connection) {
   // 1. Extract articles from dataSource 123
   connection.find({
     join: {
