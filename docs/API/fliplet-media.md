@@ -114,20 +114,23 @@ Use the `search()` method fo find folders and files in your app or organisation 
 <p class="warning"><strong>BETA FEATURE:</strong> Please note that this feature is currently only available in beta and its specifications may be subject to change before releasing it.</p>
 
 - You can search by `name`
-- You can filter results by `appId` or `folderId`
+- You can filter results by `appId`, `organizationId` or `folderId`
 - Results will include a `type` (`folder` or `file`)
 - Results will include `app` and `organisation` properties with `{ id, name }` when available
 - Results will include a `parentFolder` with `{ id, name }` which recursively include any folder up to their app or organisation folder
 
 ```js
 // search by file name
-Fliplet.Media.Folders.search({ name: 'zelda' })
+Fliplet.Media.Folders.search({ name: 'foo' })
 
 // search by app
 Fliplet.Media.Folders.search({ appId: 123 })
 
+// search by organization
+Fliplet.Media.Folders.search({ organizationId: 456 })
+
 // search by folder
-Fliplet.Media.Folders.search({ folderId: 456 })
+Fliplet.Media.Folders.search({ folderId: 789 })
 ```
 
 Sample response:
