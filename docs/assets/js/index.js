@@ -85,7 +85,7 @@ if (location.pathname !== '/') {
     var node = $title[0].tagName;
     var prefix = node === 'H4' ? '- ' : '';
 
-    var $el = $('<a href="#" data-to-id="' + $title[0].id + '" class="title-' + node + '">' + prefix + $title.text() + '</a>');
+    var $el = $('<a href="' +  + '" data-to-id="' + $title[0].id + '" class="title-' + node + '">' + prefix + $title.text() + '</a>');
     $tocList.append($el);
 
     $el.click(function (e) {
@@ -93,9 +93,9 @@ if (location.pathname !== '/') {
 
       var targetId = $(this).attr('data-to-id');
 
-      $("html, body").animate({ scrollTop: $('#' + targetId).offset().top - 50 }, 500, function () {
-        location.hash = targetId;
-      });
+      history.pushState(null, $title.text(), document.location.pathname + '#' + targetId);
+
+      $("html, body").animate({ scrollTop: $('#' + targetId).offset().top - 50 }, 500);
     });
   });
 } else {
