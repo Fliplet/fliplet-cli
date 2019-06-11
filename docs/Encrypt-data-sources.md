@@ -2,7 +2,7 @@
 
 Add the `crypto-js` Fliplet package to your global resources to enable encryption and decryption functionalities in your Fliplet apps.
 
-## 1. Define helpers functions
+## Set up the basic structure
 
 Before diving into components, let's define a few helpers in the **Global JS** to reuse code between screens. Simply copy and paste the following code to get started:
 
@@ -14,7 +14,7 @@ App = {
     },
     get: function () {
       return Fliplet.App.Storage.get(App.Static.KEYS).then(function (values) {
-        if (!values || !values.id || !values.key) {
+        if (!values || !values.key) {
           return Promise.reject('Security keys have not been set. Please make sure you\'re logged in before performing this action.');
         }
 
@@ -54,19 +54,17 @@ App = {
 };
 ```
 
-## 2. On user login, securely set your encryption keys
+## Set the encryption keys on user login
 
 ```js
+// Add this code to a screen with a login component
 Fliplet.Hooks.on('login', function (formEntry) {
-  // Locally store the organization private key for decrypting/encrypting data
-  return App.Keys.set({
-    id: 123,
-    key: 'FOO'
-  });
+  // Locally store the keys for decrypting/encrypting data
+  return App.Keys.set({ key: 'FOO' });
 });
 ````
 
-## 3. Configure a form to decrypt and encrypt data
+## Configure a form to decrypt and encrypt data
 
 ```js
 var entryId = Fliplet.Navigate.query.dataSourceEntryId;
