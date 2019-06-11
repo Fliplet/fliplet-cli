@@ -155,6 +155,7 @@ Use the `search()` method fo find folders and files in your app or organisation 
 
 - You can search by `name`
 - You can filter results by `appId`, `organizationId` or `folderId`
+- You can search for deleted files and folders by specifying `deletedOnly` as `true`
 - Results will include a `type` (`folder` or `file`)
 - Results will include `app` and `organisation` properties with `{ id, name }` when available
 - Results will include a `parentFolder` with `{ id, name }` which recursively include any folder up to their app or organisation folder
@@ -171,6 +172,9 @@ Fliplet.Media.Folders.search({ organizationId: 456 })
 
 // search by folder
 Fliplet.Media.Folders.search({ folderId: 789 })
+
+// search for deleted files and folders only
+Fliplet.Media.Folders.search({ deletedOnly: true })
 ```
 
 Sample response:
