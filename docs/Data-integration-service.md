@@ -352,6 +352,8 @@ module.exports.setup = (agent) => {
 
 When using the Fliplet Agent in advanced mode via a Javascript file you can define a `pull` operation if you simply want to grab the data from a Fliplet Data Source.
 
+<p class="warning"><strong>Version 1.4.0 required:</strong> Please note that this feature does require the version 1.4.0 or newer of Fliplet Agent to work.</p>
+
 If you don't need to push the retrieved data to your database, you can skip to define the `database` key defined in the `module.exports.config`.
 
 The following properties can be used when querying your data source:
