@@ -190,7 +190,7 @@ fliplet-agent uninstall C:\path\to\sample.yml
 
 ---
 
-## Advanced use (requires a JavaScript config file)
+## Advanced use
 
 **Note: this documentation only applies to users using a JavaScript configuration file instead of the simpler YML (YAML) approach.**
 
@@ -283,7 +283,7 @@ fliplet-agent start ./path/to/configurationFile.js
 
 ---
 
-## Manually define a push operation
+### Define a PUSH operation
 
 When using the Fliplet Agent in advanced mode via a Javascript file you can choose whether the input data to be sent to Fliplet needs to be manually pulled from a third party system rather than a database. As an example, you can read data from a file or an API. When doing so, keep these few points in mind:
 
@@ -344,7 +344,7 @@ module.exports.setup = (agent) => {
 };
 ```
 
-## Manually define a push operation
+### Define a PULL operation
 
 When using the Fliplet Agent in advanced mode via a Javascript file you can define a `pull` operation if you simply want to grab the data from a Fliplet Data Source.
 
