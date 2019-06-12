@@ -354,6 +354,13 @@ When using the Fliplet Agent in advanced mode via a Javascript file you can defi
 
 If you don't need to push the retrieved data to your database, you can skip to define the `database` key defined in the `module.exports.config`.
 
+The following properties can be used when querying your data source:
+
+- [where](https://developers.fliplet.com/REST-API/fliplet-datasources.html#run-queries-on-a-data-source)
+- [join](https://developers.fliplet.com/API/datasources/joins.html#using-joins-on-datasources)
+- attributes (Array of column names to select)
+
+
 ```js
 module.exports.config = {
   // Fliplet authorisation token from Fliplet Studio
@@ -377,7 +384,6 @@ module.exports.setup = (agent) => {
     targetDataSourceId: 123,
 
     // Define an optional "where" query filter
-    // https://developers.fliplet.com/REST-API/fliplet-datasources.html#run-queries-on-a-data-source
     where: {
       'Foo': 'Bar'
     },
