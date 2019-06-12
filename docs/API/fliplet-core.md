@@ -560,7 +560,7 @@ Fliplet.App.Logs.create({
 ### Save or update some settings of the current app
 
 ```js
-Fliplet.App.Settings.set({ foo: 'bar', hello: 'world').then(function () {
+Fliplet.App.Settings.set({ foo: 'bar', hello: 'world' }).then(function () {
   // optional promise callback to be called when the APIs have saved the data
 });
 ```
