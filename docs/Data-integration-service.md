@@ -348,6 +348,8 @@ module.exports.setup = (agent) => {
 };
 ```
 
+---
+
 ### Define a PULL operation
 
 When using the Fliplet Agent in advanced mode via a Javascript file you can define a `pull` operation if you simply want to grab the data from a Fliplet Data Source.
