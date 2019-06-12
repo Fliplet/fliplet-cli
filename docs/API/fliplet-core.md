@@ -480,19 +480,19 @@ Fliplet.Organization.Settings.getAll()
   });
 ```
 
-### Set settings. Current settings are extended with this ones.
+### Extend the current settings
 
 ```js
 Fliplet.Organization.Settings.set({
   user: 'foo',
-  _password: 'bar' // Settings start with _ are encrypted
+  _password: 'bar' // Settings with an underscore prefix "_" will be encrypted
 })
   .then(function(settings) {
-    // Your code
+    // Code to run when it completes
   });
 ```
 
-### Get a single setting
+### Get a setting
 
 ```js
 Fliplet.Organization.Settings.get('foo')
