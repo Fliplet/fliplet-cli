@@ -44,6 +44,10 @@ npm update -g
 
 ### Releases changelog
 
+#### 1.4.0 (June 12th, 2019)
+
+- Added support for [pull operations](#define-a-pull-operation).
+
 #### 1.3.1 (April 12th, 2019)
 
 - Security patch for the following third-party packages: **Sequelize**, **js-yaml**.
