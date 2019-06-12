@@ -283,7 +283,7 @@ fliplet-agent start ./path/to/configurationFile.js
 
 ---
 
-## Manually defining the input data to sync
+## Manually define a push operation
 
 When using the Fliplet Agent in advanced mode via a Javascript file you can choose whether the input data to be sent to Fliplet needs to be manually pulled from a third party system rather than a database. As an example, you can read data from a file or an API. When doing so, keep these few points in mind:
 
@@ -341,5 +341,48 @@ module.exports.setup = (agent) => {
     timestampColumnName: 'updatedAt',
     targetDataSourceId: 123
   });
+};
+```
+
+## Manually define a push operation
+
+When using the Fliplet Agent in advanced mode via a Javascript file you can define a `pull` operation if you simply want to grab the data from a Fliplet Data Source.
+
+If you don't need to push the retrieved data to your database, you can skip to define the `database` key defined in the `module.exports.config`.
+
+```js
+module.exports.config = {
+  // Fliplet authorisation token from Fliplet Studio
+  authToken: 'eu--123456789',
+
+  // Set to true to test the integration without sending any data to Fliplet servers
+  isDryRun: false,
+
+  // If set to true, operations will run when the script starts.
+  // Otherwise, they will just run according to their frequency.
+  syncOnInit: true
+};
+
+module.exports.setup = (agent) => {
+
+  // Pull data from a Fliplet Data Source
+  agent.pull({
+    description: 'Pull data from a Fliplet data source',
+    frequency: '* * * * *',
+    // The target data source ID
+    targetDataSourceId: 123,
+
+    // Define an optional "where" query filter
+    // https://developers.fliplet.com/REST-API/fliplet-datasources.html#run-queries-on-a-data-source
+    where: {
+      'Foo': 'Bar'
+    },
+
+    // Action to run when the data is retrieved
+    action: (entries, db) => {
+      console.log(entries)
+    }
+  });
+
 };
 ```
