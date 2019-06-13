@@ -71,7 +71,7 @@ Fliplet.Hooks.on('flListDataAfterGetData', fn);
     - **id** (Number) Component instance ID.
     - **uuid** (String) Component instance UUID.
     - **container** (jQuery object) jQuery object for the component container element.
-    - **entryId** (Number) Data source entry ID of the record to be deleted.
+    - **records** (Array) Collection of records to be used for the component.
 
 ### `flListDataBeforeDeleteConfirmation`
 
