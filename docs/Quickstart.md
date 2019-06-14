@@ -12,6 +12,8 @@ Our development tools rely on [Node.js](https://nodejs.org) and [Npm](https://ww
 
 ## 2. Install the Fliplet CLI
 
+[![Fliplet/fliplet-cli - GitHub](https://gh-card.dev/repos/Fliplet/fliplet-cli.svg)](https://github.com/Fliplet/fliplet-cli)
+
 The [Fliplet CLI](https://www.npmjs.com/package/fliplet-cli) is available through **Npm** and can be installed from the command line:
 
 ```shell
