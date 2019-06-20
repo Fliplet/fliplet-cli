@@ -161,6 +161,8 @@ When navigating to a screen that contains a **List (from data source)** componen
 Use the following query parameters when linking to a screen with **List (from data source)** components.
 
 - **dynamicListOpenId** Entry ID to be opened after the list is rendered.
+- **dynamicListOpenColumn** Column name to use for opening an entry after the list is rendered
+- **dynamicListOpenValue** Value to match in the given column for opening an entry after the list is rendered
 - **dynamicListSearchValue** Search term to be applied after the list is rendered. Search will be executed according to the component configuration or custom configuration. If only one entry is found, the entry will be automatically opened.
 - **dynamicListSearchColumn** Column to execute a search against. If provided, the component configuration will be ignored. (Optional)
 - **dynamicListFilterValue** A comma-separated list of filter values to select. If `dynamicListFilterColumn` is not specified, all filters that match the value will be selected. **Note:** only filter values that are present in the dataset will be used.
