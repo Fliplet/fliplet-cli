@@ -1,6 +1,6 @@
 {
   "name": "fliplet-cli",
-  "version": "5.0.5",
+  "version": "5.0.6",
   "description": "Command line utility for creating and running components, themes and menus to be used on the Fliplet platform.",
   "main": "fliplet.js",
   "scripts": {
@@ -11,7 +11,7 @@
   "bin": {
     "fliplet": "./fliplet.js"
   },
-  "homepage": "https://www.fliplet.com",
+  "homepage": "https://developers.fliplet.com",
   "repository": "Fliplet/fliplet-cli",
   "dependencies": {
     "archiver": "^3.0.0",
