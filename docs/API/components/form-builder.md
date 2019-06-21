@@ -277,8 +277,9 @@ Fliplet.Hooks.on('beforeFormSubmit', function(data) {
 Runs when a form has been submitted and has finished its processing.
 
 ```js
-Fliplet.Hooks.on('afterFormSubmit', function() {
+Fliplet.Hooks.on('afterFormSubmit', function(response) {
   // form data has been saved and submitted
+  // response contains "formData" and "result"
 });
 ```
 
