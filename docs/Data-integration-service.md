@@ -405,7 +405,9 @@ module.exports.setup = (agent) => {
 
 ---
 
-## List of messages/events triggered by the agent
+## List of messages logged by the agent
+
+Here follows a list of all log messages produced by the agent. **Critical** messages stops the agent and do require manual intervention from the user.
 
 | Type     | Text                                                                                                                                                                                                      |
 |----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
