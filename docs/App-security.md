@@ -2,7 +2,7 @@
 
 Fliplet apps can have each of their screens and data sources secured so that they can only be accessed when certain conditions are met. Take the following example:
 
-> My app has 5 screens, one being a login screen with email validation based on a Fliplet data source. I want to secure the other 4 screens of the app so thay they can only be accessed by logged-in users.
+> My app has 5 screens, one being a login screen with email validation based on a Fliplet data source. I want to secure the other 4 screens of the app so that they can only be accessed by logged-in users.
 
 Such security rule can be set up as follows:
 
