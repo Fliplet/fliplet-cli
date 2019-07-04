@@ -390,8 +390,9 @@ module.exports.setup = (agent) => {
     targetDataSourceId: 123,
 
     // Define an optional "where" query filter using sequelize operators
+    // e.g. only fetch entries that have not been sync
     where: {
-      syncedAt: null
+      syncedAt: ''
     },
 
     // Action to run when the data is retrieved
