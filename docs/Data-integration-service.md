@@ -389,14 +389,26 @@ module.exports.setup = (agent) => {
     // The target data source ID
     targetDataSourceId: 123,
 
-    // Define an optional "where" query filter
+    // Define an optional "where" query filter using sequelize operators
     where: {
-      'Foo': 'Bar'
+      syncedAt: null
     },
 
     // Action to run when the data is retrieved
     action: (entries, db) => {
       console.log(entries)
+
+      // You can write data back to Fliplet APIs if necessary,
+      // e.g. confirm you have sync these entries
+      return Promise.all(entries.map((entry) => {
+        return agent.api.request({
+          url: `v1/data-sources/456/data/${entry.id}`,
+          method: 'PUT',
+          data: {
+            syncedAt: Date.now()
+          }
+        });
+      }));
     }
   });
 
