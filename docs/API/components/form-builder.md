@@ -99,13 +99,56 @@ Fliplet.FormBuilder.get().then(function (form) {
 
 ---
 
+### `form.fields.get()
+
+Get the form fields
+```
+var fields = form.fields.get();
+```
+
+### `form.fields.set()`
+
+Sets the form fields programmatically, e.g.:
+
+```js
+form.fields.set([
+  {
+    "_type": "flInput",
+    "name": "name",
+    "label": "Name"
+  },
+  {
+    "_type": "flEmail",
+    "name": "email",
+    "label": "Email address"
+  },
+  {
+    "_type": "flSelect",
+    "name": "enquiryType",
+    "label": "What is your enquiry about?",
+    "options": [{ "id": "Support" }, { "id": "Feedback" }]
+  },
+  {
+    "_type": "flTextarea",
+    "name": "message",
+    "label": "How can we help you today?"
+  },
+  {
+    "_type": "flButtons",
+    "name": "buttons"
+  }
+]);
+```
+
+---
+
 ### `form.field(String)`
 
-Retrieves a form field by its ID (defined in Fliplet Studio interface).
+Retrieves a form field by its name (not label) as defined in Fliplet Studio in the form settings.
 
 ```js
 Fliplet.FormBuilder.get().then(function (form) {
-  // Get the field with ID 'foo'
+  // Get the field with name 'foo'
   var field = form.field('foo');
 });
 ```
