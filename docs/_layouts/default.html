@@ -18,11 +18,25 @@
       <i class="fas fa-search"></i>
     </a>
     <div id="page">
-      <aside id="toc">
+      <aside id="poc">
         <a class="logo" href="/" title="Back to documentation home"></a>
-        <div class="list"></div>
+        <div class="list">
+          <a href="/Introduction.html" class="title-H2">Introduction to the platform</a><a href="/Quickstart.html" class="title-H3">Quickstart</a><a href="/JS-APIs.html" class="title-H3">The JS APIs</a>
+          <p class="title-H2">Building components</p>
+          <a href="/Building-components.html" class="title-H3">Components</a><a href="/Building-themes.html" class="title-H3">Themes</a><a href="/Building-menus.html" class="title-H3">Menus</a><a href="/Publishing.html" class="title-H2">Publishing</a><a href="/Testing-components.html" class="title-H2">Testing</a><a href="/Cloning-widgets.html" class="title-H2">Working with your components</a><a href="/API-Documentation.html" class="title-H2">JS API Documentation</a><a href="/REST-API-Documentation.html" class="title-H2">REST API Documentation</a>
+          <p class="title-H2">UI Guidelines</p>
+          <a href="/UI-guidelines-interface.html" class="title-H3">Guidelines for component interfaces</a><a href="/UI-guidelines-build.html" class="title-H3">Guidelines for component output</a>
+          <p class="title-H2">Theme variables</p>
+          <a href="/Theme-Settings-In-CSS.html" class="title-H3">Use theme settings in your custom CSS</a>
+          <p class="title-H2">Advanced documentation</p>
+          <a href="/components/Using-Providers.html" class="title-H3">Using providers</a><a href="/Dependencies-and-assets.html" class="title-H3">Dependencies and assets when building themes and components</a><a href="/Event-emitter.html" class="title-H3">Sending events between components</a><a href="/Context-targeting.html" class="title-H3">Context targeting</a><a href="/Best-practises.html" class="title-H3">Best practice and advices</a><a href="/Fliplet-SDK.html" class="title-H3">Using the JS APIs externally</a><a href="/Reduce-app-bundle-size.html" class="title-H3">Reduce your app’s bundle size</a><a href="/App-security.html" class="title-H3">Securing your apps</a><a href="/Async-await.html" class="title-H3">Using async/await for more readable promises</a><a href="/Custom-template-for-components.html" class="title-H3">Custom HTML template for components</a><a href="/AJAX-cross-domain.html" class="title-H3">Making AJAX across different domains</a>
+          <p class="title-H2">Platform-specific advanced functionalities</p>
+          <a href="/Platform-iOS.html" class="title-H3">iOS</a><a href="/Platform-Android.html" class="title-H3">Android</a><a href="/Native-framework-changelog.html" class="title-H3">Framework Changelog</a>
+          <p class="title-H2">Integrations</p>
+          <a href="/Data-integration-service.html" class="title-H3">Fliplet Agent (Data Integration Service)</a><a href="/API/integrations/sso-saml2.html" class="title-H3">Single Sign-on with SAML2</a>
+        </div>
       </aside>
-      <div>
+      <div id="page-content">
         <section class="page-header">
           <div class="content">
             <a href="/" class="project-name">{{ page.title }}</a>
@@ -54,6 +68,10 @@
           </footer>
         </section>
       </div>
+      <aside id="toc">
+        <h2>Table of contents</h2>
+        <div class="list"></div>
+      </aside>
     </div>
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>

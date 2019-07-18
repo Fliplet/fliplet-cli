@@ -80,7 +80,7 @@ $window.resize(checkIfSidebarFits);
 checkIfSidebarFits();
 
 if (location.pathname !== '/') {
-  $('.main-content h1, .main-content h2, .main-content h3, .main-content h4').each(function () {
+  $('.main-content h2, .main-content h3, .main-content h4').each(function () {
     $title = $(this);
     var node = $title[0].tagName;
     var prefix = node === 'H4' ? '- ' : '';
@@ -96,26 +96,11 @@ if (location.pathname !== '/') {
 
       history.pushState(null, text, location.pathname + '#' + targetId);
 
-      $("html, body").animate({ scrollTop: $('#' + targetId).offset().top - 50 }, 500);
-    });
-  });
-} else {
-  $('ol > li').each(function () {
-    var $a = $(this).find('> a');
+      var scrollOffset = $('#' + targetId)[0].offsetTop - $("#page-content")[0].offsetTop
 
-    if ($a.length) {
-      $a = $a.clone();
-      $a.addClass('title-H2');
-      $tocList.append($a);
-    } else {
-      var txt = $(this).html().split('<')[0].trim();
-      $tocList.append('<p class="title-H2">' + txt + '</p>');
-    }
-
-    $(this).find('li a').each(function () {
-      var $a = $(this).clone();
-      $a.addClass('title-H3');
-      $tocList.append($a);
+      $("#page-content").animate({
+        scrollTop: scrollOffset - 50
+        }, 500);
     });
   });
 }

@@ -11,7 +11,7 @@ $secondaryBackground: #4279ca;
 $warningColor: #fdff6b;
 $warningTextColor: #6c6d00;
 
-$sidebarWidth: 300px;
+$sidebarWidth: 250px;
 
 @font-face {
   font-family: 'BASE1';
@@ -60,26 +60,19 @@ ul > li > ul {
 }
 
 #page {
-  .with-sidebar & {
-    margin-left: $sidebarWidth;
-    display: block;
-  }
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  display: flex;
+  height: 100%;
 }
 
-#toc {
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
+#poc {
   width: $sidebarWidth;
   background-color: $primaryBackground;
   padding: 20px;
-  display: none;
   overflow-y: auto;
-
-  .with-sidebar & {
-    display: block;
-  }
 
   .logo {
     display: block;
@@ -135,6 +128,70 @@ ul > li > ul {
   }
 }
 
+#page-content {
+  overflow-y: scroll;
+  height: 100%;
+  flex: 1;
+}
+
+#toc {
+  width: $sidebarWidth;
+  background-color: $lightBackground;
+  padding: 20px;
+  overflow-y: auto;
+  flex: 0 1 auto;
+
+  h2 {
+    font-size: 15px;
+    color: $primaryBackground;
+  }
+
+  .list {
+    margin: 20px 0 40px;
+
+    a, p {
+      display: block;
+      font-size: 14px;
+      color: $primaryBackground;
+      margin: 0;
+
+      &.title-H1 {
+        margin-top: 20px;
+        font-weight: bold;
+        font-size: 16px;
+        padding: 17px 0;
+        border-top: 1px solid rgba(255,255,255,0.1);
+        border-bottom: 1px solid rgba(255,255,255,0.1);
+
+        &:first-child {
+          margin-top: 0;
+        }
+      }
+
+      &.title-H2 {
+        margin-top: 20px;
+        font-size: 14px;
+
+        &:first-child {
+          margin-top: 0;
+        }
+      }
+
+      &.title-H3 {
+        opacity: 0.6;
+        font-size: 13px;
+        margin: 5px 7px;
+      }
+
+      &.title-H4 {
+        opacity: 0.4;
+        font-size: 12px;
+        margin: 5px 14px;
+      }
+    }
+  }
+}
+
 .title-H4 + .title-H3 {
   margin-top: 20px;
 }
@@ -148,7 +205,7 @@ ul > li > ul {
     text-align: left;
     max-width: 64rem;
     margin: 0 auto;
-    padding: 2rem 6rem;
+    padding: 2rem 4rem;
   }
 }
 
@@ -174,6 +231,8 @@ ul > li > ul {
 }
 
 .main-content {
+  padding: 2rem 4rem;
+
   h1, h2, h3, h4 {
     color: $primaryBackground;
   }
@@ -391,6 +450,18 @@ ul > li > ul {
   }
 }
 
+@media screen and (max-width: 1200px) {
+  #toc {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  #poc {
+    display: none;
+  }
+}
+
 @media screen and (min-width: 64em) {
   .page-header {
     padding: 0;
@@ -416,7 +487,7 @@ ul > li > ul {
     padding: 0;
   }
 
-  .page-header .content {
+  .page-header .content, .main-content {
     padding: 2rem 1rem;
   }
 
