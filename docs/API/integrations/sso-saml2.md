@@ -16,7 +16,7 @@ The first thing you'll need is to **press the copy the link to the metadata XML*
 
 ```
 https://api.fliplet.com/v1/session/providers/saml2/metadata?appId=123
-```  
+```
 
 Please note that the `appId=123` will change depending on your Fliplet app id. If your system does not allow importing the above XML, you can still configure the integration by manually getting the fields to use from the XML. These are the ones you will need and how to find them:
 
@@ -30,7 +30,7 @@ Once you have given the above to your IT, they should be able to configure the i
 
 - **Single sign-on login** URL
 - **Single sign-on logout** URL
-- Your Identity Provider **Certificate(s)** in PEM format 
+- Your Identity Provider **Certificate(s)** in PEM format
 
 When everything is set up, clicking the sign in button on the Fliplet app should redirect the user to your login screen. Once a login succeed, the user will be redirected back to the Fliplet app at the screen you selected in the component configuration.
 
@@ -65,18 +65,22 @@ Once the integration is all working, you can secure your app by requiring a vali
 Once your app has been set up with a *SAML2* Single Sign-on login, you can access the logged user details using the following JS API:
 
 ```js
-Fliplet.Session.passport('saml2').data().then(function (response) {
-  // response.user contains "firstName", "lastName" and "email"
+Fliplet.User.getCachedSession().then(function (session) {
+  var user = _.get(session, 'entries.saml2.user');
+
+  if (!user) {
+    return; // user is not logged in with saml2
+  }
+
+  // user contains "firstName", "lastName" and "email"
 
   // create a welcome string
-  var text = `Hi ${response.user.firstName}. You are signed in as ${response.user.email}.`;
+  var text = `Hi ${user.firstName}. You are signed in as ${user.email}.`;
 
   // display it in a html element with class "welcome"
   $('.welcome').text(text);
 });
 ```
-
-Don't forget to add `fliplet-session` as a dependency of your screen (or app) to make it available to your code.
 
 ---
 
