@@ -961,14 +961,21 @@ Fliplet.Hooks.on('beforeNavigateToURL', function (data) {
 });
 ```
 
-### Navigate the app to a specific screen by its ID
+### Navigate the app to a specific screen by its ID or name
 
-To find out the ID of a page, you can use Fliplet Studio (it's displayed on the browser bar) or simply run `Fliplet.Env.get('pageId')` from any page.
+Use the `Fliplet.Navigate.screen()` function to navigate to a screen by its ID or name:
 
 ```js
 // Navigate to the screen with ID 1
 Fliplet.Navigate.screen(1);
 
+// Navigate to the screen titled "Company news"
+Fliplet.Navigate.screen('Company news');
+```
+
+To find out the ID of a page, you can use Fliplet Studio (it's displayed on the browser bar) or simply run `Fliplet.Env.get('pageId')` from any page. Here follows more example with options for defining query parameters, transition and duration of the transition:
+
+```js
 // Navigate to the screen with ID 2 optionally passing some more details
 Fliplet.Navigate.screen(2, { query: '?foo=bar' });
 
