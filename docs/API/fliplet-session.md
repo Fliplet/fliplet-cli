@@ -103,7 +103,7 @@ Data for the connected account(s) can also be read and used as necessary:
 
 ```js
 Fliplet.User.getCachedSession().then(function (session) {
-  var user = _.get(session, 'entries.dataSource.data')
+  var user = _.get(session, 'entries.dataSource.data');
 
   if (!user) {
     return; // user is not logged in
