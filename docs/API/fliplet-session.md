@@ -77,17 +77,17 @@ Fliplet.Session.getCachedSession().then(function(session) {
   if (session && session.entries) {
     // the user is logged in;
 
-    // you can also check for which login type
+    // check if the user is connected to a dataSource login
     if (session.entries.dataSource) {
       // user is logged in against a Fliplet dataSource
     }
 
-    // you can also check for which login type
+    // check if the user is connected to a SAML2 login
     if (session.entries.saml2) {
       // user is logged in against your company's SAML2
     }
 
-    // you can also check for which login type
+    // check if the user is connected to a Fliplet login
     if (session.entries.flipletLogin) {
       // user is logged in with a Fliplet Studio account
     }
