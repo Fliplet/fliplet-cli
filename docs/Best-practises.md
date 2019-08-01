@@ -1,4 +1,4 @@
-# Best practises and advices when building components
+# Best practice and advices when building components
 
 Got stuck building components or found some nasty bugs? Here's a few tips that might help you dealing with basic issues during the development of components on our platform.
 

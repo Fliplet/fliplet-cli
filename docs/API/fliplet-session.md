@@ -5,8 +5,16 @@
 ### Get the current session
 
 ```js
+// Get the session using the locally cached offline data.
+// This is fast and work across all network conditions.
+Fliplet.Session.getCachedSession().then(function onCachedSessionRetrieved(session) {
+  console.log(session);
+});
+
+// This only works if the app is online as it makes an API request
+// to Fliplet servers to return the live data.
 Fliplet.Session.get().then(function onSessionRetrieved(session) {
-  // console.log(session);
+  console.log(session);
 });
 ```
 
@@ -14,7 +22,7 @@ Fliplet.Session.get().then(function onSessionRetrieved(session) {
 
 ```js
 Fliplet.Session.get(key).then(function onSessionKeyRetrieved(value) {
-  // console.log(value);
+  console.log(value);
 });
 ```
 
@@ -22,7 +30,7 @@ Fliplet.Session.get(key).then(function onSessionKeyRetrieved(value) {
 
 ```js
 Fliplet.Session.set({ foo: 'bar' }).then(function onSessionUpdated() {
-  // session data has been set
+  // session data has successfully been set here
 });
 ```
 
@@ -30,7 +38,7 @@ Fliplet.Session.set({ foo: 'bar' }).then(function onSessionUpdated() {
 
 ```js
 Fliplet.Session.clear().then(function onSessionCleared() {
-  // session has been cleared
+  // session has been cleared when this runs
 });
 ```
 
@@ -65,21 +73,21 @@ Fliplet.Session.destroy().then(function onSessionDestroyed() {
 If your app contains a login component (either DataSource, SAML2 or Fliplet) you can use the session to check whether the user is logged in and in and some of the connected account(s) details:
 
 ```js
-Fliplet.Session.get().then(function(session) {
+Fliplet.Session.getCachedSession().then(function(session) {
   if (session && session.entries) {
     // the user is logged in;
 
-    // you can also check for which login type
+    // check if the user is connected to a dataSource login
     if (session.entries.dataSource) {
       // user is logged in against a Fliplet dataSource
     }
 
-    // you can also check for which login type
+    // check if the user is connected to a SAML2 login
     if (session.entries.saml2) {
       // user is logged in against your company's SAML2
     }
 
-    // you can also check for which login type
+    // check if the user is connected to a Fliplet login
     if (session.entries.flipletLogin) {
       // user is logged in with a Fliplet Studio account
     }
@@ -94,26 +102,45 @@ Data for the connected account(s) can also be read and used as necessary:
 ### Example for dataSource login
 
 ```js
-Fliplet.Session.get().then(function(session) {
-  if (session && session.entries && session.entries.dataSource) {
-    // the user is logged in against a Fliplet dataSource
+Fliplet.User.getCachedSession().then(function (session) {
+  var user = _.get(session, 'entries.dataSource.data');
 
-    var userData = session.entries.dataSource.data;
-    // userData will contain all data found on the connected dataSource row
+  if (!user) {
+    return; // user is not logged in
   }
+
+  // contains all columns found on the connected dataSource entry
+  console.log(user);
+});
+```
+
+### Example for SAML2
+
+```js
+Fliplet.User.getCachedSession().then(function (session) {
+  var user = _.get(session, 'entries.saml2.user');
+
+  if (!user) {
+    return; // user is not logged in
+  }
+
+  // contains id, email, firstName, lastName
+  console.log(user);
 });
 ```
 
 ### Example for Fliplet Studio login
 
 ```js
-Fliplet.Session.get().then(function(session) {
-  if (session && session.entries && session.entries.dataSource) {
-    // the user is logged in against a Fliplet Studio account
+Fliplet.User.getCachedSession().then(function (session) {
+  var user = _.get(session, 'entries.flipletLogin');
 
-    var userData = session.entries.flipletLogin;
-    // userData contains id, email, firstName, lastName, fullName, userRoleId, legacyId
+  if (!user) {
+    return; // user is not logged in
   }
+
+  // contains id, email, firstName, lastName, fullName, userRoleId, legacyId
+  console.log(user);
 });
 ```
 

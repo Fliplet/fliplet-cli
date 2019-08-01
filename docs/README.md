@@ -51,7 +51,7 @@ To get a brief introduction to the technologies we use and the stack of the plat
   - [Dependencies and assets when building themes and components](Dependencies-and-assets.md)
   - [Sending events between components](Event-emitter.md)
   - [Context targeting](Context-targeting.md)
-  - [Best practises and advices](Best-practises.md)
+  - [Best practice and advices](Best-practises.md)
   - [Using the JS APIs externally](Fliplet-SDK.md)
   - [Reduce your app's bundle size](Reduce-app-bundle-size.md)
   - [Securing your apps](App-security.md)
@@ -65,3 +65,5 @@ To get a brief introduction to the technologies we use and the stack of the plat
 12. Integrations
   - [Fliplet Agent (Data Integration Service)](Data-integration-service.md)
   - [Single Sign-on with SAML2](API/integrations/sso-saml2.md)
+
+<style type="text/css">#toc { display: none; }</script>

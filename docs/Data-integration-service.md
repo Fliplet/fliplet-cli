@@ -389,16 +389,72 @@ module.exports.setup = (agent) => {
     // The target data source ID
     targetDataSourceId: 123,
 
-    // Define an optional "where" query filter
+    // Define an optional "where" query filter using sequelize operators
+    // e.g. only fetch entries that have not been sync
     where: {
-      'Foo': 'Bar'
+      syncedAt: ''
     },
 
     // Action to run when the data is retrieved
     action: (entries, db) => {
       console.log(entries)
+
+      // You can write data back to Fliplet APIs if necessary,
+      // e.g. confirm you have sync these entries
+      return Promise.all(entries.map((entry) => {
+        return agent.api.request({
+          url: `v1/data-sources/456/data/${entry.id}`,
+          method: 'PUT',
+          data: {
+            syncedAt: Date.now()
+          }
+        });
+      }));
     }
   });
 
 };
 ```
+
+---
+
+## List of messages logged by the agent
+
+Here follows a list of all log messages produced by the agent. **Critical** messages stops the agent and do require manual intervention from the user.
+
+| Type     | Text                                                                                                                                                                                                      |
+|----------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Critical | Auth token is required                                                                                                                                                                                    |
+| Critical | You don't have access to the dataSource (ID). Please check the permissions of your Fliplet user.                                                                                                          |
+| Critical | There was an error running your config file. (Error message)                                                                                                                                           |
+| Critical | Unable to connect to the database: (Error message)                                                                                                                                                        |
+| Critical | Unable to authenticate with Fliplet API: (Error message)                                                                                                                                                  |
+| Critical | Cannot sync data to Fliplet servers: (Error message)                                                                                                                                                      |
+| Critical | Cannot execute database query: (Error message)                                                                                                                                                            |
+| Error    | A row is missing its primary key value from the database. Skipping: (Row details)                                                                                                                         |
+| Warning  | A primary key has not been set, which means rows will always be appended to the data source whenever this script runs. To allow updating rows, please define a primary key to be used for the comparison. |
+| Info     | Agent started successfully. Press Ctrl+C to quit.                                                                                                                                                         |
+| Info     | User Agent for outgoing HTTP requests has been set to (UA)                                                                                                                                                |
+| Info     | Initialising connection with source database...                                                                                                                                                           |
+| Info     | Connection has been established successfully.                                                                                                                                                             |
+| Info     | Authenticating with Fliplet API...                                                                                                                                                                        |
+| Info     | Authentication has been verified successfully. You're logged in as (Email)                                                                                                                                |
+| Info     | Fetching data via Fliplet API...                                                                                                                                                                          |
+| Info     | Nothing to commit.                                                                                                                                                                                        |
+| Info     | Dry run mode is enabled. Here's a dump of the commit log we would have been sent to the Fliplet API: (JSON)                                                                                               |
+| Info     | Entries to delete: (JSON)                                                                                                                                                                                 |
+| Info     | Sync finished. (Count) data source entries have been affected.                                                                                                                                            |
+| Info     | Finished to run all operations.                                                                                                                                                                           |
+| Info     | Dry run finished. Aborting process.                                                                                                                                                                       |
+| Info     | Scheduling (Count) operation(s) to run with their set frequency...                                                                                                                                        |
+| Info     | Scheduling complete. Keep this process alive and you're good to go!                                                                                                                                       |
+| Debug    | Regional URL has been set to (URL)                                                                                                                                                                        |
+| Debug    | Fetched (Count) entries from the data source.                                                                                                                                                             |
+| Debug    | Successfully fetched data from the source.                                                                                                                                                                |
+| Debug    | Row (ID) has been marked for inserting since we don't have a primary key for the comparison.                                                                                                              |
+| Debug    | Row (ID) is not present on Fliplet servers and it's locally marked as deleted. Skipping...                                                                                                                |
+| Debug    | Row (ID) has been marked for inserting.                                                                                                                                                                   |
+| Debug    | Row (ID) already exists on Fliplet servers with ID (Fliplet ID)                                                                                                                                           |
+| Debug    | Row (ID) has been marked for deletion on Fliplet servers with ID (Fliplet ID).                                                                                                                            |
+| Debug    | Row (ID) already exists on Fliplet servers with ID (ID) and does not require updating.                                                                                                                    |
+| Debug    | Row (ID) has been marked for updating.                                                                                                                                                                    |
