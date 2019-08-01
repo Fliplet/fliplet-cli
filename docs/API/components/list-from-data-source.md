@@ -15,7 +15,7 @@ The **List (from data source)** component exposes hooks that you can use to modi
 
 ### `flListDataBeforeGetData`
 
-The hook is run before data is retrieved for rendering.
+The hook is run before data is retrieved for rendering. Return a rejected promise to stop the list from rendering with suitable error messages.
 
 ```js
 Fliplet.Hooks.on('flListDataBeforeGetData', fn);
@@ -35,9 +35,8 @@ Fliplet.Hooks.on('flListDataBeforeGetData', fn);
 **Overwriting data to be rendered**
 
 ```js
-
-Fliplet.Hooks.on('flListDataBeforeGetData', function (data) {
-  data.config.getData = function() {
+Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
+  options.config.getData = function() {
     return Promise.resolve([
       {
         id: 1,
@@ -114,8 +113,8 @@ Fliplet.Hooks.on('flListDataBeforeDeleteConfirmation', fn);
 **Before deleting an entry**
 
 ```js
-Fliplet.Hooks.on('flListDataBeforeDeleteEntry', function onBeforeDeleteEntry(data) {
-  data.config.deleteData = function(id) {
+Fliplet.Hooks.on('flListDataBeforeDeleteEntry', function onBeforeDeleteEntry(options) {
+  options.config.deleteData = function(id) {
     // Execute a custom third-party entry deletion operation
     return $.ajax({
       url: 'http://example.com/api/entry/' + id,
@@ -125,34 +124,112 @@ Fliplet.Hooks.on('flListDataBeforeDeleteEntry', function onBeforeDeleteEntry(dat
 });
 ```
 
-## Configuration
+## Configurations
 
 Using the available hooks, component instance configuration can be used to modify component data and behavior. The available configuration properties are listed below:
 
-- `getData` (Function(`data`)) Function used to retrieve data. Each entry must include the following properties, which the `Fliplet.DataSources` JS API follows. **Note** This function is best set using the [`flListDataBeforeGetData`](#fllistdatabeforegetdata) hook and must return a Promise.
+- `getData` (Function(`options`)) Function used to retrieve data. Each entry must include the following properties, which the `Fliplet.DataSources` JS API follows. **Note** This function is best set using the [`flListDataBeforeGetData`](#fllistdatabeforegetdata) hook and must return a Promise.
   - `id` (Number) Entry ID
   - `data` (Object) Entry data
-- `beforeOpen` (Function(`data`)) Function executed before loading entry details. The `data` parameter contains the following properties. Return a rejected Promise if you need to stop the entry from opening.
+- `dataQuery` (Object \| Function(`options`)) If a custom `getData` isn't used, `dataQuery` customizes the query for retrieving data from the data source. This can be used to limit the amount of data retrieved from the data source, reducing the amount of transferred and processed data. When an **Object** is provided, the object is passed to the `.find()` function as outlined in the [`Fliplet.DataSources` JS API](../../API/fliplet-datasources.md#find-specific-records). When a **Function** is provided, the function must return an object to be pased to the same `.find()` function. The function can make use of an `options` object that contains the following properties.
+  - `config` (Object) Configuration used to initialize the component
+  - `id` (Number) Entry ID
+  - `uuid` (String) Component instance UUID
+  - `container` (jQuery object) jQuery object for the component container element
+
+For example:
+
+```js
+// Retrieve only data that belongs to the user
+Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
+  return Fliplet.Profile.get('email').then(function (email) {
+    if (!email) {
+      return Promise.reject('User is not logged in');
+    }
+
+    options.config.dataQuery = {
+      where: {
+        Email: {
+          $iLike: email
+        }
+      }
+    };
+  });
+});
+```
+
+- `beforeOpen` (Function(`options`)) Function executed before loading entry details. The `options` parameter contains the following properties. Return a rejected Promise if you need to stop the entry from opening.
   - `config` (Object) Configuration used to initialize the component
   - `entry` (Object) Entry being opened
   - `entryId` (Object) ID for entry being opened
   - `entryTitle` (Object) Title for entry being opened
-- `beforeShowDetails` (Function(`data`)) Function executed before showing the entry detail view, after the entry detail data is ready. The `data` parameter contains the following properties. Return a rejected Promise if you need to stop the entry from opening.
+- `beforeShowDetails` (Function(`options`)) Function executed before showing the entry detail view, after the entry detail data is ready. The `options` parameter contains the following properties. Return a rejected Promise if you need to stop the entry from opening.
   - `src` (String) HTML source for the detail view template
   - `data` (Object) Data being used for rendering the detail view template
-- `afterShowDetails` (Function(`data`)) Function executed after the entry detail view is shown. The `data` parameter contains the following properties.
+- `afterShowDetails` (Function(`options`)) Function executed after the entry detail view is shown. The `options` parameter contains the following properties.
   - `config` (Object) Configuration used to initialize the component
   - `src` (String) HTML source for the detail view template
   - `data` (Object) Data being used for rendering the detail view template
-- `deleteData` (Function(`data`)) Function used to delete an entry. The `data` parameter contains the following properties.
+- `deleteData` (Function(`options`)) Function used to delete an entry. The `options` parameter contains the following properties.
   - `entryId`
   - `config` (Object) Configuration used to initialize the component
   - `id` (Number) Component instance ID
   - `uuid` (String) Component instance UUID
   - `container` (jQuery object) jQuery object for the component container element
-- `searchData` (Function(`data`)) Function used to execute a data search. The `data` parameter contains the following properties.
+- `searchData` (Function(`options`)) Function used to execute a data search. The `options` parameter contains the following properties.
   - `config` (object) Configuration used to initialize the component
   - `query` (String) Query string entered by user
+- `computedFields` (Object) A mapping of computed fields, where the keys map to a list of fields that would be available based on the mapped values. For example:
+
+```js
+Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
+  options.config.computedFields = {
+    foo: 'bar.$.buzz', // Iterate the array `record.data.bar` and return the array of values for `buzz` for each object
+    qux: function (record) {
+      // Returns a value for `record.data.qux` based on the record
+      return [record.dataSourceId, record.id, data.createdAt].join('_');
+    }
+  };
+});
+```
+
+- `filterOptions` (Array) An collection of pre-filter conditions to be applied before the pre-filters configured for the component. Each collection item should contain all the following properties:
+  - `column` (String) The field to apply the filter logic to
+  - `value` (Mixed) Value to pass to the logic operator
+  - `logic` (String) Logic operator to be applied on the field and value. The valid operators are
+
+| Operator | Description |
+| == | == |
+| `==` | Equals |
+| `!=` |Not equal |
+| `>` | Greater than |
+| `>=` | Greater than or equal |
+| `<` | Less than |
+| `<=` | Less than or equal |
+| `contains` | Contains |
+| `notcontain` | Not contain |
+| `regex` | RegExp |
+
+**Note** The filter is applied on the frontend after data is retrieved from the data source. To restrict data transfer via the API, use the `dataQuery` configuration.
+
+For example:
+
+```js
+Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
+  options.config.filterOptions = [
+    {
+      column: 'Department',
+      logic: 'contains',
+      value: 'technology'
+    },
+    {
+      column: 'Size',
+      logic: '>',
+      value: 50
+    },
+  ];
+});
+```
 
 ## Query parameters
 
@@ -165,7 +242,8 @@ Use the following query parameters when linking to a screen with **List (from da
 - **dynamicListOpenValue** Value to match in the given column for opening an entry after the list is rendered
 - **dynamicListSearchValue** Search term to be applied after the list is rendered. Search will be executed according to the component configuration or custom configuration. If only one entry is found, the entry will be automatically opened.
 - **dynamicListSearchColumn** Column to execute a search against. If provided, the component configuration will be ignored. (Optional)
-- **dynamicListFilterValue** A comma-separated list of filter options to select.
+- **dynamicListFilterValue** A comma-separated list of filter values to select. If `dynamicListFilterColumn` is not specified, all filters that match the value will be selected. **Note:** only filter values that are present in the dataset will be used.
+- **dynamicListFilterColumn** A comma-separated list of columns to select filter values within (optional). The number of columns provided must match the number of values provided. To select multiple values for a column, use `[]` to enclose the values and separate them by commas. e.g. `dynamicListFilterColumn=Tags,Category&dynamicListFilterValue=[Foo,Buzz],Enterprise%20software` selects the filters `Tags=Foo`, `Tags=Buzz` and `Category=Enterprise software`.
 - **dynamicListFilterHideControls** (`true|false`) Hide the filter controls when filter values are applied from the query. (Default: `false`)
 - **dynamicListPrefilterColumn** Pre-filter list based on the provided list of comma-separated column names.
 - **dynamicListPrefilterValue** Pre-filter list based on the provided list of comma-separatedvalues for the column names.
