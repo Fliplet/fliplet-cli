@@ -25,22 +25,38 @@ Fliplet.DataSources.create({
 });
 ```
 
-### Connect to a data source, given its ID
+### Connect to a data source by ID
 
 ```js
-// All options are optional
-var options = {
-  offline: true // By default on native platform it connects to offline DB. Set this option to false to connect to api's
-}
-
-Fliplet.DataSources.connect(dataSourceId, options).then(function (connection) {
+Fliplet.DataSources.connect(dataSourceId).then(function (connection) {
   // check below for usages of the connection
+});
+
+// Advanced connection passing options as second parameter
+Fliplet.DataSources.connect(dataSourceId, {
+  offline: false // disable querying offline on mobile devices
+}).then(function (connection) {
+  // check below for the list of instance methods for the connection object
 });
 ```
 
-Once you get a **connection**, you can use the following methods to **find, insert, update and delete data**.
+Once you get a **connection**, you can use the instance methods described below to **find, insert, update and delete data source entries**.
 
-## Fetch all records from a data source
+### Connect to a data source by Name
+
+You can also connect to a datas ource by its name (case-sensitive) using the `connectByName` method.
+
+```js
+Fliplet.DataSources.connectByName("Attendees").then(function (connection) {
+  // check below for the list of instance methods for the connection object
+});
+```
+
+---
+
+## Connection instance methods
+
+### Fetch all records from a data source
 
 ```js
 // use "find" with no options to get all entries
@@ -59,7 +75,7 @@ connection.find({ limit: 50, offset: 10 }).then(function (records) {
 Full example:
 
 ```js
-Fliplet.DataSources.connect(1).then(function (connection) {
+Fliplet.DataSources.connect(123).then(function (connection) {
   return connection.find({ limit: 1000 });
 }).then(function (records) {
   records.forEach(function (row) {
@@ -69,7 +85,7 @@ Fliplet.DataSources.connect(1).then(function (connection) {
 });
 ```
 
-## Find specific records
+### Find specific records
 
 ```js
 connection.find({
