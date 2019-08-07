@@ -29,7 +29,7 @@ Fliplet.DataSources.create({
 
 ```js
 Fliplet.DataSources.connect(dataSourceId).then(function (connection) {
-  // check below for usages of the connection
+  // check below for the list of instance methods for the connection object
 });
 
 // Advanced connection passing options as second parameter
