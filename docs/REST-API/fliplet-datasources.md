@@ -126,6 +126,56 @@ e.g. `v1/data-sources/123`
 
 ---
 
+### Get a data source by its Name
+
+#### `GET v1/data-sources/<dataSourceName>`
+
+All endpoints accepting a `dataSourceId` accept a URL-encoded `dataSourceName`. If you do want to use names on dataSources whose names are only made of numbers, you can force the system to treat such input as a name rather than the ID by adding the `?dsn` query parameter to the endpoint.
+
+e.g. `v1/data-sources/Foo%20bar` (URL-encoded `Foo bar`)
+
+```json
+{
+  "dataSource": {
+    "id": 2,
+    "name": "Foo bar",
+    "appCapabilities": null,
+    "hooks": [],
+    "encrypted": false,
+    "columns": null,
+    "type": null,
+    "public": null,
+    "createdAt": "2016-10-27T15:51:33.497Z",
+    "updatedAt": "2016-10-27T15:51:33.497Z",
+    "appId": null,
+    "organizationId": 123
+  }
+}
+```
+
+e.g. `v1/data-sources/12345?dsn` (treat `12345` as a name)
+
+```json
+{
+  "dataSource": {
+    "id": 2,
+    "name": "12345",
+    "appCapabilities": null,
+    "hooks": [],
+    "encrypted": false,
+    "columns": null,
+    "type": null,
+    "public": null,
+    "createdAt": "2016-10-27T15:51:33.497Z",
+    "updatedAt": "2016-10-27T15:51:33.497Z",
+    "appId": null,
+    "organizationId": 123
+  }
+}
+```
+
+---
+
 ### Create a data source
 
 #### `POST v1/data-sources`
