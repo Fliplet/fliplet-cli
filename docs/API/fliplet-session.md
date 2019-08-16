@@ -7,7 +7,7 @@
 ```js
 // Get the session using the locally cached offline data.
 // This is fast and work across all network conditions.
-Fliplet.Session.getCachedSession().then(function onCachedSessionRetrieved(session) {
+Fliplet.User.getCachedSession().then(function onCachedSessionRetrieved(session) {
   console.log(session);
 });
 
@@ -73,7 +73,7 @@ Fliplet.Session.destroy().then(function onSessionDestroyed() {
 If your app contains a login component (either DataSource, SAML2 or Fliplet) you can use the session to check whether the user is logged in and in and some of the connected account(s) details:
 
 ```js
-Fliplet.Session.getCachedSession().then(function(session) {
+Fliplet.User.getCachedSession().then(function(session) {
   if (session && session.entries) {
     // the user is logged in;
 
