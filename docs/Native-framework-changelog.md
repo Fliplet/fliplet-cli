@@ -2,7 +2,28 @@
 
 We regularly update our framework to support new features. If you have an older framework version but need to use a newer feature, your app will need to be rebuilt. You can check your apps framework in the 'About this app' section.
 
-## Latest versions (3.9.x)
+{% raw %}
+<section class="blocks">
+  <div class="bl two">
+    <div>
+      <h4>iOS</h4>
+      <p>Latest release: 3.9.9</p>
+    </div>
+  </div>
+  <div class="bl two">
+    <div>
+      <h4>Android</h4>
+      <p>Latest release: 3.9.4</p>
+    </div>
+  </div>
+</section>
+{% endraw %}
+
+## Supported versions (3.9.x)
+
+### Version 3.9.9 (Aug 28, 2019)
+
+- **iOS**: Support for iOS13
 
 ### Version 3.9.8 (Jul 19, 2019)
 
@@ -30,21 +51,22 @@ We regularly update our framework to support new features. If you have an older 
 
 ---
 
+
 ### Version 3.9.3 (April 11, 2019)
 
 - **All platforms**: Stability improvements during the download of in-app updates.
+
+---
+
+## Deprecated versions
+
+Please note that these versions have limited support for newer Fliplet features. We encourage you to submit a new native update to your apps via the App Store or Google Play if you have users still running these versions of your app.
 
 ### Version 3.9.2 (January 25, 2019)
 
 - **All platforms**: Support for push notifications deep linking
 - **All platforms**: Fixes an issue where apps don't check for updates until up to 30 seconds after app launch
 - **iOS**: Fixes an issue on iPhone X/XS/XR/XS Max running iOS 12 where the screen content is sometimes shifted after dismissing the keyboard
-
----
-
-## Deprecated versions (apps built before 2019)
-
-Please note that these versions have limited support for newer Fliplet features. We encourage you to submit a new native update to your apps via the App Store or Google Play if you have users still running these versions of your app.
 
 ### Version 3.9.1 (December 10, 2018)
 

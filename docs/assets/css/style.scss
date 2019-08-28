@@ -309,22 +309,26 @@ ul > li > ul {
   display: flex;
 }
 
-.blocks a {
+.blocks .bl {
   text-decoration: none;
   width: 33.333%;
   padding-top: 10px;
   padding-bottom: 10px;
 }
 
-.blocks a:first-child {
+.blocks .two {
+  width: 50%;
+}
+
+.blocks .bl:first-child {
   margin-right: 10px;
 }
 
-.blocks a:last-child {
+.blocks .bl:last-child {
   margin-left: 10px;
 }
 
-.blocks div {
+.blocks .bl div {
   padding: 15px;
   border-radius: 7px;
   background: $primaryBackground;

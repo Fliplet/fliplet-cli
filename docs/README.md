@@ -4,19 +4,19 @@ Welcome to the developers documentation for the **Fliplet Platform**. Here you c
 
 {% raw %}
 <section class="blocks">
-  <a href="/API-Documentation.html">
+  <a class="bl" href="/API-Documentation.html">
     <div>
       <h4>JavaScript API Documentation</h4>
       <p>Learn how to use our SDK and enrich apps within seconds.</p>
     </div>
   </a>
-  <a href="/REST-API-Documentation.html">
+  <a class="bl" href="/REST-API-Documentation.html">
     <div>
       <h4>REST API Documentation</h4>
       <p>Integrate your backend with our easy-to-use RESTful APIs.</p>
     </div>
   </a>
-  <a href="/API/components/form-builder.html">
+  <a class="bl" href="/API/components/form-builder.html">
     <div>
       <h4>Interact with your app's forms</h4>
       <p>Use hooks and functions to extend forms built via the Form Builder.</p>
