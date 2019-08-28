@@ -19,7 +19,9 @@ We regularly update our framework to support new features. If you have an older 
 </section>
 {% endraw %}
 
-## Supported versions (3.9.x)
+---
+
+## Supported versions
 
 ### Version 3.9.9 (Aug 28, 2019)
 
