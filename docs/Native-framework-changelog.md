@@ -4,6 +4,10 @@ We regularly update our framework to support new features. If you have an older 
 
 ## Latest versions (3.9.x)
 
+### Version 3.9.9 (Aug 28, 2019)
+
+- **iOS**: Support for iOS13
+
 ### Version 3.9.8 (Jul 19, 2019)
 
 - **iOS**: Improvements when playing remote audio files
