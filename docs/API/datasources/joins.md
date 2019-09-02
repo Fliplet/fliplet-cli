@@ -27,7 +27,7 @@ Before we dive into complete examples, let's start with the three types of joins
 
 ### Left join (default)
 
-Use this when you want to fetch additional data for your dataSource. Examples include things like getting the list of comments and liks for a list of articles.
+Use this when you want to fetch additional data for your dataSource. Examples include things like getting the list of comments and likes for a list of articles.
 
 Left joins must be defined by specifying:
 
