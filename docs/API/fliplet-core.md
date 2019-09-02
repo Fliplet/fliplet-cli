@@ -735,6 +735,8 @@ Fliplet.Navigator.onPluginsReady().then(function () {
 
 ### Get the current device information
 
+Use the `device()` method to retrieve details about the current device, including OS, manufacturer and model.
+
 ```js
 var device = Fliplet.Navigator.device();
 
@@ -750,6 +752,8 @@ var device = Fliplet.Navigator.device();
 ```
 
 ### Get the device/user location
+
+To get the current device's location (including latitude and longitude) using the GPS sensor, use the following method. Please note that the Operative System might ask for user's permission before reading the location. If the user doesn't allow the location to be requested by the app, the promise is rejected as shown below.
 
 ```js
 Fliplet.Navigator.location().then(function (position) {
