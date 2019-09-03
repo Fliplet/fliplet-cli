@@ -458,3 +458,11 @@ Here follows a list of all log messages produced by the agent. **Critical** mess
 | Debug    | Row (ID) has been marked for deletion on Fliplet servers with ID (Fliplet ID).                                                                                                                            |
 | Debug    | Row (ID) already exists on Fliplet servers with ID (ID) and does not require updating.                                                                                                                    |
 | Debug    | Row (ID) has been marked for updating.                                                                                                                                                                    |
+
+---
+
+## Firewall settings
+
+If your company is behind a corporate firewall and specific network access can be given, you must allow **outbound** traffic to **api.fliplet.com** on port **443** in order for the Data Integration Service to work.
+
+In order to be able to update the agent via **npm**, **registry.npmjs.org** needs to be whitelisted on port **443** too. However, if it's running behind a corporate firewall it might require specific settings for the proxy ([more details](https://www.beyondjava.net/guiding-npm-firewall)).
