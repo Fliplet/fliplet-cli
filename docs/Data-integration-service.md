@@ -467,9 +467,9 @@ Here follows a list of all log messages produced by the agent. **Critical** mess
 
 ## Network requirements
 
-If your company is behind a corporate firewall and specific network access can be given, you must allow **outbound** traffic to the follow domain:
+If your company is behind a corporate firewall and specific network access should be whitelisted, you must allow **outbound** traffic to the follow domain:
 
-- For accounts with data in **Europe**: **api.fliplet.com** on port *443*
-- For accounts with data in the **US**: **us.api.fliplet.com** on port *443*
+- For accounts with data in **Europe**: [api.fliplet.com](https://api.fliplet.com) on port *443*
+- For accounts with data in the **US**: [us.api.fliplet.com](https://us.api.fliplet.com) on port *443*
 
 In order to be able to update the agent via **npm**, **registry.npmjs.org** needs to be whitelisted on port **443** too. However, if it's running behind a corporate firewall it might require specific settings for the proxy ([more details](https://www.beyondjava.net/guiding-npm-firewall)).
