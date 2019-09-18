@@ -152,6 +152,12 @@ timestamp_column: updatedAt
 # be removed from the Fliplet Data Source when the column value is not null.
 # Uncomment the following line to enable the feature.
 # delete_column: deletedAt
+
+# Define which (optional) post-sync hooks should run on the data source data when received
+# by Fliplet servers. Hook types are "insert" and "update"
+run_hooks:
+#  - "insert"
+#  - "update"
 ```
 
 Once you have a configuration file like the one above saved on disk, starting the agent is as simple as running the `start` command from your shell. While you are setting up the configuration we also suggest using the `--test` option to perform a dry run and test out the integration without actually sending data to Fliplet servers:
@@ -275,7 +281,11 @@ module.exports.setup = (agent) => {
     deleteColumnName: deletedAt,
 
     // The ID of the Fliplet Data Source where data should be inserted to
-    targetDataSourceId: 123
+    targetDataSourceId: 123,
+
+    // Define which (optional) post-sync hooks should run on the data source data when received
+    // by Fliplet servers. Hook types are "insert" and "update"
+    runHooks: []
   });
 
   // You can define any other operation similar to the above here using "agent.push()"
