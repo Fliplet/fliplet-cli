@@ -10,9 +10,9 @@ Each hook requires the following attributes:
 
 ---
 
-### Hook types
+## Hook types
 
-## Send a push notification
+### Send a push notification
 
 In addition to hook attributes, configuring a hook to send push notifications support the following parameters:
 
@@ -65,7 +65,7 @@ Let's take a look at a more complex example where push notifications are only se
 
 ---
 
-## Send an email
+### Send an email
 
 In addition to hook attributes, configuring a hook to send emails support the following parameter:
 
