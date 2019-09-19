@@ -2,7 +2,9 @@
 
 Data Source hooks allow your app's backend to perform certain operations such as **sending emails** or **push notifications** when certain conditions occurr, e.g. inserting or updating a Data Source Entry.
 
-Each hook requires the following attributes:
+## Required properties
+
+Each hook requires the following properties:
 
 - `type`: `email` or `push`
 - `runOn`: an array with any of the following values: `insert`, `update`
@@ -14,7 +16,7 @@ Each hook requires the following attributes:
 
 ### Send a push notification
 
-In addition to hook attributes, configuring a hook to send push notifications support the following parameters:
+In addition to hook properties, configuring a hook to send push notifications support the following parameters:
 
 - `appId`: the target Fliplet App ID
 - `payload`: object with `title` and `body` for the push notification; this supports **Handlebars** syntax for variable replacement in the values as shown in the first example below
@@ -67,7 +69,7 @@ Let's take a look at a more complex example where push notifications are only se
 
 ### Send an email
 
-In addition to hook attributes, configuring a hook to send emails support the following parameter:
+In addition to hook properties, configuring a hook to send emails support the following parameter:
 
 - `payload`: object with `to`, `html` and `subject` for the email; this supports **Handlebars** syntax for variable replacement in the values as shown in the first example below
 
