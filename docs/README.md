@@ -42,6 +42,7 @@ To get a brief introduction to the technologies we use and the stack of the plat
   - [Use theme settings in your custom CSS](Theme-Settings-In-CSS.md)
 10. Advanced documentation
   - [Using providers](components/Using-Providers.md)
+  - [Data Source Hooks](Data-Source-Hooks.md)
   - [Dependencies and assets when building themes and components](Dependencies-and-assets.md)
   - [Sending events between components](Event-emitter.md)
   - [Context targeting](Context-targeting.md)
