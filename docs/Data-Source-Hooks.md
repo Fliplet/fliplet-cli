@@ -4,7 +4,7 @@ Data Source hooks allow your app's backend to perform certain operations such as
 
 **Please note**: hooks do not run when data is inserted or saved via the "App data" section in **Fliplet Studio**.
 
-## Required properties
+## Required properties to all hooks
 
 Each hook requires the following properties:
 
