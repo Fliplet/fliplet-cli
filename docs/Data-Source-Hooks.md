@@ -2,6 +2,8 @@
 
 Data Source hooks allow your app's backend to perform certain operations such as **sending emails** or **push notifications** when certain conditions occurr, e.g. inserting or updating a Data Source Entry.
 
+**Please note**: hooks do not run when data is inserted or saved via the "App data" section in **Fliplet Studio**.
+
 ## Required properties
 
 Each hook requires the following properties:
