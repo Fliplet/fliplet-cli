@@ -34,14 +34,8 @@ The following example sends a push notification to all users subscribed to app `
       "body": "{{{Description}}}"
     },
     "conditions": [
-      {
-        "Status": "Published"
-      }
-    ],
-    "filter": {
-      "match": { "Notifications": "{{Category}}" },
-      "dataSourceId": 456
-    }
+      { "Status": "Published" }
+    ]
   }
 ]
 ```
