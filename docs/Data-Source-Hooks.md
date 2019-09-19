@@ -6,8 +6,8 @@ Data Source hooks allow your app's backend to perform certain operations such as
 
 Each hook requires the following properties:
 
-- `type`: `email` or `push`
-- `runOn`: an array with any of the following values: `insert`, `update`
+- `type`: `email`, `push` or `operations`
+- `runOn`: an array with any of the following values: `insert`, `update`, `beforeSave`, `beforeQuery`
 - `conditions`: an array of objects defining match conditions to be satisfied in order to trigger the hook
 
 ---
@@ -80,10 +80,42 @@ In addition to hook properties, configuring a hook to send emails support the fo
     "type": "email",
     "runOn": ["insert"],
     "payload": {
-      "to": [{ "type": "to", "email": "john@example.org" }],
+      "to": [
+        { "type": "to", "email": "john@example.org", "name": "John" },
+        { "type": "cc", "email": "nick@example.org", "name": "Nick" }
+      ],
       "html": "<h1>Enquiry</h1><p>A form submission has been received from {{Name}}</p>",
       "subject": "Form enquiry received"
     }
+  }
+]
+```
+{% endraw %}
+
+---
+
+### Process a field value
+
+In addition to hook properties, configuring a hook to run operations support the following parameter:
+
+- `payload`: object where each key represents the field name to run the operation on, and the value is an array of operations to run.
+
+Here's the list of operations that can be applied to a field:
+
+- `trim`: removes leading and trailing whitespaces from a string
+- `lower`: transforms a string to lowercase
+- `upper`: transforms a string to uppercase
+- `hash`: hashes a string, e.g. a password to be secured
+
+Here's an example where the field named "Password" will be hashed before saving it:
+
+{% raw %}
+```json
+[
+  {
+    "type": "operations",
+    "runOn": ["beforeSave"],
+    "payload": { "Password": ["hash"] }
   }
 ]
 ```
