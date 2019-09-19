@@ -94,9 +94,9 @@ In addition to hook properties, configuring a hook to send emails support the fo
 
 ---
 
-### Process a field value
+### Manipulate a string
 
-In addition to hook properties, configuring a hook to run operations support the following parameter:
+In addition to hook properties, configuring a hook to manipulate strings support the following parameter:
 
 - `payload`: object where each key represents the field name to run the operation on, and the value is an array of operations to run.
 
@@ -116,6 +116,23 @@ Here's an example where the field named "Password" will be hashed before saving 
     "type": "operations",
     "runOn": ["beforeSave"],
     "payload": { "Password": ["hash"] }
+  }
+]
+```
+{% endraw %}
+
+And one more example where one field gets trimmed and converted to lowercase while the second field is converted to uppercase:
+
+{% raw %}
+```json
+[
+  {
+    "type": "operations",
+    "runOn": ["beforeSave"],
+    "payload": {
+      "Email": ["lower", "trim"],
+      "Name": ["upper"]
+    }
   }
 ]
 ```
