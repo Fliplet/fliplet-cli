@@ -46,6 +46,10 @@ npm update -g
 
 ### Releases changelog
 
+#### 1.7.0 (September 23rd, 2019)
+
+- Support for uploading (syncing) files to Fliplet servers on "push" operations.
+
 #### 1.6.0 (September 18th, 2019)
 
 - Support for running post-sync data source hooks on push operations.
@@ -162,6 +166,22 @@ timestamp_column: updatedAt
 run_hooks:
 #  - "insert"
 #  - "update"
+
+# Define what columns in your local database rows are URLs to remote or local files
+# to be sync to Fliplet servers when inserting or updating rows.
+files:
+# Define a column containing a remote URL to a file, e.g. "https://example.org/John.jpg"
+#  - column: thumbnail
+#    type: remote
+
+# Define a column containing a local absolute URL to a file, e.g. "/home/user/John.jpg"
+#  - column: thumbnail
+#    type: local
+
+# Define a column containing a relative URL to a file in the specified directory, e.g. "John.jpg"
+#  - column: thumbnail
+#    type: local
+#    directory: /Users/John/Desktop
 ```
 
 Once you have a configuration file like the one above saved on disk, starting the agent is as simple as running the `start` command from your shell. While you are setting up the configuration we also suggest using the `--test` option to perform a dry run and test out the integration without actually sending data to Fliplet servers:
@@ -289,7 +309,18 @@ module.exports.setup = (agent) => {
 
     // Define which (optional) post-sync hooks should run on the data source data when received
     // by Fliplet servers. Hook types are "insert" and "update"
-    runHooks: []
+    runHooks: [],
+
+    files: [
+      // Define a column containing a remote URL to a file, e.g. "https://example.org/John.jpg"
+      // { column: 'thumbnail', type: 'remote' },
+
+      // Define a column containing a local absolute URL to a file, e.g. "/home/user/John.jpg"
+      // { column: 'thumbnail', type: 'local' },
+
+      // Define a column containing a relative URL to a file in the specified directory, e.g. "John.jpg"
+      // { column: 'thumbnail', type: 'local', directory: '/path/to/dir' }
+    ]
   });
 
   // You can define any other operation similar to the above here using "agent.push()"
