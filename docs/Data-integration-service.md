@@ -465,6 +465,53 @@ module.exports.setup = (agent) => {
 };
 ```
 
+## Synchronizing files
+
+Push operations can optionally define a list of columns which are meant to contain URLs to either local or remote files which need to be uploaded to Fliplet servers. When doing so, your resulting data source entries will get the column value replaced with the URL of the file on Fliplet servers. Furthermore, you will get a `<columnName>MediaFileId` added column with the ID of the Media File on Fliplet servers.
+
+Syncing files is supported both when using the simpler YAML-based configuration and the advanced mode with a Javascript file.
+
+### YAML
+
+```yaml
+# Define what columns in your local database rows are URLs to remote or local files
+# to be sync to Fliplet servers when inserting or updating rows.
+files:
+  # Define a column containing a remote URL to a file, e.g. "https://example.org/John.jpg"
+  - column: userThumbnail
+    type: remote
+
+  # Define a column containing a local absolute URL to a file, e.g. "/home/user/John.jpg"
+  - column: userResume
+    type: local
+
+  # Define a column containing a relative URL to a file in the specified directory, e.g. "John.jpg"
+  - column: userAlternativeResume
+    type: local
+    directory: /path/to/directory
+```
+
+### Javascript
+
+```js
+module.exports.setup = (agent) => {
+  agent.push({
+    // Define rest of options here ...
+
+    files: [
+      // Define a column containing a remote URL to a file, e.g. "https://example.org/John.jpg"
+      { column: 'thumbnail', type: 'remote' },
+
+      // Define a column containing a local absolute URL to a file, e.g. "/home/user/John.jpg"
+      { column: 'thumbnail', type: 'local' },
+
+      // Define a column containing a relative URL to a file in the specified directory, e.g. "John.jpg"
+      { column: 'thumbnail', type: 'local', directory: '/path/to/dir' }
+    ]
+  });
+};
+```
+
 ---
 
 ## List of messages logged by the agent
