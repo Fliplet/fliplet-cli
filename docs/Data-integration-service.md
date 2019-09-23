@@ -500,13 +500,13 @@ module.exports.setup = (agent) => {
 
     files: [
       // Define a column containing a remote URL to a file, e.g. "https://example.org/John.jpg"
-      { column: 'thumbnail', type: 'remote' },
+      { column: 'userThumbnail', type: 'remote' },
 
       // Define a column containing a local absolute URL to a file, e.g. "/home/user/John.jpg"
-      { column: 'thumbnail', type: 'local' },
+      { column: 'userResume', type: 'local' },
 
       // Define a column containing a relative URL to a file in the specified directory, e.g. "John.jpg"
-      { column: 'thumbnail', type: 'local', directory: '/path/to/dir' }
+      { column: 'userAlternativeResume', type: 'local', directory: '/path/to/dir' }
     ]
   });
 };
