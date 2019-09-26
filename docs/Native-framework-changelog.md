@@ -7,13 +7,13 @@ We regularly update our framework to support new features. If you have an older 
   <div class="bl two">
     <div>
       <h4>iOS</h4>
-      <p>Latest release: 3.9.9</p>
+      <p>Latest stable release: 3.9.9</p>
     </div>
   </div>
   <div class="bl two">
     <div>
       <h4>Android</h4>
-      <p>Latest release: 3.9.4</p>
+      <p>Latest stable release: 3.9.4</p>
     </div>
   </div>
 </section>
@@ -21,7 +21,13 @@ We regularly update our framework to support new features. If you have an older 
 
 ---
 
-## Supported versions
+## Beta versions
+
+### Version 4.0.0 (To be released early October 2019)
+
+- **All platforms**: Support for Firebase Analytics
+
+## Stable versions
 
 ### Version 3.9.9 (Aug 28, 2019)
 
@@ -60,7 +66,7 @@ We regularly update our framework to support new features. If you have an older 
 
 ---
 
-## Deprecated versions
+## Legacy versions
 
 Please note that these versions have limited support for newer Fliplet features. We encourage you to submit a new native update to your apps via the App Store or Google Play if you have users still running these versions of your app.
 
