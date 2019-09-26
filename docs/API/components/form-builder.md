@@ -99,7 +99,7 @@ Fliplet.FormBuilder.get().then(function (form) {
 
 ---
 
-### `form.fields.get()
+### form.fields.get()
 
 Get the form fields
 ```
