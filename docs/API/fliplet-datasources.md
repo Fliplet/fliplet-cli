@@ -225,7 +225,7 @@ connection.insert({ foo: 'bar' }, {
 
 ### Update a record (entry)
 
-Updating a data source entry is done via the `connection.insert` method by providing its ID and the date to be updated.
+Updating a data source entry is done via the `connection.insert` method by providing its ID and the update to be applied.
 
 ```js
 connection.update(123, {
