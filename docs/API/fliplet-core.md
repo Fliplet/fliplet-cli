@@ -773,6 +773,8 @@ Fliplet.Navigator.location().then(function (position) {
 
 This feature allows you to run an operation (even asynchronously) and store its result so that future calls to the function will instantly resolve the Promise instead of waiting for the result.
 
+If the data is already in cache at the time of running the call, your promise will be resolved instantly. However, when the cache is about to expire (if an expiration has been set) it will automatically attempt to renew the cache in background.
+
 `Promise<result> = Fliplet.Cache.get(key, fetchData)`
 
 ```js
@@ -787,17 +789,17 @@ Here's a more complete example including all options:
 
 ```js
 Fliplet.Cache.get({
-  key: 'foo',
+  key: 'foo',         // unique name
   platform: 'native', // only cache on native
-  expire: 60 * 10 // keep cache for 10 minutes
+  expire: 60 * 10     // keep cache for 10 minutes
 }, function onFetchData() {
-  // Function to be called when data needs to be fetched.
-  // Return a promise if async
+  // Function to be called when data does not exist in the cache and needs to be fetched.
+  // Return a promise if your operation is asynchronous.
   return Fliplet.API.request({
     url: 'v1/something'
   });
 }).then(function (result) {
-  // this promise will resolve instantly if the data is already cached
+  // This promise will resolve instantly if the data is already cached
 });
 ```
 
