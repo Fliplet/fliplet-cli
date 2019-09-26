@@ -775,7 +775,7 @@ This feature allows you to run an operation (even asynchronously) and store its 
 
 If the data is already in cache at the time of running the call, your promise will be resolved instantly. However, when the cache is about to expire (if an expiration has been set) it will automatically attempt to renew the cache in background.
 
-`Promise<result> = Fliplet.Cache.get(key, fetchData)`
+`Promise<result> Fliplet.Cache.get(<string|object>, <function>)`
 
 ```js
 Fliplet.Cache.get('foo', function () {
