@@ -21,17 +21,25 @@ We regularly update our framework to support new features. If you have an older 
 
 ---
 
-## Beta versions
+## Beta version
 
 ### Version 4.0.0 (To be released early October 2019)
 
 - **All platforms**: Support for Firebase Analytics
 
-## Stable versions
+---
+
+## Stable version
 
 ### Version 3.9.9 (Aug 28, 2019)
 
 - **iOS**: Support for iOS13
+
+---
+
+## Deprecated versions
+
+Please note that these versions have limited support for newer Fliplet features. We encourage you to submit a new native update to your apps via the App Store or Google Play if you have users still running these versions of your app.
 
 ### Version 3.9.8 (Jul 19, 2019)
 
@@ -45,30 +53,18 @@ We regularly update our framework to support new features. If you have an older 
 
 - **iOS**: Bugfixes for issues reported when playing audio files
 
----
-
 ### Version 3.9.5 (April 25, 2019)
 
 - **iOS**: Stability improvements during boot time and when performing in-app updates
-
----
 
 ### Version 3.9.4 (April 16, 2019)
 
 - **Android**: Support for Google Analytics data reporting on all versions of Android.
 
----
-
 
 ### Version 3.9.3 (April 11, 2019)
 
 - **All platforms**: Stability improvements during the download of in-app updates.
-
----
-
-## Legacy versions
-
-Please note that these versions have limited support for newer Fliplet features. We encourage you to submit a new native update to your apps via the App Store or Google Play if you have users still running these versions of your app.
 
 ### Version 3.9.2 (January 25, 2019)
 
