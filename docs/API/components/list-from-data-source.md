@@ -12,6 +12,8 @@ The **List (from data source)** component exposes hooks that you can use to modi
 - [`flListDataAfterGetData`](#fllistdataaftergetdata)
 - [`flListDataBeforeDeleteConfirmation`](#fllistdatabeforedeleteconfirmation)
 - [`flListDataBeforeDeleteEntry`](#fllistdatabeforedeleteentry)
+- [`flListDataBeforeShowComments`](#flListdatabeforeshowcomments)
+- [`flListDataAfterShowComments`](#flListdataaftershowcomments)
 
 ### `flListDataBeforeGetData`
 
@@ -124,13 +126,53 @@ Fliplet.Hooks.on('flListDataBeforeDeleteEntry', function onBeforeDeleteEntry(opt
 });
 ```
 
+### `flListDataBeforeShowComments`
+
+The hook is run before showing comments for an entry.
+
+```js
+Fliplet.Hooks.on('flListDataBeforeShowComments', fn);
+```
+
+#### Parameters
+
+- **fn** (Function((`data`)) Callback function with an object parameter.
+  - **data** (Object) A map of data containing the following.
+    - **config** (Object) Configuration used to initialize the component.
+    - **html** (String) HTML code that is to be rendered for all the comments.
+    - **comments** (Array) Comments retrieved for the entry.
+    - **entryId** (Number) Data source entry ID of the record to be deleted.
+
+### `flListDataAfterShowComments`
+
+The hook is run after showing comments for an entry.
+
+```js
+Fliplet.Hooks.on('flListDataAfterShowComments', fn);
+```
+
+#### Parameters
+
+- **fn** (Function((`data`)) Callback function with an object parameter.
+  - **data** (Object) A map of data containing the following.
+    - **config** (Object) Configuration used to initialize the component.
+    - **html** (String) HTML code that is to be rendered for all the comments.
+    - **comments** (Array) Comments retrieved for the entry.
+    - **entryId** (Number) Data source entry ID of the record to be deleted.
+
+
+
 ## Configurations
 
 Using the available hooks, component instance configuration can be used to modify component data and behavior. The available configuration properties are listed below:
 
-- `getData` (Function(`options`)) Function used to retrieve data. Each entry must include the following properties, which the `Fliplet.DataSources` JS API follows. **Note** This function is best set using the [`flListDataBeforeGetData`](#fllistdatabeforegetdata) hook and must return a Promise.
+- `getData` (Function(`options`)) Function used to retrieve data. Each entry must include the following properties, which the `Fliplet.DataSources` JS API follows. **`[1]`** **`[2]`**
   - `id` (Number) Entry ID
   - `data` (Object) Entry data
+
+**`[1]`** This function is best set using the [`flListDataBeforeGetData`](#fllistdatabeforegetdata) hook and must return a Promise.
+**`[2]`** If `getData` is used to return data, the fields for the data source configured through the Studio interface needs to match the properties avaiable in the returned data. You can do this by creating at least one entry in the data source that contains all the respective fields.
+
 - `dataQuery` (Object \| Function(`options`)) If a custom `getData` isn't used, `dataQuery` customizes the query for retrieving data from the data source. This can be used to limit the amount of data retrieved from the data source, reducing the amount of transferred and processed data. When an **Object** is provided, the object is passed to the `.find()` function as outlined in the [`Fliplet.DataSources` JS API](../../API/fliplet-datasources.md#find-specific-records). When a **Function** is provided, the function must return an object to be pased to the same `.find()` function. The function can make use of an `options` object that contains the following properties.
   - `config` (Object) Configuration used to initialize the component
   - `id` (Number) Entry ID
