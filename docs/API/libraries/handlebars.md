@@ -69,6 +69,7 @@ Fliplet apps are loaded with the following helpers.
    - `str` String to be parsed for new lines
 - `toJSONString` changes any objects to a JSON string, e.g. `{{toJSONString obj}}`
    - `obj` Object to be parsed into a JSON string
+- `formatCSV` ensures that `"` characters are removed if the input is a CSV that contains `"` characters due to `,` being used in a value, e.g. `"Washington, D.C.", New York` will be formatted into `Washington, D.C., New York`
 
 ### Block Expression Helpers
 
