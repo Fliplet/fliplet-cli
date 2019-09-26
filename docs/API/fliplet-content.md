@@ -31,7 +31,7 @@ Fliplet.Content(options)
 
 ## Related
 
-* [`Fliplet.Profile.Content()`](fliplet-profile-content.md) - Use `Fliplet.Profile,Content()` to create and manage content specific to the user.
+* [`Fliplet.Profile.Content()`](fliplet-profile-content.md) - Use `Fliplet.Profile.Content()` to create and manage content specific to the user.
 
 ## Examples
 
