@@ -11,6 +11,7 @@ The following namespaces are publicly available under this package. Please click
 - [API](#api)
 - [App](#app)
 - [Apps](#apps)
+- [Cache](#cache)
 - [Encode](#encode)
 - [Environment](#environment)
 - [Hooks](#hooks)
@@ -762,6 +763,52 @@ Fliplet.Navigator.location().then(function (position) {
 }).catch(function (error) {
   // User didn't allow to share the location
 });
+```
+
+---
+
+## Cache
+
+### Fetch data and keep it cached for future calls
+
+This feature allows you to run an operation (even asynchronously) and store its result so that future calls to the function will instantly resolve the Promise instead of waiting for the result.
+
+`Promise<result> = Fliplet.Cache.get(key, fetchData)`
+
+```js
+Fliplet.Cache.get('foo', function () {
+  return { bar: 1 };
+}).then(function (result) {
+
+});
+```
+
+Here's a more complete example including all options:
+
+```js
+Fliplet.Cache.get({
+  key: 'foo',
+  platform: 'native', // only cache on native
+  expire: 60 * 10 // keep cache for 10 minutes
+}, function onFetchData() {
+  // Function to be called when data needs to be fetched.
+  // Return a promise if async
+  return Fliplet.API.request({
+    url: 'v1/something'
+  });
+}).then(function (result) {
+  // this promise will resolve instantly if the data is already cached
+});
+```
+
+### Clear cache for one or more keys
+
+```js
+// Clear a single value
+Fliplet.Cache.delete('foo');
+
+// Clear everything for this app
+Fliplet.Cache.clear();
 ```
 
 ---
