@@ -1,8 +1,54 @@
 # Encrypt the content of data sources
 
+<p class="warning"><strong>BETA FEATURE:</strong> Please note that this feature is currently only available in beta and its specifications may be subject to change before releasing it.</p>
+
+Add the `fliplet-encryption` Fliplet package to your global resources to enable encryption and decryption functionalities in your Fliplet apps.
+
+## Set the encryption/decryption key
+
+```js
+Fliplet.DataSources.Encryption().setKey('foo');
+```
+
+Working example:
+
+```js
+// Add this code to a screen with a login component
+Fliplet.Hooks.on('login', function (formEntry) {
+  Fliplet.DataSources.Encryption().setKey(formEntry.columnContainingPrivateKey);
+});
+```
+
+## Set up encryption on a data source across the app
+
+```js
+Fliplet.DataSources.Encryption().encrypt(dataSourceId, arrayOfFieldsToEncrypt);
+```
+
+Working example:
+
+```js
+// Add this to the Global JS
+Fliplet.DataSources.Encryption().encrypt(123, ['First name', ['Last name']);
+```
+
+The system will take care of both encrypting and decrypting content of data sources for you. No additional code will be required.
+
+## Clear the encryption/decryption key
+
+```js
+Fliplet.DataSources.Encryption().clearKey();
+```
+
+---
+
+## Deprecated usage
+
+<p class="warning"><strong>DEPRECATED USE:</strong> The following implementation is considered to be very low level and it's not recommended unless you know what you're doing.</p>
+
 Add the `crypto-js` Fliplet package to your global resources to enable encryption and decryption functionalities in your Fliplet apps.
 
-## Set up the basic structure
+### Set up the basic structure
 
 Before diving into components, let's define a few helpers in the **Global JS** to reuse code between screens. Simply copy and paste the following code to get started:
 
@@ -54,7 +100,7 @@ App = {
 };
 ```
 
-## Set the encryption keys on user login
+### Set the encryption keys on user login
 
 ```js
 // Add this code to a screen with a login component
@@ -64,7 +110,7 @@ Fliplet.Hooks.on('login', function (formEntry) {
 });
 ````
 
-## Configure a form to decrypt and encrypt data
+### Configure a form to decrypt and encrypt data
 
 ```js
 var entryId = Fliplet.Navigate.query.dataSourceEntryId;
@@ -99,7 +145,7 @@ return App.Keys.get().then(function (keys) {
 
 ```
 
-## Configure a LFD to decrypt data before displaying it
+### Configure a LFD to decrypt data before displaying it
 
 ```js
 Fliplet.Hooks.on('flListDataBeforeGetData', function onBeforeGetData(data) {
