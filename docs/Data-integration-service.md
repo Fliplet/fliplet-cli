@@ -473,6 +473,12 @@ Push operations can optionally define a list of columns which are meant to conta
 
 Syncing files is supported both when using the simpler YAML-based configuration and the advanced mode with a Javascript file.
 
+The following locations are currently supported for reading files:
+
+- **Remote files** (e.g. hosted on a HTTP/HTTPS URL)
+- **Local files** (e.g. on your local computer)
+- **Shared files** (e.g. shared folders on your network)
+
 ### YAML
 
 ```yaml
