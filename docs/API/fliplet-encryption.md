@@ -42,6 +42,8 @@ Fliplet.DataSources.Encryption().clearKey();
 
 ---
 
+<div class="opacity: 0.5;">
+
 ## Deprecated usage
 
 <p class="warning"><strong>DEPRECATED USE:</strong> The following implementation is considered to be very low level and it's not recommended unless you know what you're doing.</p>
@@ -170,3 +172,5 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function onBeforeGetData(data) {
   };
 });
 ```
+
+</div>
