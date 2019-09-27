@@ -488,9 +488,10 @@ files:
     type: local
 
   # Define a column containing a relative URL to a file in the specified directory, e.g. "John.jpg"
+  # Works both on local folders and shared network drives
   - column: userAlternativeResume
     type: local
-    directory: /path/to/directory
+    directory: C:\path\to\folder
 ```
 
 ### Javascript
@@ -508,7 +509,7 @@ module.exports.setup = (agent) => {
       { column: 'userResume', type: 'local' },
 
       // Define a column containing a relative URL to a file in the specified directory, e.g. "John.jpg"
-      { column: 'userAlternativeResume', type: 'local', directory: '/path/to/dir' }
+      { column: 'userAlternativeResume', type: 'local', directory: 'C:\\path\\to\\folder' }
     ]
   });
 };
