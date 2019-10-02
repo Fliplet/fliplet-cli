@@ -35,7 +35,7 @@ Working example:
 
 ```js
 // Add this to the Global JS
-Fliplet.DataSources.Encryption().encrypt(123, ['First name', ['Last name']);
+Fliplet.DataSources.Encryption().encrypt(123, ['First name', 'Last name']);
 ```
 
 The system will take care of both encrypting and decrypting content of data sources for you. No additional code will be required.
