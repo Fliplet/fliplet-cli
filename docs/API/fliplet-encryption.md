@@ -60,14 +60,14 @@ The following example assumes you want to set up multiple organisations within y
 
 Given two Data Sources as follows:
 
-*Organisations* (ID `123`)
+**Organisations** *(Data Source ID `123`)*
 
 | ID         | Name   | Key      |
 |------------|--------|----------|
 | AAPL-0123  | Apple  | appl123$ |
 | GOOG-0789  | Google | G00gl1!# |
 
-*Users* (ID `456`)
+**Users** *(Data Source ID `456`)*
 
 | Email             | OrganizationID | Full name   | Bio         |
 |-------------------|----------------|-------------|-------------|
@@ -75,7 +75,7 @@ Given two Data Sources as follows:
 | bob@example.org   | GOOG-0789      | <encrypted> | <encrypted> |
 | john@example.org  | AAPL-0123      | <encrypted> | <encrypted> |
 
-Create a login component bound to the users Data Source. Then, add a hook to fetch the user's organisation ley from the organisations Data Source when the user logs in. This key will be set as encryption/decryption key for the user:
+Create a **login component** bound to the users Data Source. Then, add a hook to fetch the user's organisation ley from the organisations Data Source when the user logs in. This key will be set as encryption/decryption key for the user:
 
 ```js
 // Add this code to a screen with a login component
