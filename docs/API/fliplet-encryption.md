@@ -75,7 +75,7 @@ Given two Data Sources as follows:
 | bob@example.org   | GOOG-0789      | (Encrypted) | (Encrypted) |
 | john@example.org  | AAPL-0123      | (Encrypted) | (Encrypted) |
 
-Create a **login component** bound to the users Data Source. Then, add a hook to fetch the user's organisation ley from the organisations Data Source when the user logs in. This key will be set as encryption/decryption key for the user:
+Create a **login component** bound to the users Data Source. Then, add the following **hook** to fetch the **user's organisation key** from the organisations Data Source when the user logs in. This key will be set as encryption/decryption key for the user:
 
 ```js
 // Add this code to a screen with a login component
@@ -86,6 +86,7 @@ Fliplet.Hooks.on('login', function (user) {
       where: { ID: user.entry.data.OrganizationID }
     });
   }).then(function (organizations) {
+    // Read the organisation key
     var key = _.first(organizations).data.key;
 
     // Locally store the organization key
