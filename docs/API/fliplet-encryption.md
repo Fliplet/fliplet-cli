@@ -62,10 +62,10 @@ Given two Data Sources as follows:
 
 **Organisations** *(Data Source ID `123`)*
 
-| ID         | Name   | Key      |
-|------------|--------|----------|
-| AAPL-0123  | Apple  | appl123$ |
-| GOOG-0789  | Google | G00gl1!# |
+| ID         | Name   | Key        |
+|------------|--------|------------|
+| AAPL-0123  | Apple  | ap!pl_123$ |
+| GOOG-0789  | Google | G00=*gl1!# |
 
 **Users** *(Data Source ID `456`)*
 
