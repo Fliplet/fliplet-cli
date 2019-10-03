@@ -8,7 +8,7 @@ Data Source hooks allow your app's backend to perform certain operations such as
 
 Each hook requires the following properties:
 
-- `type`: `email`, `push` or `operations`
+- `type`: `email`, `sms`, `web`, `push` or `operations`
 - `runOn`: an array with any of the following values: `insert`, `update`, `beforeSave`, `beforeQuery`
 - `conditions`: an array of objects defining match conditions to be satisfied in order to trigger the hook
 
