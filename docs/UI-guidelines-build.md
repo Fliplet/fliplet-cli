@@ -230,11 +230,9 @@ By default, all tables are displayed in the **Responsive** display type.
 For example:
 
 ```html
-<div class="table-scrollable">
-  <table>
-    [...]
-  </table>
-</div>
+<table class="table-scrollable">
+  [...]
+</table>
 ```
 
 ### Hybrid tables
