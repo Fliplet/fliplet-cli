@@ -86,18 +86,18 @@ Fliplet.Hooks.on('login', function (user) {
       where: { ID: user.entry.data.OrganizationID }
     });
   }).then(function (organizations) {
-    var organization = _.first(organizations);
+    var key = _.first(organizations).data.key;
 
-    // Locally store the organization private key for decrypting/encrypting data
-    return Fliplet.DataSources.Encryption().setKey(organization.data.Key);
+    // Locally store the organization key
+    return Fliplet.DataSources.Encryption().setKey(key);
   });
 });
 ```
 
-You then just need to define in your *Global JavaScript code* which Data Sources are encrypted. In our example we simply define that the contacts Data Source has some encrypted columns:
+You then just need to define in your **Global JavaScript code** which Data Sources are encrypted. In our example we simply define that the contacts Data Source has some encrypted columns:
 
 ```js
-// Add this to the Global JavaScript code
+// Add this to the Global JavaScript code to encrypt the users data source
 Fliplet.DataSources.Encryption().encrypt(345, [
   'Full name', 'Bio'
 ]);
