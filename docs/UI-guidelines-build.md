@@ -227,6 +227,16 @@ By default, all tables are displayed in the **Responsive** display type.
 | `.table-sm-scrollable` | Scrollable | Scrollable | Responsive | Responsive |
 | `.table-xs-scrollable` | Scrollable | Responsive | Responsive | Responsive |
 
+For example:
+
+```html
+<div class="table-scrollable">
+  <table>
+    [...]
+  </table>
+</div>
+```
+
 ### Hybrid tables
 
 To use tables in the **Hybrid** display type, add a `<div class="table-hybrid-container"></div>` around the table.
