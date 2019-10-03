@@ -98,7 +98,8 @@ Fliplet.Hooks.on('login', function (user) {
 You then just need to define in your **Global JavaScript code** which Data Sources are encrypted. In our example we simply define that the contacts Data Source has some encrypted columns:
 
 ```js
-// Add this to the Global JavaScript code to encrypt the users data source
+// Add this to the Global JavaScript code to encrypt the defined
+// columns of the users Data Source
 Fliplet.DataSources.Encryption().encrypt(345, [
   'Full name', 'Bio'
 ]);
