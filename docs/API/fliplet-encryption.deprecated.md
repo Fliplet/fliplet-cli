@@ -1,4 +1,6 @@
-# Encrypt the content of data sources
+## Deprecated usage of encryption on Data Sources
+
+<p class="warning"><strong>DEPRECATED USE:</strong> The following implementation is considered to be very low level and it's not recommended unless you know what you're doing. Please refer to <a href="https://developers.fliplet.com/API/fliplet-encryption.html">https://developers.fliplet.com/API/fliplet-encryption.html</a> for the official implementation.</p>
 
 Add the `crypto-js` Fliplet package to your global resources to enable encryption and decryption functionalities in your Fliplet apps.
 
@@ -64,7 +66,7 @@ Fliplet.Hooks.on('login', function (formEntry) {
 });
 ````
 
-## Configure a form to decrypt and encrypt data
+### Configure a form to decrypt and encrypt data
 
 ```js
 var entryId = Fliplet.Navigate.query.dataSourceEntryId;

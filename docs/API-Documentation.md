@@ -23,6 +23,7 @@ These JS APIs falls into the most common category and almost all apps, component
 - [Fliplet CSV](API/fliplet-csv.md) (`fliplet-csv`)
 - [Fliplet Data Sources](API/fliplet-datasources.md) (`fliplet-datasources`)
 - [Fliplet Database](API/fliplet-database.md) (`fliplet-database`)
+- [Fliplet Encryption](API/fliplet-encryption.md) (`fliplet-encryption`)
 - [Fliplet Media](API/fliplet-media.md) (`fliplet-media`)
 - [Fliplet Notifications](API/fliplet-notifications.md) (`fliplet-notifications`)
 - [Fliplet OAuth2](API/fliplet-oauth2.md) (`fliplet-oauth2`) (Beta)

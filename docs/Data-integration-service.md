@@ -473,6 +473,12 @@ Push operations can optionally define a list of columns which are meant to conta
 
 Syncing files is supported both when using the simpler YAML-based configuration and the advanced mode with a Javascript file.
 
+The following locations are currently supported for reading files:
+
+- **Remote files** (e.g. hosted on a HTTP/HTTPS URL)
+- **Local files** (e.g. on your local computer)
+- **Shared files** (e.g. shared folders on your network)
+
 ### YAML
 
 ```yaml
@@ -488,9 +494,10 @@ files:
     type: local
 
   # Define a column containing a relative URL to a file in the specified directory, e.g. "John.jpg"
+  # Works both on local folders and shared network drives
   - column: userAlternativeResume
     type: local
-    directory: /path/to/directory
+    directory: C:\path\to\folder
 ```
 
 ### Javascript
@@ -508,7 +515,7 @@ module.exports.setup = (agent) => {
       { column: 'userResume', type: 'local' },
 
       // Define a column containing a relative URL to a file in the specified directory, e.g. "John.jpg"
-      { column: 'userAlternativeResume', type: 'local', directory: '/path/to/dir' }
+      { column: 'userAlternativeResume', type: 'local', directory: 'C:\\path\\to\\folder' }
     ]
   });
 };
