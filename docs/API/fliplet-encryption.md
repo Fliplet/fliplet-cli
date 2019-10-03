@@ -71,9 +71,9 @@ Given two Data Sources as follows:
 
 | Email             | OrganizationID | Full name   | Bio         |
 |-------------------|----------------|-------------|-------------|
-| alice@example.org | AAPL-0123      | <encrypted> | <encrypted> |
-| bob@example.org   | GOOG-0789      | <encrypted> | <encrypted> |
-| john@example.org  | AAPL-0123      | <encrypted> | <encrypted> |
+| alice@example.org | AAPL-0123      | (Encrypted) | (Encrypted) |
+| bob@example.org   | GOOG-0789      | (Encrypted) | (Encrypted) |
+| john@example.org  | AAPL-0123      | (Encrypted) | (Encrypted) |
 
 Create a **login component** bound to the users Data Source. Then, add a hook to fetch the user's organisation ley from the organisations Data Source when the user logs in. This key will be set as encryption/decryption key for the user:
 
