@@ -151,8 +151,6 @@ Note: when moving a file from a folder to an app or organisation, please set its
 
 Use the `search()` method fo find folders and files in your app or organisation or a specific folder.
 
-<p class="warning"><strong>BETA FEATURE:</strong> Please note that this feature is currently only available in beta and its specifications may be subject to change before releasing it.</p>
-
 - You can search by `name`
 - You can filter results by `appId`, `organizationId` or `folderId`
 - You can search for deleted files and folders by specifying `deletedOnly` as `true`
@@ -270,8 +268,6 @@ And then use it in your directory templates like:
 ---
 
 ## Download files to devices
-
-<p class="warning"><strong>BETA FEATURE:</strong> Please note that this feature is currently only available in beta and documentation provided below may be limited. Apps support this feature from <a href="https://developers.fliplet.com/Native-framework-changelog.html#version-396-april-30-2019">version 3.9.6</a> and newer.</p>
 
 As per most or Fliplet JS APIs, all the following methods **return a promise**. There is experimental support on Chrome (for webapps) and full support is only available on native platforms (iOS and Android).
 
