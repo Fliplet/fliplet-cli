@@ -10,7 +10,7 @@ A widget instance data won't be available on the page unless your dependencies i
 
 Does your code handle that? Here's a piece of advice:
 
-1. Output each widget instance ID via the `build.html` file ensuring the format is `data-WIDGET_NAME-id`:
+1. Output each widget instance ID via the `build.html` file ensuring the format is `data-WIDGET-NAME-id` where "WIDGET-NAME" is your widget unique name:
 
 {% raw %}
 ```handlebars
