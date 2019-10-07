@@ -10,27 +10,20 @@ A widget instance data won't be available on the page unless your dependencies i
 
 Does your code handle that? Here's a piece of advice:
 
-1. Output each widget instance ID via the `build.html` file
+1. Output each widget instance ID via the `build.html` file ensuring the format is `data-WIDGET_NAME-id`:
 
 {% raw %}
 ```handlebars
-<div data-my-widget-id="{{id}}">Hi!</div>
+<div data-my-nice-widget-id="{{id}}">Hi!</div>
 ```
 {% endraw %}
 
 2. On your JS files, cycle through the instances and get the data of each instance
 
 ```js
-// Using our helper from fliplet-core
-Fliplet.Widget.instance('my-widget', function (data) {
-
-});
-
-// Or using plain jQuery
-$('[data-my-widget-id]').each(function () {
-  var $el = $(this);
-  var instanceId = $el.data('my-widget-id');
-  var data = Fliplet.Widget.getData(instanceId);
+Fliplet.Widget.instance('my-nice-widget', function (data) {
+  // initialise your component.
+  // this function is called for each component if this type dropped into the page
 });
 ```
 
