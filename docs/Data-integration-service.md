@@ -53,6 +53,7 @@ npm update -g
 #### 1.6.0 (September 18th, 2019)
 
 - Support for running post-sync data source hooks on push operations.
+- Support for deleting entries via the new `delete_column` attribute
 
 #### 1.5.0 (September 3rd, 2019)
 
