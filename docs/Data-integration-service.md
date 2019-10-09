@@ -477,7 +477,7 @@ module.exports.setup = (agent) => {
 
 ## Synchronizing files
 
-Push operations can optionally define a list of columns which are meant to contain URLs to either local or remote files which need to be uploaded to Fliplet servers. When doing so, your resulting data source entries will get the column value replaced with the URL of the file on Fliplet servers. Furthermore, you will get a `<columnName>MediaFileId` added column with the ID of the Media File on Fliplet servers.
+**Push operations** can optionally define a list of columns which are meant to contain URLs to either local or remote files which need to be uploaded to Fliplet servers. When doing so, your resulting data source entries will get the column value replaced with the URL of the file on Fliplet servers. Furthermore, you will get a `<columnName>MediaFileId` added column with the ID of the Media File on Fliplet servers.
 
 <p class="warning"><strong>Version 1.7.0 required:</strong> Please note that this feature does require the version 1.7.0 or newer of Fliplet Agent to work.</p>
 
