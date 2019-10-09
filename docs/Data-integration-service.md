@@ -266,6 +266,11 @@ module.exports.setup = (agent) => {
     // to the Fliplet Data Source hence might require updating
     timestampColumnName: 'updatedAt',
 
+    // Define whether remote entries on Fliplet servers should be kept or deleted when
+    // they are not found in the local dataset returned by the query result.
+    // Using "update" will keep orphaned entries while "replace" will delete them.
+    mode: 'update',
+
     // Define which (optional) column should be used to compare whether
     // the record has been flagged as deleted on your database and should
     // be removed from the Fliplet Data Source
@@ -439,7 +444,7 @@ module.exports.setup = (agent) => {
 
 ## Synchronization mode
 
-The `mode` parameter allows you to define whether remote entries should be deleted from the Data Source on Fliplet servers when they are not found in the local dataset. Here are the available options you can use:
+**Push operations** can define an optional `mode` parameter allows you to define whether remote entries should be deleted from the Data Source on Fliplet servers when they are not found in the local dataset. Here are the available options you can use:
 
 - `update` (**default**) will keep remote entries that are not found in the local dataset
 - `replace` will delete remote entries when they don't exist in the local dataset
@@ -460,6 +465,9 @@ module.exports.setup = (agent) => {
   agent.push({
     // Define rest of options here ...
 
+    // Define whether remote entries on Fliplet servers should be kept or deleted when
+    // they are not found in the local dataset returned by the query result.
+    // Using "update" will keep orphaned entries while "replace" will delete them.
     mode: 'update'
   });
 };
