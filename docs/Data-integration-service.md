@@ -444,7 +444,7 @@ module.exports.setup = (agent) => {
 
 ## Synchronization mode
 
-<p class="info">Available from <strong>version 1.7.1</strong></p>
+<p class="info">Available from <strong>version 1.7.1</strong> of Fliplet Agent.</p>
 
 **Push operations** can define an optional `mode` parameter allows you to define whether remote entries should be deleted from the Data Source on Fliplet servers when they are not found in the local dataset. Here are the available options you can use:
 
@@ -479,9 +479,9 @@ module.exports.setup = (agent) => {
 
 ## Synchronizing files
 
-**Push operations** can optionally define a list of columns which are meant to contain URLs to either local or remote files which need to be uploaded to Fliplet servers. When doing so, your resulting data source entries will get the column value replaced with the URL of the file on Fliplet servers. Furthermore, you will get a `<columnName>MediaFileId` added column with the ID of the Media File on Fliplet servers.
+<p class="info">Available from <strong>version 1.7.0</strong> of Fliplet Agent.</p>
 
-<p class="warning"><strong>Version 1.7.0 required:</strong> Please note that this feature does require the version 1.7.0 or newer of Fliplet Agent to work.</p>
+**Push operations** can optionally define a list of columns which are meant to contain URLs to either local or remote files which need to be uploaded to Fliplet servers. When doing so, your resulting data source entries will get the column value replaced with the URL of the file on Fliplet servers. Furthermore, you will get a `<columnName>MediaFileId` added column with the ID of the Media File on Fliplet servers.
 
 Syncing files is supported both when using the simpler YAML-based configuration and the advanced mode with a Javascript file.
 
