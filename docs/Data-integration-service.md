@@ -449,6 +449,8 @@ module.exports.setup = (agent) => {
 - `update` (**default**) will keep remote entries that are not found in the local dataset
 - `replace` will delete remote entries when they don't exist in the local dataset
 
+<p class="warning"><strong>Version 1.7.1 required:</strong> Please note that this feature does require the version 1.7.1 or newer of Fliplet Agent to work.</p>
+
 ### YAML
 
 ```yaml
