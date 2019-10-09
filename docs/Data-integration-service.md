@@ -444,12 +444,12 @@ module.exports.setup = (agent) => {
 
 ## Synchronization mode
 
+<p class="info">Available from <strong>version 1.7.1</strong></p>
+
 **Push operations** can define an optional `mode` parameter allows you to define whether remote entries should be deleted from the Data Source on Fliplet servers when they are not found in the local dataset. Here are the available options you can use:
 
 - `update` (**default**) will keep remote entries that are not found in the local dataset
 - `replace` will delete remote entries when they don't exist in the local dataset
-
-<p class="warning"><strong>Version 1.7.1 required:</strong> Please note that this feature does require the version 1.7.1 or newer of Fliplet Agent to work.</p>
 
 ### YAML
 
