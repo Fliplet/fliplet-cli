@@ -46,6 +46,10 @@ npm update -g
 
 ### Releases changelog
 
+#### 1.7.1 (October 9th, 2019)
+
+- Support for "replace" mode to delete data source entries on Fliplet servers when they were not found in the local dataset.
+
 #### 1.7.0 (September 23rd, 2019)
 
 - Support for uploading (syncing) files to Fliplet servers on "push" operations.
@@ -53,7 +57,7 @@ npm update -g
 #### 1.6.0 (September 18th, 2019)
 
 - Support for running post-sync data source hooks on push operations.
-- Support for deleting entries via the new `delete_column` attribute
+- Support for deleting entries via the new `delete_column` attribute.
 
 #### 1.5.0 (September 3rd, 2019)
 
@@ -155,6 +159,11 @@ primary_column: id
 # the record has been updated on your database since it got inserted
 # to the Fliplet Data Source hence might require updating
 timestamp_column: updatedAt
+
+# Define whether remote entries on Fliplet servers should be kept or deleted when
+# they are not found in the local dataset returned by the query result.
+# Using "update" will keep orphaned entries while "replace" will delete them.
+mode: update
 
 # Define which (optional) column should be used to compare whether
 # the record has been flagged as deleted on your database and should
@@ -368,7 +377,8 @@ module.exports.setup = (agent) => {
     source: (axios) => axios.get('https://jsonplaceholder.typicode.com/todos'),
     primaryColumnName: 'id',
     timestampColumnName: 'updatedAt',
-    targetDataSourceId: 123
+    targetDataSourceId: 123,
+    mode: 'update'
   });
 
   // 2. Example pulling hardcoded data
@@ -380,7 +390,8 @@ module.exports.setup = (agent) => {
     },
     primaryColumnName: 'id',
     timestampColumnName: 'updatedAt',
-    targetDataSourceId: 123
+    targetDataSourceId: 123,
+    mode: 'update'
   });
 
   // 3. Example reading from a local JSON file
@@ -395,7 +406,8 @@ module.exports.setup = (agent) => {
     },
     primaryColumnName: 'id',
     timestampColumnName: 'updatedAt',
-    targetDataSourceId: 123
+    targetDataSourceId: 123,
+    mode: 'update'
   });
 };
 ```
@@ -466,6 +478,38 @@ module.exports.setup = (agent) => {
 };
 ```
 
+---
+
+## Mode
+
+The `mode` parameter allows you to define whether remote entries should be deleted from the Data Source on Fliplet servers when they are not found in the local dataset. Here are the available options you can use:
+
+- `update` (**default**) will keep remote entries that are not found in the local dataset
+- `replace` will delete remote entries when they don't exist in the local dataset
+
+### YAML
+
+```yaml
+# Define whether remote entries on Fliplet servers should be kept or deleted when
+# they are not found in the local dataset returned by the query result.
+# Using "update" will keep orphaned entries while "replace" will delete them.
+mode: update
+```
+
+### JavaScript
+
+```js
+module.exports.setup = (agent) => {
+  agent.push({
+    // Define rest of options here ...
+
+    mode: 'update'
+  });
+};
+```
+
+---
+
 ## Synchronizing files
 
 Push operations can optionally define a list of columns which are meant to contain URLs to either local or remote files which need to be uploaded to Fliplet servers. When doing so, your resulting data source entries will get the column value replaced with the URL of the file on Fliplet servers. Furthermore, you will get a `<columnName>MediaFileId` added column with the ID of the Media File on Fliplet servers.
@@ -501,7 +545,7 @@ files:
     directory: C:\path\to\folder
 ```
 
-### Javascript
+### JavaScript
 
 ```js
 module.exports.setup = (agent) => {
