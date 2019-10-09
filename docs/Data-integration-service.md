@@ -44,49 +44,6 @@ If you need to update the agent to the latest version available on npm, run the 
 npm update -g
 ```
 
-### Releases changelog
-
-#### 1.7.1 (October 9th, 2019)
-
-- Support for "replace" mode to delete data source entries on Fliplet servers when they were not found in the local dataset.
-
-#### 1.7.0 (September 23rd, 2019)
-
-- Support for uploading (syncing) files to Fliplet servers on "push" operations.
-
-#### 1.6.0 (September 18th, 2019)
-
-- Support for running post-sync data source hooks on push operations.
-- Support for deleting entries via the new `delete_column` attribute.
-
-#### 1.5.0 (September 3rd, 2019)
-
-- Support for installing more than one service on Windows.
-
-#### 1.4.0 (June 12th, 2019)
-
-- Added support for [pull operations](#define-a-pull-operation).
-
-#### 1.3.1 (April 12th, 2019)
-
-- Security patch for the following third-party packages: **Sequelize**, **js-yaml**.
-
-#### 1.3.0 (April 3rd, 2019)
-
-- Support for installing the Agent as a **Windows service**.
-
-#### 1.2.2 (Feb 8th, 2019)
-
-- Fixes when deleting columns with non-numeric primary keys.
-
-#### 1.2.1 (Dec 28th, 2018)
-
-- Added **User-Agent** to all outgoing requests to improve security.
-
-#### 1.2.0 (Dec 27th, 2018)
-
-- Support for pulling data via **external APIs** or from **File System**.
-
 ---
 
 ## Get started
@@ -619,3 +576,48 @@ If your company is behind a corporate firewall and specific network access shoul
 - For accounts with data in the **US**: [us.api.fliplet.com](https://us.api.fliplet.com) on port *443*
 
 In order to be able to update the agent via **npm**, [registry.npmjs.org](https://registry.npmjs.org) needs to be whitelisted on port *443* too. However, if your internet connection is running behind a corporate firewall it might require specific settings for the proxy ([more details](https://www.beyondjava.net/guiding-npm-firewall)).
+
+---
+
+## Releases changelog
+
+#### 1.7.1 (October 9th, 2019)
+
+- Support for "replace" mode to delete data source entries on Fliplet servers when they were not found in the local dataset.
+
+#### 1.7.0 (September 23rd, 2019)
+
+- Support for uploading (syncing) files to Fliplet servers on "push" operations.
+
+#### 1.6.0 (September 18th, 2019)
+
+- Support for running post-sync data source hooks on push operations.
+- Support for deleting entries via the new `delete_column` attribute.
+
+#### 1.5.0 (September 3rd, 2019)
+
+- Support for installing more than one service on Windows.
+
+#### 1.4.0 (June 12th, 2019)
+
+- Added support for [pull operations](#define-a-pull-operation).
+
+#### 1.3.1 (April 12th, 2019)
+
+- Security patch for the following third-party packages: **Sequelize**, **js-yaml**.
+
+#### 1.3.0 (April 3rd, 2019)
+
+- Support for installing the Agent as a **Windows service**.
+
+#### 1.2.2 (Feb 8th, 2019)
+
+- Fixes when deleting columns with non-numeric primary keys.
+
+#### 1.2.1 (Dec 28th, 2018)
+
+- Added **User-Agent** to all outgoing requests to improve security.
+
+#### 1.2.0 (Dec 27th, 2018)
+
+- Support for pulling data via **external APIs** or from **File System**.
