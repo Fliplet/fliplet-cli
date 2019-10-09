@@ -480,7 +480,7 @@ module.exports.setup = (agent) => {
 
 ---
 
-## Mode
+## Synchronization mode
 
 The `mode` parameter allows you to define whether remote entries should be deleted from the Data Source on Fliplet servers when they are not found in the local dataset. Here are the available options you can use:
 
