@@ -593,11 +593,11 @@ In order to be able to update the agent via **npm**, [registry.npmjs.org](https:
 
 #### 1.7.1 (October 9th, 2019)
 
-- Support for "replace" mode to delete data source entries on Fliplet servers when they were not found in the local dataset.
+- Support for ["replace" mode](#synchronization-mode) to delete data source entries on Fliplet servers when they were not found in the local dataset.
 
 #### 1.7.0 (September 23rd, 2019)
 
-- Support for uploading (syncing) files to Fliplet servers on "push" operations.
+- Support for [uploading files](#synchronizing-files) to Fliplet servers on "push" operations.
 
 #### 1.6.0 (September 18th, 2019)
 
@@ -606,7 +606,7 @@ In order to be able to update the agent via **npm**, [registry.npmjs.org](https:
 
 #### 1.5.0 (September 3rd, 2019)
 
-- Support for installing more than one service on Windows.
+- Support for installing more than one [service on Windows](#install-the-agent-as-a-service-windows-only).
 
 #### 1.4.0 (June 12th, 2019)
 
@@ -618,7 +618,7 @@ In order to be able to update the agent via **npm**, [registry.npmjs.org](https:
 
 #### 1.3.0 (April 3rd, 2019)
 
-- Support for installing the Agent as a **Windows service**.
+- Support for installing the Agent as a [Windows service](#install-the-agent-as-a-service-windows-only).
 
 #### 1.2.2 (Feb 8th, 2019)
 
