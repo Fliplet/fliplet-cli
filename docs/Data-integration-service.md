@@ -490,6 +490,7 @@ The following locations are currently supported for reading files:
 - **Remote files** (e.g. hosted on a HTTP/HTTPS URL)
 - **Local files** (e.g. on your local computer)
 - **Shared files** (e.g. shared folders on your network)
+- **Sharepoint files**
 
 ### YAML
 
@@ -510,6 +511,13 @@ files:
   - column: userAlternativeResume
     type: local
     directory: C:\path\to\folder
+
+  # Define a column containing a Sharepoint URL to a file, e.g. "https://example.org/John.jpg"
+  # Username and password must also be configured
+  - column: userSharepointImage
+    type: sharepoint
+    username: myusername
+    password: mypassword
 ```
 
 ### JavaScript
@@ -527,7 +535,10 @@ module.exports.setup = (agent) => {
       { column: 'userResume', type: 'local' },
 
       // Define a column containing a relative URL to a file in the specified directory, e.g. "John.jpg"
-      { column: 'userAlternativeResume', type: 'local', directory: 'C:\\path\\to\\folder' }
+      { column: 'userAlternativeResume', type: 'local', directory: 'C:\\path\\to\\folder' },
+
+      // Define a column containing a Sharepoint URL to a file, e.g. "https://example.org/John.jpg"
+      { column: 'userSharepointImage', type: 'sharepoint', username: 'myuserame', password: 'mypassword' }
     ]
   });
 };
