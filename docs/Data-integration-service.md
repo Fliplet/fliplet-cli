@@ -602,6 +602,10 @@ In order to be able to update the agent via **npm**, [registry.npmjs.org](https:
 
 ## Releases changelog
 
+#### 1.7.2 (October 11th, 2019)
+
+- Support for [uploading SharePoint files](#synchronizing-files) to Fliplet servers on "push" operations.
+
 #### 1.7.1 (October 9th, 2019)
 
 - Support for ["replace" mode](#synchronization-mode) to delete data source entries on Fliplet servers when they were not found in the local dataset.
