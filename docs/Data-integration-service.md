@@ -501,6 +501,14 @@ files:
   # Define a column containing a remote URL to a file, e.g. "https://example.org/John.jpg"
   - column: userThumbnail
     type: remote
+  
+  # Define a column containing a remote URL to a file, e.g. "https://example.org/John.jpg"
+  # while also defining headers to be sent with the request
+  - column: userThumbnail
+    type: remote
+    headers:
+      Authorization: Bearer 123456
+      Foo: bar
 
   # Define a column containing a local absolute URL to a file, e.g. "/home/user/John.jpg"
   - column: userResume
@@ -530,6 +538,10 @@ module.exports.setup = (agent) => {
     files: [
       // Define a column containing a remote URL to a file, e.g. "https://example.org/John.jpg"
       { column: 'userThumbnail', type: 'remote' },
+
+      // Define a column containing a remote URL to a file, e.g. "https://example.org/John.jpg"
+      // while also defining headers to be sent with the request
+      { column: 'userThumbnail', type: 'remote', headers: { Authorization: 'Bearer 123' } },
 
       // Define a column containing a local absolute URL to a file, e.g. "/home/user/John.jpg"
       { column: 'userResume', type: 'local' },
@@ -601,6 +613,10 @@ In order to be able to update the agent via **npm**, [registry.npmjs.org](https:
 ---
 
 ## Releases changelog
+
+#### 1.7.3 (October 14th, 2019)
+
+- Support for [providing headers when uploading files](#synchronizing-files) to Fliplet servers on "push" operations.
 
 #### 1.7.2 (October 11th, 2019)
 
