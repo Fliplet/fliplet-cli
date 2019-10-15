@@ -7,13 +7,13 @@ We regularly update our framework to support new features. If you have an older 
   <div class="bl two">
     <div>
       <h4>iOS</h4>
-      <p>Latest stable release: 3.9.9</p>
+      <p>Latest stable release: 4.0.1</p>
     </div>
   </div>
   <div class="bl two">
     <div>
       <h4>Android</h4>
-      <p>Latest stable release: 3.9.4</p>
+      <p>Latest stable release: 4.0.0</p>
     </div>
   </div>
 </section>
@@ -21,19 +21,15 @@ We regularly update our framework to support new features. If you have an older 
 
 ---
 
-## Beta version
+## Supported versions (4.x)
 
-### Version 4.0.0 (To be released early October 2019)
+### Version 4.0.1 (October 15, 2019)
 
-- **All platforms**: Support for Firebase Analytics
+- **iOS**: Fixes for push notifications on **iOS13** devices 
 
----
+### Version 4.0.0 (October 8, 2019)
 
-## Stable version
-
-### Version 3.9.9 (Aug 28, 2019)
-
-- **iOS**: Support for iOS13
+- **All platforms**: Support for **Firebase Analytics**
 
 ---
 
@@ -41,30 +37,48 @@ We regularly update our framework to support new features. If you have an older 
 
 Please note that these versions have limited support for newer Fliplet features. We encourage you to submit a new native update to your apps via the App Store or Google Play if you have users still running these versions of your app.
 
+---
+### Version 3.9.9 (Aug 28, 2019)
+
+- **iOS**: Support for iOS13
+
+---
+
 ### Version 3.9.8 (Jul 19, 2019)
 
 - **iOS**: Improvements when playing remote audio files
+
+---
 
 ### Version 3.9.7 (June 3, 2019)
 
 - **iOS**: Improvements when playing audio files using `Fliplet.Media`
 
+---
+
 ### Version 3.9.6 (April 30, 2019)
 
 - **iOS**: Bugfixes for issues reported when playing audio files
+
+---
 
 ### Version 3.9.5 (April 25, 2019)
 
 - **iOS**: Stability improvements during boot time and when performing in-app updates
 
+---
+
 ### Version 3.9.4 (April 16, 2019)
 
 - **Android**: Support for Google Analytics data reporting on all versions of Android.
 
+---
 
 ### Version 3.9.3 (April 11, 2019)
 
 - **All platforms**: Stability improvements during the download of in-app updates.
+
+---
 
 ### Version 3.9.2 (January 25, 2019)
 
@@ -72,13 +86,19 @@ Please note that these versions have limited support for newer Fliplet features.
 - **All platforms**: Fixes an issue where apps don't check for updates until up to 30 seconds after app launch
 - **iOS**: Fixes an issue on iPhone X/XS/XR/XS Max running iOS 12 where the screen content is sometimes shifted after dismissing the keyboard
 
+---
+
 ### Version 3.9.1 (December 10, 2018)
 
 - **All platforms**: Fixed an issue which caused some apps to crash when applying app updates under certain conditions
 
+---
+
 ### Version 3.9.0 (October 3, 2018)
 
 - **All platforms**: Barcode scanner plugin added
+
+---
 
 ### Version 3.8.5 (August 29, 2018)
 
