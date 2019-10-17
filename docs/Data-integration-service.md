@@ -614,6 +614,10 @@ In order to be able to update the agent via **npm**, [registry.npmjs.org](https:
 
 ## Releases changelog
 
+#### 1.7.4 (October 17th, 2019)
+
+- Fixes for missing Sharepoint library resulting in boot problems on some occasions.
+
 #### 1.7.3 (October 14th, 2019)
 
 - Support for [providing headers when uploading files](#synchronizing-files) to Fliplet servers on "push" operations.
