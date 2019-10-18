@@ -91,7 +91,7 @@ Fliplet.DataSources.connect(123).then(function (connection) {
 connection.findOne({
   where: { name: 'John' }
 }).then(function (record) {
-  // records is either the found entry "object" or "undefined"
+  // record is either the found entry "object" or "undefined"
 });
 ```
 
