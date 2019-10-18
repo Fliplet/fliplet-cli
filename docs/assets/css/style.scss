@@ -354,6 +354,13 @@ ul > li > ul {
   opacity: 0.5;
 }
 
+.info {
+  background: #36344c;
+  padding: 15px 20px;
+  border-radius: 7px;
+  color: rgba(255,255,255,0.8);
+}
+
 .warning {
   background: $warningColor;
   padding: 15px 20px;

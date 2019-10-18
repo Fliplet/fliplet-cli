@@ -44,44 +44,6 @@ If you need to update the agent to the latest version available on npm, run the 
 npm update -g
 ```
 
-### Releases changelog
-
-#### 1.7.0 (September 23rd, 2019)
-
-- Support for uploading (syncing) files to Fliplet servers on "push" operations.
-
-#### 1.6.0 (September 18th, 2019)
-
-- Support for running post-sync data source hooks on push operations.
-
-#### 1.5.0 (September 3rd, 2019)
-
-- Support for installing more than one service on Windows.
-
-#### 1.4.0 (June 12th, 2019)
-
-- Added support for [pull operations](#define-a-pull-operation).
-
-#### 1.3.1 (April 12th, 2019)
-
-- Security patch for the following third-party packages: **Sequelize**, **js-yaml**.
-
-#### 1.3.0 (April 3rd, 2019)
-
-- Support for installing the Agent as a **Windows service**.
-
-#### 1.2.2 (Feb 8th, 2019)
-
-- Fixes when deleting columns with non-numeric primary keys.
-
-#### 1.2.1 (Dec 28th, 2018)
-
-- Added **User-Agent** to all outgoing requests to improve security.
-
-#### 1.2.0 (Dec 27th, 2018)
-
-- Support for pulling data via **external APIs** or from **File System**.
-
 ---
 
 ## Get started
@@ -154,6 +116,11 @@ primary_column: id
 # the record has been updated on your database since it got inserted
 # to the Fliplet Data Source hence might require updating
 timestamp_column: updatedAt
+
+# Define whether remote entries on Fliplet servers should be kept or deleted when
+# they are not found in the local dataset returned by the query result.
+# Using "update" will keep orphaned entries while "replace" will delete them.
+mode: update
 
 # Define which (optional) column should be used to compare whether
 # the record has been flagged as deleted on your database and should
@@ -299,6 +266,11 @@ module.exports.setup = (agent) => {
     // to the Fliplet Data Source hence might require updating
     timestampColumnName: 'updatedAt',
 
+    // Define whether remote entries on Fliplet servers should be kept or deleted when
+    // they are not found in the local dataset returned by the query result.
+    // Using "update" will keep orphaned entries while "replace" will delete them.
+    mode: 'update',
+
     // Define which (optional) column should be used to compare whether
     // the record has been flagged as deleted on your database and should
     // be removed from the Fliplet Data Source
@@ -367,7 +339,8 @@ module.exports.setup = (agent) => {
     source: (axios) => axios.get('https://jsonplaceholder.typicode.com/todos'),
     primaryColumnName: 'id',
     timestampColumnName: 'updatedAt',
-    targetDataSourceId: 123
+    targetDataSourceId: 123,
+    mode: 'update'
   });
 
   // 2. Example pulling hardcoded data
@@ -379,7 +352,8 @@ module.exports.setup = (agent) => {
     },
     primaryColumnName: 'id',
     timestampColumnName: 'updatedAt',
-    targetDataSourceId: 123
+    targetDataSourceId: 123,
+    mode: 'update'
   });
 
   // 3. Example reading from a local JSON file
@@ -394,7 +368,8 @@ module.exports.setup = (agent) => {
     },
     primaryColumnName: 'id',
     timestampColumnName: 'updatedAt',
-    targetDataSourceId: 123
+    targetDataSourceId: 123,
+    mode: 'update'
   });
 };
 ```
@@ -465,13 +440,57 @@ module.exports.setup = (agent) => {
 };
 ```
 
+---
+
+## Synchronization mode
+
+<p class="info">Available from <strong>version 1.7.1</strong> of Fliplet Agent.</p>
+
+**Push operations** can define an optional `mode` parameter allows you to define whether remote entries should be deleted from the Data Source on Fliplet servers when they are not found in the local dataset. Here are the available options you can use:
+
+- `update` (**default**) will keep remote entries that are not found in the local dataset
+- `replace` will delete remote entries when they don't exist in the local dataset
+
+### YAML
+
+```yaml
+# Define whether remote entries on Fliplet servers should be kept or deleted when
+# they are not found in the local dataset returned by the query result.
+# Using "update" will keep orphaned entries while "replace" will delete them.
+mode: update
+```
+
+### JavaScript
+
+```js
+module.exports.setup = (agent) => {
+  agent.push({
+    // Define rest of options here ...
+
+    // Define whether remote entries on Fliplet servers should be kept or deleted when
+    // they are not found in the local dataset returned by the query result.
+    // Using "update" will keep orphaned entries while "replace" will delete them.
+    mode: 'update'
+  });
+};
+```
+
+---
+
 ## Synchronizing files
 
-Push operations can optionally define a list of columns which are meant to contain URLs to either local or remote files which need to be uploaded to Fliplet servers. When doing so, your resulting data source entries will get the column value replaced with the URL of the file on Fliplet servers. Furthermore, you will get a `<columnName>MediaFileId` added column with the ID of the Media File on Fliplet servers.
+<p class="info">Available from <strong>version 1.7.3</strong> of Fliplet Agent.</p>
 
-<p class="warning"><strong>Version 1.7.0 required:</strong> Please note that this feature does require the version 1.7.0 or newer of Fliplet Agent to work.</p>
+**Push operations** can optionally define a list of columns which are meant to contain URLs to either local or remote files which need to be uploaded to Fliplet servers. When doing so, your resulting data source entries will get the column value replaced with the URL of the file on Fliplet servers. Furthermore, you will get a `<columnName>MediaFileId` added column with the ID of the Media File on Fliplet servers.
 
 Syncing files is supported both when using the simpler YAML-based configuration and the advanced mode with a Javascript file.
+
+The following locations are currently supported for reading files:
+
+- **Remote files** (e.g. hosted on a HTTP/HTTPS URL)
+- **Local files** (e.g. on your local computer)
+- **Shared files** (e.g. shared folders on your network)
+- **Sharepoint files**
 
 ### YAML
 
@@ -482,18 +501,34 @@ files:
   # Define a column containing a remote URL to a file, e.g. "https://example.org/John.jpg"
   - column: userThumbnail
     type: remote
+  
+  # Define a column containing a remote URL to a file, e.g. "https://example.org/John.jpg"
+  # while also defining headers to be sent with the request
+  - column: userThumbnail
+    type: remote
+    headers:
+      Authorization: Bearer 123456
+      Foo: bar
 
   # Define a column containing a local absolute URL to a file, e.g. "/home/user/John.jpg"
   - column: userResume
     type: local
 
   # Define a column containing a relative URL to a file in the specified directory, e.g. "John.jpg"
+  # Works both on local folders and shared network drives
   - column: userAlternativeResume
     type: local
-    directory: /path/to/directory
+    directory: C:\path\to\folder
+
+  # Define a column containing a Sharepoint URL to a file, e.g. "https://example.org/John.jpg"
+  # Username and password must also be configured
+  - column: userSharepointImage
+    type: sharepoint
+    username: myusername
+    password: mypassword
 ```
 
-### Javascript
+### JavaScript
 
 ```js
 module.exports.setup = (agent) => {
@@ -504,11 +539,18 @@ module.exports.setup = (agent) => {
       // Define a column containing a remote URL to a file, e.g. "https://example.org/John.jpg"
       { column: 'userThumbnail', type: 'remote' },
 
+      // Define a column containing a remote URL to a file, e.g. "https://example.org/John.jpg"
+      // while also defining headers to be sent with the request
+      { column: 'userThumbnail', type: 'remote', headers: { Authorization: 'Bearer 123' } },
+
       // Define a column containing a local absolute URL to a file, e.g. "/home/user/John.jpg"
       { column: 'userResume', type: 'local' },
 
       // Define a column containing a relative URL to a file in the specified directory, e.g. "John.jpg"
-      { column: 'userAlternativeResume', type: 'local', directory: '/path/to/dir' }
+      { column: 'userAlternativeResume', type: 'local', directory: 'C:\\path\\to\\folder' },
+
+      // Define a column containing a Sharepoint URL to a file, e.g. "https://example.org/John.jpg"
+      { column: 'userSharepointImage', type: 'sharepoint', username: 'myuserame', password: 'mypassword' }
     ]
   });
 };
@@ -567,3 +609,60 @@ If your company is behind a corporate firewall and specific network access shoul
 - For accounts with data in the **US**: [us.api.fliplet.com](https://us.api.fliplet.com) on port *443*
 
 In order to be able to update the agent via **npm**, [registry.npmjs.org](https://registry.npmjs.org) needs to be whitelisted on port *443* too. However, if your internet connection is running behind a corporate firewall it might require specific settings for the proxy ([more details](https://www.beyondjava.net/guiding-npm-firewall)).
+
+---
+
+## Releases changelog
+
+#### 1.7.4 (October 17th, 2019)
+
+- Fixes for missing Sharepoint library resulting in boot problems on some occasions.
+
+#### 1.7.3 (October 14th, 2019)
+
+- Support for [providing headers when uploading files](#synchronizing-files) to Fliplet servers on "push" operations.
+
+#### 1.7.2 (October 11th, 2019)
+
+- Support for [uploading SharePoint files](#synchronizing-files) to Fliplet servers on "push" operations.
+
+#### 1.7.1 (October 9th, 2019)
+
+- Support for ["replace" mode](#synchronization-mode) to delete data source entries on Fliplet servers when they were not found in the local dataset.
+
+#### 1.7.0 (September 23rd, 2019)
+
+- Support for [uploading files](#synchronizing-files) to Fliplet servers on "push" operations.
+
+#### 1.6.0 (September 18th, 2019)
+
+- Support for running post-sync data source hooks on push operations.
+- Support for deleting entries via the new `delete_column` attribute.
+
+#### 1.5.0 (September 3rd, 2019)
+
+- Support for installing more than one [service on Windows](#install-the-agent-as-a-service-windows-only).
+
+#### 1.4.0 (June 12th, 2019)
+
+- Added support for [pull operations](#define-a-pull-operation).
+
+#### 1.3.1 (April 12th, 2019)
+
+- Security patch for the following third-party packages: **Sequelize**, **js-yaml**.
+
+#### 1.3.0 (April 3rd, 2019)
+
+- Support for installing the Agent as a [Windows service](#install-the-agent-as-a-service-windows-only).
+
+#### 1.2.2 (Feb 8th, 2019)
+
+- Fixes when deleting columns with non-numeric primary keys.
+
+#### 1.2.1 (Dec 28th, 2018)
+
+- Added **User-Agent** to all outgoing requests to improve security.
+
+#### 1.2.0 (Dec 27th, 2018)
+
+- Support for pulling data via **external APIs** or from **File System**.

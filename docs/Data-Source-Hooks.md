@@ -8,7 +8,7 @@ Data Source hooks allow your app's backend to perform certain operations such as
 
 Each hook requires the following properties:
 
-- `type`: `email`, `push` or `operations`
+- `type`: `email`, `sms`, `web`, `push` or `operations`
 - `runOn`: an array with any of the following values: `insert`, `update`, `beforeSave`, `beforeQuery`
 - `conditions`: an array of objects defining match conditions to be satisfied in order to trigger the hook
 
@@ -73,7 +73,7 @@ Let's take a look at a more complex example where push notifications are only se
 
 In addition to hook properties, configuring a hook to send emails support the following parameter:
 
-- `payload`: object with `to`, `html` and `subject` for the email; this supports **Handlebars** syntax for variable replacement in the values as shown in the first example below
+- `payload`: object with `to`, `html` and `subject` for the email; this supports **Handlebars** syntax for variable replacement in the values as shown in the first example below.
 
 {% raw %}
 ```json
@@ -88,6 +88,55 @@ In addition to hook properties, configuring a hook to send emails support the fo
       ],
       "html": "<h1>Enquiry</h1><p>A form submission has been received from {{Name}}</p>",
       "subject": "Form enquiry received"
+    }
+  }
+]
+```
+{% endraw %}
+
+---
+
+### Send an SMS
+
+In addition to hook properties, configuring a hook to send SMS support the following parameter:
+
+- `payload`: object with `to` and `body` for the SMS; this supports **Handlebars** syntax for variable replacement in the values as shown in the first example below.
+
+{% raw %}
+```json
+[
+  {
+    "type": "sms",
+    "runOn": ["insert"],
+    "payload": {
+      "to": "+123456789",
+      "body": "Hi {{ fullName }}, thanks for signing up!"
+    }
+  }
+]
+```
+{% endraw %}
+
+---
+
+### Make a network request
+
+In addition to hook properties, configuring a hook to make network requests support the following parameter:
+
+- `payload`: object with `method`, `endpoint` and `body` for the HTTP(S) network request; this supports **Handlebars** syntax for variable replacement in the values as shown in the first example below.
+
+{% raw %}
+```json
+[
+  {
+    "type": "sms",
+    "runOn": ["insert"],
+    "payload": {
+      "method": "POST",
+      "endpoint": "https://example.org/apis/user-signup"
+      "body": {
+        "user_full_name": "{{ fullName }}"
+      }
     }
   }
 ]

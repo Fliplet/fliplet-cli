@@ -2,7 +2,7 @@
 
 The `fliplet-oauth2` package contains helpers for standardizing requests to OAuth2 web services with a client-side integration.
 
-**Note: The Fliplet OAuth2 library is currently in beta. We suggest specifying the library version using `fliplet-oauth2:0.1` when including the Fliplet OAuth2 library to avoid the functionality breaking when new versions of the feature are released.**
+<p class="warning"><strong>The Fliplet OAuth2 library is currently in beta:</strong> We suggest specifying the library version using `fliplet-oauth2:0.1` when including the Fliplet OAuth2 library to avoid the functionality breaking when new versions of the feature are released.</p>
 
 To configure an OAuth2 service provider, call `Fliplet.OAuth2.configure()` with the service specificaions and use `Fliplet.OAuth2(service)` with the specified service name to access the available methods, e.g. `Fliplet.OAuth2(service).api(path)`.
 

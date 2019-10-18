@@ -1,7 +1,5 @@
 # Using joins on DataSources
 
-<p class="warning"><strong>BETA FEATURE:</strong> Please note that this feature is currently only available in beta and its specifications may be subject to change before releasing it.</p>
-
 Both DataSources **JS APIs** and **REST APIs** allow you to **fetch data from more than one dataSource** using a featured called **"join"**, heavily inspired by traditional joins made in **SQL databases**.
 
 Joins are defined by a unique name and their configuration options; any number of joins can be defined when fetching data from one data source:
