@@ -88,11 +88,10 @@ Fliplet.DataSources.connect(123).then(function (connection) {
 ### Find specific records
 
 ```js
-connection.find({
-  where: { name: 'John' },
-  limit: 1
-}).then(function (records) {
-  // records is an array
+connection.findOne({
+  where: { name: 'John' }
+}).then(function (record) {
+  // records is either the found entry "object" or "undefined"
 });
 ```
 
