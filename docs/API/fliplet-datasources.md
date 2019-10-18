@@ -85,7 +85,7 @@ Fliplet.DataSources.connect(123).then(function (connection) {
 });
 ```
 
-### Find specific records
+### Find a specific record
 
 ```js
 connection.findOne({
