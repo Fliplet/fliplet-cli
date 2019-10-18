@@ -25,7 +25,7 @@ Fliplet.Hooks.on('flListDataBeforeGetData', fn);
 
 #### Parameters
 
-- **fn** (Function(`data`) Callback function with an object parameter.
+- **fn** (Function(`data`)) Callback function with an object parameter.
   - **data** (Object) A map of data containing the following.
     - **config** (Object) Configuration used to initialize the component.
     - **id** (Number) Component instance ID.
@@ -66,7 +66,7 @@ Fliplet.Hooks.on('flListDataAfterGetData', fn);
 
 #### Parameters
 
-- **fn** (Function(`data`) Callback function with an object parameter.
+- **fn** (Function(`data`)) Callback function with an object parameter.
   - **data** (Object) A map of data containing the following.
     - **config** (Object) Configuration used to initialize the component.
     - **id** (Number) Component instance ID.
@@ -84,7 +84,7 @@ Fliplet.Hooks.on('flListDataBeforeDeleteConfirmation', fn);
 
 #### Parameters
 
-- **fn** (Function(`data`) Callback function with an object parameter.
+- **fn** (Function(`data`)) Callback function with an object parameter.
   - **data** (Object) A map of data containing the following.
     - **config** (Object) Configuration used to initialize the component.
     - **id** (Number) Component instance ID.

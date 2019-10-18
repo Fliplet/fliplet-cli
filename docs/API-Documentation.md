@@ -14,35 +14,36 @@ Are you rather looking for our **RESTful APIs** for complex backend integrations
 
 These JS APIs falls into the most common category and almost all apps, components and themes use at least one of them. All apps include `fliplet-core` by default, and any other can easily be included on your app screens via Fliplet Studio.
 
-- [Fliplet Audio](API/fliplet-audio.md) (`fliplet-audio`)
-- [Fliplet Audio Player](API/fliplet-audio-player.md) (`fliplet-audio-player`)
-- [Fliplet Barcode](API/fliplet-barcode.md) (`fliplet-barcode`)
-- [Fliplet Communicate](API/fliplet-communicate.md) (`fliplet-communicate`)
-- [Fliplet Content](API/fliplet-content.md) (`fliplet-content`)
-- [Fliplet Core](API/fliplet-core.md) (`fliplet-core`)
-- [Fliplet CSV](API/fliplet-csv.md) (`fliplet-csv`)
-- [Fliplet Data Sources](API/fliplet-datasources.md) (`fliplet-datasources`)
-- [Fliplet Database](API/fliplet-database.md) (`fliplet-database`)
-- [Fliplet Media](API/fliplet-media.md) (`fliplet-media`)
-- [Fliplet Notifications](API/fliplet-notifications.md) (`fliplet-notifications`)
-- [Fliplet OAuth2](API/fliplet-oauth2.md) (`fliplet-oauth2`) (Beta)
-- [Fliplet Session](API/fliplet-session.md) (`fliplet-session`)
-- [Fliplet Studio UI](UI-guidelines-interface.md) (`fliplet-studio-ui`)
-- [Fliplet Themes](API/fliplet-themes.md) (`fliplet-themes`)
-- [Fliplet UI](API/fliplet-ui.md) (`fliplet-pages`)
+- [Audio](API/fliplet-audio.md) (`fliplet-audio`)
+- [Audio Player](API/fliplet-audio-player.md) (`fliplet-audio-player`)
+- [Barcode](API/fliplet-barcode.md) (`fliplet-barcode`)
+- [Communicate](API/fliplet-communicate.md) (`fliplet-communicate`)
+- [Content](API/fliplet-content.md) (`fliplet-content`)
+- [Core](API/fliplet-core.md) (`fliplet-core`)
+- [CSV](API/fliplet-csv.md) (`fliplet-csv`)
+- [Data Sources](API/fliplet-datasources.md) (`fliplet-datasources`)
+- [Database](API/fliplet-database.md) (`fliplet-database`)
 - [Like Buttons](API/like-buttons.md) (`fliplet-like:0.2`) (Beta)
+- [Media](API/fliplet-media.md) (`fliplet-media`)
+- [Notifications](API/fliplet-notifications.md) (`fliplet-notifications`)
+- [OAuth2](API/fliplet-oauth2.md) (`fliplet-oauth2`) (Beta)
+- [Session](API/fliplet-session.md) (`fliplet-session`)
+- [Studio UI](UI-guidelines-interface.md) (`fliplet-studio-ui`)
+- [Themes](API/fliplet-themes.md) (`fliplet-themes`)
+- [UI](API/fliplet-ui.md) (`fliplet-pages`)
 
 ---
 
 ## Fliplet Components
 
-- [Fliplet Accordions](API/components/accordions.md)
-- [Fliplet Data Directory](API/components/data-directory.md)
-- [Fliplet List (from data source)](API/components/list-from-data-source.md)
-- [Fliplet Form Builder](API/components/form-builder.md)
-- [Fliplet Chat](API/components/chat.md)
-- [Fliplet Push Notifications](API/components/push-notifications.md)
-- [Fliplet Interactive Graphics](API/components/interactive-graphics.md)
+- [Accordions](API/components/accordions.md)
+- [Data Directory](API/components/data-directory.md)
+- [List (from data source)](API/components/list-from-data-source.md)
+- [Form Builder](API/components/form-builder.md)
+- [Chat](API/components/chat.md)
+- [Charts](API/components/charts.md)
+- [Push Notifications](API/components/push-notifications.md)
+- [Interactive Graphics](API/components/interactive-graphics.md)
 
 ---
 
@@ -63,12 +64,12 @@ These JS APIs falls into the most common category and almost all apps, component
 
 These APIs are currently undocumented and reserved for internal use. They are usually available to components in the system hence don't require the user to access them directly.
 
-- Fliplet App Submissions
-- Fliplet App Logs
-- Fliplet Chat
-- Fliplet Interact
-- Fliplet Menu
-- Fliplet Native
-- Fliplet Pages
-- Fliplet Runtime
-- Fliplet Security
+- App Submissions
+- App Logs
+- Chat
+- Interact
+- Menu
+- Native
+- Pages
+- Runtime
+- Security
