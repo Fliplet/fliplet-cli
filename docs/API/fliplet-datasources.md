@@ -85,14 +85,15 @@ Fliplet.DataSources.connect(123).then(function (connection) {
 });
 ```
 
-### Find specific records
+### Find a specific record
+
+The `findOne` method allows you to look for up to one record, limiting the amount of entries returned if you're only looking for one specific entry.
 
 ```js
-connection.find({
-  where: { name: 'John' },
-  limit: 1
-}).then(function (records) {
-  // records is an array
+connection.findOne({
+  where: { name: 'John' }
+}).then(function (record) {
+  // record is either the found entry "object" or "undefined"
 });
 ```
 
