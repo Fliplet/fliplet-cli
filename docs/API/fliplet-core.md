@@ -161,7 +161,7 @@ Fliplet.Hooks.run('beforeFormSubmit', data).then(function (results) {
 
 ## Modal
 
-**Please note**: this JS API is only available in widget interfaces when developing for Fliplet Studio. If you're looking for adding modals and confirmation windows to your Fliplet Apps, please look for the following JS APIs instead:
+<p class="info">This JS API is only available in widget interfaces when developing for Fliplet Studio. If you're looking for adding modals and confirmation windows to your Fliplet Apps, please look for the following JS APIs instead:</p>
 
 - [Fliplet.UI.Actions](https://developers.fliplet.com/API/fliplet-ui-actions.html)
 - [Fliplet.UI.Toast](https://developers.fliplet.com/API/fliplet-ui-toast.html)
