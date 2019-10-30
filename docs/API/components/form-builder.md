@@ -239,15 +239,27 @@ Fliplet.FormBuilder.get()
 
 ### `field().change(Function)`
 
-Attaches event listeners to a field changed.
+Attaches an event listener to be fired whenever a field value changes.
+
+```js
+Fliplet.FormBuilder.get()
+  .then(function (form) {
+    // registers a callback to be fired whenever the field value changes and also on init
+    form.field('foo').change(function (val) {
+      // val was changed
+    });
+  });
+```
+
+The callback will also be fired when the form initialised with a value. If you want to avoid this behaviour, pass `false` as second parameter of the `change()` method:
 
 ```js
 Fliplet.FormBuilder.get()
   .then(function (form) {
     // registers a callback to be fired whenever the field value changes
     form.field('foo').change(function (val) {
-      // do stuff with "val"
-    });
+      // val was changed
+    }, false);
   });
 ```
 
