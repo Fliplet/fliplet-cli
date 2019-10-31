@@ -614,9 +614,13 @@ In order to be able to update the agent via **npm**, [registry.npmjs.org](https:
 
 ## Releases changelog
 
+#### 1.7.6 (October 31th, 2019)
+
+- Further improvements for files upload with [Sharepoint](#synchronizing-files) 2013.
+
 #### 1.7.5 (October 29th, 2019)
 
-- Improvements for files upload with [Sharepoint](#synchronizing-files) 2013.
+- Improvements for files upload with all versions of [Sharepoint](#synchronizing-files).
 
 #### 1.7.4 (October 17th, 2019)
 
