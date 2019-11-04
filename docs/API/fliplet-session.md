@@ -58,6 +58,8 @@ Fliplet.Session.logout('dataSource').then(function () {
 
 ### Log out from all passports
 
+If you don't provide a specific passport type to the `logout()` function, the user will be logged out from all its passports. This is useful to code a generic "log out" feature instead of relying on a specific login component.
+
 ```js
 Fliplet.Session.logout().then(function onSessionDestroyed() {
   // user has been logged out
