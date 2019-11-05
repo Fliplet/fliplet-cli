@@ -150,6 +150,27 @@ connection.findById(1).then(function (record) {
 });
 ```
 
+### Define what columns should be included when finding records
+
+```js
+// use "find" with "attributes" to filter the columns returned
+connection.find({
+  attributes: ['Foo', 'Bar']
+}).then(function (records) {
+  // records is an array
+});
+```
+
+You can also use this to count the number of entries and minimise the data returned:
+
+```js
+connection.find({ attributes: [] }).then(function (records) {
+  return records.length;
+}).then(function (count) {
+  // use count
+});
+```
+
 ### Replace the contents of the data source with new records
 
 ```js
