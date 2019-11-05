@@ -152,6 +152,8 @@ connection.findById(1).then(function (record) {
 
 ### Filter the columns returned when finding records
 
+Use the `attributes` array to optionally define a list of the columns that should be returned for the records.
+
 ```js
 // use "find" with "attributes" to filter the columns returned
 connection.find({ attributes: ['Foo', 'Bar'] }).then(function (records) {
