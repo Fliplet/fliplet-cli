@@ -614,9 +614,10 @@ In order to be able to update the agent via **npm**, [registry.npmjs.org](https:
 
 ## Releases changelog
 
-#### 1.7.7 (November 11th, 2019)
+#### 1.7.8 (November 11th, 2019)
 
 - Updates to throttle file download and upload to reduce load caused on target endpoints.
+- Fixes for files upload with [Sharepoint](#synchronizing-files) 2013 having an incorrect mimetype.
 
 #### 1.7.6 (October 31th, 2019)
 
