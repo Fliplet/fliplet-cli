@@ -36,7 +36,7 @@ Saving an instance settings is done using the public method `Fliplet.Widget.save
 // Returns a promise
 Fliplet.Widget.save({
   foo: 'bar',
-  url: 'funny-cats.mp4,
+  url: 'funny-cats.mp4',
   hello: {
     world: true
   }
