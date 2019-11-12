@@ -73,11 +73,11 @@ Fliplet apps are loaded with the following helpers.
 
 ### Block Expression Helpers
 
-- `equals` checks if two values provided are exactly the same, e.g. `{{#equals a b}}{{else}}{{/equals}}`
+- `compare`, e.g. `{{#compare a '===' b}}{{else}}{{/compare}}`
+   - The second parameter can be swapped out with any of the following operators for comparison: `==`, `===`, `!=`, `!==`, `<`, `>`, `<=`, `>=`, `typeof` (e.g. `{{#compare a 'typeof' "string"}}{{else}}{{/compare}}`)
+- `equals` checks if two values provided are exactly the same, e.g. `{{#equals a b}}{{else}}{{/equals}}`. This is the same as `{{#compare a '===' b}}{{else}}{{/compare}}`.
 - `and` checks if two conditions are both truthy, e.g. `{{#and a b}}{{else}}{{/and}}`
 - `or` checks if one of the two conditions are truthy, e.g. `{{#or a b}}{{else}}{{/or}}`
-- `comparison`, e.g. `{{#comparison a '===' b}}{{else}}{{/comparisons}}`
-   - The second parameter can be swapped out with any of the following operators for comparison: `==`, `===`, `!=`, `!==`, `<`, `>`, `<=`, `>=`, `typeof` (e.g. `{{#comparison a 'typeof' "string"}}{{else}}{{/comparisons}}`)
 
 {% endraw %}
 
