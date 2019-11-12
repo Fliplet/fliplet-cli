@@ -7,7 +7,7 @@
 
 ## Templates
 
-The **Edit component's code** feature allows you to change the templates for what users see in the component UI. This uses Handlebars as the templating engine, including some [custom helpers](../libraries/handlebars.md#using-helpers-to-enhance-your-templates) that Fliple provide.
+The **Edit component's code** feature allows you to change the templates for what users see in the component UI. This uses Handlebars as the templating engine, including some [custom helpers](../libraries/handlebars.md#using-helpers-to-enhance-your-templates) that Fliplet provide.
 
 The summary and detail view templates are rendered using a predefined list of keyword variables, e.g. `Email`, `Telephone` and `LinkedIn` in the case of the Directory layout.
 
