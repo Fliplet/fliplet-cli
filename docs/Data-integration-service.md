@@ -369,7 +369,10 @@ module.exports.setup = (agent) => {
     primaryColumnName: 'id',
     timestampColumnName: 'updatedAt',
     targetDataSourceId: 123,
-    mode: 'update'
+    mode: 'update',
+    onSync(result) {
+      // result.commits contains a report of the sync
+    }
   });
 };
 ```
