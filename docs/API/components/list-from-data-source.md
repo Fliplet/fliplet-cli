@@ -11,7 +11,7 @@ The **Edit component's code** feature allows you to change the templates for wha
 
 The summary and detail view templates are rendered using a predefined list of keyword variables, e.g. `Email`, `Telephone` and `LinkedIn` in the case of the Directory layout.
 
-When editing the HTML templates, the `{{ }}` templates are referring to these predefined variables. To access fields directly from the data source, use the `originalData.` prefix, e.g. a `{{#if}}` statement would look like the below.
+When editing the HTML templates, the {% raw %}`{{ }}`{% endraw %} templates are referring to these predefined variables. To access fields directly from the data source, use the `originalData.` prefix, e.g. a {% raw %}`{{#if}}`{% endraw %} statement would look like the below.
 
 {% raw %}
 ```handlebars
