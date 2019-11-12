@@ -14,7 +14,7 @@ The summary and detail view templates are rendered using a predefined list of ke
 When editing the HTML templates, the `{{ }}` templates are referring to these predefined variables. To access fields directly from the data source, use the `originalData.` prefix, e.g. a `{{#if}}` statement would look like the below.
 
 ```js
-{{#if originalData.[Status]}}
+\{{#if originalData.[Status]}}
 ```
 
 ## Hooks
