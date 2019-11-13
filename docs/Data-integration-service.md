@@ -122,6 +122,10 @@ timestamp_column: updatedAt
 # Using "update" will keep orphaned entries while "replace" will delete them.
 mode: update
 
+# Define how many records and files should be parsed and requested at once. 
+# Depending on how much load your system can sustain you can increase this number.
+concurrency: 1
+
 # Define which (optional) column should be used to compare whether
 # the record has been flagged as deleted on your database and should
 # be removed from the Fliplet Data Source when the column value is not null.
@@ -255,7 +259,9 @@ module.exports.setup = (agent) => {
     // The query (or operation) to run to fetch the data to be pushed to Fliplet.
     // You should define a function returning a promise with the data.
     // In our example, we fetch the data using a SQL query from the local database.
-    sourceQuery: (db) => db.query('SELECT id, email, "updatedAt" FROM users order by id asc;'),
+    sourceQuery: (db) => {
+      return db.query('SELECT id, email, "updatedAt" FROM users order by id asc;')
+    },
 
     // Define which column should be used as primary key
     // to understand whether a record already exists on the Fliplet Data Source
@@ -292,7 +298,14 @@ module.exports.setup = (agent) => {
 
       // Define a column containing a relative URL to a file in the specified directory, e.g. "John.jpg"
       // { column: 'thumbnail', type: 'local', directory: '/path/to/dir' }
-    ]
+    ],
+
+    // Define how many records and files should be parsed and requested at once. 
+    // Depending on how much load your system can sustain you can increase this number.
+    concurrency: 1,
+
+    // Define an optional callback to be fires post-sync
+    onSync: (commits) => {}
   });
 
   // You can define any other operation similar to the above here using "agent.push()"
