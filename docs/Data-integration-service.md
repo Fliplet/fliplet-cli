@@ -36,9 +36,9 @@ You can now use the command `fliplet-agent` from the command line. Just type `fl
 
 ### Troubleshooting installation errors
 
-#### Error: SSL Error: SELF_SIGNED_CERT_IN_CHAIN
+#### SSL Error: SELF_SIGNED_CERT_IN_CHAIN
 
-If you get the `Error: SSL Error: SELF_SIGNED_CERT_IN_CHAIN` error when installing the agent, please update your npm settings to allow self-signed certificates to be used. Just run the following command and then try again to install the agent:
+If you get the `SSL Error: SELF_SIGNED_CERT_IN_CHAIN` error when installing the agent, please update your npm settings to allow self-signed certificates to be used. Just run the following command and then try again to install the agent:
 
 ```bash
 npm config set strict-ssl false
