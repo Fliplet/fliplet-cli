@@ -34,6 +34,16 @@ npm install fliplet-agent -g
 
 You can now use the command `fliplet-agent` from the command line. Just type `fliplet-agent` to ensure the software is installed and also see the available options and their example usage.
 
+### Troubleshooting installation errors
+
+#### Error: SSL Error: SELF_SIGNED_CERT_IN_CHAIN
+
+If you get the `Error: SSL Error: SELF_SIGNED_CERT_IN_CHAIN` error when installing the agent, please update your npm settings to allow self-signed certificates to be used. Just run the following command and then try again to install the agent:
+
+```bash
+npm config set strict-ssl false
+```
+
 ---
 
 ## Update the agent to the latest version
