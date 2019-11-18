@@ -25,6 +25,10 @@ The **List (from data source)** component exposes hooks that you can use to modi
 
 - [`flListDataBeforeGetData`](#fllistdatabeforegetdata)
 - [`flListDataAfterGetData`](#fllistdataaftergetdata)
+- [`flListDataBeforeRenderList`](#fllistdatabeforerenderlist)
+- [`flListDataAfterRenderList`](#fllistdataafterrenderlist)
+- [`flListDataBeforeRenderFilters`](#fllistdatabeforerenderfilters)
+- [`flListDataAfterRenderFilters`](#fllistdataafterrenderfilters)
 - [`flListDataBeforeDeleteConfirmation`](#fllistdatabeforedeleteconfirmation)
 - [`flListDataBeforeDeleteEntry`](#fllistdatabeforedeleteentry)
 - [`flListDataBeforeShowComments`](#flListdatabeforeshowcomments)
@@ -87,7 +91,85 @@ Fliplet.Hooks.on('flListDataAfterGetData', fn);
     - **id** (Number) Component instance ID.
     - **uuid** (String) Component instance UUID.
     - **container** (jQuery object) jQuery object for the component container element.
+    - **records** (Array) Collection of records to be used for the component. This can be manipulated to affect the output.
+
+#### Usage
+
+**Add custom classes the container of each list item**
+
+```js
+Fliplet.Hooks.on('flListDataAfterGetData', function(options) {
+  _.forEach(options.records, function(record) {
+    // Add new classes to the record container
+    // Custom classes can be set with multiple classes separated by spaces or with an array of classes
+    _.set(record, 'data.flClasses', 'text-danger text-muted');
+  });
+});
+````
+
+### `flListDataBeforeRenderList`
+
+The hook is run right before data is to be rendered in the list.
+
+```js
+Fliplet.Hooks.on('flListDataBeforeRenderList', fn);
+```
+
+#### Parameters
+
+- **fn** (Function(`data`)) Callback function with an object parameter.
+  - **data** (Object) A map of data containing the following.
+    - **config** (Object) Configuration used to initialize the component.
+    - **records** (Array) Collection of records to be used for the component. This would be the last point in the process for the data to be manipulated before rendering.
+
+### `flListDataAfterRenderList`
+
+The hook is run after data is retrieved for rendering.
+
+```js
+Fliplet.Hooks.on('flListDataAfterRenderList', fn);
+```
+
+The hook is run right after data is to be rendered in the list.
+
+#### Parameters
+
+- **fn** (Function(`data`)) Callback function with an object parameter.
+  - **data** (Object) A map of data containing the following.
+    - **config** (Object) Configuration used to initialize the component.
     - **records** (Array) Collection of records to be used for the component.
+
+### `flListDataBeforeRenderFilters`
+
+The hook is run before filters are rendered.
+
+```js
+Fliplet.Hooks.on('flListDataBeforeRenderFilters', fn);
+```
+
+#### Parameters
+
+- **fn** (Function(`data`)) Callback function with an object parameter.
+  - **data** (Object) A map of data containing the following.
+    - **config** (Object) Configuration used to initialize the component.
+    - **filters** (Array) Array of filters and values to be rendered.
+    - **records** (Array) Collection of records to be used for the component. This can be manipulated to affect the output.
+
+### `flListDataAfterRenderFilters`
+
+The hook is run after data filters are rendered.
+
+```js
+Fliplet.Hooks.on('flListDataAfterRenderFilters', fn);
+```
+
+#### Parameters
+
+- **fn** (Function(`data`)) Callback function with an object parameter.
+  - **data** (Object) A map of data containing the following.
+    - **config** (Object) Configuration used to initialize the component.
+    - **filters** (Array) Array of filters and values to be rendered.
+    - **records** (Array) Collection of records to be used for the component. This can be manipulated to affect the output.
 
 ### `flListDataBeforeDeleteConfirmation`
 
@@ -220,6 +302,7 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
   - `entry` (Object) Entry being opened
   - `entryId` (Object) ID for entry being opened
   - `entryTitle` (Object) Title for entry being opened
+  - `event` (Object) Event object that triggered the opening
 - `beforeShowDetails` (Function(`options`)) Function executed before showing the entry detail view, after the entry detail data is ready. The `options` parameter contains the following properties. Return a rejected Promise if you need to stop the entry from opening.
   - `src` (String) HTML source for the detail view template
   - `data` (Object) Data being used for rendering the detail view template
@@ -297,6 +380,7 @@ Use the following query parameters when linking to a screen with **List (from da
 - **dynamicListOpenId** Entry ID to be opened after the list is rendered.
 - **dynamicListOpenColumn** Column name to use for opening an entry after the list is rendered
 - **dynamicListOpenValue** Value to match in the given column for opening an entry after the list is rendered
+- **dynamicListPreviousScreen** (`true|false`) If a query was used to open an entry, return to the previous page when users close the detail view. (Default: `false`)
 - **dynamicListSearchValue** Search term to be applied after the list is rendered. Search will be executed according to the component configuration or custom configuration. If only one entry is found, the entry will be automatically opened.
 - **dynamicListSearchColumn** Column to execute a search against. If provided, the component configuration will be ignored. (Optional)
 - **dynamicListFilterValue** A comma-separated list of filter values to select. If `dynamicListFilterColumn` is not specified, all filters that match the value will be selected. **Note:** only filter values that are present in the dataset will be used.
