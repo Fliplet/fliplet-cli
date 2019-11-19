@@ -7,7 +7,7 @@ We regularly update our framework to support new features. If you have an older 
   <div class="bl two">
     <div>
       <h4>iOS</h4>
-      <p>Latest stable release: 4.0.1</p>
+      <p>Latest stable release: 4.0.2</p>
     </div>
   </div>
   <div class="bl two">
@@ -22,6 +22,10 @@ We regularly update our framework to support new features. If you have an older 
 ---
 
 ## Supported versions (4.x)
+
+### Version 4.0.2 (November 19, 2019)
+
+- **iOS**: Improvements for Firebase Analytics and removed Google Analytics
 
 ### Version 4.0.1 (October 15, 2019)
 
