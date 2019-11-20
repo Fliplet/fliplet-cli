@@ -44,6 +44,12 @@ If you get the `SSL Error: SELF_SIGNED_CERT_IN_CHAIN` error when installing the 
 npm config set strict-ssl false
 ```
 
+If you still have issues accessing our servers when running the agent, just add the following code to the first line of your JavaScript file (when using the Agent in advanced mode):
+
+```js
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0'
+```
+
 ---
 
 ## Update the agent to the latest version
