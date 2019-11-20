@@ -25,15 +25,16 @@ We regularly update our framework to support new features. If you have an older 
 
 ### Version 4.0.2 (November 19, 2019)
 
-- **iOS**: Improvements for Firebase Analytics and removed Google Analytics
+- **iOS**: Improvements for Firebase Analytics reporting.
+- **All platforms**: Removed support for **Google Analytics** following its deprecation.
 
 ### Version 4.0.1 (October 15, 2019)
 
-- **iOS**: Fixes for push notifications on **iOS13** devices 
+- **iOS**: Fixes for push notifications on **iOS13** devices.
 
 ### Version 4.0.0 (October 8, 2019)
 
-- **All platforms**: Support for **Firebase Analytics**
+- **All platforms**: Support for **Firebase Analytics**.
 
 ---
 
@@ -44,31 +45,31 @@ Please note that these versions have limited support for newer Fliplet features.
 ---
 ### Version 3.9.9 (Aug 28, 2019)
 
-- **iOS**: Support for iOS13
+- **iOS**: Support for iOS13.
 
 ---
 
 ### Version 3.9.8 (Jul 19, 2019)
 
-- **iOS**: Improvements when playing remote audio files
+- **iOS**: Improvements when playing remote audio files.
 
 ---
 
 ### Version 3.9.7 (June 3, 2019)
 
-- **iOS**: Improvements when playing audio files using `Fliplet.Media`
+- **iOS**: Improvements when playing audio files using `Fliplet.Media`.
 
 ---
 
 ### Version 3.9.6 (April 30, 2019)
 
-- **iOS**: Bugfixes for issues reported when playing audio files
+- **iOS**: Bugfixes for issues reported when playing audio files.
 
 ---
 
 ### Version 3.9.5 (April 25, 2019)
 
-- **iOS**: Stability improvements during boot time and when performing in-app updates
+- **iOS**: Stability improvements during boot time and when performing in-app updates.
 
 ---
 
@@ -86,72 +87,72 @@ Please note that these versions have limited support for newer Fliplet features.
 
 ### Version 3.9.2 (January 25, 2019)
 
-- **All platforms**: Support for push notifications deep linking
-- **All platforms**: Fixes an issue where apps don't check for updates until up to 30 seconds after app launch
-- **iOS**: Fixes an issue on iPhone X/XS/XR/XS Max running iOS 12 where the screen content is sometimes shifted after dismissing the keyboard
+- **All platforms**: Support for push notifications deep linking.
+- **All platforms**: Fixes an issue where apps don't check for updates until up to 30 seconds after app launch.
+- **iOS**: Fixes an issue on iPhone X/XS/XR/XS Max running iOS 12 where the screen content is sometimes shifted after dismissing the keyboard.
 
 ---
 
 ### Version 3.9.1 (December 10, 2018)
 
-- **All platforms**: Fixed an issue which caused some apps to crash when applying app updates under certain conditions
+- **All platforms**: Fixed an issue which caused some apps to crash when applying app updates under certain conditions.
 
 ---
 
 ### Version 3.9.0 (October 3, 2018)
 
-- **All platforms**: Barcode scanner plugin added
+- **All platforms**: Barcode scanner plugin added.
 
 ---
 
 ### Version 3.8.5 (August 29, 2018)
 
-- **All platforms**: SQLite plugin removed
+- **All platforms**: SQLite plugin removed.
 
 ---
 
 ### Version 3.8.4 (May 31, 2018)
 
-- **All platforms**: Insomnia cordova plugin added
+- **All platforms**: Insomnia cordova plugin added.
 
 ---
 
 ### Version 3.8.3 (May 29, 2018)
 
-- **All platforms**: Local notifications cordova plugin added
+- **All platforms**: Local notifications cordova plugin added.
 
 ---
 
 ### Version 2.1.3 (May 1, 2018)
 
-- **All platforms**: Social share cordova plugin added
-- **Android**: Fixes for camera not allowing the user to take pictures and causing the device to crash on certain devices
+- **All platforms**: Social share cordova plugin added.
+- **Android**: Fixes for camera not allowing the user to take pictures and causing the device to crash on certain devices.
 
 ---
 
 ### Version 2.1.2 (Feb 19, 2018)
 
-- **All platforms**: Bugfixes
+- **All platforms**: Bugfixes.
 
 ---
 
 ### Version 2.1.1 (Feb 14, 2018)
 
-- **All platforms**: Various updates to Cordova plugins
-- **All platforms**: Audio plugin added
+- **All platforms**: Various updates to Cordova plugins.
+- **All platforms**: Audio plugin added.
 
 ---
 
 ### Version 2.1.0 (Dec 13, 2017)
 
-- **All platforms**: Improvements and bugfixes
-- **All platforms**: Enhanced logging for debugging
+- **All platforms**: Improvements and bugfixes.
+- **All platforms**: Enhanced logging for debugging.
 
 ---
 
 ### Version 2.0.1 (Jun 19, 2017)
 
-- **All platforms**: Improvements and bugfixes
+- **All platforms**: Improvements and bugfixes.
 
 ---
 
