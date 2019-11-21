@@ -138,7 +138,7 @@ timestamp_column: updatedAt
 # Using "update" will keep orphaned entries while "replace" will delete them.
 mode: update
 
-# Define how many records and files should be parsed and requested at once. 
+# Define how many records and files should be parsed and requested at once.
 # Depending on how much load your system can sustain you can increase this number.
 concurrency: 1
 
@@ -208,6 +208,8 @@ Once you run the above command, you're likely to get asked for confirmation by t
 Just click "**Yes**" to grant access to the software to install the service on your machine. You can monitor the output of the script through Windows Event Viewer checking under the "Applications" logs:
 
 ![img](assets/img/agent-event-viewer.png)
+
+The installed service can also be managed via the **Windows Services** interface, which can be accessed by typing `services.msc` in the **Run** window.
 
 Likewise, you can manage the service by accessing the Windows "Services" application. To remove the service, simply run the `uninstall` command as below:
 
@@ -316,7 +318,7 @@ module.exports.setup = (agent) => {
       // { column: 'thumbnail', type: 'local', directory: '/path/to/dir' }
     ],
 
-    // Define how many records and files should be parsed and requested at once. 
+    // Define how many records and files should be parsed and requested at once.
     // Depending on how much load your system can sustain you can increase this number.
     concurrency: 1,
 
@@ -533,7 +535,7 @@ files:
   # Define a column containing a remote URL to a file, e.g. "https://example.org/John.jpg"
   - column: userThumbnail
     type: remote
-  
+
   # Define a column containing a remote URL to a file, e.g. "https://example.org/John.jpg"
   # while also defining headers to be sent with the request
   - column: userThumbnail
