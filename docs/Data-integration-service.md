@@ -211,7 +211,7 @@ Just click "**Yes**" to grant access to the software to install the service on y
 
 The installed service can also be managed via the **Windows Services** interface, which can be accessed by typing `services.msc` in the **Run** window.
 
-Likewise, you can manage the service by accessing the Windows "Services" application. To remove the service, simply run the `uninstall` command as below:
+To remove the service, simply run the `uninstall` command as below:
 
 ```
 fliplet-agent uninstall C:\path\to\sample.yml
