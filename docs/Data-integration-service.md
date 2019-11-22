@@ -650,6 +650,10 @@ In order to be able to update the agent via **npm**, [registry.npmjs.org](https:
 
 ## Releases changelog
 
+#### 1.9.0 (November 22th, 2019)
+
+- Improvements when installing the agent as a [service on Windows](#install-the-agent-as-a-service-windows-only).
+
 #### 1.8.0 (November 12th, 2019)
 
 - Support for defining a post-sync hook to run on push operations with `onSync(result)`.
