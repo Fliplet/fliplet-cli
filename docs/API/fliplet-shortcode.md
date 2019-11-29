@@ -30,19 +30,21 @@ All properties of [Vue.js](https://vuejs.org/v2/api/#Options-Data) are supported
 
 Attributes can be passed to shortcodes and then accessed via `attr.<name>` in HTML or `this.attr.<name>` in JS.
 
+Please note that attribute names are be converted to camelCase, e.g. `last-name` becomes `lastName` as the example below shows:
+
 ```html
-{! start welcome last_name="Doe" !}
-  <p>Hi {! first_name !} {! attr.last_name}, how are you?</p>
+{! start welcome last-name="Doe" !}
+  <p>Hi {! firstName !} {! attr.lastName}, how are you?</p>
 {! end welcome }
 ```
 
 ```js
 Fliplet.Shortcode('welcome', {
   data: {
-    first_name: 'John'
+    firstName: 'John'
   },
   mounted: function () {
-    console.log(`Your last name is ${this.attr.last_name}`);
+    console.log(`Your last name is ${this.attr.lastName}`);
   }
 });
 ```
@@ -55,9 +57,9 @@ Fliplet.Shortcode('welcome', {
 
 ```js
 Fliplet.Shortcode('welcome', {
-  template: '<p>Hi {! first_name !} {! attr.last_name}, how are you?</p>'
+  template: '<p>Hi {! firstName !} {! attr.lastName}, how are you?</p>'
   data: {
-    first_name: 'John'
+    firstName: 'John'
   }
 });
 ```
@@ -74,14 +76,14 @@ Use the `<slot></slot>` tag to define the distribution outlet for content.
 Fliplet.Shortcode('welcome', {
   template: '<p>How are you? <slot></slot></p>'
   data: {
-    first_name: 'John'
+    firstName: 'John'
   }
 });
 ```
 
 ```html
-{! start welcome first_name="John" !}
-  <span>I am <i>good</i> because my name is {! first_name !}!</span>
+{! start welcome first-name="John" !}
+  <span>I am <i>good</i> because my name is {! firstName !}!</span>
 {! end welcome !}
 ```
 
@@ -104,20 +106,20 @@ Pass the `child: true` attribute in the shortcode definition to register the sho
 
 ```js
 Fliplet.Shortcode('greet', {
-  template: '<p>Hi {! first_name !} {! attr.last_name !}</p>'
+  template: '<p>Hi {! firstName !} {! attr.lastName !}</p>'
   data: {
-    first_name: 'John'
+    firstName: 'John'
   },
   child: true
 });
 
-Fliplet.Shortcode('profile', {});
+Fliplet.Shortcode('welcome', {});
 ```
 
 ```html
 {! start welcome !}
   <h1>Welcome to the app!</h1>
-  {! greet last_name="Doe" !}
+  {! greet last-name="Doe" !}
 {! end welcome }
 ```
 
