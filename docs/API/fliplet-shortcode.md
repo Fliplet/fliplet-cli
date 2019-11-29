@@ -117,7 +117,7 @@ Fliplet.Shortcode('profile', {});
 
 ### Loading data
 
-#### Loading data from a DataSource
+#### From a DataSource
 
 ```js
 Fliplet.Shortcode('profile', {
