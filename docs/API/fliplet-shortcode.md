@@ -24,7 +24,7 @@ Fliplet.Shortcode('welcome', {
 
 #### Passing attributes to a shortcode
 
-Attributes can be passed to tags and then accessed via `attr.<name>` in HTML or `this.attr.<name>` in JS.
+Attributes can be passed to shortcodes and then accessed via `attr.<name>` in HTML or `this.attr.<name>` in JS.
 
 ```html
 {! start welcome last_name="Doe" !}
