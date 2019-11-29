@@ -113,7 +113,3 @@ Fliplet.Shortcode('profile', {});
   {! greet last_name="Doe" !}
 {! end welcome }
 ```
-
-<script>
-window.isBetaFeature = true;
-</script>
