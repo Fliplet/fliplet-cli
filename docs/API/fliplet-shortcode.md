@@ -6,7 +6,6 @@
 
 `Fliplet.Shortcode(name, definition)`
 
-
 ```js
 Fliplet.Shortcode('welcome', {
   data: {
@@ -112,4 +111,33 @@ Fliplet.Shortcode('profile', {});
   <h1>Welcome to the app!</h1>
   {! greet last_name="Doe" !}
 {! end welcome }
+```
+
+## Load data from a DataSource
+
+```js
+Fliplet.Shortcode('profile', {
+  data: {
+    user: undefined
+  },
+  mounted: function () {
+    var instance = this;
+
+    Fliplet.DataSources.connect(123)
+      .then(function (connection) {
+        return connection.findOne({ where: { name: instance.attr.name } });
+      }).then(function (entry) {
+        instance.user = entry.data;
+      });
+  }
+});
+```
+
+```html
+{! start profile name="John" !}
+  <ul>
+    <li>Email: {{ user.email }}</li>
+    <li>Name: {{ user.name }}</li>
+  </ul>
+{! end profile !}
 ```
