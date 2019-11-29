@@ -25,21 +25,26 @@ Fliplet.Shortcode('welcome', {
 
 #### Passing attributes to a shortcode
 
+Attributes can be passed to tags and then accessed via `attr.<name>` in HTML or `this.attr.<name>` in JS.
+
 ```js
 Fliplet.Shortcode('welcome', {
   data: {
     first_name: 'John'
+  },
+  mounted: function () {
+    console.log(`Your last name is ${this.attr.last_name}`);
   }
 });
 ```
-
-### Templates
 
 ```html
 {! start welcome last_name="Doe" !}
   <p>Hi {! first_name !} {! attr.last_name}, how are you?</p>
 {! end welcome }
 ```
+
+### Templates
 
 #### Defining a custom template
 
