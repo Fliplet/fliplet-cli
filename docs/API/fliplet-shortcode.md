@@ -4,6 +4,9 @@
 
 ## Register a shortcode
 
+`Fliplet.Shortcode(name, definition)`
+
+
 ```js
 Fliplet.Shortcode('welcome', {
   data: {
@@ -81,7 +84,11 @@ Output:
 </p>
 ```
 
-## Register a nested shortcode
+### Nested shortcodes
+
+#### Register a nested shortcode
+
+Pass the `child: true` attribute in the shortcode definition to register the shortcode as a nested shortcode for other components.
 
 ```js
 Fliplet.Shortcode('greet', {
@@ -101,3 +108,7 @@ Fliplet.Shortcode('profile', {});
   {! greet last_name="Doe" !}
 {! end welcome }
 ```
+
+<script>
+window.isBetaFeature = true;
+</script>
