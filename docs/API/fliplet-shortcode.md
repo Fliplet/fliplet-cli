@@ -20,6 +20,8 @@ Fliplet.Shortcode('welcome', {
 {! end welcome }
 ```
 
+All properties of [Vue.js](https://vuejs.org/v2/api/#Options-Data) are supported in the shortcodes `definition`.
+
 ### Attributes
 
 #### Passing attributes to a shortcode
