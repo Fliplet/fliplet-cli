@@ -18,7 +18,9 @@ Fliplet.Shortcode('welcome', {
 {! end welcome }
 ```
 
-## Passing attributes to a shortcode
+### Attributes
+
+#### Passing attributes to a shortcode
 
 ```js
 Fliplet.Shortcode('welcome', {
@@ -28,13 +30,15 @@ Fliplet.Shortcode('welcome', {
 });
 ```
 
+### Templates
+
 ```html
 {! start welcome last_name="Doe" !}
   <p>Hi {! first_name !} {! attr.last_name}, how are you?</p>
 {! end welcome }
 ```
 
-## Defining custom templates
+#### Defining a custom template
 
 ```js
 Fliplet.Shortcode('welcome', {
@@ -49,7 +53,7 @@ Fliplet.Shortcode('welcome', {
 {! welcome last_name="Doe" !}
 ```
 
-## Defining custom templates
+#### Defining an outer template
 
 Use the `<slot></slot>` tag to serve as distribution outlets for content.
 
