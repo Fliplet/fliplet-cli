@@ -92,7 +92,7 @@ Output:
 
 #### Register a nested shortcode
 
-Pass the `child: true` attribute in the shortcode definition to register the shortcode as a nested shortcode for other components.
+Pass the `child: true` attribute in the shortcode definition to register the shortcode as a nested shortcode for other shortcodes.
 
 ```js
 Fliplet.Shortcode('greet', {
