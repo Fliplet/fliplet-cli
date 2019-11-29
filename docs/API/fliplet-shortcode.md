@@ -68,7 +68,7 @@ Fliplet.Shortcode('welcome', {
 
 #### Defining an outer template
 
-Use the `<slot></slot>` tag to serve as distribution outlets for content.
+Use the `<slot></slot>` tag to define the distribution outlet for content.
 
 ```js
 Fliplet.Shortcode('welcome', {
