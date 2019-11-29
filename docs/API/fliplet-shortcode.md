@@ -87,7 +87,7 @@ Fliplet.Shortcode('welcome', {
 
 Output:
 
-```
+```html
 <p>
   How are you?
   <span>I am <i>good</i> because my name is John!</span>
