@@ -1,6 +1,6 @@
 # Shortcode JS APIs
 
-<p class="warning"><strong>Note:</strong> this JS API is a draft hence we do not recommend using it yet.</p>
+<p class="warning">You are browsing an early private spec of this feature.</p>
 
 ## Register a simple component
 
