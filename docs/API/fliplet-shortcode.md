@@ -22,6 +22,8 @@ Fliplet.Shortcode('welcome', {
 
 All properties of [Vue.js](https://vuejs.org/v2/api/#Options-Data) are supported in the shortcodes `definition`.
 
+---
+
 ### Attributes
 
 #### Passing attributes to a shortcode
@@ -44,6 +46,8 @@ Fliplet.Shortcode('welcome', {
   }
 });
 ```
+
+---
 
 ### Templates
 
@@ -90,6 +94,8 @@ Output:
 </p>
 ```
 
+---
+
 ### Nested shortcodes
 
 #### Register a nested shortcode
@@ -114,6 +120,8 @@ Fliplet.Shortcode('profile', {});
   {! greet last_name="Doe" !}
 {! end welcome }
 ```
+
+---
 
 ### Loading data
 
