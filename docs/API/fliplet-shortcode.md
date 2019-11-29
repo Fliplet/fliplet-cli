@@ -2,7 +2,7 @@
 
 <p class="warning">You are browsing an early private spec of this feature.</p>
 
-## Register a simple component
+## Register a shortcode
 
 ```js
 Fliplet.Shortcode('welcome', {
@@ -18,7 +18,7 @@ Fliplet.Shortcode('welcome', {
 {! end welcome }
 ```
 
-### Use attributes
+## Passing attributes to a shortcode
 
 ```js
 Fliplet.Shortcode('welcome', {
@@ -34,7 +34,7 @@ Fliplet.Shortcode('welcome', {
 {! end welcome }
 ```
 
-### Use templates
+## Defining custom templates
 
 ```js
 Fliplet.Shortcode('welcome', {
@@ -49,7 +49,35 @@ Fliplet.Shortcode('welcome', {
 {! welcome last_name="Doe" !}
 ```
 
-### Register a nested shortcode
+## Defining custom templates
+
+Use the `<slot></slot>` tag to serve as distribution outlets for content.
+
+```js
+Fliplet.Shortcode('welcome', {
+  template: '<p>How are you? <slot></slot></p>'
+  data: {
+    first_name: 'John'
+  }
+});
+```
+
+```html
+{! start welcome first_name="John" !}
+  <span>I am <i>good</i> because my name is {! first_name !}!</span>
+{! end welcome !}
+```
+
+Output:
+
+```
+<p>
+  How are you?
+  <span>I am <i>good</i> because my name is John!</span>
+</p>
+```
+
+## Register a nested shortcode
 
 ```js
 Fliplet.Shortcode('greet', {
