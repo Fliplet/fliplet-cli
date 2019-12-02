@@ -20,7 +20,7 @@ Fliplet.Shortcode('welcome', {
 {! end welcome }
 ```
 
-All properties of [Vue.js](https://vuejs.org/v2/api/#Options-Data) are supported in the shortcodes `definition`.
+`data` can either be an object or a function returning an object or a promise returning an object.
 
 ---
 
@@ -28,13 +28,13 @@ All properties of [Vue.js](https://vuejs.org/v2/api/#Options-Data) are supported
 
 #### Passing attributes to a shortcode
 
-Attributes can be passed to shortcodes and then accessed via `attr.<name>` in HTML or `this.attr.<name>` in JS.
+Attributes can be passed to shortcodes and then accessed via their name in HTML or `this.data.<name>` in JS.
 
 Please note that attribute names are be converted to camelCase, e.g. `last-name` becomes `lastName` as the example below shows:
 
 ```html
 {! start welcome last-name="Doe" !}
-  <p>Hi {! firstName !} {! attr.lastName}, how are you?</p>
+  <p>Hi {! firstName !} {! lastName !}, how are you?</p>
 {! end welcome }
 ```
 
@@ -44,7 +44,7 @@ Fliplet.Shortcode('welcome', {
     firstName: 'John'
   },
   mounted: function () {
-    console.log(`Your last name is ${this.attr.lastName}`);
+    console.log(`Your last name is ${this.data.lastName}`);
   }
 });
 ```
@@ -57,7 +57,7 @@ Fliplet.Shortcode('welcome', {
 
 ```js
 Fliplet.Shortcode('welcome', {
-  template: '<p>Hi {! firstName !} {! attr.lastName}, how are you?</p>'
+  template: '<p>Hi {! firstName !} {! lastName !}, how are you?</p>'
   data: {
     firstName: 'John'
   }
@@ -65,16 +65,16 @@ Fliplet.Shortcode('welcome', {
 ```
 
 ```html
-{! welcome last_name="Doe" !}
+{! welcome last-name="Doe" !}
 ```
 
 #### Defining an outer template
 
-Use the `<slot></slot>` tag to define the distribution outlet for content.
+Use the `<fl-html />` tag to define the distribution outlet for content.
 
 ```js
 Fliplet.Shortcode('welcome', {
-  template: '<p>How are you? <slot></slot></p>'
+  template: '<p>How are you? <fl-html /></p>'
   data: {
     firstName: 'John'
   }
@@ -98,60 +98,64 @@ Output:
 
 ---
 
-### Nested shortcodes
-
-#### Register a nested shortcode
-
-Pass the `child: true` attribute in the shortcode definition to register the shortcode as a nested shortcode for other shortcodes.
-
-```js
-Fliplet.Shortcode('greet', {
-  template: '<p>Hi {! firstName !} {! attr.lastName !}</p>'
-  data: {
-    firstName: 'John'
-  },
-  child: true
-});
-
-Fliplet.Shortcode('welcome', {});
-```
-
-```html
-{! start welcome !}
-  <h1>Welcome to the app!</h1>
-  {! greet last-name="Doe" !}
-{! end welcome }
-```
-
----
-
 ### Loading data
 
 #### From a DataSource
 
 ```js
 Fliplet.Shortcode('profile', {
-  data: {
-    user: undefined
-  },
-  mounted: function () {
-    var instance = this;
+  data: function () {
+    var firstName = this.data.firstName;
 
     Fliplet.DataSources.connect(123)
       .then(function (connection) {
-        return connection.findOne({ where: { name: instance.attr.name } });
+        return connection.findOne({ where: { firstName: firstName } });
       }).then(function (entry) {
-        instance.user = entry.data;
+        return { user: entry.data };
       });
   }
 });
 ```
 
 ```html
-{! start profile name="John" !}
+{! start profile first-name="Nick" !}
+  <p>Searched by {! firstName }</p>
   <ul>
     <li>Email: {! user.email !}</li>
     <li>Name: {! user.name !}</li>
   </ul>
 {! end profile !}
+```
+
+---
+
+### Run logic once a shortcode is rendered
+
+```js
+Fliplet.Shortcode('profile', {
+  data: {
+    firstName: 'John'
+  },
+  ready: function () {
+    // Shortcode has been rendered
+  }
+);
+```
+
+---
+
+### Programmatically update values
+
+```js
+var profile = Fliplet.Shortcode('profile', {
+  data: {
+    firstName: 'John'
+  }
+);
+
+profile.set('firstName', 'Nick');
+
+profile.set('firstName', function () {
+  return Promise.resolve('Tony');
+})
 ```
