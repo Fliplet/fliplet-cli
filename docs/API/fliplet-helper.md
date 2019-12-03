@@ -109,12 +109,11 @@ Fliplet.Helper('profile', {
   data: function () {
     var firstName = this.data.firstName;
 
-    Fliplet.DataSources.connect(123)
-      .then(function (connection) {
-        return connection.findOne({ where: { firstName: firstName } });
-      }).then(function (entry) {
-        return { user: entry.data };
-      });
+    return Fliplet.DataSources.connect(123).then(function (connection) {
+      return connection.findOne({ where: { firstName: firstName } });
+    }).then(function (entry) {
+      return { user: entry.data };
+    });
   }
 });
 ```
