@@ -1,13 +1,13 @@
-# Shortcode JS APIs
+# Helper JS APIs
 
 <p class="warning">You are browsing an early private spec of this feature.</p>
 
-## Register a shortcode
+## Register a helper
 
-`Fliplet.Shortcode(name, definition)`
+`Fliplet.Helper(name, definition)`
 
 ```js
-Fliplet.Shortcode('welcome', {
+Fliplet.Helper('welcome', {
   data: {
     name: 'John'
   }
@@ -26,9 +26,9 @@ Fliplet.Shortcode('welcome', {
 
 ### Attributes
 
-#### Passing attributes to a shortcode
+#### Passing attributes to a helper
 
-Attributes can be passed to shortcodes and then accessed via their name in HTML or `this.data.<name>` in JS.
+Attributes can be passed to helpers and then accessed via their name in HTML or `this.data.<name>` in JS.
 
 Please note that attribute names are be converted to camelCase, e.g. `last-name` becomes `lastName` as the example below shows:
 
@@ -39,7 +39,7 @@ Please note that attribute names are be converted to camelCase, e.g. `last-name`
 ```
 
 ```js
-Fliplet.Shortcode('welcome', {
+Fliplet.Helper('welcome', {
   data: {
     firstName: 'John'
   },
@@ -56,7 +56,7 @@ Fliplet.Shortcode('welcome', {
 #### Defining a custom template
 
 ```js
-Fliplet.Shortcode('welcome', {
+Fliplet.Helper('welcome', {
   template: '<p>Hi {! firstName !} {! lastName !}, how are you?</p>'
   data: {
     firstName: 'John'
@@ -70,11 +70,11 @@ Fliplet.Shortcode('welcome', {
 
 #### Defining an outer template
 
-Use the `<fl-html />` tag to define the distribution outlet for content.
+Use the `{! this !}` code to define the distribution outlet for content.
 
 ```js
-Fliplet.Shortcode('welcome', {
-  template: '<p>How are you? <fl-html /></p>'
+Fliplet.Helper('welcome', {
+  template: '<p>How are you? {! this !}</p>'
   data: {
     firstName: 'John'
   }
@@ -105,7 +105,7 @@ Output:
 - `data` can return a `Promise`
 
 ```js
-Fliplet.Shortcode('profile', {
+Fliplet.Helper('profile', {
   data: function () {
     var firstName = this.data.firstName;
 
@@ -131,26 +131,44 @@ Fliplet.Shortcode('profile', {
 
 ---
 
-### Run logic once a shortcode is rendered
+### Run logic once a helper is rendered
 
 ```js
-Fliplet.Shortcode('profile', {
+Fliplet.Helper('profile', {
   data: {
     firstName: 'John'
   },
   ready: function () {
-    // Shortcode has been rendered
+    // Helper has been rendered
+  }
+});
+```
+
+---
+
+### Access a parent component when nesting
+
+```js
+Fliplet.Helper('poll', {
+  data: {
+    foo: 'bar'
+  }
+});
+
+Fliplet.Helper('question', {
+  ready: function () {
+    this.parent.foo;
   }
 );
 ```
 
 ---
 
-### Run logic once all shortcodes have been rendered
+### Run logic once all helpers have been rendered
 
 ```js
-Fliplet.Hooks.on('afterShortcodesRender', function () {
-  // All shortcodes have been rendered
+Fliplet.Hooks.on('afterHelpersRender', function () {
+  // All helpers have been rendered
 });
 ```
 
@@ -159,7 +177,7 @@ Fliplet.Hooks.on('afterShortcodesRender', function () {
 ### Programmatically update values
 
 ```js
-var profile = Fliplet.Shortcode('profile', {
+var profile = Fliplet.Helper('profile', {
   data: {
     firstName: 'John'
   }
