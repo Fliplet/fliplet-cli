@@ -102,6 +102,8 @@ Output:
 
 #### From a DataSource
 
+- `data` can return a `Promise`
+
 ```js
 Fliplet.Shortcode('profile', {
   data: function () {
@@ -140,6 +142,16 @@ Fliplet.Shortcode('profile', {
     // Shortcode has been rendered
   }
 );
+```
+
+---
+
+### Run logic once all shortcodes have been rendered
+
+```js
+Fliplet.Hooks.on('afterShortcodesRender', function () {
+  // All shortcodes have been rendered
+});
 ```
 
 ---
