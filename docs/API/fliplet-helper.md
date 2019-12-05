@@ -2,10 +2,24 @@
 
 <p class="warning">You are browsing an early private spec of this feature.</p>
 
-## Register a helper
+Fliplet helpers allow you to write reusable snippets which binds dynamic data to screens of your apps. Another common use case is to reuse features across different screens of your app (or even between apps) by creating an abstract helper which can be configured differently depending on the case.
+
+## Define a helper
+
+Helpers can be created by defining them via **screen or global JavaScript code** in your apps. A helper requires a **name** and its **configuration object** which defines its behaviour.
+
+Once an helper is defined, you can start using it in the Screens of your apps as shown in the example below:
 
 `Fliplet.Helper(name, definition)`
 
+<table>
+  <thead>
+    <th>JavaScript</th>
+    <th>Screen HTML</th>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
 ```js
 Fliplet.Helper('welcome', {
   data: {
@@ -13,12 +27,17 @@ Fliplet.Helper('welcome', {
   }
 });
 ```
-
+      </td>
+      <td>
 ```html
-{! start welcome !}
+{! start helper welcome !}
   <p>Hi {! name !}, how are you?</p>
-{! end welcome }
+{! end helper welcome }
 ```
+      </td>
+    </tr>
+  </tbody>
+</table>
 
 `data` can either be an object or a function returning an object or a promise returning an object.
 
