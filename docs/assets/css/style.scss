@@ -263,7 +263,7 @@ ul > li > ul {
 .main-content {
   padding: 2rem 4rem;
 
-  h1, h2, h3, h4 {
+  h1, h2, h3, h4, h5 {
     color: $primaryBackground;
   }
 
@@ -283,6 +283,11 @@ ul > li > ul {
 
   h4 {
     font-weight: bold;
+  }
+
+  h5 {
+    font-weight: bold;
+    margin-bottom: 0.3rem;
   }
 
   code {

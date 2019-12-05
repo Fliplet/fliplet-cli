@@ -1,25 +1,17 @@
-# Helper JS APIs
+# Fliplet Helper JS APIs
 
 <p class="warning">You are browsing an early private spec of this feature.</p>
 
-Fliplet helpers allow you to write reusable snippets which binds dynamic data to screens of your apps. Another common use case is to reuse features across different screens of your app (or even between apps) by creating an abstract helper which can be configured differently depending on the case.
+Fliplet helpers allow you to **write reusable snippets** which binds dynamic data to screens of your apps. Another common use case is to reuse features across different screens of your app (or even between apps) by creating an abstract helper which can be configured differently depending on the case.
 
-## Define a helper
+## Quick start
 
 Helpers can be created by defining them via **screen or global JavaScript code** in your apps. A helper requires a **name** and its **configuration object** which defines its behaviour.
 
-Once an helper is defined, you can start using it in the Screens of your apps as shown in the example below:
+Once an helper is defined in your Javascript code with `Fliplet.Helper(name, definition)`, you can start using it in the Screens of your apps as shown in the example below:
 
-`Fliplet.Helper(name, definition)`
+##### JavaScript
 
-<table>
-  <thead>
-    <th>JavaScript</th>
-    <th>Screen HTML</th>
-  </thead>
-  <tbody>
-    <tr>
-      <td>
 ```js
 Fliplet.Helper('welcome', {
   data: {
@@ -27,21 +19,72 @@ Fliplet.Helper('welcome', {
   }
 });
 ```
-      </td>
-      <td>
+
+##### Screen HTML
+
 ```html
 {! start helper welcome !}
   <p>Hi {! name !}, how are you?</p>
 {! end helper welcome }
 ```
-      </td>
-    </tr>
-  </tbody>
-</table>
 
-`data` can either be an object or a function returning an object or a promise returning an object.
+##### Output HTML
+
+```html
+<p>Hi John, how are you?</p>
+```
 
 ---
+
+Helpers can also be self-enclosing. In such case, they are defined without the `start` and `end` keyword in the HTML. When doing so, you can define their HTML `template` separately as shown below:
+
+##### JavaScript
+
+```js
+Fliplet.Helper('welcome', {
+  template: '<p class="welcome">Hi, how are you?</p>'
+});
+```
+
+##### Screen HTML
+
+```html
+{! helper welcome !}
+```
+
+##### Output HTML
+
+```html
+<p class="welcome">Hi, how are you?</p>
+```
+
+---
+
+This becomes really powerful when passing `attributes` via the HTML:
+
+##### JavaScript
+
+```js
+Fliplet.Helper('welcome', {
+  template: '<p class="welcome">Hi {! name !}, how are you?</p>'
+});
+```
+
+##### Screen HTML
+
+```html
+{! helper welcome name="John" !}
+```
+
+##### Output HTML
+
+```html
+<p class="welcome">Hi John, how are you?</p>
+```
+
+---
+
+## Documentation
 
 ### Attributes
 
