@@ -8,6 +8,8 @@ Fliplet helpers allow you to **write reusable snippets** which binds dynamic dat
 
 Helpers can be created by defining them via **screen or global JavaScript code** in your apps. A helper requires a **name** and its **configuration object** which defines its behaviour.
 
+First of all, add the `fliplet-helper` package to your screen or app's dependencies via Fliplet Studio.
+
 Once an helper is defined in your Javascript code with `Fliplet.Helper(name, definition)`, you can start using it in the Screens of your apps as shown in the example below:
 
 ##### JavaScript
