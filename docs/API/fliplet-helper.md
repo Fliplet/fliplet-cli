@@ -149,8 +149,8 @@ Fliplet.Helper('button', {
 Use the `{! this !}` code to define the distribution outlet for content.
 
 ```js
-Fliplet.Helper('welcome', {
-  template: '<p>How are you? {! this !}</p>'
+Fliplet.Helper('option', {
+  template: '<p><input type="checkbox" value="{! value !}" /> {! this !}</p>'
   data: {
     firstName: 'John'
   }
@@ -158,8 +158,8 @@ Fliplet.Helper('welcome', {
 ```
 
 ```html
-{! start welcome first-name="John" !}
-  <span>I am <i>good</i> because my name is {! firstName !}!</span>
+{! start option value="Yes" !}
+  Accept privacy policy
 {! end welcome !}
 ```
 
@@ -167,8 +167,7 @@ Output:
 
 ```html
 <p>
-  How are you?
-  <span>I am <i>good</i> because my name is John!</span>
+  <input type="checkbox" value="Yes" /> Accept privacy policy
 </p>
 ```
 
