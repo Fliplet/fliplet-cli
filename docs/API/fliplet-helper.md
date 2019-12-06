@@ -151,16 +151,13 @@ Use the `{! this !}` code to define the distribution outlet for content.
 ```js
 Fliplet.Helper('option', {
   template: '<p><input type="checkbox" value="{! value !}" /> {! this !}</p>'
-  data: {
-    firstName: 'John'
-  }
 });
 ```
 
 ```html
 {! start option value="Yes" !}
   Accept privacy policy
-{! end welcome !}
+{! end option !}
 ```
 
 Output:
