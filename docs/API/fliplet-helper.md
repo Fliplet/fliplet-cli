@@ -130,6 +130,18 @@ Fliplet.Helper('welcome', {
 {! welcome last-name="Doe" !}
 ```
 
+You can also define variables in attributes of your template:
+
+```js
+Fliplet.Helper('button', {
+  template: '<input type="submit" value="{! title !}" />'
+});
+```
+
+```html
+{! button title="Press here" !}
+```
+
 #### Defining an outer template
 
 Use the `{! this !}` code to define the distribution outlet for content.
