@@ -281,3 +281,20 @@ profile.set('firstName', function () {
   return Promise.resolve('Tony');
 })
 ```
+
+### Conditionally display content
+
+You can use the `if` and `else` helpers to conditionally display or hide content depending on whether a value is "truthy" or not.
+
+> A "truthy" value is a value that translates to **true** when evaluated in a Boolean context.
+
+
+```html
+{! start profile email="john@example.org" !}
+  {! if email }
+    <p>Your email is {! email !}</p>
+  {! else !}
+    <p>Email address not configured.</p>
+  {! endif !}
+{! end profile !}
+```
