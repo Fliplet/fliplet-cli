@@ -62,7 +62,7 @@ new Fliplet.Gamify(options)
 
 The `Fliplet.Gamify()` function returns an object with the following methods.
 
-### `.log(data, opt)`
+### `.log(data)`
 
 (Returns **`Promise`**)
 
@@ -71,8 +71,6 @@ Log data for the user.
 The promise is resolved when the log operation is completed.
 
 * `data` **Required** (Object) Log data to be saved.
-* `opt` (Object) An optional map of options for the operation.
-  * `update` (Boolean) If set to `true`, a matching entry would be updated instead of inserting a new one. **Default**: `false`.
 
 ### `.on(eventName, fn)`
 
