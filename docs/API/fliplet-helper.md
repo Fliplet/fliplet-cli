@@ -298,3 +298,13 @@ You can use the `if` and `else` helpers to conditionally display or hide content
   {! endif !}
 {! end profile !}
 ```
+
+### Looping through an array
+
+You can loop through an array of objects by using the `each` helper, defining both the array property name (e.g. `people`) and a name for the context available in the loop (e.g. `person`):
+
+```html
+{! each person in people !}
+  <p>{! person.name !}</p>
+{! endeach !}
+```
