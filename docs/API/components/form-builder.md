@@ -387,7 +387,7 @@ Fliplet.DataSources.connect(dataSourceId).then(function (connection) {
     });
   });
 
-  // 2. Bind a hook to update the data once the form is submitted:
+  // 2. Bind a hook to update the data once the form is submitted
   Fliplet.Hooks.on('beforeFormSubmit', function(data) {
     return connection.update(entryId, data);
   });
