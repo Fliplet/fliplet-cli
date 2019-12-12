@@ -342,7 +342,7 @@ Fliplet.Hooks.on('afterFormSubmit', function(response) {
 
 ### onFormSubmitError
 
-Runs when a form has could not be submitted.
+Runs when a form could not be submitted because of an error.
 
 ```js
 Fliplet.Hooks.on('onFormSubmitError', function(error) {
