@@ -207,9 +207,9 @@ Fliplet.FormBuilder.get()
     // we're populating the field with the full name of a user in a data source
     form.field('field-1').set(function () {
       return Fliplet.DataSources.connect(123).then(function (connection) {
-        return connection.find({ where: { email: 'foo@example.org' } });
-      }).then(function (entries) {
-        return _.get(_.first(entries), 'data.fullName');
+        return connection.findOne({ where: { email: 'foo@example.org' } });
+      }).then(function (entry) {
+        return _.get(entry, 'data.fullName');
       });
     });
 
