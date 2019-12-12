@@ -27,7 +27,7 @@ Data can be retrieved via Javascript using the `Fliplet.Widget.instance` method 
 
 ```js
 Fliplet.Widget.instance('my-component', function (data) {
-
+    var $el = $(this); // this gets you each component via jQuery
 });
 ```
 
