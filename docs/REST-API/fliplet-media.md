@@ -166,7 +166,7 @@ Sample response:
 
 ## Stream the contents of a file
 
-## `GET v1/media/files/<id>/contents`
+### `GET v1/media/files/<id>/contents`
 
 e.g. `v1/media/files/123/contents`
 
