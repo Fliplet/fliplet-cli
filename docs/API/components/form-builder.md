@@ -370,6 +370,11 @@ Fliplet.FormBuilder.on('reset', function () {
 
 ### Updating data source entries
 
+The following example shows how to:
+
+1. populate a form from a data source entry
+2. on submit, update the same data source entry
+
 ```js
 var dataSourceId = 123;
 var entryId = 456;
