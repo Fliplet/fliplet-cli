@@ -38,9 +38,9 @@ This is by design: **your widget can be dropped more than once into a screen**, 
 Here's an example to let you understand how a screen can look like when your widget is dropped to a page more than once:
 
 ```html
-<video src="//foo.mp4" data-my-component-id="1"></video>
-<video src="//bar.mp4" data-my-component-id="2"></video>
-<video src="//baz.mp4" data-my-component-id="3"></video>
+<video src="foo.mp4" data-my-component-id="1"></video>
+<video src="bar.mp4" data-my-component-id="2"></video>
+<video src="baz.mp4" data-my-component-id="3"></video>
 ```
 
 ```js
