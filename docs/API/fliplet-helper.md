@@ -68,7 +68,7 @@ This becomes really powerful when passing `attributes` via the HTML:
 
 ```js
 Fliplet.Helper('welcome', {
-  template: '<p class="welcome">Hi {! name !}, how are you?</p>'
+  template: '<p class="welcome">Hi {! attr.name !}, how are you?</p>'
 });
 ```
 
@@ -92,13 +92,13 @@ Fliplet.Helper('welcome', {
 
 #### Passing attributes to a helper
 
-Attributes can be passed to helpers and then accessed via their name in HTML or `this.data.<name>` in JS.
+Attributes can be passed to helpers and then accessed via the `attr` object in HTML or `this.attr(<name>)` in JS.
 
 Please note that attribute names are be converted to camelCase, e.g. `last-name` becomes `lastName` as the example below shows:
 
 ```html
 {! start welcome last-name="Doe" !}
-  <p>Hi {! firstName !} {! lastName !}, how are you?</p>
+  <p>Hi {! firstName !} {! attr.lastName !}, how are you?</p>
 {! end welcome }
 ```
 
@@ -108,7 +108,7 @@ Fliplet.Helper('welcome', {
     firstName: 'John'
   },
   ready: function () {
-    console.log(`Your last name is ${this.data.lastName}`);
+    console.log('Your last name is', this.attr('lastName'));
   }
 });
 ```
@@ -132,11 +132,11 @@ Fliplet.Helper('welcome', {
 {! welcome last-name="Doe" !}
 ```
 
-You can also define variables in attributes of your template:
+You can also define variables in attributes of your template and access them under the `attr` object:
 
 ```js
 Fliplet.Helper('button', {
-  template: '<input type="submit" value="{! title !}" />'
+  template: '<input type="submit" value="{! attr.title !}" />'
 });
 ```
 
@@ -146,7 +146,7 @@ Fliplet.Helper('button', {
 
 #### Defining an outer template
 
-Use the `{! this !}` code to define the distribution outlet for content. This will also available as `this.initialHTML` on the helper instance as shown further below.
+Use the `{! this !}` code to define the distribution outlet for content. This will also available as `this.template` on the helper instance as shown further below.
 
 ```js
 Fliplet.Helper('option', {
@@ -174,7 +174,7 @@ If you need to specify a default value for the outlet you can populate it at run
 Fliplet.Helper('option', {
   template: '<p><input type="checkbox" value="{! value !}" /> {! label !}</p>',
   ready: function () {
-    this.set('label', this.initialHTML || this.data.value);
+    this.set('label', this.template || this.data.value);
   }
 });
 ```
