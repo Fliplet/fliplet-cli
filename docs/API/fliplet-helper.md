@@ -92,7 +92,7 @@ Fliplet.Helper('welcome', {
 
 #### Passing attributes to a helper
 
-Attributes can be passed to helpers and then accessed via the `attr` object in HTML or `this.attr(<name>)` in JS.
+Attributes can be passed to helpers and then accessed via the `attr` object in HTML or `this.attr.<name>` in JS.
 
 Please note that attribute names are be converted to camelCase, e.g. `last-name` becomes `lastName` as the example below shows:
 
@@ -108,7 +108,7 @@ Fliplet.Helper('welcome', {
     firstName: 'John'
   },
   ready: function () {
-    console.log('Your last name is', this.attr('lastName'));
+    console.log('Your last name is', this.attr.lastName);
   }
 });
 ```
