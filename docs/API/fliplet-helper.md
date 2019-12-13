@@ -107,7 +107,7 @@ Fliplet.Helper('welcome', {
   data: {
     firstName: 'John'
   },
-  mounted: function () {
+  ready: function () {
     console.log(`Your last name is ${this.data.lastName}`);
   }
 });
