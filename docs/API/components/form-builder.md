@@ -307,6 +307,19 @@ Fliplet.FormBuilder.get()
   });
 ```
 
+You can also specify a different label from the value (`id`) as follows:
+
+```js
+Fliplet.FormBuilder.get()
+  .then(function (form) {
+    form.field('foo').options([
+      { id: 'john', label: 'John Doe' },
+      { id: 'nick', label: 'Nick Smith' }
+    ]);
+  });
+```
+
+
 ## Hooks
 
 ### beforeFormSubmit
