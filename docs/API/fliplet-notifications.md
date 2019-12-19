@@ -76,6 +76,46 @@ instance.poll({
 
 // return a promise with the unread notifications count
 instance.unread.count({ createdAt: { $gt: 123 } })
+
+// Manually add a notification
+instance.addNotification({
+  createdAt: moment().format(),
+  data: {
+    title: 'Consequat commodo enim ea elit',
+    message: 'Lorem reprehenderit consectetur culpa eu do.'
+  }
+})
+
+// Manually add an array of notifications
+instance.addNotifications([
+  {
+    createdAt: moment().format(),
+    data: {
+      title: 'Consequat commodo enim ea elit',
+    message: 'Lorem reprehenderit consectetur culpa eu do.'
+    }
+  },
+  {
+    createdAt: moment().format(),
+    data: {
+      title: 'Eiusmod laboris nulla voluptate',
+      message: 'Ad nisi incididunt sunt aliqua id duis irure.'
+    }
+  }
+])
+```
+
+---
+
+## Use with Notifications Inbox
+
+```js
+Fliplet.Hooks.on('afterNotificationsInit', function (notifications) {
+  notifications.getInstance()
+    .then(function (instance) {
+      // use instance as required
+    });
+});
 ```
 
 ---
