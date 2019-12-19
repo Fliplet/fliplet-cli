@@ -18,14 +18,15 @@ That's it! It's as easy as is sounds.
 Fliplet.DataSources.Encryption().setKey('foo');
 ```
 
-Working example:
+As an example, you can set up the key to be read from a user's data source entry once the user logs in:
 
 ```js
 // Add this code to a screen with a login component
 Fliplet.Hooks.on('login', function (formEntry) {
-  Fliplet.DataSources.Encryption().setKey(formEntry.columnContainingPrivateKey);
+  return Fliplet.DataSources.Encryption().setKey(formEntry.columnContainingPrivateKey);
 });
 ```
+Make sure to replace `columnContainingPrivateKey` with the actual column name where the key should be taken from.
 
 ### Set up encryption on a data source across the app
 
@@ -79,7 +80,7 @@ Create a **login component** bound to the users Data Source. Then, add the follo
 
 ```js
 // Add this code to a screen with a login component
-Fliplet.Hooks.on('login', function (user) {  
+Fliplet.Hooks.on('login', function (user) {
   // Fetch the user's organization
   return Fliplet.DataSources.connect(123).then(function (connection) {
   	return connection.find({
