@@ -77,8 +77,8 @@ instance.poll({
 // return a promise with the unread notifications count
 instance.unread.count({ createdAt: { $gt: 123 } })
 
-// Manually add a notification
-instance.addNotification({
+// Manually add a notification to the list
+instance.addToStream({
   createdAt: moment().format(),
   data: {
     title: 'Consequat commodo enim ea elit',
@@ -86,8 +86,8 @@ instance.addNotification({
   }
 })
 
-// Manually add an array of notifications
-instance.addNotifications([
+// Manually add an array of notifications to the list
+instance.addToStream([
   {
     createdAt: moment().format(),
     data: {
