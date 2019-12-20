@@ -27,7 +27,7 @@ Fliplet.Helper('welcome', {
 ```html
 {! start helper welcome !}
   <p>Hi {! name !}, how are you?</p>
-{! end helper welcome }
+{! end helper welcome !}
 ```
 
 ##### Output HTML
@@ -99,7 +99,7 @@ Please note that attribute names are be converted to camelCase, e.g. `last-name`
 ```html
 {! start welcome last-name="Doe" !}
   <p>Hi {! firstName !} {! attr.lastName !}, how are you?</p>
-{! end welcome }
+{! end welcome !}
 ```
 
 ```js
