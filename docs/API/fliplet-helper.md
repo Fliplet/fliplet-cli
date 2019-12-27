@@ -1,7 +1,5 @@
 # Fliplet Helper JS APIs
 
-<p class="warning">You are browsing an early private spec of this feature.</p>
-
 Fliplet helpers allow you to **write reusable snippets** which binds dynamic data to screens of your apps. Another common use case is to reuse features across different screens of your app (or even between apps) by creating an abstract helper which can be configured differently depending on the case.
 
 ## Quick start
