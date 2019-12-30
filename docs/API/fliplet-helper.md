@@ -86,6 +86,45 @@ Fliplet.Helper('welcome', {
 
 ## Documentation
 
+### Methods
+
+#### Defining instance methods
+
+Instance methods can be defined via the `methods` property as shown in the example below:
+
+```js
+Fliplet.Helper('welcome', {
+  methods: {
+    greet: function () {
+      console.log('Hello');
+    }
+  },
+  ready: function () {
+    // Greet once a button inside this helper is clickd
+    this.$el.find('button').click(this.greet);
+  }
+})
+```
+
+You can also keep a reference to a helper instance and call its methods any time:
+
+```js
+var welcome;
+
+Fliplet.Helper('welcome', {
+  methods: {
+    greet: function () {
+      console.log('Hello');
+    }
+  },
+  ready: function () {
+    welcome = this;
+  }
+})
+
+welcome.greet()
+```
+
 ### Attributes
 
 #### Passing attributes to a helper
@@ -109,6 +148,16 @@ Fliplet.Helper('welcome', {
     console.log('Your last name is', this.attr.lastName);
   }
 });
+```
+
+#### Using class and style attributes
+
+Standard `class` and `style` HTML attributes can be used as usual, since they won't be treated as helper attributes:
+
+```html
+{! start welcome class="my-container" !}
+  <p>Hi {! firstName !} {! attr.lastName !}, how are you?</p>
+{! end welcome !}
 ```
 
 ---
@@ -267,11 +316,18 @@ Fliplet.Hooks.on('afterHelpersRender', function () {
 ### Programmatically update values
 
 ```js
-var profile = Fliplet.Helper('profile', {
+var profile;
+
+Fliplet.Helper('profile', {
   data: {
     firstName: 'John'
+  },
+  ready: function () {
+    profile = this;
   }
-);
+});
+
+// Somewhere else
 
 profile.set('firstName', 'Nick');
 
