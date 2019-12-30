@@ -287,7 +287,9 @@ Fliplet.Helper('profile', {
 
 ---
 
-### Access a parent component when nesting
+### Nesting components
+
+#### Access a parent component when nesting
 
 ```js
 Fliplet.Helper('poll', {
