@@ -270,7 +270,9 @@ Fliplet.Helper('profile', {
 
 ---
 
-### Run logic once a helper is rendered
+### Core events
+
+#### Run logic once a helper is rendered
 
 ```js
 Fliplet.Helper('profile', {
@@ -303,17 +305,9 @@ Fliplet.Helper('question', {
 
 ---
 
-### Run logic once all helpers have been rendered
-
-```js
-Fliplet.Hooks.on('afterHelpersRender', function () {
-  // All helpers have been rendered
-});
-```
-
----
-
 ### Programmatically update values
+
+#### Using the "set" method
 
 ```js
 var profile;
@@ -338,6 +332,8 @@ profile.set('firstName', function () {
 
 ### Conditionally display content
 
+#### "If / else" blocks
+
 You can use the `if` and `else` helpers to conditionally display or hide content depending on whether a value is "truthy" or not.
 
 > A "truthy" value is a value that translates to **true** when evaluated in a Boolean context.
@@ -355,10 +351,24 @@ You can use the `if` and `else` helpers to conditionally display or hide content
 
 ### Looping through an array
 
+#### "Each" block
+
 You can loop through an array of objects by using the `each` helper, defining both the array property name (e.g. `people`) and a name for the context available in the loop (e.g. `person`):
 
 ```html
 {! each person in people !}
   <p>{! person.name !}</p>
 {! endeach !}
+```
+
+---
+
+### Hooks
+
+#### Run logic once all helpers have been rendered
+
+```js
+Fliplet.Hooks.on('afterHelpersRender', function () {
+  // All helpers have been rendered
+});
 ```
