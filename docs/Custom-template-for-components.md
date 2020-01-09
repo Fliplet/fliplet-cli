@@ -76,7 +76,7 @@ Note: {% raw %}`data-primary-button-id="{{id}}"`{% endraw %} is required by the 
 
 ---
 
-## Nested widgets
+### Nested widgets
 
 Given you have two or more widgets on the screen:
 
@@ -103,7 +103,7 @@ You can put one into the other by simply writing a custom block for the first an
 
 ---
 
-## Inspect what data is available in the template
+### Inspect what data is available in the template
 
 There's a handy handlebars helper to print out the content of an object as JSON:
 
