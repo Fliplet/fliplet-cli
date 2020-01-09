@@ -1,5 +1,41 @@
 # Custom templates for components
 
+## For apps using the new drag and drop system
+
+Apps created on or after January 9th 2020 use a new improved drag and drop system based on containers which also greatly improves the experience when using the developer tools to code custom templates for components.
+
+This is how components are shown in the developer tools:
+
+```html
+<fl-button cid="123"></fl-button>
+```
+
+To customise a component template, you can simply type HTML code in the tag:
+
+```html
+<fl-button cid="123">
+  <p>This is my custom template for a button</p>
+</fl-button>
+```
+
+You can also refer to any instance attribute of such component by using the handlebars syntax as follows:
+
+{% raw %}
+```handlebars
+<fl-button cid="123">
+  <div>My custom button</div>
+  <p>Access widget instance attributes using handlebars like {{ name }}.</p>
+  <p>If required, print the original widget template using {{{html}}}.</p>
+</fl-button>
+```
+{% endraw %}
+
+**Note**: as soon as you hit the save button the HTML tag will change from the specific component (e.g. `fl-button`) to `fl-component` to symbolize that you're creating a custom component. If you need to revert the custom component to its default template, just remove any HTML it contains and press the save button.
+
+---
+
+## For legacy apps
+
 Fliplet components are usually rendered into an app screen with the {% raw %}`{{{ widget 123 }}}`{% endraw %} syntax, where `123` would be the ID of the component.
 
 If you need to customise how a component look — and CSS itself is not enough — you can customise the component template by changing the widget declaration tag to a handlebars block by prefixing the `widget` word with a hashtag and also add a closure tag. You also must use only **two curly brackets** to enclose the tags instead of three:
