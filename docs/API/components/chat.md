@@ -91,5 +91,18 @@ Fliplet.DataSources.create({
 
 ---
 
+## Change the link to security screen
+
+If the user isn't logged in, the feature will attempt to redirect users to a security screen based on the configuration set in Fliplet Studio. Use the following hook to customize how the link is configured.
+
+```js
+Fliplet.Hooks.on('flChatRedirectToLogin', function (navigate) {
+  // Change the page where the user is redirected to
+  navigate.page = 123;
+});
+````
+
+---
+
 [Back to API documentation](../../API-Documentation.md)
 {: .buttons}
