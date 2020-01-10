@@ -207,9 +207,9 @@ Fliplet.FormBuilder.get()
     // we're populating the field with the full name of a user in a data source
     form.field('field-1').set(function () {
       return Fliplet.DataSources.connect(123).then(function (connection) {
-        return connection.find({ where: { email: 'foo@example.org' } });
-      }).then(function (entries) {
-        return _.get(_.first(entries), 'data.fullName');
+        return connection.findOne({ where: { email: 'foo@example.org' } });
+      }).then(function (entry) {
+        return _.get(entry, 'data.fullName');
       });
     });
 
@@ -307,6 +307,19 @@ Fliplet.FormBuilder.get()
   });
 ```
 
+You can also specify a different label from the value (`id`) as follows:
+
+```js
+Fliplet.FormBuilder.get()
+  .then(function (form) {
+    form.field('foo').options([
+      { id: 'john', label: 'John Doe' },
+      { id: 'nick', label: 'Nick Smith' }
+    ]);
+  });
+```
+
+
 ## Hooks
 
 ### beforeFormSubmit
@@ -342,7 +355,7 @@ Fliplet.Hooks.on('afterFormSubmit', function(response) {
 
 ### onFormSubmitError
 
-Runs when a form has could not be submitted.
+Runs when a form could not be submitted because of an error.
 
 ```js
 Fliplet.Hooks.on('onFormSubmitError', function(error) {
@@ -370,6 +383,11 @@ Fliplet.FormBuilder.on('reset', function () {
 
 ### Updating data source entries
 
+The following example shows how to:
+
+1. populate a form from a data source entry
+2. on submit, update the same data source entry
+
 ```js
 var dataSourceId = 123;
 var entryId = 456;
@@ -382,7 +400,7 @@ Fliplet.DataSources.connect(dataSourceId).then(function (connection) {
     });
   });
 
-  // 2. Bind a hook to update the data once the form is submitted:
+  // 2. Bind a hook to update the data once the form is submitted
   Fliplet.Hooks.on('beforeFormSubmit', function(data) {
     return connection.update(entryId, data);
   });

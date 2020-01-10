@@ -1,7 +1,5 @@
 # Fliplet Helper JS APIs
 
-<p class="warning">You are browsing an early private spec of this feature.</p>
-
 Fliplet helpers allow you to **write reusable snippets** which binds dynamic data to screens of your apps. Another common use case is to reuse features across different screens of your app (or even between apps) by creating an abstract helper which can be configured differently depending on the case.
 
 ## Quick start
@@ -27,7 +25,7 @@ Fliplet.Helper('welcome', {
 ```html
 {! start helper welcome !}
   <p>Hi {! name !}, how are you?</p>
-{! end helper welcome }
+{! end helper welcome !}
 ```
 
 ##### Output HTML
@@ -68,7 +66,7 @@ This becomes really powerful when passing `attributes` via the HTML:
 
 ```js
 Fliplet.Helper('welcome', {
-  template: '<p class="welcome">Hi {! name !}, how are you?</p>'
+  template: '<p class="welcome">Hi {! attr.name !}, how are you?</p>'
 });
 ```
 
@@ -88,18 +86,57 @@ Fliplet.Helper('welcome', {
 
 ## Documentation
 
+### Methods
+
+#### Defining instance methods
+
+Instance methods can be defined via the `methods` property as shown in the example below:
+
+```js
+Fliplet.Helper('welcome', {
+  methods: {
+    greet: function () {
+      console.log('Hello');
+    }
+  },
+  ready: function () {
+    // Greet once a button inside this helper is clickd
+    this.$el.find('button').click(this.greet);
+  }
+})
+```
+
+You can also keep a reference to a helper instance and call its methods any time:
+
+```js
+var welcome;
+
+Fliplet.Helper('welcome', {
+  methods: {
+    greet: function () {
+      console.log('Hello');
+    }
+  },
+  ready: function () {
+    welcome = this;
+  }
+})
+
+welcome.greet()
+```
+
 ### Attributes
 
 #### Passing attributes to a helper
 
-Attributes can be passed to helpers and then accessed via their name in HTML or `this.data.<name>` in JS.
+Attributes can be passed to helpers and then accessed via the `attr` object in HTML or `this.attr.<name>` in JS.
 
 Please note that attribute names are be converted to camelCase, e.g. `last-name` becomes `lastName` as the example below shows:
 
 ```html
 {! start welcome last-name="Doe" !}
-  <p>Hi {! firstName !} {! lastName !}, how are you?</p>
-{! end welcome }
+  <p>Hi {! firstName !} {! attr.lastName !}, how are you?</p>
+{! end welcome !}
 ```
 
 ```js
@@ -107,10 +144,20 @@ Fliplet.Helper('welcome', {
   data: {
     firstName: 'John'
   },
-  mounted: function () {
-    console.log(`Your last name is ${this.data.lastName}`);
+  ready: function () {
+    console.log('Your last name is', this.attr.lastName);
   }
 });
+```
+
+#### Using class and style attributes
+
+Standard `class` and `style` HTML attributes can be used as usual, since they won't be treated as helper attributes:
+
+```html
+{! start welcome class="my-container" !}
+  <p>Hi {! firstName !} {! attr.lastName !}, how are you?</p>
+{! end welcome !}
 ```
 
 ---
@@ -132,11 +179,11 @@ Fliplet.Helper('welcome', {
 {! welcome last-name="Doe" !}
 ```
 
-You can also define variables in attributes of your template:
+You can also define variables in attributes of your template and access them under the `attr` object:
 
 ```js
 Fliplet.Helper('button', {
-  template: '<input type="submit" value="{! title !}" />'
+  template: '<input type="submit" value="{! attr.title !}" />'
 });
 ```
 
@@ -146,7 +193,7 @@ Fliplet.Helper('button', {
 
 #### Defining an outer template
 
-Use the `{! this !}` code to define the distribution outlet for content. This will also available as `this.initialHTML` on the helper instance as shown further below.
+Use the `{! this !}` code to define the distribution outlet for content. This will also available as `this.template` on the helper instance as shown further below.
 
 ```js
 Fliplet.Helper('option', {
@@ -174,7 +221,7 @@ If you need to specify a default value for the outlet you can populate it at run
 Fliplet.Helper('option', {
   template: '<p><input type="checkbox" value="{! value !}" /> {! label !}</p>',
   ready: function () {
-    this.set('label', this.initialHTML || this.data.value);
+    this.set('label', this.template || this.data.value);
   }
 });
 ```
@@ -223,7 +270,9 @@ Fliplet.Helper('profile', {
 
 ---
 
-### Run logic once a helper is rendered
+### Core events
+
+#### Run logic once a helper is rendered
 
 ```js
 Fliplet.Helper('profile', {
@@ -238,7 +287,9 @@ Fliplet.Helper('profile', {
 
 ---
 
-### Access a parent component when nesting
+### Nesting components
+
+#### Access a parent component when nesting
 
 ```js
 Fliplet.Helper('poll', {
@@ -256,24 +307,23 @@ Fliplet.Helper('question', {
 
 ---
 
-### Run logic once all helpers have been rendered
-
-```js
-Fliplet.Hooks.on('afterHelpersRender', function () {
-  // All helpers have been rendered
-});
-```
-
----
-
 ### Programmatically update values
 
+#### Using the "set" method
+
 ```js
-var profile = Fliplet.Helper('profile', {
+var profile;
+
+Fliplet.Helper('profile', {
   data: {
     firstName: 'John'
+  },
+  ready: function () {
+    profile = this;
   }
-);
+});
+
+// Somewhere else
 
 profile.set('firstName', 'Nick');
 
@@ -283,6 +333,8 @@ profile.set('firstName', function () {
 ```
 
 ### Conditionally display content
+
+#### "If / else" blocks
 
 You can use the `if` and `else` helpers to conditionally display or hide content depending on whether a value is "truthy" or not.
 
@@ -297,4 +349,28 @@ You can use the `if` and `else` helpers to conditionally display or hide content
     <p>Email address not configured.</p>
   {! endif !}
 {! end profile !}
+```
+
+### Looping through an array
+
+#### "Each" block
+
+You can loop through an array of objects by using the `each` helper, defining both the array property name (e.g. `people`) and a name for the context available in the loop (e.g. `person`):
+
+```html
+{! each person in people !}
+  <p>{! person.name !}</p>
+{! endeach !}
+```
+
+---
+
+### Hooks
+
+#### Run logic once all helpers have been rendered
+
+```js
+Fliplet.Hooks.on('afterHelpersRender', function () {
+  // All helpers have been rendered
+});
 ```

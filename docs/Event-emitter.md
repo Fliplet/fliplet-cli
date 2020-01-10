@@ -4,7 +4,7 @@ Components interfaces can send events to Fliplet Studio using a event emitter bu
 
 ---
 
-## Tells the parent window the height of the component interface has changed
+## Inform the parent window the height of the component interface has changed
 
 This is particularly useful when the height of your interface has dramatically changed and you want to make sure the parent windows is aware of that.
 
@@ -12,7 +12,7 @@ When a component is a provider, the parent window will be the component which is
 
 ```js
 // Call from a provider or a component interface
-Fliplet.Widget.autosize()
+Fliplet.Widget.autosize();
 ```
 
 ---
@@ -27,7 +27,7 @@ Fliplet.Studio.emit('reload-page-preview');
 
 ---
 
-## Tells the parent window a component is done
+## Inform the parent window a component is done
 
 ```js
 Fliplet.Widget.complete();

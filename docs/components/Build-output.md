@@ -6,7 +6,7 @@ App components are not required to output any HTML, though when they do you can 
 
 The typical workflow is:
 
-1. Interface saves some data via `Fliplet.Widget.getData()`
+1. **Interface** saves some data via `Fliplet.Widget.save()`
 2. `build.html` gets compiled using the above data and the page/screen gets the updated HTML
 
 Your template will get available in the view all settings that have been previously saved in the instance as handlebars variables. You can also print the component unique id using the {% raw %}`{{ id }}`{% endraw %} variable.
@@ -27,7 +27,7 @@ Data can be retrieved via Javascript using the `Fliplet.Widget.instance` method 
 
 ```js
 Fliplet.Widget.instance('my-component', function (data) {
-
+    var $el = $(this); // this gets you each component via jQuery
 });
 ```
 
@@ -38,9 +38,9 @@ This is by design: **your widget can be dropped more than once into a screen**, 
 Here's an example to let you understand how a screen can look like when your widget is dropped to a page more than once:
 
 ```html
-<video src="//foo.mp4" data-my-component-id="1"></video>
-<video src="//bar.mp4" data-my-component-id="2"></video>
-<video src="//baz.mp4" data-my-component-id="3"></video>
+<video src="foo.mp4" data-my-component-id="1"></video>
+<video src="bar.mp4" data-my-component-id="2"></video>
+<video src="baz.mp4" data-my-component-id="3"></video>
 ```
 
 ```js
