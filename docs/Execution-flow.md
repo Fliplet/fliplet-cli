@@ -12,6 +12,8 @@ Fliplet Apps go through a series of rendering steps before screens are displayed
 
 You technically can by adding such code in the HTML of your screen, since such HTML is rendered (and executed) before components and even core JS APIs are loaded. As an example, adding a `<script></script>` tag would work although you won't have access to any JS API aside from `Fliplet()` (the Fliplet promise) `Fliplet.Env` and `Fliplet.Hooks` since they are the only runtime JS APIs available to the HTML code.
 
+However, **most components can be interacted with by using hooks** so you shouldn't be using the above in most use cases.
+
 ---
 
 ## When do hooks run?
