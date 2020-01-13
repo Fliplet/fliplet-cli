@@ -41,6 +41,7 @@ To get a brief introduction to the technologies we use and the stack of the plat
 9. Theme variables
   - [Use theme settings in your custom CSS](Theme-Settings-In-CSS.md)
 10. Advanced documentation
+  - [Apps Execution flow](Execution-flow.md)
   - [Infrastructure Data flow](Data-flow.md)
   - [Setting up encryption](API/fliplet-encryption.md)
   - [Using providers](components/Using-Providers.md)
