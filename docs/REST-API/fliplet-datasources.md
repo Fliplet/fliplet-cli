@@ -443,3 +443,88 @@ Sample response (Status code: 201 Created):
   "deletedAt": null
 }
 ```
+
+---
+
+## Versioning
+
+### Get list of versions of a data source:
+
+```
+GET v1/data-sources/:id/versions
+```
+
+Sample output:
+
+```json
+{
+  "versions": [
+    {
+      "createdAt": "2018-08-10T16:16:34.990Z",
+      "data": {
+        "action": "commit",
+        "columns": [
+          "Column 1",
+          "Column 2"
+        ],
+        "entries": {
+          "count": 18,
+          "key": "data-sources/1/versions/2018-08/57adb96c71525fdfbb4f63caa203d51a.json"
+        }
+      },
+      "dataSourceId": 1,
+      "id": 50,
+      "pageId": null,
+      "updatedAt": "2018-08-10T16:16:34.990Z",
+      "user": {
+        "firstName": "Nicholas",
+        "fullName": "Nicholas Valbusa",
+        "id": 1,
+        "lastName": "Valbusa"
+      },
+      "userId": 1
+    }
+  ]
+}
+```
+
+---
+
+### Get all entries for a version
+
+```
+GET or POST v1/data-sources/:id/versions/:id/data
+```
+
+Optional Input parameters:
+- `limit` (Number)
+- `where` (JSON object to be passed to **sift** for filtering data; Note that `where` can only be passed via POST)
+
+Sample output:
+
+```json
+{
+  "entries": [
+    {
+      "createdAt": "2018-08-10T16:15:48.632Z",
+      "data": {
+        "Column 1": "demo data",
+        "Column 2": "demo data"
+      },
+      "dataSourceId": 1,
+      "deletedAt": null,
+      "id": 368,
+      "order": 0,
+      "updatedAt": "2018-08-10T16:15:48.632Z"
+    }
+  ]
+}
+```
+
+---
+
+### Restore a data source version to the current data source
+
+```
+POST v1/data-sources/:id/versions/:id/restore
+```
