@@ -493,7 +493,7 @@ Sample output:
 ### Get all entries for a version
 
 ```
-GET or POST v1/data-sources/:id/versions/:id/data
+GET v1/data-sources/:id/versions/:id/data
 ```
 
 Optional Input parameters:
@@ -523,7 +523,7 @@ Sample output:
 
 ---
 
-### Restore a data source version to the current data source
+### Restore a specific version to a data source
 
 ```
 POST v1/data-sources/:id/versions/:id/restore
