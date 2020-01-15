@@ -15,7 +15,7 @@ Please head to the [how to authenticate](authenticate.md) page of the documentat
 Sample cURL request:
 
 ```
-curl -X GET -H "Auth-token: eu--36fda313b47a545b88f6f36" "https://api.fliplet.com/v1/apps"
+curl -X GET -H "Auth-token: eu--abcdef123456" "https://api.fliplet.com/v1/apps"
 ```
 
 Response  (Status code: 200 OK):

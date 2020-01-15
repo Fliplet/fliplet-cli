@@ -114,9 +114,20 @@ ul > li > ul {
       }
 
       &.title-H3 {
-        opacity: 0.5;
+        color: #9c9ba5;
         font-size: 13px;
         margin: 5px 7px;
+
+        span {
+          background: #d05c67;
+          color: white;
+          display: inline-block;
+          text-transform: uppercase;
+          border-radius: 5px;
+          padding: 2px 4px;
+          font-size: 10px;
+          line-height: 100%;
+        }
       }
 
       &.title-H4 {

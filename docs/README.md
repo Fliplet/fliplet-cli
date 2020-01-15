@@ -26,6 +26,7 @@ To get a brief introduction to the technologies we use and the stack of the plat
 1. [Introduction to the platform](Introduction.md)
   - [Quickstart](Quickstart.md)
   - [The JS APIs](JS-APIs.md)
+  - [Apps Execution flow](Execution-flow.md)
 2. Building components
   - [Components](Building-components.md)
   - [Themes](Building-themes.md)
@@ -41,6 +42,7 @@ To get a brief introduction to the technologies we use and the stack of the plat
 9. Theme variables
   - [Use theme settings in your custom CSS](Theme-Settings-In-CSS.md)
 10. Advanced documentation
+  - [Infrastructure Data flow](Data-flow.md)
   - [Setting up encryption](API/fliplet-encryption.md)
   - [Using providers](components/Using-Providers.md)
   - [Data Source Hooks](Data-Source-Hooks.md)
