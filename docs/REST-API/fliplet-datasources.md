@@ -448,10 +448,12 @@ Sample response (Status code: 201 Created):
 
 ## Versioning
 
-### Get list of versions of a data source:
+Data sources are backed up / snapshot when changes are made. You can list out all taken back ups and restore them as required using the following API endpoints.
+
+### Get list of versions of a data source
 
 ```
-GET v1/data-sources/:id/versions
+GET -> v1/data-sources/:id/versions
 ```
 
 Sample output:
@@ -493,12 +495,12 @@ Sample output:
 ### Get all entries for a version
 
 ```
-GET v1/data-sources/:id/versions/:id/data
+GET/POST -> v1/data-sources/:id/versions/:id/data
 ```
 
 Optional Input parameters:
 - `limit` (Number)
-- `where` (JSON object to be passed to **sift** for filtering data; Note that `where` can only be passed via POST)
+- `where` (JSON object to be passed to **sift** for filtering data; Note that `where` can only be passed via `POST`)
 
 Sample output:
 
@@ -526,5 +528,5 @@ Sample output:
 ### Restore a specific version to a data source
 
 ```
-POST v1/data-sources/:id/versions/:id/restore
+POST -> v1/data-sources/:id/versions/:id/restore
 ```
