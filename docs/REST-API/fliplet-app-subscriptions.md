@@ -13,7 +13,7 @@ Contains endpoints to read and manage your app's users subscribed via push notif
 Sample cURL request:
 
 ```
-curl -H "Auth-token: eu--36fda313" "https://api.fliplet.com/v1/apps/123/subscriptions"
+curl -H "Auth-token: eu--abcdef123456" "https://api.fliplet.com/v1/apps/123/subscriptions"
 ```
 
 Response  (Status code: 200 OK):

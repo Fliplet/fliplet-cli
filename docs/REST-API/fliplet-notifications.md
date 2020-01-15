@@ -164,7 +164,7 @@ Required parameters:
 Sample cURL request:
 
 ```
-curl -X GET -H "Auth-token: eu--36fda313b47a545b88f6f36" "https://api.fliplet.com/v1/apps/123/subscriptions"
+curl -X GET -H "Auth-token: eu--abcdef123456" "https://api.fliplet.com/v1/apps/123/subscriptions"
 ```
 
 Response  (Status code: 200 OK):

@@ -71,7 +71,7 @@ This endpoint requires a context, which can be either an app or an organisation.
 Sample cURL request:
 
 ```
-curl -X GET -H "Auth-token: eu--36fda313b47a545b88f6f36" "https://api.fliplet.com/v1/data-sources?organizationId=123"
+curl -X GET -H "Auth-token: eu--abcdef123456" "https://api.fliplet.com/v1/data-sources?organizationId=123"
 ```
 
 Response  (Status code: 200 OK):
@@ -193,7 +193,7 @@ Request body:
 Sample cURL request:
 
 ```
-curl -X POST -H "Auth-token: eu--36fda313b47a545b88" -H "Content-Type: application/json" -d '{"name": "Test"}' "https://api.fliplet.com/v1/data-sources?organizationId=123"
+curl -X POST -H "Auth-token: eu--abcdef123456" -H "Content-Type: application/json" -d '{"name": "Test"}' "https://api.fliplet.com/v1/data-sources?organizationId=123"
 ```
 
 Response  (Status code: 201 Created):
