@@ -61,6 +61,14 @@ Fliplet.Hooks.on('flInteractiveGraphicsBeforeRender', function () {
 });
 ```
 
+**Do not select any marker**
+
+```js
+Fliplet.Hooks.on('flInteractiveGraphicsBeforeRender', function () {
+  return { selectMarker: false };
+});
+```
+
 #### Parameters
 
 - **fn** (Function((Object) `data`)) Callback function with an object parameter

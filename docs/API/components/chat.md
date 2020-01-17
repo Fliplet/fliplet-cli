@@ -91,12 +91,25 @@ Fliplet.DataSources.create({
 
 ---
 
+## Change the column name used for verifying user login
+
+If the user is logged in to a data source that is different from the Chat contact list, the column name used for the user email might be different between the data sources. Use the following hook to set the email column name for the login data source.
+
+```js
+Fliplet.Hooks.on('flChatBeforeGetUserEmail', function (options) {
+  // Change the column name for the user email from the login data source
+  options.crossLoginColumnName = 'Authorized emails';
+});
+````
+
+---
+
 ## Change the link to security screen
 
 If the user isn't logged in, the feature will attempt to redirect users to a security screen based on the configuration set in Fliplet Studio. Use the following hook to customize how the link is configured.
 
 ```js
-Fliplet.Hooks.on('flChatRedirectToLogin', function (navigate) {
+Fliplet.Hooks.on('flChatBeforeRedirectToLogin', function (navigate) {
   // Change the page where the user is redirected to
   navigate.page = 123;
 });
