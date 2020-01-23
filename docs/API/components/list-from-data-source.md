@@ -44,8 +44,8 @@ Fliplet.Hooks.on('flListDataBeforeGetData', fn);
 
 #### Parameters
 
-- **fn** (Function(`data`)) Callback function with an object parameter.
-  - **data** (Object) A map of data containing the following.
+- **fn** (Function(`options`)) Callback function with an object parameter.
+  - **options** (Object) A map of data containing the following.
     - **config** (Object) Configuration used to initialize the component.
     - **id** (Number) Component instance ID.
     - **uuid** (String) Component instance UUID.
@@ -85,8 +85,8 @@ Fliplet.Hooks.on('flListDataAfterGetData', fn);
 
 #### Parameters
 
-- **fn** (Function(`data`)) Callback function with an object parameter.
-  - **data** (Object) A map of data containing the following.
+- **fn** (Function(`options`)) Callback function with an object parameter.
+  - **options** (Object) A map of data containing the following.
     - **config** (Object) Configuration used to initialize the component.
     - **id** (Number) Component instance ID.
     - **uuid** (String) Component instance UUID.
@@ -117,8 +117,8 @@ Fliplet.Hooks.on('flListDataBeforeRenderList', fn);
 
 #### Parameters
 
-- **fn** (Function(`data`)) Callback function with an object parameter.
-  - **data** (Object) A map of data containing the following.
+- **fn** (Function(`options`)) Callback function with an object parameter.
+  - **options** (Object) A map of data containing the following.
     - **config** (Object) Configuration used to initialize the component.
     - **records** (Array) Collection of records to be used for the component. This would be the last point in the process for the data to be manipulated before rendering.
 
@@ -134,8 +134,8 @@ The hook is run right after data is to be rendered in the list.
 
 #### Parameters
 
-- **fn** (Function(`data`)) Callback function with an object parameter.
-  - **data** (Object) A map of data containing the following.
+- **fn** (Function(`options`)) Callback function with an object parameter.
+  - **options** (Object) A map of data containing the following.
     - **config** (Object) Configuration used to initialize the component.
     - **records** (Array) Collection of records to be used for the component.
 
@@ -149,8 +149,8 @@ Fliplet.Hooks.on('flListDataBeforeRenderFilters', fn);
 
 #### Parameters
 
-- **fn** (Function(`data`)) Callback function with an object parameter.
-  - **data** (Object) A map of data containing the following.
+- **fn** (Function(`options`)) Callback function with an object parameter.
+  - **options** (Object) A map of data containing the following.
     - **config** (Object) Configuration used to initialize the component.
     - **filters** (Array) Array of filters and values to be rendered.
     - **records** (Array) Collection of records to be used for the component. This can be manipulated to affect the output.
@@ -165,8 +165,8 @@ Fliplet.Hooks.on('flListDataAfterRenderFilters', fn);
 
 #### Parameters
 
-- **fn** (Function(`data`)) Callback function with an object parameter.
-  - **data** (Object) A map of data containing the following.
+- **fn** (Function(`options`)) Callback function with an object parameter.
+  - **options** (Object) A map of data containing the following.
     - **config** (Object) Configuration used to initialize the component.
     - **filters** (Array) Array of filters and values to be rendered.
     - **records** (Array) Collection of records to be used for the component. This can be manipulated to affect the output.
@@ -181,8 +181,8 @@ Fliplet.Hooks.on('flListDataBeforeDeleteConfirmation', fn);
 
 #### Parameters
 
-- **fn** (Function(`data`)) Callback function with an object parameter.
-  - **data** (Object) A map of data containing the following.
+- **fn** (Function(`options`)) Callback function with an object parameter.
+  - **options** (Object) A map of data containing the following.
     - **config** (Object) Configuration used to initialize the component.
     - **id** (Number) Component instance ID.
     - **uuid** (String) Component instance UUID.
@@ -199,8 +199,8 @@ Fliplet.Hooks.on('flListDataBeforeDeleteConfirmation', fn);
 
 #### Parameters
 
-- **fn** (Function((`data`)) Callback function with an object parameter.
-  - **data** (Object) A map of data containing the following.
+- **fn** (Function((`options`)) Callback function with an object parameter.
+  - **options** (Object) A map of data containing the following.
     - **config** (Object) Configuration used to initialize the component.
     - **id** (Number) Component instance ID.
     - **uuid** (String) Component instance UUID.
@@ -233,8 +233,8 @@ Fliplet.Hooks.on('flListDataBeforeShowComments', fn);
 
 #### Parameters
 
-- **fn** (Function((`data`)) Callback function with an object parameter.
-  - **data** (Object) A map of data containing the following.
+- **fn** (Function((`options`)) Callback function with an object parameter.
+  - **options** (Object) A map of data containing the following.
     - **config** (Object) Configuration used to initialize the component.
     - **html** (String) HTML code that is to be rendered for all the comments.
     - **comments** (Array) Comments retrieved for the entry.
@@ -250,8 +250,8 @@ Fliplet.Hooks.on('flListDataAfterShowComments', fn);
 
 #### Parameters
 
-- **fn** (Function((`data`)) Callback function with an object parameter.
-  - **data** (Object) A map of data containing the following.
+- **fn** (Function((`options`)) Callback function with an object parameter.
+  - **options** (Object) A map of data containing the following.
     - **config** (Object) Configuration used to initialize the component.
     - **html** (String) HTML code that is to be rendered for all the comments.
     - **comments** (Array) Comments retrieved for the entry.
