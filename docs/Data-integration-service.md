@@ -29,7 +29,7 @@ Once you have installed Node.js, please open the shell to continue and install o
 Then, run this simple command to install the Fliplet Agent on your machine via the npm package manager:
 
 ```bash
-npm install fliplet-agent -g
+npm install fliplet-agent -g -f
 ```
 
 You can now use the command `fliplet-agent` from the command line. Just type `fliplet-agent` to ensure the software is installed and also see the available options and their example usage.
