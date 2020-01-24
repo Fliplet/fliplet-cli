@@ -475,6 +475,10 @@ module.exports.setup = (agent) => {
 
 Make sure to install the `sp-request` npm module via `npm i sp-request --save`.
 
+Versions supported by the above library:
+- SharePoint 2013, 2016
+- SharePoint Online
+
 ```js
 module.exports.setup = (agent) => {
   const sprequest = require('sp-request');
