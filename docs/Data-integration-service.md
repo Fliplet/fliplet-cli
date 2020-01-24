@@ -420,6 +420,36 @@ The following **properties** can also be used **when querying your data source**
 - [join](https://developers.fliplet.com/API/datasources/joins.html#using-joins-on-datasources)
 - attributes (Array of column names to select)
 
+---
+
+### Integrate with Sharepoint
+
+Make sure to install the `sp-request` npm module via `npm i sp-request --save`.
+
+```js
+module.exports.setup = (agent) => {
+  const sprequest = require('sp-request');
+  const credentialOptions = { username: 'example', password: 'example password' };
+  const spr = sprequest.create(credentialOptions);
+
+  const serviceUrl = 'http://path/to/request...';
+
+  agent.push({
+    description: 'Pull data from Sharepoint and pushes it to Fliplet',
+    frequency: '0 */2 * * *',
+    source() {
+      return spr.get(serviceUrl).then(response => {
+        return response.body.d.results;
+      });
+    },
+    primaryColumnName: 'ID',
+    timestampColumnName: '',
+    targetDataSourceId: 123
+  });
+
+};
+```
+
 
 ```js
 module.exports.config = {
