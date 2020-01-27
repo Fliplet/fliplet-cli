@@ -371,6 +371,18 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
 });
 ```
 
+- `summaryLinkAction` (Object) This object is automatically created when the component is configured to link each entry to a screen if the user clicks on it. The object can be extended to support query strings when linking to a screen.
+
+For example, to link to specify a query based on the `Query` field:
+
+```js
+Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
+  if (options.config.summaryLinkAction) {
+    options.config.summaryLinkAction.queryColumn = 'Query';
+  }
+});
+````
+
 ## Query parameters
 
 When navigating to a screen that contains a **List (from data source)** component, you can use queries to execut logic accordingly, e.g. load a specific list item, apply filters and/or search, or add a new pre-filter.
