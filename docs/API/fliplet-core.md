@@ -644,6 +644,8 @@ Fliplet.App.Storage.set(key, val)
 
 ### Profile
 
+**The `Fliplet.Profile` JS API is deprecated. We recommend using [Fliplet.DataSources](fliplet-datasources) instead.**
+
 A [namespaced storage](#namespaced) for the user profile.
 
 ```js
