@@ -32,9 +32,24 @@ instance.insert({
   ]
 })
 
+// insert a notification to a specific segment
+instance.insert({
+  data: { message: 'Hi John!' },
+  scope: { foo: 'bar' }
+})
+
 // insert a new notification broadcasting everyone
 instance.insert({
   data: { message: 'Hi Everyone!' }
+})
+
+// schedule a notification for later
+instance.insert({
+  data: {
+    message: 'Hi Everyone!',
+    scheduledAt: moment().add(5, 'hour').unix()
+  },
+  status: 'scheduled'
 })
 
 // update a notification by id
@@ -67,6 +82,7 @@ instance.poll()
 // returns a promise with the found entries too (they also get published via the stream)
 instance.poll({
   limit: 5, // defaults to batch size
+  offset: 0, // defaults to 0
   where: { createdAt: { $lt: 'timestamp' } },
   includeDeleted: false, // defaults to true
   order: 'createdAt',  // defaults to "id"
@@ -103,6 +119,12 @@ instance.addToStream([
     }
   }
 ])
+
+// On Fliplet Studio, retrieve count of matches for a given query scope, including how many of these are subscribed for push
+instance.getMatches({ foo: 'bar' }).then(function (result) {
+  // result.count (int)
+  // result.subscriptions (int)
+});
 ```
 
 ---
