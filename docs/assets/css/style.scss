@@ -111,6 +111,17 @@ ul > li > ul {
         &:first-child {
           margin-top: 0;
         }
+
+        span {
+          font-size: 10px;
+          opacity: 0.7;
+
+          a {
+            display: inline;
+            font-size: 10px;
+            text-decoration: underline;
+          }
+        }
       }
 
       &.title-H3 {
