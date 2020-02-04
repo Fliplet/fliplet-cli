@@ -11,6 +11,7 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 - Documentation for configuring the Data Integration Service with [Sharepoint](Data-integration-service.md#integrate-with-sharepoint).
 - New hooks for the [Chart](https://developers.fliplet.com/API/components/charts.html#hooks) component.
+- Documentation page to explain the [Infrastructure Data Flow](/Data-flow.md) of the Fliplet platform.
 
 ### January 17, 2020
 
