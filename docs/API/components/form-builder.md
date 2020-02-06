@@ -328,15 +328,21 @@ Capture data when the form is submitted. You can modify the data and also avoid 
 
 ```js
 Fliplet.Hooks.on('beforeFormSubmit', function(data) {
-  // add your code here
+  // Add your code here
 
   // e.g. mutate the data before it's sent
   data.foo = 'bar'
 
-  // return a promise if this callback should be async.
-  // reject the promise to stop the form from submitting the data or continuing
+  // Return a promise if this callback should be async.
+  // Reject the promise to stop the form from submitting the data or continuing.
+  // If the rejection does not contain an error, no error will be displayed to the user.
 });
 ```
+
+If you reject the hook, the form will be stopped from submitting the data. Rejecting the promise with an error will display such error while a simply rejection will not display any message to the user:
+
+- `return Promise.reject("An error message")` this will display the error message
+- `return Promise.reject()` this won't display anything to the user
 
 ---
 
