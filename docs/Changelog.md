@@ -2,6 +2,10 @@
 
 Each week, we provide changelog notes on this page giving a summary of recent significant changes to the documentation. If there haven't been any significant changes in a given week, we don't publish changelog notes.
 
+### January 6, 2020
+
+- New examples on the documentation for the `beforeFormSubmit` hook of the [Form builder](https://developers.fliplet.com/API/components/form-builder.html#beforeformsubmit)
+
 ### January 31, 2020
 
 - Deprecation notice for `Fliplet.Profile` in favour of [Fliplet.DataSources](API/fliplet-datasources.md).
