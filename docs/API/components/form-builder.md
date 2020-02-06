@@ -99,7 +99,7 @@ Fliplet.FormBuilder.get().then(function (form) {
 
 #### Programmatically submit a form
 
-You can submit a form programmatically by calling the `onSubmit()` method the Vue instance available via the `instance` attribute of the form:
+You can submit a form programmatically by calling the `onSubmit()` method of the **Vue** instance available via the `instance` attribute of the form:
 
 ```js
 Fliplet.FormBuilder.get().then(function (form) {
