@@ -124,13 +124,11 @@ Fliplet.Hooks.on('flListDataBeforeRenderList', fn);
 
 ### `flListDataAfterRenderList`
 
-The hook is run after data is retrieved for rendering.
+The hook is run right after data is rendered in the list.
 
 ```js
 Fliplet.Hooks.on('flListDataAfterRenderList', fn);
 ```
-
-The hook is run right after data is to be rendered in the list.
 
 #### Parameters
 
@@ -333,6 +331,26 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
 });
 ```
 
+- `dataPrimaryKey` (String or Function(`options`) Provide a string to define the data source field name that contains the primary key. The primary key is used as a unique identifier when saving content for the social features, i.e. likes, comments and bookmarks. You can set this value so that if content is loaded into a different data source of changes entry ID, the social content won't be lost. Alternatively, define a function to return a unique primary key based on the record data (`options.record`).
+
+To define a custom primary key:
+
+```js
+Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
+  options.config.dataPrimaryKey = 'Session ID';
+});
+```
+
+To create a custom primary key based on record data:
+
+```js
+Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
+  options.config.dataPrimaryKey = function (data) {
+    return _.get(data, 'record.data.Title') + '-' + _.get(data, 'record.data.Date');
+  };
+});
+````
+
 - `filterOptions` (Array) An collection of pre-filter conditions to be applied before the pre-filters configured for the component. Each collection item should contain all the following properties:
   - `column` (String) The field to apply the filter logic to
   - `value` (Mixed) Value to pass to the logic operator
@@ -370,6 +388,19 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
   ];
 });
 ```
+
+- `summaryLinkAction` (Object) This object is automatically created when the component is configured to link each entry to a screen if the user clicks on it. The object can be extended to support query strings when linking to a screen.
+
+For example:
+
+```js
+Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
+  // Specify a query based on the a field
+  if (options.config.summaryLinkAction) {
+    options.config.summaryLinkAction.queryColumn = 'Query';
+  }
+});
+````
 
 ## Query parameters
 
