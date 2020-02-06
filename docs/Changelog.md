@@ -7,7 +7,7 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 ### February 6th
 
 - New examples on the documentation for the `beforeFormSubmit` hook of the [Form builder](https://developers.fliplet.com/API/components/form-builder.html#beforeformsubmit)
-
+- Added new method to programmatically submit a form built via the [Form builder](https://developers.fliplet.com/API/components/form-builder.html#beforeformsubmit)
 ---
 
 ## January 2020
