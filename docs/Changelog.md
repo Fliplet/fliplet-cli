@@ -2,9 +2,15 @@
 
 Each week, we provide changelog notes on this page giving a summary of recent significant changes to the documentation. If there haven't been any significant changes in a given week, we don't publish changelog notes.
 
-### January 6, 2020
+## February 2020
+
+### February 6, 2020
 
 - New examples on the documentation for the `beforeFormSubmit` hook of the [Form builder](https://developers.fliplet.com/API/components/form-builder.html#beforeformsubmit)
+
+---
+
+## January 2020
 
 ### January 31, 2020
 
@@ -27,6 +33,10 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 - Documentation page for the [Fliplet.Helper](https://developers.fliplet.com/API/fliplet-helper.html) JS API.
 - General improvements to the guidelines and example on the [Output of components](https://developers.fliplet.com/components/Build-output.html#reading-previously-saved-settings) page used when developing custom components for Fliplet apps
+
+---
+
+## December 2019
 
 ### December 27, 2019
 
