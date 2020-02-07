@@ -20,6 +20,8 @@ Our software runs on **Node.js**, a popular open-source and cross-platform softw
 
 Please install [node.js](http://nodejs.org/) (which also comes bundled with the popular package manager [npm](http://npmjs.com)) on your computer as a pre-requisite to get started.
 
+Please note that our agent **requires at least version 8 of Node.js**. If your machine is running an older version, you will be required to update Node.js in order to use the Fliplet agent.
+
 Once you have installed Node.js, please open the shell to continue and install our agent:
 
 - **Windows**: access the Node.js shell from **Start menu** > **Node.js command prompt**
