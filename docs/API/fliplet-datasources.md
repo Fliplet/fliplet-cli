@@ -31,7 +31,13 @@ Fliplet.DataSources.create({
 Fliplet.DataSources.connect(dataSourceId).then(function (connection) {
   // check below for the list of instance methods for the connection object
 });
+```
 
+Fliplet apps on mobile devices attempt to connect to the offline bundled data sources by default. You can optionally prevent a data source from being bundled by editing its settings in Fliplet Studio, but this can also be custom coded when connecting to the data source.
+
+Providing the `offline: false` parameter instructs the JS API to only connect to the live online data source to Fliplet APIs:
+
+```js
 // Advanced connection passing options as second parameter
 Fliplet.DataSources.connect(dataSourceId, {
   offline: false // disable querying offline on mobile devices

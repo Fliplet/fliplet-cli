@@ -4,6 +4,10 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## February 2020
 
+### February 10th
+
+- Added more examples and documentation on connecting to [Data Sources](https://developers.fliplet.com/API/fliplet-datasources.html#connect-to-a-data-source-by-id) with advances settings for online and offline use.
+
 ### February 6th
 
 - New examples on the documentation for the `beforeFormSubmit` hook of the [Form builder](https://developers.fliplet.com/API/components/form-builder.html#beforeformsubmit).
