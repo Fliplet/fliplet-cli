@@ -260,7 +260,7 @@ Fliplet.Helper('profile', {
 
 ```html
 {! start profile first-name="Nick" !}
-  <p>Searched by {! firstName }</p>
+  <p>Searched by {! firstName !}</p>
   <ul>
     <li>Email: {! user.email !}</li>
     <li>Name: {! user.name !}</li>
@@ -343,7 +343,7 @@ You can use the `if` and `else` helpers to conditionally display or hide content
 
 ```html
 {! start profile email="john@example.org" !}
-  {! if email }
+  {! if email !}
     <p>Your email is {! email !}</p>
   {! else !}
     <p>Email address not configured.</p>
