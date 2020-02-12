@@ -4,9 +4,10 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## February 2020
 
-### February 10th
+### February 12th
 
 - Added more examples and documentation on connecting to [Data Sources](https://developers.fliplet.com/API/fliplet-datasources.html#connect-to-a-data-source-by-id) with advances settings for online and offline use.
+- Added more examples on [resizing a Media File](https://developers.fliplet.com/REST-API/fliplet-media.html#stream-the-contents-of-a-file).
 
 ### February 6th
 
