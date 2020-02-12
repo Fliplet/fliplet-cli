@@ -679,6 +679,10 @@ In order to be able to update the agent via **npm**, [registry.npmjs.org](https:
 
 ## Releases changelog
 
+#### 1.9.2 (February 12th, 2020)
+
+- Updated dependency on error reporting library to latest version
+
 #### 1.9.1 (January 15th, 2020)
 
 - Allow API requests to self-signed certificates when reading data using custom functionality.
