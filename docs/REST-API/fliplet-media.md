@@ -168,9 +168,13 @@ Sample response:
 
 ### `GET v1/media/files/<id>/contents`
 
-e.g. `v1/media/files/123/contents`
+Streams the contents of an encrypted media file to the requester. This endpoint is often used by Fliplet apps when displaying images, e.g.:
 
-Also accepts `size` query parameter to resize images, like `size=medium` or `size=640^480` or `size=640>?`. See examples below:
+```
+v1/media/files/123/contents/foo.jpg?auth_token=eu--123456&size=large
+```
+
+This endpoint accepts a `size` query parameter (which defaults to `large` when images are downloaded by Fliplet apps) to downsample or resize images, like `size=medium` or `size=640^480` or `size=640>?`. See examples below:
 
 - `small` image is resized so that the smallest dimension is equal to `640` px
 - `medium` image is resized so that the smallest dimension is equal to `960` px
