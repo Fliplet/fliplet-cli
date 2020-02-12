@@ -172,8 +172,12 @@ e.g. `v1/media/files/123/contents`
 
 Also accepts `size` query parameter to resize images, like `size=medium` or `size=640^480` or `size=640>?`. See examples below:
 
+- `small` image is resized so that the smallest dimension is equal to `640` px
+- `medium` image is resized so that the smallest dimension is equal to `960` px
+- `large` image is resized so that the smallest dimension is equal to `1366` px
+- `xlarge` image is resized so that the smallest dimension is equal to `1980` px
 - `320>?` image width will be resized to `320` while height will be automatic keeping the same scale ratio
-- `320>240` the image will be resized (keeping the scale ratio) to ensure the smallest dimension is equal to the given size
+- `320>240` image will be resized (keeping the scale ratio) to ensure the smallest dimension is equal to the given size
 - `320!320` image dimensions will both be resized to be equal to the target size. This resize may result in a stretched image if the source image is not a square.
 
 Note that this endpoint is meant to be called directly from the client since the file is streamed back to the requester.
