@@ -277,7 +277,7 @@ instance.addToStream([
     createdAt: moment().format(),
     data: {
       title: 'Consequat commodo enim ea elit',
-    message: 'Lorem reprehenderit consectetur culpa eu do.'
+      message: 'Lorem reprehenderit consectetur culpa eu do.'
     }
   },
   {
