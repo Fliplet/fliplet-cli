@@ -55,6 +55,17 @@ instance.insert({
 })
 ```
 
+#### Preview how many users will receive a segmented notification
+
+If you want to preview how many users and push subscribed devices will get a notification for a particular scope, use the `getMatches` method as described below:
+
+```js
+instance.getMatches({ foo: 'bar' }).then(function (result) {
+  // result.count (int)
+  // result.subscriptions (int)
+});
+```
+
 #### Schedule for later
 
 You can schedule an in-app notification to be sent at a later date:
