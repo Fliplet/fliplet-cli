@@ -25,7 +25,9 @@ var instance = Fliplet.Notifications.init({});
 
 ### Send an in-app notification
 
-#### To a specific user
+In-app notifications are displayed in the notifications inbox component of Fliplet Apps. They can optionally include a push notification to be sent to the devices as described further below.
+
+#### Send to a specific user
 
 Send an in-app notification to a specific user using the `insert` method:
 
@@ -148,9 +150,7 @@ notification.remove(1).then(function () {
 })
 ```
 
----
-
-## Get the list of notifications sent
+### Get the list of notifications
 
 If you are building a notifications managing app for your admin user, use the `poll` method to fetch for a list of both in-app and push notifications including drafts, sent or scheduled notifications:
 
@@ -176,7 +176,7 @@ instance.poll({
 
 ---
 
-## API reference
+## Usage in client apps
 
 ```js
 var instance = Fliplet.Notifications.init({
@@ -298,7 +298,7 @@ instance.getMatches({ foo: 'bar' }).then(function (result) {
 
 ---
 
-## Use with Notifications Inbox
+## Usage with Notifications Inbox
 
 ```js
 Fliplet.Hooks.on('afterNotificationsInit', function (notifications) {
