@@ -99,7 +99,7 @@ instance.insert({
 
 ### Send a push notification
 
-You can send a push notification-only by specifying its type as `push`. This type of notification won't show up in the user's notifications inbox component. If you want to send a push notification which also shows up in such list, please have a look at the above usages.
+You can send a push notification-only by specifying its type as `push`. This type of notification won't show up in the user's notifications inbox component. **If you want to send a push notification which also shows up in such list, please have a look at [sending notifications with push notifications](#also-send-a-push-notification)**.
 
 ```js
 // send a push notification
