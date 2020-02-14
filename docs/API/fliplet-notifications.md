@@ -161,7 +161,7 @@ instance.poll({
 
   // optional limit and offset support for pagination
   limit: 50,
-  offset: 0
+  offset: 0,
 
   // optional query filter
   where: {
