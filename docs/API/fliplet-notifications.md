@@ -1,13 +1,182 @@
 # Notifications JS APIs
 
+Fliplet Apps support both **in-app and push notifications**. This library can used for both reading the list of notifications for a user (or device) and managing notifications (e.g. sending and scheduling them) for app managers if you are building a managing interface.
+
 When dealing with app notifications, there's a few things you should keep in mind:
 
 1. Notifications belong to an `app`. You can't have a notification span across multiple apps.
-2. Notifications have a default "draft" `status`, meaning they are only visible to Fliplet Studio and Fliplet Viewer users. To make them live to all users, they must be published by updating their status to "published". You can also avoid this step by simply creating your notification as published in first place.
-3. Notifications can have one or more **scopes** which limit their visibility. If you don't create a scope, they are treated as broadcasted messages hence available to all users of your app. On the other hand, defining a scope (or a list) will make them private and available to only specific users (e.g. individual users or groups)
-4. Notifications have read receipts. To mark them as read you will need to identify your users with a GUID (`recipientId`). Fliplet apps automatically take care of this so no extra work is required from your end.
+2. A notification can be an in-app notification, a push notification or both at once.
+3. Notifications have a default "draft" `status`, meaning they are only visible to Fliplet Studio and Fliplet Viewer users. To make them live to all users, they must be published by updating their status to "published". You can also avoid this step by simply creating your notification as published in first place.
+4. Notifications can have one or more **scopes** which limit their visibility. If you don't create a scope, they are treated as broadcasted messages hence available to all users of your app. On the other hand, defining a scope (or a list) will make them private and available to only specific users (e.g. individual users or groups)
+5. Notifications have read receipts. To mark them as read you will need to identify your users with a GUID (`recipientId`). Fliplet apps automatically take care of this so no extra work is required from your end.
+6. Notifications can be scheduled to be sent in the future.
 
-App notifications can optionally send a notification. When doing so, you should provide the `pushNotification` payload, optionally a list of subscriptions IDs to target and the optional delay for the notification.
+---
+
+## Managing notifications
+
+This section is to be used by developers when coding interfaces for app managers to send and manage notifications. It should not be used by user-facing apps to display notifications.
+
+You first need to initialize the JS API to access all instance methods as follows:
+
+```js
+var instance = Fliplet.Notifications.init({});
+```
+
+### Send an in-app notification
+
+#### To a specific user
+
+Send an in-app notification to a specific user using the `insert` method:
+
+```js
+// insert a new notification for a specific user
+instance.insert({
+  status: 'published',
+  data: { message: 'Hi John!' },
+  // scope will be matched using data matched from the user's entry in the data source
+  scope: {
+    email: 'john@example.org'
+  }
+})
+```
+
+#### Broadcast to all users
+
+Your in-app notification will be broadcasted to everyone if you don't provide a scope:
+
+```js
+// insert a new notification broadcasting everyone
+instance.insert({
+  status: 'published',
+  data: { message: 'Hi Everyone!' }
+})
+```
+
+#### Schedule for later
+
+You can schedule an in-app notification to be sent at a later date:
+
+```js
+// schedule a notification in 5 hours
+instance.insert({
+  status: 'scheduled',
+  data: {
+    message: 'Hi Everyone!',
+
+    // timestamp in unix seconds
+    scheduledAt: moment().add(5, 'hour').unix()
+  }
+})
+```
+
+#### Also send a push notification
+
+In-app notifications can also notify the user with a push notification which can include a custom message. Push notifications can also be scheduled in the future:
+
+```js
+// insert an in-app notification and also send a push notification
+instance.insert({
+  data: { message: 'Hi John!' },
+  pushNotification: {
+    payload: {
+      title: 'Title of the push notification',
+      body: 'Message of the push notification'
+    },
+
+    // optionally schedule the push notification
+    // to be sent in 30 minutes
+    delayUntilTimestamp: moment().add(30, 'minute').unix()
+  },
+  // optional scope
+  scope: {
+    email: 'john@example.org'
+  }
+})
+```
+
+### Send a push notification
+
+You can send a push notification-only by specifying its type as `push`. This type of notification won't show up in the user's notifications inbox component. If you want to send a push notification which also shows up in such list, please have a look at the above usages.
+
+```js
+// send a push notification
+instance.insert({
+  type: 'push',
+  pushNotification: {
+    payload: {
+      title: 'Title of the push notification',
+      body: 'Message of the push notification'
+    },
+
+    // optionally schedule the push notification
+    // to be sent in 30 minutes
+    delayUntilTimestamp: moment().add(30, 'minute').unix()
+  },
+  // optional scope
+  scope: {
+    email: 'john@example.org'
+  }
+})
+```
+
+
+### Update a notification
+
+All attributes of a notification can be updated through the method below. Note that push notifications already sent can't be rescheduled as users would have already received them.
+
+```js
+// update a notification by id
+instance.update(1, {
+  status: 'published',
+  data: { bar: 'baz' },
+  extendData: true, // defaults to false (aka replace)
+  pushNotification: { payload: {}, delayUntilTimestamp: 123 }
+}).then(function () {
+
+})
+```
+
+### Remove a notification
+
+Notifications can be removed through the following method. Note that push notifications already sent can't be removed as users would have already received them.
+
+```js
+// remove a notification by id
+notification.remove(1).then(function () {
+
+})
+```
+
+---
+
+## Get the list of notifications sent
+
+If you are building a notifications managing app for your admin user, use the `poll` method to fetch for a list of both in-app and push notifications including drafts, sent or scheduled notifications:
+
+```js
+instance.poll({
+  // set this to true to ensure reports for push notifications are returned
+  includeLogs: true,
+
+  // optional limit and offset support for pagination
+  limit: 50,
+  offset: 0
+
+  // optional query filter
+  where: {
+    data: {
+      foo: 'bar'
+    }
+  }
+}).then(function (response) {
+  // response.entries will be an array of notifications
+})
+```
+
+---
+
+## API reference
 
 ```js
 var instance = Fliplet.Notifications.init({

@@ -4,8 +4,9 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## February 2020
 
-### February 12th
+### February 14th
 
+- New documentation for creating and managing [in-app and push notifications](https://developers.fliplet.com/API/fliplet-notifications.html)
 - Released version 1.9.2 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html)
 - Added more examples and documentation on connecting to [Data Sources](https://developers.fliplet.com/API/fliplet-datasources.html#connect-to-a-data-source-by-id) with advances settings for online and offline use.
 - Added more examples on [resizing a Media File](https://developers.fliplet.com/REST-API/fliplet-media.html#stream-the-contents-of-a-file).
