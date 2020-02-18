@@ -1139,6 +1139,8 @@ Fliplet.Navigate.to(data);
 
 ### Open a popup
 
+Displays a native alert/popup dialog.
+
 ```js
 var options = {
   title: 'Foo',
@@ -1168,6 +1170,8 @@ Fliplet.Navigate.confirm(options)
 ```
 
 ### Open a prompt dialog
+
+Displays a native prompt dialog.
 
 ```js
 var options = {
