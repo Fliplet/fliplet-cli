@@ -1178,9 +1178,14 @@ var options = {
 };
 Fliplet.Navigate.prompt(options)
   .then(function(input) {
-    if (!input) {
-      return console.log('Canceled or left empty!');
+    if (input === null) {
+      return console.log('Canceled');
     }
+
+    if (!input) {
+      return console.log('Prompt is left empty!');
+    }
+
     console.log(input);
   });
 ```
