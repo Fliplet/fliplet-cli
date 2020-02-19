@@ -633,6 +633,41 @@ To ensure a page doesn't force the orientation re-lock, add the following code t
 
 **Note** Landscape mode in smartphones are not officially supported by Fliplet and may have layout issues due to the shortened screen height and "notches" on devices such as the iPhone X.
 
+### Open the _About this app_ overlay
+
+You can open the _About this app_ overlay, which gives you access to app information and check for app updates.
+
+```js
+Fliplet.App.About.open().then(function () {
+  console.log('Overlay is opened');
+});
+````
+
+This supports `beforeAboutAppOpen` and `afterAboutAppOpen` hooks that lets you configure custom behaviors when user opens the _About this app_ overlay.
+
+```js
+Fliplet.Hooks.on('beforeAboutAppOpen', function (options) {
+  // @param options (Object) { html, showOnInit, closeAnywhere, entranceAnim, exitAnim, size, classes }
+
+  // Change the About this app overlay content
+  options.html = 'Hello world!';
+});
+```
+
+```js
+Fliplet.Hooks.on('afterAboutAppOpen', function (overlay) {
+  // @param overlay (Object) An Overlay object which supports several functions such as overlay.close()
+
+  // Hide any <h2></h2> found in the overlay
+  $(overlay.overlay).find('h2').hide();
+
+  // Add event listener to a custom button added to the overlay
+  $(overlay.overlay).find('.custom-button').on('click', function () {
+    console.log('User clicked on custom button');
+  });
+});
+```
+
 ### App Storage
 
 Use this to store arbitrary keys in the app storage for later use.
