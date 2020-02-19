@@ -757,6 +757,7 @@ In order to be able to update the agent via **npm**, [registry.npmjs.org](https:
 
 - Added **User-Agent** to all outgoing requests to improve security.
 
-#### 1.2.0 (Dec 27th, 2018)
+#### 1.2.0 — First public release (Dec 27th, 2018)
 
+- Published the first public release available as a `npm` package.
 - Support for pulling data via **external APIs** or from **File System**.
