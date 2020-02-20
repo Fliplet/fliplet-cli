@@ -109,7 +109,7 @@ Fliplet.Hooks.on('flListDataAfterGetData', function(options) {
 
 ### `flListDataBeforeRenderList`
 
-The hook is run right before data is to be rendered in the list.
+The hook is run right before data is to be rendered in the list. This includes the initial render as well as any search and filter renders.
 
 ```js
 Fliplet.Hooks.on('flListDataBeforeRenderList', fn);
@@ -124,7 +124,7 @@ Fliplet.Hooks.on('flListDataBeforeRenderList', fn);
 
 ### `flListDataAfterRenderList`
 
-The hook is run right after data is rendered in the list.
+The hook is run right after data is rendered in the list. This includes the initial render as well as any search and filter renders.
 
 ```js
 Fliplet.Hooks.on('flListDataAfterRenderList', fn);
