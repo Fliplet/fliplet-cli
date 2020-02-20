@@ -4,6 +4,10 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## February 2020
 
+### February 19th
+
+- Released new version of our native framework for iOS apps with dropped UIWebView support following [Apple's deprecation notice](https://developer.apple.com/news/?id=12232019b) and updated **InAppBrowser** Cordova plugin to its latest version.
+
 ### February 14th
 
 - New documentation for creating and managing [in-app and push notifications](https://developers.fliplet.com/API/fliplet-notifications.html)
