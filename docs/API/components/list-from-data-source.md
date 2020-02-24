@@ -27,6 +27,7 @@ The **List (from data source)** component exposes hooks that you can use to modi
 - [`flListDataAfterGetData`](#fllistdataaftergetdata)
 - [`flListDataBeforeRenderList`](#fllistdatabeforerenderlist)
 - [`flListDataAfterRenderList`](#fllistdataafterrenderlist)
+- [`flListDataAfterRenderListSocial`](#fllistdataafterrenderlistSocial)
 - [`flListDataBeforeRenderFilters`](#fllistdatabeforerenderfilters)
 - [`flListDataAfterRenderFilters`](#fllistdataafterrenderfilters)
 - [`flListDataBeforeDeleteConfirmation`](#fllistdatabeforedeleteconfirmation)
@@ -121,6 +122,10 @@ Fliplet.Hooks.on('flListDataBeforeRenderList', fn);
   - **options** (Object) A map of data containing the following.
     - **config** (Object) Configuration used to initialize the component.
     - **records** (Array) Collection of records to be used for the component. This would be the last point in the process for the data to be manipulated before rendering.
+    - **value** (String) Any search term that is being applied
+    - **fields** (Array) An array of fields from the data source that will be used to perform the search
+    - **activeFilters** (Object) An object mapping all active filters
+    - **showBookmarks** (Boolean) Indicating if the user has chosen to show bookmarks only
 
 ### `flListDataAfterRenderList`
 
@@ -136,6 +141,20 @@ Fliplet.Hooks.on('flListDataAfterRenderList', fn);
   - **options** (Object) A map of data containing the following.
     - **config** (Object) Configuration used to initialize the component.
     - **records** (Array) Collection of records to be used for the component.
+    - **value** (String) Any search term that is being applied
+    - **activeFilters** (Object) An object mapping all active filters
+    - **showBookmarks** (Boolean) Indicating if the user has chosen to show bookmarks only
+    - **initialRender** (Boolean) Indicating if the hook is fired from the initial component load
+
+### `flListDataAfterRenderListSocial`
+
+The hook is run right after data is rendered in the list and after any social features (likes, comments and bookmarks) are initialized for the list. This includes the initial render as well as any search and filter renders.
+
+```js
+Fliplet.Hooks.on('flListDataAfterRenderListSocial', fn);
+```
+
+All parameters are the same as for the [`flListDataAfterRenderList`](#fllistdataafterrenderlist) hook.
 
 ### `flListDataBeforeRenderFilters`
 
@@ -254,8 +273,6 @@ Fliplet.Hooks.on('flListDataAfterShowComments', fn);
     - **html** (String) HTML code that is to be rendered for all the comments.
     - **comments** (Array) Comments retrieved for the entry.
     - **entryId** (Number) Data source entry ID of the record to be deleted.
-
-
 
 ## Configurations
 
@@ -402,6 +419,8 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
 });
 ````
 
+- `forceRenerList` (Boolean) When a search/filter is applied to a list, the list is sometimes shortened by removing unneeded entries. Set this configuration to `true` so that every list render is forced to re-rendered instead of patching it. (**Default**: `false`)
+
 ## Query parameters
 
 When navigating to a screen that contains a **List (from data source)** component, you can use queries to execut logic accordingly, e.g. load a specific list item, apply filters and/or search, or add a new pre-filter.
@@ -418,7 +437,7 @@ Use the following query parameters when linking to a screen with **List (from da
 - **dynamicListFilterColumn** A comma-separated list of columns to select filter values within (optional). The number of columns provided must match the number of values provided. To select multiple values for a column, use `[]` to enclose the values and separate them by commas. e.g. `dynamicListFilterColumn=Tags,Category&dynamicListFilterValue=[Foo,Buzz],Enterprise%20software` selects the filters `Tags=Foo`, `Tags=Buzz` and `Category=Enterprise software`.
 - **dynamicListFilterHideControls** (`true|false`) Hide the filter controls when filter values are applied from the query. (Default: `false`)
 - **dynamicListPrefilterColumn** Pre-filter list based on the provided list of comma-separated column names.
-- **dynamicListPrefilterValue** Pre-filter list based on the provided list of comma-separatedvalues for the column names.
+- **dynamicListPrefilterValue** Pre-filter list based on the provided list of comma-separatedvalues for the column names. Any values that contain a comma (`,`) should be wrapped in double quotes (`"`).
 - **dynamicListPrefilterLogic** Pre-filter list based on the provided list of comma-separated logic operators to be applied on the columns and values. The valid operators are:
 
 | Operator | URL encoded operator | Description |
