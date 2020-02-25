@@ -437,7 +437,7 @@ Use the following query parameters when linking to a screen with **List (from da
 - **dynamicListFilterColumn** A comma-separated list of columns to select filter values within (optional). The number of columns provided must match the number of values provided. To select multiple values for a column, use `[]` to enclose the values and separate them by commas. e.g. `dynamicListFilterColumn=Tags,Category&dynamicListFilterValue=[Foo,Buzz],Enterprise%20software` selects the filters `Tags=Foo`, `Tags=Buzz` and `Category=Enterprise software`.
 - **dynamicListFilterHideControls** (`true|false`) Hide the filter controls when filter values are applied from the query. (Default: `false`)
 - **dynamicListPrefilterColumn** Pre-filter list based on the provided list of comma-separated column names.
-- **dynamicListPrefilterValue** Pre-filter list based on the provided list of comma-separatedvalues for the column names. Any values that contain a comma (`,`) should be wrapped in double quotes (`"`).
+- **dynamicListPrefilterValue** Pre-filter list based on the provided list of comma-separatedvalues for the column names. Any values that contain a comma (`,`) should be wrapped in URL-encoded double quotes (`%22`).
 - **dynamicListPrefilterLogic** Pre-filter list based on the provided list of comma-separated logic operators to be applied on the columns and values. The valid operators are:
 
 | Operator | URL encoded operator | Description |
