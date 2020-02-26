@@ -5,6 +5,8 @@
 Libraries available in all apps
 -------------------------------
 
+The following libraries can be found in all apps:
+
 *   **animate-css** `3.5.2` Easily add CSS animations to your app. ([Documentation](https://daneden.github.io/animate.css/))
 *   **bootstrap-css** `3.3.7` Include the CSS styles from the most popular framework in your app. ([Documentation](https://getbootstrap.com/docs/3.3/components/))
 *   **font-awesome** `4.7.0` Easily display vector icons and social logos in your app. ([Documentation](https://fontawesome.com/v4.7.0/icons/))
@@ -16,6 +18,8 @@ Libraries available in all apps
 
 Other approved libraries you can add to your apps
 -------------------------------------------------
+
+Optionally add any of the libraries to your app for additional functionality:
 
 *   **bootstrap-js** `3.3.7` Include the JavaScript code to make Bootstrap components work. ([Documentation](https://getbootstrap.com/docs/3.3/javascript/))
 *   **bootstrap-select** `1.12.4` Bring additional features to Boostrap's dropdowns. ([Documentation](https://silviomoreto.github.io/bootstrap-select/examples/))
