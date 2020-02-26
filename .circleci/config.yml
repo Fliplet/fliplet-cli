@@ -6,6 +6,7 @@ jobs:
       - checkout
       - run: cd docs && gem install bundler && bundle install && bundle exec jekyll algolia
       - run: npm install
+      - run: npm run update-assets-docs
       - run: npm link && echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
       - run: fliplet env staging
       - run: fliplet login -u $TEST_USER -p $TEST_PASSWORD

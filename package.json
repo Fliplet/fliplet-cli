@@ -1,10 +1,11 @@
 {
   "name": "fliplet-cli",
-  "version": "5.0.7",
+  "version": "5.0.8",
   "description": "Command line utility for creating and running components, themes and menus to be used on the Fliplet platform.",
   "main": "fliplet.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "update-assets-docs": "node ./docs/update-assets-list.js"
   },
   "author": "Nicholas Valbusa",
   "license": "ISC",
@@ -37,6 +38,7 @@
     "request": "^2.88.0",
     "request-promise": "^4.2.0",
     "temp": "^0.8.3",
+    "turndown": "^5.0.3",
     "unzipper": "^0.9.3"
   }
 }
