@@ -60,7 +60,7 @@ ALGOLIA_API_KEY=<API_KEY> bundle exec jekyll algolia
 
 ## Update the Fliplet Approved libraries documentation page
 
-The following command automatically runs on the CI, but you can also run it locally to update the page:
+Run the following command then commit the changed `./docs/Fliplet-approved-libraries.md` file:
 
 ```
 npm run update-assets-docs
