@@ -6,7 +6,7 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ### February 24th
 
-- Documentation for the List from Data Source component updated with new options for the **flListDataBeforeRenderList** and **flListDataAfterRenderList** hooks.
+- Documentation for the [List from data source](https://developers.fliplet.com/API/components/list-from-data-source.html) component updated with new options for the **flListDataBeforeRenderList** and **flListDataAfterRenderList** hooks.
 
 ### February 19th
 
