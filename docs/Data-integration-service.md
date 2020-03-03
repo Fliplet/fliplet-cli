@@ -420,6 +420,7 @@ The following **properties** can also be used **when querying your data source**
 
 - [where](https://developers.fliplet.com/REST-API/fliplet-datasources.html#run-queries-on-a-data-source)
 - [join](https://developers.fliplet.com/API/datasources/joins.html#using-joins-on-datasources)
+- [view](https://developers.fliplet.com/API/datasources/views.md)
 - attributes (Array of column names to select)
 
 ```js

@@ -2,6 +2,14 @@
 
 Each week, we provide changelog notes on this page giving a summary of recent significant changes to the documentation. If there haven't been any significant changes in a given week, we don't publish changelog notes.
 
+## March 2020
+
+### March 3rd
+
+- Documentation for defining [Data Source Views](https://developers.fliplet.com/API/datasources/views.html).
+
+---
+
 ## February 2020
 
 ### February 24th

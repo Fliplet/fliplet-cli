@@ -290,6 +290,13 @@ connection.removeById(1).then(function onRemove() {});
 
 ---
 
+## Define views to filter a data source
+
+[View documentation on how to define views to filter data of a data source](datasources/views.md)
+{: .buttons}
+
+---
+
 ## Configurable operations
 
 ### Automatically generate a unique ID for your entries
