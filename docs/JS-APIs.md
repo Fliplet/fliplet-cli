@@ -45,6 +45,8 @@ $ fliplet list-assets
 
 You can also get them as a [JSON](https://api.fliplet.com/v1/widgets/assets) hitting our [API endpoint](https://api.fliplet.com/v1/widgets/assets).
 
+You can find a list of available assets on the [Fliplet approved libraries](Fliplet-approved-libraries) page.
+
 ### First-party packages
 
 The different parts of our SDK are split into different packages which includes one or more functionalities. To use them, you will need to import them as dependencies in your components (or themes).

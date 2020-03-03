@@ -57,3 +57,11 @@ The index gets updated automatically from CircleCI when you commit new code. How
 ```
 ALGOLIA_API_KEY=<API_KEY> bundle exec jekyll algolia
 ```
+
+## Update the Fliplet Approved libraries documentation page
+
+Run the following command then commit the changed `./docs/Fliplet-approved-libraries.md` file:
+
+```
+npm run update-assets-docs
+```
