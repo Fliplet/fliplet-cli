@@ -6,7 +6,8 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ### March 3rd
 
-- Documentation for defining [Data Source Views](https://developers.fliplet.com/API/datasources/views.html).
+- Added new documentation page to list out available JavaScript assets in Fliplet Apps.
+- Added new documentation page for defining [Data Source Views](https://developers.fliplet.com/API/datasources/views.html).
 
 ---
 
