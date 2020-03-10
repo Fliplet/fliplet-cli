@@ -14,7 +14,7 @@ If you need more control on your security rules, you can also write your custom 
 
 - `server` (Boolean) `true` when the security rule is being checked for a webapp
 - `client` (Boolean) `true` when the security rule is being checked for a native app on iOS/Android/Windows
-- `page` (Object `{ id: Number }`) the page that is running the security rule
+- `page` (Object `{ id: Number, title: String }`) the page that is running the security rule
 - `session` (Object) the user's session, when available. Contains the same attributes found in the `v1/session` endpoint
 - `ipRangeCheck` (Function) please check the next section on IP address whitelisting/blacklisting for usage
 
