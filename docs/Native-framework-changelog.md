@@ -7,13 +7,13 @@ We regularly update our framework to support new features. If you have an older 
   <div class="bl two">
     <div>
       <h4>iOS</h4>
-      <p>Latest stable release: 4.1.0</p>
+      <p>Latest stable release: 4.1.2</p>
     </div>
   </div>
   <div class="bl two">
     <div>
       <h4>Android</h4>
-      <p>Latest stable release: 4.0.2</p>
+      <p>Latest stable release: 4.1.2</p>
     </div>
   </div>
 </section>
@@ -22,6 +22,11 @@ We regularly update our framework to support new features. If you have an older 
 ---
 
 ## Supported versions (4.x)
+
+### Version 4.1.2 (March 16, 2010)
+
+- **All platforms**: Improved support for new link actions in push notifications.
+- **iOS**: Dropped all usage of UIWebView following [Apple's deprecation notice](https://developer.apple.com/news/?id=12232019b).
 
 ### Version 4.1.0 (February 19, 2010)
 
