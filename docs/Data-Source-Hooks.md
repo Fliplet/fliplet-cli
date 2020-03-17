@@ -151,7 +151,7 @@ In addition to hook properties, configuring a hook to manipulate strings support
 
 - `payload`: object where each key represents the field name to run the operation on, and the value is either a string value or an array of operations to run.
 
-If the value is a `string`, the result will compiled through Handlebars so you can replace any variable at runtime, e.g. `Your email is {{ Email }}`.
+If the value is a `string`, the result will compiled through Handlebars so you can replace any variable at runtime. See the examples below for more information.
 
 On the other hand, when the value is an `array` it can be a list of operations that should be applied to the field:
 
