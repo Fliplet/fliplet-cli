@@ -23,7 +23,7 @@ We regularly update our framework to support new features. If you have an older 
 
 ## Supported versions (4.x)
 
-### Version 4.1.2 (March 16, 2010)
+### Version 4.1.2 (March 17, 2010)
 
 - **All platforms**: Improved support for new link actions in push notifications.
 - **iOS**: Dropped all usage of UIWebView following [Apple's deprecation notice](https://developer.apple.com/news/?id=12232019b).
