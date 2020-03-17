@@ -27,6 +27,7 @@ We regularly update our framework to support new features. If you have an older 
 
 - **All platforms**: Improved support for new link actions in push notifications.
 - **iOS**: Dropped all usage of UIWebView following [Apple's deprecation notice](https://developer.apple.com/news/?id=12232019b).
+- **iOS**: Target SDK increased to iOS13.
 
 ### Version 4.1.0 (February 19, 2010)
 
