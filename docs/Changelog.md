@@ -4,6 +4,12 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## March 2020
 
+### Match 17th
+
+- Updates for new app framework released, see [native framework changelog](https://developers.fliplet.com/Native-framework-changelog.html) for details.
+- New documentation for [Data Source operation hooks](https://developers.fliplet.com/Data-Source-Hooks.html#manipulate-a-string).
+
+
 ### March 3rd
 
 - Added new documentation page to list out available JavaScript assets in Fliplet Apps.

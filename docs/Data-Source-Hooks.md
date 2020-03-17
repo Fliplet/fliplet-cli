@@ -149,9 +149,11 @@ In addition to hook properties, configuring a hook to make network requests supp
 
 In addition to hook properties, configuring a hook to manipulate strings support the following parameter:
 
-- `payload`: object where each key represents the field name to run the operation on, and the value is an array of operations to run.
+- `payload`: object where each key represents the field name to run the operation on, and the value is either a string value or an array of operations to run.
 
-Here's the list of operations that can be applied to a field:
+If the value is a `string`, the result will compiled through Handlebars so you can replace any variable at runtime, e.g. `Your email is {{ Email }}`.
+
+On the other hand, when the value is an `array` it can be a list of operations that should be applied to the field:
 
 - `trim`: removes leading and trailing whitespaces from a string
 - `lower`: transforms a string to lowercase
@@ -183,6 +185,23 @@ And one more example where one field gets trimmed and converted to lowercase whi
     "payload": {
       "Email": ["lower", "trim"],
       "Name": ["upper"]
+    }
+  }
+]
+```
+{% endraw %}
+
+This last example shows string interpolation being compiled with Handlebars:
+
+{% raw %}
+```json
+[
+  {
+    "type": "operations",
+    "runOn": ["beforeSave"],
+    "payload": {
+      "Content": "Foo bar",
+      "AnotherContent": "Foo {{ email }}"
     }
   }
 ]

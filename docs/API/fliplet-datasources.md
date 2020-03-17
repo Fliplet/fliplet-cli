@@ -205,6 +205,27 @@ Using `connection.append(entriesArray)` also triggers "**insert** "hooks for eac
 connection.append([{ name: 'Nick' }], { runHooks: false })
 ```
 
+### Commit changes at once to a data source
+
+Use `connection.commit(Array)` to commit more than one change at once to a data source. You can use this to insert, update and delete entries at the same time with a single request.
+
+Note that entries not contained in the array will be deleted from the remote data source.
+
+```js
+connection.commit([
+  // insert one entry
+  {
+    data: { foo: 'bar' }
+  },
+
+  // update one entry
+  {
+    id: 123,
+    data: { foo: 'barbaz' }
+  }
+])
+```
+
 ### Insert a single record into the data source
 
 To insert a record into a data source, use the `connection.insert` method by passing the data to be inserted as a **JSON** object or a **FormData** object.
