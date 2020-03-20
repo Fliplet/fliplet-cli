@@ -311,7 +311,8 @@ instance.addToStream([
   }
 ])
 
-// On Fliplet Studio, retrieve count of matches for a given query scope, including how many of these are subscribed for push
+// Retrieve count of matches for a given query scope,
+// including how many of these are subscribed for push
 instance.getMatches({ foo: 'bar' }).then(function (result) {
   // result.count (int)
   // result.subscriptions (int)
