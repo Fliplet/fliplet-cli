@@ -43,6 +43,19 @@ instance.insert({
 })
 ```
 
+#### Send to all logged in users
+
+Send an in-app notification to all logged in users using the `audience` attribute:
+
+```js
+// insert a new notification for a specific user
+instance.insert({
+  status: 'published',
+  data: { message: 'Hi logged in users!' },
+  audience: 'loggedIn'
+})
+```
+
 #### Broadcast to all users
 
 Your in-app notification will be broadcasted to everyone if you don't provide a scope:
@@ -55,12 +68,12 @@ instance.insert({
 })
 ```
 
-#### Preview how many users will receive a segmented notification
+#### Preview how many users will receive a notification
 
 If you want to preview how many users and push subscribed devices will get a notification for a particular scope, use the `getMatches` method as described below:
 
 ```js
-instance.getMatches({ foo: 'bar' }).then(function (result) {
+instance.getMatches({ type: 'Admin' }).then(function (result) {
   // result.count (int)
   // result.subscriptions (int)
 });
