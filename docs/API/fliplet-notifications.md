@@ -88,11 +88,10 @@ You can schedule an in-app notification to be sent at a later date:
 instance.insert({
   status: 'scheduled',
   data: {
-    message: 'Hi Everyone!',
-
-    // timestamp in unix seconds
-    scheduledAt: moment().add(5, 'hour').unix()
-  }
+    message: 'Hi Everyone!'
+  },
+  // timestamp in unix seconds
+  orderAt: moment().add(5, 'hour').unix()
 })
 ```
 
@@ -210,7 +209,6 @@ var instance = Fliplet.Notifications.init({
   // This example targets a specific user and everything sent
   // to the "news" topic.
   scope: [
-    { dataSourceId: 123, email: 'john@example.org' },
     { topic: 'news' }
   ],
   onFirstResponse: function (err, notifications) {}
