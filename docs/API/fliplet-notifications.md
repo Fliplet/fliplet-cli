@@ -206,8 +206,8 @@ var instance = Fliplet.Notifications.init({
   batchSize: 20, // defaults to 50
   appId: 123, // defaults to current app
   // List of scopes to fetch notifications from.
-  // This example targets a specific user and everything sent
-  // to the "news" topic.
+  // This example targets everyone sent to the logged user
+  // and also all notifications sent to the "news" topic.
   scope: [
     { topic: 'news' }
   ],
