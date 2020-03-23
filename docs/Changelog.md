@@ -45,7 +45,6 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ### January 31st
 
-- ~Deprecation notice for `Fliplet.Profile` in favour of [Fliplet.DataSources](API/fliplet-datasources.md).~
 - Documentation for screen link queries on [List from Data Source](API/components/list-from-data-source.md).
 
 ### January 24th
