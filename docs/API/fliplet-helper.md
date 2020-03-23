@@ -189,6 +189,12 @@ Fliplet.Helper('welcome', {
 {! welcome last-name="Doe" !}
 ```
 
+Or using the HTML syntax:
+
+```html
+<fl-helper data-type="welcome" data-last-name="Doe"></fl-helper>
+```
+
 You can also define variables in attributes of your template and access them under the `attr` object:
 
 ```js
@@ -199,12 +205,6 @@ Fliplet.Helper('button', {
 
 ```html
 {! button title="Press here" !}
-```
-
-Templates can also be defined using standard HTML syntax:
-
-```html
-<fl-helper data-type="welcome" data-last-name="Doe"></fl-helper>
 ```
 
 #### Defining an outer template
