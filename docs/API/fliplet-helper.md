@@ -20,7 +20,7 @@ Fliplet.Helper('welcome', {
 });
 ```
 
-##### Screen HTML
+##### Screen HTML (using short syntax)
 
 ```html
 {! start helper welcome !}
@@ -28,11 +28,21 @@ Fliplet.Helper('welcome', {
 {! end helper welcome !}
 ```
 
+##### Screen HTML (using HTML tags)
+
+```html
+<fl-helper data-type="welcome">
+  <p>Hi <fl-prop data-path="name"></fl-prop>, how are you?</p>
+</fl-helper>
+```
+
 ##### Output HTML
 
 ```html
 <p>Hi John, how are you?</p>
 ```
+
+The example above illustrates how to use both the **short syntax** as well as **HTML** to define your templates. There is no difference in the output so you're free to use whichever syntax you prefer in your templates.
 
 ---
 
