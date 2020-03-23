@@ -201,6 +201,12 @@ Fliplet.Helper('button', {
 {! button title="Press here" !}
 ```
 
+Templates can also be defined using standard HTML syntax:
+
+```html
+<fl-helper data-type="welcome" data-last-name="Doe"></fl-helper>
+```
+
 #### Defining an outer template
 
 Use the `{! this !}` code to define the distribution outlet for content. This will also available as `this.template` on the helper instance as shown further below.
