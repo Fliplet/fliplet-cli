@@ -165,7 +165,7 @@ Fliplet.UI.Toast({
 
 ## Related
 
-* [Error Toast](fliplet-ui-error-toast.md)
+* [Error Toast](fliplet-ui-toast-error.md)
 
 ---
 

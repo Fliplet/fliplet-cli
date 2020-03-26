@@ -4,7 +4,7 @@ Adding encryption on Data Sources requires just a few lines of code. Here's how 
 
 1. Add the `fliplet-encryption` Fliplet package to your **global resources** (*Developer options > Global > Settings > Resources*) to enable encryption and decryption functionalities in your Fliplet app
 2. [Set up the encryption/decryption](#set-the-encryptiondecryption-key) private key in one of your **Screen Javascript** code (most likely when the user logs in)
-3. In your **Global JavaScript**, [specify a list of Data Sources to encrypt](set-up-encryption-on-a-data-source-across-the-app) along with the list of columns that should be encrypted.
+3. In your **Global JavaScript**, [specify a list of Data Sources to encrypt](#set-up-encryption-on-a-data-source-across-the-app) along with the list of columns that should be encrypted.
 
 That's it! It's as easy as is sounds.
 
