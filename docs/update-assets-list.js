@@ -10,6 +10,8 @@ const assetsToExclude = [
   "fliplet-pages",
   "fliplet-native",
   "fliplet-interact",
+  "fliplet-app-submissions",
+  "fliplet-security",
   "bootstrap",
   "reset-css",
   "normalize-css",
