@@ -4,6 +4,10 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## March 2020
 
+### Match 30th
+
+- New documentation for retrieving the [public URL](https://developers.fliplet.com/API/fliplet-core.html#get-the-public-url-of-the-current-screen) of a screen.
+
 ### Match 17th
 
 - Updates for new app framework released, see [native framework changelog](https://developers.fliplet.com/Native-framework-changelog.html) for details.
