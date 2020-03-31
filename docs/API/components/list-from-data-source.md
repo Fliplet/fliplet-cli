@@ -30,10 +30,20 @@ The **List (from data source)** component exposes hooks that you can use to modi
 - [`flListDataAfterRenderListSocial`](#fllistdataafterrenderlistSocial)
 - [`flListDataBeforeRenderFilters`](#fllistdatabeforerenderfilters)
 - [`flListDataAfterRenderFilters`](#fllistdataafterrenderfilters)
+- [`flListDataSearchKeyUp`](#flListDataSearchKeyUp)
+- [`flListDataSearchInput`](#flListDataSearchInput)
 - [`flListDataBeforeDeleteConfirmation`](#fllistdatabeforedeleteconfirmation)
 - [`flListDataBeforeDeleteEntry`](#fllistdatabeforedeleteentry)
 - [`flListDataBeforeShowComments`](#flListdatabeforeshowcomments)
 - [`flListDataAfterShowComments`](#flListdataaftershowcomments)
+- [`flListDataBeforeNewComment`](#flListDataBeforeNewComment)
+- [`flListDataAfterNewComment`](#flListDataAfterNewComment)
+- [`flListDataAfterNewCommentShown`](#flListDataAfterNewCommentShown)
+- [`flListDataBeforeUpdateComment`](#flListDataBeforeUpdateComment)
+- [`flListDataAfterUpdateComment`](#flListDataAfterUpdateComment)
+- [`flListDataAfterUpdateCommentShown`](#flListDataAfterUpdateCommentShown)
+- [`flListDataBeforeDeleteComment`](#flListDataBeforeDeleteComment)
+- [`flListDataAfterDeleteComment`](#flListDataAfterDeleteComment)
 
 ### `flListDataBeforeGetData`
 
@@ -188,6 +198,46 @@ Fliplet.Hooks.on('flListDataAfterRenderFilters', fn);
     - **filters** (Array) Array of filters and values to be rendered.
     - **records** (Array) Collection of records to be used for the component. This can be manipulated to affect the output.
 
+### `flListDataSearchKeyUp`
+
+The hook is run after when a key is pressed on the search field.
+
+```js
+Fliplet.Hooks.on('flListDataSearchKeyUp', fn);
+```
+
+#### Parameters
+
+- **fn** (Function(`options`)) Callback function with an object parameter.
+  - **options** (Object) A map of data containing the following.
+    - **config** (Object) Configuration used to initialize the component.
+    - **id** (Number) Component instance ID.
+    - **uuid** (String) Component instance UUID.
+    - **container** (jQuery object) jQuery object for the component container element.
+    - **input** (jQuery object) jQuery object for the search input field.
+    - **value** (String) Search value.
+    - **event** (Event) Event object that triggered the hook.
+
+### `flListDataSearchInput`
+
+The hook is run after when a the search field value changes.
+
+```js
+Fliplet.Hooks.on('flListDataSearchKeyUp', fn);
+```
+
+#### Parameters
+
+- **fn** (Function(`options`)) Callback function with an object parameter.
+  - **options** (Object) A map of data containing the following.
+    - **config** (Object) Configuration used to initialize the component.
+    - **id** (Number) Component instance ID.
+    - **uuid** (String) Component instance UUID.
+    - **container** (jQuery object) jQuery object for the component container element.
+    - **input** (jQuery object) jQuery object for the search input field.
+    - **value** (String) Search value.
+    - **event** (Event) Event object that triggered the hook.
+
 ### `flListDataBeforeDeleteConfirmation`
 
 The hook is run before delete confirmation pop up shows.
@@ -253,9 +303,12 @@ Fliplet.Hooks.on('flListDataBeforeShowComments', fn);
 - **fn** (Function((`options`)) Callback function with an object parameter.
   - **options** (Object) A map of data containing the following.
     - **config** (Object) Configuration used to initialize the component.
+    - **id** (Number) Component instance ID.
+    - **uuid** (String) Component instance UUID.
+    - **container** (jQuery object) jQuery object for the component container element.
     - **html** (String) HTML code that is to be rendered for all the comments.
     - **comments** (Array) Comments retrieved for the entry.
-    - **entryId** (Number) Data source entry ID of the record to be deleted.
+    - **record** (Object) Data source entry that the comments are attached to.
 
 ### `flListDataAfterShowComments`
 
@@ -270,9 +323,142 @@ Fliplet.Hooks.on('flListDataAfterShowComments', fn);
 - **fn** (Function((`options`)) Callback function with an object parameter.
   - **options** (Object) A map of data containing the following.
     - **config** (Object) Configuration used to initialize the component.
+    - **id** (Number) Component instance ID.
+    - **uuid** (String) Component instance UUID.
+    - **container** (jQuery object) jQuery object for the component container element.
     - **html** (String) HTML code that is to be rendered for all the comments.
     - **comments** (Array) Comments retrieved for the entry.
-    - **entryId** (Number) Data source entry ID of the record to be deleted.
+    - **record** (Objcet) Data source entry that the comments are attached to.
+
+### `flListDataBeforeNewComment`
+
+The hook is run before a comment is added to a data source entry.
+
+#### Parameters
+
+- **fn** (Function((`options`)) Callback function with an object parameter.
+  - **options** (Object) A map of data containing the following.
+    - **config** (Object) Configuration used to initialize the component.
+    - **id** (Number) Component instance ID.
+    - **uuid** (String) Component instance UUID.
+    - **container** (jQuery object) jQuery object for the component container element.
+    - **record** (Objcet) Data source entry that the comments are attached to.
+    - **comment** (String) Comment entered by user.
+    - **commentGuid** (String) A temporary ID given to the new comment.
+
+### `flListDataAfterNewComment`
+
+The hook is run after a comment is added to a data source entry.
+
+#### Parameters
+
+- **fn** (Function((`options`)) Callback function with an object parameter.
+  - **options** (Object) A map of data containing the following.
+    - **config** (Object) Configuration used to initialize the component.
+    - **id** (Number) Component instance ID.
+    - **uuid** (String) Component instance UUID.
+    - **container** (jQuery object) jQuery object for the component container element.
+    - **record** (Objcet) Data source entry that the comments are attached to.
+    - **commentEntry** (String) Comment entry returned by the API.
+    - **commentGuid** (String) A temporary ID given to the new comment.
+
+### `flListDataAfterNewCommentShown`
+
+The hook is run after a comment is added and rendered on the page.
+
+#### Parameters
+
+- **fn** (Function((`options`)) Callback function with an object parameter.
+  - **options** (Object) A map of data containing the following.
+    - **config** (Object) Configuration used to initialize the component.
+    - **id** (Number) Component instance ID.
+    - **uuid** (String) Component instance UUID.
+    - **container** (jQuery object) jQuery object for the component container element.
+    - **record** (Objcet) Data source entry that the comments are attached to.
+    - **commentEntry** (String) Comment entry returned by the API.
+    - **commentGuid** (String) A temporary ID given to the new comment.
+    - **commentContainer** (jQuery object) jQuery object for the new comment container element.
+
+### `flListDataBeforeUpdateComment`
+
+The hook is run before a comment is updated.
+
+#### Parameters
+
+- **fn** (Function((`options`)) Callback function with an object parameter.
+  - **options** (Object) A map of data containing the following.
+    - **config** (Object) Configuration used to initialize the component.
+    - **id** (Number) Component instance ID.
+    - **uuid** (String) Component instance UUID.
+    - **container** (jQuery object) jQuery object for the component container element.
+    - **record** (Objcet) Data source entry that the comments are attached to.
+    - **oldCommentData** (Object) Comment entry object for the comment to be updated.
+    - **newComment** (String) New comment for the comment.
+
+### `flListDataAfterUpdateComment`
+
+The hook is run after a comment is updated.
+
+#### Parameters
+
+- **fn** (Function((`options`)) Callback function with an object parameter.
+  - **options** (Object) A map of data containing the following.
+    - **config** (Object) Configuration used to initialize the component.
+    - **id** (Number) Component instance ID.
+    - **uuid** (String) Component instance UUID.
+    - **container** (jQuery object) jQuery object for the component container element.
+    - **record** (Objcet) Data source entry that the comments are attached to.
+    - **oldCommentData** (Object) Comment entry object for the comment before it is updated.
+    - **newCommentData** (Object) Comment entry object for the comment after it is updated.
+
+### `flListDataAfterUpdateCommentShown`
+
+The hook is run after a comment is updated and rendered on the page.
+
+#### Parameters
+
+- **fn** (Function((`options`)) Callback function with an object parameter.
+  - **options** (Object) A map of data containing the following.
+    - **config** (Object) Configuration used to initialize the component.
+    - **id** (Number) Component instance ID.
+    - **uuid** (String) Component instance UUID.
+    - **container** (jQuery object) jQuery object for the component container element.
+    - **record** (Objcet) Data source entry that the comments are attached to.
+    - **oldCommentData** (Object) Comment entry object for the comment before it is updated.
+    - **newCommentData** (Object) Comment entry object for the comment after it is updated.
+    - **commentContainer** (jQuery object) jQuery object for the updated comment container element.
+
+### `flListDataBeforeDeleteComment`
+
+The hook is run before a comment is deleted.
+
+#### Parameters
+
+- **fn** (Function((`options`)) Callback function with an object parameter.
+  - **options** (Object) A map of data containing the following.
+    - **config** (Object) Configuration used to initialize the component.
+    - **id** (Number) Component instance ID.
+    - **uuid** (String) Component instance UUID.
+    - **container** (jQuery object) jQuery object for the component container element.
+    - **record** (Objcet) Data source entry that the comments are attached to.
+    - **commentId** (Number) Comment ID to be deleted.
+    - **commentContainer** (jQuery object) jQuery object for the updated comment container element.
+
+### `flListDataAfterDeleteComment`
+
+The hook is run after a comment is deleted and removed from the page.
+
+#### Parameters
+
+- **fn** (Function((`options`)) Callback function with an object parameter.
+  - **options** (Object) A map of data containing the following.
+    - **config** (Object) Configuration used to initialize the component.
+    - **id** (Number) Component instance ID.
+    - **uuid** (String) Component instance UUID.
+    - **container** (jQuery object) jQuery object for the component container element.
+    - **record** (Objcet) Data source entry that the comments are attached to.
+    - **commentId** (Number) Comment ID to be deleted.
+    - **commentContainer** (jQuery object) jQuery object for the updated comment container element.
 
 ## Configurations
 
