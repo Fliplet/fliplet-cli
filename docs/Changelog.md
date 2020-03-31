@@ -4,11 +4,12 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## March 2020
 
-### Match 30th
+### March 31st
 
 - New documentation for retrieving the [public URL](https://developers.fliplet.com/API/fliplet-core.html#get-the-public-url-of-the-current-screen) of a screen.
+- New [beforeRichFieldInitialize](https://developers.fliplet.com/API/components/form-builder.html#beforeRichFieldInitialize) hook added to the **Form builder**.
 
-### Match 17th
+### March 17th
 
 - Updates for new app framework released, see [native framework changelog](https://developers.fliplet.com/Native-framework-changelog.html) for details.
 - New documentation for [Data Source operation hooks](https://developers.fliplet.com/Data-Source-Hooks.html#manipulate-a-string).
