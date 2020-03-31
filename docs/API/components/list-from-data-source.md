@@ -645,6 +645,8 @@ Use the following query parameters when linking to a screen with **List (from da
 - **dynamicListOpenId** Entry ID to be opened after the list is rendered.
 - **dynamicListOpenColumn** Column name to use for opening an entry after the list is rendered
 - **dynamicListOpenValue** Value to match in the given column for opening an entry after the list is rendered
+- **dynamicListOpenComments** (`true|false`) Open the comments view, if applicable (Default: `false`)
+- **dynamicListCommentId** Open the comments view and scroll to the provided comment based on the comment ID
 - **dynamicListPreviousScreen** (`true|false`) If a query was used to open an entry, return to the previous page when users close the detail view. (Default: `false`)
 - **dynamicListSearchValue** Search term to be applied after the list is rendered. Search will be executed according to the component configuration or custom configuration. If only one entry is found, the entry will be automatically opened.
 - **dynamicListSearchColumn** Column to execute a search against. If provided, the component configuration will be ignored. (Optional)
