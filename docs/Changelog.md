@@ -2,6 +2,15 @@
 
 Each week, we provide changelog notes on this page giving a summary of recent significant changes to the documentation. If there haven't been any significant changes in a given week, we don't publish changelog notes.
 
+## April 2020
+
+### April 1st
+
+- Documentation for the [List from data source](https://developers.fliplet.com/API/components/list-from-data-source.html) component updated with the following:
+  - New comment related hooks
+  - New search input related hooks
+  - New comment related query parameters
+
 ## March 2020
 
 ### March 31st
