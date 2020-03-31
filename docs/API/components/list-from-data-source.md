@@ -464,14 +464,18 @@ The hook is run after a comment is deleted and removed from the page.
 
 Using the available hooks, component instance configuration can be used to modify component data and behavior. The available configuration properties are listed below:
 
-- `getData` (Function(`options`)) Function used to retrieve data. Each entry must include the following properties, which the `Fliplet.DataSources` JS API follows. **`[1]`** **`[2]`**
+### `getData`
+
+(Function(`options`)) Function used to retrieve data. Each entry must include the following properties, which the `Fliplet.DataSources` JS API follows. **`[1]`** **`[2]`**
   - `id` (Number) Entry ID
   - `data` (Object) Entry data
 
 **`[1]`** This function is best set using the [`flListDataBeforeGetData`](#fllistdatabeforegetdata) hook and must return a Promise.
 **`[2]`** If `getData` is used to return data, the fields for the data source configured through the Studio interface needs to match the properties avaiable in the returned data. You can do this by creating at least one entry in the data source that contains all the respective fields.
 
-- `dataQuery` (Object \| Function(`options`)) If a custom `getData` isn't used, `dataQuery` customizes the query for retrieving data from the data source. This can be used to limit the amount of data retrieved from the data source, reducing the amount of transferred and processed data. When an **Object** is provided, the object is passed to the `.find()` function as outlined in the [`Fliplet.DataSources` JS API](../../API/fliplet-datasources.md#find-specific-records). When a **Function** is provided, the function must return an object to be pased to the same `.find()` function. The function can make use of an `options` object that contains the following properties.
+### `dataQuery`
+
+(Object \| Function(`options`)) If a custom `getData` isn't used, `dataQuery` customizes the query for retrieving data from the data source. This can be used to limit the amount of data retrieved from the data source, reducing the amount of transferred and processed data. When an **Object** is provided, the object is passed to the `.find()` function as outlined in the [`Fliplet.DataSources` JS API](../../API/fliplet-datasources.md#find-specific-records). When a **Function** is provided, the function must return an object to be pased to the same `.find()` function. The function can make use of an `options` object that contains the following properties.
   - `config` (Object) Configuration used to initialize the component
   - `id` (Number) Entry ID
   - `uuid` (String) Component instance UUID
@@ -498,29 +502,46 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
 });
 ```
 
-- `beforeOpen` (Function(`options`)) Function executed before loading entry details. The `options` parameter contains the following properties. Return a rejected Promise if you need to stop the entry from opening.
+### `beforeOpen`
+
+(Function(`options`)) Function executed before loading entry details. The `options` parameter contains the following properties. Return a rejected Promise if you need to stop the entry from opening.
   - `config` (Object) Configuration used to initialize the component
   - `entry` (Object) Entry being opened
   - `entryId` (Object) ID for entry being opened
   - `entryTitle` (Object) Title for entry being opened
   - `event` (Object) Event object that triggered the opening
-- `beforeShowDetails` (Function(`options`)) Function executed before showing the entry detail view, after the entry detail data is ready. The `options` parameter contains the following properties. Return a rejected Promise if you need to stop the entry from opening.
+
+### `beforeShowDetails`
+
+(Function(`options`)) Function executed before showing the entry detail view, after the entry detail data is ready. The `options` parameter contains the following properties. Return a rejected Promise if you need to stop the entry from opening.
   - `src` (String) HTML source for the detail view template
   - `data` (Object) Data being used for rendering the detail view template
-- `afterShowDetails` (Function(`options`)) Function executed after the entry detail view is shown. The `options` parameter contains the following properties.
+
+### `afterShowDetails`
+
+(Function(`options`)) Function executed after the entry detail view is shown. The `options` parameter contains the following properties.
   - `config` (Object) Configuration used to initialize the component
   - `src` (String) HTML source for the detail view template
   - `data` (Object) Data being used for rendering the detail view template
-- `deleteData` (Function(`options`)) Function used to delete an entry. The `options` parameter contains the following properties.
+
+### `deleteData`
+
+(Function(`options`)) Function used to delete an entry. The `options` parameter contains the following properties.
   - `entryId`
   - `config` (Object) Configuration used to initialize the component
   - `id` (Number) Component instance ID
   - `uuid` (String) Component instance UUID
   - `container` (jQuery object) jQuery object for the component container element
-- `searchData` (Function(`options`)) Function used to execute a data search. The `options` parameter contains the following properties.
+
+### `searchData`
+
+(Function(`options`)) Function used to execute a data search. The `options` parameter contains the following properties.
   - `config` (object) Configuration used to initialize the component
   - `query` (String) Query string entered by user
-- `computedFields` (Object) A mapping of computed fields, where the keys map to a list of fields that would be available based on the mapped values. For example:
+
+### `computedFields`
+
+(Object) A mapping of computed fields, where the keys map to a list of fields that would be available based on the mapped values. For example:
 
 ```js
 Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
@@ -534,7 +555,9 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
 });
 ```
 
-- `dataPrimaryKey` (String or Function(`options`) Provide a string to define the data source field name that contains the primary key. The primary key is used as a unique identifier when saving content for the social features, i.e. likes, comments and bookmarks. The primary key is also passed as the `sessionId` query parameter when user visits the allocated Poll, Survey and Question pages.<br><br>You can set this value so that if content is loaded into a different data source of changes entry ID, the social content won't be lost. Alternatively, define a function to return a unique primary key based on the record data (`options.record`).
+### `dataPrimaryKey`
+
+(String or Function(`options`) Provide a string to define the data source field name that contains the primary key. The primary key is used as a unique identifier when saving content for the social features, i.e. likes, comments and bookmarks. The primary key is also passed as the `sessionId` query parameter when user visits the allocated Poll, Survey and Question pages.<br><br>You can set this value so that if content is loaded into a different data source of changes entry ID, the social content won't be lost. Alternatively, define a function to return a unique primary key based on the record data (`options.record`).
 
 To define a custom primary key:
 
@@ -554,7 +577,9 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
 });
 ````
 
-- `filterOptions` (Array) An collection of pre-filter conditions to be applied before the pre-filters configured for the component. Each collection item should contain all the following properties:
+### `filterOptions`
+
+(Array) An collection of pre-filter conditions to be applied before the pre-filters configured for the component. Each collection item should contain all the following properties:
   - `column` (String) The field to apply the filter logic to
   - `value` (Mixed) Value to pass to the logic operator
   - `logic` (String) Logic operator to be applied on the field and value. The valid operators are
@@ -592,7 +617,9 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
 });
 ```
 
-- `summaryLinkAction` (Object) This object is automatically created when the component is configured to link each entry to a screen if the user clicks on it. The object can be extended to support query strings when linking to a screen.
+### `summaryLinkAction`
+
+(Object) This object is automatically created when the component is configured to link each entry to a screen if the user clicks on it. The object can be extended to support query strings when linking to a screen.
 
 For example:
 
@@ -605,7 +632,9 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
 });
 ````
 
-- `forceRenerList` (Boolean) When a search/filter is applied to a list, the list is sometimes shortened by removing unneeded entries. Set this configuration to `true` so that every list render is forced to re-rendered instead of patching it. (**Default**: `false`)
+### `forceRenerList`
+
+(Boolean) When a search/filter is applied to a list, the list is sometimes shortened by removing unneeded entries. Set this configuration to `true` so that every list render is forced to re-rendered instead of patching it. (**Default**: `false`)
 
 ## Query parameters
 
