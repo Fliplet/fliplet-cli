@@ -199,7 +199,7 @@ instance.poll({
 
 ---
 
-## Usage in client apps
+## Advanced usage in client apps
 
 ```js
 var instance = Fliplet.Notifications.init({
@@ -218,9 +218,7 @@ var instance = Fliplet.Notifications.init({
 instance.insert({
   data: { message: 'Hi John!' },
   pushNotification: { payload: {}, delayUntilTimestamp: 123 },
-  scope: [
-    { dataSourceId: 123, email: 'john@example.org' }
-  ]
+  scope: { email: 'john@example.org' }
 })
 
 // insert a notification to a specific segment
