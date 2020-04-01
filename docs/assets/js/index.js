@@ -81,7 +81,7 @@ $window.resize(checkIfSidebarFits);
 checkIfSidebarFits();
 
 if (location.pathname !== '/') {
-  $('.main-content h2, .main-content h3, .main-content h4').each(function () {
+  $('.main-content h2, .main-content h3').each(function () {
     $title = $(this);
     var node = $title[0].tagName;
     var prefix = node === 'H4' ? '- ' : '';
