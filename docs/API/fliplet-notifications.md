@@ -1,6 +1,6 @@
 # Notifications JS APIs
 
-Fliplet Apps support both **in-app and push notifications**. This library can used for both reading the list of notifications for a user (or device) and managing notifications (e.g. sending and scheduling them) for app managers if you are building a managing interface.
+Fliplet Apps support both **in-app and push notifications**. After adding the `fliplet-notifications` dependency to your apps, you can use such library for both reading the list of notifications for a user (or device) and managing notifications (e.g. sending and scheduling them) for app managers if you are building a managing interface.
 
 When dealing with app notifications, there's a few things you should keep in mind:
 
