@@ -471,6 +471,7 @@ Using the available hooks, component instance configuration can be used to modif
   - `data` (Object) Entry data
 
 **`[1]`** This function is best set using the [`flListDataBeforeGetData`](#fllistdatabeforegetdata) hook and must return a Promise.
+
 **`[2]`** If `getData` is used to return data, the fields for the data source configured through the Studio interface needs to match the properties avaiable in the returned data. You can do this by creating at least one entry in the data source that contains all the respective fields.
 
 ### `dataQuery`
