@@ -632,7 +632,7 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
 });
 ````
 
-### `forceRenerList`
+### `forceRenderList`
 
 (Boolean) When a search/filter is applied to a list, the list is sometimes shortened by removing unneeded entries. Set this configuration to `true` so that every list render is forced to re-rendered instead of patching it. (**Default**: `false`)
 
