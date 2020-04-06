@@ -26,7 +26,7 @@ Fliplet.DataSources.Encryption().setKey('foo');
 Fliplet.DataSources.Encryption().setKey('3581e5305707b61fb3931346b5826e5c');
 ```
 
-As an example, you can set up the key to be read from a user's data source entry once the user logs in:
+As a further example, you can optionally set up the key dynamically to be read from a user's data source entry once the user logs in:
 
 ```js
 // Add this code to a screen with a login component
@@ -38,11 +38,13 @@ Make sure to replace `columnContainingPrivateKey` with the actual column name wh
 
 ### Set up encryption on a data source across the app
 
+Use the `encrypt()` method to enable automatic management of a data source encryption and decryption data on-device.
+
 ```js
 Fliplet.DataSources.Encryption().encrypt(dataSourceId, arrayOfFieldsToEncrypt);
 ```
 
-Working example:
+Here's a fully working example:
 
 ```js
 // Add this to the Global JS
@@ -51,7 +53,7 @@ Fliplet.DataSources.Encryption().encrypt(123, [
 ]);
 ```
 
-The system will take care of both encrypting and decrypting content of data sources for you. No additional code will be required.
+The system will take care of both encrypting and decrypting content of data sources for you. No additional code will be required aside from setting up the encryption key.
 
 ### Clear the encryption/decryption key
 
