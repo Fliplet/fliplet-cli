@@ -25,7 +25,7 @@ The `db` object exposes a `dataSource()` public method which requires a valid to
 
 The latter method returns an object with two public methods:
 
-- `find(query)` Returns an array of results. Query using [Sift.js](https://github.com/crcn/sift.js/tree/master) operators.
+- `find(query)` Returns an array of results. Query using [Sift.js](https://github.com/Fliplet/sift.js) operators.
 - `findById(id)` Returns a single record by its ID
 
 ---
