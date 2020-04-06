@@ -36,6 +36,8 @@ Fliplet.Hooks.on('login', function (formEntry) {
 ```
 Make sure to replace `columnContainingPrivateKey` with the actual column name where the key should be taken from.
 
+---
+
 ### Set up encryption on a data source across the app
 
 Use the `encrypt()` method to enable automatic management of a data source encryption and decryption data on-device.
@@ -54,6 +56,8 @@ Fliplet.DataSources.Encryption().encrypt(123, [
 ```
 
 The system will take care of both encrypting and decrypting content of data sources for you. No additional code will be required aside from setting up the encryption key.
+
+---
 
 ### Clear the encryption/decryption key
 
