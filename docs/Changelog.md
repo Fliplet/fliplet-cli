@@ -4,6 +4,10 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## April 2020
 
+### April 6th
+
+- Added more documentation and examples on [setting up an encryption key](https://developers.fliplet.com/API/fliplet-encryption.html#set-the-encryptiondecryption-key) on `fliplet-encryption`.
+
 ### April 1st
 
 - Documentation for the [List from data source](https://developers.fliplet.com/API/components/list-from-data-source.html) component updated with the following:
