@@ -14,8 +14,16 @@ That's it! It's as easy as is sounds.
 
 ### Set the encryption/decryption key
 
+When encrypting the contents of a data source, you need to specify an AES (128, 256 or 512) key to encrypt and decrypt such contents. The length of key will drive the encryption type, e.g. use a 32 bytes key for AES256.
+
 ```js
+// Use an arbitrary key
 Fliplet.DataSources.Encryption().setKey('foo');
+```
+
+```js
+// or using a 32 byte key for AES256
+Fliplet.DataSources.Encryption().setKey('3581e5305707b61fb3931346b5826e5c');
 ```
 
 As an example, you can set up the key to be read from a user's data source entry once the user logs in:

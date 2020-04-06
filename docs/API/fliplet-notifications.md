@@ -73,7 +73,7 @@ instance.insert({
 If you want to preview how many users and push subscribed devices will get a notification for a particular scope, use the `getMatches` method as described below:
 
 ```js
-instance.getMatches({ type: 'Admin' }).then(function (result) {
+instance.getMatches({ scope: { type: 'Admin' } }).then(function (result) {
   // result.count (int)
   // result.subscriptions (int)
 });
@@ -311,7 +311,7 @@ instance.addToStream([
 
 // Retrieve count of matches for a given query scope,
 // including how many of these are subscribed for push
-instance.getMatches({ foo: 'bar' }).then(function (result) {
+instance.getMatches({ scope: { foo: 'bar' } }).then(function (result) {
   // result.count (int)
   // result.subscriptions (int)
 });
