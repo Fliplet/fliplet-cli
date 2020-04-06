@@ -6,7 +6,7 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ### April 6th
 
-- Added more documentation and examples on [setting up an encryption key](https://developers.fliplet.com/API/fliplet-encryption.html#set-the-encryptiondecryption-key) on `fliplet-encryption`.
+- Added more documentation and examples on [setting up an encryption key](https://developers.fliplet.com/API/fliplet-encryption.html#set-the-encryptiondecryption-key) when using the `fliplet-encryption` dependency.
 
 ### April 1st
 
