@@ -179,7 +179,7 @@ connection.find({ attributes: [] }).then(function (records) {
 
 ### Run aggregation queries
 
-You can use the built-in [Mingo](https://github.com/kofrasa/mingo) library to run complex aggregation queries on top of Data Sources. Mingo operations can be provided to the `find` method via the `aggregate` attribute:
+You can use the built-in [Mingo](https://github.com/kofrasa/mingo) library to run complex aggregation queries or projections on top of Data Sources. Mingo operations can be provided to the `find` method via the `aggregate` attribute:
 
 ```js
 // This example groups records by values found on a sample column "myColumnName"
