@@ -387,8 +387,43 @@ Runs when a **Rich text** field type is about to initialise. You can use this ho
 Fliplet.Hooks.on('beforeRichFieldInitialize', function (data) {
   // data.field
   // data.config
+
+  // e.g. extend TinyMCE 4.8.1 initialisation config properties
+  data.config.toolbar = data.config.toolbar + ' || superscript subscript';
 });
 ```
+
+This is the default config options which we use for TinyMCE (version 4.8.1) initialization:
+
+```js
+{
+  theme: 'modern',
+  mobile: {
+    theme: 'mobile',
+    plugins: [ 'autosave', 'lists', 'autolink' ],
+    toolbar: [ 'bold', 'italic', 'underline', 'bullist', 'numlist', 'removeformat' ]
+  },
+  plugins: [
+    'advlist autolink lists link directionality',
+    'autoresize fullscreen code paste'
+  ].join(' '),
+  toolbar: [
+    'bold italic underline',
+    'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent',
+    'ltr rtl | link | removeformat code fullscreen'
+  ].join(' | '),
+  image_advtab: true,
+  menubar: false,
+  statusbar: false,
+  inline: false,
+  resize: false,
+  autoresize_bottom_margin: 0,
+  autofocus: false,
+  branding: false
+}
+```
+
+Please refer to the [TinyMCE 4](https://www.tiny.cloud/docs-4x/) documentation for a list of all available options.
 
 ---
 
