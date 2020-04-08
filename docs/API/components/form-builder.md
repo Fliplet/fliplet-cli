@@ -393,7 +393,7 @@ Fliplet.Hooks.on('beforeRichFieldInitialize', function (data) {
 });
 ```
 
-This is the default config options which we use for **TinyMCE** ([version 4.8.1](https://developers.fliplet.com/API/components/form-builder.html#beforerichfieldinitialize)) initialization:
+This is the default config options which we use for **TinyMCE** ([version 4.8.1](https://www.tiny.cloud/docs-4x/)) initialization:
 
 ```js
 {
