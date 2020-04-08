@@ -20,7 +20,7 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 ### March 31st
 
 - New documentation for retrieving the [public URL](https://developers.fliplet.com/API/fliplet-core.html#get-the-public-url-of-the-current-screen) of a screen.
-- New [beforeRichFieldInitialize](https://developers.fliplet.com/API/components/form-builder.html#beforeRichFieldInitialize) hook added to the **Form builder**.
+- New [beforeRichFieldInitialize](https://developers.fliplet.com/API/components/form-builder.html#beforerichfieldinitialize) hook added to the **Form builder**.
 
 ### March 17th
 
