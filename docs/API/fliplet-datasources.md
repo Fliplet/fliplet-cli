@@ -177,6 +177,29 @@ connection.find({ attributes: [] }).then(function (records) {
 });
 ```
 
+### Run aggregation queries
+
+You can use the built-in [Mingo](https://github.com/kofrasa/mingo) library to run complex aggregation queries on top of Data Sources. Mingo operations can be provided to the `find` method via the `aggregate` attribute:
+
+```js
+// This example groups records by values found on a sample column "myColumnName"
+// and counts the matches for each value
+connection.find({
+  aggregate: [
+    {
+      $group: {
+        _id: '$data.myColumnName',
+        count: { $sum: 1 }
+      }
+    }
+  ]
+}).then(function (records) {
+
+})
+```
+
+Please refer to the [Mingo](https://github.com/kofrasa/mingo) documentation to read more about all the different usages and types of aggregation queries.
+
 ### Replace the contents of the data source with new records
 
 ```js
