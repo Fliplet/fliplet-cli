@@ -352,7 +352,7 @@ Fliplet.Hooks.on('beforeFormSubmit', function(data) {
 If you reject the hook, the form will be stopped from submitting the data. Rejecting the promise with an error will display such error while a simply rejection will not display any message to the user:
 
 - `return Promise.reject("An error message")` this will display the error message
-- `return Promise.reject()` this won't display anything to the user
+- `return Promise.reject("")` this won't display anything to the user
 
 ---
 
