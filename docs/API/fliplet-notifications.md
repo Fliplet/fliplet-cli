@@ -11,6 +11,8 @@ When dealing with app notifications, there's a few things you should keep in min
 5. Notifications have read receipts. To mark them as read you will need to identify your users with a GUID (`recipientId`). Fliplet apps automatically take care of this so no extra work is required from your end.
 6. Notifications can be scheduled to be sent in the future using the `scheduled` `status` and specifying the date using the `orderAt` parameter.
 
+Note: apps by default have no permissions to insert notifications. Enabling such permission is done by setting the `notificationsExtendedPermissions` setting to `true` in the app settings.
+
 ---
 
 ## Managing notifications
