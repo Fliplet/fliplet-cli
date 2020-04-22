@@ -7,6 +7,7 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 ### April 22nd
 
 - Adds support for [disabling the download option](https://developers.fliplet.com/API/fliplet-audio-player.html) for audio players.
+- New iOS framework release (version 4.1.3) to enhance the audio player.
 
 ### April 8th
 
