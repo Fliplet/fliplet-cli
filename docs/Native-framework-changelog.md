@@ -7,7 +7,7 @@ We regularly update our framework to support new features. If you have an older 
   <div class="bl two">
     <div>
       <h4>iOS</h4>
-      <p>Latest stable release: 4.1.2</p>
+      <p>Latest stable release: 4.1.3</p>
     </div>
   </div>
   <div class="bl two">
@@ -22,6 +22,10 @@ We regularly update our framework to support new features. If you have an older 
 ---
 
 ## Supported versions (4.x)
+
+### Version 4.1.3 (March 22, 2010)
+
+- **iOS**: Improvements when playing audio files.
 
 ### Version 4.1.2 (March 17, 2010)
 
