@@ -23,17 +23,17 @@ We regularly update our framework to support new features. If you have an older 
 
 ## Supported versions (4.x)
 
-### Version 4.1.3 (March 22, 2010)
+### Version 4.1.3 (March 22, 2020)
 
 - **iOS**: Improvements when playing audio files.
 
-### Version 4.1.2 (March 17, 2010)
+### Version 4.1.2 (March 17, 2020)
 
 - **All platforms**: Improved support for new link actions in push notifications.
 - **iOS**: Dropped all usage of UIWebView following [Apple's deprecation notice](https://developer.apple.com/news/?id=12232019b).
 - **iOS**: Target SDK increased to iOS13.
 
-### Version 4.1.0 (February 19, 2010)
+### Version 4.1.0 (February 19, 2020)
 
 - **iOS**: Dropped UIWebView support following [Apple's deprecation notice](https://developer.apple.com/news/?id=12232019b).
 - **iOS**: Updated **InAppBrowser** Cordova plugin to its latest version.
