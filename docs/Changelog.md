@@ -91,6 +91,10 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 - Documentation page for the [Fliplet.Helper](https://developers.fliplet.com/API/fliplet-helper.html) JS API.
 - General improvements to the guidelines and example on the [Output of components](https://developers.fliplet.com/components/Build-output.html#reading-previously-saved-settings) page used when developing custom components for Fliplet apps.
 
+### January 6th
+
+- Updated jQuery to 3.4.1. See [all Fliplet approved libraries](https://developers.fliplet.com/Fliplet-approved-libraries.htm).
+
 ---
 
 ## December 2019
