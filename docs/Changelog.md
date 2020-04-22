@@ -4,7 +4,11 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## April 2020
 
-### April 8th
+### April 22nd
+
+- Adds support for [disabling the download option](https://developers.fliplet.com/API/fliplet-audio-player.html) for audio players.
+
+### April 8th
 
 - New documentation for running [aggregation queries](https://developers.fliplet.com/API/fliplet-datasources.html#run-aggregation-queries) on Data Sources using the built-in Mingo library.
 

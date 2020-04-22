@@ -558,7 +558,7 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
 
 ### `dataPrimaryKey`
 
-(String or Function(`options`) Provide a string to define the data source field name that contains the primary key. The primary key is used as a unique identifier when saving content for the social features, i.e. likes, comments and bookmarks. The primary key is also passed as the `sessionId` query parameter when user visits the allocated Poll, Survey and Question pages.<br><br>You can set this value so that if content is loaded into a different data source of changes entry ID, the social content won't be lost. Alternatively, define a function to return a unique primary key based on the record data (`options.record`).
+(String or Function(`options`)) Provide a string to define the data source field name that contains the primary key. The primary key is used as a unique identifier when saving content for the social features, i.e. likes, comments and bookmarks. The primary key is also passed as the `sessionId` query parameter when user visits the allocated Poll, Survey and Question pages.<br><br>You can set this value so that if content is loaded into a different data source of changes entry ID, the social content won't be lost. Alternatively, define a function to return a unique primary key based on the record data (`options.record`).
 
 To define a custom primary key:
 
