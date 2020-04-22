@@ -93,7 +93,7 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ### January 6th
 
-- Updated jQuery to 3.4.1. See [all Fliplet approved libraries](https://developers.fliplet.com/Fliplet-approved-libraries.htm).
+- Updated jQuery to 3.4.1. See [all Fliplet approved libraries](https://developers.fliplet.com/Fliplet-approved-libraries.html).
 
 ---
 
