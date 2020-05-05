@@ -1,0 +1,29 @@
+{
+  "name": "{{name}}",
+  "package": "{{package}}",
+  "version": "1.0.0",
+  "description": "",
+  "icon": "img/icon.png",
+  "tags": ["type:component", "category:general"],
+  "provider_only": false,
+  "references": [],
+  "html_tag": "div",
+  "interface": {
+    "dependencies": [
+      "vue.js",
+      "fliplet-core",
+      "fliplet-studio-ui",
+      "lodash"
+    ],
+    "assets": [
+      "dist/css/index.css",
+      "dist/app.js"
+    ]
+  },
+  "build": {
+    "dependencies": [
+      "fliplet-core"
+    ],
+    "assets": []
+  }
+}
