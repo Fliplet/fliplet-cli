@@ -4,7 +4,7 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## May 2020
 
-- Adds support for new Vue.js-based boilerplate when creating component interfaces.
+- Adds support for new [Vue.js-based boilerplate](https://developers.fliplet.com/Building-components.html#creating-a-component-interface-using-the-advanced-vuejs-boilerplate) when creating component interfaces.
 
 ## April 2020
 
