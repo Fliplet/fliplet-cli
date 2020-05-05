@@ -12,8 +12,7 @@
     "dependencies": [
       "vue.js",
       "fliplet-core",
-      "fliplet-studio-ui",
-      "lodash"
+      "fliplet-studio-ui"
     ],
     "assets": [
       "dist/css/index.css",
