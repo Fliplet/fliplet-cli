@@ -6,7 +6,8 @@ const program = require('commander');
 
 program
   .version(package.version)
-  .command('create-widget [name]', 'Create a new component.')
+  .command('create-widget [name]', 'Create a new component using the standard jQuery boilerplate.')
+  .command('create-widget [name] --vue', 'Create a new component interface using the advanced Vue.js-based boilerplate.')
   .command('create-theme [name]', 'Create a new theme.')
   .command('create-menu [name]', 'Create a new menu.')
   .command('run', 'Run the current widget or theme for development.')

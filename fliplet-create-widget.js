@@ -10,13 +10,23 @@ if (process.argv.length < 3) {
 }
 
 const widgetName = process.argv[2];
+const boilerplate = (process.argv[3] || '').replace('--', '');
 const safeName = widgetName.trim().toLowerCase().replace(/ /g, '-').replace(/[^A-z0-9-]/g, '');
 const packageName = widgetName.trim().replace(/ /g, '-').toLowerCase();
 const folderPath = path.join(process.cwd(), packageName);
 
 log('Creating new widget', widgetName, 'to', folderPath);
 
-ncp(path.join(__dirname, 'widget-template'), folderPath, function (err) {
+if (boilerplate && boilerplate !== 'vue') {
+  console.log('Chosen boilerplate is not valid.');
+  process.exit();
+}
+
+const template = boilerplate === 'vue'
+  ? 'widget-vue-template'
+  : 'widget-template';
+
+ncp(path.join(__dirname, template), folderPath, function (err) {
   if (err) {
     return console.error(err);
   }
