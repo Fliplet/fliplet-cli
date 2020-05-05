@@ -30,7 +30,9 @@ We'll first focus on the `widget.json`, which is the definition of your componen
 
 ## Creating a component interface using the advanced Vue.js boilerplate
 
-Idf you're building a component interface and want to use the advanced Vue.js-based boilerplate, simply use the `--vue` option as described below:
+If you're building a component interface and want to use the advanced Vue.js-based boilerplate, simply use the `--vue` option as described below.
+
+<p class="warning"><strong>Version 5.1.0 required:</strong> Please note that this feature does require the version 5.1.0 or newer of the Fliplet CLI.</p>
 
 ```
 $ fliplet create-widget "my-awesome-component" --vue
