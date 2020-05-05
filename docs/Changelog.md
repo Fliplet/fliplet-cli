@@ -2,6 +2,10 @@
 
 Each week, we provide changelog notes on this page giving a summary of recent significant changes to the documentation. If there haven't been any significant changes in a given week, we don't publish changelog notes.
 
+## May 2020
+
+- Adds support for new Vue.js-based boilerplate when creating component interfaces.
+
 ## April 2020
 
 ### April 22nd

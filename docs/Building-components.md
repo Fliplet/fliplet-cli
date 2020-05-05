@@ -28,6 +28,16 @@ The above command will run the development server at [http://localhost:3000](htt
 
 We'll first focus on the `widget.json`, which is the definition of your component. If you're used to npm, it's similar to the `package.json` file for npm modules.
 
+## Creating a component interface using the advanced Vue.js boilerplate
+
+Idf you're building a component interface and want to use the advanced Vue.js-based boilerplate, simply use the `--vue` option as described below:
+
+```
+$ fliplet create-widget "my-awesome-component" --vue
+```
+
+Once done, follow the instructions in the `README.md` file in the generated folder to get started.
+
 ## Including external libraries
 
 Components should never include script/link tags to reference external assets (like **vendor libraries**), but rather define them as `assets` via the `widget.json` file. Check the section below for more details.
