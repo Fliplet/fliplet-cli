@@ -510,7 +510,7 @@ module.exports.setup = (agent) => {
 
 ## Encryption
 
-<p class="info">Feature available from <strong>version 1.10</strong> of Fliplet Agent.</p>
+<p class="info">Feature available from <strong>version 1.10.1</strong> of Fliplet Agent.</p>
 
 If you're planning to send sensitive data to a Fliplet Data Source we do recommend enabling encryption for such data.
 
@@ -537,7 +537,7 @@ encrypt:
     - First name
     - Last name
     - Age
-  key: MyPrivateEncryptionKey
+  key: MyPrivateEncryptionKey # optional key
 ```
 
 Or via the advanced JS configuration file:
@@ -560,6 +560,16 @@ That's all there is to it. **Once encryption is enabled, data uploaded to Fliple
 We recommending confirming that the whole process is working as expected by inspecting the uploaded data via the "App data" section of Fliplet Studio. If everything is correct, the columns specified by your script to be encrypted should be shown with encrypted (hence unreadable / meaningless) data in the Fliplet Studio UI.
 
 In regards to **decrypting the data when being read by your apps**, please read the [documentation for the Fliplet Encryption JS APIs](/API/fliplet-encryption.html#set-the-encryptiondecryption-key).
+
+If you didn't provide a key and it's managed by Fliplet, you can fetch it on your apps using the following snippet as documented in detail in the link above:
+
+```js
+// Fetch the key from the keystore
+Fliplet.DataSources.Encryption.KeyStore.getKey().then(function (key) {
+  // Register the key on the device
+  return Fliplet.DataSources.Encryption().setKey(key);
+});
+```
 
 ---
 
@@ -734,6 +744,10 @@ In order to be able to update the agent via **npm**, [registry.npmjs.org](https:
 ---
 
 ## Releases changelog
+
+#### 1.10.1 (May 6th, 2020)
+
+- Support for [data encryption](https://developers.fliplet.com/Data-integration-service.html#encryption).
 
 #### 1.9.2 (February 12th, 2020)
 
