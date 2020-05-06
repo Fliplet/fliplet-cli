@@ -559,7 +559,7 @@ That's all there is to it. **Once encryption is enabled, data uploaded to Fliple
 
 We recommending confirming that the whole process is working as expected by inspecting the uploaded data via the "App data" section of Fliplet Studio. If everything is correct, the columns specified by your script to be encrypted should be shown with encrypted (hence unreadable / meaningless) data in the Fliplet Studio UI.
 
-In regards to **decrypting the data when being read by your apps**, please read the [documentation for the Fliplet Encryption JS APIs](/API/fliplet-encryption.html#set-the-encryptiondecryption-key).
+In regards to **decrypting the data when being read by your apps**, please read the [documentation for the Fliplet Encryption JS APIs](/API/fliplet-encryption.html#get-the-encryption-key-from-the-keystore).
 
 If you didn't provide a key and it's managed by Fliplet, you can fetch it on your apps using the following snippet as documented in detail in the link above:
 
