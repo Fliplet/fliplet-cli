@@ -571,6 +571,10 @@ Fliplet.DataSources.Encryption.KeyStore.getKey().then(function (key) {
 });
 ```
 
+On the other hand, if you have provided your own encryption key you will just need to set it instead of fetching it from the keystore.
+
+Likewise, if you have set up a `salt` you will need to pass it as first argument of the `getKey` method shown above. More documentation can be found [here](/API/fliplet-encryption.html#get-the-encryption-key-from-the-keystore).
+
 ---
 
 ## Synchronization mode
