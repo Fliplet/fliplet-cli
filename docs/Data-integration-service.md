@@ -510,7 +510,7 @@ module.exports.setup = (agent) => {
 
 ## Encryption
 
-<p class="info">Feature available from <strong>version 1.10.1</strong> of Fliplet Agent.</p>
+<p class="info">Feature available from <strong>version 1.10</strong> of Fliplet Agent.</p>
 
 If you're planning to send sensitive data to a Fliplet Data Source we do recommend enabling encryption for such data.
 
@@ -749,7 +749,7 @@ In order to be able to update the agent via **npm**, [registry.npmjs.org](https:
 
 ## Releases changelog
 
-#### 1.10.1 (May 6th, 2020)
+#### 1.10.2 (May 6th, 2020)
 
 - Support for [data encryption](https://developers.fliplet.com/Data-integration-service.html#encryption).
 
