@@ -508,6 +508,61 @@ module.exports.setup = (agent) => {
 
 ---
 
+## Encryption
+
+<p class="info">Feature available from <strong>version 1.10</strong> of Fliplet Agent.</p>
+
+If you're planning to send sensitive data to a Fliplet Data Source we do recommend enabling encryption for such data.
+
+Here's how standards and options for the encryption algorithm and private key:
+
+- **Encryption algorithm**: [AES512](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard).
+- **Encryption key**: you can decide whether the encryption key is provided by you or automatically generated and **managed by Fliplet into a secure keystore for your organization**. In the latter case, **the encryption key itself will be encrypted both at rest and during transit for extra added security**. On the other hand, when the key is provided by you it will never leave your machine so [you will be responsible for distributing this to your apps](/API/fliplet-encryption.html#set-the-encryptiondecryption-key) when the data must be decrypted.
+
+### Enabling encryption
+
+You can enable encryption for your data so that it gets **encrypted by the Fliplet Agent before being sent to Fliplet servers**.
+
+Configuration parameters:
+
+- `fields` (required): an array with the names of the columns to be encrypted. Note that encrypting columns will result in such values not be searchable for some of the app components such as the List from Data Source component.
+- `key` (optional): a 512-bit **encryption key for the data**. If not provided, Fliplet will automatically generate one and manage it in a secure keystore for your organization.
+- `salt` (optional): a 512-bit encryption salt to encrypt the encryption key when this is generated and managed by Fliplet. The system will automatically generate a salt if you don't provide one. Note that this option should not be used when using the `key` parameter.
+
+You can provide the options above via the classic YML configuration file:
+
+```yml
+encrypt:
+  fields:
+    - First name
+    - Last name
+    - Age
+  key: MyPrivateEncryptionKey
+```
+
+Or via the advanced JS configuration file:
+
+```js
+module.exports.setup = (agent) => {
+  agent.push({
+    // Define rest of options here ...
+
+    encrypt: {
+      fields: ['First name', 'Last name', 'Email'],
+      key: 'MyPrivateEncryptionKey', // optional key
+    }
+  });
+};
+```
+
+That's all there is to it. **Once encryption is enabled, data uploaded to Fliplet servers will be encrypted by the Fliplet Agent before it's sent to the Fliplet APIs.**
+
+We recommending confirming that the whole process is working as expected by inspecting the uploaded data via the "App data" section of Fliplet Studio. If everything is correct, the columns specified by your script to be encrypted should be shown with encrypted (hence unreadable / meaningless) data in the Fliplet Studio UI.
+
+In regards to **decrypting the data when being read by your apps**, please read the [documentation for the Fliplet Encryption JS APIs](/API/fliplet-encryption.html#set-the-encryptiondecryption-key).
+
+---
+
 ## Synchronization mode
 
 <p class="info">Available from <strong>version 1.7.1</strong> of Fliplet Agent.</p>
