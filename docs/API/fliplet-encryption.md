@@ -12,6 +12,29 @@ That's it! It's as easy as is sounds.
 
 ## Methods
 
+### Get the encryption key from the keystore
+
+If you're using the **Fliplet Agent to encrypt data and the key is managed by Fliplet**, you can read it from the keystore using the following method:
+
+```js
+// Fetch the key from the keystore
+Fliplet.DataSources.Encryption.KeyStore.getKey().then(function (key) {
+  // use key as necessary
+});
+```
+
+This can be used in conjunction with the `set()` method described below to fetch and register the key on the local device:
+
+```js
+// Fetch the key from the keystore
+Fliplet.DataSources.Encryption.KeyStore.getKey().then(function (key) {
+  // Register the key on the device
+  return Fliplet.DataSources.Encryption().setKey(key);
+});
+```
+
+---
+
 ### Set the encryption/decryption key
 
 When encrypting the contents of a data source, you need to specify an AES (128, 256 or 512) key to encrypt and decrypt such contents. The length of key will drive the encryption type, e.g. use a 32 bytes key for AES256.
