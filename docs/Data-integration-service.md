@@ -514,7 +514,7 @@ module.exports.setup = (agent) => {
 
 If you're planning to send sensitive data to a Fliplet Data Source we do recommend enabling encryption for such data.
 
-Here's how standards and options for the encryption algorithm and private key:
+Here's our standards and options for the encryption algorithm and private key:
 
 - **Encryption algorithm**: [AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) 256 or 512.
 - **Encryption key**: you can decide whether the encryption key is provided by you or automatically generated and **managed by Fliplet into a secure keystore for your organization**. In the latter case, **the encryption key itself will be encrypted both at rest and during transit for extra added security**. On the other hand, when the key is provided by you it will never leave your machine so [you will be responsible for distributing this to your apps](/API/fliplet-encryption.html#set-the-encryptiondecryption-key) when the data must be decrypted.
