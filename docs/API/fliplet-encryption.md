@@ -33,6 +33,15 @@ Fliplet.DataSources.Encryption.KeyStore.getKey().then(function (key) {
 });
 ```
 
+If you have specified a `salt` passphrase for your encryption key, you can specify it as first parameter of the method:
+
+```js
+// Fetch the key from the keystore
+Fliplet.DataSources.Encryption.KeyStore.getKey('mySecretPassphrase').then(function (key) {
+  // use key as necessary
+});
+```
+
 ---
 
 ### Set the encryption/decryption key
