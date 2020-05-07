@@ -167,10 +167,10 @@ files:
 #    directory: /Users/John/Desktop
 
 # Optionally enable encryption for the columns defined in the list
-#encrypt:
-#  fields:
-#    - First name
-#    - Last name
+# encrypt:
+#   fields:
+#     - First name
+#     - Last name
 ```
 
 Once you have a configuration file like the one above saved on disk, starting the agent is as simple as running the `start` command from your shell. While you are setting up the configuration we also suggest using the `--test` option to perform a dry run and test out the integration without actually sending data to Fliplet servers:
