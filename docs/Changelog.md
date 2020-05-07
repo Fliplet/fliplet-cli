@@ -4,6 +4,10 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## May 2020
 
+### May 6th
+
+- Published new [Fliplet Agent](https://developers.fliplet.com/Data-integration-service.html#encryption) version (1.10) with support for [encrypting columns](https://developers.fliplet.com/Data-integration-service.html#encryption).
+
 - Adds support for new [Vue.js-based boilerplate](https://developers.fliplet.com/Building-components.html#creating-a-component-interface-using-the-advanced-vuejs-boilerplate) when creating component interfaces.
 
 ## April 2020
