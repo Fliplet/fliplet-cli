@@ -13,12 +13,14 @@ A theme consist in:
 
 Use the `create-theme` command of the CLI to create your theme:
 
-```
+```bash
 $ fliplet create-theme "my-awesome-theme"
+```
 
 Creating new theme my-awesome-theme to /Users/nicholas/my-awesome-theme
 Theme has been successfully created. To run it for development:
 
+```bash
 $ cd my-awesome-theme
 $ fliplet run
 ```
@@ -65,7 +67,7 @@ The theme configuration can be specified via the `settings.configuration` array 
 
 Themes can inherit properties and assets from other themes by listing their package names under the `settings.inherits` array:
 
-```
+```json
 {
   "inherits": ["com.fliplet.theme.default"]
 }
@@ -75,7 +77,7 @@ Themes can inherit properties and assets from other themes by listing their pack
 
 If you want to provide default values for the configurations of the theme you inherit, like your branding options, you can define them as key/values of the `defaults` object in the settings of the theme:
 
-```
+```json
 {
   "defaults": {
     "bodyBackground": "#FF0000"
@@ -87,7 +89,7 @@ If you want to provide default values for the configurations of the theme you in
 
 When you inherit from one or more themes, all their configurations will be available unless `showInheritedConfigurations` is set to `false` or an array. If it's set as an array you can include the name of the configuration groups or single options you want to display to the user:
 
-```
+```json
 {
   "showInheritedConfigurations": ["General layouts", "introBodyBackground"]
 }
