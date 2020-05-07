@@ -583,3 +583,40 @@ ul > li > ul {
     display: none;
   }
 }
+
+div.highlighter-rouge[class|="language"] {
+  position: relative;
+
+  &:before {
+    background: lighten(#36344c, 30%);
+    color: white;
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    font-size: 12px;
+    padding: 1px 13px;
+    border-top-left-radius: 0.3rem;
+    border-top-right-radius: 0.3rem;
+  }
+
+  pre.highlight {
+    padding-top: 31px;
+  }
+}
+
+.language-bash:before {
+  content: "SHELL";
+}
+
+.language-yml:before {
+  content: "YML (YAML)";
+}
+
+.language-js:before {
+  content: "JAVASCRIPT";
+}
+
+.language-handlebars:before {
+  content: "HANDLEBARS";
+}
