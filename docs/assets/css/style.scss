@@ -605,6 +605,10 @@ div.highlighter-rouge[class|="language"] {
   }
 }
 
+.language-plaintext:before {
+  content: ">";
+}
+
 .language-bash:before {
   content: "SHELL";
 }
