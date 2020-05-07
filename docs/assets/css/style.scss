@@ -613,6 +613,10 @@ div.highlighter-rouge[class|="language"] {
   content: "YML (YAML)";
 }
 
+.language-json:before {
+  content: "JSON";
+}
+
 .language-js:before {
   content: "JAVASCRIPT";
 }
