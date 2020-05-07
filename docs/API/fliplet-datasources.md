@@ -194,8 +194,8 @@ connection.find({
     }
   ]
 }).then(function (records) {
-
-})
+  // user records as required
+});
 ```
 
 Please refer to the [Mingo](https://github.com/kofrasa/mingo) documentation to read more about all the different usages and types of aggregation queries.
