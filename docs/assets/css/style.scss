@@ -605,30 +605,30 @@ div.highlighter-rouge[class|="language"] {
   }
 }
 
-.language-plaintext:before {
+div.language-plaintext:before {
   content: ">";
 }
 
-.language-bash:before {
+div.language-bash:before {
   content: "SHELL";
 }
 
-.language-yml:before {
+div.language-yml:before {
   content: "YML (YAML)";
 }
 
-.language-json:before {
+div.language-json:before {
   content: "JSON";
 }
 
-.language-js:before {
+div.language-js:before {
   content: "JAVASCRIPT";
 }
 
-.language-handlebars:before {
+div.language-handlebars:before {
   content: "HANDLEBARS";
 }
 
-.language-html:before {
+div.language-html:before {
   content: "HTML";
 }
