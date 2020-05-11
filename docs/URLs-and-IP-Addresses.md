@@ -15,7 +15,7 @@ Fliplet Studio, Fliplet Web and Native apps as well as Fliplet Agent (DIS) make 
 - cdn.fliplet.com
 - cdn.api.fliplet.com
 
-US customers will also need to whitelist the following domains:
+**US customers** will also need to whitelist the following domains:
 
 - us.api.fliplet.com
 - us.cdn.fliplet.com
@@ -27,7 +27,7 @@ US customers will also need to whitelist the following domains:
 
 - apps.fliplet.com
 
-US customers will also need to whitelist the following domain:
+**US customers** will also need to whitelist the following domain:
 
 - us-apps.fliplet.com
 
