@@ -11,9 +11,9 @@ Note that using static IP address filtering is not considered a safe and effecti
 
 Fliplet Studio, Fliplet Web and Native apps as well as Fliplet Agent (DIS) make use of the following URLs:
 
-- api.fliplet.com
-- cdn.fliplet.com
-- cdn.api.fliplet.com
+- `api.fliplet.com`
+- `cdn.fliplet.com`
+- `cdn.api.fliplet.com`
 
 **US customers** will also need to whitelist the following domains:
 
