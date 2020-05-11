@@ -44,6 +44,7 @@ To get a brief introduction to the technologies we use and the stack of the plat
 10. Advanced documentation
   - [Infrastructure Data flow](Data-flow.md)
   - [Setting up encryption](API/fliplet-encryption.md)
+  - [URLs and IP Addresses](URLs-and-IP-Addresses.md)
   - [Using providers](components/Using-Providers.md)
   - [Data Source Hooks](Data-Source-Hooks.md)
   - [Dependencies and assets when building themes and components](Dependencies-and-assets.md)
