@@ -6,6 +6,7 @@
 
 Note that using static IP address filtering is not considered a safe and effective means of protection. For example, an attacker could set up a malicious Fliplet app which could share the same IP address range as your app. Instead, we suggest that you take a [defense in depth](https://en.wikipedia.org/wiki/Defense_in_depth_(computing)) approach using Single-Sign-On (e.g. SAML2).
 
+In regards to ports, you must allow traffic for **TCP ports 80 and 443**.
 
 ## URLs for all Fliplet Services
 
