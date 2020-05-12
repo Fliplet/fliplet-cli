@@ -527,7 +527,7 @@ Here's our standards and options for the encryption algorithm and private key:
 
 ### Keystore
 
-<p class="info subtle">As mentioned above, the encryption key for your data source can be managed by Fliplet. <strong>This is our recommended approach</strong> since it ensures optimal security throughout the process with no additional effort from your organization.</p>
+<p class="quote">As mentioned above, the encryption key for your data source can be managed by Fliplet. <strong>This is our recommended approach</strong> since it ensures optimal security throughout the process with no additional effort from your organization.</p>
 
 The keystore is a securely managed data source within your organization, completely hidden from the Fliplet Studio UI but optionally accessible via our programmable APIs if you require fine tuning.
 
@@ -586,7 +586,7 @@ That's all there is to it. **Once encryption is enabled, data uploaded to Fliple
 
 We recommending confirming that the whole process is working as expected by inspecting the uploaded data via the "App data" section of Fliplet Studio. If everything is correct, the columns specified by your script to be encrypted should be shown with encrypted (hence unreadable / meaningless) data in the Fliplet Studio UI.
 
-In regards to **decrypting the data when being read by your apps**, please read the [documentation for the Fliplet Encryption JS APIs](/API/fliplet-encryption.html#get-the-encryption-key-from-the-keystore).
+<p class="quote">In regards to <strong>decrypting the data when being read by your apps</strong>, please read the <a href="https://developers.fliplet.com/API/fliplet-encryption.html#get-the-encryption-key-from-the-keystore">documentation for the Fliplet Encryption JS APIs</a>.</p>
 
 If you didn't provide a key and it's managed by Fliplet, you can fetch it on your apps using the following snippet as documented in detail in the link above:
 
