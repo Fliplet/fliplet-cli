@@ -537,14 +537,14 @@ This encryption key is used to locally encrypt your data before it's sent to Fli
 
 For extra added security, the encryption key itself can be encrypted using a salt provided by you (which is never sent to Fliplet servers). If you don't choose a salt we'll generate one for you and keep it in sync with your apps.
 
-To recap, here's the actions flow Fliplet Agent automatically takes care of:
+**To recap, here's the actions flow Fliplet Agent automatically takes care of:**
 
 1. Fliplet Agent fetches the encryption key from the keystore.
 2. If the key does not exist, a random 512-bits key is generated, encrypted and safely uploaded to the keystore.
 3. Fliplet Agent decrypts the key and uses it to encrypt your data with AES (256 or 512) before it's sent.
 4. Encrypted data is sent to Fliplet.
 
-Your apps can then decrypt the data following this simple flow:
+**Your apps can then decrypt the data following this simple flow:**
 
 1. On user login (e.g. Single-Sign-On), the device receives the decryption key from the keystore.
 2. The device decrypts the key and saves it locally.
@@ -552,9 +552,7 @@ Your apps can then decrypt the data following this simple flow:
 
 ### Enabling encryption
 
-You can enable encryption for your data so that it gets **encrypted by the Fliplet Agent before being sent to Fliplet servers**.
-
-Configuration parameters:
+Enabling encryption only takes a few seconds, at minimum you only need to define the list of columns (fields) to encrypt. See all our configuration options and examples below:
 
 - `fields` (required): an array with the names of the columns to be encrypted. Note that encrypting columns will result in such values not be searchable for some of the app components such as the List from Data Source component.
 - `key` (optional): a 512-bit **encryption key for the data**. If not provided, Fliplet will automatically generate one and manage it in a secure keystore for your organization.
