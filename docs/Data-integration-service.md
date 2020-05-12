@@ -525,9 +525,9 @@ Here's our standards and options for the encryption algorithm and private key:
 - **Encryption algorithm**: [AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) 256 or 512.
 - **Encryption key**: you can decide whether the encryption key is provided by you or automatically generated and **managed by Fliplet into a secure keystore for your organization**. In the latter case, **the encryption key itself will be encrypted both at rest and during transit for extra added security**. On the other hand, when the key is provided by you it will never leave your machine so [you will be responsible for distributing this to your apps](/API/fliplet-encryption.html#set-the-encryptiondecryption-key) when the data must be decrypted.
 
-### Encryption Keystore
+### Keystore
 
-As mentioned above, the encryption key for your data source can be managed by Fliplet. **This is our recommended approach** as it ensures optimal security throughout the process with no effort from your organization.
+<p class="info subtle">As mentioned above, the encryption key for your data source can be managed by Fliplet. <strong>This is our recommended approach</strong> since it ensures optimal security throughout the process with no additional effort from your organization.</p>
 
 The keystore is a securely managed data source within your organization, completely hidden from the Fliplet Studio UI but optionally accessible via our programmable APIs if you require fine tuning.
 
@@ -550,7 +550,7 @@ For extra added security, the encryption key itself can be encrypted using a sal
 2. The device decrypts the key and saves it locally.
 3. When retrieving or displaying data, the device receives encrypted data which is then decrypted on-device using the locally stored decryption key.
 
-### Enabling encryption
+### How to enable encryption
 
 Enabling encryption only takes a few seconds, at minimum you only need to define the list of columns (fields) to encrypt. See all our configuration options and examples below:
 
