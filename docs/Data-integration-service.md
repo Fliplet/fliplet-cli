@@ -525,6 +525,31 @@ Here's our standards and options for the encryption algorithm and private key:
 - **Encryption algorithm**: [AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) 256 or 512.
 - **Encryption key**: you can decide whether the encryption key is provided by you or automatically generated and **managed by Fliplet into a secure keystore for your organization**. In the latter case, **the encryption key itself will be encrypted both at rest and during transit for extra added security**. On the other hand, when the key is provided by you it will never leave your machine so [you will be responsible for distributing this to your apps](/API/fliplet-encryption.html#set-the-encryptiondecryption-key) when the data must be decrypted.
 
+### The Fliplet Keystore
+
+As mentioned above, the encryption key for your data source can be managed by Fliplet. **This is our recommended approach** as it ensures optimal security throughout the process with no effort from your organization.
+
+The keystore is a securely managed data source within your organization, completely hidden from the Fliplet Studio UI but optionally accessible via our programmable APIs if you require fine tuning.
+
+**Fliplet Agent generates a random 512-bits encryption key** which gets encrypted locally before being sent to Fliplet servers using HTTPS (TSL 1.3) to be stored encrypted at rest in your organization's keystore. This key is never stored on your computer as the Fliplet Agent will automatically fetch and decrypt the key from the keystore whenever it starts up.
+
+This encryption key is used to locally encrypt your data before it's sent to Fliplet servers and it's never transmitted to our servers aside from the initial request where the key is saved into the keystore if it doesn't exist already.
+
+For extra added security, the encryption key itself can be encrypted using a salt provided by you (which is never sent to Fliplet servers). If you don't choose a salt we'll generate one for you and keep it in sync with your apps.
+
+To recap, here's the actions flow Fliplet Agent automatically takes care of:
+
+1. Fliplet Agent fetches the encryption key from the keystore.
+2. If the key does not exist, a random 512-bits key is generated, encrypted and safely uploaded to the keystore.
+3. Fliplet Agent decrypts the key and uses it to encrypt your data with AES (256 or 512) before it's sent.
+4. Encrypted data is sent to Fliplet.
+
+Your apps can then decrypt the data following this simple flow:
+
+1. On user login (e.g. Single-Sign-On), the device receives the decryption key from the keystore.
+2. The device decrypts the key and saves it locally.
+3. When retrieving or displaying data, the device receives encrypted data which is then decrypted on-device using the locally stored decryption key.
+
 ### Enabling encryption
 
 You can enable encryption for your data so that it gets **encrypted by the Fliplet Agent before being sent to Fliplet servers**.
@@ -535,7 +560,7 @@ Configuration parameters:
 - `key` (optional): a 512-bit **encryption key for the data**. If not provided, Fliplet will automatically generate one and manage it in a secure keystore for your organization.
 - `salt` (optional): a 512-bit encryption salt to encrypt the encryption key when this is generated and managed by Fliplet. The system will automatically generate a salt if you don't provide one. Note that this option should not be used when using the `key` parameter.
 
-You can provide the options above via the classic YML configuration file:
+You can provide the options above via the classic YML configuration file. Here's the most basic example to get you started using encryption:
 
 ```yml
 encrypt:
@@ -543,7 +568,6 @@ encrypt:
     - First name
     - Last name
     - Age
-  key: MyPrivateEncryptionKey # optional key
 ```
 
 Or via the advanced JS configuration file:
@@ -554,8 +578,7 @@ module.exports.setup = (agent) => {
     // Define rest of options here ...
 
     encrypt: {
-      fields: ['First name', 'Last name', 'Email'],
-      key: 'MyPrivateEncryptionKey', // optional key
+      fields: ['First name', 'Last name', 'Email']
     }
   });
 };
