@@ -576,7 +576,7 @@ module.exports.setup = (agent) => {
     // Define rest of options here ...
 
     encrypt: {
-      fields: ['First name', 'Last name', 'Email']
+      fields: ['First name', 'Last name', 'Age']
     }
   });
 };
