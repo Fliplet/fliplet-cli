@@ -1,3 +1,5 @@
+[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/Fliplet/fliplet-cli) 
+
 # Fliplet CLI
 Command line utility for creating and running components, themes and menus to be used on the Fliplet platform.
 
