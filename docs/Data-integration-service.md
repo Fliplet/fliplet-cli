@@ -527,9 +527,9 @@ Here's our standards and options for the encryption algorithm and private key:
 
 ### Keystore
 
-<p class="quote">As mentioned above, the encryption key for your data source can be managed by Fliplet. <strong>This is our recommended approach</strong> since it ensures optimal security throughout the process with no additional effort from your organization.</p>
-
 The keystore is a securely managed data source within your organization, completely hidden from the Fliplet Studio UI but optionally accessible via our programmable APIs if you require fine tuning.
+
+<p class="quote">Note: <strong>Leaving key management to Fliplet via its Keystore is our recommended approach</strong> since it ensures optimal security throughout the process with no additional effort from your organization.</p>
 
 **Fliplet Agent generates a random 512-bits encryption key** which gets encrypted locally before being sent to Fliplet servers using HTTPS (TSL 1.3) to be stored encrypted at rest in your organization's keystore. This key is never stored on your computer as the Fliplet Agent will automatically fetch and decrypt the key from the keystore whenever it starts up.
 
