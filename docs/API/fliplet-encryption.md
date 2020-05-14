@@ -1,8 +1,8 @@
-# Encrypt the content of data sources
+# Encryption JS APIs
 
-Adding encryption on Data Sources requires just a few lines of code. Here's how it works:
+Adding automatic encryption and decryption on Data Sources when being used in your apps requires just a few lines of code. Here's how it works:
 
-1. Add the `fliplet-encryption` Fliplet package to your **global resources** (*Developer options > Global > Settings > Resources*) to enable encryption and decryption functionalities in your Fliplet app
+1. Add the `fliplet-encryption` Fliplet package to your app's **global resources** (*Developer options > Global > Settings > Resources*) to enable encryption and decryption functionalities in your Fliplet app
 2. [Set up the encryption/decryption](#set-the-encryptiondecryption-key) private key in one of your **Screen Javascript** code (most likely when the user logs in)
 3. In your **Global JavaScript**, [specify a list of Data Sources to encrypt](#set-up-encryption-on-a-data-source-across-the-app) along with the list of columns that should be encrypted.
 
@@ -48,13 +48,15 @@ Fliplet.DataSources.Encryption.KeyStore.getKey('mySecretPassphrase').then(functi
 
 When encrypting the contents of a data source, you need to specify an AES (128, 256 or 512) key to encrypt and decrypt such contents. The length of key will drive the encryption type, e.g. use a 32 bytes key for AES256.
 
+<p class="quote">You must likely want to run this command once a user logs in. See below for complete examples.</p>
+
 ```js
-// Use an arbitrary key
+// Use an arbitrary key (as salt for a generated AES512 key)
 Fliplet.DataSources.Encryption().setKey('foo');
 ```
 
 ```js
-// or using a 32 byte key for AES256
+// or using a 32 byte key for AES512
 Fliplet.DataSources.Encryption().setKey('3581e5305707b61fb3931346b5826e5c');
 ```
 
@@ -81,7 +83,7 @@ Fliplet.DataSources.Encryption().encrypt(dataSourceId, arrayOfFieldsToEncrypt);
 Here's a fully working example:
 
 ```js
-// Add this to the Global JS
+// Add this to the Global JS of your app
 Fliplet.DataSources.Encryption().encrypt(123, [
   'First name', 'Last name', 'Bio'
 ]);
