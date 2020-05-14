@@ -46,9 +46,11 @@ Fliplet.DataSources.Encryption.KeyStore.getKey('mySecretPassphrase').then(functi
 
 ### Set the encryption/decryption key
 
-When encrypting the contents of a data source, you need to specify an AES (128, 256 or 512) key to encrypt and decrypt such contents. The length of key will drive the encryption type, e.g. use a 32 bytes key for AES256.
+When encrypting the contents of a data source, you need to specify an AES (128, 256 or 512) key to encrypt and decrypt such contents. The length of key will drive the encryption type, e.g. use a 32 bytes key for AES512.
 
-<p class="quote">You must likely want to run this command once a user logs in. See below for complete examples.</p>
+<p class="quote">Note: You must likely want to run this command once a user logs in. See below for complete examples.</p>
+
+Setting a key is as simple as running the following JS API:
 
 ```js
 // Use an arbitrary key (as salt for a generated AES512 key)
