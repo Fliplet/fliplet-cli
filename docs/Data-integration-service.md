@@ -776,6 +776,10 @@ In order to be able to update the agent via **npm**, [registry.npmjs.org](https:
 
 ## Releases changelog
 
+#### 1.10.3 (Mat 14th, 2020)
+
+- Fixes for connection issues (ENOTFOUND error) happening under certain conditions.
+
 #### 1.10.2 (May 6th, 2020)
 
 - Support for [data encryption](https://developers.fliplet.com/Data-integration-service.html#encryption).
