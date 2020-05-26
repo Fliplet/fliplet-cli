@@ -4,6 +4,10 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## May 2020
 
+### May 26th
+
+- Added new documentation for the [Fliplet.App.getPublicSlug()](https://developers.fliplet.com/API/fliplet-core.html#get-the-public-url-of-the-current-app) method.
+
 ### May 11th
 
 - Published new documentation on [Fliplet URLs and IP Addresses](https://developers.fliplet.com/URLs-and-IP-Addresses.html).
