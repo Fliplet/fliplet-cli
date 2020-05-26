@@ -725,9 +725,18 @@ Fliplet.Pages.get().then(function (appPages) {
 });
 ```
 
+### Get the public URL of the current app
+
+Use the `Fliplet.App.getPublicSlug()` method to get the public URL of the current app. Note that this only works if you have enabled shareable URLs via Fliplet Studio under the App Settings.
+
+```js
+// e.g. "https://apps.fliplet.test/foo-bar"
+var url = Fliplet.App.getPublicSlug();
+```
+
 ### Get the public URL of the current screen
 
-Use the `getPublicSlug()` method to get the public URL of the current screen. Note that this only works if you have enabled shareable URLs via Fliplet Studio under the App Settings.
+Use the `Fliplet.Page.getPublicSlug()` method to get the public URL of the current screen. Note that this only works if you have enabled shareable URLs via Fliplet Studio under the App Settings.
 
 ```js
 // e.g. "https://apps.fliplet.test/foo-bar/my-screen-abc"
