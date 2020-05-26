@@ -568,6 +568,17 @@ encrypt:
     - Age
 ```
 
+And here's an example providing a custom encryption key:
+
+```yml
+encrypt:
+  fields:
+    - First name
+    - Last name
+    - Age
+  key: MySuperSecretEncryptionKey
+```
+
 Or via the advanced JS configuration file:
 
 ```js
