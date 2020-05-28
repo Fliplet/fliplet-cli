@@ -795,7 +795,11 @@ In order to be able to update the agent via **npm**, [registry.npmjs.org](https:
 
 ## Releases changelog
 
-#### 1.10.3 (Mat 14th, 2020)
+#### 1.10.5 (May 28th, 2020)
+
+- Added support for extending columns (e.g. merge data from both sides) when data source entries are sent to Fliplet servers. This can be enabled via the new `extend: true` option.
+
+#### 1.10.3 (May 14th, 2020)
 
 - Fixes for connection issues (ENOTFOUND error) happening under certain conditions.
 
