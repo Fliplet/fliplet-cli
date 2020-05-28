@@ -4,6 +4,10 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## May 2020
 
+### May 28th
+
+- Added support for extending data source entries when in sync with the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html) via the new `extend: true` option.
+
 ### May 26th
 
 - Added new documentation for the [Fliplet.App.getPublicSlug()](https://developers.fliplet.com/API/fliplet-core.html#get-the-public-url-of-the-current-app) method.

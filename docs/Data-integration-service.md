@@ -150,6 +150,10 @@ run_hooks:
 #  - "insert"
 #  - "update"
 
+# Define whether updating entries will merge local columns with remote columns.
+# This is useful if your data is updated by Fliplet Apps.
+extend: true
+
 # Define what columns in your local database rows are URLs to remote or local files
 # to be sync to Fliplet servers when inserting or updating rows.
 files:
@@ -310,6 +314,10 @@ module.exports.setup = (agent) => {
     // Define which (optional) post-sync hooks should run on the data source data when received
     // by Fliplet servers. Hook types are "insert" and "update"
     runHooks: [],
+
+    // Define whether updating entries will merge local columns with remote columns.
+    // This is useful if your data is updated by Fliplet Apps.
+    extend: true,
 
     files: [
       // Define a column containing a remote URL to a file, e.g. "https://example.org/John.jpg"
