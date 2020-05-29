@@ -152,7 +152,7 @@ run_hooks:
 
 # Define whether updating entries will merge local columns with remote columns.
 # This is useful if your data is updated by Fliplet Apps.
-extend: true
+merge: true
 
 # Define what columns in your local database rows are URLs to remote or local files
 # to be sync to Fliplet servers when inserting or updating rows.
@@ -317,7 +317,7 @@ module.exports.setup = (agent) => {
 
     // Define whether updating entries will merge local columns with remote columns.
     // This is useful if your data is updated by Fliplet Apps.
-    extend: true,
+    merge: true,
 
     files: [
       // Define a column containing a remote URL to a file, e.g. "https://example.org/John.jpg"
@@ -795,9 +795,9 @@ In order to be able to update the agent via **npm**, [registry.npmjs.org](https:
 
 ## Releases changelog
 
-#### 1.10.5 (May 28th, 2020)
+#### 1.10.6 (May 28th, 2020)
 
-- Added support for extending columns (e.g. merge data from both sides) when data source entries are sent to Fliplet servers. This can be enabled via the new `extend: true` option.
+- Added support for merging columns (e.g. merge data from both sides) when data source entries are sent to Fliplet servers. This can be enabled via the new `merge: true` option.
 
 #### 1.10.3 (May 14th, 2020)
 

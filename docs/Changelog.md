@@ -6,7 +6,7 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ### May 28th
 
-- Added support for extending data source entries when in sync with the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html) via the new `extend: true` option.
+- Added support for merging data source entries when in sync with the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html) via the new `merge: true` option.
 
 ### May 26th
 
