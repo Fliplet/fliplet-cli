@@ -4,6 +4,7 @@ jobs:
     machine: true
     steps:
       - checkout
+      - run: rvm install 2.4 && echo . $(rvm 2.4 do rvm env --path) >> $BASH_ENV
       - run: cd docs && gem install bundler && bundle install && bundle exec jekyll algolia
       - run: npm install
       - run: npm link && echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
