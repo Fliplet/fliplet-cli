@@ -63,6 +63,7 @@ These variables are usually available on app screens as long as components and p
 - `appName` - the current app name
 - `appPages` - array of pages for the current app
 - `appSettings` - object with public settings for the current app
+- `appSlug` - string with the public slug (URI) for the current app
 - `appUpdatedAt` - timestamp set to the last time a change has been made via Fliplet Studio to the current app
 - `appVersion` - number pointing to the app's version (when using Fliplet Viewer, its value will be `(DEV)`)
 - `appTemplate` - boolean indicating whether the app is a template
@@ -71,6 +72,7 @@ These variables are usually available on app screens as long as components and p
 - `interact` - `true / false` true when you are in edit mode in Fliplet Studio
 - `masterAppId` - when called from a live app, returns the ID of the master app seen through Fliplet Studio
 - `mode` - `'preview' / 'view' / 'interact'`
+- `demo` - boolean indicating whether the app is running in demo mode (e.g. when browsed via app previews)
 - `organizationName` - the user's organization name
 - `organizationId` - the user's organization id
 - `pageId` - the current page id

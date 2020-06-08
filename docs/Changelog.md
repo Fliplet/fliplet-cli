@@ -2,6 +2,13 @@
 
 Each week, we provide changelog notes on this page giving a summary of recent significant changes to the documentation. If there haven't been any significant changes in a given week, we don't publish changelog notes.
 
+## June 2020
+
+- New documentation for setting up a [test SAML2 integration with Auth0](https://developers.fliplet.com/API/integrations/sso-saml2.html#set-up-a-test-saml2-integration-with-auth0).
+- New JavaScript environment variable `demo` available via `Fliplet.Env.get('demo')`.
+
+---
+
 ## May 2020
 
 ### May 28th
