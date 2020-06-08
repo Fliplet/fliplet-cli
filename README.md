@@ -42,6 +42,8 @@ gem install bundler
 bundle install
 ```
 
+You may need to install `sudo apt-get install ruby-dev` in order for the bundle install to succeed on some systems. This is due to the `nokogiri` gem requiring `ruby-dev` to be compiled.
+
 Run Jekyll locally:
 
 ```

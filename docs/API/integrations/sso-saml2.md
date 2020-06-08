@@ -84,6 +84,40 @@ Fliplet.User.getCachedSession().then(function (session) {
 
 ---
 
+## Set up a test SAML2 integration with Auth0
+
+While developing your app it may be useful to have a sample test account for SAML2 so you can fully test your integration and any custom code requiring SAML2 data. We do recommend using [Auth0](auth0.com) as the setup is quite simple and only requires a free account.
+
+Create a free account on **Auth0**, then go to the **Applications** tab and **create a new application**:
+
+![SAML2](../../assets/img/saml/auth0-1.png)
+
+Type a name for your application and choose **Regular web applications** for the application type. Click on the **Add-ons** tab and then enable the **SAML2 Web app** add-on.
+
+You will now need to get the **Application Callback URL** from your Fliplet app. Open Fliplet Studio, copy the URL to the Provider metadata and open it in a new tab as shown below:
+
+![SAML2](../../assets/img/saml/auth0-2.png)
+
+You will need to copy the callback URL and paste it to the Auth0 configuration interface:
+
+![SAML2](../../assets/img/saml/auth0-3.png)
+
+![SAML2](../../assets/img/saml/auth0-4.png)
+
+Click on the **Usage** tab, **download the Auth0 certificate** and **copy the Identity Provider Login URL**:
+
+![SAML2](../../assets/img/saml/auth0-5.png)
+
+You will need to open the Auth0 certificate with a text editor, copy the file contents and paste it to the SAML2 configuration interface in Fliplet Studio in the **Your identity provider certificate(s)** textarea. The Identity provider login URL must also be pasted in the **Single sign-on login URL**:
+
+![SAML2](../../assets/img/saml/auth0-6.png)
+
+Finally, click on the **Settings** tab of the Auth0 interface, then scroll to the bottom of the modal window and click the blue **Enable** button, then close the modal window.
+
+Save the interface settings for SAML2 in Fliplet Studio by clicking **Save & Close**, then preview your app to initiate the SAML2 Single-Sign-On.
+
+---
+
 ## Third-party reference docs
 
 The following links might help you and your IT to configure the integration. Please use the link depending on the backend system you use:
