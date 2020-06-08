@@ -116,6 +116,8 @@ Finally, click on the **Settings** tab of the Auth0 interface, then scroll to th
 
 Save the interface settings for SAML2 in Fliplet Studio by clicking **Save & Close**, then preview your app to initiate the SAML2 Single-Sign-On.
 
+By default, Auth0 is configured to allow users to log in using their Google account, which makes testing ever easier since you don't have to configure additional users tables in Auth0 if you have a google account.
+
 ---
 
 ## Third-party reference docs
