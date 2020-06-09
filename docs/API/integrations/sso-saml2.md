@@ -86,7 +86,7 @@ Fliplet.User.getCachedSession().then(function (session) {
 
 ## Set up a test SAML2 integration with Auth0
 
-While developing your app it may be useful to have a sample test account for SAML2 so you can fully test your integration and any custom code requiring SAML2 data. We do recommend using [Auth0](auth0.com) as the setup is quite simple and only requires a free account.
+While developing your app it may be useful to have a sample test account for SAML2 so you can fully test your integration and any custom code requiring SAML2 data. We do recommend using [Auth0](https://auth0.com) as the setup is quite simple and only requires a free account.
 
 Create a free account on **Auth0**, then go to the **Applications** tab and **create a new application**:
 
@@ -98,7 +98,7 @@ You will now need to get the **Application Callback URL** from your Fliplet app.
 
 ![SAML2](../../assets/img/saml/auth0-2.png)
 
-You will need to copy the callback URL and paste it to the Auth0 configuration interface:
+Once the URL has opened and a XML is shown on the browser, you will need to copy the callback URL and paste it to the Auth0 configuration interface:
 
 ![SAML2](../../assets/img/saml/auth0-3.png)
 
