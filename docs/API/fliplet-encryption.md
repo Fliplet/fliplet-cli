@@ -93,6 +93,8 @@ Fliplet.DataSources.Encryption().encrypt(123, [
 
 The system will take care of both encrypting and decrypting content of data sources for you. No additional code will be required aside from setting up the encryption key.
 
+<p class="quote">Note: After enabling encryption all features in your app will utilise it, <strong>you do not need to add any further code or settings</strong> to your app or components.</p>
+
 ---
 
 ### Clear the encryption/decryption key
