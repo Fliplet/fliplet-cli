@@ -795,6 +795,10 @@ In order to be able to update the agent via **npm**, [registry.npmjs.org](https:
 
 ## Releases changelog
 
+#### 1.10.7 (June 17th, 2020)
+
+- Added an error when the user tries to encrypt the primary key (which is not supported).
+
 #### 1.10.6 (May 28th, 2020)
 
 - Added support for merging columns (e.g. merge data from both sides) when data source entries are sent to Fliplet servers. This can be enabled via the new `merge: true` option.
