@@ -14,6 +14,32 @@ Each hook requires the following properties:
 
 ---
 
+## Hook conditions
+
+Hooks can specify an array of objects to define a list of matching conditions that should be satisfied in order to trigger the hook. These supports [Sift.js](https://github.com/Fliplet/sift.js) operators as long as string matching.
+
+See the example below where we have set up a hook to automatically add a column named "Approved" to a data source entry when it is added given the Email column has a Fliplet domain:
+
+```json
+[
+  {
+    "type": "operations",
+    "runOn": [ "insert" ],
+    "payload": {
+      "Approved": "Yes"
+    },
+    "conditions": [
+      {
+        "Email": {
+          "$regex": ".+@fliplet.com$"
+        }
+      }
+    ]
+  }
+]
+```
+
+
 ## Hook types
 
 ### Send a push notification
