@@ -46,6 +46,10 @@ Sample response for the above methods:
       "organizationId": 123,
       "path": "apps/1/2895a2611b753a74f2ae5097411579e4223-234-2632.jpg",
       "size": [ 640, 480 ],
+      "metadata": {
+        "size": 10438,
+        "checksum": "29b5d83988d3d4c28af2109418674e20"
+      },
       "thumbnail": "https://path/to/thumbnail.jpg",
       "updatedAt": "2019-01-07T16:58:43.619Z",
       "url": "https://path/to/secure-file.jpg",
@@ -67,7 +71,11 @@ Sample response for the above methods:
 }
 ```
 
-Note: `parentId` on a folder indicates whether this folder is a subfolder of another folder. If you want to query for all subfolders of a folder, provide the `folderId` parameter to the above JS APIs with the required ID.
+Notes:
+
+- `parentId` on a folder indicates whether this folder is a subfolder of another folder. If you want to query for all subfolders of a folder, provide the `folderId` parameter to the above JS APIs with the required ID.
+- `size` is an array with the width and height for images.
+- `metadata` is an object containing the file size in bytes and its md5 checksum.
 
 ### Create a new folder
 
