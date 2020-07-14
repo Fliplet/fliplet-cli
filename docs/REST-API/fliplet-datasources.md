@@ -14,6 +14,7 @@ Table of contents
   * [Update a data source attributes](#update-a-data-source-attributes)
   * [Delete a data source and its entries from the system](#delete-a-data-source-and-its-entries-from-the-system)
   * [Bulk-import entries for a data source](#bulk-import-entries-for-a-data-source)
+  * [Commit a series of changes to a data source](#commit-a-series-of-changes-to-a-data-source)
   * [Run queries on a data source](#run-queries-on-a-data-source)
   * [Get a data source entry by its ID](#get-a-data-source-entry-by-its-id)
   * [Insert a new entry to a data source](#insert-a-new-entry-to-a-data-source)

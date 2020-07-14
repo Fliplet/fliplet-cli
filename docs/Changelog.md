@@ -2,6 +2,12 @@
 
 Each week, we provide changelog notes on this page giving a summary of recent significant changes to the documentation. If there haven't been any significant changes in a given week, we don't publish changelog notes.
 
+## July 2020
+
+### July 14th
+
+- New documentation for the [Data Source commit endpoint](https://developers.fliplet.com/REST-API/fliplet-datasources.html#commit-a-series-of-changes-to-a-data-source).
+
 ## June 2020
 
 ### June 23rd
