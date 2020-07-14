@@ -280,13 +280,48 @@ Request body:
 {
   "append": true,
   "entries": [
-    { "email": "ibroom@fliplet.com" },
-    { "email": "nvalbusa@fliplet.com" }
+    { "email": "john@example.org" },
+    { "email": "alice@example.org" }
   ]
 }
 ```
 
 Response status code: 200 OK (no body)
+
+---
+
+### Commit a series of changes to a data source
+
+#### `POST v1/data-sources/<dataSourceId>/commit`
+
+e.g. `v1/data-sources/123/commit`
+
+The commit endpoint is useful if you want to insert, update and delete many records at once in a single API request. This makes it very efficient in terms of both minimising the network requests and computation required from both sides.
+
+The following sample request applies the following changes to the data source:
+- updates the entry with ID 123 merging its data with the new added column(s)
+- inserts a new entry
+- deletes the entry with ID 456:
+
+```json
+{
+  "entries": [
+    { "id": 123, "data": { "email": "john@example.org" } },
+    { "data": { "email": "alice@example.org" } }
+  ],
+  "delete": [456],
+  "append": true,
+  "extend": true,
+  "runHooks": []
+}
+```
+
+Response status code: 200 OK (the updated dataset will also be returned in the response)
+
+Notes:
+- Use `append: false` to remove any entry that is not sent with the request (e.g. replace all existing entries)
+- Use `extend: false` to disable merging the updates existing columns when sending updates.
+- The `runHooks` array can optionally contain `insert` or `update` to run configured hooks on the data source.
 
 ---
 
