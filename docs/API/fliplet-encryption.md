@@ -62,7 +62,7 @@ Fliplet.DataSources.Encryption().setKey('foo');
 Fliplet.DataSources.Encryption().setKey('3581e5305707b61fb3931346b5826e5c');
 ```
 
-As a further example, you can optionally set up the key dynamically to be read from a user's data source entry once the user logs in:
+As a further example, you can optionally set up the key to dynamically be read from a user's data source entry once the user logs in:
 
 ```js
 // Add this code to a screen with a login component
@@ -70,6 +70,7 @@ Fliplet.Hooks.on('login', function (formEntry) {
   return Fliplet.DataSources.Encryption().setKey(formEntry.columnContainingPrivateKey);
 });
 ```
+
 Make sure to replace `columnContainingPrivateKey` with the actual column name where the key should be taken from.
 
 ---
