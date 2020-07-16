@@ -1,6 +1,8 @@
 # App Subscriptions REST APIs
 
-Contains endpoints to read and manage your app's users subscribed via push notifications.
+The App Subscriptions REST APIs allows you to read and manage your app's users subscribed via push notifications.
+
+<p class="warning"><strong>Note:</strong> This RESTful API is intended to be used by 3rd party software such as external integrations. <strong>If you're using this in a Fliplet App, please use the <a href="/API/fliplet-notifications.html">Notifications JS APIs</a> instead.</strong></p>
 
 ---
 
