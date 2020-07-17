@@ -98,7 +98,7 @@ The system will take care of both encrypting and decrypting content of data sour
 
 The system will take care of both encrypting and decrypting content of data sources for you. No additional code will be required aside from setting up the encryption key.
 
-<p class="warning">If you're using the <code>Fliplet.DataSources.connectByName</code> in your custom code to access Data Sources by name you will also need to configure your encryption code to additionally connect by name as per example below:</p>
+<p class="warning">If you're using the <code>Fliplet.DataSources.connectByName</code> method in your custom code to access Data Sources by name you will also need to configure your encryption code to additionally connect by name as per example below:</p>
 
 ```js
 // Add this to the Global JS of your app
