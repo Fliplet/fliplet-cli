@@ -80,7 +80,7 @@ function checkIfSidebarFits() {
 $window.resize(checkIfSidebarFits);
 checkIfSidebarFits();
 
-if (location.pathname !== '/') {
+if (location.pathname !== '/' && location.pathname !== '/API-Documentation.html') {
   $('.main-content h2, .main-content h3').each(function () {
     $title = $(this);
     var node = $title[0].tagName;
