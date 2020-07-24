@@ -2,7 +2,19 @@
 
 Each week, we provide changelog notes on this page giving a summary of recent significant changes to the documentation. If there haven't been any significant changes in a given week, we don't publish changelog notes.
 
+## July 2020
+
+### July 14th
+
+- New documentation for the [Data Source commit endpoint](https://developers.fliplet.com/REST-API/fliplet-datasources.html#commit-a-series-of-changes-to-a-data-source).
+
 ## June 2020
+
+### June 23rd
+
+- New documentation for [advanced conditions on Data Source hooks](https://developers.fliplet.com/Data-Source-Hooks.html#hook-conditions) using Sift.js.
+
+### June 15th
 
 - New documentation for setting up a [test SAML2 integration with Auth0](https://developers.fliplet.com/API/integrations/sso-saml2.html#set-up-a-test-saml2-integration-with-auth0).
 - New JavaScript environment variable `demo` available via `Fliplet.Env.get('demo')`.

@@ -1,5 +1,9 @@
 # Notifications REST APIs
 
+The Notifications REST APIs allows you to interact and make any sort of change to your app's notifications.
+
+<p class="warning"><strong>Note:</strong> This RESTful API is intended to be used by 3rd party software such as external integrations. <strong>If you're using this in a Fliplet App, please use the <a href="/API/fliplet-notifications.html">Notifications JS APIs</a> instead.</strong></p>
+
 ## Authentication
 
 Please head to the [how to authenticate](authenticate.md) page of the documentation to read more about how you can authorise your client to make API requests to Fliplet.

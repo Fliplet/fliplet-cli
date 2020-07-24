@@ -118,7 +118,7 @@ Fliplet.Communicate.composeEmail(options);
 
 ### Default provider
 ```js
-const options = {
+var options = {
   data: {
     to: "+123456789",
     body: "Hey!"
@@ -131,7 +131,7 @@ Fliplet.Communicate.sendSMS(options);
 ### Twilio
 
 ```js
-const options = {
+var options = {
   provider: "twilio"
   data: {
     from: "+123456789"

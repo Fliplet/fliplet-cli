@@ -48,7 +48,7 @@ Fliplet.DataSources.Encryption.KeyStore.getKey('mySecretPassphrase').then(functi
 
 When encrypting the contents of a data source, you need to specify an AES (128, 256 or 512) key to encrypt and decrypt such contents. The length of key will drive the encryption type, e.g. use a 32 bytes key for AES512.
 
-<p class="quote">Note: You must likely want to run this command once a user logs in. See below for complete examples.</p>
+<p class="quote">Note: you most likely want to run this command once a user logs in. See below for complete examples.</p>
 
 Setting a key is as simple as running the following JS API:
 
@@ -62,7 +62,7 @@ Fliplet.DataSources.Encryption().setKey('foo');
 Fliplet.DataSources.Encryption().setKey('3581e5305707b61fb3931346b5826e5c');
 ```
 
-As a further example, you can optionally set up the key dynamically to be read from a user's data source entry once the user logs in:
+As a further example, you can optionally set up the key to dynamically be read from a user's data source entry once the user logs in:
 
 ```js
 // Add this code to a screen with a login component
@@ -70,6 +70,7 @@ Fliplet.Hooks.on('login', function (formEntry) {
   return Fliplet.DataSources.Encryption().setKey(formEntry.columnContainingPrivateKey);
 });
 ```
+
 Make sure to replace `columnContainingPrivateKey` with the actual column name where the key should be taken from.
 
 ---
@@ -79,7 +80,7 @@ Make sure to replace `columnContainingPrivateKey` with the actual column name wh
 Use the `encrypt()` method to enable automatic management of a data source encryption and decryption data on-device.
 
 ```js
-Fliplet.DataSources.Encryption().encrypt(dataSourceId, arrayOfFieldsToEncrypt);
+Fliplet.DataSources.Encryption().encrypt(dataSourceIdOrName, arrayOfFieldsToEncrypt);
 ```
 
 Here's a fully working example:
@@ -92,6 +93,19 @@ Fliplet.DataSources.Encryption().encrypt(123, [
 ```
 
 The system will take care of both encrypting and decrypting content of data sources for you. No additional code will be required aside from setting up the encryption key.
+
+<p class="quote">Note: After enabling encryption all features in your app will utilise it, <strong>you do not need to add any further code or settings</strong> to your app or components.</p>
+
+The system will take care of both encrypting and decrypting content of data sources for you. No additional code will be required aside from setting up the encryption key.
+
+<p class="warning">If you're using the <code>Fliplet.DataSources.connectByName</code> method in your custom code to access Data Sources by name you will also need to configure your encryption code to additionally connect by name as per example below:</p>
+
+```js
+// Add this to the Global JS of your app
+Fliplet.DataSources.Encryption().encrypt('My data source name', [
+  'First name', 'Last name', 'Bio'
+]);
+```
 
 ---
 

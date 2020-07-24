@@ -1,6 +1,12 @@
 # Data Sources REST APIs
 
-Table of contents
+The Data Source REST APIs allows you to interact and make any sort of change to your app's Data Sources.
+
+<p class="warning"><strong>Note:</strong> This RESTful API is intended to be used by 3rd party software such as external integrations. <strong>If you're using this in a Fliplet App, please use the <a href="/API/fliplet-datasources.html">Data Sources JS APIs</a> instead.</strong></p>
+
+---
+
+### Table of contents
 
 1. [Authentication](#authentication)
 2. [Access roles](#access-roles)
@@ -14,6 +20,7 @@ Table of contents
   * [Update a data source attributes](#update-a-data-source-attributes)
   * [Delete a data source and its entries from the system](#delete-a-data-source-and-its-entries-from-the-system)
   * [Bulk-import entries for a data source](#bulk-import-entries-for-a-data-source)
+  * [Commit a series of changes to a data source](#commit-a-series-of-changes-to-a-data-source)
   * [Run queries on a data source](#run-queries-on-a-data-source)
   * [Get a data source entry by its ID](#get-a-data-source-entry-by-its-id)
   * [Insert a new entry to a data source](#insert-a-new-entry-to-a-data-source)
@@ -280,13 +287,48 @@ Request body:
 {
   "append": true,
   "entries": [
-    { "email": "ibroom@fliplet.com" },
-    { "email": "nvalbusa@fliplet.com" }
+    { "email": "john@example.org" },
+    { "email": "alice@example.org" }
   ]
 }
 ```
 
 Response status code: 200 OK (no body)
+
+---
+
+### Commit a series of changes to a data source
+
+#### `POST v1/data-sources/<dataSourceId>/commit`
+
+e.g. `v1/data-sources/123/commit`
+
+The commit endpoint is useful if you want to insert, update and delete many records at once in a single API request. This makes it very efficient in terms of both minimising the network requests and computation required from both sides.
+
+The following sample request applies the following changes to the data source:
+- updates the entry with ID 123 merging its data with the new added column(s)
+- inserts a new entry
+- deletes the entry with ID 456:
+
+```json
+{
+  "entries": [
+    { "id": 123, "data": { "email": "john@example.org" } },
+    { "data": { "email": "alice@example.org" } }
+  ],
+  "delete": [456],
+  "append": true,
+  "extend": true,
+  "runHooks": []
+}
+```
+
+Response status code: 200 OK (the updated dataset will also be returned in the response)
+
+Notes:
+- Use `append: false` to remove any entry that is not sent with the request (e.g. replace all existing entries)
+- Use `extend: false` to disable merging the updates existing columns when sending updates.
+- The `runHooks` array can optionally contain `insert` or `update` to run configured hooks on the data source.
 
 ---
 

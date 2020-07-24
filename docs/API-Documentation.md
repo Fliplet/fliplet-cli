@@ -2,15 +2,72 @@
 
 Feeling lost? Head to the [JS APIs](JS-APIs.md) section of the docs to read more about using these packages in your Fliplet apps, components and themes.
 
-Are you rather looking for our **RESTful APIs** for complex backend integrations? Jump to their [documentation](REST-API-Documentation.md) to read more.
+<p class="quote">Are you rather looking for our <strong>RESTful APIs</strong> for complex backend integrations? Jump to our <a href="/REST-API-Documentation.html">documentation</a> to read more.</p>
 
-- [Public JS APIs](#public-js-apis)
-- [Fliplet Components](#fliplet-components)
-- [Third-party integrations](#third-party-integrations)
-- [Third-party libraries](#third-party-libraries)
-- [Private JS APIs](#private-js-apis)
+---
 
-## Public JS APIs
+{% raw %}
+<section class="blocks alt">
+  <a class="bl two" href="/API/fliplet-core.html">
+    <div>
+      <span class="pin">Recommended library</span>
+      <h4>Core</h4>
+      <p>All your apps come with this pre-included set of useful core libraries to help you out doing the most common tasks such as reading information about the current app or screen.</p>
+      <p class="note">Sample use cases</p>
+      <ul>
+        <li>Interact with the current screen and user</li>
+        <li>Navigate the app to different screen</li>
+        <li>Read and save data locally</li>
+      </ul>
+      <button>View documentation</button>
+    </div>
+  </a>
+  <a class="bl two" href="/API/fliplet-datasources.html">
+    <div>
+      <span class="pin">Recommended library</span>
+      <h4>Data Sources</h4>
+      <p>Apps very frequently need to interact with dynamic data you manage. Use these JS APIs to read and write data from your app to your Data Sources.</p>
+      <p class="note">Sample use cases</p>
+      <ul>
+        <li>Read and write data to a Data Source</li>
+        <li>Integrate apps with data from DIS</li>
+        <li>Create dynamic screens</li>
+      </ul>
+      <button>View documentation</button>
+    </div>
+  </a>
+</section>
+<section class="blocks alt">
+  <a class="bl two" href="/API/fliplet-core.html">
+    <div>
+      <h4>Communicate</h4>
+      <p>Send emails, texts and share URLs to users of your apps.</p>
+      <p class="note">Sample use cases</p>
+      <ul>
+        <li>Send an email to your users</li>
+        <li>Let the user compose an email</li>
+      </ul>
+      <button>View documentation</button>
+    </div>
+  </a>
+  <a class="bl two" href="/API/fliplet-datasources.html">
+    <div>
+      <h4>Encryption</h4>
+      <p>Set up encryption and decryption for your apps.</p>
+      <p class="note">Sample use cases</p>
+      <ul>
+        <li>Use a encrypted Data Source</li>
+        <li>Integrate with data from DIS</li>
+      </ul>
+      <button>View documentation</button>
+    </div>
+  </a>
+</section>
+{% endraw %}
+
+---
+
+## All JS APIs you can use in apps
 
 These JS APIs falls into the most common category and almost all apps, components and themes use at least one of them. All apps include `fliplet-core` by default, and any other can easily be included on your app screens via Fliplet Studio.
 
@@ -76,3 +133,5 @@ These APIs are currently undocumented and reserved for internal use. They are us
 - Pages
 - Runtime
 - Security
+
+<style type="text/css">#toc { display: none; }</script>

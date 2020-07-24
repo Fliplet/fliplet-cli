@@ -16,7 +16,7 @@ Our development tools rely on [Node.js](https://nodejs.org) and [Npm](https://ww
 
 The [Fliplet CLI](https://www.npmjs.com/package/fliplet-cli) is available through **Npm** and can be installed from the command line:
 
-```shell
+```
 $ npm install -g fliplet-cli
 ```
 
@@ -60,19 +60,19 @@ We regularly update the development tools, so please make sure you're running th
 
 To check for updates, use the npm command `outdated`:
 
-```shell
+```
 $ npm outdated
 ```
 
 To install or update to the latest version, simply run the install command as follows:
 
-```shell
+```
 $ npm install -g fliplet-cli
 ```
 
 You can see the version you have installed by running the command below:
 
-```shell
+```
 $ fliplet --version
 3.0.1
 ```
