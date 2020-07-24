@@ -7,7 +7,7 @@ We regularly update our framework to support new features. If you have an older 
   <div class="bl two">
     <div>
       <h4>iOS</h4>
-      <p>Latest stable release: 4.1.3</p>
+      <p>Latest stable release: 4.1.4</p>
     </div>
   </div>
   <div class="bl two">
