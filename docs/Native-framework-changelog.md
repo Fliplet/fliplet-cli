@@ -23,6 +23,10 @@ We regularly update our framework to support new features. If you have an older 
 
 ## Supported versions (4.x)
 
+### Version 4.1.4 (July 24, 2020)
+
+- **iOS**: Fixed an issue that caused apps to crash when recording videos
+
 ### Version 4.1.3 (March 22, 2020)
 
 - **iOS**: Improvements when playing audio files.
