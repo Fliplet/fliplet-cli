@@ -621,9 +621,10 @@ var isPreview = Fliplet.App.isPreview(true);
 ### Lock the device orientation
 
 ```js
-// If called with no parameters, the app orientation from the settings will be used
-Fliplet.App.Orientation.lock(newOrientation)
+Fliplet.App.Orientation.lock(orientation)
 ```
+
+* `orientation` (String) `portrait` or `landscape`. If called with no parameters, the app orientation from the settings will be used.
 
 ### Unlock the device orientation
 
