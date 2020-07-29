@@ -40,7 +40,7 @@ Fliplet Studio, Fliplet Web and Native apps as well as Fliplet Agent (Data Integ
 
 ### Additional URLs for Fliplet Studio
 
-- `production.studio.fliplet.com`
+- `studio.fliplet.com`
 
 ---
 

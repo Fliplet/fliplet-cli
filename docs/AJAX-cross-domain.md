@@ -12,7 +12,7 @@ This is because Fliplet apps make AJAX requests from the following domains:
 
 **Fliplet Studio**
 
-  * `https://production.studio.fliplet.com/*`
+  * `https://studio.fliplet.com/*`
   * `https://api.fliplet.com/*`
 
 **Web apps**
