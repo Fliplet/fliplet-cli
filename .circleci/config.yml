@@ -4,6 +4,8 @@ jobs:
     machine: true
     steps:
       - checkout
+      - run: sudo apt-get update && sudo apt-get install jq
+      - run: cd docs && cd docsearch && echo "API_KEY=$ALGOLIA_API_KEY" >> .env && docker run -it --env-file=.env -e "CONFIG=$(cat config.json | jq -r tostring)" algolia/docsearch-scraper
       - run: npm install
       - run: npm link && echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
       - run: fliplet env staging
@@ -11,8 +13,6 @@ jobs:
       - run: fliplet organization $TEST_ORGANIZATION
       - run: fliplet create-widget awesome-widget
       - run: cd awesome-widget && fliplet test
-      - run: apt-get install jq
-      - run: cd docs && cd docsearch && echo "API_KEY=$ALGOLIA_API_KEY" >> .env && docker run -it --env-file=.env -e "CONFIG=$(cat config.json | jq -r tostring)" algolia/docsearch-scraper
   publish:
     machine: true
     steps:
