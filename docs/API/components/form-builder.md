@@ -288,6 +288,8 @@ Fliplet.FormBuilder.get()
   });
 ```
 
+<p class="quote"><strong>Note</strong>: toggling the field visibility will <strong>revert its value to the default value</strong> set in the form configuration. To disable this, pass a false boolean as second parameter of the toggle method at all times: <code>field.toggle(false, false)</code>.</p>
+
 Shows or hides fields based on another field's value
 
 ```js
