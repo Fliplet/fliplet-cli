@@ -91,7 +91,7 @@ Compose an email on the device.
 Fliplet.Communicate.composeEmail(options, data);
 ```
 
-* **options** (Object) A map of options to pass to the function. The following properties found on the [official Mandrill documentation](https://mandrillapp.com/api/docs/messages.JSON.html) are supported:
+* **options** (Object) A map of options to pass to the function. The following properties found are supported:
   * **to** (Array) array of recipients for "to", "cc" or "bcc"
   * **subject** (String) subject of the email
   * **html** (String) HTML email body
