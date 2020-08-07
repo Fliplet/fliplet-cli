@@ -13,7 +13,7 @@ We regularly update our framework to support new features. If you have an older 
   <div class="bl two">
     <div>
       <h4>Android</h4>
-      <p>Latest stable release: 4.1.2</p>
+      <p>Latest stable release: 4.2.0</p>
     </div>
   </div>
 </section>
@@ -21,7 +21,11 @@ We regularly update our framework to support new features. If you have an older 
 
 ---
 
-## Supported versions (4.x)
+## Supported versions (4.1+)
+
+### Version 4.2.0 (July 24, 2020)
+
+- **Android**: Target SDK increased to 29 (Android 10) and disabled back-ups to improve security.
 
 ### Version 4.1.4 (July 24, 2020)
 
@@ -42,6 +46,12 @@ We regularly update our framework to support new features. If you have an older 
 - **iOS**: Dropped UIWebView support following [Apple's deprecation notice](https://developer.apple.com/news/?id=12232019b).
 - **iOS**: Updated **InAppBrowser** Cordova plugin to its latest version.
 
+---
+
+## Deprecated versions
+
+Please note that these versions have limited support for newer Fliplet features. We encourage you to submit a new native update to your apps via the App Store or Google Play if you have users still running these versions of your app.
+
 ### Version 4.0.2 (November 19, 2019)
 
 - **iOS**: Improvements for Firebase Analytics reporting.
@@ -57,11 +67,6 @@ We regularly update our framework to support new features. If you have an older 
 
 ---
 
-## Deprecated versions
-
-Please note that these versions have limited support for newer Fliplet features. We encourage you to submit a new native update to your apps via the App Store or Google Play if you have users still running these versions of your app.
-
----
 ### Version 3.9.9 (Aug 28, 2019)
 
 - **iOS**: Support for iOS13.
