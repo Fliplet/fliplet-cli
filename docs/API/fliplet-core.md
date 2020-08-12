@@ -1349,7 +1349,9 @@ Fliplet.App.Analytics.Session.reset();
 
 Here's how you can use our powerful JS APIs to do some heavylifting for you and return aggregated logs instead of having to group them manually when displaying charts for app analytics.
 
-**Note**: fetching aggregating logs is available both under the namespace **for the current app** (`Fliplet.App`) and **for all apps** (`Fliplet.Apps`), each have different behaviors and parameter requirements:
+<p class="quote"><strong>Note</strong>: this JS API is only available when app users have logged in with the <strong>Fliplet Studio</strong> component or when using <strong>Fliplet Viewer</strong>.</p>
+
+Fetching aggregating logs is available both under the namespace **for the current app** (`Fliplet.App`) and **for all apps** (`Fliplet.Apps`), each have different behaviors and parameter requirements:
 
 ```js
 // Fetch analytics for the current app
