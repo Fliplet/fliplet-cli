@@ -109,7 +109,7 @@ Sample response:
 
 ---
 
-### Uploads one or more files
+### Upload one or more files
 
 #### `POST v1/media/files`
 
