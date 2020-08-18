@@ -469,7 +469,13 @@ module.exports.setup = (agent) => {
     action: (entries, db) => {
       console.log(entries)
 
-      // You can write data back to Fliplet APIs if necessary,
+      // The db argument of this function is the Sequelize Database instance
+      // which you can use to run queries to your database, including
+      // INSERT queries. You can follow Sequelize documentation about using
+      // db.query() to create your queries as necessary:
+      // https://sequelize.org/master/manual/raw-queries.html
+
+      // You can also write data back to Fliplet APIs if necessary,
       // e.g. confirm you have sync these entries
       return Promise.all(entries.map((entry) => {
         return agent.api.request({
