@@ -59,28 +59,113 @@ ul > li > ul {
   font-weight: normal;
 }
 
-#page {
-  position: absolute;
+#header {
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
+  height: 70px;
+  background-color: $primaryBackground;
+  z-index: 100;
   display: flex;
-  height: 100%;
+  padding: 0 20px;
+
+  .brand {
+    flex: 1;
+    display: flex;
+    align-items: center;
+
+    .logo {
+      display: block;
+      width: 32px;
+      height: 32px;
+      background: url(/assets/img/logo-white.png) no-repeat left center;
+      background-size: contain;
+      margin-right: 6px;
+    }
+
+    span {
+      color: #FFF;
+      font-size: 22px;
+      line-height: 22px;
+    }
+  }
+
+  .middle {
+    flex: 0 1 auto;
+    display: flex;
+
+    .search-input {
+      position: relative;
+      display: flex;
+      align-items: center;
+
+      input[type="text"] {
+        width: 250px;
+        height: 40px;
+        background-color: #FFF;
+        border: 0;
+        border-radius: 4px;
+        padding: 0 30px 0 10px;
+      }
+
+      .algolia-autocomplete {
+        display: flex !important;
+        align-items: center;
+      }
+
+      svg {
+        width: 22px;
+        height: 22px;
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        margin-top: -11px;
+        opacity: 0.5;
+      }
+    }
+
+    ul.nav {
+      list-style: none;
+      display: flex;
+      margin: 0;
+      padding: 0;
+      align-items: center;
+
+      li {
+        a {
+          display: block;
+          height: 40px;
+          line-height: 40px;
+          text-align: center;
+          padding: 0 10px;
+          margin-left: 10px;
+          color: #FFF;
+          border-radius: 4px;
+
+          &.active {
+            background-color: rgba(255, 255, 255, 0.2);
+          }
+
+          &:hover {
+            text-decoration: none;
+            background-color: #FFF;
+            color: $primaryBackground;
+          }
+        }
+      }
+    }
+  }
+}
+
+#page {
+  display: flex;
+  padding-top: 70px;
 }
 
 #poc {
   width: $sidebarWidth;
-  background-color: $primaryBackground;
   padding: 20px;
-  overflow-y: auto;
-
-  .logo {
-    display: block;
-    width: 100px;
-    height: 40px;
-    background: url(/assets/img/logo-white.png) no-repeat left center;
-    background-size: contain;
-  }
 
   .list {
     margin: 20px 0 40px;
@@ -181,8 +266,6 @@ ul > li > ul {
 }
 
 #page-content {
-  overflow-y: scroll;
-  height: 100%;
   flex: 1;
 }
 

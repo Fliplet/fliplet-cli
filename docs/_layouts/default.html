@@ -14,6 +14,25 @@
     <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.3"></script>
   </head>
   <body>
+    <header id="header">
+      <div class="brand">
+        <a class="logo" href="/" title="Back to documentation home"></a>
+        <span><strong>Fliplet</strong> Developers</span>
+      </div>
+      <div class="middle">
+        <div class="search-input">
+          <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="Type to search"  spellcheck="false" type="text" value="" />
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="100%" height="100%">
+            <path d="M26.804 29.01c-2.832 2.34-6.465 3.746-10.426 3.746C7.333 32.756 0 25.424 0 16.378 0 7.333 7.333 0 16.378 0c9.046 0 16.378 7.333 16.378 16.378 0 3.96-1.406 7.594-3.746 10.426l10.534 10.534c.607.607.61 1.59-.004 2.202-.61.61-1.597.61-2.202.004L26.804 29.01zm-10.426.627c7.323 0 13.26-5.936 13.26-13.26 0-7.32-5.937-13.257-13.26-13.257C9.056 3.12 3.12 9.056 3.12 16.378c0 7.323 5.936 13.26 13.258 13.26z" fill-rule="evenodd"></path>
+          </svg>
+        </div>
+        <ul class="nav">
+          <li><a href="/" class="active">Documentation</a></li>
+          <li><a href="https://help.fliplet.com/">Help centre</a></li>
+          <li><a href="https://studio.fliplet.com">Your apps</a></li>
+        </ul>
+      </div>
+    </header>
     <a href="#" class="search-handle">
       <i class="fas fa-search"></i>
     </a>
@@ -69,33 +88,9 @@
         </div>
       </aside>
       <div id="page-content">
-        <section class="page-header">
-          <div class="content">
-            <div class="project-name">{{ page.title }}</div>
-
-            <div id="search">
-              <div class="ais-search-box"><input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="Type to search" role="textbox" spellcheck="false" type="text" value="" class="ais-search-box--input"><span class="ais-search-box--magnifier-wrapper"><div class="ais-search-box--magnifier">
-                <svg xmlns="http://www.w3.org/2000/svg" id="sbx-icon-search-13" viewBox="0 0 40 40" width="100%" height="100%">
-                  <path d="M26.804 29.01c-2.832 2.34-6.465 3.746-10.426 3.746C7.333 32.756 0 25.424 0 16.378 0 7.333 7.333 0 16.378 0c9.046 0 16.378 7.333 16.378 16.378 0 3.96-1.406 7.594-3.746 10.426l10.534 10.534c.607.607.61 1.59-.004 2.202-.61.61-1.597.61-2.202.004L26.804 29.01zm-10.426.627c7.323 0 13.26-5.936 13.26-13.26 0-7.32-5.937-13.257-13.26-13.257C9.056 3.12 3.12 9.056 3.12 16.378c0 7.323 5.936 13.26 13.258 13.26z" fill-rule="evenodd"></path>
-                </svg>
-              </div></span></div>
-
-
-            </div>
-            <div id="hits">
-              <!-- Hits widget will appear here -->
-            </div>
-          </div>
-          <!--{% if site.github.is_project_page %}
-            <a href="{{ site.github.repository_url }}" class="btn">View on GitHub</a>
-          {% endif %}
-          {% if site.show_downloads %}
-            <a href="{{ site.github.zip_url }}" class="btn">Download .zip</a>
-            <a href="{{ site.github.tar_url }}" class="btn">Download .tar.gz</a>
-          {% endif %}-->
-        </section>
-
         <section class="main-content">
+          <div class="project-name">{{ page.title }}</div>
+
           {{ content }}
 
           <footer class="site-footer">

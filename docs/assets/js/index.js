@@ -2,7 +2,7 @@ var search = docsearch({
   appId: '8GRBFEV21Y',
   apiKey: '4c075de739ed6724ede1f923f3d42abf',
   indexName: 'Fliplet Developers',
-  inputSelector: '#search input',
+  inputSelector: '.search-input input',
   debug: false
 });
 
