@@ -8,12 +8,14 @@ If you're a <strong>Fliplet Studio</strong> user creating apps, you most likely 
 <section class="blocks">
   <a class="bl two" href="/API-Documentation.html">
     <div>
+      <i class="fas fa-code"></i>
       <h4>JavaScript API Documentation</h4>
       <p>Learn how to use our SDK and enrich apps within seconds.</p>
     </div>
   </a>
   <a class="bl two" href="/REST-API-Documentation.html">
     <div>
+      <i class="fas fa-bezier-curve"></i>
       <h4>REST API Documentation</h4>
       <p>Integrate your backend with our easy-to-use RESTful APIs.</p>
     </div>

@@ -249,6 +249,7 @@ h2, h3, h4, h5, h6 {
   width: $sidebarWidth;
   flex: 0 0 $sidebarWidth;
   padding: 20px;
+  margin-bottom: 20px;
 
   .list {
     hr {
@@ -540,6 +541,17 @@ h2, h3, h4, h5, h6 {
   width: 33.333%;
   padding-top: 10px;
   padding-bottom: 10px;
+
+  i {
+    display: block;
+    color: $primary;
+    font-size: 30px;
+    text-align: center;
+
+    + h4 {
+      margin-top: 10px;
+    }
+  }
 }
 
 .blocks .two {
