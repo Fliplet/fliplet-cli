@@ -107,7 +107,7 @@ if (location.pathname !== '/') {
       'Code using popular frameworks.'
     ],
     typeSpeed: 60,
-    backSpeed: 50,
+    backSpeed: 30,
     loop: true
   });
 }
