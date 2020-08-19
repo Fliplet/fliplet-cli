@@ -38,53 +38,111 @@
     </a>
     <div id="page">
       <aside id="poc">
-        <a class="logo" href="/" title="Back to documentation home"></a>
         <div class="list">
-          <p class="title-H2">Documentation <span clas="small">(<a href="/Changelog.html">changelog</a>)</span></p>
-          <div class="boxes">
-            <a href="/API-Documentation.html">JS API</a>
-            <a href="/REST-API-Documentation.html">REST API</a>
-          </div>
-          <p class="title-H2">Build with Fliplet</p>
-          <a href="/Introduction.html" class="title-H3">Our platform</a>
-          <a href="/Quickstart.html" class="title-H3">Development tools</a>
-          <a href="/Execution-flow.html" class="title-H3">App execution flow</a>
-          <a href="/Building-components.html" class="title-H3">Build components</a>
-          <a href="/Building-themes.html" class="title-H3">Build themes</a>
-          <a href="/Building-menus.html" class="title-H3">Build menus</a>
-          <a href="/Publishing.html" class="title-H3">Publishing</a>
-          <a href="/Testing-components.html" class="title-H3">Testing</a>
+          <ul class="nav">
+            <li>
+              <a href="#" class="toggle">
+                <i class="fas fa-caret-right handle"></i>
+                <i class="fas fa-cubes"></i>
+                Start building
+              </a>
+              <ul>
+                <li><a href="/Introduction.html">Overview & Introduction</a></li>
+                <li><a href="/Quickstart.html">Development tools</a></li>
+                <li><a href="/Building-components.html">Build components</a></li>
+                <li><a href="/Building-themes.html">Build themes</a></li>
+                <li><a href="/Building-menus.html">Build menus</a></li>
+                <li><a href="/Publishing.html">Publishing</a></li>
+                <li><a href="/Testing-components.html">Testing</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="#" class="toggle">
+                <i class="fas fa-caret-right handle"></i>
+                <i class="fas fa-plug"></i>
+                Integrations
+              </a>
+              <ul>
+                <li><a href="/Data-integration-service.html">Data Integration Service</a></li>
+                <li><a href="/Data-Source-Hooks.html">Data Source Hooks</a></li>
+                <li><a href="/API/integrations/sso-saml2.html">Single Sign-on with SAML2</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="#" class="toggle">
+                <i class="fas fa-caret-right handle"></i>
+                <i class="fas fa-code"></i>
+                JS API
+              </a>
+              <ul>
+                <li><a href="/API-Documentation.html">Overview</a></li>
+                <li><p>Common libraries</p></li>
+                <li><a href="/API/fliplet-core.html">Core</a></li>
+                <li><a href="/API/fliplet-communicate.html">Communicate</a></li>
+                <li><a href="/API/fliplet-datasources.html">Data Sources</a></li>
+                <li><a href="/API/fliplet-encryption.html">Encryption</a></li>
+                <li><a href="/API-Documentation.html">View all &rarr;</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="#" class="toggle">
+                <i class="fas fa-caret-right handle"></i>
+                <i class="fas fa-mobile"></i>
+                Mobile platforms
+              </a>
+              <ul>
+                <li><a href="/Native-framework-changelog.html">Framework Changelog</a></li>
+                <li><a href="/Platform-iOS.html">iOS-only features</a></li>
+                <li><a href="/Platform-Android.html">Android-only features</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="#" class="toggle">
+                <i class="fas fa-caret-right handle"></i>
+                <i class="fas fa-stream"></i>
+                Data & execution flow
+              </a>
+              <ul>
+                <li><a href="/Execution-flow.html">App execution flow</a></li>
+                <li><a href="/Data-flow.html">Infrastructure data flow</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="#" class="toggle">
+                <i class="fas fa-caret-right handle"></i>
+                <i class="fas fa-lock"></i>
+                Security
+              </a>
+              <ul>
+                <li><a href="/API/fliplet-encryption.html">Setting up encryption</a></li>
+                <li><a href="/App-security.html">Securing your apps</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="#" class="toggle">
+                <i class="fas fa-caret-right handle"></i>
+                <i class="fas fa-cog"></i>
+                Advanced topics
+              </a>
+              <ul>
 
-          <p class="title-H2">Integrations</p>
-          <a href="/Data-integration-service.html" class="title-H3">Data Integration Service</a>
-          <a href="/Data-Source-Hooks.html" class="title-H3">Data Source Hooks</a>
-          <a href="/API/integrations/sso-saml2.html" class="title-H3">Single Sign-on with SAML2</a>
+                <li><a href="/URLs-and-IP-Addresses.html">URLs and IP Addresses</a></li>
+                <li><a href="/components/Using-Providers.html">Using providers</a></li>
+                <li><a href="/Dependencies-and-assets.html">Dependencies and assets when building themes and </li>components</a>
+                <li><a href="/Event-emitter.html">Sending events between components</a></li>
+                <li><a href="/Context-targeting.html">Context targeting</a></li>
+                <li><a href="/Best-practises.html">Coding practice and advices</a></li>
+                <li><a href="/Fliplet-SDK.html">Using the JS APIs externally</a></li>
+                <li><a href="/Reduce-app-bundle-size.html">Reduce your app’s bundle size</a></li>
 
-          <p class="title-H2">Mobile platforms</p>
-          <a href="/Native-framework-changelog.html" class="title-H3">Framework Changelog</a>
-          <a href="/Platform-iOS.html" class="title-H3">iOS-only features</a>
-          <a href="/Platform-Android.html" class="title-H3">Android-only features</a>
-
-          <p class="title-H2">UI Guidelines</p>
-          <a href="/UI-guidelines-interface.html" class="title-H3">Guidelines for component interfaces</a>
-          <a href="/UI-guidelines-build.html" class="title-H3">Guidelines for component output</a>
-          <a href="/Theme-Settings-In-CSS.html" class="title-H3">Use theme settings in your custom CSS</a>
-
-          <p class="title-H2">Advanced topics</p>
-          <a href="/Data-flow.html" class="title-H3">Infrastructure data flow</a>
-          <a href="/API/fliplet-encryption.html" class="title-H3">Setting up encryption</a>
-          <a href="/URLs-and-IP-Addresses.html" class="title-H3">URLs and IP Addresses</a>
-          <a href="/components/Using-Providers.html" class="title-H3">Using providers</a>
-          <a href="/Dependencies-and-assets.html" class="title-H3">Dependencies and assets when building themes and components</a>
-          <a href="/Event-emitter.html" class="title-H3">Sending events between components</a>
-          <a href="/Context-targeting.html" class="title-H3">Context targeting</a>
-          <a href="/Best-practises.html" class="title-H3">Coding practice and advices</a>
-          <a href="/Fliplet-SDK.html" class="title-H3">Using the JS APIs externally</a>
-          <a href="/Reduce-app-bundle-size.html" class="title-H3">Reduce your app’s bundle size</a>
-          <a href="/App-security.html" class="title-H3">Securing your apps</a>
-          <a href="/Async-await.html" class="title-H3">Using async/await for more readable promises</a>
-          <a href="/Custom-template-for-components.html" class="title-H3">Custom HTML template for components</a>
-          <a href="/AJAX-cross-domain.html" class="title-H3">Making AJAX across different domains</a>
+                <li><a href="/Async-await.html">Using async/await for more readable promises</a></li>
+                <li><a href="/Custom-template-for-components.html">Custom HTML template for components</a></li>
+                <li><a href="/AJAX-cross-domain.html">Making AJAX across different domains</a></li>
+              </ul>
+            </li>
+          </ul>
+          <hr />
+          <a href="/Changelog.html">Changelog</a>
         </div>
       </aside>
       <div id="page-content">

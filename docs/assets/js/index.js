@@ -3,7 +3,7 @@ var search = docsearch({
   apiKey: '4c075de739ed6724ede1f923f3d42abf',
   indexName: 'Fliplet Developers',
   inputSelector: '.search-input input',
-  debug: false
+  debug: true
 });
 
 
@@ -30,6 +30,20 @@ $('.search-handle').click(function (event) {
     $('.ais-search-box--input').focus().addClass('in-focus');
     $('.ais-search-box').addClass('animated shake');
   });
+});
+
+$('body').on('click', 'a.toggle', function (event) {
+  event.preventDefault();
+  var $li = $(this).parent();
+  var isOpen = $li.hasClass('active');
+
+  if (isOpen) {
+    $li.removeClass('active');
+    $(this).find('.fa-caret-down').addClass('fa-caret-right').removeClass('fa-caret-down');
+  } else {
+    $li.addClass('active');
+    $(this).find('.fa-caret-right').addClass('fa-caret-down').removeClass('fa-caret-right');
+  }
 });
 
 $('body').on('blur', '.ais-search-box--input', function () {

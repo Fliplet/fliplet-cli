@@ -3,6 +3,7 @@
 
 @import "{{ site.theme }}";
 
+$primary: #00abd1;
 $primaryBackground: #36344c;
 $lightBackground: #f8f6f7;
 
@@ -11,7 +12,7 @@ $secondaryBackground: #4279ca;
 $warningColor: #fdff6b;
 $warningTextColor: #6c6d00;
 
-$sidebarWidth: 250px;
+$sidebarWidth: 286px;
 
 @font-face {
   font-family: 'BASE1';
@@ -64,7 +65,7 @@ ul > li > ul {
   top: 0;
   left: 0;
   width: 100%;
-  height: 70px;
+  height: 80px;
   background-color: $primaryBackground;
   z-index: 100;
   display: flex;
@@ -101,12 +102,16 @@ ul > li > ul {
       align-items: center;
 
       input[type="text"] {
-        width: 250px;
+        width: 270px;
         height: 40px;
         background-color: #FFF;
         border: 0;
         border-radius: 4px;
-        padding: 0 30px 0 10px;
+        padding: 0 10px 0 37px;
+
+        &:focus, &:active {
+          outline: 0;
+        }
       }
 
       .algolia-autocomplete {
@@ -119,7 +124,7 @@ ul > li > ul {
         height: 22px;
         position: absolute;
         top: 50%;
-        right: 10px;
+        left: 10px;
         margin-top: -11px;
         opacity: 0.5;
       }
@@ -149,8 +154,12 @@ ul > li > ul {
 
           &:hover {
             text-decoration: none;
-            background-color: #FFF;
-            color: $primaryBackground;
+            background-color: $primary;
+
+            &.active {
+              cursor: default;
+              background-color: rgba(255, 255, 255, 0.2);
+            }
           }
         }
       }
@@ -168,97 +177,102 @@ ul > li > ul {
   padding: 20px;
 
   .list {
-    margin: 20px 0 40px;
+    hr {
+      border: 0;
+      margin: 10px 0 20px;
+      padding: 0;
+      height: 1px;
+      background-color: #CCC;
+    }
 
-    a, p {
+    > a {
+      font-size: 15px;
+      color: #999;
       display: block;
-      font-size: 14px;
-      color: #FFF;
-      margin: 0;
+      padding: 5px 15px;
+      border-radius: 4px;
 
-      &.title-H1 {
-        margin-top: 20px;
-        font-weight: bold;
-        font-size: 16px;
-        padding: 17px 0;
-        border-top: 1px solid rgba(255,255,255,0.1);
-        border-bottom: 1px solid rgba(255,255,255,0.1);
-
-        &:first-child {
-          margin-top: 0;
-        }
-      }
-
-      &.title-H2 {
-        margin-top: 20px;
-        font-size: 14px;
-
-        &:first-child {
-          margin-top: 0;
-        }
-
-        span {
-          font-size: 10px;
-          opacity: 0.7;
-
-          a {
-            display: inline;
-            font-size: 10px;
-            text-decoration: underline;
-          }
-        }
-      }
-
-      &.title-H3 {
-        color: #9c9ba5;
-        font-size: 13px;
-        margin: 5px 7px;
-
-        span {
-          background: #d05c67;
-          color: white;
-          display: inline-block;
-          text-transform: uppercase;
-          border-radius: 5px;
-          padding: 2px 4px;
-          font-size: 10px;
-          line-height: 100%;
-        }
-      }
-
-      &.title-H4 {
-        opacity: 0.3;
-        font-size: 12px;
-        margin: 5px 14px;
+      &:hover {
+        background-color: rgba($primaryBackground, 0.1);
+        text-decoration: none;
+        color: $primaryBackground;
       }
     }
 
-    .boxes {
-      margin-top: 5px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+    .nav {
+      list-style: none;
+      padding: 0;
+      margin: 0;
 
-      a {
-        display: block;
-        flex: 1;
-        border: 2px solid rgba(255,255,255,0.2);
-        border-radius: 5px;
-        text-align: center;
-        padding: 5px 0;
+      li {
+        font-size: 15px;
+        padding: 0 0 10px;
 
-        &:hover {
-          background: #FFF;
+        a.toggle {
+          position: relative;
           color: $primaryBackground;
-          text-decoration: none;
+          display: block;
+          padding: 5px 15px;
+          border-radius: 4px;
+          font-weight: bold;
+
+          &:hover {
+            background-color: rgba($primaryBackground, 0.1);
+            text-decoration: none;
+          }
+
+          i {
+            color: $primary;
+            margin-right: 5px;
+            width: 20px;
+
+            &.handle {
+              width: auto;
+              position: absolute;
+              top: 12px;
+              right: 5px;
+              color: #CCC;
+              font-size: 13px;
+            }
+          }
         }
 
-        &:first-child {
-          margin-right: 5px;
+        ul {
+          list-style: none;
+          padding: 0 0 0 8px;
+          margin: 10px 0 0 22px;
+          border-left: 1px solid #CCC;
+          display: none;
+
+          li {
+            font-size: 13px;
+            padding: 0;
+            margin: 0 0 5px;
+
+            a {
+              display: block;
+              padding: 2px 10px;
+              color: $primaryBackground;
+              border-radius: 6px;
+
+              &:hover {
+                background-color: rgba($primaryBackground, 0.1);
+                text-decoration: none;
+              }
+            }
+
+            p {
+              margin: 20px 0 2px 10px;
+              font-weight: bold;
+              color: #888;
+            }
+          }
         }
 
-        &:last-child {
-          margin-left: 5px;
+        &.active {
+          ul {
+            display: block;
+          }
         }
       }
     }
