@@ -97,6 +97,8 @@ if (location.pathname !== '/') {
   $html.removeClass('with-sidebar');
   $html.addClass('with-hero');
 
+  $('.project-name').remove();
+
   new Typed('.hero h6', {
     strings: [
       'Build amazing apps.',
