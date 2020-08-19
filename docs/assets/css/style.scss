@@ -111,6 +111,11 @@ h2, h3, h4, h5, h6 {
       color: #FFF;
       font-size: 22px;
       line-height: 22px;
+
+      strong {
+        font-weight: normal;
+        opacity: 0.5;
+      }
     }
   }
 
@@ -870,6 +875,14 @@ h2, h3, h4, h5, h6 {
   }
 
   .search-handle {
+    display: none;
+  }
+
+  #header .brand span {
+    display: none;
+  }
+
+  #header .middle ul.nav {
     display: none;
   }
 }
