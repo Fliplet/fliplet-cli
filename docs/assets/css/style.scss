@@ -22,9 +22,15 @@ $sidebarWidth: 286px;
   font-style: normal;
 }
 
+html {
+  overflow: -moz-scrollbars-vertical;
+  overflow-y: scroll;
+}
+
 html, body {
   font-family: 'BASE1';
   -webkit-font-smoothing: antialiased;
+  background-color: #f8f6f7;
 }
 
 a {
@@ -60,6 +66,10 @@ ul > li > ul {
   font-weight: normal;
 }
 
+h2, h3, h4, h5, h6 {
+  scroll-margin-top: 100px;
+}
+
 #header {
   position: fixed;
   top: 0;
@@ -69,7 +79,14 @@ ul > li > ul {
   background-color: $primaryBackground;
   z-index: 100;
   display: flex;
-  padding: 0 20px;
+
+  .content {
+    display: flex;
+    padding: 10px 20px;
+    max-width: 1326px;
+    margin: 0 auto;
+    flex: 1;
+  }
 
   .brand {
     flex: 1;
@@ -170,10 +187,12 @@ ul > li > ul {
 #page {
   display: flex;
   padding-top: 70px;
+  justify-content: center;
 }
 
 #poc {
   width: $sidebarWidth;
+  flex: 0 0 $sidebarWidth;
   padding: 20px;
 
   .list {
@@ -197,12 +216,23 @@ ul > li > ul {
         text-decoration: none;
         color: $primaryBackground;
       }
+
+      &.btn {
+        margin: 20px 0 0 15px;
+        background-color: $primary;
+        color: #FFF;
+        display: inline-block;
+
+        &:hover {
+          background-color: $primaryBackground;
+        }
+      }
     }
 
     .nav {
       list-style: none;
       padding: 0;
-      margin: 0;
+      margin: 20px 0 0;
 
       li {
         font-size: 15px;
@@ -212,7 +242,7 @@ ul > li > ul {
           position: relative;
           color: $primaryBackground;
           display: block;
-          padding: 5px 15px;
+          padding: 5px 15px 5px 10px;
           border-radius: 4px;
           font-weight: bold;
 
@@ -225,6 +255,7 @@ ul > li > ul {
             color: $primary;
             margin-right: 5px;
             width: 20px;
+            text-align: center;
 
             &.handle {
               width: auto;
@@ -280,34 +311,46 @@ ul > li > ul {
 }
 
 #page-content {
-  flex: 1;
+  min-width: 200px;
+  max-width: 800px;
+  flex-basis: auto;
+  flex-grow: 1;
+  background-color: #FFF;
+  margin-top: 40px;
+  border-radius: 4px;
+  border: 1px solid #ddd;
 }
 
 #toc {
-  width: $sidebarWidth;
-  background-color: $lightBackground;
+  flex: 0 0 240px;
   padding: 20px;
-  overflow-y: auto;
-  flex: 0 1 auto;
+  margin-top: 20px;
+
+  .content {
+    background: #efefef;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+  }
 
   h2 {
-    font-size: 15px;
+    font-size: 14px;
     color: $primaryBackground;
   }
 
   .list {
-    margin: 20px 0 40px;
+    margin: 0;
 
     a, p {
       display: block;
-      font-size: 14px;
+      font-size: 12px;
       color: $primaryBackground;
       margin: 0;
 
       &.title-H1 {
         margin-top: 20px;
         font-weight: bold;
-        font-size: 16px;
+        font-size: 14px;
         padding: 17px 0;
         border-top: 1px solid rgba(255,255,255,0.1);
         border-bottom: 1px solid rgba(255,255,255,0.1);
@@ -318,8 +361,8 @@ ul > li > ul {
       }
 
       &.title-H2 {
-        margin-top: 20px;
-        font-size: 14px;
+        margin-top: 10px;
+        font-size: 12px;
 
         &:first-child {
           margin-top: 0;
@@ -328,14 +371,14 @@ ul > li > ul {
 
       &.title-H3 {
         opacity: 0.6;
-        font-size: 13px;
-        margin: 5px 7px;
+        font-size: 11px;
+        margin: 5px 0;
       }
 
       &.title-H4 {
         opacity: 0.4;
-        font-size: 12px;
-        margin: 5px 14px;
+        font-size: 10px;
+        margin: 5px 0;
       }
     }
   }
@@ -369,6 +412,7 @@ ul > li > ul {
   font-weight: bold;
   display: block;
   margin-bottom: 35px;
+  font-size: 2.9rem;
 
   &:hover {
     text-decoration: none;
@@ -380,7 +424,8 @@ ul > li > ul {
 }
 
 .main-content {
-  padding: 2rem 4rem;
+  padding: 1.5rem 2rem;
+  font-size: 1rem;
 
   h1, h2, h3, h4, h5 {
     color: $primaryBackground;
@@ -691,6 +736,24 @@ ul > li > ul {
     font-style: normal;
     font-weight: bold;
   }
+}
+
+.algolia-autocomplete .ds-dropdown-menu [class^=ds-dataset-] {
+  border: 2px solid $primaryBackground !important;
+  background-color: $lightBackground;
+}
+
+.algolia-autocomplete .ds-dropdown-menu:before {
+  display: none !important;
+}
+
+.algolia-autocomplete .ds-dropdown-menu {
+  margin-top: -8px !important;
+  margin-right: -2px !important;
+}
+
+.algolia-autocomplete .algolia-docsearch-suggestion--highlight {
+  background-color: #feffa5 !important;
 }
 
 @media screen and (max-width: 1200px) {

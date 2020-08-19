@@ -3,7 +3,7 @@ var search = docsearch({
   apiKey: '4c075de739ed6724ede1f923f3d42abf',
   indexName: 'Fliplet Developers',
   inputSelector: '.search-input input',
-  debug: true
+  debug: false
 });
 
 
@@ -54,14 +54,14 @@ if (window.isBetaFeature) {
   $('body').addClass('is-beta');
 }
 
-function checkIfSidebarFits() {
-  $html.toggleClass('with-sidebar', $window.width() > 900);
-}
+if (location.pathname !== '/') {
+  function checkIfSidebarFits() {
+    $html.toggleClass('with-sidebar', $window.width() > 900);
+  }
 
-$window.resize(checkIfSidebarFits);
-checkIfSidebarFits();
+  $window.resize(checkIfSidebarFits);
+  checkIfSidebarFits();
 
-if (location.pathname !== '/' && location.pathname !== '/API-Documentation.html') {
   $('.main-content h2, .main-content h3').each(function () {
     $title = $(this);
     var node = $title[0].tagName;
@@ -78,11 +78,21 @@ if (location.pathname !== '/' && location.pathname !== '/API-Documentation.html'
 
       history.pushState(null, text, location.pathname + '#' + targetId);
 
-      var scrollOffset = $('#' + targetId)[0].offsetTop - $("#page-content")[0].offsetTop
+      var scrollOffset = $('#' + targetId)[0].offsetTop - $("#page-content")[0].offsetTop;
 
-      $("#page-content").animate({
-        scrollTop: scrollOffset - 50
+      $("body, html").animate({
+        scrollTop: scrollOffset - 30
         }, 500);
+
+      var $target = $('#' + targetId);
+
+      $target.css('background-color', '#fdff6b').addClass('animated shake');
+
+      setTimeout(function () {
+        $target.css('background-color', 'transparent');
+      }, 5000);
     });
   });
+} else {
+  $html.removeClass('with-sidebar');
 }

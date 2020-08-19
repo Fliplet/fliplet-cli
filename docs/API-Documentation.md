@@ -133,5 +133,3 @@ These APIs are currently undocumented and reserved for internal use. They are us
 - Pages
 - Runtime
 - Security
-
-<style type="text/css">#toc { display: none; }</script>

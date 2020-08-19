@@ -15,22 +15,24 @@
   </head>
   <body>
     <header id="header">
-      <div class="brand">
-        <a class="logo" href="/" title="Back to documentation home"></a>
-        <span><strong>Fliplet</strong> Developers</span>
-      </div>
-      <div class="middle">
-        <div class="search-input">
-          <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="Type to search"  spellcheck="false" type="text" value="" />
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="100%" height="100%">
-            <path d="M26.804 29.01c-2.832 2.34-6.465 3.746-10.426 3.746C7.333 32.756 0 25.424 0 16.378 0 7.333 7.333 0 16.378 0c9.046 0 16.378 7.333 16.378 16.378 0 3.96-1.406 7.594-3.746 10.426l10.534 10.534c.607.607.61 1.59-.004 2.202-.61.61-1.597.61-2.202.004L26.804 29.01zm-10.426.627c7.323 0 13.26-5.936 13.26-13.26 0-7.32-5.937-13.257-13.26-13.257C9.056 3.12 3.12 9.056 3.12 16.378c0 7.323 5.936 13.26 13.258 13.26z" fill-rule="evenodd"></path>
-          </svg>
+      <div class="content">
+        <div class="brand">
+          <a class="logo" href="/" title="Back to documentation home"></a>
+          <span><strong>Fliplet</strong> Developers</span>
         </div>
-        <ul class="nav">
-          <li><a href="/" class="active">Documentation</a></li>
-          <li><a href="https://help.fliplet.com/">Help centre</a></li>
-          <li><a href="https://studio.fliplet.com">Your apps</a></li>
-        </ul>
+        <div class="middle">
+          <div class="search-input">
+            <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="Type to search"  spellcheck="false" type="text" value="" />
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="100%" height="100%">
+              <path d="M26.804 29.01c-2.832 2.34-6.465 3.746-10.426 3.746C7.333 32.756 0 25.424 0 16.378 0 7.333 7.333 0 16.378 0c9.046 0 16.378 7.333 16.378 16.378 0 3.96-1.406 7.594-3.746 10.426l10.534 10.534c.607.607.61 1.59-.004 2.202-.61.61-1.597.61-2.202.004L26.804 29.01zm-10.426.627c7.323 0 13.26-5.936 13.26-13.26 0-7.32-5.937-13.257-13.26-13.257C9.056 3.12 3.12 9.056 3.12 16.378c0 7.323 5.936 13.26 13.258 13.26z" fill-rule="evenodd"></path>
+            </svg>
+          </div>
+          <ul class="nav">
+            <li><a href="/" class="active">Documentation</a></li>
+            <li><a href="https://help.fliplet.com/">Help centre</a></li>
+            <li><a href="https://studio.fliplet.com">Your apps</a></li>
+          </ul>
+        </div>
       </div>
     </header>
     <a href="#" class="search-handle">
@@ -52,6 +54,7 @@
                 <li><a href="/Building-components.html">Build components</a></li>
                 <li><a href="/Building-themes.html">Build themes</a></li>
                 <li><a href="/Building-menus.html">Build menus</a></li>
+                <li><a href="/components/Using-Providers.html">Using providers</a></li>
                 <li><a href="/Publishing.html">Publishing</a></li>
                 <li><a href="/Testing-components.html">Testing</a></li>
               </ul>
@@ -66,6 +69,7 @@
                 <li><a href="/Data-integration-service.html">Data Integration Service</a></li>
                 <li><a href="/Data-Source-Hooks.html">Data Source Hooks</a></li>
                 <li><a href="/API/integrations/sso-saml2.html">Single Sign-on with SAML2</a></li>
+                <li><a href="/Fliplet-SDK.html">Using the JS APIs externally</a></li>
               </ul>
             </li>
             <li>
@@ -76,12 +80,35 @@
               </a>
               <ul>
                 <li><a href="/API-Documentation.html">Overview</a></li>
-                <li><p>Common libraries</p></li>
+                <li><p>Libraries</p></li>
                 <li><a href="/API/fliplet-core.html">Core</a></li>
                 <li><a href="/API/fliplet-communicate.html">Communicate</a></li>
                 <li><a href="/API/fliplet-datasources.html">Data Sources</a></li>
                 <li><a href="/API/fliplet-encryption.html">Encryption</a></li>
+                <li><a href="/API/fliplet-media.html">Media</a></li>
                 <li><a href="/API-Documentation.html">View all &rarr;</a></li>
+
+                <li><p>Components</p></li>
+                <li><a href="/API/components/form-builder.html">Form Builder</a></li>
+                <li><a href="/API/components/list-from-data-source.html">List (from Data Source)</a></li>
+                <li><a href="/API-Documentation.html#fliplet-components">View all &rarr;</a></li>
+              </ul>
+            </li>
+            <li>
+              <a href="#" class="toggle">
+                <i class="fas fa-caret-right handle"></i>
+                <i class="fas fa-bezier-curve"></i>
+                REST API
+              </a>
+              <ul>
+                <li><a href="/REST-API-Documentation.html">Overview</a></li>
+                <li><a href="/REST-API/authenticate.html">Authentication</a></li>
+                <li><p>Endpoints</p></li>
+                <li><a href="/REST-API/fliplet-apps.html">Apps</a></li>
+                <li><a href="/REST-API/fliplet-app-subscriptions.html">App Subscriptions</a></li>
+                <li><a href="/REST-API/fliplet-datasources.html">Data Sources</a></li>
+                <li><a href="/REST-API/fliplet-media.html">Media</a></li>
+                <li><a href="/REST-API/fliplet-notifications.html">Notifications</a></li>
               </ul>
             </li>
             <li>
@@ -116,6 +143,7 @@
               <ul>
                 <li><a href="/API/fliplet-encryption.html">Setting up encryption</a></li>
                 <li><a href="/App-security.html">Securing your apps</a></li>
+                <li><a href="/URLs-and-IP-Addresses.html">URLs and IP Addresses</a></li>
               </ul>
             </li>
             <li>
@@ -125,14 +153,10 @@
                 Advanced topics
               </a>
               <ul>
-
-                <li><a href="/URLs-and-IP-Addresses.html">URLs and IP Addresses</a></li>
-                <li><a href="/components/Using-Providers.html">Using providers</a></li>
-                <li><a href="/Dependencies-and-assets.html">Dependencies and assets when building themes and </li>components</a>
+                <li><a href="/Dependencies-and-assets.html">Dependencies and assets when building themes and components</a></li>
                 <li><a href="/Event-emitter.html">Sending events between components</a></li>
                 <li><a href="/Context-targeting.html">Context targeting</a></li>
                 <li><a href="/Best-practises.html">Coding practice and advices</a></li>
-                <li><a href="/Fliplet-SDK.html">Using the JS APIs externally</a></li>
                 <li><a href="/Reduce-app-bundle-size.html">Reduce your app’s bundle size</a></li>
 
                 <li><a href="/Async-await.html">Using async/await for more readable promises</a></li>
@@ -143,6 +167,11 @@
           </ul>
           <hr />
           <a href="/Changelog.html">Changelog</a>
+          <a href="https://help.fliplet.com/code-library">Code library</a>
+          <a href="https://help.fliplet.com/how-to-use-the-developer-options">Developer Options</a>
+          <a href="https://fliplet.com/security/">Enterprise security</a>
+          <a href="https://help.fliplet.com">Get support</a>
+          <a class="btn" href="https://fliplet.com/contact">Get help</a>
         </div>
       </aside>
       <div id="page-content">
@@ -160,8 +189,10 @@
         </section>
       </div>
       <aside id="toc">
-        <h2>Table of contents</h2>
-        <div class="list"></div>
+        <div class="content">
+          <h2>Table of contents</h2>
+          <div class="list"></div>
+        </div>
       </aside>
     </div>
 
