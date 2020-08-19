@@ -4,6 +4,10 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## August 2020
 
+### Aug 18th
+
+- New redesigned layout for the developers website
+
 ### Aug 7th
 
 - New Android framework release (version 4.2.0) to increase target SDK to 29 (Android 10) and disable back-ups for improved security.
