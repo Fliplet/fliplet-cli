@@ -1,3 +1,5 @@
+# Developers Documentation
+
 Welcome to the developers documentation for the **Fliplet Platform**. Here you can learn how to extend your Fliplet Apps and also how to create new components, themes and menus.
 
 If you're a <strong>Fliplet Studio</strong> user creating apps, you most likely want to look at our <a href="/API-Documentation.html">JS API</a> documentation, where you can learn how to interact with our core framework and components to extend your apps.
