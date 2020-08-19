@@ -13,24 +13,22 @@ var $window = $(window);
 var $html = $('html');
 var $toc = $('#toc');
 var $tocList = $toc.find('.list');
-var $pageContent = $('#page-content');
+var lastScrollPos;
 
 function onScroll() {
-  var scrollTop = $pageContent.scrollTop();
-  $html.toggleClass('has-scrolled', scrollTop > 250);
+  var scrollTop = $(this).scrollTop();
+
+  if (scrollTop < lastScrollPos) {
+    $html.removeClass('has-scrolled');
+  } else {
+    $html.toggleClass('has-scrolled', scrollTop > 250);
+  }
+
+  lastScrollPos = scrollTop;
 }
 
-$pageContent.scroll(onScroll);
+$(window).on('scroll', onScroll);
 onScroll();
-
-$('.search-handle').click(function (event) {
-  event.preventDefault();
-
-  $pageContent.stop().animate({scrollTop:0}, 500, 'swing', function() {
-    $('.ais-search-box--input').focus().addClass('in-focus');
-    $('.ais-search-box').addClass('animated shake');
-  });
-});
 
 $('body').on('click', 'a.toggle', function (event) {
   event.preventDefault();

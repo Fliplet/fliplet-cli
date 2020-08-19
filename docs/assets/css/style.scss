@@ -79,6 +79,11 @@ h2, h3, h4, h5, h6 {
   background-color: $primaryBackground;
   z-index: 100;
   display: flex;
+  transition: top 0.3s;
+
+  .has-scrolled & {
+    top: -80px;
+  }
 
   .content {
     display: flex;
