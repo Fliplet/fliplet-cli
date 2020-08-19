@@ -323,6 +323,8 @@ connection.import(FormData).then(function onSuccess() {});
 
 ### Remove a record by its ID
 
+Use the `removeById` method to remove a entry from a data source given its ID.
+
 ```js
 connection.removeById(1).then(function onRemove() {});
 ```
