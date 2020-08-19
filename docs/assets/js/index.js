@@ -95,4 +95,19 @@ if (location.pathname !== '/') {
   });
 } else {
   $html.removeClass('with-sidebar');
+  $html.addClass('with-hero');
+
+  new Typed('.hero h6', {
+    strings: [
+      'Build amazing apps.',
+      'Create incredible components.',
+      'Securely integrate with your data.',
+      'Customise apps within seconds.',
+      'Launch apps effortlessly.',
+      'Code using popular frameworks.'
+    ],
+    typeSpeed: 60,
+    backSpeed: 50,
+    loop: true
+  });
 }
