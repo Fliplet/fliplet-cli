@@ -336,6 +336,7 @@ h2, h3, h4, h5, h6 {
   h2 {
     font-size: 14px;
     color: $primaryBackground;
+    margin-top: 0;
   }
 
   .list {
@@ -371,13 +372,13 @@ h2, h3, h4, h5, h6 {
 
       &.title-H3 {
         opacity: 0.6;
-        font-size: 11px;
+        font-size: 12px;
         margin: 5px 0;
       }
 
       &.title-H4 {
         opacity: 0.4;
-        font-size: 10px;
+        font-size: 11px;
         margin: 5px 0;
       }
     }
@@ -411,7 +412,7 @@ h2, h3, h4, h5, h6 {
   color: $primaryBackground;
   font-weight: bold;
   display: block;
-  margin-bottom: 35px;
+  margin-bottom: 25px;
   font-size: 2.9rem;
 
   &:hover {
