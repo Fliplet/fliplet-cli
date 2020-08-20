@@ -75,22 +75,23 @@ h2, h3, h4, h5, h6 {
   top: 0;
   left: 0;
   width: 100%;
-  height: 80px;
+  height: 70px;
   background-color: $primaryBackground;
   z-index: 100;
   display: flex;
   transition: top 0.3s;
 
   .has-scrolled & {
-    top: -80px;
+    top: -70px;
   }
 
   .content {
     display: flex;
-    padding: 10px 20px;
+    padding: 0 20px;
     max-width: 1326px;
     margin: 0 auto;
     flex: 1;
+    height: 100%;
   }
 
   .brand {
@@ -131,10 +132,11 @@ h2, h3, h4, h5, h6 {
       input[type="text"] {
         width: 270px;
         height: 40px;
+        line-height: 40px;
         background-color: #FFF;
         border: 0;
-        border-radius: 4px;
-        padding: 0 10px 0 37px;
+        border-radius: 40px;
+        padding: 0 40px 0 14px;
 
         &:focus, &:active {
           outline: 0;
@@ -151,8 +153,8 @@ h2, h3, h4, h5, h6 {
         height: 22px;
         position: absolute;
         top: 50%;
-        left: 10px;
-        margin-top: -11px;
+        right: 12px;
+        margin-top: -12px;
         opacity: 0.5;
       }
     }
@@ -160,20 +162,25 @@ h2, h3, h4, h5, h6 {
     ul.nav {
       list-style: none;
       display: flex;
-      margin: 0;
+      margin: 0 10px 0 0;
       padding: 0;
       align-items: center;
 
       li {
+        padding: 0;
+        display: flex;
+        align-items: center;
+        margin-right: 20px;
+
         a {
           display: block;
           height: 40px;
           line-height: 40px;
           text-align: center;
-          padding: 0 10px;
-          margin-left: 10px;
+          padding: 0;
           color: #FFF;
           border-radius: 4px;
+          opacity: 0.7;
 
           &.active {
             background-color: rgba(255, 255, 255, 0.2);
@@ -181,12 +188,22 @@ h2, h3, h4, h5, h6 {
 
           &:hover {
             text-decoration: none;
-            background-color: $primary;
+            opacity: 1;
+          }
+        }
 
-            &.active {
-              cursor: default;
-              background-color: rgba(255, 255, 255, 0.2);
-            }
+        &:hover {
+          border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+          border-top: 2px solid transparent;
+        }
+
+        &.active {
+          border-bottom: 2px solid $primary;
+          border-top: 2px solid transparent;
+
+          a {
+            opacity: 1;
+            cursor: default;
           }
         }
       }
@@ -195,7 +212,7 @@ h2, h3, h4, h5, h6 {
 }
 
 #app {
-  padding-top: 80px;
+  padding-top: 70px;
 }
 
 .hero {
@@ -228,8 +245,8 @@ h2, h3, h4, h5, h6 {
   .button {
     background-color: $primary;
     color: #FFF;
-    padding: 12px 20px;
-    border-radius: 6px;
+    padding: 12px 24px;
+    border-radius: 40px;
     margin-top: 20px;
     font-size: 16px;
 
@@ -278,6 +295,7 @@ h2, h3, h4, h5, h6 {
         background-color: $primary;
         color: #FFF;
         display: inline-block;
+        border-radius: 40px;
 
         &:hover {
           background-color: $primaryBackground;
@@ -819,10 +837,6 @@ h2, h3, h4, h5, h6 {
 .algolia-autocomplete .ds-dropdown-menu {
   margin-top: -8px !important;
   margin-right: -2px !important;
-}
-
-.algolia-autocomplete .algolia-docsearch-suggestion--highlight {
-  background-color: #feffa5 !important;
 }
 
 @media screen and (max-width: 1200px) {
