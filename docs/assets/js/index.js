@@ -112,7 +112,7 @@ if (location.pathname !== '/') {
   });
 }
 
-var $a = $('a[href="' + location.pathname + '"]');
+var $a = $('a[href="' + location.pathname + '"]:eq(0)');
 
 if ($a.length) {
   $a.addClass('current');
