@@ -112,8 +112,9 @@ if (location.pathname !== '/') {
   });
 }
 
-if (location.pathname.indexOf('/API') === 0) {
-  $('a[data-section="js-api"]').click();
-} else if (location.pathname.indexOf('/REST-API') === 0) {
-  $('a[data-section="rest-api"]').click();
+var $a = $('a[href="' + location.pathname + '"]');
+
+if ($a.length) {
+  $a.addClass('current');
+  $a.closest('li').parent().closest('li').find('.toggle').click();
 }
