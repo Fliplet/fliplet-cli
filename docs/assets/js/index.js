@@ -111,3 +111,9 @@ if (location.pathname !== '/') {
     loop: true
   });
 }
+
+if (location.pathname.indexOf('/API') === 0) {
+  $('a[data-section="js-api"]').click();
+} else if (location.pathname.indexOf('/REST-API') === 0) {
+  $('a[data-section="rest-api"]').click();
+}
