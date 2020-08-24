@@ -50,9 +50,11 @@ Each **page** in **pages** will have a **label** `String` and a **action** `JSON
 
 {% raw %}
 ```handlebars
+<ul>
 {{#each pages}}
-  <a href="#" data-fl-navigate='{{{action}}}'>{{label}}</li>
+  <li><a href="#" data-fl-navigate='{{{action}}}'>{{label}}</a></li>
 {{/each}}
+</ul>
 ```
 {% endraw %}
 
