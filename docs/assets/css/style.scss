@@ -703,6 +703,89 @@ h2, h3, h4, h5, h6 {
   background: green;
 }
 
+.site-footer {
+  background-color: $primaryBackground;
+
+  .content {
+    display: flex;
+    padding: 20px 20px 40px;
+    max-width: 1060px;
+    margin: 0 auto;
+    flex: 1;
+
+    .brand {
+      display: flex;
+      margin-right: 80px;
+
+      .logo {
+        display: block;
+        width: 32px;
+        height: 32px;
+        background: url(/assets/img/logo-white.png?v=2) no-repeat left center;
+        background-size: contain;
+        margin-right: 6px;
+      }
+
+      span {
+        color: #FFF;
+        font-size: 22px;
+        line-height: 22px;
+        margin-top: 5px;
+
+        strong {
+          font-weight: normal;
+          opacity: 0.5;
+        }
+      }
+    }
+
+    .side {
+      .links {
+        display: flex;
+
+        ul {
+          list-style: none;
+          margin: 5px 0 40px 0;
+          width: 33.33%;
+          padding: 0;
+
+          &:last-child {
+            margin-right: 0;
+          }
+
+          li {
+            margin: 0;
+            padding: 0;
+
+            h3 {
+              color: $primary;
+              margin: 0 0 20px;
+              font-size: 22px;
+              font-weight: normal;
+              line-height: 22px;
+            }
+
+            a {
+              color: #FFF;
+              margin-bottom: 10px;
+            }
+          }
+        }
+      }
+    }
+
+    .site-footer-owner {
+      color: #FFF;
+      opacity: 0.5;
+
+      a {
+        color: #FFF;
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
 .search-handle {
   transition: opacity 0.5s;
   position: fixed;
