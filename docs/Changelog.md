@@ -1,3 +1,7 @@
+---
+description: Changelog notes giving a summary of recent significant changes to the documentation.
+---
+
 # Changelog
 
 Each week, we provide changelog notes on this page giving a summary of recent significant changes to the documentation. If there haven't been any significant changes in a given week, we don't publish changelog notes.

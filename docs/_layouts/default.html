@@ -1,3 +1,4 @@
+{% assign defaultDescription = "Developers documentation for the Fliplet Platform. Here you can learn how to extend your Fliplet Apps and also how to create new components, themes and menus. If you’re a Fliplet Studio user creating apps, you most likely want to look at our JS API documentation, where you can learn how to interact with our core framework and components to extend your apps."  %}
 <!DOCTYPE html>
 <html lang="en-us" class="with-sidebar">
   <head>
@@ -6,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#36344C">
     <meta property="og:image" content="https://developers.fliplet.com/assets/img/social.jpg">
-    <meta name="description" content="Developers documentation for the Fliplet Platform. Here you can learn how to extend your Fliplet Apps and also how to create new components, themes and menus. If you’re a Fliplet Studio user creating apps, you most likely want to look at our JS API documentation, where you can learn how to interact with our core framework and components to extend your apps.">
+    <meta name="description" content="{{ page.description | default: defaultDescription }}">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.3/dist/instantsearch.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
