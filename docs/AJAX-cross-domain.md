@@ -1,3 +1,7 @@
+---
+description: How to make AJAX Cross Domain requests on Fliplet Apps
+---
+
 # AJAX cross domain and cross-origin requests
 
 A common problem for developers is a browser to refuse access to a remote resource. Usually, this happens when you execute **AJAX cross domain request** using jQuery Ajax interface, Fetch API, or plain XMLHttpRequest. As result is that the AJAX request is not performed and data are not retrieved.
