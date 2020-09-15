@@ -7,7 +7,7 @@ We regularly update our framework to support new features. If you have an older 
   <div class="bl two">
     <div>
       <h4>iOS</h4>
-      <p>Latest stable release: 4.1.4</p>
+      <p>Latest stable release: 4.2.1</p>
     </div>
   </div>
   <div class="bl two">
@@ -22,6 +22,10 @@ We regularly update our framework to support new features. If you have an older 
 ---
 
 ## Supported versions (4.1+)
+
+### Version 4.2.1 (September 15, 2020)
+
+- **iOS**: Added support for clearing the splash screen cache on app startup.
 
 ### Version 4.2.0 (July 24, 2020)
 

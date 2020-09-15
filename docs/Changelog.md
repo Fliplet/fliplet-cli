@@ -6,6 +6,14 @@ description: Changelog notes giving a summary of recent significant changes to t
 
 Each week, we provide changelog notes on this page giving a summary of recent significant changes to the documentation. If there haven't been any significant changes in a given week, we don't publish changelog notes.
 
+## September 2020
+
+### Sep 15th
+
+- New iOS framework version 4.2.1 released with support for clearing the splash screen cache on app startup.
+
+---
+
 ## August 2020
 
 ### Aug 18th
