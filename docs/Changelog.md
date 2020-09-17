@@ -8,6 +8,10 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## September 2020
 
+### Sep 17th
+
+- New iOS framework version 4.2.2 released and fixed an issue that caused clipboard warnings to be triggered when user revisits an app.
+
 ### Sep 15th
 
 - New iOS framework version 4.2.1 released with support for clearing the splash screen cache on app startup.
