@@ -684,6 +684,12 @@ h2, h3, h4, h5, h6 {
     border-top-left-radius: 5px;
     border-bottom-right-radius: 5px;
     font-size: 14px;
+
+    i {
+      color: #A47F00;
+      font-size: 14px;
+      display: inline;
+    }
   }
 
   button {
@@ -701,6 +707,27 @@ h2, h3, h4, h5, h6 {
   .bl > div {
     height: 100%;
     position: relative;
+
+    &.secondary {
+      background-color: #EEE;
+
+      .pin {
+        background-color: #DDD;
+
+        i {
+          color: #AAA;
+        }
+      }
+
+      h4, p {
+        color: $primaryBackground;
+      }
+
+      button {
+        color: $primaryBackground;
+        border-color: $primaryBackground;
+      }
+    }
   }
 
   h4, p {
