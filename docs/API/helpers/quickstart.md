@@ -6,27 +6,26 @@ Helpers can be created by defining them via **screen or global JavaScript code**
 
 ---
 
-## 1. Define the helper
+## 1. Define your helper
 
-Define your helper in the Screen JS or Global JS of your Fliplet app:
+Define your helper in the <strong>Screen JavaScript or Global JavaScript</strong> of your Fliplet app:
 
 ```js
-Fliplet.Helper('welcome', {
-  template: '<p class="welcome">Hi {! attr.firstName !}, how are you?</p>',
+Fliplet.Helper('accordion', {
+  template: '<div class="accordion"><h3>Title: {! attr.title !}</h3>' +
+            '<p>Content: {! attr.content !}</p></div>',
   configuration: {
     fields: [
-      {
-        name: 'firstName',
-        label: 'First name'
-      }
+      { name: 'title', type: 'text', label: 'Title' },
+      { name: 'content', type: 'text', label: 'Content' }
     ]
   }
 });
 ```
 
 Here's an explanation of what the above helper declares:
-- a HTML template for the helper, which would print a paragraph with some text and the dynamic property `attr.firstName`
-- a configuration UI to set up the value for the dynamic property described above
+- a template string for the helper, which would print some HTML with two dynamic properties such as `attr.title`
+- a configuration UI to set up the value for the two dynamic properties
 
 ## 2. Drop the helper into your screen
 
@@ -34,23 +33,23 @@ Once the helper has been defined it **will be shown in the components list of Fl
 
 The output in the screen should look like the following:
 
-```html
-<p>Hi John, how are you?</p>
-```
+![image](/assets/img/helper-1.png)
+
+<p class="quote">Note: <strong>Every time you drop an helper into a screen a new "instance" gets created.</strong> Each helper is independent from each other and you can create as many as you want.</p>
 
 ## 3. Instance HTML
 
-Finally, if you inspect the resulting HTML either via the developer tools in Fliplet Studio or the browser you will see the produced HTML, which should be alongside these lines:
+Finally, if you check the resulting HTML via the Screen HTML in Fliplet Studio or the browser you will see the produced HTML, which should equal to:
 
 ```html
-<fl-helper data-type="welcome">
-  Hi <fl-prop data-path="name"></fl-prop>, how are you?
-</fl-helper>
+<fl-helper data-type="accordion" data-title="Hello"></fl-helper>
 ```
 
 This is also how you can copy and paste helper instances between your apps or screens of your app.
 
 ---
+
+## Further reading
 
 <section class="blocks alt">
   <a class="bl two" href="templates.html">

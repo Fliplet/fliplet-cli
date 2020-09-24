@@ -1,18 +1,35 @@
-# Fliplet Helpers
+# Helpers
+
+## What are Helpers?
 
 Building custom components using traditional development tools can be difficult: that's why Fliplet has created <strong>Helpers</strong>, a UI framework to easily create custom functionality for your Fliplet apps.
 
-Here's how it works:
+Let's break down how helpers work:
 
 1. You define a helper using JavaScript code
 2. The helper is shown into the Fliplet Studio components list alongside Fliplet 1st-party components.
 3. You drop the helper into your app screens. This creates an helper instance.
+4. Clicking on a helper instance shows its configuration interface.
 
-<p class="quote">Note: <strong>Every time you drop an helper into a screen a new "instance" gets created.</strong> Each helper is independent from each other and you can create as many as you want.</p>
+![image](/assets/img/helper-1.png)
+<small style="text-align: center;display: block"><i>A helper in Fliplet Studio, showing the helper instance in the device preview, its JavaScript configuration and the instance in the Screen HTML.<br/><br /></i></small>
 
 As you might be aware of, Fliplet components are also capable of presenting the user a configuration UI to amend their settings once clicked. Helpers easily allow you to define a configuration UI within just a few seconds as you will learn in the next few chapters of the documentation.
 
+## Sample use cases
+
+We now know what Helpers are. The next question is "what can we use them for?"
+
+1. Create an accordion
+2. Create a decision tree
+3. Creating a quiz
+
+...and literally any other use case requiring either static or dynamic content.
+
+
 ---
+
+## Further reading
 
 <section class="blocks alt">
   <a class="bl two" href="quickstart.html">

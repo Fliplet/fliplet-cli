@@ -423,6 +423,14 @@ h2, h3, h4, h5, h6 {
                 background-color: $primary;
                 color: #FFF;
               }
+
+              .label {
+                color: #FFF;
+                background: $primary;
+                border-radius: 4px;
+                padding: 1px 3px;
+                font-size: 12px;
+              }
             }
 
             p {
