@@ -48,11 +48,11 @@ You can use the `<fl-each>` block to automatically render an array of items base
 ---
 
 <section class="blocks alt">
-  <a class="bl two" href="templates.html">
+  <a class="bl two" href="methods.html">
     <div>
       <span class="pin">Next article in this series</span>
-      <h4>Attributes</h4>
-      <p>Learn more about defining attributes in your helpers.</p>
+      <h4>Methods</h4>
+      <p>Learn more about defining instance methods in your helpers.</p>
       <button>Next &rarr;</button>
     </div>
   </a>
