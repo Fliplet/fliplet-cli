@@ -211,6 +211,60 @@ h2, h3, h4, h5, h6 {
   }
 }
 
+.section-nav {
+  display: none;
+  margin: 0 0 40px;
+  border-bottom: 1px solid #DDD;
+
+  ul {
+    list-style: none;
+    margin: 0 40px 40px 0;
+    padding: 0;
+
+    li {
+      padding: 4px 0;
+
+      h3 {
+        font-size: 25px;
+        font-weight: bold;
+        color: $primaryBackground;
+        margin: 10px 0 0 0;
+      }
+
+      strong {
+        margin-left: 10px;
+        font-size: 14px;
+      }
+
+      a {
+        width: 100%;
+        display: block;
+        padding: 3px 10px;
+        border-radius: 4px;
+        font-size: 14px;
+
+        &:hover {
+          text-decoration: none;
+          background-color: rgba($primaryBackground, 0.1);
+          color: $primaryBackground;
+        }
+
+        &.current {
+          color: #FFF;
+          background-color: $primary;
+        }
+      }
+
+      .divider {
+        display: block;
+        height: 1px;
+        width: 100%;
+        margin: 10px 0;
+      }
+    }
+  }
+}
+
 #app {
   padding-top: 70px;
 }
@@ -587,6 +641,10 @@ h2, h3, h4, h5, h6 {
 
 .blocks .bl:last-child {
   margin-left: 10px;
+}
+
+.blocks .bl:only-child {
+  margin-left: 0;
 }
 
 .blocks .bl div {

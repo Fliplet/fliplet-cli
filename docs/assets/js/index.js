@@ -63,7 +63,11 @@ if (location.pathname !== '/') {
   $window.resize(checkIfSidebarFits);
   checkIfSidebarFits();
 
+  var added;
+
   $('.main-content h2, .main-content h3').each(function () {
+    added = true;
+
     $title = $(this);
     var node = $title[0].tagName;
     var prefix = node === 'H4' ? '- ' : '';
@@ -94,6 +98,10 @@ if (location.pathname !== '/') {
       }, 5000);
     });
   });
+
+  if (!added) {
+    $('#toc').html('');
+  }
 } else {
   $html.removeClass('with-sidebar');
   $html.addClass('with-hero');
@@ -120,4 +128,8 @@ var $a = $('a[href="' + location.pathname + '"]:eq(0)');
 if ($a.length) {
   $a.addClass('current');
   $a.closest('li').parent().closest('li').find('.toggle').click();
+}
+
+if (location.pathname.indexOf('/API/helpers/') === 0) {
+  $('[data-section="helpers"]').css('display', 'block');
 }
