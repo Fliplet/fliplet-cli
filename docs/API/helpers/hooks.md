@@ -24,3 +24,18 @@ Fliplet.Hooks.on('afterHelpersRender', function () {
   // All helpers have been rendered
 });
 ```
+
+---
+
+## Further reading
+
+<section class="blocks alt">
+  <a class="bl two" href="style.html">
+    <div>
+      <span class="pin">Next article in this series</span>
+      <h4>Styling</h4>
+      <p>Learn more about styling your helpers with CSS.</p>
+      <button>Next &rarr;</button>
+    </div>
+  </a>
+</section>

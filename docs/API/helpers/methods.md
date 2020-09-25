@@ -74,6 +74,8 @@ profile.set('firstName', function () {
 
 ---
 
+## Further reading
+
 <section class="blocks alt">
   <a class="bl two" href="attributes.html">
     <div>

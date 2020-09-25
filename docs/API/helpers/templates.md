@@ -137,6 +137,8 @@ You can also the shorthand syntax as shown below:
 
 ---
 
+## Further reading
+
 <section class="blocks alt">
   <a class="bl two" href="methods.html">
     <div>

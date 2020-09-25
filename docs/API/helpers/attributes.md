@@ -96,12 +96,14 @@ Fliplet.Helper('profile', {
 
 ---
 
+## Further reading
+
 <section class="blocks alt">
-  <a class="bl two" href="attributes.html">
+  <a class="bl two" href="hooks.html">
     <div>
       <span class="pin">Next article in this series</span>
-      <h4>Attributes</h4>
-      <p>Learn more about defining attributes in your helpers.</p>
+      <h4>Hooks &amp; Events</h4>
+      <p>Learn more about responsing to hooks and events in your helpers.</p>
       <button>Next &rarr;</button>
     </div>
   </a>
