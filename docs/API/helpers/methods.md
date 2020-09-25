@@ -4,8 +4,7 @@ Helpers are can define instance methods which can then be called at any time dur
 
 ---
 
-
-## Instance methods
+## Define instance methods
 
 Instance methods can be defined via the `methods` property as shown in the example below:
 
@@ -40,6 +39,37 @@ Fliplet.Helper('welcome', {
 });
 
 welcome.greet();
+```
+
+---
+
+## Public methods
+
+### Update attributes
+
+Use the `set` instance method to update attributes and values at runtime. Given the following example:
+
+```js
+var profile;
+
+Fliplet.Helper('profile', {
+  data: {
+    firstName: 'John'
+  },
+  ready: function () {
+    profile = this;
+  }
+});
+```
+
+See how the `firstName` property can be updated at anytime using a static value or using the result of a promise returned by a function:
+
+```js
+profile.set('firstName', 'Nick');
+
+profile.set('firstName', function () {
+  return Promise.resolve('Tony');
+})
 ```
 
 ---
