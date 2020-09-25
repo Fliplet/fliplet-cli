@@ -37,6 +37,34 @@ Fliplet.Helper('welcome', {
 });
 ```
 
+## Dynamically loading attributes
+
+The `data` object can optionally be a function returning a promise. This can be used to programmatcally load dynamic data when the helper is loaded:
+
+```js
+Fliplet.Helper('profile', {
+  data: function () {
+    var firstName = this.data.firstName;
+
+    return Fliplet.DataSources.connect(123).then(function (connection) {
+      return connection.findOne({ where: { firstName: firstName } });
+    }).then(function (entry) {
+      return { user: entry.data };
+    });
+  }
+});
+```
+
+```html
+{! start profile first-name="Nick" !}
+  <p>Searched by {! firstName !}</p>
+  <ul>
+    <li>Email: {! user.email !}</li>
+    <li>Name: {! user.name !}</li>
+  </ul>
+{! end profile !}
+```
+
 ---
 
 <section class="blocks alt">
