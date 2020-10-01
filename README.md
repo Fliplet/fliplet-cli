@@ -54,7 +54,7 @@ Then the website should be up and running at http://127.0.0.1:4000/
 
 ## Update Algolia search index
 
-1. Set API_KEY in `docs/docsearch/.env`
+1. Set API_KEY in `docs/docsearch/.env` and `APPLICATION_ID=8GRBFEV21Y`
 2. Install [jq](https://github.com/stedolan/jq/wiki/Installation) on your machine
 3. Clear the index on Algolia https://www.algolia.com/apps/8GRBFEV21Y
 3. Run this from the `docs/docsearch` folder:
