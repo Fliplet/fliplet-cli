@@ -1,5 +1,5 @@
 {
-  "index_name": "developers-website",
+  "index_name": "Fliplet Developers",
   "start_urls": ["https://developers.fliplet.com"],
   "selectors": {
     "lvl0": "h1",
