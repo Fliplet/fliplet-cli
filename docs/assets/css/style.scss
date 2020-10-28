@@ -1021,6 +1021,19 @@ h2, h3, h4, h5, h6 {
       width: 50%;
     }
   }
+
+  #page-content {
+    margin: 0;
+    border: 0;
+  }
+
+  .site-footer {
+    margin-top: 0;
+  }
+
+  .project-name {
+    font-size: 2.7rem;
+  }
 }
 
 div.highlighter-rouge[class|="language"] {
