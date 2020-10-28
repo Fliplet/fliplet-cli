@@ -513,6 +513,10 @@ h2, h3, h4, h5, h6 {
   align-items: center;
   justify-content: flex-end;
   text-decoration: none;
+
+  i, &:active, &:focus {
+    text-decoration: none;
+  }
 }
 
 .main-content {
@@ -958,6 +962,10 @@ h2, h3, h4, h5, h6 {
     background: #eee;
     width: 100%;
     box-shadow: 0 0 5px rgba(0,0,0,0.1);
+
+    .btn {
+      width: auto;
+    }
   }
 }
 
