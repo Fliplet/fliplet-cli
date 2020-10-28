@@ -976,15 +976,19 @@ h2, h3, h4, h5, h6 {
     flex-direction: column;
   }
 
+  .blocks .two {
+    width: 100%;
+  }
+
   .blocks a {
     width: 100%;
   }
 
-  .blocks a:first-child {
+  .blocks a:first-child, .blocks .bl:first-child {
     margin-right: 0;
   }
 
-  .blocks a:last-child {
+  .blocks a:last-child, .blocks .bl:last-child {
     margin-left: 0;
   }
 
@@ -996,8 +1000,26 @@ h2, h3, h4, h5, h6 {
     display: none;
   }
 
+  #header .brand {
+    flex: none;
+    margin-right: 20px;
+  }
+
   #header .middle ul.nav {
     display: none;
+  }
+
+  .site-footer .content {
+    flex-direction: column;
+  }
+
+  .site-footer .content .side .links {
+    flex-wrap: wrap;
+    margin-top: 40px;
+
+    ul {
+      width: 50%;
+    }
   }
 }
 
