@@ -954,18 +954,26 @@ h2, h3, h4, h5, h6 {
   }
 
   .with-mobile-menu #poc {
+    transition: top 0.3s;
     display: block;
-    position: absolute;
+    position: fixed;
     top: 70px;
     left: 0;
+    bottom: 0;
     padding-top: 0;
     background: #eee;
     width: 100%;
-    box-shadow: 0 0 5px rgba(0,0,0,0.1);
+    box-shadow: 0 0 15px rgba(0,0,0,0.7);
+    z-index: 1;
+    overflow-y: scroll;
 
     .btn {
       width: auto;
     }
+  }
+
+  .with-mobile-menu.has-scrolled #poc {
+    top: 0;
   }
 }
 
@@ -1068,6 +1076,14 @@ h2, h3, h4, h5, h6 {
     }
   }
 
+  .with-hero .hero {
+    height: 300px;
+  }
+
+  .hero h6 {
+    font-size: 40px;
+  }
+
   #page-content {
     margin: 0;
     border: 0;
@@ -1083,7 +1099,12 @@ h2, h3, h4, h5, h6 {
 
   .algolia-autocomplete .ds-dropdown-menu [class^=ds-dataset-] {
     left: 0;
+    bottom: 0;
+    top: 70px;
     position: fixed !important;
+    overflow-y: scroll !important;
+    border-radius: 0 !important;
+    border: 0 !important;
   }
 }
 
