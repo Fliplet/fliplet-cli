@@ -514,7 +514,7 @@ h2, h3, h4, h5, h6 {
   justify-content: flex-end;
   text-decoration: none;
 
-  i, &:active, &:focus {
+  i, &:active, &:focus, &:hover {
     text-decoration: none;
   }
 }
@@ -948,7 +948,7 @@ h2, h3, h4, h5, h6 {
   }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 830px) {
   #poc {
     display: none;
   }
@@ -994,6 +994,14 @@ h2, h3, h4, h5, h6 {
 
   .page-header .content .logo {
     display: none;
+  }
+
+  #header .middle ul.nav {
+    display: none;
+  }
+
+  .menu-handle {
+    display: flex;
   }
 }
 
@@ -1105,6 +1113,7 @@ h2, h3, h4, h5, h6 {
     overflow-y: scroll !important;
     border-radius: 0 !important;
     border: 0 !important;
+    width: 100%;
   }
 }
 
