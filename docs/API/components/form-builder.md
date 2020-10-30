@@ -144,6 +144,11 @@ form.fields.set([
     "label": "How can we help you today?"
   },
   {
+    _type: 'flParagraph',
+    name: 'text1',
+    content: 'Text of the paragraph'
+  },
+  {
     "_type": "flButtons",
     "name": "buttons"
   }
