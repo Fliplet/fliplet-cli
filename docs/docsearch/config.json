@@ -11,6 +11,16 @@
     "text": ".main-content p, .main-content ul, .main-content ol, code"
   },
   "selectors_exclude": ["#search", "#hits"],
+  "start_urls": [
+    {
+      "url": "https://developers.fliplet.com/API/components/list-from-data-source.html",
+      "page_rank": 2
+    },
+    {
+      "url": "https://developers.fliplet.com",
+      "page_rank": 1
+    }
+  ],
   "custom_settings": {
     "synonyms": [
       [
