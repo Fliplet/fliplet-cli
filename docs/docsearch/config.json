@@ -10,5 +10,23 @@
     "lvl5": "h6",
     "text": ".main-content p, .main-content ul, .main-content ol, code"
   },
-  "selectors_exclude": ["#search", "#hits"]
+  "selectors_exclude": ["#search", "#hits"],
+  "custom_settings": {
+    "synonyms": [
+      [
+        "DIS",
+        "Data Integration Service",
+        "Agent"
+      ],
+      [
+        "library",
+        "dependency",
+        "package"
+      ],
+      [
+        "LFD",
+        "List from Data Source"
+      ]
+    ]
+  }
 }
