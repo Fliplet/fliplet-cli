@@ -1005,6 +1005,17 @@ h2, h3, h4, h5, h6 {
   }
 }
 
+@media screen and (max-width: 58em) {
+  .site-footer .content {
+    flex-direction: column;
+  }
+
+  .site-footer .content .side .links {
+    flex-wrap: wrap;
+    margin-top: 40px;
+  }
+}
+
 @media screen and (max-width: 42em) {
   .page-header {
     padding: 0;
@@ -1071,17 +1082,8 @@ h2, h3, h4, h5, h6 {
     width: 100%;
   }
 
-  .site-footer .content {
-    flex-direction: column;
-  }
-
-  .site-footer .content .side .links {
-    flex-wrap: wrap;
-    margin-top: 40px;
-
-    ul {
-      width: 50%;
-    }
+  .site-footer .content .side .links ul {
+    width: 50%;
   }
 
   .with-hero .hero {
@@ -1117,7 +1119,7 @@ h2, h3, h4, h5, h6 {
   }
 }
 
-@media screen and (max-width: 32em) {
+@media screen and (max-width: 22em) {
   .site-footer .content .side .links ul {
     width: 100%;
   }
