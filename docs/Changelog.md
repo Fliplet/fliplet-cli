@@ -6,6 +6,14 @@ description: Changelog notes giving a summary of recent significant changes to t
 
 Each week, we provide changelog notes on this page giving a summary of recent significant changes to the documentation. If there haven't been any significant changes in a given week, we don't publish changelog notes.
 
+## October 2020
+
+### Oct 1st
+
+- Released new version 1.11.0 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html) with support for case-insensitive primary key, log verbosity and absolute paths on the Windows service.
+
+---
+
 ## September 2020
 
 ### Sep 17th

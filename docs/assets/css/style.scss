@@ -504,6 +504,21 @@ h2, h3, h4, h5, h6 {
   color: rgba(21, 60, 73, 0.6);
 }
 
+.menu-handle {
+  width: 44px;
+  height: 100%;
+  color: #FFF;
+  font-size: 25px;
+  display: none;
+  align-items: center;
+  justify-content: flex-end;
+  text-decoration: none;
+
+  i, &:active, &:focus, &:hover {
+    text-decoration: none;
+  }
+}
+
 .main-content {
   padding: 1.5rem 2rem;
   font-size: 1rem;
@@ -933,9 +948,32 @@ h2, h3, h4, h5, h6 {
   }
 }
 
-@media screen and (max-width: 600px) {
+@media screen and (max-width: 830px) {
   #poc {
     display: none;
+  }
+
+  .with-mobile-menu #poc {
+    transition: top 0.3s;
+    display: block;
+    position: fixed;
+    top: 70px;
+    left: 0;
+    bottom: 0;
+    padding-top: 0;
+    background: #eee;
+    width: 100%;
+    box-shadow: 0 0 15px rgba(0,0,0,0.7);
+    z-index: 1;
+    overflow-y: scroll;
+
+    .btn {
+      width: auto;
+    }
+  }
+
+  .with-mobile-menu.has-scrolled #poc {
+    top: 0;
   }
 }
 
@@ -957,6 +995,14 @@ h2, h3, h4, h5, h6 {
   .page-header .content .logo {
     display: none;
   }
+
+  #header .middle ul.nav {
+    display: none;
+  }
+
+  .menu-handle {
+    display: flex;
+  }
 }
 
 @media screen and (max-width: 42em) {
@@ -976,28 +1022,98 @@ h2, h3, h4, h5, h6 {
     flex-direction: column;
   }
 
+  .blocks .two {
+    width: 100%;
+  }
+
   .blocks a {
     width: 100%;
   }
 
-  .blocks a:first-child {
+  .blocks a:first-child, .blocks .bl:first-child {
     margin-right: 0;
   }
 
-  .blocks a:last-child {
+  .blocks a:last-child, .blocks .bl:last-child {
     margin-left: 0;
+  }
+
+  #header .middle {
+    flex: 1;
+  }
+
+  #header .middle .search-input {
+    flex: 1;
   }
 
   .search-handle {
     display: none;
   }
 
+  .menu-handle {
+    display: flex;
+  }
+
   #header .brand span {
     display: none;
   }
 
+  #header .brand {
+    flex: none;
+    width: 50px;
+  }
+
   #header .middle ul.nav {
     display: none;
+  }
+
+  #header .middle .search-input input[type="text"] {
+    width: 100%;
+  }
+
+  .site-footer .content {
+    flex-direction: column;
+  }
+
+  .site-footer .content .side .links {
+    flex-wrap: wrap;
+    margin-top: 40px;
+
+    ul {
+      width: 50%;
+    }
+  }
+
+  .with-hero .hero {
+    height: 300px;
+  }
+
+  .hero h6 {
+    font-size: 40px;
+  }
+
+  #page-content {
+    margin: 0;
+    border: 0;
+  }
+
+  .site-footer {
+    margin-top: 0;
+  }
+
+  .project-name {
+    font-size: 2.7rem;
+  }
+
+  .algolia-autocomplete .ds-dropdown-menu [class^=ds-dataset-] {
+    left: 0;
+    bottom: 0;
+    top: 70px;
+    position: fixed !important;
+    overflow-y: scroll !important;
+    border-radius: 0 !important;
+    border: 0 !important;
+    width: 100%;
   }
 }
 

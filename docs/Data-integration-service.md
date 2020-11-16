@@ -128,6 +128,9 @@ query: SELECT id, email as 'Email', fullName as 'Full Name', updatedAt FROM user
 # has already been added.
 primary_column: id
 
+# Choose whether the primary column should be considered case-sensitive or not.
+case_insensitive_primary_column: true
+
 # Define which (optional) column should be used to compare whether
 # the record has been updated on your database since it got inserted
 # to the Fliplet Data Source hence might require updating
@@ -160,6 +163,7 @@ merge: true
 
 # Define what columns in your local database rows are URLs to remote or local files
 # to be sync to Fliplet servers when inserting or updating rows.
+# Files will be uploaded to a folder named "Files uploaded from DIS" in your organization folder.
 files:
 # Define a column containing a remote URL to a file, e.g. "https://example.org/John.jpg"
 #  - column: thumbnail
@@ -179,6 +183,9 @@ files:
 #   fields:
 #     - First name
 #     - Last name
+
+# Define the log verbosity, between "debug", "info" and "critical".
+log_verbosity: debug
 ```
 
 Once you have a configuration file like the one above saved on disk, starting the agent is as simple as running the `start` command from your shell. While you are setting up the configuration we also suggest using the `--test` option to perform a dry run and test out the integration without actually sending data to Fliplet servers:
@@ -257,6 +264,9 @@ module.exports.config = {
   // Otherwise, they will just run according to their frequency.
   syncOnInit: true,
 
+  // Define the log verbosity, between "debug", "info" and "critical".
+  logVerbosity: 'debug',
+
   // Database connection settings (using Sequelize format)
   // http://docs.sequelizejs.com/
   database: {
@@ -296,6 +306,9 @@ module.exports.setup = (agent) => {
     // Define which column should be used as primary key
     // to understand whether a record already exists on the Fliplet Data Source
     primaryColumnName: 'id',
+
+    // Choose whether the primary column should be considered case-sensitive or not.
+    caseInsensitivePrimaryColumn: true,
 
     // Define which (optional) column should be used to compare whether
     // the record has been updated on your database since it got inserted
@@ -683,6 +696,8 @@ The following locations are currently supported for reading files:
 - **Shared files** (e.g. shared folders on your network)
 - **Sharepoint files**
 
+<p class="quote">Files will be uploaded to a folder named "<strong>Files uploaded from DIS</strong>" in your organization folder.</p>
+
 ### YAML
 
 ```yaml
@@ -804,6 +819,12 @@ In order to be able to update the agent via **npm**, [registry.npmjs.org](https:
 ---
 
 ## Releases changelog
+
+#### 1.11.0 (October 1st, 2020)
+
+- Added new `log_verbosity` option
+- Added new `case_insensitive_primary_column` option
+- Support for absolute paths when installing the agent as a service on Windows
 
 #### 1.10.7 (June 17th, 2020)
 

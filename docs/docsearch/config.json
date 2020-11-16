@@ -1,5 +1,5 @@
 {
-  "index_name": "developers-website",
+  "index_name": "Fliplet Developers",
   "start_urls": ["https://developers.fliplet.com"],
   "selectors": {
     "lvl0": "h1",
@@ -10,5 +10,33 @@
     "lvl5": "h6",
     "text": ".main-content p, .main-content ul, .main-content ol, code"
   },
-  "selectors_exclude": ["#search", "#hits"]
+  "selectors_exclude": ["#search", "#hits"],
+  "start_urls": [
+    {
+      "url": "https://developers.fliplet.com/API/components/list-from-data-source.html",
+      "page_rank": 2
+    },
+    {
+      "url": "https://developers.fliplet.com",
+      "page_rank": 1
+    }
+  ],
+  "custom_settings": {
+    "synonyms": [
+      [
+        "DIS",
+        "Data Integration Service",
+        "Agent"
+      ],
+      [
+        "library",
+        "dependency",
+        "package"
+      ],
+      [
+        "LFD",
+        "List from Data Source"
+      ]
+    ]
+  }
 }

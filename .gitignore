@@ -3,3 +3,4 @@ node_modules/
 .idea
 .history
 docs/_site/
+docs/docsearch/.env

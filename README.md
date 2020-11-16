@@ -54,10 +54,13 @@ Then the website should be up and running at http://127.0.0.1:4000/
 
 ## Update Algolia search index
 
-The index gets updated automatically from CircleCI when you commit new code. However, if you wish to update it manually you can run this command from the `docs` folder:
+1. Set API_KEY in `docs/docsearch/.env` and `APPLICATION_ID=8GRBFEV21Y`
+2. Install [jq](https://github.com/stedolan/jq/wiki/Installation) on your machine
+3. Clear the index on Algolia https://www.algolia.com/apps/8GRBFEV21Y
+3. Run this from the `docs/docsearch` folder:
 
 ```
-ALGOLIA_API_KEY=<API_KEY> bundle exec jekyll algolia
+docker run -it --env-file=.env -e "CONFIG=$(cat config.json | jq -r tostring)" algolia/docsearch-scraper
 ```
 
 ## Update the Fliplet Approved libraries documentation page
