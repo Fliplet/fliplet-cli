@@ -761,7 +761,7 @@ h2, h3, h4, h5, h6 {
         ul {
           list-style: none;
           margin: 5px 0 40px 0;
-          width: 33.33%;
+          width: 25%;
           padding: 0;
 
           &:last-child {
@@ -1005,6 +1005,17 @@ h2, h3, h4, h5, h6 {
   }
 }
 
+@media screen and (max-width: 58em) {
+  .site-footer .content {
+    flex-direction: column;
+  }
+
+  .site-footer .content .side .links {
+    flex-wrap: wrap;
+    margin-top: 40px;
+  }
+}
+
 @media screen and (max-width: 42em) {
   .page-header {
     padding: 0;
@@ -1071,17 +1082,8 @@ h2, h3, h4, h5, h6 {
     width: 100%;
   }
 
-  .site-footer .content {
-    flex-direction: column;
-  }
-
-  .site-footer .content .side .links {
-    flex-wrap: wrap;
-    margin-top: 40px;
-
-    ul {
-      width: 50%;
-    }
+  .site-footer .content .side .links ul {
+    width: 50%;
   }
 
   .with-hero .hero {
@@ -1113,6 +1115,12 @@ h2, h3, h4, h5, h6 {
     overflow-y: scroll !important;
     border-radius: 0 !important;
     border: 0 !important;
+    width: 100%;
+  }
+}
+
+@media screen and (max-width: 22em) {
+  .site-footer .content .side .links ul {
     width: 100%;
   }
 }
