@@ -820,6 +820,10 @@ In order to be able to update the agent via **npm**, [registry.npmjs.org](https:
 
 ## Releases changelog
 
+#### 1.12.0 (November 17th, 2020)
+
+- Fixes for uninstalling a script as a Windows Service
+
 #### 1.11.0 (October 1st, 2020)
 
 - Added new `log_verbosity` option
