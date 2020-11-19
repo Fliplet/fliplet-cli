@@ -23,14 +23,14 @@ var guid = Fliplet.guid();
 ## Further reading
 
 <section class="blocks alt">
-  <a class="bl two" href="quickstart.html">
+  <a class="bl two" href="navigate.html">
     <div class="secondary">
       <h4>Fliplet.Navigate</h4>
       <p>Learn how to navigate between different screens of your app or open a webpage.</p>
       <button>Next &rarr;</button>
     </div>
   </a>
-  <a class="bl two" href="quickstart.html">
+  <a class="bl two" href="storage.html">
     <div class="secondary">
       <h4>Fliplet.Storage</h4>
       <p>Learn how to read and write persistent data locally on the device or web browser.</p>
