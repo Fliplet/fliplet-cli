@@ -1,3 +1,4 @@
+// Search input integration with Algolia
 var search = docsearch({
   appId: '8GRBFEV21Y',
   apiKey: '4c075de739ed6724ede1f923f3d42abf',
@@ -9,7 +10,6 @@ var search = docsearch({
   }
 });
 
-
 // ---------------------------------------------
 
 var $window = $(window);
@@ -18,6 +18,9 @@ var $toc = $('#toc');
 var $tocList = $toc.find('.list');
 var lastScrollPos;
 
+/**
+ * Automatically shows and hide the scrollbar when the user scrolls up and down
+ */
 function onScroll() {
   var scrollTop = $(this).scrollTop();
 
@@ -30,9 +33,11 @@ function onScroll() {
   lastScrollPos = scrollTop;
 }
 
+// Hide scrollbar on scroll down
 $(window).on('scroll', onScroll);
 onScroll();
 
+// Accordion logic
 $('body').on('click', 'a.toggle', function (event) {
   event.preventDefault();
   var $li = $(this).parent();
@@ -47,6 +52,7 @@ $('body').on('click', 'a.toggle', function (event) {
   }
 });
 
+// Tweaks for algolia search
 $('body').on('blur', '.ais-search-box--input', function () {
   $(this).removeClass('in-focus');
 });
@@ -55,6 +61,7 @@ if (window.isBetaFeature) {
   $('body').addClass('is-beta');
 }
 
+// Logic for internal pages
 if (location.pathname !== '/') {
   function checkIfSidebarFits() {
     $html.toggleClass('with-sidebar', $window.width() > 900);
@@ -65,6 +72,7 @@ if (location.pathname !== '/') {
 
   var added;
 
+  // Generate Table of Contents
   $('.main-content h2, .main-content h3').each(function () {
     added = true;
 
@@ -103,6 +111,7 @@ if (location.pathname !== '/') {
     $('#toc').html('');
   }
 } else {
+  // Homepage logic
   $html.removeClass('with-sidebar');
   $html.addClass('with-hero');
 
@@ -123,6 +132,7 @@ if (location.pathname !== '/') {
   });
 }
 
+// Mark links as active
 var $a = $('a[href="' + location.pathname + '"]:eq(0)');
 
 if ($a.length) {
@@ -130,10 +140,15 @@ if ($a.length) {
   $a.closest('li').parent().closest('li').find('.toggle').click();
 }
 
+// Pages with left-hand-side navigation
+// @TODO: refactor to better format usig variables set from pages
 if (location.pathname.indexOf('/API/helpers/') === 0) {
   $('[data-section="helpers"]').css('display', 'block');
+} else if (location.pathname.indexOf('/API/core/') === 0) {
+  $('[data-section="core"]').css('display', 'block');
 }
 
+// Menu on mobile
 $('.menu-handle').click(function (e) {
   e.preventDefault();
   $('html').toggleClass('with-mobile-menu');
