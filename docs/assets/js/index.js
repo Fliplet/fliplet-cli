@@ -1,13 +1,26 @@
 // Search input integration with Algolia
-var search = docsearch({
+window.algoliaSearch = docsearch({
   appId: '8GRBFEV21Y',
   apiKey: '4c075de739ed6724ede1f923f3d42abf',
   indexName: 'Fliplet Developers',
   inputSelector: '.search-input input',
   debug: true,
   algoliaOptions: {
-    hitsPerPage: 20
+    hitsPerPage: 30
   }
+});
+
+$('input.ds-input').on('keyup', function (e) {
+  var value = $(this).val();
+  $(this).closest('.search-input').toggleClass('is-searching', !!value);
+});
+
+$('[data-clear-search]').click(function (e) {
+  e.preventDefault();
+  algoliaSearch.input.autocomplete.setVal('');
+  algoliaSearch.input.autocomplete.close('');
+  $('.search-input').removeClass('is-searching');
+  // $('input.ds-input').focus();
 });
 
 // ---------------------------------------------

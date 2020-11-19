@@ -136,7 +136,7 @@ h2, h3, h4, h5, h6 {
         background-color: #FFF;
         border: 0;
         border-radius: 40px;
-        padding: 0 40px 0 14px;
+        padding: 0 80px 0 14px;
 
         &:focus, &:active {
           outline: 0;
@@ -156,6 +156,41 @@ h2, h3, h4, h5, h6 {
         right: 12px;
         margin-top: -12px;
         opacity: 0.5;
+      }
+
+      [data-clear-search] {
+        position: absolute;
+        top: -1px;
+        right: 0;
+        height: 100%;
+
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        font-size: 14px;
+        color: $primaryBackground;
+        opacity: 0.5;
+        padding: 0 10px;
+
+        &:hover {
+          opacity: 1;
+        }
+
+        i {
+          font-size: 16px;
+          margin-left: 5px;
+          display: inline-block;
+        }
+      }
+
+      &.is-searching {
+        svg {
+          display: none;
+        }
+
+        [data-clear-search] {
+          display: flex;
+        }
       }
     }
 
