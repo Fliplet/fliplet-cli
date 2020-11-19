@@ -73,7 +73,7 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ### May 26th
 
-- Added new documentation for the [Fliplet.App.getPublicSlug()](https://developers.fliplet.com/API/fliplet-core.html#get-the-public-url-of-the-current-app) method.
+- Added new documentation for the [Fliplet.App.getPublicSlug()](https://developers.fliplet.com/API/core/overview.html#get-the-public-url-of-the-current-app) method.
 
 ### May 11th
 
@@ -115,7 +115,7 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ### March 31st
 
-- New documentation for retrieving the [public URL](https://developers.fliplet.com/API/fliplet-core.html#get-the-public-url-of-the-current-screen) of a screen.
+- New documentation for retrieving the [public URL](https://developers.fliplet.com/API/core/overview.html#get-the-public-url-of-the-current-screen) of a screen.
 - New [beforeRichFieldInitialize](https://developers.fliplet.com/API/components/form-builder.html#beforerichfieldinitialize) hook added to the **Form builder**.
 
 ### March 17th
