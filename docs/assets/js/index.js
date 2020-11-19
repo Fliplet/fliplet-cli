@@ -6,7 +6,7 @@ var search = docsearch({
   inputSelector: '.search-input input',
   debug: true,
   algoliaOptions: {
-    hitsPerPage: 12
+    hitsPerPage: 20
   }
 });
 

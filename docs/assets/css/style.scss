@@ -1109,6 +1109,22 @@ h2, h3, h4, h5, h6 {
   }
 }
 
+.algolia-autocomplete .ds-dropdown-menu [class^=ds-dataset-] {
+  left: 0;
+  bottom: 0;
+  top: 70px;
+  position: fixed !important;
+  overflow-y: scroll !important;
+  border-radius: 0 !important;
+  border: 0 !important;
+  width: 100%;
+  transition: top 0.3s;
+
+  .has-scrolled & {
+    top: 0;
+  }
+}
+
 @media screen and (max-width: 42em) {
   .page-header {
     padding: 0;
@@ -1200,16 +1216,7 @@ h2, h3, h4, h5, h6 {
     font-size: 2.7rem;
   }
 
-  .algolia-autocomplete .ds-dropdown-menu [class^=ds-dataset-] {
-    left: 0;
-    bottom: 0;
-    top: 70px;
-    position: fixed !important;
-    overflow-y: scroll !important;
-    border-radius: 0 !important;
-    border: 0 !important;
-    width: 100%;
-  }
+
 }
 
 @media screen and (max-width: 22em) {
