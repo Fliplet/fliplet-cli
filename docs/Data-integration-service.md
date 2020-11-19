@@ -163,6 +163,7 @@ merge: true
 
 # Define what columns in your local database rows are URLs to remote or local files
 # to be sync to Fliplet servers when inserting or updating rows.
+# Files will be uploaded to a folder named "Files uploaded from DIS" in your organization folder.
 files:
 # Define a column containing a remote URL to a file, e.g. "https://example.org/John.jpg"
 #  - column: thumbnail
@@ -695,6 +696,8 @@ The following locations are currently supported for reading files:
 - **Shared files** (e.g. shared folders on your network)
 - **Sharepoint files**
 
+<p class="quote">Files will be uploaded to a folder named "<strong>Files uploaded from DIS</strong>" in your organization folder.</p>
+
 ### YAML
 
 ```yaml
@@ -816,6 +819,10 @@ In order to be able to update the agent via **npm**, [registry.npmjs.org](https:
 ---
 
 ## Releases changelog
+
+#### 1.12.0 (November 17th, 2020)
+
+- Fixes for uninstalling a script as a Windows Service
 
 #### 1.11.0 (October 1st, 2020)
 

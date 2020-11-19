@@ -3,7 +3,7 @@ var search = docsearch({
   apiKey: '4c075de739ed6724ede1f923f3d42abf',
   indexName: 'Fliplet Developers',
   inputSelector: '.search-input input',
-  debug: false,
+  debug: true,
   algoliaOptions: {
     hitsPerPage: 12
   }
@@ -133,3 +133,8 @@ if ($a.length) {
 if (location.pathname.indexOf('/API/helpers/') === 0) {
   $('[data-section="helpers"]').css('display', 'block');
 }
+
+$('.menu-handle').click(function (e) {
+  e.preventDefault();
+  $('html').toggleClass('with-mobile-menu');
+});

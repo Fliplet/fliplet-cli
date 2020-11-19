@@ -6,6 +6,14 @@ description: Changelog notes giving a summary of recent significant changes to t
 
 Each week, we provide changelog notes on this page giving a summary of recent significant changes to the documentation. If there haven't been any significant changes in a given week, we don't publish changelog notes.
 
+## November 2020
+
+### Oct 17th
+
+- Released new version 1.12.0 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html) with fixes for uninstalling Windows Services.
+
+---
+
 ## October 2020
 
 ### Oct 1st

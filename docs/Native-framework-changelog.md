@@ -23,6 +23,10 @@ We regularly update our framework to support new features. If you have an older 
 
 ## Supported versions (4.1+)
 
+### Version 4.2.3 (September 22, 20202)
+
+- **iOS**: Fixes an issue that prevents status bar text from correctly adapting in Dark Mode.
+
 ### Version 4.2.2 (September 17, 2020)
 
 - **iOS**: Fixed an issue that caused clipboard warnings to be triggered when user revisits an app.
