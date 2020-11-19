@@ -12,7 +12,7 @@ Feeling lost? Head to the [JS APIs](JS-APIs.md) section of the docs to read more
 
 {% raw %}
 <section class="blocks alt">
-  <a class="bl two" href="/API/fliplet-core.html">
+  <a class="bl two" href="/API/core/overview.html">
     <div>
       <span class="pin">Recommended library</span>
       <h4>Core</h4>
@@ -42,7 +42,7 @@ Feeling lost? Head to the [JS APIs](JS-APIs.md) section of the docs to read more
   </a>
 </section>
 <section class="blocks alt">
-  <a class="bl two" href="/API/fliplet-core.html">
+  <a class="bl two" href="/API/core/overview.html">
     <div>
       <h4>Communicate</h4>
       <p>Send emails, texts and share URLs to users of your apps.</p>
