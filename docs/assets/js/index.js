@@ -23,6 +23,14 @@ $('[data-clear-search]').click(function (e) {
   // $('input.ds-input').focus();
 });
 
+$(document).keydown(function(e) {
+  if (e.ctrlKey && (e.which === 70)) {
+    e.preventDefault();
+    $('input.ds-input').focus();
+    $('html').removeClass('has-scrolled');
+  }
+});
+
 // ---------------------------------------------
 
 var $window = $(window);
