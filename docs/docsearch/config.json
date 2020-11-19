@@ -1,6 +1,5 @@
 {
   "index_name": "Fliplet Developers",
-  "start_urls": ["https://developers.fliplet.com"],
   "selectors": {
     "lvl0": "h1",
     "lvl1": "h2",
@@ -23,20 +22,9 @@
   ],
   "custom_settings": {
     "synonyms": [
-      [
-        "DIS",
-        "Data Integration Service",
-        "Agent"
-      ],
-      [
-        "library",
-        "dependency",
-        "package"
-      ],
-      [
-        "LFD",
-        "List from Data Source"
-      ]
+      ["DIS", "Data Integration Service", "Agent"],
+      ["library", "dependency", "package"],
+      ["LFD", "List from Data Source"]
     ]
   }
 }

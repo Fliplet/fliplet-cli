@@ -19,7 +19,7 @@ Features are arranged by namespace, e.g. "<strong>Screen</strong>" is the namesp
 ## Dive in
 
 <section class="blocks alt">
-  <a class="bl two" href="quickstart.html">
+  <a class="bl two" href="navigate.html">
     <div>
       <span class="pin">Recommended article</span>
       <h4>Fliplet.Navigate</h4>
@@ -27,7 +27,7 @@ Features are arranged by namespace, e.g. "<strong>Screen</strong>" is the namesp
       <button>Next &rarr;</button>
     </div>
   </a>
-  <a class="bl two" href="quickstart.html">
+  <a class="bl two" href="storage.html">
     <div>
       <span class="pin">Often searched</span>
       <h4>Fliplet.Storage</h4>
