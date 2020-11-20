@@ -7,7 +7,7 @@ We regularly update our framework to support new features. If you have an older 
   <div class="bl two">
     <div>
       <h4>iOS</h4>
-      <p>Latest stable release: 4.2.2</p>
+      <p>Latest stable release: 4.2.4</p>
     </div>
   </div>
   <div class="bl two">
@@ -23,7 +23,11 @@ We regularly update our framework to support new features. If you have an older 
 
 ## Supported versions (4.1+)
 
-### Version 4.2.3 (September 22, 20202)
+### Version 4.2.4 (November 11, 2020)
+
+- **iOS**: Improvements and bugfixes.
+
+### Version 4.2.3 (September 22, 2020)
 
 - **iOS**: Fixes an issue that prevents status bar text from correctly adapting in Dark Mode.
 
