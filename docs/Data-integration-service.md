@@ -36,7 +36,7 @@ Please note that our agent **requires at least version 8 of Node.js**. If your m
 Once you have installed Node.js, please open the shell to continue and install our agent:
 
 - **Windows**: access the Node.js shell from **Start menu** > **Node.js command prompt**
-- **Mac OSX**: access the shell of your computer from **Applications** > **Utilities** > **Terminal**
+- **macOS**: access the shell of your computer from **Applications** > **Utilities** > **Terminal**
 - **Unix**: access the shell of your computer
 
 Then, run this simple command to install the Fliplet Agent on your machine via the npm package manager:
