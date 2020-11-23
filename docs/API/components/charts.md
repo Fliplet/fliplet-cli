@@ -2,7 +2,6 @@
 
 ## JS API
 
-
 ### Retrieve an instance
 
 Since you can have many charts in a screen, we provide some handy functions to grab a specific instance by its chart name or the first one available in the page when no input parameter is given.
