@@ -1,5 +1,83 @@
 # Charts
 
+## JS API
+
+
+### Retrieve an instance
+
+Since you can have many charts in a screen, we provide some handy functions to grab a specific instance by its chart name or the first one available in the page when no input parameter is given.
+
+`Fliplet.Chart.get()`
+
+Retrieves the first or specific chart instance.
+
+```js
+// Gets the first chart instance
+Fliplet.Chart.get()
+  .then(function(chart) {
+    // Use chart to perform various actions
+  });
+
+// Gets the first chart instance named 'foo'
+Fliplet.FormBuilder.get('foo')
+  .then(function (form) {
+    // Use chart to perform various actions
+  });
+````
+
+Alternatively, you can also retrieve the first chart instance of a specific type.
+
+Support values for `type` are: `bar`, `column`, `donut`, `line`, `pie`, `scatter`.
+
+```js
+// Gets the first line chart instance
+Fliplet.Chart.get({ type: 'line' })
+  .then(function(chart) {
+    // Use chart to perform various actions
+  });
+````
+
+`Fliplet.Chart.getAll()`
+
+Retrieve all chart instances or all chart instances that match the specified query.
+
+```js
+// Get all charts
+Fliplet.Chart.getAll()
+  .then(function(charts) {
+    // Use charts to perform various actions
+  });
+
+// Get all charts named 'foo'
+Fliplet.Chart.getAll('foo')
+  .then(function(charts) {
+    // Use charts to perform various actions
+  });
+
+// Get all pie charts
+Fliplet.Chart.getAll({ type: 'pie' })
+  .then(function(charts) {
+    // Use charts to perform various actions
+  });
+```
+
+### Instance properties
+
+The `chart` instance variable above makes available the following instance properties.
+
+ * `chart.name` Chart name
+ * `chart.type` Chart type
+
+### Instance methods
+
+The `chart` instance variable above makes available the following instance methods.
+
+`chart.refresh()`
+
+Instantly refreshes the chart by getting the latest data. If auto-refresh is enabled, the timer is after data is retrieved.
+
+The method returns a promise that resolves when the chart is redrawn.
+
 ## Hooks
 
 The **Chart** components exposes hooks that you can use to modify the component data and behavior. Here are the hooks and their specific life cycle:

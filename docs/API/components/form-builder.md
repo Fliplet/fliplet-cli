@@ -4,7 +4,7 @@ These public JS APIs will be automatically available in your screens once a **Fo
 
 ## Retrieve an instance
 
-Since you can have many forms into a screen, we provide a handy function to grab a specific instance by its form name or the first one available in the page when no input parameter is given.
+Since you can have many forms in a screen, we provide a handy function to grab a specific instance by its form name or the first one available in the page when no input parameter is given.
 
 ### `Fliplet.FormBuilder.get()`
 
@@ -17,7 +17,7 @@ Fliplet.FormBuilder.get()
     // Use form to perform various actions
   });
 
-// Gets the form instance named 'foo'
+// Gets the first form instance named 'foo'
 Fliplet.FormBuilder.get('foo')
   .then(function (form) {
     // Use form to perform various actions
