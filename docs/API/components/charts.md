@@ -18,7 +18,7 @@ Fliplet.Chart.get()
   });
 
 // Gets the first chart instance named 'foo'
-Fliplet.FormBuilder.get('foo')
+Fliplet.Chart.get('foo')
   .then(function (form) {
     // Use chart to perform various actions
   });
