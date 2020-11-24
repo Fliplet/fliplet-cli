@@ -490,7 +490,7 @@ module.exports.setup = (agent) => {
     },
 
     // Action to run when the data is retrieved
-    action: (entries, db) => {
+    action: async (entries, db) => {
       console.log(entries)
 
       // The db argument of this function is the Sequelize Database instance
@@ -498,6 +498,18 @@ module.exports.setup = (agent) => {
       // INSERT queries. You can follow Sequelize documentation about using
       // db.query() to create your queries as necessary:
       // https://sequelize.org/master/manual/raw-queries.html
+      await entries.map(async (entry) => {
+        await db.query(`
+          INSERT INTO MyTable (FirstName, LastName, Company) VALUES (?, ?, ?);`, {
+            replacements: [
+              entry.data["First name"],
+              entry.data["Last name"],
+              entry.data.Company
+            ]
+          }).catch((err) => {
+            options.log.error(err);
+          });
+      });
 
       // You can also write data back to Fliplet APIs if necessary,
       // e.g. confirm you have sync these entries
