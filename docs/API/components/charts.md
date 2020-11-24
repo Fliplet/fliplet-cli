@@ -19,7 +19,7 @@ Fliplet.Chart.get()
 
 // Gets the first chart instance named 'foo'
 Fliplet.Chart.get('foo')
-  .then(function (form) {
+  .then(function (chart) {
     // Use chart to perform various actions
   });
 ````
