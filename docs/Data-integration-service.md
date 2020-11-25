@@ -474,7 +474,7 @@ module.exports.config = {
   syncOnInit: true
 };
 
-module.exports.setup = (agent) => {
+module.exports.setup = (agent, options) => {
 
   // Pull data from a Fliplet Data Source
   agent.pull({
