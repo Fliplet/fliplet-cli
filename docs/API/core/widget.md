@@ -182,3 +182,33 @@ Fliplet.Widget.save({ foo: 1 }).then(function () {
 ```js
 Fliplet.Widget.complete();
 ```
+
+## Namespaced widgets
+
+You can also create a private widget namespace which you can use to store and access widget instances:
+
+```js
+// Register a namespace. Existing namespace will be returned.
+Fliplet.Foo = Fliplet.Widget.Namespace('foo');
+```
+
+### Add an instance
+```js
+Fliplet.Foo.add(instance) // instance can be a promise but does not need to be
+```
+
+### Get an instance
+
+```js
+Fliplet.Foo.get().then((instance) => { /* Returns the first instsance */ })
+Fliplet.Foo.get('bar').then((instance) => { /* Returns the first instsance with instance.name: "bar" */ })
+Fliplet.Foo.get({ type: 'bar' }).then((instance) => { /* Returns the first instsance with instance.type: "bar" */ })
+```
+
+### Get all instances
+
+```js
+Fliplet.Foo.getAll().then((instances) => { /* Returns an array of all instances */ })
+Fliplet.Foo.getAll('bar').then((instances) => { /* Returns an array of instances where instance.name: "bar" */ })
+Fliplet.Foo.getAll({ type: 'bar' }).then((instances) => { /* Returns an array of instances where instance.type: "bar" */ })
+```
