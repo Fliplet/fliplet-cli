@@ -81,7 +81,7 @@ Fliplet.App.Storage.remove('key').then(function () {
 
 ## Namespaced storage
 
-You can also create a private namespaced storage which is not shared with the `Fliplet.App.Storage` neither with the global `Fliplet.Storage`:
+You can also create a private namespaced storage which is not shared with `Fliplet.App.Storage` or the global `Fliplet.Storage`:
 
 ```js
 var myPrivateStorage = Fliplet.Storage.Namespace('foo');

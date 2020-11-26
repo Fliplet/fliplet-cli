@@ -200,9 +200,9 @@ Fliplet.Foo.add(instance) // instance can be a promise but does not need to be
 ### Get an instance
 
 ```js
-Fliplet.Foo.get().then((instance) => { /* Returns the first instsance */ })
-Fliplet.Foo.get('bar').then((instance) => { /* Returns the first instsance with instance.name: "bar" */ })
-Fliplet.Foo.get({ type: 'bar' }).then((instance) => { /* Returns the first instsance with instance.type: "bar" */ })
+Fliplet.Foo.get().then((instance) => { /* Returns the first instance */ })
+Fliplet.Foo.get('bar').then((instance) => { /* Returns the first instance with instance.name: "bar" */ })
+Fliplet.Foo.get({ type: 'bar' }).then((instance) => { /* Returns the first instance with instance.type: "bar" */ })
 ```
 
 ### Get all instances
