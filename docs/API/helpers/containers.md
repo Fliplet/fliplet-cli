@@ -28,7 +28,7 @@ The example above defines two containers:
 
 ## Define where a helper can be dropped into
 
-Helpers can optionally be allowed <strong>to be dropped any into rich-content containers defined by other helpers</strong>. To do so. You must define the `childOf` array property in the child helper with a list of helpers it can be dropped to:
+By default, helpers are not allowed to be dropped into other helpers. However, they can optionally be allowed <strong>to be dropped any into rich-content containers defined by other helpers</strong>. To do so you must define the `childOf` array property in the child helper with a list of helpers it can be dropped to:
 
 ```js
 // This helper can only be dropped in the "slider" helper
