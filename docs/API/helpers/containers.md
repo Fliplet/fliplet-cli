@@ -40,7 +40,8 @@ Fliplet.Helper('slide', {
 Furthermore, if your parent helper is declaring more than one rich-content container you can restrict your child helper to only be allowed to be dropped into a specific container by using the dot notation as follows:
 
 ```js
-// This helper can only be dropped in the "slider" helper container named "mySecondContainer"
+// This helper can only be dropped in the
+// "slider" helper container named "mySecondContainer"
 Fliplet.Helper('slide', {
   childOf: ['slider.mySecondContainer']
 });
