@@ -47,7 +47,7 @@ Fliplet.Helper('slide', {
 });
 ```
 
-<p class="quote"><strong>Note:</strong>If you want to allow an helper to be dropped in any other helper with no restrictions, you don't need to define the <code>childOf</code> property.</p>
+<p class="quote"><strong>Note:</strong> If you want to allow an helper to be dropped in any other helper with no restrictions, you don't need to define the <code>childOf</code> property.</p>
 
 ---
 
