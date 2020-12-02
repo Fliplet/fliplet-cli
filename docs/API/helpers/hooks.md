@@ -30,11 +30,11 @@ Fliplet.Hooks.on('afterHelpersRender', function () {
 ## Further reading
 
 <section class="blocks alt">
-  <a class="bl two" href="style.html">
+  <a class="bl two" href="containers.html">
     <div>
       <span class="pin">Next article in this series</span>
-      <h4>Styling</h4>
-      <p>Learn more about styling your helpers with CSS.</p>
+      <h4>Containers</h4>
+      <p>Learn more about how to add rich-content containers to your helper.</p>
       <button>Next &rarr;</button>
     </div>
   </a>
