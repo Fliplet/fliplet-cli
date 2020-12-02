@@ -28,7 +28,7 @@ The example above defines two containers:
 
 ## Define where a helper can be dropped into
 
-Helpers can optionally be allowed to be dropped into rich-content containers defined by other helpers. To do so. You must define the `childOf` array property in the child helper with a list of helpers it can be dropped to:
+Helpers can optionally be allowed <strong>to be dropped any into rich-content containers defined by other helpers</strong>. To do so. You must define the `childOf` array property in the child helper with a list of helpers it can be dropped to:
 
 ```js
 // This helper can only be dropped in the "slider" helper
@@ -37,7 +37,7 @@ Fliplet.Helper('slide', {
 });
 ```
 
-Furthermore, if your parent helper is declaring more than one rich-content container you can restrict your child helper to only be allowed to be dropped into a specific container by using the dot notation as follows:
+Furthermore, if your parent helper is declaring more than one rich-content container you can restrict your child helper to only be allowed <strong>to be dropped into a specific container</strong> by using the <strong>dot notation</strong> as follows:
 
 ```js
 // This helper can only be dropped in the
@@ -47,14 +47,7 @@ Fliplet.Helper('slide', {
 });
 ```
 
-If you want to allow an helper to be dropped in any other helper with no restrictions, you can either not define the `childOf` property or simply leave it an an empty array:
-
-```js
-// This helper can be dropped in any other helper
-Fliplet.Helper('welcome', {
-  childOf: []
-});
-```
+<p class="quote"><strong>Note:</strong>If you want to allow an helper to be dropped in any other helper with no restrictions, you don't need to define the <code>childOf</code> property.</p>
 
 ---
 
