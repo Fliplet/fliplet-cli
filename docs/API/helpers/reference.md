@@ -72,7 +72,7 @@ Fliplet.Helper(name, options);
       <td><code>array</code></td>
       <td>optional</td>
       <td>
-        <a href="/API/helpers/containers.html">The list of helpers an helper can be dropped in</a>.</td>
+        <a href="/API/helpers/containers.html#define-where-a-helper-can-be-dropped-into">The list of helpers an helper can be dropped in</a>.</td>
     </tr>
   </tbody>
 </table>
