@@ -37,7 +37,16 @@ Fliplet.Helper('slide', {
 });
 ```
 
-If you want to allow an helper to be dropped in any other helper with no restrictions please define the `childOf` property an an empty array:
+Furthermore, if your parent helper is declaring more than one rich-content container you can restrict your child helper to only be allowed to be dropped into a specific container by using the dot notation as follows:
+
+```js
+// This helper can only be dropped in the "slider" helper container named "mySecondContainer"
+Fliplet.Helper('slide', {
+  childOf: ['slider.mySecondContainer']
+});
+```
+
+If you want to allow an helper to be dropped in any other helper with no restrictions, you can either not define the `childOf` property or simply leave it an an empty array:
 
 ```js
 // This helper can be dropped in any other helper
