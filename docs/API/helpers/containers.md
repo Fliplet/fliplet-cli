@@ -26,6 +26,28 @@ The example above defines two containers:
 
 ---
 
+## Define where a helper can be dropped into
+
+Helpers can optionally be allowed to be dropped into rich-content containers defined by other helpers. To do so. You must define the `childOf` array property in the child helper with a list of helpers it can be dropped to:
+
+```js
+// This helper can only be dropped in the "slider" helper
+Fliplet.Helper('slide', {
+  childOf: ['slider']
+});
+```
+
+If you want to allow an helper to be dropped in any other helper with no restrictions please define the `childOf` property an an empty array:
+
+```js
+// This helper can be dropped in any other helper
+Fliplet.Helper('welcome', {
+  childOf: []
+});
+```
+
+---
+
 ## Further reading
 
 <section class="blocks alt">
