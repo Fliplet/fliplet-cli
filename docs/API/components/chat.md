@@ -85,7 +85,10 @@ Fliplet.DataSources.create({
     runOn: ['insert'],
     type: 'push-message',
     appId: Fliplet.Env.get('appId')
-  }]
+  }],
+  accessRules: [
+    { type: ['select', 'insert', 'update', 'delete'], allow: 'all' }
+  ]
 });
 ```
 
