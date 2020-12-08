@@ -71,7 +71,7 @@ Fliplet.Hooks.on('beforeChatContactsRendering', function onBeforeChatContactsRen
 
 ## Public channels
 
-### Get the list of public channels available
+### Get the list of channels available
 
 You can get the list of public channel for a chat using the following method:
 
@@ -83,7 +83,7 @@ Fliplet.Chat.get().then(function (chat) {
 });
 ```
 
-### Create a public chat channel
+### Create a channel
 
 Channels can be created by simply running this simple snippet via custom code (or by running it in the console). Make sure to change the channel name with the actual words you want to use:
 
