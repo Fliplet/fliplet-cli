@@ -69,9 +69,33 @@ Fliplet.Hooks.on('beforeChatContactsRendering', function onBeforeChatContactsRen
 
 ---
 
-## Create a public chat channel
+## Public channels
+
+### Get the list of public channels available
+
+You can get the list of public channel for a chat using the following method:
+
+```js
+Fliplet.Chat.get().then(function (chat) {
+  return chat.channels.get();
+}).then(function (channels) {
+  console.log(channels);
+});
+```
+
+### Create a public chat channel
 
 Channels can be created by simply running this simple snippet via custom code (or by running it in the console). Make sure to change the channel name with the actual words you want to use:
+
+```js
+Fliplet.Chat.get().then(function (chat) {
+  return chat.channels.create('My public channel');
+}).then(function (channel) {
+  // Channel has been created
+});
+```
+
+Please note that the above snippet only works in a screen with a chat component. If you want to create a channel from a different screen please use the low-level JS API that follows:
 
 ```js
 // Creates a chat public channel
@@ -92,9 +116,24 @@ Fliplet.DataSources.create({
 });
 ```
 
+### Delete a channel
+
+You can delete a channel by using the `delete` instance method as follows:
+
+```js
+Fliplet.Chat.get().then(function (chat) {
+  // Deletes a channel by its ID
+  return chat.channels.delete(123);
+}).then(function () {
+  // Channel has been deleted
+});
+```
+
 ---
 
-## Change the column name used for verifying user login
+## User verification
+
+### Change the column name used for verifying user login
 
 If the user is logged in to a data source that is different from the Chat contact list, the column name used for the user email might be different between the data sources. Use the following hook to set the email column name for the login data source.
 
