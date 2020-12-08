@@ -89,7 +89,7 @@ Channels can be created by simply running this simple snippet via custom code (o
 
 ```js
 Fliplet.Chat.get().then(function (chat) {
-  return chat.channels.create('My public channel');
+  return chat.channels.create('My channel name');
 }).then(function (channel) {
   // Channel has been created
 });
