@@ -131,7 +131,7 @@ Fliplet.Chat.get().then(function (chat) {
 
 ---
 
-## User verification
+## User verification & Security
 
 ### Change the column name used for verifying user login
 
@@ -142,11 +142,11 @@ Fliplet.Hooks.on('flChatBeforeGetUserEmail', function (options) {
   // Change the column name for the user email from the login data source
   options.crossLoginColumnName = 'Authorized emails';
 });
-````
+```
 
 ---
 
-## Change the link to security screen
+### Change the link to security screen
 
 If the user isn't logged in, the feature will attempt to redirect users to a security screen based on the configuration set in Fliplet Studio. Use the following hook to customize how the link is configured.
 
@@ -155,7 +155,7 @@ Fliplet.Hooks.on('flChatBeforeRedirectToLogin', function (navigate) {
   // Change the page where the user is redirected to
   navigate.page = 123;
 });
-````
+```
 
 ---
 
