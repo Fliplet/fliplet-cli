@@ -95,10 +95,10 @@ Fliplet.Chat.get().then(function (chat) {
 });
 ```
 
-Please note that the above snippet only works in a screen with a chat component. If you want to create a channel from a different screen please use the low-level JS API that follows:
+<p class="quote">Please note that <strong>the above snippet only works in a screen with a chat component</strong>. If you want to create a channel from a different screen please use the low-level JS API that follows.</p>
 
 ```js
-// Creates a chat public channel
+// Creates a chat public channel from any screen
 Fliplet.DataSources.create({
   appId: Fliplet.Env.get('masterAppId'),
   type: 'conversation',
@@ -127,6 +127,17 @@ Fliplet.Chat.get().then(function (chat) {
 }).then(function () {
   // Channel has been deleted
 });
+```
+
+Likewise, you can also delete a channel from any screen using the low-level JS API:
+
+```js
+Fliplet.API.request({
+  method: 'DELETE',
+  url: 'v1/data-sources/123'
+}).then(function () {
+  // Channel has been deleted
+})
 ```
 
 ---
