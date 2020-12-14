@@ -7,7 +7,7 @@ We regularly update our framework to support new features. If you have an older 
   <div class="bl two">
     <div>
       <h4>iOS</h4>
-      <p>Latest stable release: 4.2.4</p>
+      <p>Latest stable release: 4.3.0</p>
     </div>
   </div>
   <div class="bl two">
@@ -22,6 +22,10 @@ We regularly update our framework to support new features. If you have an older 
 ---
 
 ## Supported versions (4.1+)
+
+### Version 4.3.0 (December 14, 2020)
+
+- **iOS**: Improvements for push notifications.
 
 ### Version 4.2.4 (November 11, 2020)
 

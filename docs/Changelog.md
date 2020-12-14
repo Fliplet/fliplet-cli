@@ -8,6 +8,10 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## December 2020
 
+### Dec 14th
+
+- New iOS framework version 4.3.0 released to improve support for **push notifications**.
+
 ### Dec 8th
 
 - Added public JS APIs for interacting with [Chat channels](/API/components/chat.html#public-channels).
