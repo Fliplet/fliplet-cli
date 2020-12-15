@@ -49,3 +49,40 @@ Response  (Status code: 200 OK):
 ```
 
 ---
+
+### Update your live app
+
+#### `POST v1/apps/:id/publish`
+
+Use the publish API endpoint to send an in-app update to your live app.
+
+An update is required to have the `release` attribute with the following properties:
+
+- `type`: `silent`, `visible` or `forced`
+- `changelog`: release notes for the update
+
+Sample cURL request:
+
+```
+curl 'https://api.fliplet.com/v1/apps/123/publish' \
+  -H 'Content-Type: application/json;charset=UTF-8' \
+  -H "Auth-token: eu--abcdef123456"
+  --data-binary '{"release":{"type":"visible","changelog":"Description of the update"}}' \
+  --compressed
+```
+
+Response  (Status code: 200 OK):
+
+```json
+{
+  "app": {
+    "version": 2,
+    "id": 123,
+    "updatedAt": "2020-12-15T14:54:29.866Z"
+  }
+}
+
+```
+
+
+---
