@@ -66,7 +66,7 @@ Sample cURL request:
 ```
 curl 'https://api.fliplet.com/v1/apps/123/publish' \
   -H 'Content-Type: application/json;charset=UTF-8' \
-  -H "Auth-token: eu--abcdef123456"
+  -H "Auth-token: eu--abcdef123456" \
   --data-binary '{"release":{"type":"visible","changelog":"Description of the update"}}' \
   --compressed
 ```
