@@ -148,7 +148,8 @@ instance.insert({
       body: 'Message of the push notification',
       badge: 1, // Set the notification badge number
       custom: {
-        customData: { // Add a link to the push notification
+        // Add a link to the push notification
+        customData: {
           action: 'screen',
           page: 123,
           query: 'weather=sunny'
@@ -181,7 +182,8 @@ instance.insert({
       body: 'Message of the push notification'
       badge: 1, // Set the notification badge number
       custom: {
-        customData: { // Add a link to the push notification
+        // Add a link to the push notification
+        customData: {
           action: 'screen',
           page: 123,
           query: 'weather=sunny'
