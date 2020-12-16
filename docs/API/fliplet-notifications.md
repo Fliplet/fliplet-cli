@@ -29,9 +29,44 @@ var instance = Fliplet.Notifications.init({});
 
 In-app notifications are displayed in the notifications inbox component of Fliplet Apps. They can optionally include a push notification to be sent to the devices as described further below.
 
+#### Send to all users
+
+Send an in-app notification using the `insert` method:
+
+```js
+// insert a new notification for all users
+instance.insert({
+  status: 'published',
+  data: {
+    title: 'Greetings',
+    message: 'Hi John!'
+  }
+})
+```
+
+#### Add a link to the notification
+
+Add a link to the in-app notification using the `navigate` option:
+
+```js
+// insert a notification linking to a screen with a query
+instance.insert({
+  status: 'published',
+  data: {
+    title: 'Greetings',
+    message: 'Hi John!',
+    navigate: {
+      action: 'screen',
+      page: 123,
+      query: '?weather=sunny'
+    }
+  }
+})
+````
+
 #### Send to a specific user
 
-Send an in-app notification to a specific user using the `insert` method:
+Send an in-app notification to a specific user using the `scope` option:
 
 ```js
 // insert a new notification for a specific user
@@ -105,10 +140,21 @@ In-app notifications can also notify the user with a push notification which can
 // insert an in-app notification and also send a push notification
 instance.insert({
   data: { message: 'Hi John!' },
+
+  // Also send a push notification
   pushNotification: {
     payload: {
       title: 'Title of the push notification',
-      body: 'Message of the push notification'
+      body: 'Message of the push notification',
+      badge: 1, // Set the notification badge number
+      custom: {
+        // Add a link to the push notification
+        customData: {
+          action: 'screen',
+          page: 123,
+          query: '?weather=sunny'
+        }
+      }
     },
 
     // optionally schedule the push notification
@@ -134,6 +180,15 @@ instance.insert({
     payload: {
       title: 'Title of the push notification',
       body: 'Message of the push notification'
+      badge: 1, // Set the notification badge number
+      custom: {
+        // Add a link to the push notification
+        customData: {
+          action: 'screen',
+          page: 123,
+          query: '?weather=sunny'
+        }
+      }
     },
 
     // optionally schedule the push notification
