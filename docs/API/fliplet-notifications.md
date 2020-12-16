@@ -58,7 +58,7 @@ instance.insert({
     navigate: {
       action: 'screen',
       page: 123,
-      query: 'weather=sunny'
+      query: '?weather=sunny'
     }
   }
 })
@@ -152,7 +152,7 @@ instance.insert({
         customData: {
           action: 'screen',
           page: 123,
-          query: 'weather=sunny'
+          query: '?weather=sunny'
         }
       }
     },
@@ -186,7 +186,7 @@ instance.insert({
         customData: {
           action: 'screen',
           page: 123,
-          query: 'weather=sunny'
+          query: '?weather=sunny'
         }
       }
     },
