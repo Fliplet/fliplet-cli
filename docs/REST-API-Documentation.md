@@ -48,6 +48,13 @@ Read and manage your app's users subscribed via push notifications.
 [View documentation for App Subscriptions »](REST-API/fliplet-app-subscriptions.md)
 {: .buttons}
 
+### Organizations
+
+Read audit logs for your organization.
+
+[View documentation for Organizations »](REST-API/fliplet-organizations.md)
+{: .buttons}
+
 ---
 
 We'll be adding more docs for REST APIs soon, stay tuned!
