@@ -20,6 +20,8 @@ Fliplet.Helper('welcome', {
 });
 ```
 
+Attributes can also be accessed in the HTML template by using the shortcode syntax, e.g. `{! attr.firstName !}`.
+
 ## Updating attributes
 
 Use the `set` instance method to update attributes and values at runtime. Given the following example:
