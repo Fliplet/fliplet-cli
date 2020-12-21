@@ -11,7 +11,7 @@ Take a look at a basic example where a helper is defining a custom template:
 
 ```js
 Fliplet.Helper('welcome', {
-  template: '<p>Hi {! firstName !}, how are you?</p>'
+  template: '<p>Hi {! firstName !}, how are you?</p>',
   data: {
     firstName: 'John'
   }
