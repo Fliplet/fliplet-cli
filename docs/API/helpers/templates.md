@@ -17,8 +17,9 @@ Fliplet.Helper('welcome', {
   }
 });
 ```
-```html
 
+```html
+<fl-helper data-type="welcome"></fl-helper>
 ```
 
 ---
