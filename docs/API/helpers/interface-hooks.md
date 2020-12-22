@@ -20,11 +20,12 @@ Fliplet.Helper('welcome', {
         init: function(el) {
           var currentField = this;
 
+          // 1. populate the input with the existing value
           $(el)
             .find('input')
             .val(this.value)
             .change(function() {
-              // Update value on change
+              // 2. Update the field instance on input change
               currentField.val($(this).val());
             });
         }
