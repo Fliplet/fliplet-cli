@@ -18,13 +18,14 @@ Fliplet.Helper('welcome', {
         description: 'Lorem ipsum dolor sit amet',
         html: '<input type="text" />',
         init: function(el) {
-          var vm = this;
+          var currentField = this;
 
           $(el)
             .find('input')
             .val(this.value)
             .change(function() {
-              vm.val($(this).val());
+              // Update value on change
+              currentField.val($(this).val());
             });
         }
       }
