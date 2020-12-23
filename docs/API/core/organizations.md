@@ -40,7 +40,7 @@ Here's an example providing all optional parameters:
 Fliplet.Organizations.Logs.get({
   format: 'csv',
   type: ['app.settings.update', 'app.create'],
-  fields: ['id', 'type', 'data],
+  fields: ['id', 'type', 'data'],
   appId: 123,
   startDate: '2020-01-01',
   endDate: '2020-12-31 23:59:59',
