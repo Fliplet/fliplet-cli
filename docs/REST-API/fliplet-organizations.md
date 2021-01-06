@@ -57,7 +57,13 @@ The following types are filtered out by default since they are primarily used fo
       "organizationId": 1234,
       "appNotificationId": null
     }
-  ]
+  ],
+  "query": {
+    "where": { "type": "app.analytics.pageView" },
+    "offset": 0,
+    "limit": 50,
+    "order": [["createdAt", "DESC"]]
+  }
 }
 
 ```
