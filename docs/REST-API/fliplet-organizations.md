@@ -25,9 +25,11 @@ Optional parameters:
 - `offset`: Number
 - `format` (`json` or `csv`; defaults to `json`)
 
-<p class="quote">Note: when using GET requests, arrays can be given as a CSV string (e.g. `foo,bar`)</p>
+<p class="quote">Note: when using GET requests, arrays can be given as a CSV string (e.g. <code>type=foo,bar</code>)</p>
 
-Response  (Status code: 200 OK):
+The following types are filtered out by default since they are primarily used for analytics: `app.analytics.pageView`, `app.analytics.event`, `app.view`, `app.update`,  `studio.analytics.presence`.
+
+**Response  (Status code: 200 OK):**
 
 ```json
 {
