@@ -34,6 +34,8 @@ Fliplet.Organizations.Logs.get().then(function(response) {
 });
 ```
 
+Note that the following types are filtered out by default since they are primarily used for analytics: `app.analytics.pageView`, `app.analytics.event`, `app.view`, `app.update`,  `studio.analytics.presence`.
+
 Here's an example providing all optional parameters:
 
 ```js
