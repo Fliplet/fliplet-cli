@@ -7,13 +7,13 @@ We regularly update our framework to support new features. If you have an older 
   <div class="bl two">
     <div>
       <h4>iOS</h4>
-      <p>Latest stable release: 4.3.0</p>
+      <p>Latest stable release: 4.4.0</p>
     </div>
   </div>
   <div class="bl two">
     <div>
       <h4>Android</h4>
-      <p>Latest stable release: 4.2.0</p>
+      <p>Latest stable release: 4.4.0</p>
     </div>
   </div>
 </section>
@@ -22,6 +22,11 @@ We regularly update our framework to support new features. If you have an older 
 ---
 
 ## Supported versions (4.1+)
+
+### Version 4.4.0 (December 14, 2020)
+
+- **All platforms**: Improvements to access new JS APIs for Notifications and open the app settings screen.
+- **Android**: Support for Biometrics JS APIs (e.g. Fingerprint and Face Unlock).
 
 ### Version 4.3.0 (December 14, 2020)
 
