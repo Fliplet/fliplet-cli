@@ -4,9 +4,9 @@ _Biometrics are only available in native apps on supporting devices._
 
 ### Check biometrics availability
 
-Use the `Fliplet.User.Biometrics.isAvailable()` method to checks whether biometrics are available on the device. The promise is rejected when biometrics are not available.
+Use the `Fliplet.User.Biometrics.isAvailable()` method to check whether biometrics are available on the device. The promise is rejected when biometrics are not available.
 
-The avilable types are:
+The available types are:
 
 - `face` iOS and Android
 - `finger` Android only
