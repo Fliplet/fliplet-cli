@@ -1,6 +1,6 @@
 # Biometrics
 
-_Biometrics are only available in native apps on supporting devices._
+_Biometrics are only available in native apps on supported devices._
 
 ### Check biometrics availability
 
@@ -21,9 +21,9 @@ Fliplet.User.Biometrics.isAvailable().then(function (type) {
 });
 ```
 
-### Ask user for biometric verification
+### Ask the user for biometric verification
 
-Use the `Fliplet.User.Biometrics.verify()` method to verify the user using fingerprint or facial recogition.
+Use the `Fliplet.User.Biometrics.verify()` method to verify the user using fingerprint or facial recognition.
 
 ```js
 Fliplet.User.Biometrics.verify({
