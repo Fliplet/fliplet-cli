@@ -1,5 +1,48 @@
 # Hooks & Events
 
+## Run a function when the interface is initialized
+
+Use the `init` property on the configuration object to define a function to run when the configuration interface gets initialized:
+
+```js
+Fliplet.Helper('question', {
+  configuration: {
+    fields: [
+      { name: 'title', type: 'text', label: 'Title' }
+    ],
+    init: function (data, configuration) {
+      // here the interface has been initialised
+    }
+  }
+});
+```
+
+---
+
+## Run a function before the interface is saved
+
+Use the `beforeSave` property on the configuration object to define a function to run when the configuration interface gets initialized.
+
+In the following example, the "tags" property is split into an array before it's saved and then it's converted back into a string right before displaying it in the text field:
+
+```js
+Fliplet.Helper('question', {
+  configuration: {
+    fields: [
+      { name: 'tags', type: 'text', label: 'Tags' }
+    ],
+    beforeSave: function (data, configuration) {
+      data.tags = data.tags.split(',');
+    },
+    init: function (data, configuration) {
+      data.tags = data.tags.join(',');
+    }
+  }
+});
+```
+
+---
+
 ## Run a function when a field is initialized
 
 Use the `init` property on a field to define a function to run when the field is initialized.
