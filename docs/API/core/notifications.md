@@ -2,7 +2,7 @@
 
 ### Check if the device has permissions to receive notifications
 
-Use the `Fliplet.Navigator.Notifications.hasPermission()` method to check whether the device has permissions from the user to receive notifications (including push notifications).
+Use the `Fliplet.Navigator.Notifications.hasPermission()` function to check whether the device has permissions from the user to receive notifications (including push notifications).
 
 ```js
 Fliplet.Navigator.Notifications.hasPermission().then(function (hasPermission) {
