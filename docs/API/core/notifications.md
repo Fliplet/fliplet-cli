@@ -113,7 +113,7 @@ Fliplet.Hooks.on('notificationPermissionChange', function(status) {
 
 ### Register a hook to be notified when the user subscribes for Push Notifications
 
-Use the `notificationSubscriptionChange` hook to listen for events fired when the user subscribes for push Notifications. The promise will be resolved with a `details` object containing the following keys:
+Use the `notificationSubscriptionChange` hook to listen for events fired when the user subscribes to push notifications. The promise will be resolved with a `details` object containing the following keys:
 
 - `subscriptionId`: ID of the subscription
 - `sessionId`: ID of the session (which can be used to send the notification to the device)
