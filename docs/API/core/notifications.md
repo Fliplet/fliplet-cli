@@ -117,7 +117,7 @@ Use the `notificationSubscriptionChange` hook to listen for events fired when th
 
 - `subscriptionId`: ID of the subscription
 - `sessionId`: ID of the session (which can be used to send the notification to the device)
-- `createdAt`: DateTime (ISODATE) indicating the time the user subscribed
+- `createdAt`: Timestamp indicating the time the user subscribed (in ISODATE format)
 
 ```js
 Fliplet.Hooks.on('notificationSubscriptionChange', function(details) {
