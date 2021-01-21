@@ -82,7 +82,7 @@ Fliplet.User.unsubscribe().then(function() {
 
 ### Open the App Settings
 
-Use the `Fliplet.Navigator.Notifications.openSettings()` method to open the device native settings for app where the user can manually change permissions for push notifications.
+Use the `Fliplet.Navigator.Notifications.openSettings()` method to open the device native settings for the app where the user can manually change permissions for push notifications.
 
 ```js
 Fliplet.Navigator.Notifications.openSettings().then(function() {
