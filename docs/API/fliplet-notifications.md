@@ -179,7 +179,7 @@ instance.insert({
   pushNotification: {
     payload: {
       title: 'Title of the push notification',
-      body: 'Message of the push notification'
+      body: 'Message of the push notification',
       badge: 1, // Set the notification badge number
       custom: {
         // Add a link to the push notification
