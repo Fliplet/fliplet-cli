@@ -28,7 +28,7 @@ Fliplet.Navigator.Notifications.getPermission().then(function(permission) {
       // the user has denied permissions to receive notifications
       break;
     case 'default':
-      // no specific choice has been made yet (e.g. not requested)
+      // no specific choice has been made yet (e.g. not requested or user has not responded)
       break;
   }
 });
