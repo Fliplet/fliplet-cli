@@ -1,4 +1,4 @@
-# Interface
+# Configuration Interface
 
 You can create configuration interfaces for your helpers by defining a set of fields for the UI. This allows you to quickly configure attribute values for each helper instance once clicked on Fliplet Studio while in edit mode:
 
