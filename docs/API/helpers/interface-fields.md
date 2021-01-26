@@ -31,6 +31,28 @@ Example:
 
 ---
 
+### Textarea (`textarea`)
+
+A simple textarea input field. Also supports the following optional properties:
+
+- `required` (Boolean)
+- `rows` (Number)
+
+Example:
+
+```js
+{
+  type: 'textarea',
+  name: 'bio',
+  label: 'Bio',
+  description: 'Type your bio',
+  required: true,
+  rows: 5
+}
+```
+
+---
+
 ### HTML
 
 - A freeform HTML field. Supports the following properties:

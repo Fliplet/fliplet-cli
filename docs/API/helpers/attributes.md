@@ -1,6 +1,6 @@
 # Attributes
 
-Attributes can be passed to helpers and then accessed via the `attr` object in HTML or `this.attr.<name>` in JS.
+Attributes can be passed to helpers via the `attr` HTML element and then accessed via `this.attr.<name>` in JavaScript.
 
 ## Accessing attributes
 
@@ -9,13 +9,16 @@ Use the `attr` property of the helper instance (`this`) to access attribute valu
 Please note that attribute names are automatically converted to camelCase, e.g. `last-name` becomes `lastName` as the example below illustrates.
 
 ```html
-<fl-helper data-type="welcome" data-first-name="John"></fl-helper>
+<fl-helper data-type="question">
+  <attr name="title">What is your name?</attr>
+  <attr name="description">Lorem ipsum dolor sit amet</attr>
+</fl-helper>
 ```
 
 ```js
-Fliplet.Helper('welcome', {
+Fliplet.Helper('question', {
   ready: function () {
-    console.log('Your first name is', this.attr.firstName);
+    console.log('Title of the question', this.attr.title);
   }
 });
 ```

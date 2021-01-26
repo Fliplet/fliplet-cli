@@ -26,17 +26,17 @@ Fliplet.Helper('welcome', {
 
 ## Binding to variables
 
-Variables can also be defined via HTML data attributes, but must be accessed using the `attr` property, e.g. use the `{! attr.name !}` syntax to define dynamic binding to variables in your HTML templates:
+Variables can also be defined via HTML `attr` nodes and can be accessed using the `attr` property, e.g. use the `{! attr.name !}` syntax to define dynamic binding to variables from your HTML templates:
 
 ```html
-<fl-helper data-type="welcome" data-first-name="John"> {! attr.firstName !} </fl-helper>
+<fl-helper data-type="user">
+  <attr name="name">John</attr>
+</fl-helper>
 ```
 
-Likewise, if you have defined a custom template you can reference data attributes in the same way:
-
 ```js
-Fliplet.Helper('welcome', {
-  template: '<p>Hi {! attr.firstName !}, how are you?</p>'
+Fliplet.Helper('user', {
+  template: '<p>Hi {! attr.name !}, how are you?</p>'
 });
 ```
 
