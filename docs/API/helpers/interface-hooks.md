@@ -41,7 +41,7 @@ Fliplet.Helper('question', {
 
 ### Run a function before the interface is saved
 
-Use the `beforeSave` property on the configuration object to define a function to run when the configuration interface gets initialized.
+Use the `beforeSave` property on the configuration object to define a function to run before the configuration interface data gets saved.
 
 In the following example, the "tags" property is split into an array before it's saved and then it's converted back into a string right before displaying it in the text field:
 

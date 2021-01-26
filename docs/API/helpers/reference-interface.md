@@ -34,6 +34,27 @@ Fliplet.Helper(name, {
       <td>required</td>
       <td><a href="http://127.0.0.1:4000/API/helpers/interface-fields.html">The list of fields to display in the UI</a>.</td>
     </tr>
+    <tr>
+      <td><code>configuration.beforeInit</code></td>
+      <td><code>function</code></td>
+      <td>optional</td>
+      <td>
+        <a href="/API/helpers/interface-hooks.html#run-a-function-before-the-interface-is-initialized">A function to run before the configuration interface gets initialized</a>.</td>
+    </tr>
+    <tr>
+      <td><code>configuration.init</code></td>
+      <td><code>function</code></td>
+      <td>optional</td>
+      <td>
+        <a href="/API/helpers/interface-hooks.html#run-a-function-when-the-interface-is-initialized">A function to run when the configuration interface gets initialized</a>.</td>
+    </tr>
+    <tr>
+      <td><code>configuration.beforeSave</code></td>
+      <td><code>function</code></td>
+      <td>optional</td>
+      <td>
+        <a href="/API/helpers/interface-hooks.html#run-a-function-before-the-interface-is-saved">A function to run before the configuration interface data is saved.</a>.</td>
+    </tr>
   </tbody>
 </table>
 
