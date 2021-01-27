@@ -42,7 +42,9 @@ The output in the screen should look like the following:
 Finally, if you check the resulting HTML via the Screen HTML in Fliplet Studio or the browser you will see the produced HTML, which should equal to:
 
 ```html
-<fl-helper data-type="accordion" data-title="Hello"></fl-helper>
+<fl-helper data-type="accordion">
+  <attr name="title">Hello</attr>
+</fl-helper>
 ```
 
 This is also how you can copy and paste helper instances between your apps or screens of your app.
