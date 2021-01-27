@@ -32,7 +32,7 @@ Fliplet.Helper(name, {
       <td><code>configuration.fields</code></td>
       <td><code>array</code></td>
       <td>required</td>
-      <td><a href="http://127.0.0.1:4000/API/helpers/interface-fields.html">The list of fields to display in the UI</a>.</td>
+      <td><a href="/API/helpers/interface-fields.html">The list of fields to display in the UI</a>.</td>
     </tr>
     <tr>
       <td><code>configuration.beforeInit</code></td>
