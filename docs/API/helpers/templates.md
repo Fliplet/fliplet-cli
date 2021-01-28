@@ -44,53 +44,6 @@ Fliplet.Helper('user', {
 
 ---
 
-## Defining an outer template
-
-Use the `{! this !}` code to define the distribution outlet for content. This will also available as `this.template` on the helper instance as shown further below.
-
-```js
-Fliplet.Helper('option', {
-  template: '<p><input type="checkbox" value="{! value !}" /> {! this !}</p>'
-});
-```
-
-```html
-{! start option value="Yes" !}
-  Accept privacy policy
-{! end option !}
-```
-
-Output:
-
-```html
-<p>
-  <input type="checkbox" value="Yes" /> Accept privacy policy
-</p>
-```
-
-If you need to specify a default value for the outlet you can populate it at runtime:
-
-```js
-Fliplet.Helper('option', {
-  template: '<p><input type="checkbox" value="{! value !}" /> {! label !}</p>',
-  ready: function () {
-    this.set('label', this.template || this.data.value);
-  }
-});
-```
-
-```html
-<!-- Example with a specific outlet for the label -->
-{! start option value="Yes" !}
-  Accept privacy policy
-{! end option !}
-
-<!-- Example where value will be used for the label instead -->
-{! option value="Accept privacy policy" !}
-```
-
----
-
 ## Blocks for conditional visibility
 
 If you require parts of your HTML to be conditionally visible only when a specific variable is "truthy" we made available the `<fl-if>` block available:
