@@ -9,7 +9,7 @@
     "lvl5": "h6",
     "text": ".main-content p, .main-content ul, .main-content ol, code"
   },
-  "selectors_exclude": ["#search", "#hits"],
+  "selectors_exclude": ["#search", "#hits", "#toc"],
   "start_urls": [
     {
       "url": "https://developers.fliplet.com/API/components/list-from-data-source.html",
@@ -24,7 +24,8 @@
     "synonyms": [
       ["DIS", "Data Integration Service", "Agent"],
       ["library", "dependency", "package"],
-      ["LFD", "List from Data Source"]
+      ["LFD", "List from Data Source"],
+      ["URL", "endpoint", "address", "link"]
     ]
   }
 }
