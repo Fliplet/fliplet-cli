@@ -8,7 +8,7 @@ Fliplet Apps generally rely on our internal APIs to integrate with data you have
 
 This page shows you a few examples and libraries to get started integrating with third party API endpoints.
 
-<p class="quote">Note: integrating with third-party APIs may result in <strong><a href="/AJAX-cross-domain.html">cross domain policy issues</a> when the target domain does not allow API requests from the source origin (the Fliplet app)</strong>. Please read our support article <a href="/AJAX-cross-domain.html">here</a> to learn more on the topic.</a>
+<p class="quote">Note: integrating with third-party APIs may result in <strong><a href="/AJAX-cross-domain.html">cross domain policy issues</a> when the target domain does not allow API requests from the source origin (the Fliplet app)</strong>. Please read our support article <a href="/AJAX-cross-domain.html">here</a> to learn more on the topic.</p>
 
 All Fliplet apps have available the popular [jQuery](https://jquery.com/) library, which can be used on any screen when writing custom JavaScript code. Such library have easy-to-use helpers available to read and write data from/to an external API through the [jQuery AJAX](https://api.jquery.com/jquery.ajax/) methods, including:
 
