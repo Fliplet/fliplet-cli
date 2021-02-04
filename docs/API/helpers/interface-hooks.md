@@ -10,7 +10,7 @@ Use the `beforeReady` property on the configuration object to define a function 
 Fliplet.Helper('question', {
   configuration: {
     fields: [
-      { name: 'title', type: 'text', label: 'Title' }
+      { name: 'title', type: 'text', label: 'Title', default: 'Lorem ipsum' }
     ],
     beforeReady: function (data) {
       // here the interface has not been initialised

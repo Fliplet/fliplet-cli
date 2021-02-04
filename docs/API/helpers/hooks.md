@@ -18,6 +18,8 @@ Fliplet.Helper({
 });
 ```
 
+---
+
 ## Run logic once a helper is rendered
 
 Define a `ready` function to run code when a helper instance is initialized and mounted to the HTML:
@@ -36,6 +38,10 @@ Fliplet.Helper({
 });
 ```
 
+<p class="quote"><strong>Note:</strong>the <code>ready</code> does not get fired when you are editing your app in Fliplet Studio. Please use "Preview" mode to test your code.</p>
+
+---
+
 ## Run logic once all helpers have been rendered
 
 Define a `afterHelpersRender` hook to run code when all helpers have been initialized and rendered:
@@ -51,11 +57,11 @@ Fliplet.Hooks.on('afterHelpersRender', function () {
 ## Further reading
 
 <section class="blocks alt">
-  <a class="bl two" href="containers.html">
+  <a class="bl two" href="views.html">
     <div>
       <span class="pin">Next article in this series</span>
-      <h4>Containers</h4>
-      <p>Learn more about how to add rich-content containers to your helper.</p>
+      <h4>Views</h4>
+      <p>Learn more about how to add rich-content views to your helper.</p>
       <button>Next &rarr;</button>
     </div>
   </a>

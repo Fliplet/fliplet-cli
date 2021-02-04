@@ -6,6 +6,7 @@
 - `name` (String, required)
 - `label` (String) a bold label displayed before the input field
 - `description` (String) a description displayed before the input field
+- `default` (Mixed) a default value for the field
 
 ## Types
 
@@ -25,6 +26,7 @@ Example:
   label: 'First Name',
   description: 'The first name of the user',
   placeholder: 'Type your name',
+  default: 'John',
   required: true
 }
 ```

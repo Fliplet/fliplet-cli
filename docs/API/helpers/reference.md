@@ -74,18 +74,18 @@ Fliplet.Helper(name, options);
         <a href="/API/helpers/interface.html">The list of fields to present in the configuration UI</a>.</td>
     </tr>
     <tr>
-      <td><code>options.containers</code></td>
+      <td><code>options.views</code></td>
       <td><code>object</code></td>
       <td>optional</td>
       <td>
-        <a href="/API/helpers/containers.html">The list of rich content containers</a>.</td>
+        <a href="/API/helpers/views.html">The list of rich content views</a>.</td>
     </tr>
     <tr>
       <td><code>options.childOf</code></td>
       <td><code>array</code></td>
       <td>optional</td>
       <td>
-        <a href="/API/helpers/containers.html#define-where-a-helper-can-be-dropped-into">The list of helpers an helper can be dropped in</a>.</td>
+        <a href="/API/helpers/views.html#define-where-a-helper-can-be-dropped-into">The list of helpers an helper can be dropped in</a>.</td>
     </tr>
   </tbody>
 </table>
