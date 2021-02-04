@@ -2,6 +2,11 @@
 
 ## Interface
 
+Lifecycle:
+1. `beforeReady`
+2. `ready`
+3. `beforeSave`
+
 ### Run a function before the interface is initialized
 
 Use the `beforeReady` property on the configuration object to define a function to run before the configuration interface gets initialized:
@@ -64,6 +69,9 @@ Fliplet.Helper('question', {
 ---
 
 ## Fields
+
+Lifecycle:
+1. `ready`
 
 ### Run a function when a field is initialized
 

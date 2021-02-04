@@ -1,5 +1,9 @@
 # Hooks & Events
 
+Lifecycle:
+1. `beforeReady`
+2. `ready`
+
 ## Run logic before a helper is rendered
 
 Define a `beforeReady` function to run code when a helper instance is initialized and mounted to the HTML:
