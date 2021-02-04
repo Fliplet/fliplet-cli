@@ -33,25 +33,32 @@ Fliplet.Helper(name, options);
       <td>The configuration option.</td>
     </tr>
     <tr>
-      <td><code>options.template</code></td>
+      <td><code>options.data</code></td>
+      <td><code>object</code> or <code>function</code></td>
+      <td>optional</td>
+      <td>
+        <a href="/API/helpers/fields.html#default-fields">The data for your helper</a>.</td>
+    </tr>
+    <tr>
+      <td><code>options.render.template</code></td>
       <td><code>string</code></td>
       <td>optional</td>
       <td>
         <a href="/API/helpers/templates.html">An optional HTML template</a>.</td>
     </tr>
     <tr>
-      <td><code>options.data</code></td>
-      <td><code>object</code> or <code>function</code></td>
-      <td>optional</td>
-      <td>
-        <a href="/API/helpers/attributes.html#default-attributes">The data attributes for your helper</a>.</td>
-    </tr>
-    <tr>
-      <td><code>options.ready</code></td>
+      <td><code>options.render.beforeReady</code></td>
       <td><code>function</code></td>
       <td>optional</td>
       <td>
-        <a href="/API/helpers/hooks.html#run-logic-once-a-helper-is-rendered">A function to run when the helper instance is mounted</a>.</td>
+        <a href="/API/helpers/hooks.html#run-logic-before-a-helper-is-rendered">A function to run before the helper instance is rendered</a>.</td>
+    </tr>
+    <tr>
+      <td><code>options.render.ready</code></td>
+      <td><code>function</code></td>
+      <td>optional</td>
+      <td>
+        <a href="/API/helpers/hooks.html#run-logic-once-a-helper-is-rendered">A function to run when the helper instance is rendered</a>.</td>
     </tr>
     <tr>
       <td><code>options.configuration</code></td>
@@ -102,7 +109,7 @@ Fliplet.Helper(name, {
       <td><code>instance.set</code></td>
       <td><code>function</code></td>
       <td>
-        <a href="/API/helpers/attributes.html#updating-attributes">Update the helper instance attributes</a>.</td>
+        <a href="/API/helpers/fields.html#updating-fields">Update the helper instance fields</a>.</td>
     </tr>
     <tr>
       <td><code>instance.$el</code></td>

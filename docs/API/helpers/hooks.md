@@ -1,5 +1,22 @@
 # Hooks & Events
 
+## Run logic before a helper is rendered
+
+Define a `beforeReady` function to run code when a helper instance is initialized and mounted to the HTML:
+
+```js
+Fliplet.Helper('profile', {
+  data: {
+    firstName: 'John'
+  },
+  render: {
+    beforeReady: function () {
+      // Helper has been rendered
+    }
+  }
+});
+```
+
 ## Run logic once a helper is rendered
 
 Define a `ready` function to run code when a helper instance is initialized and mounted to the HTML:
@@ -9,8 +26,10 @@ Fliplet.Helper('profile', {
   data: {
     firstName: 'John'
   },
-  ready: function () {
-    // Helper has been rendered
+  render: {
+    ready: function () {
+      // Helper has been rendered
+    }
   }
 });
 ```

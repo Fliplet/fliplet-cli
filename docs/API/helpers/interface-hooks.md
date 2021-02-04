@@ -4,7 +4,7 @@
 
 ### Run a function before the interface is initialized
 
-Use the `beforeIinit` property on the configuration object to define a function to run before the configuration interface gets initialized:
+Use the `beforeReady` property on the configuration object to define a function to run before the configuration interface gets initialized:
 
 ```js
 Fliplet.Helper('question', {
@@ -12,7 +12,7 @@ Fliplet.Helper('question', {
     fields: [
       { name: 'title', type: 'text', label: 'Title' }
     ],
-    beforeInit: function (data) {
+    beforeReady: function (data) {
       // here the interface has not been initialised
       data.title = data.title || 'Insert a title';
     }
@@ -22,7 +22,7 @@ Fliplet.Helper('question', {
 
 ### Run a function when the interface is initialized
 
-Use the `init` property on the configuration object to define a function to run when the configuration interface gets initialized:
+Use the `ready` property on the configuration object to define a function to run when the configuration interface gets initialized:
 
 ```js
 Fliplet.Helper('question', {
@@ -30,7 +30,7 @@ Fliplet.Helper('question', {
     fields: [
       { name: 'title', type: 'text', label: 'Title' }
     ],
-    init: function (data, configuration) {
+    ready: function (data, configuration) {
       // here the interface has been initialised
     }
   }
@@ -54,7 +54,7 @@ Fliplet.Helper('question', {
     beforeSave: function (data, configuration) {
       data.tags = data.tags.split(',');
     },
-    beforeInit: function (configuration) {
+    beforeReady: function (data) {
       data.tags = data.tags.join(',');
     }
   }
@@ -67,13 +67,13 @@ Fliplet.Helper('question', {
 
 ### Run a function when a field is initialized
 
-Use the `init` property on a field to define a function to run when the field is initialized.
+Use the `ready` property on a field to define a function to run when the field is initialized.
 
 See how the example below manually defines an input field which handles user input and updates the actual value:
 
 ```js
 Fliplet.Helper('welcome', {
-  template: '<p class="welcome">Hi {! attr.name !}, how are you?</p>',
+  template: '<p class="welcome">Hi {! fields.name !}, how are you?</p>',
   configuration: {
     fields: [
       {
@@ -82,7 +82,7 @@ Fliplet.Helper('welcome', {
         label: 'Some html',
         description: 'Lorem ipsum dolor sit amet',
         html: '<input type="text" />',
-        init: function(el) {
+        ready: function(el) {
           var currentField = this;
 
           // 1. populate the input with the existing value

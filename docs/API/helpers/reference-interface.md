@@ -35,14 +35,14 @@ Fliplet.Helper(name, {
       <td><a href="/API/helpers/interface-fields.html">The list of fields to display in the UI</a>.</td>
     </tr>
     <tr>
-      <td><code>configuration.beforeInit</code></td>
+      <td><code>configuration.beforeReady</code></td>
       <td><code>function</code></td>
       <td>optional</td>
       <td>
         <a href="/API/helpers/interface-hooks.html#run-a-function-before-the-interface-is-initialized">A function to run before the configuration interface gets initialized</a>.</td>
     </tr>
     <tr>
-      <td><code>configuration.init</code></td>
+      <td><code>configuration.ready</code></td>
       <td><code>function</code></td>
       <td>optional</td>
       <td>

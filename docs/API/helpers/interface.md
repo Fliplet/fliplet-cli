@@ -1,6 +1,6 @@
 # Configuration Interface
 
-You can create configuration interfaces for your helpers by defining a set of fields for the UI. This allows you to quickly configure attribute values for each helper instance once clicked on Fliplet Studio while in edit mode:
+You can create configuration interfaces for your helpers by defining a set of fields for the UI. This allows you to quickly configure field values for each helper instance once clicked on Fliplet Studio while in edit mode:
 
 ![image](/assets/img/helper-2.png)
 <small style="text-align: center;display: block"><i>A helper in Fliplet Studio, showing its configuration interface on the right hand side.<br/><br /></i></small>
@@ -11,9 +11,9 @@ Start by adding a `configuration` object to your helper, including the list of f
 
 ```js
 Fliplet.Helper('accordion', {
-  template: '<div class="accordion"><h3>Title: {! attr.title !}</h3>' +
-            '<fl-if data-path="attr.title">' +
-            '<p>Content: {! attr.content !}</p></fl-if></div>',
+  template: '<div class="accordion"><h3>Title: {! fields.title !}</h3>' +
+            '<fl-if data-path="fields.title">' +
+            '<p>Content: {! fields.content !}</p></fl-if></div>',
   configuration: {
     title: 'Configure your accordion',
     fields: [

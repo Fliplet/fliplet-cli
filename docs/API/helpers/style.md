@@ -2,18 +2,18 @@
 
 Helpers can be styles using any standard CSS property since they are rendered as HTML elements.
 
-## Using class and style attributes
+## Using class and style fields
 
-Standard `class` and `style` HTML attributes can be used as usual, since they won't be treated as helper attributes:
+Standard `class` and `style` HTML fields can be used as usual, since they won't be treated as helper fields:
 
 ```html
-<fl-helper data-type="accordion" class="my-container"></fl-helper>
+<fl-helper name="accordion" class="my-container"></fl-helper>
 ```
 
 The template shorthand syntax also supports both properties:
 
 ```html
 {! start welcome class="my-container" !}
-  <p>Hi {! firstName !} {! attr.lastName !}, how are you?</p>
+  <p>Hi {! firstName !} {! fields.lastName !}, how are you?</p>
 {! end welcome !}
 ```

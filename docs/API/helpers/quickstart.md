@@ -12,8 +12,8 @@ Define your helper in the <strong>Screen JavaScript or Global JavaScript</strong
 
 ```js
 Fliplet.Helper('accordion', {
-  template: '<div class="accordion"><h3>Title: {! attr.title !}</h3>' +
-            '<p>Content: {! attr.content !}</p></div>',
+  template: '<div class="accordion"><h3>Title: {! fields.title !}</h3>' +
+            '<p>Content: {! fields.content !}</p></div>',
   configuration: {
     fields: [
       { name: 'title', type: 'text', label: 'Title' },
@@ -24,7 +24,7 @@ Fliplet.Helper('accordion', {
 ```
 
 Here's an explanation of what the above helper declares:
-- a template string for the helper, which would print some HTML with two dynamic properties such as `attr.title`
+- a template string for the helper, which would print some HTML with two dynamic properties such as `fields.title`
 - a configuration UI to set up the value for the two dynamic properties
 
 ## 2. Drop the helper into your screen
@@ -42,8 +42,8 @@ The output in the screen should look like the following:
 Finally, if you check the resulting HTML via the Screen HTML in Fliplet Studio or the browser you will see the produced HTML, which should equal to:
 
 ```html
-<fl-helper data-type="accordion">
-  <attr name="title">Hello</attr>
+<fl-helper name="accordion">
+  <field name="title">Hello</field>
 </fl-helper>
 ```
 

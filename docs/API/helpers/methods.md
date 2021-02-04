@@ -45,9 +45,9 @@ welcome.greet();
 
 ## Public methods
 
-### Update attributes
+### Update fields
 
-Use the `set` instance method to update attributes and values at runtime. Given the following example:
+Use the `set` instance method to update fields and values at runtime. Given the following example:
 
 ```js
 var profile;
@@ -77,11 +77,11 @@ profile.set('firstName', function () {
 ## Further reading
 
 <section class="blocks alt">
-  <a class="bl two" href="attributes.html">
+  <a class="bl two" href="fields.html">
     <div>
       <span class="pin">Next article in this series</span>
-      <h4>Attributes</h4>
-      <p>Learn more about defining attributes in your helpers.</p>
+      <h4>Fields</h4>
+      <p>Learn more about defining fields in your helpers.</p>
       <button>Next &rarr;</button>
     </div>
   </a>

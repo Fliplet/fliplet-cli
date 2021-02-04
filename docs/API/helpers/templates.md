@@ -11,7 +11,9 @@ Take a look at a basic example where a helper is defining a custom template:
 
 ```js
 Fliplet.Helper('welcome', {
-  template: '<p>Hi {! firstName !}, how are you?</p>',
+  render: {
+    template: '<p>Hi {! firstName !}, how are you?</p>'
+  },
   data: {
     firstName: 'John'
   }
@@ -19,24 +21,26 @@ Fliplet.Helper('welcome', {
 ```
 
 ```html
-<fl-helper data-type="welcome"></fl-helper>
+<fl-helper name="welcome"></fl-helper>
 ```
 
 ---
 
 ## Binding to variables
 
-Variables can also be defined via HTML `attr` nodes and can be accessed using the `attr` property, e.g. use the `{! attr.name !}` syntax to define dynamic binding to variables from your HTML templates:
+Variables can also be defined via HTML `field` nodes and can be accessed using the `fields` property, e.g. use the `{! fields.name !}` syntax to define dynamic binding to variables from your HTML templates:
 
 ```html
-<fl-helper data-type="user">
-  <attr name="name">John</attr>
+<fl-helper name="user">
+  <field name="name">John</field>
 </fl-helper>
 ```
 
 ```js
 Fliplet.Helper('user', {
-  template: '<p>Hi {! attr.name !}, how are you?</p>'
+  render: {
+    template: '<p>Hi {! fields.name !}, how are you?</p>'
+  }
 });
 ```
 
@@ -49,8 +53,8 @@ Fliplet.Helper('user', {
 If you require parts of your HTML to be conditionally visible only when a specific variable is "truthy" we made available the `<fl-if>` block available:
 
 ```html
-<fl-if data-path="attr.title">
-  This will only be shown when there is a title. The title is {! attr.title !}
+<fl-if data-path="fields.title">
+  This will only be shown when there is a title. The title is {! fields.title !}
 </fl-if>
 ```
 
@@ -60,7 +64,7 @@ You can also the shorthand syntax as shown below:
 
 ```html
 {! if title !}
-  This will only be shown when there is a title. The title is {! attr.title !}
+  This will only be shown when there is a title. The title is {! fields.title !}
 {! endif !}
 ```
 
@@ -81,7 +85,7 @@ Else blocks are also supported:
 You can use the `<fl-each>` block to automatically render an array of items based on a sample template to be compiled with each item in the array as the context:
 
 ```html
-<fl-each data-path="attr.people" data-context="person">
+<fl-each data-path="fields.people" data-context="person">
   <template>
     <li>{! person.firstName !}</li>
   </template>

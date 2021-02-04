@@ -70,13 +70,13 @@ Fliplet.Helper('welcome', {
 
 ---
 
-This becomes really powerful when passing `attributes` via the HTML:
+This becomes really powerful when passing `fields` via the HTML:
 
 ##### JavaScript
 
 ```js
 Fliplet.Helper('welcome', {
-  template: '<p class="welcome">Hi {! attr.name !}, how are you?</p>'
+  template: '<p class="welcome">Hi {! fields.name !}, how are you?</p>'
 });
 ```
 
@@ -135,17 +135,17 @@ Fliplet.Helper('welcome', {
 welcome.greet()
 ```
 
-### Attributes
+### Fields
 
-#### Passing attributes to a helper
+#### Passing fields to a helper
 
-Attributes can be passed to helpers and then accessed via the `attr` object in HTML or `this.attr.<name>` in JS.
+Fields can be passed to helpers and then accessed via the `fields` object in HTML or `this.fields.<name>` in JS.
 
-Please note that attribute names are be converted to camelCase, e.g. `last-name` becomes `lastName` as the example below shows:
+Please note that field names are converted to camelCase, e.g. `last-name` becomes `lastName` as the example below shows:
 
 ```html
 {! start welcome last-name="Doe" !}
-  <p>Hi {! firstName !} {! attr.lastName !}, how are you?</p>
+  <p>Hi {! firstName !} {! fields.lastName !}, how are you?</p>
 {! end welcome !}
 ```
 
@@ -155,7 +155,7 @@ Fliplet.Helper('welcome', {
     firstName: 'John'
   },
   ready: function () {
-    console.log('Your last name is', this.attr.lastName);
+    console.log('Your last name is', this.fields.lastName);
   }
 });
 ```
@@ -166,7 +166,7 @@ Standard `class` and `style` HTML attributes can be used as usual, since they wo
 
 ```html
 {! start welcome class="my-container" !}
-  <p>Hi {! firstName !} {! attr.lastName !}, how are you?</p>
+  <p>Hi {! firstName !} {! fields.lastName !}, how are you?</p>
 {! end welcome !}
 ```
 
@@ -195,11 +195,11 @@ Or using the HTML syntax:
 <fl-helper data-type="welcome" data-last-name="Doe"></fl-helper>
 ```
 
-You can also define variables in attributes of your template and access them under the `attr` object:
+You can also define variables in attributes of your template and access them under the `field` object:
 
 ```js
 Fliplet.Helper('button', {
-  template: '<input type="submit" value="{! attr.title !}" />'
+  template: '<input type="submit" value="{! fields.title !}" />'
 });
 ```
 

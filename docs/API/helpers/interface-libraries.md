@@ -11,7 +11,7 @@ Simply list out the names of the libraries you want to use:
 
 ```js
 Fliplet.Helper('welcome', {
-  template: '<p class="welcome">Hi {! attr.name !}, how are you?</p>',
+  template: '<p class="welcome">Hi {! fields.name !}, how are you?</p>',
   configuration: {
     dependencies: ['moment'],
     fields: []
@@ -25,7 +25,7 @@ Define an object with `url` and `type` for each 3rd-party library you want to in
 
 ```js
 Fliplet.Helper('welcome', {
-  template: '<p class="welcome">Hi {! attr.name !}, how are you?</p>',
+  template: '<p class="welcome">Hi {! fields.name !}, how are you?</p>',
   dependencies: ['fliplet-media'],
   configuration: {
     title: 'Dolor sit amet',

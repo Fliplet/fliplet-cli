@@ -1,33 +1,33 @@
-# Attributes
+# Fields
 
-Attributes can be passed to helpers via the `attr` HTML element and then accessed via `this.attr.<name>` in JavaScript.
+fields can be passed to helpers via the `field` HTML element and then accessed via `this.fields.<name>` in JavaScript.
 
-## Accessing attributes
+## Accessing fields
 
-Use the `attr` property of the helper instance (`this`) to access attribute values in JavaScript as shown below.
+Use the `field` property of the helper instance (`this`) to access field values in JavaScript as shown below.
 
-Please note that attribute names are automatically converted to camelCase, e.g. `last-name` becomes `lastName` as the example below illustrates.
+Please note that field names are automatically converted to camelCase, e.g. `last-name` becomes `lastName` as the example below illustrates.
 
 ```html
-<fl-helper data-type="question">
-  <attr name="title">What is your name?</attr>
-  <attr name="description">Lorem ipsum dolor sit amet</attr>
+<fl-helper name="question">
+  <field name="title">What is your name?</field>
+  <field name="description">Lorem ipsum dolor sit amet</field>
 </fl-helper>
 ```
 
 ```js
 Fliplet.Helper('question', {
   ready: function () {
-    console.log('Title of the question', this.attr.title);
+    console.log('Title of the question', this.fields.title);
   }
 });
 ```
 
-Attributes can also be accessed in the HTML template by using the shortcode syntax, e.g. `{! attr.firstName !}`.
+fields can also be accessed in the HTML template by using the shortcode syntax, e.g. `{! fields.firstName !}`.
 
-## Updating attributes
+## Updating fields
 
-Use the `set` instance method to update attributes and values at runtime. Given the following example:
+Use the `set` instance method to update fields and values at runtime. Given the following example:
 
 ```js
 var profile;
@@ -54,9 +54,9 @@ profile.set('firstName', function () {
 
 ---
 
-## Default attributes
+## Default fields
 
-Use the `data` object to define default attributes for your helpers:
+Use the `data` object to define default fields for your helpers:
 
 ```js
 Fliplet.Helper('welcome', {
@@ -64,14 +64,14 @@ Fliplet.Helper('welcome', {
     lastName: 'Doe'
   },
   ready: function () {
-    console.log('Your last name is', this.attr.lastName);
+    console.log('Your last name is', this.fields.lastName);
   }
 });
 ```
 
 ---
 
-## Dynamically loading attributes
+## Dynamically loading fields
 
 The `data` object can optionally be a function returning a promise. This can be used to programmatcally load dynamic data when the helper is loaded:
 
