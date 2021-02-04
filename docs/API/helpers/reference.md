@@ -48,7 +48,7 @@ Fliplet.Helper(name, options);
       <td><code>options.icon</code></td>
       <td><code>string</code></td>
       <td>optional</td>
-      <td>The icon of the helper to show in the components list of Fliplet Studio.</td>
+      <td>The icon of the helper to show in the components list of Fliplet Studio. You can use any Fontawesome name (e.g. `fa-check`) or URL.</td>
     </tr>
     <tr>
       <td><code>options.data</code></td>

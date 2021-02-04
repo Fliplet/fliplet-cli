@@ -14,7 +14,7 @@ Define your helper in the <strong>Screen JavaScript or Global JavaScript</strong
 Fliplet.Helper({
   name: 'accordion',
   displayName: 'Accordion',
-  icon: 'sample',
+  icon: 'fa-check',
   render: {
     template: '<div class="accordion"><h3>Title: {! fields.title !}</h3>' +
               '<p>Content: {! fields.content !}</p></div>'
