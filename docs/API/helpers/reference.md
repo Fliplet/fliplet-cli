@@ -39,6 +39,18 @@ Fliplet.Helper(name, options);
       <td>The name of the helper.</td>
     </tr>
     <tr>
+      <td><code>options.displayName</code></td>
+      <td><code>string</code></td>
+      <td>optional</td>
+      <td>The display name of the helper to show in the components list of Fliplet Studio.</td>
+    </tr>
+    <tr>
+      <td><code>options.icon</code></td>
+      <td><code>string</code></td>
+      <td>optional</td>
+      <td>The icon of the helper to show in the components list of Fliplet Studio.</td>
+    </tr>
+    <tr>
       <td><code>options.data</code></td>
       <td><code>object</code> or <code>function</code></td>
       <td>optional</td>

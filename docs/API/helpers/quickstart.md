@@ -13,6 +13,8 @@ Define your helper in the <strong>Screen JavaScript or Global JavaScript</strong
 ```js
 Fliplet.Helper({
   name: 'accordion',
+  displayName: 'Accordion',
+  icon: 'sample',
   render: {
     template: '<div class="accordion"><h3>Title: {! fields.title !}</h3>' +
               '<p>Content: {! fields.content !}</p></div>'
@@ -33,6 +35,8 @@ Here's an explanation of what the above helper declares:
 ## 2. Drop the helper into your screen
 
 Once the helper has been defined it **will be shown in the components list of Fliplet Studio alongside our 1st-party components**. If you drag & drop the helper in your app screen, a new instance of the helper will be created when the helper has been dropped.
+
+**Helpers are required to declare both the `displayName` and `icon` properties in order to be displayed in the components list of Fliplet Studio**.
 
 The output in the screen should look like the following:
 
