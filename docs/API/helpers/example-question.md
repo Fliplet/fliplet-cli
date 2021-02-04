@@ -9,8 +9,6 @@ The following snippet illustrates how to create a simple helper showing a questi
 ### JavaScript
 
 ```js
-var results;
-
 Fliplet.Helper({
   name: 'question',
   displayName: 'Question',
@@ -22,15 +20,16 @@ Fliplet.Helper({
       '<label><input type="radio" name="{! fields.title !}" class="answer" value="{! answer.label !}" /> {! answer.label !}</label><br />' +
       '{! endeach !}',
     beforeReady: function() {
-      console.log('The question has been showed to the user');
+      // The question has been shown to the user
     },
     ready: function() {
       var vm = this;
 
+      // Register a click event when the answer is clicked
       this.$el.find('.answer').click(function() {
         var currentAnswer = $(this).val();
         var answer = _.find(vm.fields.answers, { label: currentAnswer });
-        var result = Fliplet.Helper.findOne({ type: 'result' });
+        var results = Fliplet.Helper.findOne({ name: 'results' })
 
         results.set('answer', currentAnswer);
         results.set('correct', !!answer.correct);
@@ -40,7 +39,11 @@ Fliplet.Helper({
   configuration: {
     title: 'Question',
     fields: [
-      { name: 'title', type: 'text', label: 'Enter the question', default: 'Best country ever?' },
+      { name: 'title',
+        type: 'text',
+        label: 'Enter the question',
+        default: 'Best country ever?'
+      },
       {
         name: 'answers',
         type: 'textarea',
@@ -50,43 +53,39 @@ Fliplet.Helper({
       }
     ],
     beforeSave: function(data, configuration) {
+      // Convert the multiline text to an array of objects
       data.answers = _.compact(
         data.answers.split(/\r|\n|\r\n/).map(function(answer) {
           if (!answer.trim()) {
             return;
           }
+
           return {
-            label: answer.replace(/[ ]+\(answer\)/, '').trim(),
+            label: answer.replace(/[ ]+\(answer\) ?/, '').trim(),
             correct: answer.indexOf('(answer)') > 0
           };
         })
       );
     },
     beforeReady: function(data) {
-      console.log('beforeReady', data);
-
+      // Convert the array of objects to a multiline text to be shown to the user
       if (Array.isArray(data.answers)) {
         data.answers = data.answers
           .map(function(answer) {
             return answer.label + (answer.correct ? ' (answer)' : '');
           })
           .join('\r\n');
-
-        console.log(data, data.answers);
       }
     },
     ready: function() {
-      console.log('Configuration UI has been showed to the user');
+      // Configuration UI has been shown to the user
     }
   }
 });
 
 Fliplet.Helper('results', {
   template:
-    '{! if answer !}Your answer is <strong>{! answer !}. Your answer is {! if correct !}correct{! else !}incorrect{! endif !}{! else !}<p>Please pick an answer</p>{! endif !}.',
-  ready: function() {
-    results = this;
-  }
+    '{! if answer !}Your answer is <strong>{! answer !}. Your answer is {! if correct !}correct{! else !}incorrect{! endif !}{! else !}<p>Please pick an answer</p>{! endif !}.'
 });
 ```
 
