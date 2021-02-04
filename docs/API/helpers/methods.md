@@ -9,15 +9,18 @@ Helpers are can define instance methods which can then be called at any time dur
 Instance methods can be defined via the `methods` property as shown in the example below:
 
 ```js
-Fliplet.Helper('welcome', {
-  methods: {
-    greet: function () {
-      console.log('Hello');
+Fliplet.Helper({
+  name: 'welcome',
+  render: {
+    methods: {
+      greet: function () {
+        console.log('Hello');
+      }
+    },
+    ready: function () {
+      // Greet once a button inside this helper is clickd
+      this.$el.find('button').click(this.greet);
     }
-  },
-  ready: function () {
-    // Greet once a button inside this helper is clickd
-    this.$el.find('button').click(this.greet);
   }
 });
 ```
@@ -27,14 +30,17 @@ You can also keep a reference to a helper instance and call its methods any time
 ```js
 var welcome;
 
-Fliplet.Helper('welcome', {
-  methods: {
-    greet: function () {
-      console.log('Hello');
+Fliplet.Helper({
+  name: 'welcome',
+  render: {
+    methods: {
+      greet: function () {
+        console.log('Hello');
+      }
+    },
+    ready: function () {
+      welcome = this;
     }
-  },
-  ready: function () {
-    welcome = this;
   }
 });
 
@@ -52,12 +58,15 @@ Use the `set` instance method to update fields and values at runtime. Given the 
 ```js
 var profile;
 
-Fliplet.Helper('profile', {
+Fliplet.Helper({
+  name: 'profile',
   data: {
     firstName: 'John'
   },
-  ready: function () {
-    profile = this;
+  render: {
+    ready: function () {
+      profile = this;
+    }
   }
 });
 ```

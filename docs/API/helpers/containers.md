@@ -7,11 +7,14 @@ Define a list of rich-content containers for your helper using the `containers` 
 Each key will correspond to the unique container name within the helper, whereas the value is required to be an object to define its configuration, including what helpers are allowed to be dropped into the container.
 
 ```js
-Fliplet.Helper('slider', {
-  template: [
-    '<div data-container="myFirstContainer"></div>',
-    '<div data-container="mySecondContainer"></div>'
-  ].join(''),
+Fliplet.Helper({
+  name: 'slider',
+  render: {
+    template: [
+      '<div data-container="myFirstContainer"></div>',
+      '<div data-container="mySecondContainer"></div>'
+    ].join('')
+  },
   containers: {
     myFirstContainer: { allow: [] },
     mySecondContainer: { allow: ['slide'] }
@@ -32,7 +35,8 @@ By default, helpers are not allowed to be dropped into other helpers. However, t
 
 ```js
 // This helper can only be dropped in the "slider" helper
-Fliplet.Helper('slide', {
+Fliplet.Helper({
+  name: 'slide',
   childOf: ['slider']
 });
 ```
@@ -42,7 +46,8 @@ Furthermore, if your parent helper is declaring more than one rich-content conta
 ```js
 // This helper can only be dropped in the
 // "slider" helper container named "mySecondContainer"
-Fliplet.Helper('slide', {
+Fliplet.Helper({
+  name: 'slide',
   childOf: ['slider.mySecondContainer']
 });
 ```

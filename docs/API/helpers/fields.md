@@ -16,9 +16,12 @@ Please note that field names are automatically converted to camelCase, e.g. `las
 ```
 
 ```js
-Fliplet.Helper('question', {
-  ready: function () {
-    console.log('Title of the question', this.fields.title);
+Fliplet.Helper({
+  name: 'question',
+  render: {
+    ready: function () {
+      console.log('Title of the question', this.fields.title);
+    }
   }
 });
 ```
@@ -32,12 +35,15 @@ Use the `set` instance method to update fields and values at runtime. Given the 
 ```js
 var profile;
 
-Fliplet.Helper('profile', {
+Fliplet.Helper({
+  name: 'profile',
   data: {
     firstName: 'John'
   },
-  ready: function () {
-    profile = this;
+  render: {
+    ready: function () {
+      profile = this;
+    }
   }
 });
 ```
@@ -59,12 +65,15 @@ profile.set('firstName', function () {
 Use the `data` object to define default fields for your helpers:
 
 ```js
-Fliplet.Helper('welcome', {
+Fliplet.Helper({
+  name: 'welcome',
   data: {
     lastName: 'Doe'
   },
-  ready: function () {
-    console.log('Your last name is', this.fields.lastName);
+  render: {
+    ready: function () {
+      console.log('Your last name is', this.fields.lastName);
+    }
   }
 });
 ```
@@ -76,7 +85,8 @@ Fliplet.Helper('welcome', {
 The `data` object can optionally be a function returning a promise. This can be used to programmatcally load dynamic data when the helper is loaded:
 
 ```js
-Fliplet.Helper('profile', {
+Fliplet.Helper({
+  name: 'profile',
   data: function () {
     var firstName = this.data.firstName;
 

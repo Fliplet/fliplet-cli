@@ -33,6 +33,12 @@ Fliplet.Helper(name, options);
       <td>The configuration option.</td>
     </tr>
     <tr>
+      <td><code>options.name</code></td>
+      <td><code>string</code></td>
+      <td>required</td>
+      <td>The name of the helper.</td>
+    </tr>
+    <tr>
       <td><code>options.data</code></td>
       <td><code>object</code> or <code>function</code></td>
       <td>optional</td>

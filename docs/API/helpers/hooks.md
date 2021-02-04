@@ -5,7 +5,8 @@
 Define a `beforeReady` function to run code when a helper instance is initialized and mounted to the HTML:
 
 ```js
-Fliplet.Helper('profile', {
+Fliplet.Helper({
+  name: 'profile',
   data: {
     firstName: 'John'
   },
@@ -22,7 +23,8 @@ Fliplet.Helper('profile', {
 Define a `ready` function to run code when a helper instance is initialized and mounted to the HTML:
 
 ```js
-Fliplet.Helper('profile', {
+Fliplet.Helper({
+  name: 'profile',
   data: {
     firstName: 'John'
   },

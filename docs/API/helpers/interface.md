@@ -10,10 +10,13 @@ You can create configuration interfaces for your helpers by defining a set of fi
 Start by adding a `configuration` object to your helper, including the list of fields to present:
 
 ```js
-Fliplet.Helper('accordion', {
-  template: '<div class="accordion"><h3>Title: {! fields.title !}</h3>' +
-            '<fl-if data-path="fields.title">' +
-            '<p>Content: {! fields.content !}</p></fl-if></div>',
+Fliplet.Helper({
+  name: 'accordion',
+  render: {
+    template: '<div class="accordion"><h3>Title: {! fields.title !}</h3>' +
+              '<fl-if data-path="fields.title">' +
+              '<p>Content: {! fields.content !}</p></fl-if></div>'
+  },
   configuration: {
     title: 'Configure your accordion',
     fields: [

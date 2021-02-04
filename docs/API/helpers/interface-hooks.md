@@ -72,8 +72,11 @@ Use the `ready` property on a field to define a function to run when the field i
 See how the example below manually defines an input field which handles user input and updates the actual value:
 
 ```js
-Fliplet.Helper('welcome', {
-  template: '<p class="welcome">Hi {! fields.name !}, how are you?</p>',
+Fliplet.Helper({
+  name: 'welcome',
+  render: {
+    template: '<p class="welcome">Hi {! fields.name !}, how are you?</p>'
+  },
   configuration: {
     fields: [
       {

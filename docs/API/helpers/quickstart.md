@@ -11,9 +11,12 @@ Helpers can be created by defining them via **screen or global JavaScript code**
 Define your helper in the <strong>Screen JavaScript or Global JavaScript</strong> of your Fliplet app:
 
 ```js
-Fliplet.Helper('accordion', {
-  template: '<div class="accordion"><h3>Title: {! fields.title !}</h3>' +
-            '<p>Content: {! fields.content !}</p></div>',
+Fliplet.Helper({
+  name: 'accordion',
+  render: {
+    template: '<div class="accordion"><h3>Title: {! fields.title !}</h3>' +
+              '<p>Content: {! fields.content !}</p></div>'
+  },
   configuration: {
     fields: [
       { name: 'title', type: 'text', label: 'Title' },

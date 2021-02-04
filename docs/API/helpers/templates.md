@@ -10,7 +10,8 @@ Templates support the following features:
 Take a look at a basic example where a helper is defining a custom template:
 
 ```js
-Fliplet.Helper('welcome', {
+Fliplet.Helper({
+  name: 'welcome',
   render: {
     template: '<p>Hi {! firstName !}, how are you?</p>'
   },
@@ -37,7 +38,8 @@ Variables can also be defined via HTML `field` nodes and can be accessed using t
 ```
 
 ```js
-Fliplet.Helper('user', {
+Fliplet.Helper({
+  name: 'welcome',
   render: {
     template: '<p>Hi {! fields.name !}, how are you?</p>'
   }

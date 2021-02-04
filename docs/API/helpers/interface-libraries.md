@@ -10,8 +10,11 @@ Define a `dependencies` array to include libraries in your interfaces. These can
 Simply list out the names of the libraries you want to use:
 
 ```js
-Fliplet.Helper('welcome', {
-  template: '<p class="welcome">Hi {! fields.name !}, how are you?</p>',
+Fliplet.Helper({
+  name: 'welcome',
+  render: {
+    template: '<p class="welcome">Hi {! fields.name !}, how are you?</p>'
+  },
   configuration: {
     dependencies: ['moment'],
     fields: []
@@ -24,9 +27,12 @@ Fliplet.Helper('welcome', {
 Define an object with `url` and `type` for each 3rd-party library you want to include:
 
 ```js
-Fliplet.Helper('welcome', {
-  template: '<p class="welcome">Hi {! fields.name !}, how are you?</p>',
-  dependencies: ['fliplet-media'],
+Fliplet.Helper({
+  name: 'welcome',
+  render: {
+    template: '<p class="welcome">Hi {! fields.name !}, how are you?</p>',
+    dependencies: ['fliplet-media']
+  },
   configuration: {
     title: 'Dolor sit amet',
     dependencies: [
