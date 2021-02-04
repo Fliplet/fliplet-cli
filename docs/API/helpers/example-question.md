@@ -29,7 +29,7 @@ Fliplet.Helper({
       this.$el.find('.answer').click(function() {
         var currentAnswer = $(this).val();
         var answer = _.find(vm.fields.answers, { label: currentAnswer });
-        var results = Fliplet.Helper.findOne({ name: 'results' })
+        var results = Fliplet.Helper.findOne({ name: 'results' });
 
         results.set('answer', currentAnswer);
         results.set('correct', !!answer.correct);
