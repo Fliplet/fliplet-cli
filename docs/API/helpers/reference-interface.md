@@ -4,11 +4,12 @@
 
 Defines a new Helper for the current screen. Use the constructor in Global JS code to define it for the entire app.
 
-#### - `public static object Fliplet.Helper(name: String, options: Object)`
+#### - `public static object Fliplet.Helper(options: Object)`
 
 ```js
-Fliplet.Helper(name, {
-  configuration
+Fliplet.Helper({
+  name: String
+  configuration: Object
 });
 ```
 
