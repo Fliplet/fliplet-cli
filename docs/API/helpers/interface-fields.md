@@ -57,9 +57,10 @@ Example:
 
 ### HTML
 
-- A freeform HTML field. Supports the following properties:
+A freeform HTML field. Supports the following properties:
 
 - `html` (HTML String)
+- [ready](https://developers.fliplet.com/API/helpers/interface-hooks.html#run-a-function-when-a-field-is-initialized) (Function)
 
 ```js
 {
