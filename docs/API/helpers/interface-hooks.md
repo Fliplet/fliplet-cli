@@ -3,9 +3,11 @@
 ## Interface
 
 Lifecycle:
-1. `beforeReady`
-2. `ready`
-3. `beforeSave`
+1. `beforeReady` (interface has not been rendered yet)
+2. `ready` (interface has been presented to the user)
+3. `beforeSave` (interface is about to be saved and closed)
+
+---
 
 ### Run a function before the interface is initialized
 
