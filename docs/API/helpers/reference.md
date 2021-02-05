@@ -34,67 +34,67 @@ Fliplet.Helper({
   </thead>
   <tbody>
     <tr>
-      <td><code>options.name</code></td>
+      <td><code>name</code></td>
       <td><code>string</code></td>
       <td>required</td>
       <td>A unique name for your helper.</td>
     </tr>
     <tr>
-      <td><code>options.displayName</code></td>
+      <td><code>displayName</code></td>
       <td><code>string</code></td>
       <td>optional</td>
       <td>The display name of the helper to show in the components list of Fliplet Studio.</td>
     </tr>
     <tr>
-      <td><code>options.icon</code></td>
+      <td><code>icon</code></td>
       <td><code>string</code></td>
       <td>optional</td>
       <td>The icon of the helper to show in the components list of Fliplet Studio. You can use any Fontawesome name (e.g. `fa-check`) or URL.</td>
     </tr>
     <tr>
-      <td><code>options.data</code></td>
+      <td><code>data</code></td>
       <td><code>object</code> or <code>function</code></td>
       <td>optional</td>
       <td>
         <a href="/API/helpers/fields.html#default-fields">The data for your helper</a>.</td>
     </tr>
     <tr>
-      <td><code>options.render.template</code></td>
+      <td><code>render.template</code></td>
       <td><code>string</code></td>
       <td>optional</td>
       <td>
         <a href="/API/helpers/templates.html">An optional HTML template</a>.</td>
     </tr>
     <tr>
-      <td><code>options.render.beforeReady</code></td>
+      <td><code>render.beforeReady</code></td>
       <td><code>function</code></td>
       <td>optional</td>
       <td>
         <a href="/API/helpers/hooks.html#run-logic-before-a-helper-is-rendered">A function to run before the helper instance is rendered</a>.</td>
     </tr>
     <tr>
-      <td><code>options.render.ready</code></td>
+      <td><code>render.ready</code></td>
       <td><code>function</code></td>
       <td>optional</td>
       <td>
         <a href="/API/helpers/hooks.html#run-logic-once-a-helper-is-rendered">A function to run when the helper instance is rendered</a>.</td>
     </tr>
     <tr>
-      <td><code>options.configuration</code></td>
+      <td><code>configuration</code></td>
       <td><code>object</code></td>
       <td>optional</td>
       <td>
         <a href="/API/helpers/interface.html">The list of fields to present in the configuration UI</a>.</td>
     </tr>
     <tr>
-      <td><code>options.views</code></td>
+      <td><code>views</code></td>
       <td><code>object</code></td>
       <td>optional</td>
       <td>
         <a href="/API/helpers/views.html">The list of rich content views</a>.</td>
     </tr>
     <tr>
-      <td><code>options.childOf</code></td>
+      <td><code>childOf</code></td>
       <td><code>array</code></td>
       <td>optional</td>
       <td>
