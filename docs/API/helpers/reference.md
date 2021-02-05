@@ -7,7 +7,20 @@ Defines a new Helper for the current screen. Use the constructor in Global JS co
 #### - `public static object Fliplet.Helper(options: Object)`
 
 ```js
-Fliplet.Helper(options);
+Fliplet.Helper({
+ name: String,
+ displayName: String,
+ icon: String,
+ data: Object,
+ render: {
+   template: String,
+   beforeReady: Function,
+   ready: Function
+ },
+ configuration: Object,
+ views: Object,
+ childOf: Array
+});
 ```
 
 **Parameters:**
