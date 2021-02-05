@@ -6,8 +6,6 @@ fields can be passed to helpers via the `field` HTML element and then accessed v
 
 Use the `field` property of the helper instance (`this`) to access field values in JavaScript as shown below.
 
-Please note that field names are automatically converted to camelCase, e.g. `last-name` becomes `lastName` as the example below illustrates.
-
 ```html
 <fl-helper name="question">
   <field name="title">What is your name?</field>
