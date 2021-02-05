@@ -7,7 +7,7 @@
 - `label` (String) a bold label displayed before the input field
 - `description` (String) a description displayed before the input field
 - `default` (Mixed) a default value for the field
-- [ready](https://developers.fliplet.com/API/helpers/interface-hooks.html#run-a-function-when-a-field-is-initialized) (Function)
+- [ready](https://developers.fliplet.com/API/helpers/interface-hooks.html#run-a-function-when-a-field-is-initialized) (Function) a function to run when a field is initialized
 
 ## Types
 
@@ -60,8 +60,8 @@ Example:
 
 A freeform HTML field. Supports the following properties:
 
-- `html` (HTML String)
-- [ready](https://developers.fliplet.com/API/helpers/interface-hooks.html#run-a-function-when-a-field-is-initialized) (Function)
+- `html` (HTML String) the HTML template
+- [ready](https://developers.fliplet.com/API/helpers/interface-hooks.html#run-a-function-when-a-field-is-initialized) (Function) a function to run when a field is initialized
 
 ```js
 {
