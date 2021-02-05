@@ -108,9 +108,12 @@ Fliplet.Helper({
 ## Instance properties
 
 ```js
-Fliplet.Helper(name, {
-  ready: function () {
-    var instance = this;
+Fliplet.Helper({
+  name: String,
+  render: {
+    ready: function () {
+      var instance = this;
+    }
   }
 });
 ```
