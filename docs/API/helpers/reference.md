@@ -21,22 +21,10 @@ Fliplet.Helper(options);
   </thead>
   <tbody>
     <tr>
-      <td><code>name</code></td>
-      <td><code>string</code></td>
-      <td>required</td>
-      <td>A unique name for your helper.</td>
-    </tr>
-    <tr>
-      <td><code>options</code></td>
-      <td><code>object</code></td>
-      <td>required</td>
-      <td>The configuration option.</td>
-    </tr>
-    <tr>
       <td><code>options.name</code></td>
       <td><code>string</code></td>
       <td>required</td>
-      <td>The name of the helper.</td>
+      <td>A unique name for your helper.</td>
     </tr>
     <tr>
       <td><code>options.displayName</code></td>
