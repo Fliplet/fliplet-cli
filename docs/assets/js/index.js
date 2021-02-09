@@ -144,7 +144,7 @@ if (location.pathname !== '/') {
       'Build amazing apps.',
       'Create incredible components.',
       'Securely integrate with your data.',
-      'Customise apps within seconds.',
+      'Customize apps within seconds.',
       'Launch apps effortlessly.',
       'Code using popular frameworks.'
     ],
