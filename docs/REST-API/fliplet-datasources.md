@@ -197,6 +197,9 @@ Request body:
 }
 ```
 
+If you don't want your data source to be displayed in the **Data Source Manager** in Fliplet Studio (available under the "App data" menu in the top header), simply add a specific `type` string to it.
+
+
 Sample cURL request:
 
 ```
