@@ -55,7 +55,7 @@ Once the integration is all working, you can secure your app by requiring a vali
 ## The integration flow explained
 
 1. User clicks a login button on a Fliplet app and gets redirected to the client's login page.
-2. User logs in with his/her organisation credentials (not Fliplet credentials) and gets redirected back to Fliplet servers.
+2. User logs in with his/her organization credentials (not Fliplet credentials) and gets redirected back to Fliplet servers.
 3. Fliplet servers validate the login request and redirects the user back to the Fliplet app and to the relevant page.
 
 ---

@@ -30,7 +30,7 @@ Fliplet.Hooks.on('flDirectoryBeforeGetData', function onBeforeGetData(data) {
   // disable caching the data so it's always retrieved from the server
   data.config.cache = false;
 
-  // Define the "getData" promise to manually fetching data. 
+  // Define the "getData" promise to manually fetching data.
   data.config.getData = function () {
     // In this example we connect to a datasource with ID 123
     return Fliplet.DataSources.connect(123).then(function(connection) {
@@ -50,7 +50,7 @@ Fliplet.Hooks.on('flDirectoryBeforeGetData', function onBeforeGetData(data) {
 });
 ```
 
-## Running code before the directory is initialised
+## Running code before the directory is initialized
 
 ```js
 // Register the event

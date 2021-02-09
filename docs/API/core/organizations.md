@@ -12,7 +12,7 @@ Fliplet.Organizations.get().then(function (organizations) {
 
 ## Audit logs
 
-Use the logs JS API to fetch audit logs for an organisation.
+Use the logs JS API to fetch audit logs for an organization.
 
 Optional parameters:
 

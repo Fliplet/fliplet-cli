@@ -38,7 +38,7 @@ Typical usage:
 
 ### Themes
 
-As the name suggests, themes enables you to customise any visual aspect of your apps. A Fliplet App can only be assigned to one theme.
+As the name suggests, themes enables you to customize any visual aspect of your apps. A Fliplet App can only be assigned to one theme.
 
 A theme consists in CSS (or SCSS) and Javascript files.
 

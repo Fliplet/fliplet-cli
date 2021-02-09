@@ -20,7 +20,7 @@ Fliplet.Helper('question', {
       { name: 'title', type: 'text', label: 'Title', default: 'Lorem ipsum' }
     ],
     beforeReady: function (data) {
-      // here the interface has not been initialised
+      // here the interface has not been initialized
       data.title = data.title || 'Insert a title';
     }
   }
@@ -38,7 +38,7 @@ Fliplet.Helper('question', {
       { name: 'title', type: 'text', label: 'Title' }
     ],
     ready: function (data, configuration) {
-      // here the interface has been initialised
+      // here the interface has been initialized
     }
   }
 });

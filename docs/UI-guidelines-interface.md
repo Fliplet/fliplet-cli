@@ -8,8 +8,8 @@ We always include Bootstrap, as the framework to build responsive interfaces, as
 
 In the settings of our components we use the following basic styles:
 
-Primary colour: `#00abd2`
-Secondary colour: `#aaaaaa`
+Primary color: `#00abd2`
+Secondary color: `#aaaaaa`
 Text: `#333333`
 Headings:
 ```html
@@ -68,7 +68,7 @@ Here is an example:
 
 In our components we use the following form fields:
 - [Input field](#input-field)
-- [Colour picker](#colour-picker)
+- [Color picker](#color-picker)
 - [Dropdown list](#dropdown-list)
 - [Radio buttons](#radio-buttons)
 - [Checkboxes](#checkboxes)
@@ -100,11 +100,11 @@ If you want to use an input field without a label, all you need to do is remove 
 </div>
 ```
 
-### Colour picker
+### Color picker
 
-![Colour picker](assets/img/ui-interface/color-picker.png)
+![Color picker](assets/img/ui-interface/color-picker.png)
 
-For colour pickers we use Bootstrap's input field with an addon.
+For color pickers we use Bootstrap's input field with an addon.
 Here is an example:
 
 ```html
@@ -282,7 +282,7 @@ We hide the checkbox input field and we style the label to look like what we wan
 
 ![Tabs](assets/img/ui-interface/tabs.png)
 
-If you need to categorise your component's settings then you should use our tabbed system.
+If you need to categorize your component's settings then you should use our tabbed system.
 Again, we use Bootstrap's tabbed system and we style it to look like we want it.
 
 Here is a quick example of the markup:

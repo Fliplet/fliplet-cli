@@ -12,7 +12,7 @@ description: Fliplet Agent (Data integration service) is a command line utility 
 
 ## Before you start
 
-To synchronize your data with Fliplet servers you will need an authorisation token generated via Fliplet Studio from an organisation admin account.
+To synchronize your data with Fliplet servers you will need an authorization token generated via Fliplet Studio from an organization admin account.
 
 To generate a token, please follow the docs [here](REST-API/authenticate.md).
 
@@ -74,7 +74,7 @@ npm update -g
 Create a simple file with with `.yml` extension (or grab a [sample copy here](https://raw.githubusercontent.com/Fliplet/fliplet-agent/master/sample.yml)) somewhere in your filesystem with the following configuration details and replace with your own settings where appropriate:
 
 ```yml
-# Fliplet API authorisation token taken from Fliplet Studio. More documentation available at:
+# Fliplet API authorization token taken from Fliplet Studio. More documentation available at:
 # https://developers.fliplet.com/REST-API/authenticate.html#how-to-create-an-authentication-token
 auth_token: eu--123456789
 
@@ -251,7 +251,7 @@ fliplet-agent uninstall C:\path\to\sample.yml
 
 Running the Fliplet Agent in advanced mode requires you to create a configuration file written in JavaScript (instead of YML) with the following required details:
 
-1. **Fliplet authToken**: The authorisation token generated via Fliplet Studio.
+1. **Fliplet authToken**: The authorization token generated via Fliplet Studio.
 2. **Database connection details**: Username, password, host, port and database name to connect to your database server.
 3. A list of **operations** to run: each operation defines how data is pushed, pulled or synced between your database and Fliplet servers.
 
@@ -261,7 +261,7 @@ Here's a sample configuration file to give you an idea on its structure:
 // Save this into a file and run using "fliplet-agent start ./path/to/file.js"
 
 module.exports.config = {
-  // Fliplet authorisation token from Fliplet Studio
+  // Fliplet authorization token from Fliplet Studio
   authToken: 'eu--123456789',
 
   // Set to true to test the integration without sending any data to Fliplet servers
@@ -386,7 +386,7 @@ When using the Fliplet Agent in advanced mode via a Javascript file you can choo
 
 ```js
 module.exports.config = {
-  // Fliplet authorisation token from Fliplet Studio
+  // Fliplet authorization token from Fliplet Studio
   authToken: 'eu--123456789',
 
   // Set to true to test the integration without sending any data to Fliplet servers
@@ -463,7 +463,7 @@ The following **properties** can also be used **when querying your data source**
 
 ```js
 module.exports.config = {
-  // Fliplet authorisation token from Fliplet Studio
+  // Fliplet authorization token from Fliplet Studio
   authToken: 'eu--123456789',
 
   // Set to true to test the integration without sending any data to Fliplet servers

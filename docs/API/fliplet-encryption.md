@@ -94,7 +94,7 @@ Fliplet.DataSources.Encryption().encrypt(123, [
 
 The system will take care of both encrypting and decrypting content of data sources for you. No additional code will be required aside from setting up the encryption key.
 
-<p class="quote">Note: After enabling encryption all features in your app will utilise it, <strong>you do not need to add any further code or settings</strong> to your app or components.</p>
+<p class="quote">Note: After enabling encryption all features in your app will utilize it, <strong>you do not need to add any further code or settings</strong> to your app or components.</p>
 
 The system will take care of both encrypting and decrypting content of data sources for you. No additional code will be required aside from setting up the encryption key.
 
@@ -119,13 +119,13 @@ Fliplet.DataSources.Encryption().clearKey();
 
 ---
 
-## Multi-organisation set up
+## Multi-organization set up
 
-The following example assumes you want to set up multiple organisations within your app having different encryption keys so they can't access each other's data.
+The following example assumes you want to set up multiple organizations within your app having different encryption keys so they can't access each other's data.
 
 Given two Data Sources as follows:
 
-**Organisations** *(Data Source ID `123`)*
+**Organizations** *(Data Source ID `123`)*
 
 | ID         | Name   | Key                              |
 |------------|--------|----------------------------------|
@@ -140,7 +140,7 @@ Given two Data Sources as follows:
 | bob@example.org   | GOOG-0789      | (Encrypted) | (Encrypted) |
 | john@example.org  | AAPL-0123      | (Encrypted) | (Encrypted) |
 
-Create a **login component** bound to the users Data Source. Then, add the following **hook** to fetch the **user's organisation key** from the organisations Data Source when the user logs in. This key will be set as encryption/decryption key for the user:
+Create a **login component** bound to the users Data Source. Then, add the following **hook** to fetch the **user's organization key** from the organizations Data Source when the user logs in. This key will be set as encryption/decryption key for the user:
 
 ```js
 // Add this code to a screen with a login component
@@ -151,7 +151,7 @@ Fliplet.Hooks.on('login', function (user) {
       where: { ID: user.entry.data.OrganizationID }
     });
   }).then(function (organizations) {
-    // Read the organisation key
+    // Read the organization key
     var key = _.first(organizations).data.key;
 
     // Locally store the organization key
