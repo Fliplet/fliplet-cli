@@ -20,7 +20,7 @@ Fliplet.Media.Folders.get().then(function (response) {
   // response.files
 });
 
-// Get a list of all top-level folders and files for an organisation by its ID
+// Get a list of all top-level folders and files for an organization by its ID
 Fliplet.Media.Folders.get({ organizationId: 1 }).then(function (response) {});
 
 // Get a list of all top-level folders and files for an app by its ID
@@ -105,11 +105,11 @@ Fliplet.Media.Folders.update(123, {
 Fliplet.Media.Folders.update(123, {
   appId: 123,         // move to an app
   parentId: 456,      // move to a folder
-  organizationId: 789 // move to the organisation
+  organizationId: 789 // move to the organization
 });
 ```
 
-Note: when moving a folder out from a subfolder (and to an app or organisation), please set its `parentId` to `null`.
+Note: when moving a folder out from a subfolder (and to an app or organization), please set its `parentId` to `null`.
 
 ## Files
 
@@ -147,24 +147,24 @@ Fliplet.Media.Files.update(123, {
 Fliplet.Media.Files.update(123, {
   appId: 123,         // move to an app
   mediaFolderId: 456, // move to a folder
-  organizationId: 789 // move to the organisation
+  organizationId: 789 // move to the organization
 });
 ```
 
-Note: when moving a file from a folder to an app or organisation, please set its `mediaFolderId` to `null`.
+Note: when moving a file from a folder to an app or organization, please set its `mediaFolderId` to `null`.
 
 ---
 
 ## Search folders and files
 
-Use the `search()` method fo find folders and files in your app or organisation or a specific folder.
+Use the `search()` method fo find folders and files in your app or organization or a specific folder.
 
 - You can search by `name`
 - You can filter results by `appId`, `organizationId` or `folderId`
 - You can search for deleted files and folders by specifying `deletedOnly` as `true`
 - Results will include a `type` (`folder` or `file`)
-- Results will include `app` and `organisation` properties with `{ id, name }` when available
-- Results will include a `parentFolder` with `{ id, name }` which recursively include any folder up to their app or organisation folder
+- Results will include `app` and `organization` properties with `{ id, name }` when available
+- Results will include a `parentFolder` with `{ id, name }` which recursively include any folder up to their app or organization folder
 
 ```js
 // search by file name

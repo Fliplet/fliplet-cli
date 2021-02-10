@@ -4,7 +4,7 @@ The entrypoint to use for all requests is ​**[https://api.fliplet.com​](http
 
 All requests must be made via ​**SSL​** to the above HTTPS-only endpoint.
 
-All our APIs uses **​RESTful​ web services** which supports both **JSON** and url-encoded parameters as body of POST requests. 
+All our APIs uses **​RESTful​ web services** which supports both **JSON** and url-encoded parameters as body of POST requests.
 
 The request **body size ​limit​** on all endpoints is set to **1​ GB​**, which is then a hard limit for uploaded files.
 
@@ -42,7 +42,7 @@ If the provided token has been revoked, an error message will be returned as fol
 4. Go to ‘App tokens’ tab of app settings
 5. Create a new token
 
-Note: The token does not expire, but can be revoked at any time should you want to (e.g. when unauthorised access is found or your token has been compromised).
+Note: The token does not expire, but can be revoked at any time should you want to (e.g. when unauthorized access is found or your token has been compromised).
 
 ---
 

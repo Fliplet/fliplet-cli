@@ -63,7 +63,7 @@ The relative path to the icon of your component. When available, the icon will b
 
 ## "tags"
 
-Tags are used by both the system and studio to filter components and organise them into different sections.
+Tags are used by both the system and studio to filter components and organize them into different sections.
 
 - A component is declared as a **page component** when the default tag `type:component` is included.
 - A component becomes an **app component** when the tag `type:appComponent` is included.

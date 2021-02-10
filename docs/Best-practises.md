@@ -22,7 +22,7 @@ Does your code handle that? Here's a piece of advice:
 
 ```js
 Fliplet.Widget.instance('my-nice-widget', function (data) {
-  // initialise your component.
+  // initialize your component.
   // this function is called for each component if this type dropped into the page
 
   // "this" will be the element so you can use $(this) to access it via jQuery:

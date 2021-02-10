@@ -10,7 +10,7 @@ This is how components are shown in the developer tools:
 <fl-button cid="123"></fl-button>
 ```
 
-To customise a component template, you can simply type HTML code in the tag:
+To customize a component template, you can simply type HTML code in the tag:
 
 ```html
 <fl-button cid="123">
@@ -38,7 +38,7 @@ You can also refer to any instance attribute of such component by using the hand
 
 Fliplet components are usually rendered into an app screen with the {% raw %}`{{{ widget 123 }}}`{% endraw %} syntax, where `123` would be the ID of the component.
 
-If you need to customise how a component look — and CSS itself is not enough — you can customise the component template by changing the widget declaration tag to a handlebars block by prefixing the `widget` word with a hashtag and also add a closure tag. You also must use only **two curly brackets** to enclose the tags instead of three:
+If you need to customize how a component look — and CSS itself is not enough — you can customize the component template by changing the widget declaration tag to a handlebars block by prefixing the `widget` word with a hashtag and also add a closure tag. You also must use only **two curly brackets** to enclose the tags instead of three:
 
 {% raw %}
 ```handlebars
@@ -50,7 +50,7 @@ If you need to customise how a component look — and CSS itself is not enough �
 ```
 {% endraw %}
 
-Let's make a hands-on example customising a **primary button**. First, let's take a look at its default output on the [open source github repository](https://github.com/Fliplet/fliplet-widget-primary-button/blob/master/build.html):
+Let's make a hands-on example customizing a **primary button**. First, let's take a look at its default output on the [open source github repository](https://github.com/Fliplet/fliplet-widget-primary-button/blob/master/build.html):
 
 {% raw %}
 ```handlebars
@@ -58,7 +58,7 @@ Let's make a hands-on example customising a **primary button**. First, let's tak
 ```
 {% endraw %}
 
-As you can see, the widget declares a {% raw %}`{{id}}`{% endraw %} and {% raw %}`{{label}}`{% endraw %} that we must use to keep the component behaviour. We could then customise this widget instance html as follows:
+As you can see, the widget declares a {% raw %}`{{id}}`{% endraw %} and {% raw %}`{{label}}`{% endraw %} that we must use to keep the component behaviour. We could then customize this widget instance html as follows:
 
 {% raw %}
 ```handlebars

@@ -4,7 +4,7 @@ Before building themes, we recommend reading the documentation about [creating c
 
 A theme consist in:
 - SCSS, CSS and Javascript assets.
-- A configuration object which is used from Fliplet Studio to build a UI and let users customise various parts of your theme.
+- A configuration object which is used from Fliplet Studio to build a UI and let users customize various parts of your theme.
 - Sample html files to be used from the CLI to preview a theme during development.
 
 ---
@@ -53,7 +53,7 @@ The theme configuration can be specified via the `settings.configuration` array 
       "variables": [
         {
           "name": "bodyBackground",
-          "description": "The background colour of the page",
+          "description": "The background color of the page",
           "type": "color",
           "default": "#FFFFFF"
         }

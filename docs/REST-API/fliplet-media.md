@@ -2,7 +2,7 @@
 
 ## Authentication
 
-Please head to the [how to authenticate](authenticate.md) page of the documentation to read more about how you can authorise your client to make API requests to Fliplet.
+Please head to the [how to authenticate](authenticate.md) page of the documentation to read more about how you can authorize your client to make API requests to Fliplet.
 
 ---
 
@@ -13,21 +13,21 @@ Before heading deep into describing the API endpoints, let's describe what a **M
 ### Media Folder
 
 A representation of a folder which can contain subfolders and files.
-Media folders can belong to an organisation, an app or a media folder (which acts as the parent folder).
+Media folders can belong to an organization, an app or a media folder (which acts as the parent folder).
 
 ### Media File
 
-Represents a file uploaded via the APIs. It can be contained within a folder, or as a root file for an app or organisation.
+Represents a file uploaded via the APIs. It can be contained within a folder, or as a root file for an app or organization.
 
 ---
 
 ## Endpoints
 
-### Get the folders and files belonging to an app or organisation or media folder
+### Get the folders and files belonging to an app or organization or media folder
 
 #### `GET v1/media`
 
-This endpoint requires a context, which can be an app or an organisation or a mediaFolder. The context needs to be sent as a GET parameter in the request, like ​`appId=1​` or ​`organizationId=2` or `folderId=123`
+This endpoint requires a context, which can be an app or an organization or a mediaFolder. The context needs to be sent as a GET parameter in the request, like ​`appId=1​` or ​`organizationId=2` or `folderId=123`
 
 Response  (Status code: 200 OK):
 

@@ -266,7 +266,7 @@ Fliplet.FormBuilder.get()
   });
 ```
 
-The callback will also be fired when the form initialised with a value. If you want to avoid this behaviour, pass `false` as second parameter of the `change()` method:
+The callback will also be fired when the form initialized with a value. If you want to avoid this behaviour, pass `false` as second parameter of the `change()` method:
 
 ```js
 Fliplet.FormBuilder.get()
@@ -388,14 +388,14 @@ Fliplet.Hooks.on('onFormSubmitError', function(error) {
 
 ### beforeRichFieldInitialize
 
-Runs when a **Rich text** field type is about to initialise. You can use this hook to make changes to the `config` initialization object which is then passed to **TinyMCE** after the hook runs.
+Runs when a **Rich text** field type is about to initialize. You can use this hook to make changes to the `config` initialization object which is then passed to **TinyMCE** after the hook runs.
 
 ```js
 Fliplet.Hooks.on('beforeRichFieldInitialize', function (data) {
   // data.field
   // data.config
 
-  // e.g. extend TinyMCE 4.8.1 initialisation config properties
+  // e.g. extend TinyMCE 4.8.1 initialization config properties
   data.config.toolbar = data.config.toolbar + ' || superscript subscript';
 });
 ```

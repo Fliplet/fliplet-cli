@@ -14,7 +14,7 @@ The Data Source REST APIs allows you to interact and make any sort of change to 
   * [Data Source](#data-source)
   * [Data Source Entry](#data-source-entry)
 4. [Endpoints](#endpoints)
-  * [Get the data sources belonging to an app or organisation](#get-the-data-sources-belonging-to-an-app-or-organisation)
+  * [Get the data sources belonging to an app or organization](#get-the-data-sources-belonging-to-an-app-or-organization)
   * [Get a data source by its ID](#get-a-data-source-by-its-id)
   * [Create a data source](#create-a-data-source)
   * [Update a data source attributes](#update-a-data-source-attributes)
@@ -30,7 +30,7 @@ The Data Source REST APIs allows you to interact and make any sort of change to 
 
 ## Authentication
 
-Please head to the [how to authenticate](authenticate.md) page of the documentation to read more about how you can authorise your client to make API requests to Fliplet.
+Please head to the [how to authenticate](authenticate.md) page of the documentation to read more about how you can authorize your client to make API requests to Fliplet.
 
 ---
 
@@ -38,7 +38,7 @@ Please head to the [how to authenticate](authenticate.md) page of the documentat
 
 Data sources requires ​roles​ to be accessed to. Roles can have multiple permissions: **create, read, update, delete, query**. We call them ​`crudq​`. Once you create a data source, your user automatically gets all these permissions assigned to it, since you own the data source.
 
-If the app token you're using doesn't have access to one of your organisation data sources, you will need to grant permissions to it via Fliplet Studio:
+If the app token you're using doesn't have access to one of your organization data sources, you will need to grant permissions to it via Fliplet Studio:
 
 1. Go to the **App settings**<sup>1</sup> >> **App tokens**<sup>2</sup> section of Fliplet Studio
 2. Copy the **numerical app token ID**<sup>3</sup> for the token you need to add access to
@@ -59,7 +59,7 @@ Before heading deep into describing the API endpoints, let's describe what a **D
 ### Data Source
 
 A representation of a table (or a sheet) with columns and rows.
-Data Sources belongs to an ​organisation​ and optionally to an ​app​, can define hooks when new data comes in, and can set up different permissions to let some apps write or read to it. A data source can also optionally be declared as public, which means it does not require authentication to be accessed.
+Data Sources belongs to an ​organization​ and optionally to an ​app​, can define hooks when new data comes in, and can set up different permissions to let some apps write or read to it. A data source can also optionally be declared as public, which means it does not require authentication to be accessed.
 
 ### Data Source Entry
 
@@ -69,11 +69,11 @@ Represents a row of a Data Source. It can store complex objects with nested valu
 
 ## Endpoints
 
-### Get the data sources belonging to an app or organisation
+### Get the data sources belonging to an app or organization
 
 #### `GET v1/data-sources`
 
-This endpoint requires a context, which can be either an app or an organisation. The context needs to be sent as a GET parameter in the request, like ​`appId=1​` or ​`organizationId=2`
+This endpoint requires a context, which can be either an app or an organization. The context needs to be sent as a GET parameter in the request, like ​`appId=1​` or ​`organizationId=2`
 
 Sample cURL request:
 
@@ -187,7 +187,7 @@ e.g. `v1/data-sources/12345?dsn` (treat `12345` as a name)
 
 #### `POST v1/data-sources`
 
-This endpoint requires a context, which can be either an app or an organisation. The context needs to be sent as a GET parameter in the request, like appId=1 or organizationId=2
+This endpoint requires a context, which can be either an app or an organization. The context needs to be sent as a GET parameter in the request, like appId=1 or organizationId=2
 
 Request body:
 
@@ -306,7 +306,7 @@ Response status code: 200 OK (no body)
 
 e.g. `v1/data-sources/123/commit`
 
-The commit endpoint is useful if you want to insert, update and delete many records at once in a single API request. This makes it very efficient in terms of both minimising the network requests and computation required from both sides.
+The commit endpoint is useful if you want to insert, update and delete many records at once in a single API request. This makes it very efficient in terms of both minimizing the network requests and computation required from both sides.
 
 The following sample request applies the following changes to the data source:
 - updates the entry with ID 123 merging its data with the new added column(s)
@@ -404,7 +404,7 @@ Response (Status code: 200 OK):
 
 e.g. `v1/data-sources/123/data`
 
-Note: when sending files, this endpoint supports a multipart body request. All files sent will be uploaded to the relevant Fliplet bucket and optionally encrypted when enabled from the organisation. The created entry will get its files input field names replaced with the URL where the file has been stored.
+Note: when sending files, this endpoint supports a multipart body request. All files sent will be uploaded to the relevant Fliplet bucket and optionally encrypted when enabled from the organization. The created entry will get its files input field names replaced with the URL where the file has been stored.
 
 Request body:
 

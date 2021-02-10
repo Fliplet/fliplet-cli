@@ -8,8 +8,8 @@ We always include Bootstrap, as the framework to build responsive interfaces, as
 
 Our component's output use the following basic styles:
 
-Primary colour: `#337ab7`
-Secondary colour: `#d2d2d2`
+Primary color: `#337ab7`
+Secondary color: `#d2d2d2`
 Text: `#333333`
 
 ---

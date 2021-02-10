@@ -6,7 +6,7 @@ The Notifications REST APIs allows you to interact and make any sort of change t
 
 ## Authentication
 
-Please head to the [how to authenticate](authenticate.md) page of the documentation to read more about how you can authorise your client to make API requests to Fliplet.
+Please head to the [how to authenticate](authenticate.md) page of the documentation to read more about how you can authorize your client to make API requests to Fliplet.
 
 ---
 
