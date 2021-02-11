@@ -9,10 +9,10 @@ description: Fliplet Agent (Data integration service) is a command line utility 
 <section class="blocks alt">
   <a class="bl two" href="https://www.youtube.com/watch?v=vbPzjxr-U3k" target="_blank">
     <div>
-      <span class="pin"><i class="fa fa-youtube"></i></span>
+      <span class="pin">Recommended</span>
       <h4>Introduction video</h4>
       <p>Watch our 15-minutes crash course on getting started with the Data Integration Service.</p>
-      <button>Watch &rarr;</button>
+      <button>Watch now &rarr;</button>
     </div>
   </a>
   <a class="bl two" href="https://github.com/Fliplet/fliplet-agent" target="_blank">
