@@ -6,7 +6,24 @@ description: Fliplet Agent (Data integration service) is a command line utility 
 
 **Fliplet Agent (Data integration service)** is a command line utility to synchronize data to and from Fliplet Servers.
 
-[![Fliplet/fliplet-agent - GitHub](https://gh-card.dev/repos/Fliplet/fliplet-agent.svg)](https://github.com/Fliplet/fliplet-agent)
+<section class="blocks alt">
+  <a class="bl two" href="https://www.youtube.com/watch?v=vbPzjxr-U3k" target="_blank">
+    <div>
+      <span class="pin"><i class="fa fa-youtube"></i></span>
+      <h4>Introduction video</h4>
+      <p>Watch our 15-minutes crash course on getting started with the Data Integration Service.</p>
+      <button>Watch &rarr;</button>
+    </div>
+  </a>
+  <a class="bl two" href="https://github.com/Fliplet/fliplet-agent" target="_blank">
+    <div class="secondary">
+      <span class="pin"><i class="fa fa-file-alt"></i></span>
+      <h4>Open-source code</h4>
+      <p>Browse the open-source code of Fliplet Agent on Github.</p>
+      <button>Browse &rarr;</button>
+    </div>
+  </a>
+</section>
 
 ---
 
