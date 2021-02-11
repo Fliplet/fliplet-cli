@@ -215,6 +215,12 @@ Once you start the agent with the above command an output similar to the one bel
 
 Any error found in your configuration will be printed out for you to look at.
 
+### Troubleshoot errors with permissions
+
+The app token you have created via Fliplet Studio (see [documentation](REST-API/authenticate.md)) requires specific access to the Data Source you want to access via DIS. To grant such access to the app token, please copy its ID from the "App tokens" UI in Fliplet Studio. You then will need to paste such ID in the "Studio users permissions" tab of the Data Source after clicking the "Add new user" button:
+
+![img](assets/img/dis-permissions.png)
+
 ---
 
 ## Install the agent as a service (Windows only)
