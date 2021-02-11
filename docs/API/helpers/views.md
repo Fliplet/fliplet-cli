@@ -12,7 +12,8 @@ Fliplet.Helper({
   render: {
     template: [
       '<div data-view="myFirstView"></div>',
-      '<div data-view="mySecondView"></div>'
+      '<div data-view="mySecondView"></div>',
+      '<div data-view="myThirdView"></div>'
     ].join('')
   },
   views: [
