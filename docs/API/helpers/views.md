@@ -15,17 +15,19 @@ Fliplet.Helper({
       '<div data-view="mySecondView"></div>'
     ].join('')
   },
-  views: {
-    myFirstView: { allow: [] },
-    mySecondView: { allow: ['slide'] }
-  }
+  views: [
+    { name: 'myFirstView', displayName: 'View 1' },
+    { name: 'mySecondView', displayName: 'View 2', allow: ['slide'] },
+    { name: 'myThirdView', displayName: 'View 3', allow: [] }
+  ]
 });
 ```
 
-The example above defines two views:
+The example above defines three views:
 
 - `myFirstView` allows any helper to be dropped in
 - `mySecondView` only allows an helper called `slide` to be dropped in
+- `myThirdView` only allows no helpers to be dropped in
 
 ---
 
