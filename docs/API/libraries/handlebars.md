@@ -54,7 +54,7 @@ $('#output').html(compiledHTML);
 
 Handlebars helpers can be used to add formatting (with **Expression Helpers**) and enhanced logic operations (with **Block Expression Helpers**) to your content. See [Handlebars documentation](https://handlebarsjs.com/) to learn how to use and write your own helpers.
 
-Fliplet apps are loaded with the following helpers.
+Fliplet apps and widget interfaces are loaded with the following helpers.
 
 {% raw %}
 
@@ -68,17 +68,28 @@ Fliplet apps are loaded with the following helpers.
 - `moment` outputs a date/time value based on the provided format, e.g. `{{moment timestamp format="MMM Do YY"}}` to format a date, or `{{moment timestamp inputFormat="H:mm" format="h:mm a"}}` to format a timestamp based on a specific input format. See [github.com](https://github.com/Fliplet/handlebars-helper-moment/blob/master/README.md) for the full documentation.
 - `nl2br` changes any new lines or carriage returns in the value to a `<br>` tag, adding a new line to the HTML output, e.g. `{{nl2br str}}`
    - `str` String to be parsed for new lines
+- `plaintext` outputs the combined text contents of HTML markup, e.g. `{{plaintext html}}`
+   - `html` HTML markup to be processed
+- `removeSpaces` outputs the string with all spaces removed, e.g. `{{removeSpaces str}}`
+   - `str` String to be processed
 - `toJSONString` changes any objects to a JSON string, e.g. `{{toJSONString obj}}`
    - `obj` Object to be parsed into a JSON string
+
+**Available with _List (from data source)_ component only**
+
 - `formatCSV` ensures that `"` characters are removed if the input is a CSV that contains `"` characters due to `,` being used in a value, e.g. `"Washington, D.C.", New York` will be formatted into `Washington, D.C., New York`
 
 ### Block Expression Helpers
 
-- `compare` , e.g. `{{#compare a '===' b}}{{else}}{{/compare}}`
-   - The second parameter can be swapped out with any of the following operators for comparison: `==`, `===`, `!=`, `!==`, `<`, `>`, `<=`, `>=`, `typeof` (e.g. `{{#compare a 'typeof' 'string'}}{{else}}{{/compare}}`)
+- `compare`, e.g. `{{#compare a '===' b}}{{else}}{{/compare}}`
+   - The second parameter can be swapped out with any of the following operators for comparison: `==`, `===`, `!=`, `!==`, `<`, `>`, `<=`, `>=`, `&&`, `||` `typeof` (e.g. `{{#compare a 'typeof' 'string'}}{{else}}{{/compare}}`)
+
+**Deprecated**
+
+- `ifCond` Alias of and works the same way as `compare`
 - `equals` checks if two values provided are exactly the same, e.g. `{{#equals a b}}{{else}}{{/equals}}`. This is the same as `{{#compare a '===' b}}{{else}}{{/compare}}`.
-- `and` checks if two conditions are both truthy, e.g. `{{#and a b}}{{else}}{{/and}}`
-- `or` checks if one of the two conditions are truthy, e.g. `{{#or a b}}{{else}}{{/or}}`
+- `and` checks if two conditions are both truthy, e.g. `{{#and a b}}{{else}}{{/and}}`. This is the same as `{{#compare a '&&' b}}{{else}}{{/compare}}`.
+- `or` checks if one of the two conditions are truthy, e.g. `{{#or a b}}{{else}}{{/or}}`. This is the same as `{{#compare a '||' b}}{{else}}{{/compare}}`.
 
 {% endraw %}
 
