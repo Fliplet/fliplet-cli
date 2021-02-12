@@ -1,0 +1,43 @@
+{
+  "name": "{{name}}",
+  "version": "1.0.0",
+  "description": "{{name}}",
+  "author": "",
+  "private": true,
+  "scripts": {
+    "watch": "gulp build && gulp watch",
+    "build": "gulp build"
+  },
+  "dependencies": {
+    "core-js": "^3.1.4",
+    "regenerator-runtime": "^0.13.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-transform-modules-amd": "^7.2.0",
+    "@babel/plugin-transform-runtime": "^7.4.4",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/runtime": "^7.4.5",
+    "babel-eslint": "^10.0.3",
+    "babel-loader": "^8.0.6",
+    "css-loader": "^3.0.0",
+    "del": "^4.1.1",
+    "eslint": "^6.8.0",
+    "eslint-config-fliplet": "^0.7.0",
+    "eslint-loader": "^3.0.3",
+    "eslint-plugin-vue": "^6.1.2",
+    "gulp": "^4.0.2",
+    "gulp-sass": "^4.0.2",
+    "gulp-vueify2": "0.0.3",
+    "node-sass": "^4.12.0",
+    "path": "^0.12.7",
+    "sass-loader": "^7.1.0",
+    "style-loader": "^0.23.1",
+    "vinyl-named": "^1.1.0",
+    "vue": "^2.2.4",
+    "vue-loader": "^15.7.0",
+    "vue-template-compiler": "^2.6.10",
+    "webpack": "^4.34.0",
+    "webpack-stream": "^5.2.1"
+  }
+}
