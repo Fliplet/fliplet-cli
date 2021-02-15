@@ -30,4 +30,4 @@ When that happens, you should review the integration you have put together and m
 
 <p class="quote">Note that both JS APIs and RESTful APIs are subject to our standard rate limiting as outlined above.</p>
 
-As a rule of thumb, avoid making requests inside loops, e.g. if you are updating data source entries in short succession you should rewrite your code to [commit changes at once](https://developers.fliplet.com/API/fliplet-datasources.html#commit-changes-at-once-to-a-data-source) using a single (API request)[https://developers.fliplet.com/REST-API/fliplet-datasources.html#post-v1data-sourcesdatasourceidcommit].
+As a rule of thumb, avoid making requests inside loops, e.g. if you are updating data source entries in short succession you should rewrite your code to [commit changes at once](https://developers.fliplet.com/API/fliplet-datasources.html#commit-changes-at-once-to-a-data-source) using a single [API request](https://developers.fliplet.com/REST-API/fliplet-datasources.html#post-v1data-sourcesdatasourceidcommit).
