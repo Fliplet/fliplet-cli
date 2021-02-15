@@ -60,7 +60,7 @@ Example:
 
 A list of checkboxes for the user to allow a multiple choice selection. Supports the following property:
 
-- `options` (**Array** of strings or objects with either `{ value: string}` or `{ value: string, label: string }`
+- `options` (**Array** of strings or objects with either `{ value: string}` or `{ value: string, label: string }`)
 
 Example:
 
@@ -93,7 +93,7 @@ Example with different label and value:
 
 A list of radio buttons for the user to allow a single choice selection. Supports the following property:
 
-- `options` (**Array** of strings or objects with either `{ value: string}` or `{ value: string, label: string }`
+- `options` (**Array** of strings or objects with either `{ value: string}` or `{ value: string, label: string }`)
 
 Example:
 
@@ -117,6 +117,30 @@ Example with different label and value:
     { value: 'AAPL', label: 'Apple' },
     { value: 'GOOGL', label: 'Google' }
   ]
+}
+```
+
+---
+
+### Provider
+
+A provider (Fliplet first-party component) to perform a variety of tasks. These are commonly used to reuse existing functionality, e.g. let the user choose a screen or a data source.
+
+- `package` (**string**, e.g. `com.fliplet.link`)
+
+These are the supported provider packages:
+
+- `com.fliplet.link`: choose an App Screen or URL for a navigate action
+- `com.fliplet.data-source-provider`: choose a Data Source
+
+Example:
+
+```js
+{
+  type: 'provider',
+  name: 'action',
+  label: 'Choose an action to do when the button is pressed',
+  package: 'com.fliplet.link'
 }
 ```
 
