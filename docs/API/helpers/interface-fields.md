@@ -56,6 +56,72 @@ Example:
 
 ---
 
+### Checkbox (`checkbox`)
+
+A list of checkboxes for the user to allow a multiple choice selection. Supports the following property:
+
+- `options` (**Array** of strings or objects with either `{ value: string}` or `{ value: string, label: string }`
+
+Example:
+
+```js
+{
+  type: 'checkbox',
+  name: 'fruits',
+  label: 'Choose one or more fruits',
+  options: ['Apple', 'Orange']
+}
+```
+
+Example with different label and value:
+
+```js
+{
+  type: 'checkbox',
+  name: 'fruits',
+  label: 'What stocks do you like?',
+  options: [
+    { value: 'AAPL', label: 'Apple' },
+    { value: 'GOOGL', label: 'Google' }
+  ]
+}
+```
+
+---
+
+### Radio (`radio`)
+
+A list of radio buttons for the user to allow a single choice selection. Supports the following property:
+
+- `options` (**Array** of strings or objects with either `{ value: string}` or `{ value: string, label: string }`
+
+Example:
+
+```js
+{
+  type: 'radio',
+  name: 'fruits',
+  label: 'Choose a fruit',
+  options: ['Apple', 'Orange']
+}
+```
+
+Example with different label and value:
+
+```js
+{
+  type: 'radio',
+  name: 'fruits',
+  label: 'Which stock do you like most?',
+  options: [
+    { value: 'AAPL', label: 'Apple' },
+    { value: 'GOOGL', label: 'Google' }
+  ]
+}
+```
+
+---
+
 ### HTML
 
 A freeform HTML field. Supports the following properties:
