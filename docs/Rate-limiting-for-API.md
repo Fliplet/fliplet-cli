@@ -1,3 +1,7 @@
+---
+description: If you’re integrating your app or service with Fliplet APIs, you should be mindful in relation to how frequent your requests are hitting our APIs. Our infrastructure is set up to automatically throttle down and rate limit requests depending on how frequently they are made.
+---
+
 # Rate limiting for APIs
 
 If you're integrating your app or service with Fliplet APIs, you should be mindful in relation to how frequent your requests are hitting our APIs.
