@@ -11,7 +11,7 @@
 
 ## Types
 
-### Text input (`text`)
+### Text input
 
 A simple text input field. Also supports the following optional properties:
 
@@ -34,7 +34,7 @@ Example:
 
 ---
 
-### Textarea (`textarea`)
+### Textarea
 
 A simple textarea input field. Also supports the following optional properties:
 
@@ -56,7 +56,7 @@ Example:
 
 ---
 
-### Checkbox (`checkbox`)
+### Checkbox
 
 A list of checkboxes for the user to allow a multiple choice selection. Supports the following property:
 
@@ -89,7 +89,7 @@ Example with different label and value:
 
 ---
 
-### Radio (`radio`)
+### Radio
 
 A list of radio buttons for the user to allow a single choice selection. Supports the following property:
 
