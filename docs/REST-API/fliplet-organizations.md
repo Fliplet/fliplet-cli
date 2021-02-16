@@ -14,7 +14,7 @@ Please head to the [how to authenticate](authenticate.md) page of the documentat
 
 Optional parameters:
 
-- `type`: String or Array
+- `type`: String or Array of strings ([see list of available types](/Organization-audit-log-types.html))
 - `appId`: Number (ID)
 - `fields`: Array of strings
 - `startDate`: ISODATE String
@@ -27,7 +27,7 @@ Optional parameters:
 
 <p class="quote">Note: when using GET requests, arrays can be given as a CSV string (e.g. <code>type=foo,bar</code>)</p>
 
-The following types are filtered out by default since they are primarily used for analytics: `app.analytics.pageView`, `app.analytics.event`, `app.view`, `app.update`,  `studio.analytics.presence`.
+The following [types](/Organization-audit-log-types.html) are filtered out by default since they are primarily used for analytics: `app.analytics.pageView`, `app.analytics.event`, `app.view`, `app.update`,  `studio.analytics.presence`.
 
 **Response  (Status code: 200 OK):**
 
