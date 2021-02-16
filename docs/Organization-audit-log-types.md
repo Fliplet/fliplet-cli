@@ -79,7 +79,7 @@ Please see below a table with a recap of all available log types for organizatio
 
 ---
 
-## List from Fliplrt Apps
+## Logs from Fliplet Apps
 
 | Section                     | Type                               | Description                                                           |
 |-----------------------------|------------------------------------|-----------------------------------------------------------------------|
