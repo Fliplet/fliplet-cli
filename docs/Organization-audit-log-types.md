@@ -1,8 +1,12 @@
 # List of audit log types for organizations
 
+Please see below a table with a recap of all available log types for organization audit logs. Logs can be fetched either using the [JS API](/API/core/organizations.html#audit-logs) or [RESTful API](/REST-API/fliplet-organizations.html#get-the-audit-logs-for-an-organization).
+
+
+## Logs from Fliplet Studio & Fliplet Viewer
+
 | Section                     | Type                               | Description                                                           |
 |-----------------------------|------------------------------------|-----------------------------------------------------------------------|
-| **Studio / Viewer**         |                                    |                                                                       |
 | Authenticaton               | user.login                         | User logs in                                                          |
 | Authenticaton               | user.login.first                   | User logs in for the first time                                       |
 | Authenticaton               | user.login.failed                  | User failed to log in                                                 |
@@ -72,8 +76,13 @@
 | Media Folders management    | mediaFolder.restore                | A media folder was restored                                           |
 | Widgets management          | widget.update                      | A widget was sync'd (uploaded or updated)                             |
 | App Push notifications logs | pushNotification.send              | Push notifications were sent for the app                              |
-|                             |                                    |                                                                       |
-| **Apps**                    |                                    |                                                                       |
+
+---
+
+## List from Fliplrt Apps
+
+| Section                     | Type                               | Description                                                           |
+|-----------------------------|------------------------------------|-----------------------------------------------------------------------|
 | Communication Audits        | sms.2fa                            | An SMS was sent because of 2FA login                                  |
 | Communication Audits        | sms.communicate                    | An SMS was sent via JS APIs                                           |
 | Communication Audits        | sms.dataSourceHook                 | An SMS was sent from a data source hook                               |
