@@ -7,11 +7,11 @@ Please see below a table with a recap of all available log types for organizatio
 
 | Section                     | Type                               | Description                                                           |
 |-----------------------------|------------------------------------|-----------------------------------------------------------------------|
-| Authenticaton               | user.login                         | User logs in                                                          |
-| Authenticaton               | user.login.first                   | User logs in for the first time                                       |
-| Authenticaton               | user.login.failed                  | User failed to log in                                                 |
-| Authenticaton               | user.login.sso                     | User log in via SSO                                                   |
-| Authenticaton               | user.logout                        | User logs out                                                         |
+| Authentication              | user.login                         | User logs in                                                          |
+| Authentication              | user.login.first                   | User logs in for the first time                                       |
+| Authentication              | user.login.failed                  | User failed to log in                                                 |
+| Authentication              | user.login.sso                     | User log in via SSO                                                   |
+| Authentication              | user.logout                        | User logs out                                                         |
 | User activity               | studio.analytics.presence          | User has accessed Studio                                              |
 | User management             | user.update                        | User updated its details                                              |
 | User management             | user.password.update               | User updates its password                                             |
