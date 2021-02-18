@@ -20,7 +20,7 @@ The Data Source REST APIs allows you to interact and make any sort of change to 
   * [Update a data source attributes](#update-a-data-source-attributes)
   * [Delete a data source and its entries from the system](#delete-a-data-source-and-its-entries-from-the-system)
   * [Bulk-import entries for a data source](#bulk-import-entries-for-a-data-source)
-  * [Empty a data dource](#empty-a-data-source)
+  * [Empty a data source (truncate)](#empty-a-data-source-truncate)
   * [Commit a series of changes to a data source](#commit-a-series-of-changes-to-a-data-source)
   * [Run queries on a data source](#run-queries-on-a-data-source)
   * [Get a data source entry by its ID](#get-a-data-source-entry-by-its-id)
@@ -301,7 +301,7 @@ Response status code: 200 OK (no body)
 
 ---
 
-### Empty a data source
+### Empty a data source (truncate)
 
 #### `POST v1/data-sources/<dataSourceId>/data`
 
