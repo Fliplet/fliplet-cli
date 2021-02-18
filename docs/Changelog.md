@@ -10,13 +10,11 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## Feb 18th
 
-- - Added new documentation page for public JS APIs for the [Email Verification](https://developers.fliplet.com/API/components/email-verification.html).
+- Added new documentation page for public JS APIs for the [Email Verification](https://developers.fliplet.com/API/components/email-verification.html).
 
 ## Feb 14th
 
 - Added new documentation page for [rate limiting when using APIs](https://developers.fliplet.com/Rate-limiting-for-API.html).
-
--
 
 ### Feb 11th
 
