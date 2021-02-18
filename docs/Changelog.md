@@ -6,6 +6,38 @@ description: Changelog notes giving a summary of recent significant changes to t
 
 Each week, we provide changelog notes on this page giving a summary of recent significant changes to the documentation. If there haven't been any significant changes in a given week, we don't publish changelog notes.
 
+## February 2021
+
+## Feb 18th
+
+- - Added new documentation page for public JS APIs for the [Email Verification](https://developers.fliplet.com/API/components/email-verification.html).
+
+## Feb 14th
+
+- Added new documentation page for [rate limiting when using APIs](https://developers.fliplet.com/Rate-limiting-for-API.html).
+
+-
+
+### Feb 11th
+
+- Added public JS APIs for accessing the [device biometrics](https://developers.fliplet.com/API/core/biometrics.html).
+- Added new documentation page listing all [organization audit log types](https://developers.fliplet.com/Organization-audit-log-types.html#list-of-audit-log-types-for-organizations).
+
+---
+
+## January 2021
+
+### Jan 24th
+
+- Added public JS APIs for accessing [Organization audit logs](https://developers.fliplet.com/API/core/organizations.html#audit-logs).
+- Added public RESTful APIs for accessing [Organization audit logs](https://developers.fliplet.com/REST-API/fliplet-organizations.html#get-the-audit-logs-for-an-organization).
+
+### Jan 15th
+
+- Added new page for APIs related to [Upcoming features](/Upcoming.html).
+
+---
+
 ## December 2020
 
 ### Dec 14th

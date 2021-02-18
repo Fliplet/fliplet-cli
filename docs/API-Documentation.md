@@ -108,6 +108,7 @@ These JS APIs falls into the most common category and almost all apps, component
 - [Charts](API/components/charts.md)
 - [Push Notifications](API/components/push-notifications.md)
 - [Interactive Graphics](API/components/interactive-graphics.md)
+- [Email Verification](API/components/email-verification.md)
 
 ---
 
