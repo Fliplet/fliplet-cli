@@ -78,7 +78,7 @@ curl 'https://api.fliplet.com/v1/apps/123/publish' \
   "app": {
     "version": 2,
     "id": 123,
-    "updatedAt": "2020-12-15T14:54:29.866Z"
+    "updatedAt": "2021-02-31T14:54:29.866Z"
   }
 }
 
