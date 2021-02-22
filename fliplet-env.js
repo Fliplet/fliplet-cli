@@ -1,11 +1,11 @@
 const config = require('./lib/config');
 const configstore = require('./lib/configstore');
 
-const environments = ['dev', 'staging', 'production'];
+const environments = ['local', 'development', 'staging', 'production'];
 
 let input = process.argv[2];
 
-if (input === 'local' || input === 'development') {
+if (input === 'local') {
   input = 'dev';
 }
 
