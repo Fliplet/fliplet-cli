@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+process.env.NODE_NO_WARNINGS = 1;
+
 const path = require('path');
 const package = require(path.join(__dirname, 'package.json'));
 const program = require('commander');
