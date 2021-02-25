@@ -134,6 +134,24 @@ Fliplet.Helper({
         <a href="/API/helpers/fields.html#updating-fields">Update the helper instance fields</a>.</td>
     </tr>
     <tr>
+      <td><code>instance.find</code></td>
+      <td><code>function</code></td>
+      <td>
+        <a href="/API/helpers/methods.html#find-all-nested-helpers">Find nested helpers</a>.</td>
+    </tr>
+    <tr>
+      <td><code>instance.findOne</code></td>
+      <td><code>function</code></td>
+      <td>
+        <a href="/API/helpers/methods.html#find-a-nested-helper">Find a nested helper</a>.</td>
+    </tr>
+    <tr>
+      <td><code>instance.children</code></td>
+      <td><code>function</code></td>
+      <td>
+        <a href="/API/helpers/methods.html#find-all-children-helpers">Find direct child helpers</a>.</td>
+    </tr>
+    <tr>
       <td><code>instance.$el</code></td>
       <td><code><a href="https://learn.jquery.com/using-jquery-core/jquery-object/">jQuery object</a></code></td>
       <td>

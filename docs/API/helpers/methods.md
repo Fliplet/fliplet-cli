@@ -4,52 +4,7 @@ Helpers are can define instance methods which can then be called at any time dur
 
 ---
 
-## Define instance methods
-
-Instance methods can be defined via the `methods` property as shown in the example below:
-
-```js
-Fliplet.Helper({
-  name: 'welcome',
-  render: {
-    methods: {
-      greet: function () {
-        console.log('Hello');
-      }
-    },
-    ready: function () {
-      // Greet once a button inside this helper is clickd
-      this.$el.find('button').click(this.greet);
-    }
-  }
-});
-```
-
-You can also keep a reference to a helper instance and call its methods any time:
-
-```js
-var welcome;
-
-Fliplet.Helper({
-  name: 'welcome',
-  render: {
-    methods: {
-      greet: function () {
-        console.log('Hello');
-      }
-    },
-    ready: function () {
-      welcome = this;
-    }
-  }
-});
-
-welcome.greet();
-```
-
----
-
-## Public methods
+## Instance methods
 
 ### Update fields
 
@@ -130,6 +85,53 @@ var foundHelpers = profile.children('foo');
 var foundHelpers = profile.children(function (instance) {
   return instance.name === 'foo' || instance.name === 'bar';
 });
+```
+
+---
+
+
+
+## Define instance methods
+
+Instance methods can be defined via the `methods` property as shown in the example below:
+
+```js
+Fliplet.Helper({
+  name: 'welcome',
+  render: {
+    methods: {
+      greet: function () {
+        console.log('Hello');
+      }
+    },
+    ready: function () {
+      // Greet once a button inside this helper is clickd
+      this.$el.find('button').click(this.greet);
+    }
+  }
+});
+```
+
+You can also keep a reference to a helper instance and call its methods any time:
+
+```js
+var welcome;
+
+Fliplet.Helper({
+  name: 'welcome',
+  render: {
+    methods: {
+      greet: function () {
+        console.log('Hello');
+      }
+    },
+    ready: function () {
+      welcome = this;
+    }
+  }
+});
+
+welcome.greet();
 ```
 
 ---
