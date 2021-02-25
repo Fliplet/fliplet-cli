@@ -5,10 +5,6 @@ const environments = ['local', 'development', 'staging', 'production'];
 
 let input = process.argv[2];
 
-if (input === 'local') {
-  input = 'dev';
-}
-
 if (environments.indexOf(input) === -1) {
   console.error(`[ERROR] Environment value is not valid. Accepted values are ${environments.join(', ')}`);
   process.exit(1);
