@@ -91,7 +91,7 @@ var foundHelpers = profile.children(function (instance) {
 
 
 
-## Define instance methods
+## Define new instance methods
 
 Instance methods can be defined via the `methods` property as shown in the example below:
 
