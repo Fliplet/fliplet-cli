@@ -81,6 +81,57 @@ profile.set('firstName', function () {
 })
 ```
 
+### Find all nested helpers
+
+Use the `find` method to retrieve a list of all helpers nested in the current helper.
+
+```js
+// Get a list of nested helpers by name
+var foundHelpers = profile.find({ name: 'foo' });
+
+// You can also use the shorthand
+var foundHelpers = profile.find('foo');
+
+// You can also provide a predicate function
+var foundHelpers = profile.find(function (instance) {
+  return instance.name === 'foo' || instance.name === 'bar';
+});
+```
+
+### Find a nested helper
+
+Use the `findOne` method to retrieve a helper nested in the current helper.
+
+```js
+// Get a nested helper by name
+var helperInstance = profile.findOne({ name: 'foo' });
+
+// You can also use the shorthand
+var helperInstance = profile.findOne('foo');
+
+// You can also provide a predicate function
+var helperInstance = profile.findOne(function (instance) {
+  return instance.name === 'foo' || instance.name === 'bar';
+});
+```
+
+### Find all children helpers
+
+Use the `children` method to retrieve a list of all direct child helpers nested in the current helper.
+
+```js
+// Get a list of direct child helpers by name
+var foundHelpers = profile.children({ name: 'foo' });
+
+// You can also use the shorthand
+var foundHelpers = profile.children('foo');
+
+// You can also provide a predicate function
+var foundHelpers = profile.children(function (instance) {
+  return instance.name === 'foo' || instance.name === 'bar';
+});
+```
+
 ---
 
 ## Further reading
