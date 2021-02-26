@@ -118,6 +118,14 @@ Fliplet.Helper({
 ## Further reading
 
 <section class="blocks alt">
+  <a class="bl two" href="interface-methods.html">
+    <div>
+      <span class="pin">Next up</span>
+      <h4>Methods</h4>
+      <p>Learn the instance methods available to fields.</p>
+      <button>Read &rarr;</button>
+    </div>
+  </a>
   <a class="bl two" href="interface-libraries.html">
     <div>
       <span class="pin">Recommended reading</span>
