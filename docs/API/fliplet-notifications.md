@@ -236,8 +236,9 @@ If you are building a notifications managing app for your admin user, use the `p
 
 ```js
 instance.poll({
-  // set this to true to ensure reports for push notifications are returned
-  includeLogs: true,
+  // Set this to true to ensure reports for push notifications are returned.
+  // Note that this requires the logged in user to have editing permissions to the app.
+  includeLogs: false,
 
   // optional limit and offset support for pagination
   limit: 50,
