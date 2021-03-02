@@ -8,13 +8,23 @@ Both configuration interface and configuration fields have available the followi
 
 ## Interface
 
+Considering the following HTML template:
+
+```html
+<fl-helper name="quiz">
+  <fl-helper name="results"></fl-helper>
+</fl-helper>
+```
+
+The following methods allow you to get the `results` helper instance via the `quiz` helper instance.
+
 ### Find all nested helpers
 
 Use the `find` method to retrieve a list of all helpers nested in the current helper.
 
 ```js
 Fliplet.Helper({
-  name: 'welcome',
+  name: 'quiz',
   configuration: {
     fields: [
       {
@@ -23,14 +33,14 @@ Fliplet.Helper({
         html: '<input type="text" />',
         ready: function(el) {
           // Get a list of nested helpers by name
-          var foundHelpers = this.find({ name: 'foo' });
+          var foundHelpers = this.find({ name: 'results' });
 
           // You can also use the shorthand
-          var foundHelpers = this.find('foo');
+          var foundHelpers = this.find('results');
 
           // You can also provide a predicate function
           var foundHelpers = this.find(function (instance) {
-            return instance.name === 'foo' || instance.name === 'bar';
+            return instance.name === 'results' || instance.name === 'bar';
           });
         }
       }
@@ -45,7 +55,7 @@ Use the `findOne` method to retrieve a helper nested in the current helper.
 
 ```js
 Fliplet.Helper({
-  name: 'welcome',
+  name: 'quiz',
   configuration: {
     fields: [
       {
@@ -54,14 +64,14 @@ Fliplet.Helper({
         html: '<input type="text" />',
         ready: function(el) {
           // Get a nested helper by name
-          var helperInstance = this.findOne({ name: 'foo' });
+          var helperInstance = this.findOne({ name: 'results' });
 
           // You can also use the shorthand
-          var helperInstance = this.findOne('foo');
+          var helperInstance = this.findOne('results');
 
           // You can also provide a predicate function
           var helperInstance = this.findOne(function (instance) {
-            return instance.name === 'foo' || instance.name === 'bar';
+            return instance.name === 'results' || instance.name === 'bar';
           });
         }
       }
@@ -76,7 +86,7 @@ Use the `children` method to retrieve a list of all direct child helpers nested 
 
 ```js
 Fliplet.Helper({
-  name: 'welcome',
+  name: 'quiz',
   configuration: {
     fields: [
       {
@@ -85,14 +95,14 @@ Fliplet.Helper({
         html: '<input type="text" />',
         ready: function(el) {
           // Get a list of direct child helpers by name
-          var foundHelpers = this.children({ name: 'foo' });
+          var foundHelpers = this.children({ name: 'results' });
 
           // You can also use the shorthand
-          var foundHelpers = this.children('foo');
+          var foundHelpers = this.children('results');
 
           // You can also provide a predicate function
           var foundHelpers = this.children(function (instance) {
-            return instance.name === 'foo' || instance.name === 'bar';
+            return instance.name === 'results' || instance.name === 'bar';
           });
         }
       }

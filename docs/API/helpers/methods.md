@@ -36,60 +36,78 @@ profile.set('firstName', function () {
 })
 ```
 
+---
+
 ### Find all nested helpers
 
 Use the `find` method to retrieve a list of all helpers nested in the current helper.
 
+```html
+<fl-helper name="quiz">
+  <fl-helper name="results"></fl-helper>
+</fl-helper>
+```
+
 ```js
 // Get a list of nested helpers by name
-var foundHelpers = profile.find({ name: 'foo' });
+var foundHelpers = quiz.find({ name: 'results' });
 
 // You can also use the shorthand
-var foundHelpers = profile.find('foo');
+var foundHelpers = quiz.find('results');
 
 // You can also provide a predicate function
-var foundHelpers = profile.find(function (instance) {
-  return instance.name === 'foo' || instance.name === 'bar';
+var foundHelpers = quiz.find(function (instance) {
+  return instance.name === 'results';
 });
 ```
 
 ### Find a nested helper
 
+```html
+<fl-helper name="quiz">
+  <fl-helper name="results"></fl-helper>
+</fl-helper>
+```
+
 Use the `findOne` method to retrieve a helper nested in the current helper.
 
 ```js
 // Get a nested helper by name
-var helperInstance = profile.findOne({ name: 'foo' });
+var helperInstance = quiz.findOne({ name: 'results' });
 
 // You can also use the shorthand
-var helperInstance = profile.findOne('foo');
+var helperInstance = quiz.findOne('results');
 
 // You can also provide a predicate function
-var helperInstance = profile.findOne(function (instance) {
-  return instance.name === 'foo' || instance.name === 'bar';
+var helperInstance = quiz.findOne(function (instance) {
+  return instance.name === 'results';
 });
 ```
 
 ### Find all children helpers
 
+```html
+<fl-helper name="quiz">
+  <fl-helper name="results"></fl-helper>
+</fl-helper>
+```
+
 Use the `children` method to retrieve a list of all direct child helpers nested in the current helper.
 
 ```js
 // Get a list of direct child helpers by name
-var foundHelpers = profile.children({ name: 'foo' });
+var foundHelpers = quiz.children({ name: 'results' });
 
 // You can also use the shorthand
-var foundHelpers = profile.children('foo');
+var foundHelpers = quiz.children('results');
 
 // You can also provide a predicate function
-var foundHelpers = profile.children(function (instance) {
-  return instance.name === 'foo' || instance.name === 'bar';
+var foundHelpers = quiz.children(function (instance) {
+  return instance.name === 'results';
 });
 ```
 
 ---
-
-
 
 ## Define new instance methods
 
