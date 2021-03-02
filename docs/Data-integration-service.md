@@ -70,7 +70,11 @@ This is roughly the output you should see in your terminal:
   <span data-ty>+ fliplet-agent@1.12.0</span>
 </div>
 
+That's it! You can now jump to the [Get Started](#get-started) part of this documentation to create your first script.
+
 ---
+
+### Verifying the agent is installed
 
 You can now use the command `fliplet-agent` from the command line. Just type `fliplet-agent` to ensure the software is installed and also see the available options and their example usage:
 
