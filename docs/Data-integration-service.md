@@ -64,25 +64,27 @@ npm install fliplet-agent -g
 
 This is roughly the output you should see in your terminal:
 
-<!-- the termynal container -->
 <div class="termynal" data-termynal data-ty-typeDelay="40" data-ty-lineDelay="700">
-    <span data-ty="input" data-ty-prompt="$ ~/User">npm install fliplet-agent -g</span>
-    <span data-ty="progress" data-ty-progressChar="·"></span>
-    <span data-ty>+ fliplet-agent@1.12.0</span>
-    <span data-ty="input" data-ty-prompt="$ ~/User">fliplet-agent</span>
-    <span data-ty="input" data-ty-prompt="">Usage: fliplet-agent [options] [command]</span>
-    <span data-ty="input" data-ty-prompt=""></span>
-    <span data-ty="input" data-ty-prompt="">Options:</span>
-    <span data-ty="input" data-ty-prompt="">&nbsp;&nbsp;-V, --version                       output the version number</span>
-    <span data-ty="input" data-ty-prompt="">&nbsp;&nbsp;-h, --help                          output usage information</span>
-    <span data-ty="input" data-ty-prompt=""></span>
-    <span data-ty="input" data-ty-prompt="">Commands:</span>
-    <span data-ty="input" data-ty-prompt="">&nbsp;&nbsp;start [path/to/config.js] [--test]  Start the agent in foregroud mode. Use the --test command to perform a dry run and avoid writing data to Fliplet servers.</span>
-    <span data-ty="input" data-ty-prompt="">&nbsp;&nbsp;install [path/to/config.js]         Install a config file to run as a background service (Windows only).</span>
-    <span data-ty="input" data-ty-prompt="">&nbsp;&nbsp;uninstall [path/to/config.js]       Uninstall a background service.</span>
+  <span data-ty="input" data-ty-prompt="$ ~/User">npm install fliplet-agent -g</span>
+  <span data-ty="progress" data-ty-progressChar="·"></span>
+  <span data-ty>+ fliplet-agent@1.12.0</span>
 </div>
 
-You can now use the command `fliplet-agent` from the command line. Just type `fliplet-agent` to ensure the software is installed and also see the available options and their example usage.
+You can now use the command `fliplet-agent` from the command line. Just type `fliplet-agent` to ensure the software is installed and also see the available options and their example usage:
+
+<div class="termynal" data-termynal data-ty-typeDelay="40" data-ty-lineDelay="700">
+  <span data-ty="input" data-ty-prompt="$ ~/User">fliplet-agent</span>
+  <span data-ty="input" data-ty-prompt="">Usage: fliplet-agent [options] [command]</span>
+  <span data-ty="input" data-ty-prompt=""></span>
+  <span data-ty="input" data-ty-prompt="">Options:</span>
+  <span data-ty="input" data-ty-prompt="">&nbsp;&nbsp;-V, --version                       output the version number</span>
+  <span data-ty="input" data-ty-prompt="">&nbsp;&nbsp;-h, --help                          output usage information</span>
+  <span data-ty="input" data-ty-prompt=""></span>
+  <span data-ty="input" data-ty-prompt="">Commands:</span>
+  <span data-ty="input" data-ty-prompt="">&nbsp;&nbsp;start [path/to/config.js] [--test]  Start the agent in foregroud mode. Use the --test command to perform a dry run and avoid writing data to Fliplet servers.</span>
+  <span data-ty="input" data-ty-prompt="">&nbsp;&nbsp;install [path/to/config.js]         Install a config file to run as a background service (Windows only).</span>
+  <span data-ty="input" data-ty-prompt="">&nbsp;&nbsp;uninstall [path/to/config.js]       Uninstall a background service.</span>
+</div>
 
 ### Troubleshooting installation errors
 
