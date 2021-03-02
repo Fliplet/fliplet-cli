@@ -64,15 +64,17 @@ npm install fliplet-agent -g
 
 This is roughly the output you should see in your terminal:
 
-<div class="termynal" data-termynal data-ty-typeDelay="40" data-ty-lineDelay="700">
+<div class="termynal1" data-termynal data-ty-typeDelay="40" data-ty-lineDelay="700">
   <span data-ty="input" data-ty-prompt="$ ~/User">npm install fliplet-agent -g</span>
   <span data-ty="progress" data-ty-progressChar="·"></span>
   <span data-ty>+ fliplet-agent@1.12.0</span>
 </div>
 
+---
+
 You can now use the command `fliplet-agent` from the command line. Just type `fliplet-agent` to ensure the software is installed and also see the available options and their example usage:
 
-<div class="termynal" data-termynal data-ty-typeDelay="40" data-ty-lineDelay="700">
+<div class="termynal2" data-termynal data-ty-typeDelay="40" data-ty-lineDelay="700">
   <span data-ty="input" data-ty-prompt="$ ~/User">fliplet-agent</span>
   <span data-ty="input" data-ty-prompt="">Usage: fliplet-agent [options] [command]</span>
   <span data-ty="input" data-ty-prompt=""></span>
