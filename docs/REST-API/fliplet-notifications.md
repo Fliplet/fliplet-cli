@@ -17,7 +17,7 @@ When dealing with app notifications, there's a few things you should keep in min
 1. Notifications belong to an `app`. You can't have a notification span across multiple apps.
 2. Notifications have a default "draft" `status`, meaning they are only visible to Fliplet Studio and Fliplet Viewer users. To make them live to all users, they must be published by updating their status to "published". You can also avoid this step by simply creating your notification as published in first place.
 3. Notifications can have a `scope` which limits their visibility. If you don't create a scope, they are treated as broadcasted messages hence available to all users of your app. On the other hand, defining a scope (or a list) will make them private and available to only specific users (e.g. individual users or groups)
-4. Notifications have read receipts. To mark them as read you will need to identify your users with a GUID (`recipientId`). Fliplet apps automatically take care of this via the **Notifications JS APIs**.
+4. Notifications have read receipts. Fliplet apps automatically take care of identifying your users so no extra work is required from your end when marking notifications as read.
 
 ### Push notifications
 
@@ -50,7 +50,6 @@ Optional query parameters:
 - **order** (string, defaults to "orderAt")
 - **direction** (string, defaults to "DESC")
 - **count** (boolean, defaults to `false`. When `true`, only the total count of matched notifications is returned)
-- **recipientId** (guid string to identify the requester for marking read receipts)
 - **includeDeleted** (boolean, whether deleted notifications should be returned)
 - **where** (object, sequelize "where" query condition)
 - **scope** (array, list of scopes to fetch from)
@@ -156,7 +155,7 @@ Optional parameters:
 #### `POST v1/apps/:id/notifications/mark-as-read`
 
 Required parameters:
-- **recipientId** (guid string to identify your user)
+- **recipientId** ([GUID](https://en.wikipedia.org/wiki/Universally_unique_identifier) string to identify your user)
 - **entries** (array of notification IDs)
 
 ---

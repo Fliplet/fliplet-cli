@@ -8,7 +8,7 @@ When dealing with app notifications, there's a few things you should keep in min
 2. A notification can be an **in-app notification**, a **push notification** or both at once.
 3. Notifications have a default "**draft**" `status`, meaning they are only visible to Fliplet Studio and Fliplet Viewer users. To make them live to all users, they must be published by updating their status to "**published**". You can also avoid this step by simply creating your notification as published in first place.
 4. Notifications can have one or more **scopes** which limit their visibility. If you don't create a scope, they are treated as broadcasted messages hence available to all users of your app. On the other hand, defining a scope (or a list) will make them private and available to only specific users (e.g. individual users or groups)
-5. Notifications have read receipts. To mark them as read you will need to identify your users with a GUID (`recipientId`). Fliplet apps automatically take care of this so no extra work is required from your end.
+5. Notifications have read receipts. Fliplet apps automatically take care of identifying your users so no extra work is required from your end when marking notifications as read.
 6. Notifications can be scheduled to be sent in the future using the `scheduled` `status` and specifying the date using the `orderAt` parameter.
 
 Note: apps by default have no permissions to insert notifications. Enabling such permission is done by setting the `notificationsExtendedPermissions` setting to `true` in the app settings.
