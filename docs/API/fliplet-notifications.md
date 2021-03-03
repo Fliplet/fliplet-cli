@@ -232,10 +232,10 @@ notification.remove(1).then(function () {
 
 ### Get the list of notifications
 
-If you are building a notifications managing app for your admin user, use the `poll` method to fetch for a list of both in-app and push notifications including drafts, sent or scheduled notifications:
+If you are building a notifications managing app for your admin user, use the `get` method to fetch for a list of both in-app and push notifications including drafts, sent or scheduled notifications:
 
 ```js
-instance.poll({
+instance.get({
   // Set this to true to ensure reports for push notifications are returned.
   // Note that this requires the logged in user to have editing permissions to the app.
   includeLogs: false,
@@ -243,6 +243,12 @@ instance.poll({
   // optional limit and offset support for pagination
   limit: 50,
   offset: 0,
+
+  // optional list of statuses to filter notifications
+  // this defaults to published only
+  status: [
+    'draft', 'published', 'scheduled'
+  ],
 
   // optional query filter
   where: {
@@ -315,6 +321,10 @@ notification.remove(1)
 // it can also contain readStatus { readAt: Timestamp }
 instance.stream(console.log)
 
+// force checking for updates.
+// calling this will publish any incoming notifications to the stream
+instance.poll()
+
 // mark an array of notifications as read
 // make sure to pass notifications objects, not their IDs.
 instance.markNotificationsAsRead([notification1, notification2])
@@ -322,19 +332,18 @@ instance.markNotificationsAsRead([notification1, notification2])
 // mark all notifications as read
 instance.markNotificationsAsRead('all')
 
-// force checking for updates
-instance.poll()
-
 // fetch specific messages
-// returns a promise with the found entries too (they also get published via the stream)
-instance.poll({
-  limit: 5, // defaults to batch size
-  offset: 0, // defaults to 0
-  where: { createdAt: { $lt: 'timestamp' } },
-  includeDeleted: false, // defaults to true
-  order: 'createdAt',  // defaults to "id"
-  direction: 'DESC',  // defaults to ASC
-  publishToStream: false // defaults to true
+// returns a promise with the found entries too
+// (they also get published via the stream when "publishToStream" is true)
+instance.get({
+  limit: 5,                                    // defaults to the batch size
+  offset: 0,                                   // defaults to 0
+  includeDeleted: false,                       // defaults to true
+  order: 'createdAt',                          // defaults to "id"
+  direction: 'DESC',                           // defaults to ASC
+  status: ['draft', 'published', 'scheduled'], // defaults to published only
+  publishToStream: false,                      // defaults to true
+  where: { createdAt: { $lt: 'timestamp' } }   // defaults to no filter
 })
 
 // return a promise with the unread notifications count
