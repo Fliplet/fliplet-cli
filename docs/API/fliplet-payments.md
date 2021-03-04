@@ -121,9 +121,6 @@ Here's a full example to help you getting started:
 // Get the list of products
 Fliplet.Payments.getProducts().then(function (products) {
 
-  // Choose the first product
-  const product = _.first(products);
-
   // Initiate a checkout session to the payment provider
   Fliplet.Payments.checkout({
     // Options for the payment provider.
@@ -132,11 +129,11 @@ Fliplet.Payments.getProducts().then(function (products) {
     // https://stripe.com/docs/api/checkout/sessions/create
     line_items: [
       {
-        price: 'price_1HAuW7JNczvHKhMA2lbd8xjs',
+        price: products[0]['Price ID'],
         quantity: 1
       },
       {
-        price: 'price_2HAuW7sNczvfKhMA2lbd1xjx',
+        price: products[1]['Price ID'],
         quantity: 2
       }
     ],
