@@ -1,10 +1,10 @@
 ---
-description: Adds payments functionality using Stripe to your Fliplet apps.
+description: Adds payments functionality in your Fliplet apps using Stripe and our easy-to-use JS API.
 ---
 
 # `Fliplet.Payments`
 
-Adds payments functionality in your apps.
+Adds payments functionality in your Fliplet apps using Stripe and our easy-to-use JS API.
 
 <p class="warning"><strong>Note:</strong> This documentation is a draft subject to change before release.</p>
 
