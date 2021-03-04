@@ -139,6 +139,9 @@ Fliplet.Payments.getProducts().then(function (products) {
     // Refer to the Stripe documentation for the list
     // of available options you can use:
     // https://stripe.com/docs/api/checkout/sessions/create
+
+    // Specify the list of items
+    // https://stripe.com/docs/api/checkout/sessions/create#create_checkout_session-line_items
     line_items: [
       {
         price: products[0]['Price ID'],
