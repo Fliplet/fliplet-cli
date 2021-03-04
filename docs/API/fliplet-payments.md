@@ -53,7 +53,7 @@ Fliplet.Payments.Configuration.update({
   // Configuration has been set successfully.
   // Your app is almost ready to start checkout sessions.
 
-  console.log('Callback URL to configure in Stripe', result.webhookCallbackUrl);
+  console.log('Webhook URL to configure in Stripe', result.webhookCallbackUrl);
   // result.webhookCallbackUrl must be configured on your payment provider,
   // see the next section of the docs here below.
 });
