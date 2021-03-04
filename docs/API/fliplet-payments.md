@@ -22,7 +22,7 @@ Adding payments to your apps has the following three requirements:
 
 To start setting up payments for your app, add `fliplet-payments` to your app or screen dependencies.
 
-### Configure the payment settings
+## Configure the payment settings
 
 An app must first configure its payment settings before users are able to buy products. Configuring the app is done by making a JS API or RESTful API request including the following information:
 
@@ -53,7 +53,7 @@ Fliplet.Payments.Configuration.update({
 
 ---
 
-### Configure webhooks in the payment provider
+## Configure webhooks in the payment provider
 
 Before you start accepting payments, webhooks must be set up in your payment provider to notify Fliplet about charges made from buying products and subscriptions.
 
@@ -89,7 +89,7 @@ Once the webhook has been set up, you can start to configure your data source wi
 
 ---
 
-### Configure the products
+## Configure the products
 
 Use the "App data" section of Fliplet Studio or the Data Sources JS APIs to manage a list of products for users to buy. Each product requires the following information:
 
@@ -108,7 +108,7 @@ Once you have set up one or more products you're ready to start accepting paymen
 
 ---
 
-### Add code to initiate a checkout session
+## Add code to initiate a checkout session
 
 Our JS APIs allow your apps to read the list of products you have configured and then initiate a checkout process for one of your products.
 
@@ -157,7 +157,7 @@ Fliplet.Payments.getProducts().then(function (products) {
 
 ---
 
-### Check if payments have been configured for an app
+## Check if payments have been configured for an app
 
 Use the `isConfigured` method to check whether payments have been configured for the app:
 
@@ -173,7 +173,7 @@ Flipler.Payments.isConfigured().then(function (isConfigured) {
 
 ---
 
-### Retrieve the list of payment-related events for a user
+## Retrieve the list of payment-related events for a user
 
 Some providers are capable of returning a list of events made for a specific customer, including a list of successfull and failed charges. You can use the following JS API to retrieve a list of all logs generated for a customer:
 
