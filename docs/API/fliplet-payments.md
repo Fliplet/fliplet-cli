@@ -160,8 +160,8 @@ Fliplet.Payments.getProducts().then(function (products) {
   }, function onCheckoutFailed(err) {
     // The checkout session has been canceled
     // or could not be completed
-  })
-})
+  });
+});
 ```
 
 ---
