@@ -139,6 +139,8 @@ Fliplet.Payments.getProducts().then(function (products) {
     // Refer to the Stripe documentation for the list
     // of available options you can use:
     // https://stripe.com/docs/api/checkout/sessions/create
+    mode: 'payment',
+    customer_email: 'john@example.org',
 
     // Specify the list of items
     // https://stripe.com/docs/api/checkout/sessions/create#create_checkout_session-line_items
@@ -151,9 +153,7 @@ Fliplet.Payments.getProducts().then(function (products) {
         price: products[1]['Price ID'],
         quantity: 2
       }
-    ],
-    mode: 'payment',
-    customer_email: 'john@example.org'
+    ]
   }).then(function onCheckoutCompleted(response) {
     // The checkout session has been completed.
     // The user was successfully charged for the product.
