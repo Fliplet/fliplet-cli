@@ -149,7 +149,8 @@ Fliplet.Payments.getProducts().then(function (products) {
         quantity: 2
       }
     ],
-    mode: 'payment'
+    mode: 'payment',
+    customer_email: 'john@example.org'
   }).then(function onCheckoutCompleted(response) {
     // The checkout session has been completed.
     // The user was successfully charged for the product.
