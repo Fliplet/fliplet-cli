@@ -32,8 +32,8 @@ To start setting up payments for your app, add `fliplet-payments` to your app or
 An app must first configure its payment settings before users are able to buy products. Configuring the app is done by making a JS API or RESTful API request including the following information:
 
 - `provider`: `string` - the payment provider; we currently only support `stripe` as value
-- `providerPublicKey`: `string` - the public key for the provider
-- `providerPrivateKey`: `string` - the private key for the provider
+- `providerPublicKey`: `string` - the public key for the Stripe provider
+- `providerPrivateKey`: `string` - the private key for the Stripe provider
 - `productsDataSourceId`: `number` - the ID of the Data Source listing the products your users can buy
 
 <p class="quote"><strong>Note:</strong> the following request must be made only once and from an authenticated Studio user. <strong>You can however call it at any time to update the configuration</strong>.</p>
@@ -43,9 +43,12 @@ An app must first configure its payment settings before users are able to buy pr
 // to set up or update the configuration.
 Fliplet.Payments.Configuration.update({
   provider: 'stripe',
-  providerPublicKey: 'foo',
-  providerPrivateKey: 'bar',
-  productsDataSourceId: 123
+
+  // Get these from https://dashboard.stripe.com/apikeys
+  providerPublicKey: 'foo',  // Publisheable key
+  providerPrivateKey: 'bar', // Secret key
+
+  productsDataSourceId: 123  // ID of the products data source
 }).then(function (result) {
   // Configuration has been set successfully.
   // Your app is almost ready to start checkout sessions.
