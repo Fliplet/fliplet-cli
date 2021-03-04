@@ -56,6 +56,9 @@ Fliplet.Payments.Configuration.update({
   console.log('Webhook URL to configure in Stripe', result.webhookCallbackUrl);
   // result.webhookCallbackUrl must be configured on your payment provider,
   // see the next section of the docs here below.
+  // Here's an example of what the URL looks like:
+  // https://api.fliplet.com/v1/billing/apps/webhook/8a85a2edc3f3a774ac06f
+
 });
 ```
 
@@ -69,7 +72,7 @@ The previous JS API (`Fliplet.Payments.Configuration.update`) returns a `webhook
 
 1. Go to the [Developers > Webhooks](https://dashboard.stripe.com/webhooks) section in Stripe
 2. Click `Add endpoint`
-3. Add the value you got from `webhookCallbackUrl` in the `Endpoint URL` field
+3. Add the value you got from `webhookCallbackUrl` in the `Endpoint URL` field. The value has a format similar to this URL: `https://api.fliplet.com/v1/billing/apps/webhook/8a85a2edc3f3a774ac06f`
 4. Choose the following events to be sent:
     - `customer.subscription.updated`
     - `customer.subscription.deleted`
