@@ -78,6 +78,8 @@ Fliplet.User.unsubscribe().then(function() {
 });
 ```
 
+---
+
 ### Verify the device's push notification settings
 
 Use the `Fliplet.User.getPushNotificationSettings()` method to find out whether the user has allowed alerts, badges and sounds for push notifications.
@@ -118,8 +120,6 @@ Fliplet.User.getPushNotificationSettings().then(function(settings) {
 ```
 
 <p class="quote"><strong>Note:</strong> calling the method above does not automatically subscribe user for push notifications.</p>
-
----
 
 ---
 

@@ -25,7 +25,50 @@ Fliplet.Widget.get('PushNotifications').ask().then(function (subscriptionId) {
 
 ---
 
-## Reset the user's push notification settings 
+### Verify the device's push notification settings
+
+Use the `Fliplet.User.getPushNotificationSettings()` method to find out whether the user has allowed alerts, badges and sounds for push notifications.
+
+<p class="warning">This method requires the <strong>native framework version 4.5.0 or newer</strong> to ensure the correct settings are returned.</p>
+
+This is the list of properties returned on all platforms:
+
+- `alert`: `boolean`
+- `badge`: `boolean`
+- `sound`: `boolean`
+
+When running the method on **Android** the following properties are also returned:
+
+- `canBypassDnd`: `boolean` - whether or not notifications can bypass the "Do Not Disturb" mode
+- `importance`: `number` - the importance of a channel, from `0` (low) to `5` (high)
+- `lightColor`: `number` - the notification light color for notifications
+- `lockScreenVisibility`: `number` - whether or not notifications are shown on the lockscreen in full or redacted form. `-1` indicates no visibility, `0` indicates **private** (do not reveal any part of this notification on a secure lockscreen) and `1` indicates **public** (show this notification in its entirety on all lockscreens)
+
+Please refer to the [Android notification documentation](https://developer.android.com/reference/android/app/NotificationChannel#summary) for more details about the properties listed above.
+
+```js
+Fliplet.User.getPushNotificationSettings().then(function(settings) {
+  if (settings.alert) {
+    // Alerts are enabled
+  }
+
+  if (settings.badge) {
+    // Badges are enabled
+  }
+
+  if (settings.sound) {
+    // Sounds are enabled
+  }
+}, function(error) {
+  // There was an error fetching the settings
+});
+```
+
+<p class="quote"><strong>Note:</strong> calling the method above does not automatically subscribe user for push notifications.</p>
+
+---
+
+## Reset the user's push notification settings
 
 Use the `reset()` method to clear the local settings on whether the user has decided not to subscribe for push notifications. This method is useful if you want to present the `ask()` popup once again even if the user did decide not to subscribe in the past.
 
