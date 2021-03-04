@@ -6,13 +6,19 @@ description: Changelog notes giving a summary of recent significant changes to t
 
 Each week, we provide changelog notes on this page giving a summary of recent significant changes to the documentation. If there haven't been any significant changes in a given week, we don't publish changelog notes.
 
+## March 2021
+
+### Mar 4th
+
+- New iOS and Android framework version 4.5.0 released to add support for reading push notification settings (e.g. badge, sound and alert).
+
 ## February 2021
 
-## Feb 18th
+### Feb 18th
 
 - Added new documentation page for public JS APIs for the [Email Verification](https://developers.fliplet.com/API/components/email-verification.html).
 
-## Feb 14th
+### Feb 14th
 
 - Added new documentation page for [rate limiting when using APIs](https://developers.fliplet.com/Rate-limiting-for-API.html).
 
