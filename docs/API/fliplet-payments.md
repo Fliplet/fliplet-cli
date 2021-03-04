@@ -45,8 +45,8 @@ Fliplet.Payments.Configuration.update({
   provider: 'stripe',
 
   // Get these from https://dashboard.stripe.com/apikeys
-  providerPublicKey: 'foo',  // Publisheable key
-  providerPrivateKey: 'bar', // Secret key
+  providerPublicKey: 'pk_live_abcdef123456',  // Publisheable key
+  providerPrivateKey: 'sk_live_abcdef123456', // Secret key
 
   productsDataSourceId: 123  // ID of the products data source
 }).then(function (result) {
