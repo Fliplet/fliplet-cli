@@ -25,7 +25,7 @@ We regularly update our framework to support new features. If you have an older 
 
 ### Version 4.5.0 (March 4, 2020)
 
-- **All platforms**: Support for reading push notification settings via the JS API.
+- **All platforms**: Support for [reading push notification settings via the JS API](https://developers.fliplet.com/API/core/notifications.html#verify-the-devices-push-notification-settings).
 
 ### Version 4.4.0 (December 14, 2020)
 
