@@ -1,3 +1,7 @@
+---
+description: Building custom components using traditional development tools can be difficult, that's why Fliplet has created Helpers, a UI framework to easily create custom functionality for your Fliplet apps.
+---
+
 # Helpers
 
 ## What are Helpers?

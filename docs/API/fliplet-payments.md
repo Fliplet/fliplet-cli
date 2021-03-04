@@ -1,3 +1,7 @@
+---
+description: Adds payments functionality using Stripe to your Fliplet apps.
+---
+
 # `Fliplet.Payments`
 
 Adds payments functionality in your apps.
