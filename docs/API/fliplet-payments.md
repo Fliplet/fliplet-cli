@@ -82,7 +82,7 @@ Save changes to add the endpoint, then copy the value of the `Signing secret`:
 
 ![Stripe webhook](../assets/img/stripe-secret.png)
 
-Finally, configure your signing secret in the Fliplet app by by running the following JS API as a logged in Studio user:
+Finally, configure your signing secret in the Fliplet app by running the following JS API as a logged in Studio user:
 
 ```js
 // Run this once while logged in as a Studio user
