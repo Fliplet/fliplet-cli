@@ -27,10 +27,11 @@ An app must first configure its payment settings before users are able to buy pr
 - `providerPrivateKey`: `string` - the private key for the provider
 - `productsDataSourceId`: `number` - the ID of the Data Source listing the products your users can buy
 
-<p class="quote"><strong>Note:</strong> the following request must be made only once and from an authenticated Studio user.</p>
+<p class="quote"><strong>Note:</strong> the following request must be made only once and from an authenticated Studio user. <strong>You can however call it at any time to update the configuration</strong>.</p>
 
 ```js
 // Run this once while logged in as a Studio user
+// to set up or update the configuration.
 Fliplet.Payments.Configuration.update({
   provider: 'stripe',
   providerPublicKey: 'foo',
@@ -38,11 +39,49 @@ Fliplet.Payments.Configuration.update({
   productsDataSourceId: 123
 }).then(function (result) {
   // Configuration has been set successfully.
-  // Your app is ready to start checkout sessions.
+  // Your app is almost ready to start checkout sessions.
+
+  console.log('Callback URL to configure in Stripe', result.webhookCallbackUrl);
+  // result.webhookCallbackUrl must be configured on your payment provider,
+  // see the next section of the docs here below.
 });
 ```
 
-Once configuration has been set up, you can start to configure your data source with the products you want to list.
+---
+
+### Configure webhooks in the payment provider
+
+Before you start accepting payments, webhooks must be set up in your payment provider to notify Fliplet about charges made from buying products and subscriptions.
+
+The previous JS API (`Fliplet.Payments.Configuration.update`) returns a `webhookCallbackUrl` in its promise callback which you should note down and add into Stripe:
+
+1. Go to the `Developers > Webhooks` section in Stripe: https://dashboard.stripe.com/webhooks
+2. Click `Add endpoint`
+3. Add the value you got from `webhookCallbackUrl` in the `Endpoint URL` field
+4. Choose the following events to be sent:
+    - `customer.subscription.updated`
+    - `customer.subscription.deleted`
+    - `customer.subscription.created`
+
+![Stripe webhook](../assets/img/stripe-webhook.png)
+
+
+5. Save changes to add the endpoint, then copy the value of the `Signing secret`:
+
+![Stripe webhook](../assets/img/stripe-secret.png)
+
+1. Configure your signing secret in the Fliplet app by by running the following JS API as a logged in Studio user:
+
+```js
+// Run this once while logged in as a Studio user
+// to set up or update the signing secret from Stripe.
+Fliplet.Payments.Configuration.updateSigningSecret('whsec_123abc').then(function () {
+  // Configuration has been set successfully.
+  // Your app is now ready to start checkout sessions.
+});
+```
+
+Once the webhook has been set up, you can start to configure your data source with the products you want to list.
 
 ---
 
@@ -52,14 +91,14 @@ Use the "App data" section of Fliplet Studio or the Data Sources JS APIs to mana
 
 - Name: `string`
 - Price: `float`
-- Price ID: `string` // TODO: confirm
+- Price ID: `string` - the ID or hash as found in your payment provider
 
 Here's an example Data Source containing a few products:
 
-| Name         | Description              | Price | Price ID |
-|--------------|--------------------------|-------|----------|
-| Premium plan | A fancy premium plan     | 1.00  | 123      |
-| Gold plan    | A even fancier gold plan | 2.50  | 456      |
+| Name         | Description              | Price | Price ID                            |
+|--------------|--------------------------|-------|-------------------------------------|
+| Premium plan | A fancy premium plan     | 1.00  | price_1HAuW7JNczvHKhMA2lbd8xjs      |
+| Gold plan    | A even fancier gold plan | 2.50  | price_2HAuW7sNczvfKhMA2lbd1xjx      |
 
 Once you have set up one or more products you're ready to start accepting payments in your app.
 
@@ -74,7 +113,7 @@ You want to first read the list of products, then let the user choose one (and i
 These are the two JS APIs you need to use to achieve what has been described above:
 
 - `Fliplet.Payments.getProducts()` - fetch the list of products you have configured in the data source
-- `Fliplet.Payments.checkout(productId, quantity, options)` - initiate a checkout session to let the user buy a product
+- `Fliplet.Payments.checkout(data)` - initiate a checkout session to let the user buy a product
 
 Here's a full example to help you getting started:
 
@@ -86,11 +125,22 @@ Fliplet.Payments.getProducts().then(function (products) {
   const product = _.first(products);
 
   // Initiate a checkout session to the payment provider
-  Fliplet.Payments.checkout(product.id, quantity, {
-    // Additional options for the payment provider.
+  Fliplet.Payments.checkout({
+    // Options for the payment provider.
     // Refer to the Stripe documentation for the list
-    // of available options you can use.
-    description: 'Buy the premium plan for the app'
+    // of available options you can use:
+    // https://stripe.com/docs/api/checkout/sessions/create
+    line_items: [
+      {
+        price: 'price_1HAuW7JNczvHKhMA2lbd8xjs',
+        quantity: 1
+      },
+      {
+        price: 'price_2HAuW7sNczvfKhMA2lbd1xjx',
+        quantity: 2
+      }
+    ],
+    mode: 'payment'
   }).then(function onCheckoutCompleted(response) {
     // The checkout session has been completed.
     // The user was successfully charged for the product.
@@ -102,6 +152,22 @@ Fliplet.Payments.getProducts().then(function (products) {
     // or could not be completed
   })
 })
+```
+
+---
+
+### Check if payments have been configured for an app
+
+Use the `isConfigured` method to check whether payments have been configured for the app:
+
+```js
+Flipler.Payments.isConfigured().then(function (isConfigured) {
+  if (isConfigured) {
+    // Payments are configured
+  } else {
+    // Payments are not configured
+  }
+});
 ```
 
 ---
