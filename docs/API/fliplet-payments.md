@@ -21,9 +21,13 @@ Adding payments to your apps has the following four requirements:
 3. A **Data Source** is created with a specific structure to manage the list of products you want the app users to be able to buy.
 4. **Custom code** is added in your app screen to let users buy the products and complete the **checkout process** using our simple JS APIs.
 
+---
+
+## Configuration
+
 To start setting up payments for your app, add `fliplet-payments` to your app or screen dependencies.
 
-## 1. Configure the payment settings
+### 1. Configure the payment settings
 
 An app must first configure its payment settings before users are able to buy products. Configuring the app is done by making a JS API or RESTful API request including the following information:
 
@@ -54,7 +58,7 @@ Fliplet.Payments.Configuration.update({
 
 ---
 
-## 2. Configure webhooks in the payment provider
+### 2. Configure webhooks in the payment provider
 
 Before you start accepting payments, webhooks must be set up in your payment provider to notify Fliplet about charges made from buying products and subscriptions.
 
@@ -90,7 +94,7 @@ Once the webhook has been set up, you can start to configure your data source wi
 
 ---
 
-## 3. Configure the products
+### 3. Configure the products
 
 Use the "App data" section of Fliplet Studio or the Data Sources JS APIs to manage a list of products for users to buy. Each product requires the following information:
 
@@ -109,7 +113,7 @@ Once you have set up one or more products you're ready to start accepting paymen
 
 ---
 
-## 4. Add code to initiate a checkout session
+### 4. Add code to initiate a checkout session
 
 Our JS APIs allow your apps to read the list of products you have configured and then initiate a checkout process for one of your products.
 
