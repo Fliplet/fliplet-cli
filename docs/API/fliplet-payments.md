@@ -32,8 +32,8 @@ To start setting up payments for your app, add `fliplet-payments` to your app or
 An app must first configure its payment settings before users are able to buy products. Configuring the app is done by making a JS API or RESTful API request including the following information:
 
 - `provider`: `string` - the payment provider; we currently only support `stripe` as value
-- `providerPublicKey`: `string` - the public key for the Stripe provider
-- `providerPrivateKey`: `string` - the private key for the Stripe provider
+- `providerPublicKey`: `string` - the [publisheable key from Stripe](https://dashboard.stripe.com/apikeys)
+- `providerPrivateKey`: `string` - the [secret key from Stripe](https://dashboard.stripe.com/apikeys)
 - `productsDataSourceId`: `number` - the ID of the Data Source listing the products your users can buy
 
 <p class="quote"><strong>Note:</strong> the following request must be made only once and from an authenticated Studio user. <strong>You can however call it at any time to update the configuration</strong>.</p>
@@ -67,7 +67,7 @@ Before you start accepting payments, webhooks must be set up in your payment pro
 
 The previous JS API (`Fliplet.Payments.Configuration.update`) returns a `webhookCallbackUrl` in its promise callback which you should note down and add into Stripe:
 
-1. Go to the `Developers > Webhooks` section in Stripe: https://dashboard.stripe.com/webhooks
+1. Go to the [Developers > Webhooks](https://dashboard.stripe.com/webhooks) section in Stripe
 2. Click `Add endpoint`
 3. Add the value you got from `webhookCallbackUrl` in the `Endpoint URL` field
 4. Choose the following events to be sent:
