@@ -132,7 +132,7 @@ instance.insert({
 })
 ```
 
-### Send a push notification
+### Include a push notification
 
 In-app notifications can also notify the user with a push notification which can include a custom message. Push notifications can also be scheduled in the future:
 
