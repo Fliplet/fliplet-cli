@@ -130,43 +130,54 @@ These are the two JS APIs you need to use to achieve what has been described abo
 - `Fliplet.Payments.Products.get()` - fetch the list of products you have configured in the data source
 - `Fliplet.Payments.Checkout.create(options)` - initiate a checkout session to let the user buy a product
 
+Moreover, although not required it is recommended that you use the following JS API to create a customer on Stripe:
+
+- `Fliplet.Payments.Customers.create(options)` - create a customer (if it's existing then it just gets returned)
+
 Here's a full example to help you getting started:
 
 ```js
 // Get the list of products
 Fliplet.Payments.Products.get().then(function (products) {
 
-  // Initiate a checkout session to the payment provider
-  Fliplet.Payments.Checkout.create({
-    // Options for the payment provider.
-    // Refer to the Stripe documentation for the list
-    // of available options you can use:
-    // https://stripe.com/docs/api/checkout/sessions/create
-    mode: 'payment',
-    payment_method_types: ['card'],
-    customer_email: 'john@example.org',
+  // Create or get a customer by email
+  return Fliplet.Payments.Customers.create({
+    email: 'john@example.org'
+  }).then(function(customer) {
+    // Save customer.id if required
 
-    // Specify the list of items
-    // https://stripe.com/docs/api/checkout/sessions/create#create_checkout_session-line_items
-    line_items: [
-      {
-        price: products[0]['Price ID'],
-        quantity: 1
-      },
-      {
-        price: products[1]['Price ID'],
-        quantity: 2
-      }
-    ]
-  }).then(function onCheckoutCompleted(response) {
-    // The checkout session has been completed.
-    // The user was successfully charged for the product.
+    // Initiate a checkout session to the payment provider
+    return Fliplet.Payments.Checkout.create({
+      // Options for the payment provider.
+      // Refer to the Stripe documentation for the list
+      // of available options you can use:
+      // https://stripe.com/docs/api/checkout/sessions/create
+      mode: 'payment',
+      payment_method_types: ['card'],
+      customer: customer.id,
 
-    // response.customerId
-    // response.transactionDetails
-  }, function onCheckoutFailed(err) {
-    // The checkout session has been canceled
-    // or could not be completed
+      // Specify the list of items
+      // https://stripe.com/docs/api/checkout/sessions/create#create_checkout_session-line_items
+      line_items: [
+        {
+          price: products[0]['Price ID'],
+          quantity: 1
+        },
+        {
+          price: products[1]['Price ID'],
+          quantity: 2
+        }
+      ]
+    }).then(function onCheckoutCompleted(response) {
+      // The checkout session has been completed.
+      // The user was successfully charged for the product.
+
+      // response.customerId
+      // response.transactionDetails
+    }, function onCheckoutFailed(err) {
+      // The checkout session has been canceled
+      // or could not be completed
+    });
   });
 });
 ```
@@ -186,6 +197,21 @@ Flipler.Payments.Configuration.exists().then(function (isConfigured) {
   } else {
     // Payments are not configured
   }
+});
+```
+
+---
+
+### Create a customer
+
+Use the following JS API to create a customer, or return the existing record when it already exists for the given email:
+
+```js
+return Fliplet.Payments.Customers.create({
+  email: 'nvalbusa@fliplet.com'
+}).then(function(customer) {
+  // Use customer as required
+  console.log(customer);
 });
 ```
 
