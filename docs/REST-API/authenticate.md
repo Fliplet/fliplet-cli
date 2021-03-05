@@ -44,6 +44,8 @@ If the provided token has been revoked, an error message will be returned as fol
 
 Note: The token does not expire, but can be revoked at any time should you want to (e.g. when unauthorized access is found or your token has been compromised).
 
+<p class="quote">Some API endpoints may require you to use the app's production ID for extra added security, since app tokens don't have access to the working draft apps you see in Studio. You can grab the production app's ID by heading to the <strong>https://api.fliplet.com/v1/apps/</strong> endpoint and verify the value for the <code>productionAppId</code> for the apps you have access to</p>
+
 ---
 
 All done? Jump to the [Data Sources](fliplet-datasources.md) documentation to start using our REST APIs!
