@@ -116,7 +116,7 @@ instance.getMatches({ scope: { type: 'Admin' } }).then(function (result) {
 });
 ```
 
-#### Schedule for later
+### Schedule a notification for later
 
 You can schedule an in-app notification to be sent at a later date:
 
@@ -132,7 +132,7 @@ instance.insert({
 })
 ```
 
-#### Also send a push notification
+### Send a push notification
 
 In-app notifications can also notify the user with a push notification which can include a custom message. Push notifications can also be scheduled in the future:
 
