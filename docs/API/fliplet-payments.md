@@ -202,6 +202,8 @@ Flipler.Payments.Configuration.exists().then(function (isConfigured) {
 
 ---
 
+## Customers and events
+
 ### Create a customer
 
 Use the following JS API to create a customer, or return the existing record when it already exists for the given email:
@@ -217,15 +219,27 @@ return Fliplet.Payments.Customers.create({
 
 ---
 
-### Retrieve the list of payment-related events for a user
+### Retrieve the list of payment-related events for a customer
 
 Some providers are capable of returning a list of events made for a specific customer, including a list of successfull and failed charges. You can use the following JS API to retrieve a list of all logs generated for a customer:
 
 ```js
-Fliplet.Payments.Logs.get({
-  customerId: 123
+Fliplet.Payments.Customers.getLogs({
+  customerId: 'cus_abcdefg123456'
 }).then(function (logs) {
   // Use logs here
+});
+```
+
+### Open the customer billing portal on Stripe
+
+Use the `openBillingPortal` JS API to redirect the user to the customer billing portal on Stripe. The promise will resolve once the user has returned to the app.
+
+```js
+Fliplet.Payments.Customers.openBillingPortal({
+  customerId: 'cus_abcdefg123456'
+}).then(function (logs) {
+  // Billing portal was closed by the user
 });
 ```
 
