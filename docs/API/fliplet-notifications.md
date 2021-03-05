@@ -161,16 +161,17 @@ instance.insert({
     // to be sent in 30 minutes
     delayUntilTimestamp: moment().add(30, 'minute').unix()
   },
-  // optional scope
+  // Optional scope: use a filter based on the connected Data Source
+  // fro your contacts (if your app has a login component)
   scope: {
-    email: 'john@example.org'
+    Email: 'john@example.org'
   }
 })
 ```
 
 ### Send a push notification
 
-You can send a push notification-only by specifying its type as `push`. This type of notification won't show up in the user's notifications inbox component. **If you want to send a push notification which also shows up in such list, please have a look at [sending notifications with push notifications](#also-send-a-push-notification)**.
+You can send a **push notification-only** by specifying its type as `push`. This type of notification won't show up in the user's notifications inbox component. **If you want to send a push notification which also shows up in such list, please have a look at [sending notifications with push notifications](#also-send-a-push-notification)**.
 
 ```js
 // send a push notification
@@ -195,9 +196,10 @@ instance.insert({
     // to be sent in 30 minutes
     delayUntilTimestamp: moment().add(30, 'minute').unix()
   },
-  // optional scope
+  // Optional scope: use a filter based on the connected Data Source
+  // fro your contacts (if your app has a login component)
   scope: {
-    email: 'john@example.org'
+    Email: 'john@example.org'
   }
 })
 ```
