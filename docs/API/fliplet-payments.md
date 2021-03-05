@@ -127,17 +127,17 @@ You want to first read the list of products, then let the user choose one (and i
 
 These are the two JS APIs you need to use to achieve what has been described above:
 
-- `Fliplet.Payments.getProducts()` - fetch the list of products you have configured in the data source
-- `Fliplet.Payments.checkout(data)` - initiate a checkout session to let the user buy a product
+- `Fliplet.Payments.Products.get()` - fetch the list of products you have configured in the data source
+- `Fliplet.Payments.Checkout.create(options)` - initiate a checkout session to let the user buy a product
 
 Here's a full example to help you getting started:
 
 ```js
 // Get the list of products
-Fliplet.Payments.getProducts().then(function (products) {
+Fliplet.Payments.Products.get().then(function (products) {
 
   // Initiate a checkout session to the payment provider
-  Fliplet.Payments.checkout({
+  Fliplet.Payments.Checkout.create({
     // Options for the payment provider.
     // Refer to the Stripe documentation for the list
     // of available options you can use:
@@ -176,10 +176,10 @@ Fliplet.Payments.getProducts().then(function (products) {
 
 ### Check if payments have been configured for an app
 
-Use the `isConfigured` method to check whether payments have been configured for the app:
+Use the `Configuration.exists()` method to check whether payments have been configured for the app:
 
 ```js
-Flipler.Payments.isConfigured().then(function (isConfigured) {
+Flipler.Payments.Configuration.exists().then(function (isConfigured) {
   if (isConfigured) {
     // Payments are configured
   } else {
