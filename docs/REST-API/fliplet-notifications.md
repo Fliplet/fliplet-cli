@@ -116,7 +116,7 @@ Sample request body:
 {
   "data": { "message": "John posted an article." },
   "scope": [
-    { "topic": "company-updates" }
+    { "Email": "nick@example.org" }
   ],
   "pushNotification": {
     "payload": {

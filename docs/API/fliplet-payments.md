@@ -143,6 +143,7 @@ Fliplet.Payments.Products.get().then(function (products) {
     // of available options you can use:
     // https://stripe.com/docs/api/checkout/sessions/create
     mode: 'payment',
+    payment_method_types: ['card'],
     customer_email: 'john@example.org',
 
     // Specify the list of items

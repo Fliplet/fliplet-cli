@@ -62,7 +62,7 @@ instance.insert({
     }
   }
 })
-````
+```
 
 #### Send to a specific user
 
