@@ -73,6 +73,26 @@ Fliplet.Hooks.on('login', function (formEntry) {
 
 Make sure to replace `columnContainingPrivateKey` with the actual column name where the key should be taken from.
 
+<p class="warning">Note: the <code>setKey</code> method does not work for web apps hosted in iframes due to third-party cookies being disallowed by browsers for privacy reasons. To bypass this limitation please refer to the <code>setRuntimeKey</code> method described below.</p>
+
+### Set up the encryption key for the current session only
+
+The following JS API allows you to set up an encryption key without storing it to disk. This is often used to circumvent browsers limitations when the Fliplet app is served via an iframe as third-party cookies and local storage access is blocked by browsers:
+
+```js
+Fliplet.DataSources.Encryption().setRuntimeKey('foo');
+```
+
+### Get the encryption key
+
+Use the `getKey` JS API to fetch the encryption key from the current session or the device storage:
+
+```js
+Fliplet.DataSources.Encryption().getKey().then(function (obj) {
+  // obj.key
+});
+```
+
 ---
 
 ### Set up encryption on a data source across the app
