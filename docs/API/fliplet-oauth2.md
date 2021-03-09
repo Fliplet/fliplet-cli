@@ -23,7 +23,7 @@ Fliplet.OAuth2(service).api(path)
 *Note: The service configuration is likely executed via the Global JS code in Fliplet Studio.*
 
 ```js
-Flipet.OAuth2.configure('github', {
+Fliplet.OAuth2.configure('github', {
   authUrl: 'http://github.com/login/oauth/authorize', // from OAuth2 service provider
   grantType: 'implicit', // as supported by OAuth2 service provider
   grantUrl: 'https://github.com/login/oauth/access_token', // from OAuth2 service provider

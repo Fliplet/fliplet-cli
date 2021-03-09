@@ -191,7 +191,7 @@ Fliplet.Payments.Products.get().then(function (products) {
 Use the `Configuration.exists()` method to check whether payments have been configured for the app:
 
 ```js
-Flipler.Payments.Configuration.exists().then(function (isConfigured) {
+Fliplet.Payments.Configuration.exists().then(function (isConfigured) {
   if (isConfigured) {
     // Payments are configured
   } else {

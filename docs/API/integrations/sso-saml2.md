@@ -21,7 +21,7 @@ https://api.fliplet.com/v1/session/providers/saml2/metadata?appId=123
 Please note that the `appId=123` will change depending on your Fliplet app id. If your system does not allow importing the above XML, you can still configure the integration by manually getting the fields to use from the XML. These are the ones you will need and how to find them:
 
 1. **Entity ID** (or Identifier) this field has a fixed value and it's `https://api.fliplet.com/v1/session/providers/saml2/metadata` for any Fliplet app
-2. **Reply URL** (or Assertion URL) is dynamic and depends on your Flipler App ID. Here's a sample value for it: `https://api.fliplet.com/v1/session/providers/saml2/callback?appId=123`
+2. **Reply URL** (or Assertion URL) is dynamic and depends on your Fliplet App ID. Here's a sample value for it: `https://api.fliplet.com/v1/session/providers/saml2/callback?appId=123`
 2. Service Provider Certificate (PEM String format): [Download](../../assets/misc/saml2-certificate.txt)
 
 Note: the three fields above can also be retrieved from the metadata XML under the following paths: `SingleSignOnService`, `SingleLogoutService`, `X509Certificate`.
