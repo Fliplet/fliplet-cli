@@ -172,7 +172,6 @@ Fliplet.Payments.Products.get().then(function (products) {
       // The checkout session has been completed.
       // The user was successfully charged for the product.
 
-      // response.customerId
       // response.transactionDetails
     }, function onCheckoutFailed(err) {
       // The checkout session has been canceled
@@ -225,7 +224,7 @@ Some providers are capable of returning a list of events made for a specific cus
 
 ```js
 Fliplet.Payments.Customers.getLogs({
-  customerId: 'cus_abcdefg123456'
+  customer: 'cus_abcdefg123456'
 }).then(function (logs) {
   // Use logs here
 });
@@ -237,7 +236,7 @@ Use the `openBillingPortal` JS API to redirect the user to the customer billing 
 
 ```js
 Fliplet.Payments.Customers.openBillingPortal({
-  customerId: 'cus_abcdefg123456'
+  customer: 'cus_abcdefg123456'
 }).then(function (logs) {
   // Billing portal was closed by the user
 });
