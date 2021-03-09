@@ -230,6 +230,28 @@ Fliplet.Payments.Customers.getLogs({
 });
 ```
 
+This is the full list of supported input parameters:
+
+- `customer` (String)
+- `limit` (Number, defaults to 100)
+- `offset` (Number, defaults to 0)
+- `where` (Query object)
+
+```js
+return Fliplet.Payments.Customers.getLogs({
+  customer: 'cus_abcdefg123456',
+  limit: 30,
+  offset: 0,
+  where: {
+    type: 'payment_intent.created'
+  }
+}).then(function (logs) {
+
+});
+```
+
+---
+
 ### Open the customer billing portal on Stripe
 
 Use the `openBillingPortal` JS API to redirect the user to the customer billing portal on Stripe. The promise will resolve once the user has returned to the app.
