@@ -237,8 +237,6 @@ Use the `openBillingPortal` JS API to redirect the user to the customer billing 
 ```js
 Fliplet.Payments.Customers.openBillingPortal({
   customer: 'cus_abcdefg123456'
-}).then(function (logs) {
-  // Billing portal was closed by the user
 });
 ```
 
