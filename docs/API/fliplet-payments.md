@@ -2,7 +2,7 @@
 description: Adds payments functionality in your Fliplet apps using Stripe and our easy-to-use JS API.
 ---
 
-# `Fliplet.Payments`
+# `Payments JS API`
 
 Adds payments functionality in your Fliplet apps using **Stripe** and our easy-to-use JS API.
 ---
