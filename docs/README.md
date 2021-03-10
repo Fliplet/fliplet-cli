@@ -27,11 +27,11 @@ To get a brief introduction to the technologies we use and the stack of the plat
 
 ---
 
-## Upcoming features
+### Upcoming features
 
 <section class="blocks alt">
   <a class="bl two" href="/API/helpers/overview.html">
-    <div>
+    <div class="secondary">
       <span class="pin">To be released in Q3 2021</span>
       <h4>Helpers</h4>
       <p>Fliplet Helpers are due major enhancements to be released mid-2021. You can browse the documentation draft for the upcoming changes.</p>
@@ -39,7 +39,7 @@ To get a brief introduction to the technologies we use and the stack of the plat
     </div>
   </a>
   <a class="bl two" href="/API/fliplet-payments.html">
-    <div>
+    <div class="secondary">
       <span class="pin">Now available to all customers</span>
       <h4>Payments</h4>
       <p>Fliplet Payments allow you to add payment and checkout functionality in your apps. Browse the documentation for this feature we just released.</p>
