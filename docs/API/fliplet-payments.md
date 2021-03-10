@@ -4,13 +4,10 @@ description: Adds payments functionality in your Fliplet apps using Stripe and o
 
 # `Fliplet.Payments`
 
-Adds payments functionality in your Fliplet apps using Stripe and our easy-to-use JS API.
-
-<p class="warning"><strong>Note:</strong> This documentation is a draft subject to change before release.</p>
-
+Adds payments functionality in your Fliplet apps using **Stripe** and our easy-to-use JS API.
 ---
 
-Dependencies: `fliplet-payments`
+Dependency name: `fliplet-payments`
 
 ## Data models and key concepts
 
