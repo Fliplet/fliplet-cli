@@ -19,7 +19,7 @@ This page lists upcoming changes and features that are going to be documented in
     <div>
       <span class="pin">Now available to all customers</span>
       <h4>Payments</h4>
-      <p>Fliplet Payments allow you to add payment and checkout functionality in your apps. You can browse the documentation draft for this upcoming feature.</p>
+      <p>Fliplet Payments allow you to add payment and checkout functionality in your apps. Browse the documentation for this feature we just released.</p>
       <button>Browse documentation &rarr;</button>
     </div>
   </a>
