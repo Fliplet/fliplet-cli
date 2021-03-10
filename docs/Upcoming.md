@@ -9,7 +9,7 @@ This page lists upcoming changes and features that are going to be documented in
 <section class="blocks alt">
   <a class="bl two" href="/API/helpers/overview.html">
     <div>
-      <span class="pin"><i class="fa fa-file-alt"></i></span>
+      <span class="pin">To be released in Q3 2021</span>
       <h4>Helpers</h4>
       <p>Fliplet Helpers are due major enhancements to be released mid-2021. You can browse the documentation draft for the upcoming changes.</p>
       <button>Browse draft documentation &rarr;</button>
