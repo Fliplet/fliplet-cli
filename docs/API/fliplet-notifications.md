@@ -301,10 +301,10 @@ instance.insert({
 // schedule a notification for later
 instance.insert({
   data: {
-    message: 'Hi Everyone!',
-    scheduledAt: moment().add(5, 'hour').unix()
+    message: 'Hi Everyone!'
   },
-  status: 'scheduled'
+  status: 'scheduled',
+  orderAt: moment().add(5, 'hour').unix()
 })
 
 // update a notification by id
