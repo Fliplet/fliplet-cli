@@ -29,6 +29,8 @@ To get a brief introduction to the technologies we use and the stack of the plat
 
 ### Upcoming features
 
+Here's a short list of requested features that are coming up on our platform in the near future.
+
 <section class="blocks alt">
   <a class="bl two" href="/API/helpers/overview.html">
     <div class="secondary">
