@@ -8,6 +8,10 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## March 2021
 
+### Mar 10th
+
+- New JS API available to [integrate your apps with payments via Stripe](https://developers.fliplet.com/API/fliplet-payments.html).
+
 ### Mar 4th
 
 - New iOS and Android framework version 4.5.0 released to add support for [reading push notification settings](https://developers.fliplet.com/API/core/notifications.html#verify-the-devices-push-notification-settings) (e.g. badge, sound and alert).

@@ -91,6 +91,7 @@ These JS APIs falls into the most common category and almost all apps, component
 - [Media](API/fliplet-media.md) (`fliplet-media`)
 - [Notifications](API/fliplet-notifications.md) (`fliplet-notifications`)
 - [OAuth2](API/fliplet-oauth2.md) (`fliplet-oauth2`) (Beta)
+- [Payments](API/fliplet-payments.md) (`fliplet-payments`)
 - [Session](API/fliplet-session.md) (`fliplet-session`)
 - [Studio UI](UI-guidelines-interface.md) (`fliplet-studio-ui`)
 - [Themes](API/fliplet-themes.md) (`fliplet-themes`)
