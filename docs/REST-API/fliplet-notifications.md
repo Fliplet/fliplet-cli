@@ -105,7 +105,7 @@ Required parameters:
 - **data** (json object)
 
 Optional parameters:
-- **scope** (array of json objects)
+- **scope** (array of json objects or single json object)
 - **status** (string, defaults to `draft`. Use `published` to make the notification visible to live apps)
 - **orderAt** (number, defaults to the current time)
 - **pushNotification** (json object containing payload, subscriptions, delayUntilTimestamp)
@@ -115,9 +115,7 @@ Sample request body:
 ```json
 {
   "data": { "message": "John posted an article." },
-  "scope": [
-    { "Email": "nick@example.org" }
-  ],
+  "scope": { "Email": "nick@example.org" },
   "pushNotification": {
     "payload": {
       "title": "New article",
@@ -137,7 +135,7 @@ Sample request body:
 Optional parameters:
 - **data** (json object)
 - **extendData** (boolean, defaults to `false` (replace). When `true`, the input data will be merged with the existing notification data instead of replacing it)
-- **scope** (array of json objects)
+- **scope** (array of json objects or single json object)
 - **status** (string, defaults to `draft`. Use `published` to make the notification visible to live apps)
 - **orderAt** (datetime, defaults to the current time)
 - **pushNotification** (json object containing payload, subscriptions, delayUntilTimestamp)
