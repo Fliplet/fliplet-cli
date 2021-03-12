@@ -108,7 +108,7 @@ Optional parameters:
 - **scope** (array of json objects or single json object)
 - **status** (string, defaults to `draft`. Use `published` to make the notification visible to live apps)
 - **orderAt** (number, defaults to the current time)
-- **pushNotification** (json object containing payload, subscriptions, delayUntilTimestamp)
+- **pushNotification** (json object containing payload, delayUntilTimestamp)
 
 Sample request body:
 
@@ -120,8 +120,20 @@ Sample request body:
     "payload": {
       "title": "New article",
       "body": "John has posted a new article on the news page. Go check it out!"
-    },
-    "subscriptions": [123]
+    }
+  }
+}
+```
+
+You can also target many people at once using any [Sift.js](https://github.com/Fliplet/sift.js) operator for the scope, e.g.:
+
+```json
+{
+  "data": { "message": "Hi John and Nicj!." },
+  "scope": {
+    "Email": {
+      "$in": ["nick@example.org", "john@example.org"]
+    }
   }
 }
 ```
