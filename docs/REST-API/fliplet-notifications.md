@@ -15,9 +15,12 @@ Please head to the [how to authenticate](authenticate.md) page of the documentat
 When dealing with app notifications, there's a few things you should keep in mind:
 
 1. Notifications belong to an `app`. You can't have a notification span across multiple apps.
-2. Notifications have a default "draft" `status`, meaning they are only visible to Fliplet Studio and Fliplet Viewer users. To make them live to all users, they must be published by updating their status to "published". You can also avoid this step by simply creating your notification as published in first place.
-3. Notifications can have a `scope` which limits their visibility. If you don't create a scope, they are treated as broadcasted messages hence available to all users of your app. On the other hand, defining a scope (or a list) will make them private and available to only specific users (e.g. individual users or groups)
-4. Notifications have read receipts. Fliplet apps automatically take care of identifying your users so no extra work is required from your end when marking notifications as read.
+2. A notification can be an **in-app notification**, a **push notification** or both at once.
+3. Notifications have a default "**draft**" `status`, meaning they are only visible to Fliplet Studio and Fliplet Viewer users. To make them live to all users, they must be published by updating their status to "**published**". You can also avoid this step by simply creating your notification as published in first place.
+4. Notifications can have one or more **scopes** which limit their visibility. If you don't create a scope, they are treated as broadcasted messages hence available to all users of your app. On the other hand, defining a scope (or a list) will make them private and available to only specific users (e.g. individual users or groups)
+5. Notifications have read receipts. Fliplet apps automatically take care of identifying your users so no extra work is required from your end when marking notifications as read.
+6. Notifications can be scheduled to be sent in the future using the `scheduled` `status` and specifying the date using the `orderAt` parameter.
+7. Push notifications automatically manage the badge count of new notifications, unless you provide the `badge` property to a fixed value.
 
 ### Push notifications
 
@@ -129,7 +132,7 @@ You can also target many people at once using any [Sift.js](https://github.com/F
 
 ```json
 {
-  "data": { "message": "Hi John and Nicj!." },
+  "data": { "message": "Hi John and Nick!." },
   "scope": {
     "Email": {
       "$in": ["nick@example.org", "john@example.org"]

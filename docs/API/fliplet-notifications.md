@@ -10,6 +10,7 @@ When dealing with app notifications, there's a few things you should keep in min
 4. Notifications can have one or more **scopes** which limit their visibility. If you don't create a scope, they are treated as broadcasted messages hence available to all users of your app. On the other hand, defining a scope (or a list) will make them private and available to only specific users (e.g. individual users or groups)
 5. Notifications have read receipts. Fliplet apps automatically take care of identifying your users so no extra work is required from your end when marking notifications as read.
 6. Notifications can be scheduled to be sent in the future using the `scheduled` `status` and specifying the date using the `orderAt` parameter.
+7. Push notifications automatically manage the badge count of new notifications, unless you provide the `badge` property to a fixed value.
 
 Note: apps by default have no permissions to insert notifications. Enabling such permission is done by setting the `notificationsExtendedPermissions` setting to `true` in the app settings.
 
@@ -146,7 +147,10 @@ instance.insert({
     payload: {
       title: 'Title of the push notification',
       body: 'Message of the push notification',
-      badge: 1, // Set the notification badge number
+      // Optionally set the notification badge number to a fixed number.
+      // Omit this property to have the system automatically increment the
+      // badge count for each user and device receiving the push notification.
+      badge: 1,
       custom: {
         // Add a link to the push notification
         customData: {
@@ -181,7 +185,10 @@ instance.insert({
     payload: {
       title: 'Title of the push notification',
       body: 'Message of the push notification',
-      badge: 1, // Set the notification badge number
+      // Optionally set the notification badge number to a fixed number.
+      // Omit this property to have the system automatically increment the
+      // badge count for each user and device receiving the push notification.
+      badge: 1,
       custom: {
         // Add a link to the push notification
         customData: {
