@@ -8,6 +8,10 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## March 2021
 
+### Mar 18th
+
+- New iOS and Android framework version 4.5.1 released with improvements for receiving push notifications and displaying notification badges on the home screen.
+
 ### Mar 10th
 
 - New JS API available to [integrate your apps with payments via Stripe](https://developers.fliplet.com/API/fliplet-payments.html).

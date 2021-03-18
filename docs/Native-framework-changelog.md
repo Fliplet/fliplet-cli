@@ -7,13 +7,13 @@ We regularly update our framework to support new features. If you have an older 
   <div class="bl two">
     <div>
       <h4>iOS</h4>
-      <p>Latest stable release: 4.5.0</p>
+      <p>Latest stable release: 4.5.1</p>
     </div>
   </div>
   <div class="bl two">
     <div>
       <h4>Android</h4>
-      <p>Latest stable release: 4.5.0</p>
+      <p>Latest stable release: 4.5.1</p>
     </div>
   </div>
 </section>
@@ -22,6 +22,10 @@ We regularly update our framework to support new features. If you have an older 
 ---
 
 ## Supported versions (4.1+)
+
+### Version 4.5.1 (March 18, 2020)
+
+- **All platforms**: Improvements for push notifications and displaying notification badges on the home screen.
 
 ### Version 4.5.0 (March 4, 2020)
 
