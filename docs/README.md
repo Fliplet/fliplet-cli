@@ -27,9 +27,9 @@ To get a brief introduction to the technologies we use and the stack of the plat
 
 ---
 
-### Upcoming features
+### Upcoming and newly released features
 
-Here's a short list of requested features that are coming up on our platform in the near future.
+Here's a short list of requested features that are coming up on our platform in the near future or have just been released.
 
 <section class="blocks alt">
   <a class="bl two" href="/API/helpers/overview.html">
