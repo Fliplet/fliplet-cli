@@ -1263,8 +1263,67 @@ h2, h3, h4, h5, h6 {
   .project-name {
     font-size: 2.7rem;
   }
+}
 
+.sides {
+  display: flex;
+  align-items: stretch;
+  margin-bottom: 60px;
 
+  @media screen and (max-width: 800px) {
+    flex-direction: column;
+  }
+
+  &.no-margin {
+    margin-bottom: 0;
+  }
+
+  > div {
+    &:first-child {
+      width: 60%;
+      padding-right: 20px;
+    }
+
+    &:last-child {
+      width: 40%;
+    }
+
+    &.alt {
+      &:first-child {
+        width: 40%;
+      }
+
+      &:last-child {
+        width: 60%;
+        padding-left: 20px;
+      }
+    }
+
+    @media screen and (max-width: 800px) {
+      width: 100% !important;
+      padding: 0 !important;
+
+      &:first-child {
+        margin-bottom: 30px;
+      }
+    }
+
+    h2 {
+      font-size: 27px;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    .img {
+      width: 100%;
+      height: 100%;
+      background: no-repeat center;
+      background-size: contain;
+      min-height: 200px;
+    }
+  }
 }
 
 @media screen and (max-width: 22em) {

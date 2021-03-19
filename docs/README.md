@@ -1,8 +1,48 @@
 # Developers Documentation
 
-Welcome to the developers documentation for the **Fliplet Platform**. Here you can learn how to extend your Fliplet Apps and also how to create new components, themes and menus.
+<section class="sides">
+  <div>
+    <h2>Customise your apps with our low code technologies</h2>
+    <p>Welcome to the <strong>Fliplet developers documentation</strong> website. Here you can learn how to extend your Fliplet Apps, create new components, themes and menus.<br /><br />Start by having a look at our <a href="/API-Documentation.html">JS API</a> documentation to learn how to interact with our core framework and components to extend your apps.</p>
+  </div>
+  <div>
+    <div class="img" style="background-image:url('/assets/img/code-review.svg')"></div>
+  </div>
+</section>
 
-If you're a <strong>Fliplet Studio</strong> user creating apps, you most likely want to look at our <a href="/API-Documentation.html">JS API</a> documentation, where you can learn how to interact with our core framework and components to extend your apps.
+<section class="sides">
+  <div class="alt">
+    <div class="img" style="background-image:url('/assets/img/devices.svg')"></div>
+  </div>
+  <div class="alt">
+    <h2>Write code that works on any device and platform</h2>
+    <p>Fliplet allows you to code once and have your app fully function on <a href="http://localhost:4000/Native-framework-changelog.html">all platforms we support</a>, including <strong>iOS</strong>, <strong>Android</strong> and <strong>Web</strong>.<br /><br />Stop worrying about compatibility and let us do the heavylifting for you. Just focus on coding!</p>
+  </div>
+</section>
+
+<section class="sides">
+  <div>
+    <h2>Integrate with on-prem data</h2>
+    <p>Use our open-source <a href="/Data-integration-service.html">Data Integration Service</a> software to fetch data from your on-prem infrastructure and integrate a secure login system to your apps using <a href="/API/integrations/sso-saml2.html">Single Sign-On with SAML2</a> or other identity providers. The choice is yours!</p>
+  </div>
+  <div>
+    <div class="img" style="background-image:url('/assets/img/forms.svg')"></div>
+  </div>
+</section>
+
+<section class="sides">
+  <div class="alt">
+    <div class="img" style="background-image:url('/assets/img/workflow.svg')"></div>
+  </div>
+  <div class="alt">
+    <h2>Create complex workflows</h2>
+    <p>Start with a simple proof-of-concept, then start leveraging our technology to virtually built anything else!<br /><br />We have a <a href="/API-Documentation.html">JS API</a> for any occasion, give it a read and find out how easy is to get started.</p>
+  </div>
+</section>
+
+---
+
+
 
 {% raw %}
 <section class="blocks">
