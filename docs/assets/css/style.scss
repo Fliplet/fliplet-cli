@@ -344,17 +344,34 @@ h2, h3, h4, h5, h6 {
     font-size: 46px;
   }
 
-  .button {
-    background-color: $primary;
-    color: #FFF;
-    padding: 12px 24px;
-    border-radius: 40px;
-    margin-top: 20px;
-    font-size: 16px;
+  .buttons {
+    display: flex;
 
-    &:hover {
-      text-decoration: none;
-      background-color: $primaryBackground;
+    .button {
+      background-color: $primary;
+      color: #FFF;
+      padding: 10px 24px;
+      border-radius: 40px;
+      margin-top: 20px;
+      font-size: 16px;
+      border: 2px solid $primary;
+
+      &:first-child {
+        background-color: transparent;
+        color: #FFF;
+        border: 2px solid #FFF;
+
+        @media screen and (max-width: 730px) {
+          display: none;
+        }
+      }
+
+      &:hover {
+        text-decoration: none;
+        background-color: $primaryBackground;
+        border-color: $primaryBackground;
+        color: #FFF;
+      }
     }
   }
 }
