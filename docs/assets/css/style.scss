@@ -324,7 +324,7 @@ h2, h3, h4, h5, h6 {
     display: block;
   }
 
-  background-color: #8F909B;
+  background-color: #7e4c79;
   position: relative;
   overflow: hidden;
 
@@ -333,6 +333,7 @@ h2, h3, h4, h5, h6 {
     top: 0%;
     width: 100%;
     z-index: 1;
+    display: none;
   }
 
   .content {
