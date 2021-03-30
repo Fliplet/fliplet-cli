@@ -333,6 +333,16 @@ h2, h3, h4, h5, h6 {
     top: 0%;
     width: 100%;
     z-index: 1;
+
+    video {
+      width: 100%;
+      height: 100%;
+
+      @media screen and (max-width: 730px) {
+        height: 400px;
+        width: auto;
+      }
+    }
   }
 
   .content {
@@ -1274,6 +1284,32 @@ h2, h3, h4, h5, h6 {
 
   .with-hero .hero {
     height: 300px;
+
+    @media screen and (max-width: 730px) {
+      height: 400px;
+      display: flex;
+
+      .content {
+        width: 100%;
+
+        h6 {
+          text-align: center;
+          padding: 0 20px;
+          font-size: 38px;
+          width: 100%;
+          display: block;
+        }
+
+        .typed-cursor {
+          display: none;
+        }
+
+        aside {
+          position: absolute;
+          bottom: 0;
+        }
+      }
+    }
   }
 
   .hero h6 {
