@@ -333,14 +333,16 @@ module.exports.config = {
     username: 'foo',
     password: 'bar',
     port: 1234,
-    database: 'myDatabaseName',
+    database: 'myDatabaseName'
 
-    // MSSQL Server only
+    // MSSQL Server only: uncomment if you need to use these variables.
+    /*
     dialectOptions: {
       domain: 'myDomain',
       instanceName: 'myInstanceName',
       encrypt: false
     }
+    */
   }
 };
 
