@@ -335,7 +335,7 @@ module.exports.config = {
     port: 1234,
     database: 'myDatabaseName'
 
-    // MSSQL Server only: uncomment if you need to use these variables.
+    // MSSQL Server only: uncomment if you need to use these settings
     /*
     dialectOptions: {
       domain: 'myDomain',
