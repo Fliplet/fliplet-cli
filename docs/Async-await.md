@@ -31,7 +31,7 @@ var newEntry = await connection.insert({ foo: 'bar' });
 // here I can use the "entries" array and also "newEntry"
 ```
 
-<p class="warning"><strong>Note</strong>: this feature is not supported on <u>Internet Explorer 11</u>.</p>
+<p class="warning"><strong>Note</strong>: the <code>await</code> feature is not supported on <u>Internet Explorer 11</u>.</p>
 
 ## Catching errors with async/await
 
