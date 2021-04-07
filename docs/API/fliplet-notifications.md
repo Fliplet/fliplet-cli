@@ -94,6 +94,22 @@ instance.insert({
 })
 ```
 
+#### Send to a specific device
+
+Send an in-app notification to a specific device ID using the `scope` option with the `flSessionId` attribute and the target device ID(s):
+
+```js
+// insert a new notification for a specific user
+instance.insert({
+  status: 'published',
+  data: { message: 'Hi John!' },
+  // scope will be matched for the list of Device IDs specified
+  scope: {
+    flSessionId: [123]
+  }
+})
+```
+
 #### Broadcast to all users
 
 Your in-app notification will be broadcasted to everyone if you don't provide a scope:
@@ -292,6 +308,12 @@ instance.insert({
 instance.insert({
   data: { message: 'Hi John!' },
   scope: { foo: 'bar' }
+})
+
+// insert a notification to a specific device ID
+instance.insert({
+  data: { message: 'Hi John!' },
+  scope: { flSessionId: [123] }
 })
 
 // insert a new notification broadcasting everyone
