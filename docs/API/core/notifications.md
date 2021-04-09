@@ -1,5 +1,19 @@
 # Notifications
 
+### Check if the device supports receiving notifications
+
+Use the `Fliplet.Navigator.Notifications.hasPermission()` function to check whether the device has permissions from the user to receive notifications (including push notifications).
+
+```js
+Fliplet.Navigator.Notifications.isSupported().then(function (isSupported) {
+  if (isSupported) {
+    // The user can receive notifications
+  }
+});
+```
+
+---
+
 ### Check if the device has permissions to receive notifications
 
 Use the `Fliplet.Navigator.Notifications.hasPermission()` function to check whether the device has permissions from the user to receive notifications (including push notifications).
