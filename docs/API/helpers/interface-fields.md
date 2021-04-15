@@ -162,6 +162,50 @@ A freeform HTML field. Supports the following properties:
 
 ---
 
+### List of fields
+
+An array of fields for the user to allow setting up complex lists. Each item in the list is displayed as an accordion with the list of fields configured in your list. Here's an example of what it looks like:
+
+![List of fields](../../assets/img/helper-field-list.png)
+
+A list of fields supports the following property:
+
+- `addLabel` (`String`) the label displayed in the UI to add a new item
+- `headingFieldName` (`String`) the name of the field that should display its value in the accordion header
+- `emptyListPlaceholderHtml` (`HTML String`) optional HTML to display when the list is empty
+- `fields` (**Array** of field objects) the array of fields to display for the user to configure for each item in the list
+
+Example:
+
+```js
+{
+  name: 'buttons',
+  label: 'Buttons',
+  type: 'group',
+  addLabel: 'Add button',
+  headingFieldName: 'title',
+  emptyListPlaceholderHtml: '<p>Please add at least one button</p>',
+  fields: [
+    {
+      name: 'title',
+      type: 'text',
+      label: 'Button title',
+      placeholder: 'Sample button'
+    },
+    {
+      type: 'provider',
+      name: 'action',
+      label: 'Choose what happens when the button is pressed',
+      package: 'com.fliplet.link'
+    }
+  ]
+}
+```
+
+
+
+---
+
 ## Further reading
 
 <section class="blocks alt">
