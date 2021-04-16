@@ -6,6 +6,14 @@ description: Changelog notes giving a summary of recent significant changes to t
 
 Each week, we provide changelog notes on this page giving a summary of recent significant changes to the documentation. If there haven't been any significant changes in a given week, we don't publish changelog notes.
 
+## April 2021
+
+## Apr 16th
+
+- New Android framework version 4.5.2 released with improvements for marking in-app notifications as read when push notifications are received.
+
+---
+
 ## March 2021
 
 ### Mar 18th
@@ -19,6 +27,8 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 ### Mar 4th
 
 - New iOS and Android framework version 4.5.0 released to add support for [reading push notification settings](https://developers.fliplet.com/API/core/notifications.html#verify-the-devices-push-notification-settings) (e.g. badge, sound and alert).
+
+---
 
 ## February 2021
 

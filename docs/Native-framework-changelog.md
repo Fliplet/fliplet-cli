@@ -13,7 +13,7 @@ We regularly update our framework to support new features. If you have an older 
   <div class="bl two">
     <div>
       <h4>Android</h4>
-      <p>Latest stable release: 4.5.1</p>
+      <p>Latest stable release: 4.5.2</p>
     </div>
   </div>
 </section>
@@ -21,7 +21,11 @@ We regularly update our framework to support new features. If you have an older 
 
 ---
 
-## Supported versions (4.1+)
+## Supported versions (4.2+)
+
+### Version 4.5.2 (April 16, 2020)
+
+- **All platforms**: Improvements for marking in-app notifications as read when push notifications are received.
 
 ### Version 4.5.1 (March 18, 2020)
 
@@ -60,6 +64,12 @@ We regularly update our framework to support new features. If you have an older 
 
 - **Android**: Target SDK increased to 29 (Android 10) and disabled back-ups to improve security.
 
+---
+
+## Deprecated versions
+
+Please note that these versions have limited support for newer Fliplet features. We encourage you to submit a new native update to your apps via the App Store or Google Play if you have users still running these versions of your app.
+
 ### Version 4.1.4 (July 24, 2020)
 
 - **iOS**: Fixed an issue that caused apps to crash when recording videos
@@ -78,12 +88,6 @@ We regularly update our framework to support new features. If you have an older 
 
 - **iOS**: Dropped UIWebView support following [Apple's deprecation notice](https://developer.apple.com/news/?id=12232019b).
 - **iOS**: Updated **InAppBrowser** Cordova plugin to its latest version.
-
----
-
-## Deprecated versions
-
-Please note that these versions have limited support for newer Fliplet features. We encourage you to submit a new native update to your apps via the App Store or Google Play if you have users still running these versions of your app.
 
 ### Version 4.0.2 (November 19, 2019)
 
