@@ -8,7 +8,7 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## April 2021
 
-### Apr 16th
+### April 16th
 
 - New Android framework version 4.5.2 released with improvements for marking in-app notifications as read when push notifications are received.
 
@@ -16,15 +16,15 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## March 2021
 
-### Mar 18th
+### March 18th
 
 - New iOS and Android framework version 4.5.1 released with improvements for receiving push notifications and displaying notification badges on the home screen.
 
-### Mar 10th
+### March 10th
 
 - New JS API available to [integrate your apps with payments via Stripe](https://developers.fliplet.com/API/fliplet-payments.html).
 
-### Mar 4th
+### March 4th
 
 - New iOS and Android framework version 4.5.0 released to add support for [reading push notification settings](https://developers.fliplet.com/API/core/notifications.html#verify-the-devices-push-notification-settings) (e.g. badge, sound and alert).
 
@@ -32,15 +32,15 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## February 2021
 
-### Feb 18th
+### February 18th
 
 - Added new documentation page for public JS APIs for the [Email Verification](https://developers.fliplet.com/API/components/email-verification.html).
 
-### Feb 14th
+### February 14th
 
 - Added new documentation page for [rate limiting when using APIs](https://developers.fliplet.com/Rate-limiting-for-API.html).
 
-### Feb 11th
+### February 11th
 
 - Added public JS APIs for accessing the [device biometrics](https://developers.fliplet.com/API/core/biometrics.html).
 - Added new documentation page listing all [organization audit log types](https://developers.fliplet.com/Organization-audit-log-types.html#list-of-audit-log-types-for-organizations).
@@ -49,12 +49,12 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## January 2021
 
-### Jan 24th
+### January 24th
 
 - Added public JS APIs for accessing [Organization audit logs](https://developers.fliplet.com/API/core/organizations.html#audit-logs).
 - Added public RESTful APIs for accessing [Organization audit logs](https://developers.fliplet.com/REST-API/fliplet-organizations.html#get-the-audit-logs-for-an-organization).
 
-### Jan 15th
+### January 15th
 
 - Added new page for APIs related to [Upcoming features](/Upcoming.html).
 
@@ -62,17 +62,17 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## December 2020
 
-### Dec 14th
+### December 14th
 
 - New iOS framework version 4.3.0 released to improve support for **push notifications**.
 
-### Dec 8th
+### December 8th
 
 - Added public JS APIs for interacting with [Chat channels](/API/components/chat.html#public-channels).
 
 ## November 2020
 
-### Oct 17th
+### November 17th
 
 - Released new version 1.12.0 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html) with fixes for uninstalling Windows Services.
 
@@ -80,7 +80,7 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## October 2020
 
-### Oct 1st
+### October 1st
 
 - Released new version 1.11.0 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html) with support for case-insensitive primary key, log verbosity and absolute paths on the Windows service.
 
@@ -88,11 +88,11 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## September 2020
 
-### Sep 17th
+### September 17th
 
 - New iOS framework version 4.2.2 released and fixed an issue that caused clipboard warnings to be triggered when user revisits an app.
 
-### Sep 15th
+### September 15th
 
 - New iOS framework version 4.2.1 released with support for clearing the splash screen cache on app startup.
 
@@ -100,11 +100,11 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## August 2020
 
-### Aug 18th
+### August 18th
 
 - New redesigned layout for the developers website
 
-### Aug 7th
+### August 7th
 
 - New Android framework release (version 4.2.0) to increase target SDK to 29 (Android 10) and disable back-ups for improved security.
 
