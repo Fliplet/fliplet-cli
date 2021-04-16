@@ -8,7 +8,7 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## April 2021
 
-## Apr 16th
+### Apr 16th
 
 - New Android framework version 4.5.2 released with improvements for marking in-app notifications as read when push notifications are received.
 
