@@ -32,6 +32,31 @@ The example above defines three views:
 
 ---
 
+## Define a placeholder for a rich-content view
+
+Views can define a placeholder HTML to be rendered when empty. Use the `placeholder` attribute as detailed here below:
+
+
+```js
+Fliplet.Helper({
+  name: 'slider',
+  render: {
+    template: [
+      '<div data-view="myFirstView"></div>'
+    ].join('')
+  },
+  views: [
+    {
+      name: 'myFirstView',
+      displayName: 'View 1',
+      placeholder: '<p>Please drop content here</p>'
+    }
+  ]
+});
+```
+
+---
+
 ## Define where a helper can be dropped into
 
 By default, helpers are not allowed to be dropped into other helpers. However, they can optionally be allowed <strong>to be dropped any into rich-content views defined by other helpers</strong>. To do so you must define the `childOf` array property in the child helper with a list of helpers it can be dropped to:
