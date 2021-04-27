@@ -9,6 +9,7 @@
 - `default` (Mixed) a default value for the field
 - `warning` (String) a warning label to be displayed to the user below the input
 - [ready](https://developers.fliplet.com/API/helpers/interface-hooks.html#run-a-function-when-a-field-is-initialized) (Function) a function to run when a field is initialized
+- [change](https://developers.fliplet.com/API/helpers/interface-hooks.html#run-a-function-when-a-field-value-changes) (Function) a function to run when a field value changes
 
 ## Types
 
