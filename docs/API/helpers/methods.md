@@ -17,7 +17,7 @@ var instance = Fliplet.Helper.findOne({
 });
 ```
 
-### Find a list of helper
+### Find a list of helpers
 
 Use the `find` class method to find a list of helper instances on a screen. You can provide a predicate to filter for specific helpers:
 
