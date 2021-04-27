@@ -4,7 +4,7 @@ description: Build a decision tree using the Fliplet Helper library.
 
 # Example Helper
 
-## "Decision Tree"
+## Decision Tree
 
 The following snippet illustrates how to create a simple decision tree showing a question with a set of answers. Upon selecting an answer, the next question will be presented to the user.
 

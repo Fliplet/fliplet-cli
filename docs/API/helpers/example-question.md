@@ -1,6 +1,6 @@
 # Example Helper
 
-## "Answer a question"
+## Answer a question
 
 The following snippet illustrates how to create a simple helper showing a question with a set of answers. Upon selecting an answer, a further helper will show whether the answer is correct. Here's a preview of what it's going to look like:
 
