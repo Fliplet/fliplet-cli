@@ -74,7 +74,34 @@ Fliplet.Helper({
   configuration: {
     title: 'Question',
     fields: [
-      { name: 'id', type: 'text', label: 'Question ID' },
+      {
+        type: 'html',
+        ready: function(el) {
+          // Display a warning to the user when there's only one question on the screen
+          if (Fliplet.Helper.find({ name: 'question' }).length < 2) {
+            $(el).html(
+              '<p class="alert alert-warning">Only 1 Decision Tree component is found on this screen.\r\nTo create a custom user flow, add 1 more Decision Tree component to the screen.</p>'
+            );
+          }
+        }
+      },
+      {
+        name: 'id',
+        type: 'text',
+        label: 'Question ID',
+        change: function(value) {
+          var field = this;
+
+          // Display a warning when another question is using the same ID
+          var question = Fliplet.Helper.findOne(function (question) {
+            return question.name === 'question'
+            	&& _.get(question, 'fields.id') === value
+              && question.id !== field.$parent.instanceId;
+          });
+
+					this.warning = question ? 'Question ID already in use' : '';
+        }
+      },
       {
         type: 'checkbox',
         name: 'showOnLoad',
@@ -105,7 +132,6 @@ Fliplet.Helper({
     ]
   }
 });
-
 ```
 
 ### HTML
