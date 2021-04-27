@@ -24,7 +24,7 @@ Fliplet.Helper({
   render: {
     template: [
       '{! if show !}',
-      '<div <div data-view="content"></div>',
+      '<div data-view="content"></div>',
       '{! each button in fields.buttons !}',
       '<button data-to="{! button.goto !}" class="answer">{! button.label !}</button><br />',
       '{! endeach !}',
