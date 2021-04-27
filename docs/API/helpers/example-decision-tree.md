@@ -111,14 +111,11 @@ Fliplet.Helper({
 ### HTML
 
 ```html
-<fl-helper name="question" data-helper-id="771b">
-  <field name="showOnLoad">["Yes"]</field>
-  <field name="buttons">[{"label":"Go to Q2","goto":"2"},{"label":"Go to Q3","goto":"3"}]</field>
-  <field name="id">1</field>
+<fl-helper name="question">
   <view name="content">
-    <fl-container cid="671"></fl-container>
-    <fl-text cid="672">
-      <p>First question</p>
+    <fl-container cid="123"></fl-container>
+    <fl-text cid="456">
+      <p>Here goes the content for the first question</p>
     </fl-text>
   </view>
 </fl-helper>
