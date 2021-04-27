@@ -35,7 +35,7 @@ Fliplet.Helper({
         name: 'content',
         displayName: 'Question content',
         placeholder: '<p>Drop content here</p>'
-        }
+      }
     ],
     ready: function() {
       var vm = this;
