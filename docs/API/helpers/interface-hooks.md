@@ -73,7 +73,9 @@ Fliplet.Helper('question', {
 ## Fields
 
 Lifecycle:
-1. `ready`
+
+1. `ready` (field is rendered)
+2. `change` (field value has changed)
 
 ### Run a function when a field is initialized
 
@@ -85,7 +87,7 @@ See how the example below manually defines an input field which handles user inp
 Fliplet.Helper({
   name: 'welcome',
   render: {
-    template: '<p class="welcome">Hi {! fields.name !}, how are you?</p>'
+    template: '<p class="welcome">Hi {! fields.lastName !}, how are you?</p>'
   },
   configuration: {
     fields: [
@@ -106,6 +108,35 @@ Fliplet.Helper({
               // 2. Update the field instance on input change
               currentField.val($(this).val());
             });
+        }
+      }
+    ]
+  }
+});
+```
+
+### Run a function when a field value changes
+
+Use the `change` property on a field to define a function to run when the field value changes because of user input.
+
+See how the example below manually defines an input field which handles user input and displays a warning when too short:
+
+```js
+Fliplet.Helper({
+  name: 'welcome',
+  render: {
+    template: '<p class="welcome">Hi {! fields.lastName !}, how are you?</p>'
+  },
+  configuration: {
+    fields: [
+      {
+        name: 'lastName',
+        type: 'html',
+        label: 'Some html',
+        description: 'Lorem ipsum dolor sit amet',
+        html: '<input type="text" />',
+        change: function(value) {
+          this.warning = value.length < 3 ? 'Please type at least 3 characters' : '';
         }
       }
     ]

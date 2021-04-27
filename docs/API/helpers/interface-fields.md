@@ -7,6 +7,7 @@
 - `label` (String) a bold label displayed before the input field
 - `description` (String) a description displayed before the input field
 - `default` (Mixed) a default value for the field
+- `warning` (String) a warning label to be displayed to the user below the input
 - [ready](https://developers.fliplet.com/API/helpers/interface-hooks.html#run-a-function-when-a-field-is-initialized) (Function) a function to run when a field is initialized
 
 ## Types
