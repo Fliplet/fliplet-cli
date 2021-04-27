@@ -4,6 +4,31 @@ Helpers are can define instance methods which can then be called at any time dur
 
 ---
 
+## Class methods
+
+### Find a helper
+
+Use the `findOne` class method to find an instance of a helper. You can provide a predicate to look for a specific helper on the screen:
+
+```js
+var instance = Fliplet.Helper.findOne({
+  name: 'profile',
+  fields: { bar: 1 }
+});
+```
+
+### Find a list of helper
+
+Use the `find` class method to find a list of helper instances on a screen. You can provide a predicate to filter for specific helpers:
+
+```js
+var instances = Fliplet.Helper.find({
+  name: 'profile'
+});
+```
+
+---
+
 ## Instance methods
 
 ### Update fields
