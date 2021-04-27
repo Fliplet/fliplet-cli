@@ -13,7 +13,7 @@ Use the `findOne` class method to find an instance of a helper. You can provide 
 ```js
 var instance = Fliplet.Helper.findOne({
   name: 'profile',
-  fields: { bar: 1 }
+  fields: { name: 'john' }
 });
 ```
 
