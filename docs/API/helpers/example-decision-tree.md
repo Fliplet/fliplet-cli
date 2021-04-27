@@ -132,6 +132,7 @@ fl-helper[name="question"] {
     display: block;
     margin: 0 15px;
     padding: 3px 20px;
+
     fl-prop {
       font-size: 16px;
     }
