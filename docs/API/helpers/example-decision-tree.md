@@ -26,7 +26,7 @@ Fliplet.Helper({
       '{! if show !}',
       '<div data-view="content"></div>',
       '{! each button in fields.buttons !}',
-      '<button data-to="{! button.goto !}" class="answer">{! button.label !}</button><br />',
+      '<button class="answer">{! button.label !}</button><br />',
       '{! endeach !}',
       '{! endif !}'
     ].join(''),
