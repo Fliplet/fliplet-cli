@@ -23,15 +23,15 @@ We regularly update our framework to support new features. If you have an older 
 
 ## Supported versions (4.2+)
 
-### Version 4.5.2 (April 16, 2020)
+### Version 4.5.2 (April 16, 2021)
 
 - **All platforms**: Improvements for marking in-app notifications as read when push notifications are received.
 
-### Version 4.5.1 (March 18, 2020)
+### Version 4.5.1 (March 18, 2021)
 
 - **All platforms**: Improvements for push notifications and displaying notification badges on the home screen.
 
-### Version 4.5.0 (March 4, 2020)
+### Version 4.5.0 (March 4, 2021)
 
 - **All platforms**: Support for [reading push notification settings via the JS API](https://developers.fliplet.com/API/core/notifications.html#verify-the-devices-push-notification-settings).
 
