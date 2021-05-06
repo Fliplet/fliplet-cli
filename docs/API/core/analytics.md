@@ -28,21 +28,24 @@ Analytics for apps can be tracked by providing a type (either `event` or `pageVi
 ```js
 // Track an event
 Fliplet.App.Analytics.track('event', {
-  label: 'Click on News Item'
+  category: 'news',
+  action: 'open',
+  label: 'News Item 123'
 });
 
 // Track a page view
 Fliplet.App.Analytics.track('pageView', {
-  label: 'Page 123',
-  foo: 'bar'
+  label: 'My sample page'
 });
 
-// shorthand for tracking events
+// Shorthand for tracking events
 Fliplet.App.Analytics.event({
+  category: 'news',
+  action: 'open',
   label: 'News Item 123'
 });
 
-// shorthand for tracking pageviews
+// Shorthand for tracking pageviews
 Fliplet.App.Analytics.pageView('My sample page');
 ```
 
