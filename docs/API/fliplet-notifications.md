@@ -73,7 +73,10 @@ Send an in-app notification to a specific user using the `scope` option:
 // insert a new notification for a specific user
 instance.insert({
   status: 'published',
-  data: { message: 'Hi John!' },
+  data: {
+    title: 'Greetings',
+    message: 'Hi John!'
+  },
   // scope will be matched using data matched from the user's entry in the data source
   scope: {
     email: 'john@example.org'
@@ -89,7 +92,10 @@ Send an in-app notification to all logged in users using the `audience` attribut
 // insert a new notification for a specific user
 instance.insert({
   status: 'published',
-  data: { message: 'Hi logged in users!' },
+  data: {
+    title: 'Welcome',
+    message: 'Hi logged in users!'
+  },
   audience: 'loggedIn'
 })
 ```
@@ -102,7 +108,10 @@ Send an in-app notification to a specific device ID using the `scope` option wit
 // insert a new notification for a specific user
 instance.insert({
   status: 'published',
-  data: { message: 'Hi John!' },
+  data: {
+    title: 'Greetings',
+    message: 'Hi John!'
+  },
   // scope will be matched for the list of Device IDs specified
   scope: {
     flSessionId: [123]
@@ -118,7 +127,10 @@ Your in-app notification will be broadcasted to everyone if you don't provide a 
 // insert a new notification broadcasting everyone
 instance.insert({
   status: 'published',
-  data: { message: 'Hi Everyone!' }
+  data: {
+    title: 'Greetings',
+    message: 'Hi Everyone!'
+  }
 })
 ```
 
@@ -142,6 +154,7 @@ You can schedule an in-app notification to be sent at a later date:
 instance.insert({
   status: 'scheduled',
   data: {
+    title: 'Greetings',
     message: 'Hi Everyone!'
   },
   // timestamp in unix seconds
@@ -156,7 +169,10 @@ In-app notifications can also notify the user with a push notification which can
 ```js
 // insert an in-app notification and also send a push notification
 instance.insert({
-  data: { message: 'Hi John!' },
+  data: {
+    title: 'Greetings',
+    message: 'Hi John!'
+  },
 
   // Also send a push notification
   pushNotification: {
@@ -299,31 +315,44 @@ var instance = Fliplet.Notifications.init({
 
 // insert a new notification for a specific user
 instance.insert({
-  data: { message: 'Hi John!' },
+  data: {
+    title: 'Greetings',
+    message: 'Hi John!'
+  },
   pushNotification: { payload: {}, delayUntilTimestamp: 123 },
   scope: { email: 'john@example.org' }
 })
 
 // insert a notification to a specific segment
 instance.insert({
-  data: { message: 'Hi John!' },
+  data: {
+    title: 'Greetings',
+    message: 'Hi John!'
+  },
   scope: { foo: 'bar' }
 })
 
 // insert a notification to a specific device ID
 instance.insert({
-  data: { message: 'Hi John!' },
+  data: {
+    title: 'Greetings',
+    message: 'Hi John!'
+  },
   scope: { flSessionId: [123] }
 })
 
 // insert a new notification broadcasting everyone
 instance.insert({
-  data: { message: 'Hi Everyone!' }
+  data: {
+    title: 'Greetings',
+    message: 'Hi Everyone!'
+  }
 })
 
 // schedule a notification for later
 instance.insert({
   data: {
+    title: 'Greetings',
     message: 'Hi Everyone!'
   },
   status: 'scheduled',
@@ -378,8 +407,8 @@ instance.unread.count({ createdAt: { $gt: 123 } })
 instance.addToStream({
   createdAt: moment().format(),
   data: {
-    title: 'Consequat commodo enim ea elit',
-    message: 'Lorem reprehenderit consectetur culpa eu do.'
+    title: 'Title of additional notification',
+    message: 'Message of additional notification'
   }
 })
 
@@ -388,15 +417,15 @@ instance.addToStream([
   {
     createdAt: moment().format(),
     data: {
-      title: 'Consequat commodo enim ea elit',
-      message: 'Lorem reprehenderit consectetur culpa eu do.'
+      title: 'Title of additional notification',
+      message: 'Message of additional notification'
     }
   },
   {
     createdAt: moment().format(),
     data: {
-      title: 'Eiusmod laboris nulla voluptate',
-      message: 'Ad nisi incididunt sunt aliqua id duis irure.'
+      title: 'Title of another additional notification',
+      message: 'Message of another additional notification.'
     }
   }
 ])

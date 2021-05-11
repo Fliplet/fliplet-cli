@@ -117,7 +117,10 @@ Sample request body:
 
 ```json
 {
-  "data": { "message": "John posted an article." },
+  "data": {
+    "title": "New article",
+    "message": "John posted an article."
+  },
   "scope": { "Email": "nick@example.org" },
   "pushNotification": {
     "payload": {
@@ -132,7 +135,10 @@ You can also target many people at once using any [Sift.js](https://github.com/F
 
 ```json
 {
-  "data": { "message": "Hi John and Nick!." },
+  "data": {
+    "title": "Greetings",
+    "message": "Hi John and Nick!."
+  },
   "scope": {
     "Email": {
       "$in": ["nick@example.org", "john@example.org"]
