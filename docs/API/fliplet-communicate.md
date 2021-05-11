@@ -16,7 +16,7 @@ Available options:
 - `subject`: subject of the email
 - `from_name`: the sender's name
 - `html`: HTML string for the email body
-- `headers`: "key:value" object with headers to add to the email
+- `headers`: "key:value" object with headers to add to the email (most headers are allowed). We recommend using `X-*` prefixes to any custom header, e.g. `X-My-Custom-Header: "value"`
 - `attachments`: array of attachments
 - `images`: array of images
 
