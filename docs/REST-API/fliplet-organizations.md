@@ -10,6 +10,8 @@ Please head to the [how to authenticate](authenticate.md) page of the documentat
 
 ### Get the audit logs for an organization
 
+<p class="warning"><strong>Note</strong>: this feature is only available for the <strong>gold plan</strong> and above. Please contact our sales team for more details.</p>
+
 #### `GET or POST v1/organizations/:id/logs`
 
 Optional parameters:

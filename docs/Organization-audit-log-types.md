@@ -2,6 +2,7 @@
 
 Please see below a table with a recap of all available log types for organization audit logs. Logs can be fetched either using the [JS API](/API/core/organizations.html#audit-logs) or [RESTful API](/REST-API/fliplet-organizations.html#get-the-audit-logs-for-an-organization).
 
+<p class="warning"><strong>Note</strong>: this feature is only available for the <strong>gold plan</strong> and above. Please contact our sales team for more details.</p>
 
 ## Logs from Fliplet Studio & Fliplet Viewer
 
