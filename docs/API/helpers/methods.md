@@ -185,8 +185,8 @@ welcome.greet();
   <a class="bl two" href="fields.html">
     <div>
       <span class="pin">Next article in this series</span>
-      <h4>Fields</h4>
-      <p>Learn more about defining fields in your helpers.</p>
+      <h4>Attributes</h4>
+      <p>Learn more about defining attributes and fields in your helpers.</p>
       <button>Next &rarr;</button>
     </div>
   </a>

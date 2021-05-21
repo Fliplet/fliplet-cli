@@ -1,8 +1,8 @@
-# Fields
+# Attributes (fields)
 
-fields can be passed to helpers via the `field` HTML element and then accessed via `this.fields.<name>` in JavaScript.
+Attributes can be passed to helpers via the `field` HTML element and then accessed via `this.fields.<name>` in JavaScript.
 
-## Accessing fields
+## Accessing attributes
 
 Use the `field` property of the helper instance (`this`) to access field values in JavaScript as shown below.
 
@@ -24,11 +24,11 @@ Fliplet.Helper({
 });
 ```
 
-fields can also be accessed in the HTML template by using the shortcode syntax, e.g. `{! fields.firstName !}`.
+attributes can also be accessed in the HTML template by using the shortcode syntax, e.g. `{! fields.firstName !}`.
 
-## Updating fields
+## Updating attributes
 
-Use the `set` instance method to update fields and values at runtime. Given the following example:
+Use the `set` instance method to update attributes and values at runtime. Given the following example:
 
 ```js
 var profile;
@@ -46,7 +46,7 @@ Fliplet.Helper({
 });
 ```
 
-See how the `firstName` property can be updated at anytime using a static value or using the result of a promise returned by a function:
+See how the `firstName` attribute can be updated at anytime using a static value or using the result of a promise returned by a function:
 
 ```js
 profile.set('firstName', 'Nick');
@@ -58,9 +58,9 @@ profile.set('firstName', function () {
 
 ---
 
-## Default fields
+## Default attributes
 
-Use the `data` object to define default fields for your helpers:
+Use the `data` object to define default attributes for your helpers:
 
 ```js
 Fliplet.Helper({
@@ -78,9 +78,9 @@ Fliplet.Helper({
 
 ---
 
-## Dynamically loading fields
+## Dynamically loading attributes
 
-The `data` object can optionally be a function returning a promise. This can be used to programmatcally load dynamic data when the helper is loaded:
+The `data` object can optionally be a function returning a promise. This can be used to programmatically populate attributes when the helper is loaded:
 
 ```js
 Fliplet.Helper({
