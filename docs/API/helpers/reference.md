@@ -15,7 +15,8 @@ Fliplet.Helper({
  render: {
    template: String,
    beforeReady: Function,
-   ready: Function
+   ready: Function,
+   dependencies: Array
  },
  configuration: Object,
  views: Object,
@@ -78,6 +79,13 @@ Fliplet.Helper({
       <td>optional</td>
       <td>
         <a href="/API/helpers/hooks.html#run-logic-once-a-helper-is-rendered">A function to run when the helper instance is rendered</a>.</td>
+    </tr>
+    <tr>
+      <td><code>render.dependencies</code></td>
+      <td><code>array</code></td>
+      <td>optional</td>
+      <td>
+        <a href="/API/helpers/libraries.html">A list of dependencies to include when rendering the helper</a>.</td>
     </tr>
     <tr>
       <td><code>configuration</code></td>

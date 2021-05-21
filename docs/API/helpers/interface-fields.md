@@ -2,6 +2,8 @@
 
 ## Properties for all fields
 
+The following property can be defined for all field types:
+
 - `type` (String, required)
 - `name` (String, required)
 - `label` (String) a bold label displayed before the input field
@@ -183,7 +185,7 @@ Example:
 {
   name: 'buttons',
   label: 'Buttons',
-  type: 'group',
+  type: 'list',
   addLabel: 'Add button',
   headingFieldName: 'title',
   emptyListPlaceholderHtml: '<p>Please add at least one button</p>',

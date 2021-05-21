@@ -111,7 +111,7 @@ Fliplet.Helper({
       {
         name: 'buttons',
         label: 'Buttons',
-        type: 'group',
+        type: 'list',
         addLabel: 'Add button',
         headingFieldName: 'label',
         emptyListPlaceholderHtml: '<p>Please add at least one button</p>',
