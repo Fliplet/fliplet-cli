@@ -8,24 +8,44 @@ The Data Source REST APIs allows you to interact and make any sort of change to 
 
 ### Table of contents
 
-1. [Authentication](#authentication)
-2. [Access roles](#access-roles)
-3. [Entities](#entities)
-  * [Data Source](#data-source)
-  * [Data Source Entry](#data-source-entry)
-4. [Endpoints](#endpoints)
-  * [Get the data sources belonging to an app or organization](#get-the-data-sources-belonging-to-an-app-or-organization)
-  * [Get a data source by its ID](#get-a-data-source-by-its-id)
-  * [Create a data source](#create-a-data-source)
-  * [Update a data source attributes](#update-a-data-source-attributes)
-  * [Delete a data source and its entries from the system](#delete-a-data-source-and-its-entries-from-the-system)
-  * [Bulk-import entries for a data source](#bulk-import-entries-for-a-data-source)
-  * [Empty a data source (truncate)](#empty-a-data-source-truncate)
-  * [Commit a series of changes to a data source](#commit-a-series-of-changes-to-a-data-source)
-  * [Run queries on a data source](#run-queries-on-a-data-source)
-  * [Get a data source entry by its ID](#get-a-data-source-entry-by-its-id)
-  * [Insert a new entry to a data source](#insert-a-new-entry-to-a-data-source)
-  * [Insert a new entry with files into a data source](#insert-a-new-entry-with-files-into-a-data-source)
+- [Data Sources REST APIs](#data-sources-rest-apis)
+    - [Table of contents](#table-of-contents)
+  - [Authentication](#authentication)
+  - [Access roles](#access-roles)
+  - [Entities](#entities)
+    - [Data Source](#data-source)
+    - [Data Source Entry](#data-source-entry)
+  - [Endpoints](#endpoints)
+    - [Get the data sources belonging to an app or organization](#get-the-data-sources-belonging-to-an-app-or-organization)
+      - [`GET v1/data-sources`](#get-v1data-sources)
+    - [Get a data source by its ID](#get-a-data-source-by-its-id)
+      - [`GET v1/data-sources/<dataSourceId>`](#get-v1data-sourcesdatasourceid)
+    - [Get a data source by its Name](#get-a-data-source-by-its-name)
+      - [`GET v1/data-sources/<dataSourceName>`](#get-v1data-sourcesdatasourcename)
+    - [Create a data source](#create-a-data-source)
+      - [`POST v1/data-sources`](#post-v1data-sources)
+    - [Update a data source attributes](#update-a-data-source-attributes)
+    - [`PUT v1/data-sources/<dataSourceId>`](#put-v1data-sourcesdatasourceid)
+    - [Delete a data source and its entries from the system](#delete-a-data-source-and-its-entries-from-the-system)
+      - [`DELETE v1/data-sources/<dataSourceId>`](#delete-v1data-sourcesdatasourceid)
+    - [Bulk-import entries for a data source](#bulk-import-entries-for-a-data-source)
+      - [`POST v1/data-sources/<dataSourceId>/data`](#post-v1data-sourcesdatasourceiddata)
+    - [Empty a data source (truncate)](#empty-a-data-source-truncate)
+      - [`POST v1/data-sources/<dataSourceId>/data`](#post-v1data-sourcesdatasourceiddata-1)
+    - [Commit a series of changes to a data source](#commit-a-series-of-changes-to-a-data-source)
+      - [`POST v1/data-sources/<dataSourceId>/commit`](#post-v1data-sourcesdatasourceidcommit)
+    - [Run queries on a data source](#run-queries-on-a-data-source)
+      - [`POST v1/data-sources/<dataSourceId>/data/query`](#post-v1data-sourcesdatasourceiddataquery)
+    - [Get a data source entry by its ID](#get-a-data-source-entry-by-its-id)
+      - [`GET v1/data-sources/<dataSourceId>/data/<entryId>`](#get-v1data-sourcesdatasourceiddataentryid)
+    - [Insert a new entry to a data source](#insert-a-new-entry-to-a-data-source)
+      - [`PUT v1/data-sources/<dataSourceId>/data`](#put-v1data-sourcesdatasourceiddata)
+    - [Insert a new entry with files into a data source](#insert-a-new-entry-with-files-into-a-data-source)
+      - [`PUT v1/data-sources/<dataSourceId>/data`](#put-v1data-sourcesdatasourceiddata-1)
+  - [Versioning](#versioning)
+    - [Get list of versions of a data source](#get-list-of-versions-of-a-data-source)
+    - [Get all entries for a version](#get-all-entries-for-a-version)
+    - [Restore a specific version to a data source](#restore-a-specific-version-to-a-data-source)
 
 ---
 
@@ -328,6 +348,13 @@ Response status code: 200 OK (no body)
 e.g. `v1/data-sources/123/commit`
 
 The commit endpoint is useful if you want to insert, update and delete many records at once in a single API request. This makes it very efficient in terms of both minimizing the network requests and computation required from both sides.
+
+List of input parameters:
+- `entries`: (required array): the list of entries to insert or update (`{ data }` for insert and `{ id, data }` for updates).
+- `append`: (optional boolean, defaults to false): set to `true` to keep existing remote entries not sent in the updates to be made. When this is set to `false` you will essentially be replacing the whole data source with just the data you are sending.
+- `delete`: (optional array): the list of entry IDs to remove (when used in combination with `append: true`).
+- `extend` (optional boolean, defaults to false): set to `true` to enable merging the local columns you are sending with any existing columns for the affected data source entries.
+- `runHooks` (optional array) the list of hooks (`insert` or `update`) to run on the data source during the operation.
 
 The following sample request applies the following changes to the data source:
 - updates the entry with ID 123 merging its data with the new added column(s)
