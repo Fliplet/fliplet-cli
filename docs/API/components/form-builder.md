@@ -339,6 +339,32 @@ Fliplet.FormBuilder.get()
 
 ## Hooks
 
+### isFormInvalid
+
+Runs when the form is found in valid after submission. The `invalidFields` parameter contains a collection of fields that are invalid.
+
+```js
+/* Suppress the notification for required fields */
+Fliplet.Hooks.on('isFormInvalid', function(invalidFields) {
+  return Promise.reject(); // With no parameter
+});
+
+/* Customize notification for required fields */
+Fliplet.Hooks.on('isFormInvalid', function(invalidFields) {
+  return Promise.reject('Go and fill in all required fields');
+});
+
+/* Ensure the notification for required fields appears */
+Fliplet.Hooks.on('isFormInvalid', function(invalidFields) {
+  return Promise.reject('');
+});
+
+/* Allow form submission to continue despite the form is invalid */
+Fliplet.Hooks.on('isFormInvalid', function(invalidFields) {
+  return Promise.resolve(); // or return nothing
+});
+```
+
 ### beforeFormSubmit
 
 Capture data when the form is submitted. You can modify the data and also avoid data from being saved to a data source or continuing its flow.
