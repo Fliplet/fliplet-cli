@@ -131,13 +131,15 @@ Example with different label and value:
 A provider (Fliplet first-party component) to perform a variety of tasks. These are commonly used to reuse existing functionality, e.g. let the user choose a screen or a data source.
 
 - `package` (**string**, e.g. `com.fliplet.link`)
+- `mode` (**string**, either not provided or with value `full-screen`)
+- `html` (**string**, when using `full-screen` this is the `Handlebars` template to define a placeholder to launch the provider)
 
-These are the supported provider packages:
+These are the supported inline provider packages:
 
 - `com.fliplet.link`: choose an App Screen or URL for a navigate action
 - `com.fliplet.data-source-provider`: choose a Data Source
 
-Example:
+Example for an inline provider:
 
 ```js
 {
@@ -147,6 +149,26 @@ Example:
   package: 'com.fliplet.link'
 }
 ```
+
+On the other hand, these are the supported `full-screen` provider packages:
+
+- `com.fliplet.file-picker`: choose one or multiple files and folders
+- `com.fliplet.email`: configure an email to be sent
+
+Example for a `full-screen` provider:
+
+```js
+{
+  type: 'provider',
+  name: 'files',
+  label: 'Choose a file',
+  package: 'com.fliplet.file-picker',
+  mode: 'full-screen',
+  html: '<button data-open-provider>Configure</button> You selected {{ value.length }} files'
+}
+```
+
+As shown in the example above, the `html` requires a trigger element to open the provider. You can define the trigger by adding the `data-open-provider` data attribute to any HTML element defined in the Handlebars template.
 
 ---
 
