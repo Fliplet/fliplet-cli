@@ -1469,8 +1469,8 @@ div.language-scss:before {
 .hiring {
   background: linear-gradient(-45deg, $secondaryBackground, #7C4B73, #EC5E6C, $secondaryBackground);
 	background-size: 400% 400%;
-	animation: gradient 15s ease infinite;
-  box-shadow: 0px 0px 0px 1px rgba($primaryBackground, 0.5) inset;
+	animation: gradient 15s ease;
+  box-shadow: 0px 0px 0px 2px rgba($primaryBackground, 0.5) inset;
   padding: 12px 12px !important;
   color: #FFF;
   margin-top: 20px;
