@@ -13,7 +13,7 @@ We regularly update our framework to support new features. If you have an older 
   <div class="bl two">
     <div>
       <h4>Android</h4>
-      <p>Latest stable release: 4.5.2</p>
+      <p>Latest stable release: 4.5.3</p>
     </div>
   </div>
 </section>
@@ -22,6 +22,10 @@ We regularly update our framework to support new features. If you have an older 
 ---
 
 ## Supported versions (4.2+)
+
+### Version 4.5.3 (June 15, 2021)
+
+- **Android**: Security improvements for unzipping files.
 
 ### Version 4.5.2 (April 16, 2021)
 
