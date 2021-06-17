@@ -41,6 +41,8 @@ To synchronize your data with Fliplet servers you will need an authorization tok
 
 To generate a token, please follow the docs [here](REST-API/authenticate.md).
 
+---
+
 ## Minimum requirements
 
 - Operative System: Windows (7, 8, 10, Server), macOS, Linux (x64, ARM)
