@@ -27,6 +27,12 @@ description: Fliplet Agent (Data integration service) is a command line utility 
 
 ---
 
+## How it works
+
+![How it works](/assets/img/dis-flow.svg)
+
+---
+
 ## Before you start
 
 To synchronize your data with Fliplet servers you will need an authorization token generated via Fliplet Studio from an organization admin account.
