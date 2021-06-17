@@ -74,6 +74,28 @@ That's it! You can now jump to the [Get Started](#get-started) part of this docu
 
 ---
 
+### Install the agent for all users
+
+Due to the nature of [npm](http://npmjs.com), `fliplet-agent` is by default only installed for the local user of the workstation as the packages folder is within the user's home folder.
+
+You can verify this by running `npm config get prefix` on the shell. On Windows, you should get an output such as `C:\Users\YourUser\AppData\Roaming\npm`.
+
+To install packages for all users of a workstation, simply create a shared folder accessible by all users and sets its path to be the npm default directory via the following command:
+
+```bash
+npm config set prefix 'C:\MySharedFolder\'
+```
+
+Once you have set up the global folder, simply install the agent to have it installed for all users:
+
+```bash
+npm install fliplet-agent -g
+```
+
+Note that each user must set its npm prefix to the shared folder before being able to use its packages.
+
+---
+
 ### Verifying the agent is installed
 
 You can now use the command `fliplet-agent` from the command line. Just type `fliplet-agent` to ensure the software is installed and also see the available options and their example usage:
