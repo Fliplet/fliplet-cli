@@ -518,6 +518,11 @@ h2, h3, h4, h5, h6 {
                 padding: 1px 3px;
                 font-size: 12px;
               }
+
+              &.current .label {
+                background-color: #FFF;
+                color: $primaryBackground;
+              }
             }
 
             p {
