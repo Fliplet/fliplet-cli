@@ -33,7 +33,7 @@ Optionally add any of the libraries to your app for additional functionality:
 *   **fliplet-datasources** `1.0` Integrate your app with Data Source functionalities to read and write new entries. ([Documentation](http://developers.fliplet.com/API/fliplet-datasources.html))
 *   **fliplet-encryption** `1.0` Encrypt the content of Data Sources to secure your data. ([Documentation](https://developers.fliplet.com/API/fliplet-encryption.html))
 *   **fliplet-gamify** `0.1` Easily configure gamification logic for your app. ([Documentation](http://developers.fliplet.com/API/fliplet-gamify.html))
-*   **fliplet-helper** `1.0` Fliplet helpers ([Documentation](http://developers.fliplet.com/API/fliplet-helper.html))
+*   **fliplet-helper** `1.0` Fliplet helpers ([Documentation](http://developers.fliplet.com/API/helpers/overview.html))
 *   **fliplet-icons** `1.0.0` Fliplet own icon font. ([Documentation](https://fliplet.com/icons-demo-page/))
 *   **fliplet-like** `0.2` Helper to display a like button that saves the result into a data source. ([Documentation](http://developers.fliplet.com/API/like-buttons.html))
 *   **fliplet-media** `1.0` Upload media files and read media folders from your app. ([Documentation](http://developers.fliplet.com/API/fliplet-media.html))

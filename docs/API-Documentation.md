@@ -85,7 +85,7 @@ These JS APIs falls into the most common category and almost all apps, component
 - [Data Sources](API/fliplet-datasources.md) (`fliplet-datasources`)
 - [Database](API/fliplet-database.md) (`fliplet-database`)
 - [Encryption](API/fliplet-encryption.md) (`fliplet-encryption`)
-- [Helper](API/fliplet-helper.md) (`fliplet-helper`)
+- [Helper](API/helpers/overview.md) (`fliplet-helper`)
 - [Gamify](API/fliplet-gamify.md) (`fliplet-gamify`)
 - [Like Buttons](API/like-buttons.md) (`fliplet-like:0.2`) (Beta)
 - [Media](API/fliplet-media.md) (`fliplet-media`)

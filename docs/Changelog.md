@@ -6,6 +6,14 @@ description: Changelog notes giving a summary of recent significant changes to t
 
 Each week, we provide changelog notes on this page giving a summary of recent significant changes to the documentation. If there haven't been any significant changes in a given week, we don't publish changelog notes.
 
+## June 2021
+
+### June 23rd
+
+- New documentation page for the [Fliplet Helper components](https://developers.fliplet.com/API/helpers/overview.html).
+
+---
+
 ## April 2021
 
 ### April 16th
@@ -239,7 +247,7 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ### January 10th
 
-- Documentation page for the [Fliplet.Helper](https://developers.fliplet.com/API/fliplet-helper.html) JS API.
+- Documentation page for the [Fliplet.Helper](https://developers.fliplet.com/API/helpers/overview.html) JS API.
 - General improvements to the guidelines and example on the [Output of components](https://developers.fliplet.com/components/Build-output.html#reading-previously-saved-settings) page used when developing custom components for Fliplet apps.
 
 ### January 6th

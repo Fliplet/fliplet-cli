@@ -75,7 +75,7 @@ Here's a short list of requested features that are coming up on our platform in 
   <a class="bl two" href="/API/helpers/overview.html">
     <div class="secondary">
       <h4>Helpers</h4>
-      <p>Fliplet Helpers are due major enhancements to be released mid-2021. You can browse the documentation draft for the upcoming changes.</p>
+      <p>Fliplet Helpers have gone through a complete overhaul to enhance their functionality and list of use cases. See the new changes we just released.</p>
       <button>Browse draft documentation &rarr;</button>
     </div>
   </a>
