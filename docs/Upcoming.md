@@ -11,7 +11,7 @@ This page lists upcoming changes and features that are going to be documented in
     <div>
       <span class="pin">Now available to all customers</span>
       <h4>Helpers</h4>
-      <p>Fliplet Helpers have gone through a complete overhaul to enhance their functionality and list of use cases. See the new changes we just released.</p>
+      <p>Fliplet Helpers have gone through a complete overhaul to enhance their functionality and list of use cases. See the new changes we released.</p>
       <button>Browse documentation &rarr;</button>
     </div>
   </a>

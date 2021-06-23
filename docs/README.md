@@ -75,8 +75,8 @@ Here's a short list of requested features that are coming up on our platform in 
   <a class="bl two" href="/API/helpers/overview.html">
     <div class="secondary">
       <h4>Helpers</h4>
-      <p>Fliplet Helpers have gone through a complete overhaul to enhance their functionality and list of use cases. See the new changes we just released.</p>
-      <button>Browse draft documentation &rarr;</button>
+      <p>Fliplet Helpers have gone through a complete overhaul to enhance their functionality and list of use cases. See the new changes we released.</p>
+      <button>Browse documentation &rarr;</button>
     </div>
   </a>
   <a class="bl two" href="/API/fliplet-payments.html">
