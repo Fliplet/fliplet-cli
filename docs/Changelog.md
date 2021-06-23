@@ -12,6 +12,10 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 - New documentation page for the [Fliplet Helper components](https://developers.fliplet.com/API/helpers/overview.html).
 
+### June 9th
+
+- New documentation for the `isFormInvalid` hook for the Form component.
+
 ---
 
 ## April 2021
