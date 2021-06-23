@@ -25,7 +25,7 @@ We regularly update our framework to support new features. If you have an older 
 
 ### Version 4.6.0 (June 17, 2021)
 
-- **Android**: Security improvements and target SDK bumped up to version 30.
+- **Android**: Security improvements.
 
 ### Version 4.5.3 (June 15, 2021)
 
