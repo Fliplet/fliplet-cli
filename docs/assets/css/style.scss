@@ -14,6 +14,8 @@ $warningTextColor: #6c6d00;
 
 $sidebarWidth: 286px;
 
+$header-height: 66px;
+
 @font-face {
   font-family: 'BASE1';
   src: url('/assets/fonts/base64.eot');
@@ -75,14 +77,14 @@ h2, h3, h4, h5, h6 {
   top: 0;
   left: 0;
   width: 100%;
-  height: 70px;
+  height: $header-height;
   background-color: $primaryBackground;
   z-index: 100;
   display: flex;
   transition: top 0.3s;
 
   .has-scrolled & {
-    top: -70px;
+    top: -$header-height;
   }
 
   .content {
@@ -95,9 +97,9 @@ h2, h3, h4, h5, h6 {
   }
 
   .brand {
-    flex: 1;
     display: flex;
     align-items: center;
+    text-decoration: none;
 
     .logo {
       display: block;
@@ -108,16 +110,30 @@ h2, h3, h4, h5, h6 {
       margin-right: 6px;
     }
 
-    span {
+    strong {
+      display: block;
+      font-size: 26px;
       color: #FFF;
-      font-size: 22px;
       line-height: 22px;
+    }
 
-      strong {
-        font-weight: normal;
-        opacity: 0.5;
+    span {
+      display: block;
+      color: #FFF;
+      font-size: 26px;
+      line-height: 22px;
+      opacity: 0.4;
+    }
+
+    &:hover {
+      span {
+        opacity: 0.8;
       }
     }
+  }
+
+  .spacer {
+    flex: 1;
   }
 
   .middle {
@@ -220,7 +236,7 @@ h2, h3, h4, h5, h6 {
           padding: 0;
           color: #FFF;
           border-radius: 4px;
-          opacity: 0.7;
+          opacity: 0.5;
 
           &.active {
             background-color: rgba(255, 255, 255, 0.2);
@@ -232,15 +248,7 @@ h2, h3, h4, h5, h6 {
           }
         }
 
-        &:hover {
-          border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-          border-top: 2px solid transparent;
-        }
-
         &.active {
-          border-bottom: 2px solid $primary;
-          border-top: 2px solid transparent;
-
           a {
             opacity: 1;
             cursor: default;
@@ -314,7 +322,7 @@ h2, h3, h4, h5, h6 {
 }
 
 #app {
-  padding-top: 70px;
+  padding-top: $header-height;
 }
 
 .hero {
@@ -1142,7 +1150,7 @@ h2, h3, h4, h5, h6 {
     transition: top 0.3s;
     display: block;
     position: fixed;
-    top: 70px;
+    top: $header-height;
     left: 0;
     bottom: 0;
     padding-top: 0;
@@ -1204,7 +1212,7 @@ h2, h3, h4, h5, h6 {
 .algolia-autocomplete .ds-dropdown-menu [class^=ds-dataset-] {
   left: 0;
   bottom: 0;
-  top: 70px;
+  top: $header-height;
   position: fixed !important;
   overflow-y: scroll !important;
   border-radius: 0 !important;
@@ -1266,7 +1274,15 @@ h2, h3, h4, h5, h6 {
     display: flex;
   }
 
-  #header .brand span {
+  #header .brand {
+    flex: 1;
+  }
+
+  #header .spacer {
+    display: none;
+  }
+
+  #header .brand span, #header .brand strong {
     display: none;
   }
 
