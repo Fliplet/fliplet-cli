@@ -1,6 +1,6 @@
 # Data Sources JS APIs
 
-The Data Source REST APIs allows you to interact and make any sort of change to your app's Data Sources from the app itself.
+The Data Source JS APIs allows you to interact and make any sort of change to your app's Data Sources from the app itself.
 
 The `fliplet-datasources` package contains the following namespaces:
 
