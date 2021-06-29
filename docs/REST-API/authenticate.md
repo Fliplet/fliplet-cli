@@ -16,7 +16,7 @@ The request **body size ​limit​** on all endpoints is set to **1​ GB​**,
 Auth-token: eu--abcdefg123456789
 ```
 
-Alternatively, you can also sent the token via the **Authorization** header, encoded as a**base64**:
+Alternatively, you can also send the token via the **Authorization** header, encoded as a**base64**:
 
 ```
 Authorization: Bearer ZXUtLWFiY2RlZmcxMjM0NTY3ODk=
