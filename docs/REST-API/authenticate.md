@@ -11,8 +11,15 @@ The request **body size ​limit​** on all endpoints is set to **1​ GB​**,
 **All requests must contain the authentication token** in the request headers ​or​ as a GET parameter. Alternatively, it can also be sent as a cookie, although sending it in the headers is preferred for security.
 
 **Option 1) as a header**
+
 ```
 Auth-token: eu--abcdefg123456789
+```
+
+Alternatively, you can also sent the token via the **Authorization** header, encoded as a**base64**:
+
+```
+Authorization: Bearer ZXUtLWFiY2RlZmcxMjM0NTY3ODk=
 ```
 
 **Option 2) as a GET parameter**
