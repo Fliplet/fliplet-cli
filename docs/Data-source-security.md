@@ -27,7 +27,7 @@ if (type === 'select') {
   return { granted: true, exclude: ['Phone', 'NextOfKin'] };
 }
 
-// No access granted to other type of operations
+// No further access is granted by this rule to other type of operations
 ```
 
 ### Make changes to the input query
