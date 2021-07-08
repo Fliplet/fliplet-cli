@@ -78,7 +78,7 @@ if (type === 'select') {
 if (type === 'insert') {
   var entry = await DataSources(123).find();
 
-  // Only allow reads as long as less than 10 entries in the target Data Source
+  // Only allow writes as long as there are less than 10 entries in the target Data Source
   if (entry && entry.length < 10) {
     return { granted: true };
   }
