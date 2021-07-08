@@ -49,7 +49,7 @@ if (type === 'insert') {
 }
 ```
 
-Custom rules can also read data from different Data Sources using the `find` and `findOne` methods:
+Custom rules can also read data from different Data Sources using the `find` (for finding multiple records) and `findOne` (for finding a single record) methods of the `DataSource` server-side library:
 
 ```js
 if (type === 'select') {
@@ -72,3 +72,9 @@ if (type === 'insert') {
   }
 }
 ```
+
+Both `find` and `findOne` supports the following properties:
+
+- `where` (Object) Sequelize query to run
+- `limit` (Number, defaults to `1` on `findOne`)
+- `offset` (Number, defaults to 0)
