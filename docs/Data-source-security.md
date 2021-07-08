@@ -10,6 +10,8 @@ If you need more control on your security rules granting access to Data Sources,
 - `user` (Object) the user's session with its data, when the user is logged in
 - `query` (Object) the input query (when reading data) or data to write (when inserting or updating an entry)
 
+### Granting access with a custom security rule
+
 A rule needs to return an object with `granted: true` when access is granted to the user. The rule can also return an `exclude` array property alongside the same object with a list of columns that are not allowed to be read, written or updated.
 
 Let's take a look at a basic example for a rule:
@@ -28,7 +30,9 @@ if (type === 'select') {
 // No access granted to other type of operations
 ```
 
-Furthermore, rules can also make changes to the input `query` object if required:
+### Make changes to the input query
+
+Rules can also make changes to the input `query` object if required:
 
 ```js
 if (type === 'select') {
@@ -48,6 +52,8 @@ if (type === 'insert') {
   return { granted: true };
 }
 ```
+
+### Reading data from other Data Sources
 
 Custom rules can also read data from different Data Sources using the `find` (for finding multiple records) and `findOne` (for finding a single record) methods of the `DataSource` server-side library:
 
@@ -73,8 +79,10 @@ if (type === 'insert') {
 }
 ```
 
-Both `find` and `findOne` supports the following properties:
+As you can see, the `DataSource` function accepts the input ID of the target Data Source and exposes two interfaces for reading one or multiple records. Both `find` and `findOne` supports the following properties:
 
 - `where` (Object) Sequelize query to run
 - `limit` (Number, defaults to `1` on `findOne`)
-- `offset` (Number, defaults to 0)
+- `offset` (Number, defaults to `0`)
+
+---
