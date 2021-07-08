@@ -2,6 +2,8 @@
 
 Fliplet apps can have each of their screens and data sources secured so that they can only be accessed when certain conditions are met. Our Data Sources management UI allows you to define security rules through a easy-to-use wizard. However, depending on the case you may want to write your own security rule from scratch using JavaScript as explained further below.
 
+![Custom security](assets/img/datasource-custom-security.png)
+
 ## Custom security rules
 
 If you need more control on your security rules granting access to Data Sources, you can write your custom conditions using Javascript. When doing so, **these variables are available to the context of the script**:
