@@ -1,6 +1,6 @@
-```
+---
 Learn how to create your own custom rules for Data Source access.
-```
+---
 
 # Securing your Data Sources
 
