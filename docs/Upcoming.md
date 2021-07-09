@@ -7,6 +7,17 @@ description: Upcoming features to be added in the Fliplet Developer documentatio
 This page lists upcoming changes and features that are going to be documented in the developers website you're looking at.
 
 <section class="blocks alt">
+  <a class="bl two" href="/Data-source-security.html">
+    <div>
+      <span class="pin">Internal preview</span>
+      <h4>Data Source Custom Access rules</h4>
+      <p>Learn how Data Sources will soon be able to support writing custom access rules having JavaScript.</p>
+      <button>Browse documentation &rarr;</button>
+    </div>
+  </a>
+</section>
+<hr />
+<section class="blocks alt">
   <a class="bl two" href="/API/helpers/overview.html">
     <div>
       <span class="pin">Now available to all customers</span>
