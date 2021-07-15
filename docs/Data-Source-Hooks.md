@@ -162,6 +162,9 @@ In addition to hook properties, configuring a hook to make network requests supp
       "endpoint": "https://example.org/apis/user-signup",
       "body": {
         "user_full_name": "{{ fullName }}"
+      },
+      "headers": {
+        "X-Foo": "Bar"
       }
     }
   }
