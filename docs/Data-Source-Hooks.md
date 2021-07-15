@@ -155,11 +155,11 @@ In addition to hook properties, configuring a hook to make network requests supp
 ```json
 [
   {
-    "type": "sms",
+    "type": "web",
     "runOn": ["insert"],
     "payload": {
       "method": "POST",
-      "endpoint": "https://example.org/apis/user-signup"
+      "endpoint": "https://example.org/apis/user-signup",
       "body": {
         "user_full_name": "{{ fullName }}"
       }
