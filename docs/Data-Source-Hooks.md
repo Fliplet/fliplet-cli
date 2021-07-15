@@ -93,6 +93,17 @@ Let's take a look at a more complex example where push notifications are only se
 ```
 {% endraw %}
 
+Note: `filter` only works for Data Source Entries having a `flPushSubscriptionId` column with value equals to the user's push subscription ID. You can read such ID using the following JS API and then save it to the relevant entry:
+
+```js
+Fliplet.User.getSubscriptionId().then(function (id) {
+  // Save id to the user's data source entry under the "flPushSubscriptionId" key
+  Fliplet.DataSources.connect(123).then(function (connection) {
+    return connection.update(456, { flPushSubscriptionId: id });
+  });
+});
+```
+
 ---
 
 ### Send an email
