@@ -147,7 +147,7 @@ In addition to hook properties, configuring a hook to send SMS support the follo
 
 ### Make a network request
 
-In addition to hook properties, configuring a hook to make network requests support the following parameter:
+In addition to hook properties, configuring a hook to make network requests supports the following parameter:
 
 - `payload`: object with `method`, `endpoint`, `body` and `headers` for the HTTP(S) network request; this supports **Handlebars** syntax for variable replacement in the values as shown in the example below.
 
