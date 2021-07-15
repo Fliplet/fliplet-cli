@@ -149,7 +149,7 @@ In addition to hook properties, configuring a hook to send SMS support the follo
 
 In addition to hook properties, configuring a hook to make network requests support the following parameter:
 
-- `payload`: object with `method`, `endpoint` and `body` for the HTTP(S) network request; this supports **Handlebars** syntax for variable replacement in the values as shown in the first example below.
+- `payload`: object with `method`, `endpoint`, `body` and `headers` for the HTTP(S) network request; this supports **Handlebars** syntax for variable replacement in the values as shown in the example below.
 
 {% raw %}
 ```json
