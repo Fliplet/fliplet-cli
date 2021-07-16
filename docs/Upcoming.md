@@ -7,6 +7,14 @@ description: Upcoming features to be added in the Fliplet Developer documentatio
 This page lists upcoming changes and features that are going to be documented in the developers website you're looking at.
 
 <section class="blocks alt">
+  <a class="bl two" href="/API/core/app-tasks.html">
+    <div>
+      <span class="pin">Internal preview</span>
+      <h4>App Tasks</h4>
+      <p>Learn how App Tasks allow you to define scheduled automations for your app screens.</p>
+      <button>Browse documentation &rarr;</button>
+    </div>
+  </a>
   <a class="bl two" href="/Data-source-security.html">
     <div>
       <span class="pin">Internal preview</span>
