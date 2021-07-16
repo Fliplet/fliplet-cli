@@ -29,9 +29,9 @@ The **App Tasks** library allows you to configure app screens to run automatical
 
 ---
 
-## Configure the target screen
+## Configuring the target screen
 
-<p class="quote"><strong>Note:</strong> Before you create an app task, <strong>your target app screen must be configured</strong> to ensure it's ready to process inbound requests made by the app task when running on a schedule or on demand.</p>
+<p class="quote"><strong>[Required]</strong> Before you create an app task, <strong>your target app screen must be configured</strong> to ensure it's ready to process inbound requests made by the app task when running on a schedule or on demand.</p>
 
 To start, use the `Fliplet.Page.onRemoteExecution()` function to register your custom JavaScript code to run when the screen is being fired by an app task:
 
