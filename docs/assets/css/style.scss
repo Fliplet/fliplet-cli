@@ -1475,6 +1475,10 @@ div.language-scss:before {
   content: "SCSS (Sass)";
 }
 
+tr td:first-child code {
+  white-space: nowrap;
+}
+
 @keyframes gradient {
 	0% {
 		background-position: 0% 50%;
