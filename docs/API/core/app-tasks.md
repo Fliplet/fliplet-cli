@@ -39,6 +39,8 @@ To start, use the `Fliplet.Page.onRemoteExecution()` function to register your c
 // Add this code to the screen JavaScript code
 // in the developer options of Fliplet Studio
 Fliplet.Page.onRemoteExecution(function (payload) {
+  console.log('App task sent this payload', payload);
+
   // This code will run when the screen is triggered by an app task.
   // You can return a promise if the result to be returned is async.
   return Promise.resolve({ a: 1, b: 2 });
