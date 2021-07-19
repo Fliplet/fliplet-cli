@@ -107,6 +107,16 @@ Fliplet.FormBuilder.get().then(function (form) {
 });
 ```
 
+#### Programmatically clear (reset) a form
+
+You can clear (reset) a form programmatically by calling the `reset()` method of the **Vue** instance available via the `instance` attribute of the form:
+
+```js
+Fliplet.FormBuilder.get().then(function (form) {
+  form.instance.reset();
+});
+```
+
 ---
 
 ### form.fields.get()
