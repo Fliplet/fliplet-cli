@@ -6,6 +6,8 @@ description: Configure your app screens to run scheduled or ad-hoc operation in 
 
 The **App Tasks** library allows you to configure app screens to run automatically at a scheduled time or carry out an ad-hoc operations and automations in the cloud.
 
+![How it works](/assets/img/app-tasks.png)
+
 <p class="warning"><strong>Early preview</strong>: this feature is currently in internal preview and it's not available to all our customers yet. Please get in touch with us if you want to try an early preview of App Tasks.</p>
 
 #### Sample use cases:
