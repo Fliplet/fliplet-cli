@@ -6,6 +6,14 @@ description: Changelog notes giving a summary of recent significant changes to t
 
 Each week, we provide changelog notes on this page giving a summary of recent significant changes to the documentation. If there haven't been any significant changes in a given week, we don't publish changelog notes.
 
+## July 2021
+
+### July 20th
+
+- New documentation page for [App Tasks](https://developers.fliplet.com/API/core/app-tasks.html).
+
+---
+
 ## June 2021
 
 ### June 23rd
