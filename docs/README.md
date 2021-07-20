@@ -72,17 +72,18 @@ To get a brief introduction to the technologies we use and the stack of the plat
 Here's a short list of requested features that are coming up on our platform in the near future or have just been released.
 
 <section class="blocks alt">
+  <a class="bl two" href="/API/core/app-tasks.html">
+    <div>
+      <span class="pin">Internal preview</span>
+      <h4>App Tasks</h4>
+      <p>Learn how App Tasks allow you to define scheduled automations for your app screens.</p>
+      <button>Browse documentation &rarr;</button>
+    </div>
+  </a>
   <a class="bl two" href="/API/helpers/overview.html">
     <div class="secondary">
       <h4>Helpers</h4>
       <p>Fliplet Helpers have gone through a complete overhaul to enhance their functionality and list of use cases. See the new changes we released.</p>
-      <button>Browse documentation &rarr;</button>
-    </div>
-  </a>
-  <a class="bl two" href="/API/fliplet-payments.html">
-    <div class="secondary">
-      <h4>Payments</h4>
-      <p>Fliplet Payments allow you to add payment and checkout functionality in your apps. Browse the documentation for this feature we just released.</p>
       <button>Browse documentation &rarr;</button>
     </div>
   </a>
