@@ -132,6 +132,7 @@ if (location.pathname !== '/') {
 
   new Typed('.hero h6', {
     strings: [
+      'Make apps work for you',
       'Develop. Preview. Publish.',
       'Build amazing apps.',
       'Create incredible components.',
