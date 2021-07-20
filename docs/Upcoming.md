@@ -11,7 +11,7 @@ This page lists upcoming changes and features that are going to be documented in
     <div>
       <span class="pin">Internal preview</span>
       <h4>App Tasks</h4>
-      <p>Learn how App Tasks allow you to define scheduled automations for your app screens.</p>
+      <p>Learn how App Tasks allow you to define scheduled and complex automations for your app screens and solve some challenging use cases.</p>
       <button>Browse documentation &rarr;</button>
     </div>
   </a>
