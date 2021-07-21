@@ -97,7 +97,7 @@ Here are a few examples for the frequency value:
 | `*/5 1 * * *`     | Run every 5th minute of every first hour (i.e., 01:00, 01:05, 01:10, up until 01:55)                   |
 | `0 0 1 1 *`       | Run once a year at midnight of 1 January	                                                             |
 
-<p class="warning"><strong>[Timezone]</strong> Hours for the frequency need to be defined using the <strong>UTC timezone</strong>.</p>
+<p class="warning">The timezone for the frequency can be defined via the <code>timezone</code> parameter in <strong>RFC2822 format</strong>. Check out the example below for more information.</p>
 
 ### Create a scheduled task
 
@@ -107,6 +107,7 @@ Once you have figured out what frequency to use, use the `create` JS API to crea
 Fliplet.App.Tasks.create({
   name: 'send-monday-weekly-reminder',
   frequency: '0 8 * * 1',
+  timezone: '+00',
   active: true,
   pageId: 123
 }).then(function (task) {
@@ -162,6 +163,8 @@ Fliplet.App.Tasks.runWithResult('email-is-registered', {
 });
 ```
 
+Please note that app tasks do not save their result in the produced log entry when running on-demand.
+
 ---
 
 ## Get the list of app tasks
@@ -185,6 +188,7 @@ Here is a sample of the array of tasks returned:
     "name": "send-monday-weekly-reminder",
     "active": true,
     "frequency": "*/2 * * * *",
+    "timezone": "+00",
     "lastRunAt": "2021-07-21T12:32:02.495Z",
     "nextRunAt": "2021-07-21T12:34:00.000Z",
     "createdAt": "2021-07-20T09:29:00.366Z",
