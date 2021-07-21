@@ -24,11 +24,13 @@ The **App Tasks** library allows you to configure app screens to run automatical
 
 ## Data models and key concepts
 
-1. An app task consists in a unique `name`, a target `pageId` and an optional `frequency`.
+1. An app task consists in a unique `name`, a target `pageId` (the screen to run) and an optional `frequency`.
 2. An app task can be created as **scheduled** (when using the `frequency` parameter) or to be run on demand.
 3. Only **up to 5 app** tasks can be defined for each app.
 4. An app task runs the target app screen in the cloud. A result can be given back by the screen both when running on a schedule and when on demand.
 5. An app task is **limited to 10 seconds of execution time**. After 10 seconds, the task will be killed an a specific timeout error will be returned.
+6. Only JavaScript assets are loaded when the screen runs as an app task. Assets such as CSS and images will be ignored by the system.
+7. Scheduled app tasks will only run the published version of a screen, whereas on-demand tasks will run the version from the same environment they are fired from (e.g. Fliplet Viewer, Live apps)
 
 ---
 
@@ -166,6 +168,25 @@ return Fliplet.App.Tasks.get().then(function (tasks) {
     console.log(task);
   });
 });
+```
+
+Here is a sample of the array of tasks returned:
+
+```json
+[
+  {
+    "id": 1,
+    "name": "send-monday-weekly-reminder",
+    "active": true,
+    "frequency": "*/2 * * * *",
+    "lastRunAt": "2021-07-21T12:32:02.495Z",
+    "nextRunAt": "2021-07-21T12:34:00.000Z",
+    "createdAt": "2021-07-20T09:29:00.366Z",
+    "updatedAt": "2021-07-20T09:29:00.366Z",
+    "appId": 123,
+    "pageId": 456
+  }
+]
 ```
 
 ---
