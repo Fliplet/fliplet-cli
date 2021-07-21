@@ -28,12 +28,15 @@ The **App Tasks** library allows you to configure app screens to run automatical
 2. An app task can be created as **scheduled** (when using the `frequency` parameter) or to be run on demand.
 3. Only **up to 5 app** tasks can be defined for each app.
 4. An app task runs the target app screen in the cloud. A result can be given back by the screen both when running on a schedule and when on demand.
+5. An app task is **limited to 10 seconds of execution time**. After 10 seconds, the task will be killed an a specific timeout error will be returned.
 
 ---
 
 ## Configuring the target screen
 
 <p class="quote"><strong>[Required]</strong> Before you create an app task, <strong>your target app screen must be configured</strong> to ensure it's ready to process inbound requests made by the app task when running on a schedule or on demand.</p>
+
+When a screen is executed by an app task, a special function called `onRemoteExecution` is going to be fired by the system. You want to put your custom code needing to run on the app task within such function and return the result of your execution. If your function throws an error, such error is going to be included in the produced log.
 
 To start, use the `Fliplet.Page.onRemoteExecution()` function to register your custom JavaScript code to run when the screen is being fired by an app task:
 
