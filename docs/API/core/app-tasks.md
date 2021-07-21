@@ -28,7 +28,7 @@ The **App Tasks** library allows you to configure app screens to run automatical
 2. An app task can be created as **scheduled** (when using the `frequency` parameter) or to be run **on-demand**.
 3. Only **up to 5 app** tasks can be defined for each app.
 4. An app task runs the target app screen in the cloud. A result can be given back by the screen both when running on a schedule and when on-demand.
-5. An app task is **limited to 10 seconds of execution time**. After 10 seconds, the task will be killed an a specific timeout error will be returned.
+5. An app task is **limited to 30 seconds of execution time**. After 10 seconds, the task will be killed an a specific timeout error will be returned.
 6. Only JavaScript assets are loaded when the screen runs as an app task. Assets such as CSS and images will be ignored by the system.
 7. Scheduled app tasks will only run the published version of a screen, whereas on-demand tasks will run the version from the same environment they are fired from (e.g. Fliplet Viewer, Live apps  )
 
