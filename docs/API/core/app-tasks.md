@@ -97,6 +97,8 @@ Here are a few examples for the frequency value:
 | `*/5 1 * * *`     | Run every 5th minute of every first hour (i.e., 01:00, 01:05, 01:10, up until 01:55)                   |
 | `0 0 1 1 *`       | Run once a year at midnight of 1 January	                                                             |
 
+<p class="warning"><strong>[Timezone]</strong> Hours for the frequency need to be defined using the <strong>UTC timezone</strong>.</p>
+
 ### Create a scheduled task
 
 Once you have figured out what frequency to use, use the `create` JS API to create the task:
