@@ -18,6 +18,7 @@ gruntFile(grunt);
 
 const folderPath = process.cwd();
 const widgetPackagePath = path.join(folderPath, 'widget.json');
+const translationPackagePath = path.join(folderPath, 'translation.json');
 const themePackagePath = path.join(folderPath, 'theme.json');
 const menuPackagePath = path.join(folderPath, 'menu.json');
 const template = require('./lib/template');
@@ -185,10 +186,19 @@ app.get('/build', function (req, res) {
       };
     }
 
+    let translation;
+
+    try {
+      translation = require(translationPackagePath);
+    } catch (err) {
+      console.log('A translation file could not be found. Have you added "translation.json" in the root folder for this project?');
+    }
+
     template.compile({
       topMenu,
       page,
       app: dummyApp,
+      translation,
       widgets: [{
         id: Date.now(),
         name: package.name,
