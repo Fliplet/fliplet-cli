@@ -229,21 +229,34 @@ Sample logs:
 ```json
 [
   {
-    "id": 1234,
+    "id": 1,
     "createdAt": "2021-07-21T12:36:02.663Z",
     "type": "app.task.completed",
     "data": {
+      "mode": "on-demand",
       "duration": 2000,
+      "pageId": 456,
+      "taskId": 1
+    }
+  },
+  {
+    "id": 2,
+    "createdAt": "2021-07-21T12:36:02.663Z",
+    "type": "app.task.completed",
+    "data": {
+      "mode": "scheduled",
+      "duration": 3000,
       "pageId": 456,
       "taskId": 1,
       "result": { "a": 1 }
     }
   },
   {
-    "id": 1234,
+    "id": 3,
     "createdAt": "2021-07-21T12:36:02.663Z",
     "type": "app.task.failed",
     "data": {
+      "mode": "scheduled",
       "duration": 5000,
       "pageId": 456,
       "taskId": 1,
