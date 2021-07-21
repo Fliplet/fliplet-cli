@@ -25,9 +25,9 @@ The **App Tasks** library allows you to configure app screens to run automatical
 ## Data models and key concepts
 
 1. An app task consists in a unique `name`, a target `pageId` (the screen to run) and an optional `frequency`.
-2. An app task can be created as **scheduled** (when using the `frequency` parameter) or to be run on demand.
+2. An app task can be created as **scheduled** (when using the `frequency` parameter) or to be run **on-demand**.
 3. Only **up to 5 app** tasks can be defined for each app.
-4. An app task runs the target app screen in the cloud. A result can be given back by the screen both when running on a schedule and when on demand.
+4. An app task runs the target app screen in the cloud. A result can be given back by the screen both when running on a schedule and when on-demand.
 5. An app task is **limited to 10 seconds of execution time**. After 10 seconds, the task will be killed an a specific timeout error will be returned.
 6. Only JavaScript assets are loaded when the screen runs as an app task. Assets such as CSS and images will be ignored by the system.
 7. Scheduled app tasks will only run the published version of a screen, whereas on-demand tasks will run the version from the same environment they are fired from (e.g. Fliplet Viewer, Live apps  )
@@ -36,7 +36,7 @@ The **App Tasks** library allows you to configure app screens to run automatical
 
 ## Configuring the target screen
 
-<p class="quote"><strong>[Required]</strong> Before you create an app task, <strong>your target app screen must be configured</strong> to ensure it's ready to process inbound requests made by the app task when running on a schedule or on demand.</p>
+<p class="warning"><strong>[Required]</strong> Before you create an app task, <strong>your target app screen must be configured</strong> as described below to ensure it's ready to process inbound requests made by the app task when running on a schedule or on-demand.</p>
 
 When a screen is executed by an app task, a special function called `onRemoteExecution` is going to be fired by the system. You want to put your custom code needing to run on the app task within such function and return the result of your execution. If your function throws an error, such error is going to be included in the produced log.
 
@@ -46,10 +46,14 @@ To start, use the `Fliplet.Page.onRemoteExecution()` function to register your c
 // Add this code to the screen JavaScript code
 // in the developer options of Fliplet Studio
 Fliplet.Page.onRemoteExecution(function (payload) {
+  // This code will run when the screen is triggered by an app task.
+
   console.log('App task sent this payload', payload);
 
-  // This code will run when the screen is triggered by an app task.
-  // You can return a promise if the result to be returned is async.
+  // Here you can return the result to be send back to the user (if running an on-demand task)
+  // or stored in the produced log.
+
+  // You can also return a promise if the result to be returned is async.
   return Promise.resolve({ a: 1, b: 2 });
 });
 ```
@@ -112,7 +116,7 @@ Fliplet.App.Tasks.create({
 
 ### Create an on-demand task
 
-<p class="warning"><strong>Note</strong>: if you only want to <strong>run your task on demand</strong> (e.g. triggered by a user) make sure not to use the frequency parameter as shown below.</p>
+<p class="warning"><strong>Note</strong>: if you only want to <strong>run your task on-demand</strong> (e.g. triggered by a user) make sure not to use the frequency parameter as shown below.</p>
 
 ```js
 // Create a task that is manually run by you
@@ -120,7 +124,7 @@ Fliplet.App.Tasks.create({
   name: 'confirm-booking',
   pageId: 456
 }).then(function (task) {
-  // On demand task has been created
+  // On-demand task has been created
 });
 ```
 
