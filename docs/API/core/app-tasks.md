@@ -30,7 +30,7 @@ The **App Tasks** library allows you to configure app screens to run automatical
 4. An app task runs the target app screen in the cloud. A result can be given back by the screen both when running on a schedule and when on demand.
 5. An app task is **limited to 10 seconds of execution time**. After 10 seconds, the task will be killed an a specific timeout error will be returned.
 6. Only JavaScript assets are loaded when the screen runs as an app task. Assets such as CSS and images will be ignored by the system.
-7. Scheduled app tasks will only run the published version of a screen, whereas on-demand tasks will run the version from the same environment they are fired from (e.g. Fliplet Viewer, Live apps)
+7. Scheduled app tasks will only run the published version of a screen, whereas on-demand tasks will run the version from the same environment they are fired from (e.g. Fliplet Viewer, Live apps  )
 
 ---
 
@@ -212,6 +212,39 @@ Fliplet.App.Tasks.getLogs({
 }).then(function (response) {
   console.log(response.logs);
 });
+```
+
+Sample logs:
+
+```json
+[
+  {
+    "id": 1234,
+    "createdAt": "2021-07-21T12:36:02.663Z",
+    "type": "app.task.completed",
+    "data": {
+      "duration": 2000,
+      "pageId": 456,
+      "taskId": 1,
+      "result": { "a": 1 }
+    }
+  },
+  {
+    "id": 1234,
+    "createdAt": "2021-07-21T12:36:02.663Z",
+    "type": "app.task.failed",
+    "data": {
+      "duration": 5000,
+      "pageId": 456,
+      "taskId": 1,
+      "result": {
+        "errorType": "Error",
+        "errorMessage": "Error: Evaluation failed: TypeError: Cannot read property 'sendEmail' of undefined...",
+        "trace": ["..."]
+      }
+    }
+  }
+]
 ```
 
 ---
