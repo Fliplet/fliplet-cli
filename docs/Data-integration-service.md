@@ -275,7 +275,7 @@ log_verbosity: debug
 Once you have a configuration file like the one above saved on disk, starting the agent is as simple as running the `start` command from your shell. While you are setting up the configuration we also suggest using the `--test` option to perform a dry run and test out the integration without actually sending data to Fliplet servers:
 
 ```bash
-fliplet-agent start .\\path\\to\\configurationFile.yml --test
+fliplet-agent start .\path\to\configurationFile.yml --test
 ```
 
 e.g. if your file is in the current folder and it's named `sample.yml`, you would simply write:
