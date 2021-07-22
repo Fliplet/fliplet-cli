@@ -253,14 +253,14 @@ files:
 #  - column: thumbnail
 #    type: remote
 
-# Define a column containing a local absolute URL to a file, e.g. "/home/user/John.jpg"
+# Define a column containing a local absolute URL to a file, e.g. "C:\Users\fliplet\John.jpg"
 #  - column: thumbnail
 #    type: local
 
 # Define a column containing a relative URL to a file in the specified directory, e.g. "John.jpg"
 #  - column: thumbnail
 #    type: local
-#    directory: /Users/John/Desktop
+#    directory: C:\Users\fliplet\images
 
 # Optionally enable encryption for the columns defined in the list
 # encrypt:
@@ -275,7 +275,7 @@ log_verbosity: debug
 Once you have a configuration file like the one above saved on disk, starting the agent is as simple as running the `start` command from your shell. While you are setting up the configuration we also suggest using the `--test` option to perform a dry run and test out the integration without actually sending data to Fliplet servers:
 
 ```bash
-fliplet-agent start ./path/to/configurationFile.yml --test
+fliplet-agent start .\\path\\to\\configurationFile.yml --test
 ```
 
 e.g. if your file is in the current folder and it's named `sample.yml`, you would simply write:
