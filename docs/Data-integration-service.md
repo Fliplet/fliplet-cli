@@ -281,7 +281,7 @@ fliplet-agent start .\path\to\configurationFile.yml --test
 e.g. if your file is in the current folder and it's named `sample.yml`, you would simply write:
 
 ```bash
-fliplet-agent start sample.yml
+fliplet-agent start .\sample.yml
 ```
 
 **Note: on Windows we do recommend using an absolute path to the config file to avoid errors when the file is loaded by the software.**
