@@ -99,9 +99,23 @@ Fliplet.Hooks.on('beforeChartQuery', fn);
 - `fn` (Function(`data`)) Callback function with an object parameter.
   - `options` (Object) A map of data containing the following.
     - `config` (Object) Configuration used to initialize the component
+      - `dataSourceQuery` (Object) Data source query configuration
+        - `query` (Object) Optional - Add a `query` object to customize the data source query
     - `id` (Number) Component instance ID
     - `uuid` (String) Component instance UUID
     - `type` (String) Chart type
+
+**Example: Only load data relevant to a user**
+
+```js
+Fliplet.Hooks.on('beforeChartQuery', function(data) {
+  data.config.dataSourceQuery.query = {
+    where: {
+      User: 'user@email.com'
+    }
+  };
+});
+```
 
 ### `afterChartQuery`
 
