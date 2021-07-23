@@ -97,7 +97,7 @@ Fliplet.Hooks.on('beforeChartQuery', fn);
 #### Parameters
 
 - `fn` (Function(`data`)) Callback function with an object parameter.
-  - `options` (Object) A map of data containing the following.
+  - `data` (Object) A map of data containing the following.
     - `config` (Object) Configuration used to initialize the component
       - `dataSourceQuery` (Object) Data source query configuration
         - `query` (Object) Optional - Add a `query` object to customize the data source query
@@ -128,7 +128,7 @@ Fliplet.Hooks.on('afterChartQuery', fn);
 #### Parameters
 
 - `fn` (Function(`data`)) Callback function with an object parameter.
-  - `options` (Object) A map of data containing the following.
+  - `data` (Object) A map of data containing the following.
     - `records` (Array) Collection of records to be used for the component. This would be the last point in the process for the data to be manipulated before the chart renders it. The records can be found in `records.dataSourceEntries`.
     - `config` (Object) Configuration used to initialize the component
     - `id` (Number) Component instance ID
@@ -159,7 +159,7 @@ Fliplet.Hooks.on('beforeChartRender', fn);
 #### Parameters
 
 - `fn` (Function(`data`)) Callback function with an object parameter.
-  - `options` (Object) A map of data containing the following.
+  - `data` (Object) A map of data containing the following.
     - `config` (Object) Configuration used to initialize the component
     - `chartOptions` (Object) Configuration used to initialize the Highcharts instance
     - `id` (Number) Component instance ID
@@ -187,7 +187,7 @@ Fliplet.Hooks.on('afterChartRender', fn);
 #### Parameters
 
 - `fn` (Function(`data`)) Callback function with an object parameter.
-  - `options` (Object) A map of data containing the following.
+  - `data` (Object) A map of data containing the following.
     - `chart` (Object) Highcharts instance
     - `config` (Object) Configuration used to initialize the component
     - `chartOptions` (Object) Configuration used to initialize the Highcharts instance
