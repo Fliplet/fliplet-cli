@@ -2,6 +2,14 @@
 
 These public JS APIs will be automatically available in your screens once a **Chat layout** component is used. You can also include these by manually adding the `fliplet-chat` dependency to your app.
 
+## Start/open a conversation with someone
+
+Add a `contactEmail` parameter when loading the screen to start/open a conversation with someone.
+
+```
+?contactEmail=john@example.org
+```
+
 ## Run a hook before the contacts are rendered
 
 ```js
