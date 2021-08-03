@@ -328,7 +328,7 @@ Fliplet.Hooks.on('flListDataAfterShowComments', fn);
     - **container** (jQuery object) jQuery object for the component container element.
     - **html** (String) HTML code that is to be rendered for all the comments.
     - **comments** (Array) Comments retrieved for the entry.
-    - **record** (Objcet) Data source entry that the comments are attached to.
+    - **record** (Object) Data source entry that the comments are attached to.
 
 ### `flListDataBeforeNewComment`
 
@@ -342,7 +342,7 @@ The hook is run before a comment is added to a data source entry.
     - **id** (Number) Component instance ID.
     - **uuid** (String) Component instance UUID.
     - **container** (jQuery object) jQuery object for the component container element.
-    - **record** (Objcet) Data source entry that the comments are attached to.
+    - **record** (Object) Data source entry that the comments are attached to.
     - **comment** (String) Comment entered by user.
     - **commentGuid** (String) A temporary ID given to the new comment.
 
@@ -358,7 +358,7 @@ The hook is run after a comment is added to a data source entry.
     - **id** (Number) Component instance ID.
     - **uuid** (String) Component instance UUID.
     - **container** (jQuery object) jQuery object for the component container element.
-    - **record** (Objcet) Data source entry that the comments are attached to.
+    - **record** (Object) Data source entry that the comments are attached to.
     - **commentEntry** (String) Comment entry returned by the API.
     - **commentGuid** (String) A temporary ID given to the new comment.
 
@@ -374,7 +374,7 @@ The hook is run after a comment is added and rendered on the page.
     - **id** (Number) Component instance ID.
     - **uuid** (String) Component instance UUID.
     - **container** (jQuery object) jQuery object for the component container element.
-    - **record** (Objcet) Data source entry that the comments are attached to.
+    - **record** (Object) Data source entry that the comments are attached to.
     - **commentEntry** (String) Comment entry returned by the API.
     - **commentGuid** (String) A temporary ID given to the new comment.
     - **commentContainer** (jQuery object) jQuery object for the new comment container element.
@@ -391,7 +391,7 @@ The hook is run before a comment is updated.
     - **id** (Number) Component instance ID.
     - **uuid** (String) Component instance UUID.
     - **container** (jQuery object) jQuery object for the component container element.
-    - **record** (Objcet) Data source entry that the comments are attached to.
+    - **record** (Object) Data source entry that the comments are attached to.
     - **oldCommentData** (Object) Comment entry object for the comment to be updated.
     - **newComment** (String) New comment for the comment.
 
@@ -407,7 +407,7 @@ The hook is run after a comment is updated.
     - **id** (Number) Component instance ID.
     - **uuid** (String) Component instance UUID.
     - **container** (jQuery object) jQuery object for the component container element.
-    - **record** (Objcet) Data source entry that the comments are attached to.
+    - **record** (Object) Data source entry that the comments are attached to.
     - **oldCommentData** (Object) Comment entry object for the comment before it is updated.
     - **newCommentData** (Object) Comment entry object for the comment after it is updated.
 
@@ -423,7 +423,7 @@ The hook is run after a comment is updated and rendered on the page.
     - **id** (Number) Component instance ID.
     - **uuid** (String) Component instance UUID.
     - **container** (jQuery object) jQuery object for the component container element.
-    - **record** (Objcet) Data source entry that the comments are attached to.
+    - **record** (Object) Data source entry that the comments are attached to.
     - **oldCommentData** (Object) Comment entry object for the comment before it is updated.
     - **newCommentData** (Object) Comment entry object for the comment after it is updated.
     - **commentContainer** (jQuery object) jQuery object for the updated comment container element.
@@ -440,7 +440,7 @@ The hook is run before a comment is deleted.
     - **id** (Number) Component instance ID.
     - **uuid** (String) Component instance UUID.
     - **container** (jQuery object) jQuery object for the component container element.
-    - **record** (Objcet) Data source entry that the comments are attached to.
+    - **record** (Object) Data source entry that the comments are attached to.
     - **commentId** (Number) Comment ID to be deleted.
     - **commentContainer** (jQuery object) jQuery object for the updated comment container element.
 
@@ -456,7 +456,7 @@ The hook is run after a comment is deleted and removed from the page.
     - **id** (Number) Component instance ID.
     - **uuid** (String) Component instance UUID.
     - **container** (jQuery object) jQuery object for the component container element.
-    - **record** (Objcet) Data source entry that the comments are attached to.
+    - **record** (Object) Data source entry that the comments are attached to.
     - **commentId** (Number) Comment ID to be deleted.
     - **commentContainer** (jQuery object) jQuery object for the updated comment container element.
 
@@ -639,7 +639,7 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
 
 ## Query parameters
 
-When navigating to a screen that contains a **List (from data source)** component, you can use queries to execut logic accordingly, e.g. load a specific list item, apply filters and/or search, or add a new pre-filter.
+When navigating to a screen that contains a **List (from data source)** component, you can use queries to execute logic accordingly, e.g. load a specific list item, apply filters and/or search, or add a new pre-filter.
 
 Use the following query parameters when linking to a screen with **List (from data source)** components.
 
@@ -655,7 +655,7 @@ Use the following query parameters when linking to a screen with **List (from da
 - **dynamicListFilterColumn** A comma-separated list of columns to select filter values within (optional). The number of columns provided must match the number of values provided. To select multiple values for a column, use `[]` to enclose the values and separate them by commas. e.g. `dynamicListFilterColumn=Tags,Category&dynamicListFilterValue=[Foo,Buzz],Enterprise%20software` selects the filters `Tags=Foo`, `Tags=Buzz` and `Category=Enterprise software`.
 - **dynamicListFilterHideControls** (`true|false`) Hide the filter controls when filter values are applied from the query. (Default: `false`)
 - **dynamicListPrefilterColumn** Pre-filter list based on the provided list of comma-separated column names.
-- **dynamicListPrefilterValue** Pre-filter list based on the provided list of comma-separatedvalues for the column names. Any values that contain a comma (`,`) should be wrapped in URL-encoded double quotes (`%22`).
+- **dynamicListPrefilterValue** Pre-filter list based on the provided list of comma-separated values for the column names. Any values that contain a comma (`,`) should be wrapped in URL-encoded double quotes (`%22`).
 - **dynamicListPrefilterLogic** Pre-filter list based on the provided list of comma-separated logic operators to be applied on the columns and values. The valid operators are:
 
 | Operator | URL encoded operator | Description |
@@ -668,7 +668,13 @@ Use the following query parameters when linking to a screen with **List (from da
 | `<=` | `%3C%3D` | Less than or equal |
 | `contains` | `contains` | Contains |
 | `notcontain` | `notcontain` | Not contain |
+| `oneof` | `oneof` | Is one of |
+| `between` | `between` | Is between |
 | `regex` | `regex` | RegExp |
+| `dateis` | `dateis` | Date is |
+| `datebefore` | `datebefore` | Date is before |
+| `dateafter` | `dateafter` | Date is after |
+| `datebetween` | `datebetween` | Date is between |
 
 ### Examples
 
@@ -700,16 +706,16 @@ dynamicListPrefilterColumn=Name,Age&dynamicListPrefilterValue=John,29&dynamicLis
 
 **The Persistent Variable Queries method has been deprecated.**
 
-With the **List (from data source)** you can programatically load a specific list item, apply filters and/or search, and even add a new pre-filter. _(pre-filter is a filter applied before the list is rendered - this won't override the filters added in component settings)_
+With the **List (from data source)** you can programmatically load a specific list item, apply filters and/or search, and even add a new pre-filter. _(pre-filter is a filter applied before the list is rendered - this won't override the filters added in component settings)_
 
-This can be achieved by setting a persistant variable using the `Fliplet.App.Storage`. [Read more here](../../API/fliplet-core.md#app-storage)
-The persistant variable, by default, will be removed automatically after running.
+This can be achieved by setting a persistent variable using the `Fliplet.App.Storage`. [Read more here](../../API/fliplet-core.md#app-storage)
+The persistent variable, by default, will be removed automatically after running.
 ```js
 Fliplet.App.Storage.set('flDynamicListQuery:simple-list', { ... });
 ```
-The persistant variable is namespaced with `flDynamicListQuery:` plus the list layout name. Below are all the layout names you can use.
+The persistent variable is namespaced with `flDynamicListQuery:` plus the list layout name. Below are all the layout names you can use.
 ### List layouts
-The key of the persistant variable includes the layout name of the List (from data source).
+The key of the persistent variable includes the layout name of the List (from data source).
 Here is a list of all the layouts available in the List (from data source) component:
 - `small-card` Small Expandable Cards
 - `news-feed` Cards with Description
@@ -721,7 +727,7 @@ Let's have a look at how to use the feature.
 ```js
 Fliplet.App.Storage.set('flDynamicListQuery:simple-list', options);
 ```
-- **options** (Object) A map of options to pass as the value of the persistant variable.
+- **options** (Object) A map of options to pass as the value of the persistent variable.
   - **prefilter** (Array) (Array of objects) Use this if you want to pre-filter your list.
     - **column** (String) [Required] The name of the column that you want to use to filter by.
     - **logic** (String) [Required] The logic operator for the filtering. _See the possible logic operators below._
@@ -741,7 +747,7 @@ Fliplet.App.Storage.set('flDynamicListQuery:simple-list', options);
     - **hijackBack** (Boolean) This will hijack the action of the back button (arrow left) on the top bar menu (**Default**: `false`)
     - **action** (Function) The function will be executed before the user is returned to the previous screen. The function must be written as a `String`, because functions can't be saved to `Fliplet.Storage`.
   - **previousScreen** (Boolean or Function) If you want to return to the previous screen when closing a list item, set to true or write a function. The function will be executed before the user is returned to the previous screen. We recommend only using this option when you know there will only be one entry as a result. (**Default**: false)
-  - **persist** (Boolean) Use this if you want to prevent the persistant variable from being deleted. (**Default**: `false`)
+  - **persist** (Boolean) Use this if you want to prevent the persistent variable from being deleted. (**Default**: `false`)
 
 Let's see a few examples on how to use all these options:
 
