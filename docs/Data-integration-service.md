@@ -172,13 +172,13 @@ database_password: 123456
 database_port: 5432
 database_name: eu
 
-# MSSQL Server only: uncomment if you need to use these variables.
+# MSSQL Server and ODBC only: uncomment if you need to use these variables.
 # database_domain: sampleDomainName
 # database_instance: sampleInstanceName
 # database_encrypt: true
 
-# ODBC Native driver only: uncomment this and install the driver on your computer
-# by pasting this command to the terminal: "npm install sequelize-odbc-mssql -g"
+# To use ODBC and its native driver: uncomment thw following config line and install the driver
+# on your machine by pasting this command to the terminal: "npm install sequelize-odbc-mssql -g"
 # database_native_odbc: true
 
 # Description of the operation (will be printed out in the logs).
@@ -367,11 +367,15 @@ module.exports.config = {
     port: 1234,
     database: 'myDatabaseName'
 
-    // MSSQL Server only: uncomment if you need to use these settings
+    // MSSQL Server and ODBC only: uncomment if you need to use these settings
     /*
     dialectOptions: {
       domain: 'myDomain',
       instanceName: 'myInstanceName',
+
+      // Only add this if you're using ODBC and you have installed it
+      // by running "npm install sequelize-odbc-mssql -g" on the terminal
+      dialectModulePath: 'sequelize-odbc-mssql',
       encrypt: false
     }
     */
@@ -458,6 +462,12 @@ Once you have a configuration file like the one above saved on disk, starting th
 
 ```bash
 fliplet-agent start ./path/to/configurationFile.js
+```
+
+If you need to use an **ODBC driver** for the database connection, make sure to run the following command to install the relevant driver on your machine:
+
+```js
+npm install sequelize-odbc-mssql -g
 ```
 
 ---
