@@ -6,6 +6,14 @@ description: Changelog notes giving a summary of recent significant changes to t
 
 Each week, we provide changelog notes on this page giving a summary of recent significant changes to the documentation. If there haven't been any significant changes in a given week, we don't publish changelog notes.
 
+## Aug 2021
+
+### Aug 3rd
+
+- New Android framework version 5.0.0 released with support for App Bundle and SDK 30.
+
+---
+
 ## July 2021
 
 ### July 20th
