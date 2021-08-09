@@ -173,7 +173,26 @@ Fliplet.Navigate.exitApp();
 
 The `com.fliplet.link` link provider supports a log out action. The following code does the same thing as the provider.
 
+You can optionally add a `logoutAction` (supports `screen` and `exit-app`) to perform a screen redirect or leave the app after the user is logged out.
+
 ```js
+// Log the user out (of all passports)
+Fliplet.Navigate.to({
+  action: 'logout'
+}).then(function() {
+  console.log('User is logged out');
+});
+
+// Log user out of a specific passport
+Fliplet.Navigate.to({
+  action: 'logout',
+  logoutPassport: 'dataSource'
+});
+Fliplet.Navigate.to({
+  action: 'logout',
+  logoutPassport: 'dataSource'
+});
+
 // Log out the user then go to a page
 Fliplet.Navigate.to({
   action: 'logout',
