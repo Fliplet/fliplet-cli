@@ -5,6 +5,7 @@ window.algoliaSearch = docsearch({
   indexName: 'Fliplet Developers',
   inputSelector: '.search-input input',
   debug: false,
+  analytics: !!localStorage.getItem('disableAnalytics'),
   algoliaOptions: {
     hitsPerPage: 50
   }
