@@ -5,8 +5,8 @@ window.algoliaSearch = docsearch({
   indexName: 'Fliplet Developers',
   inputSelector: '.search-input input',
   debug: false,
-  analytics: !!localStorage.getItem('disableAnalytics'),
   algoliaOptions: {
+    analytics: !!localStorage.getItem('disableAnalytics'),
     hitsPerPage: 50
   }
 });
