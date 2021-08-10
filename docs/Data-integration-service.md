@@ -812,6 +812,14 @@ The following locations are currently supported for reading files:
 
 <p class="quote">Files will be uploaded to a folder named "<strong>Files uploaded from DIS</strong>" in your organization folder.</p>
 
+**Q: Does case sensitivity matter when synchronizing files?**
+
+A: It depends on your file system settings and OS platform, see below.
+
+- Windows: not case-sensitive by default (but can be [enabled](https://www.windowscentral.com/how-enable-ntfs-treat-folders-case-sensitive-windows-10) on a per-folder basis)
+- Linux: case-sensitive by default
+- macOS: depends on hard drive partition settings
+
 ### YAML
 
 ```yaml
