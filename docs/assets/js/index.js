@@ -6,7 +6,7 @@ window.algoliaSearch = docsearch({
   inputSelector: '.search-input input',
   debug: false,
   algoliaOptions: {
-    analytics: !!localStorage.getItem('disableAnalytics'),
+    analytics: !localStorage.getItem('disableAnalytics'),
     hitsPerPage: 50
   }
 });
