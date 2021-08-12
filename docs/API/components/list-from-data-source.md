@@ -671,10 +671,6 @@ Use the following query parameters when linking to a screen with **List (from da
 | `oneof` | `oneof` | Is one of |
 | `between` | `between` | Is between |
 | `regex` | `regex` | RegExp |
-| `dateis` | `dateis` | Date is |
-| `datebefore` | `datebefore` | Date is before |
-| `dateafter` | `dateafter` | Date is after |
-| `datebetween` | `datebetween` | Date is between |
 
 ### Examples
 
