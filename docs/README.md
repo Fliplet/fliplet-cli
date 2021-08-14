@@ -2,7 +2,7 @@
 
 <section class="sides">
   <div>
-    <h2>Customise your apps with our low code technologies</h2>
+    <h2>Customize your apps with our low code technologies</h2>
     <p>Welcome to the <strong>Fliplet developers documentation</strong> website. Here you can learn how to extend your Fliplet Apps, create new components, themes and menus.<br /><br />Start by having a look at our <a href="/API-Documentation.html">JS API</a> documentation to learn how to interact with our core framework and components to extend your apps.</p>
   </div>
   <div>
@@ -16,7 +16,7 @@
   </div>
   <div class="alt">
     <h2>Write code that works on any device and platform</h2>
-    <p>Fliplet allows you to code once and have your app fully function on <a href="http://localhost:4000/Native-framework-changelog.html">all platforms we support</a>, including <strong>iOS</strong>, <strong>Android</strong> and <strong>Web</strong>.<br /><br />Stop worrying about compatibility and let us do the heavylifting for you. Just focus on coding!</p>
+    <p>Fliplet allows you to code once and have your app fully function on <a href="http://localhost:4000/Native-framework-changelog.html">all platforms we support</a>, including <strong>iOS</strong>, <strong>Android</strong> and <strong>Web</strong>.<br /><br />Stop worrying about compatibility and let us do the heavy lifting for you. Just focus on coding!</p>
   </div>
 </section>
 
@@ -80,10 +80,11 @@ Here's a short list of requested features that are coming up on our platform in 
       <button>Browse documentation &rarr;</button>
     </div>
   </a>
-  <a class="bl two" href="/API/helpers/overview.html">
-    <div class="secondary">
-      <h4>Helpers</h4>
-      <p>Fliplet Helpers have gone through a complete overhaul to enhance their functionality and list of use cases. See the new changes we released.</p>
+  <a class="bl two" href="/API/core/locale.html">
+    <div>
+      <span class="pin">Internal preview</span>
+      <h4>Localization</h4>
+      <p>Learn how to localize your component for different languages and regions.</p>
       <button>Browse documentation &rarr;</button>
     </div>
   </a>
