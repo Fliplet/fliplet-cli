@@ -80,7 +80,7 @@ Here's a short list of requested features that are coming up on our platform in 
       <button>Browse documentation &rarr;</button>
     </div>
   </a>
-  <a class="bl two" href="/API/core/locale.html">
+  <a class="bl two" href="/API/core/localization.html">
     <div>
       <span class="pin">Internal preview</span>
       <h4>Localization</h4>

@@ -2,7 +2,7 @@
 description: Customize your component to localize to different languages and regions.
 ---
 
-# App Tasks
+# Localization
 
 The `Fliplet.Locale` JS API and Fliplet's localization framework allow you to customize your component to different languages and regions.
 
