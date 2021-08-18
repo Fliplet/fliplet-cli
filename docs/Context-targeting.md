@@ -108,12 +108,14 @@ Use a single or combination of the available classes for toggling content across
 
 #### Screen sizes
 
-|   | Mobile (`< 640px`) | Tablet (`>= 640px`) |
+|   | Mobile (`< 640px`) | Tablet (`>= 640px`) | Desktop (`>= 1024px`) |
 | --- | --- | ---
-| `.visible-mobile-*` | **Visible** | Hidden |
-| `.visible-tablet-*` | Hidden | **Visible** |
-| `.hidden-mobile` | Hidden | **Visible** |
-| `.hidden-tablet` | **Visible** | Hidden |
+| `.visible-mobile-*` | **Visible** | Hidden | Hidden |
+| `.visible-tablet-*` | Hidden | **Visible** | Hidden |
+| `.visible-desktop-*` | Hidden | Hidden | **Visible** |
+| `.hidden-mobile` | Hidden | **Visible** | **Visible** |
+| `.hidden-tablet` | **Visible** | Hidden | **Visible** |
+| `.hidden-desktop` | **Visible** | **Visible** | Hidden |
 
 #### iPhone X
 

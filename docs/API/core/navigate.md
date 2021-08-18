@@ -161,6 +161,59 @@ var data = {
 Fliplet.Navigate.to(data);
 ```
 
+### Exit app (to the portal app)
+
+When the App List component is used to build a portal app, the `Fliplet.Navigate.exitApp()` method can be used to leave an app and return to the portal app containing the App List component.
+
+```js
+Fliplet.Navigate.exitApp();
+```
+
+### Log out
+
+The `com.fliplet.link` link provider supports a log out action. The following code does the same thing as the provider.
+
+You can optionally add a `logoutAction` (supports `screen` and `exit-app`) to perform a screen redirect or leave the app after the user is logged out.
+
+```js
+// Log the user out (of all passports)
+Fliplet.Navigate.to({
+  action: 'logout'
+}).then(function() {
+  console.log('User is logged out');
+});
+
+// Log user out of a specific passport
+Fliplet.Navigate.to({
+  action: 'logout',
+  logoutPassport: 'dataSource'
+});
+Fliplet.Navigate.to({
+  action: 'logout',
+  logoutPassport: 'dataSource'
+});
+
+// Log out the user then go to a page
+Fliplet.Navigate.to({
+  action: 'logout',
+  logoutAction: 'screen',
+  page: 123
+});
+
+// The .logout() method is a shortcut for skipping the action parameter
+Fliplet.Navigate.logout({
+  logoutAction: 'screen',
+  page: 123
+});
+
+// Log out the user then exit the app
+// This is applicable only when access apps via an app list (portal app)
+Fliplet.Navigate.to({
+  action: 'logout',
+  logoutAction: 'exit-app'
+});
+```
+
 ### Open a popup
 
 Displays a native alert/popup dialog.
