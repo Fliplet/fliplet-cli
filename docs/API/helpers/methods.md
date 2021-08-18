@@ -134,6 +134,63 @@ var foundHelpers = quiz.children(function (instance) {
 
 ---
 
+### Find all parents
+
+```html
+<fl-helper name="slide">
+  <fl-helper name="quiz">
+    <fl-helper name="results"></fl-helper>
+  </fl-helper>
+</fl-helper>
+```
+
+Use the `parents` method to retrieve a list of all parent helpers of the current helper. If a predicate object/function is provided, the list of parents are filtered accordingly.
+
+```js
+// Get a list of all parent helpers
+var parents = result.parents();
+
+// Get a list of all parent helpers by name
+var parents = result.parents({ name: 'quiz' });
+
+// You can also use the shorthand
+var parents = result.parents('quiz');
+
+// You can also provide a predicate function
+var foundHelpers = quiz.parents(function (instance) {
+  return instance.name === 'quiz';
+});
+```
+
+---
+
+### Find closest helper
+
+```html
+<fl-helper name="slide">
+  <fl-helper name="quiz">
+    <fl-helper name="results"></fl-helper>
+  </fl-helper>
+</fl-helper>
+```
+
+Use the `closest` method to retrieve the closest parent helper of the current helper that matches the provided predicate object/function, including itself.
+
+```js
+// Get the closest parent helpers by name
+var closest = result.closest({ name: 'quiz' });
+
+// You can also use the shorthand
+var closest = result.closest('quiz');
+
+// You can also provide a predicate function
+var foundHelpers = quiz.closest(function (instance) {
+  return instance.name === 'quiz';
+});
+```
+
+---
+
 ## Define new instance methods
 
 Instance methods can be defined via the `methods` property as shown in the example below:
