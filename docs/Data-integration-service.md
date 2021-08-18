@@ -939,6 +939,7 @@ If your company is behind a corporate firewall and specific network access shoul
 
 - For accounts with data in **Europe**: [api.fliplet.com](https://api.fliplet.com) on port *443*
 - For accounts with data in the **US**: [us.api.fliplet.com](https://us.api.fliplet.com) on port *443*
+- For accounts with data in **Canada**: [ca.api.fliplet.com](https://ca.api.fliplet.com) on port *443*
 
 In order to be able to update the agent via **npm**, [registry.npmjs.org](https://registry.npmjs.org) needs to be whitelisted on port *443* too. However, if your internet connection is running behind a corporate firewall it might require specific settings for the proxy ([more details](https://www.beyondjava.net/guiding-npm-firewall)).
 
