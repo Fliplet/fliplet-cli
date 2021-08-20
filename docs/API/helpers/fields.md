@@ -9,7 +9,7 @@ Use the `field` property of the helper instance (`this`) to access field values 
 ```html
 <fl-helper name="question">
   <field name="title">What is your name?</field>
-  <field name="description">Lorem ipsum dolor sit amet</field>
+  <field name="description">Your name is needed when sending emails</field>
 </fl-helper>
 ```
 
@@ -116,7 +116,7 @@ Fliplet.Helper({
     <div>
       <span class="pin">Next article in this series</span>
       <h4>Hooks &amp; Events</h4>
-      <p>Learn more about responsing to hooks and events in your helpers.</p>
+      <p>Learn more about responding to hooks and events in your helpers.</p>
       <button>Next &rarr;</button>
     </div>
   </a>
