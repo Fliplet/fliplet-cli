@@ -1,6 +1,6 @@
 # Authenticating with the APIs
 
-The entrypoint to use for all requests is ​**[https://api.fliplet.com​](https://api.fliplet.com​)**. Alternatively, US clients can use ​**[https://us.api.fliplet.com​](https://us.api.fliplet.com​)** to get faster execution and response when their data resides in the US region. If you’re unsure about this, please get in touch with us.
+The entrypoint to use for all requests is ​**[https://api.fliplet.com​](https://api.fliplet.com​)**. Alternatively, US clients can use ​**[https://us.api.fliplet.com​](https://us.api.fliplet.com​)** to get faster execution and response when their data resides in the US region (same applied for Canadian customers wanting to use ​**[https://ca.api.fliplet.com​](https://ca.api.fliplet.com​)**). If you’re unsure about this, please get in touch with us.
 
 All requests must be made via ​**SSL​** to the above HTTPS-only endpoint.
 

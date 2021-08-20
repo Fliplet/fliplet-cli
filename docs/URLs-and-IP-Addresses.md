@@ -26,6 +26,12 @@ Fliplet Studio, Fliplet Web and Native apps as well as Fliplet Agent (Data Integ
 - `us.cdn.fliplet.com`
 - `us.cdn.api.fliplet.com`
 
+**Canadian customers** will also need to whitelist the following domains:
+
+- `ca.api.fliplet.com`
+- `ca.cdn.fliplet.com`
+- `ca.cdn.api.fliplet.com`
+
 ---
 
 ### Additional URLs for Fliplet webapps
