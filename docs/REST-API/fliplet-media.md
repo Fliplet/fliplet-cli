@@ -115,6 +115,8 @@ Sample response:
 
 - Requires context (`folderId` or `appId` or `organizationId`)
 
+<p class="quote"><strong>Note:</strong> Fliplet scans all uploaded files for viruses. If a file is found to be infected the system will automatically quarantine it and not allow apps to download it. Quarantined files can be seen in the trash folder the File Manager in Fliplet Studio.</p>
+
 Request body (**multipart request**):
 
 ```
