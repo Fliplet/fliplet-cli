@@ -7,7 +7,7 @@ We regularly update our framework to support new features. If you have an older 
   <div class="bl two">
     <div>
       <h4>iOS</h4>
-      <p>Latest stable release: 4.5.1</p>
+      <p>Latest stable release: 4.5.2</p>
     </div>
   </div>
   <div class="bl two">
@@ -21,7 +21,7 @@ We regularly update our framework to support new features. If you have an older 
 
 ---
 
-## Supported versions (4.2+)
+## Supported versions (4.3+)
 
 ### Version 5.0.0 (Aug 3, 2021)
 
@@ -56,6 +56,12 @@ We regularly update our framework to support new features. If you have an older 
 
 - **iOS**: Improvements for push notifications.
 
+---
+
+## Deprecated versions
+
+Please note that these versions have limited support for newer Fliplet features. We encourage you to submit a new native update to your apps via the App Store or Google Play if you have users still running these versions of your app.
+
 ### Version 4.2.4 (November 11, 2020)
 
 - **iOS**: Improvements and bugfixes.
@@ -75,12 +81,6 @@ We regularly update our framework to support new features. If you have an older 
 ### Version 4.2.0 (July 24, 2020)
 
 - **Android**: Target SDK increased to 29 (Android 10) and disabled back-ups to improve security.
-
----
-
-## Deprecated versions
-
-Please note that these versions have limited support for newer Fliplet features. We encourage you to submit a new native update to your apps via the App Store or Google Play if you have users still running these versions of your app.
 
 ### Version 4.1.4 (July 24, 2020)
 
