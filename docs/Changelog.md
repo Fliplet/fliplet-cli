@@ -8,7 +8,7 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## September 2021
 
-## September 1st
+### September 1st
 
 - The new anti-virus feature has been rolled out to all customers. All files uploaded through the [Media APIs](https://developers.fliplet.com/API/fliplet-media.html#upload-one-or-more-files) will be scanned for viruses and quarantined when an infection is found.
 
