@@ -26,7 +26,7 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ### July 20th
 
-- New documentation page for [App Tasks](https://developers.fliplet.com/API/core/app-tasks.html).
+- New documentation page for [App Actions](https://developers.fliplet.com/API/core/app-actions.html).
 
 ---
 
