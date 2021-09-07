@@ -9,6 +9,8 @@ Use the `Fliplet.App.getPublicSlug()` method to get the public URL of the curren
 var url = Fliplet.App.getPublicSlug();
 ```
 
+---
+
 ### Get the public URL of a specific screen for the current app
 
 Use the `Fliplet.App.getUrlForPage()` method to get the public URL of a specific screen (given its ID) for the current app. Note that this only works if you have enabled shareable URLs via Fliplet Studio under the App Settings.
@@ -24,17 +26,23 @@ You can optionally provide options to be added to the query parameters of the UR
 var url = Fliplet.App.getUrlForPage(1, { disableTracking: true, dataSourceEntryId: 123 });
 ```
 
+---
+
 ### Get the current app settings
 
 ```js
 var settings = Fliplet.App.Settings.getAll();
 ```
 
+---
+
 ### Get a single settings from the current app
 
 ```js
-var datum = Fliplet.App.Settings.get('foo');
+var settingValue = Fliplet.App.Settings.get('foo');
 ```
+
+---
 
 ### Get the logs for an app
 
@@ -46,6 +54,8 @@ Fliplet.App.Logs.get({
 });
 ```
 
+---
+
 ### Create a log for an app
 
 ```js
@@ -56,6 +66,8 @@ Fliplet.App.Logs.create({
 });
 ```
 
+---
+
 ### Save or update some settings of the current app
 
 ```js
@@ -63,6 +75,8 @@ Fliplet.App.Settings.set({ foo: 'bar', hello: 'world' }).then(function () {
   // optional promise callback to be called when the APIs have saved the data
 });
 ```
+
+---
 
 ### Deletes a list of settings from the app
 
@@ -72,6 +86,8 @@ Fliplet.App.Settings.unset(['foo', 'hello']).then(function () {
 });
 ```
 
+---
+
 ### Check if your app is running in preview mode
 
 Use the following snippet to check if your app is running inside Fliplet Viewer (or Fliplet Studio) or it's the production version from the App Store / Play Store / Web apps.
@@ -80,6 +96,8 @@ Use the following snippet to check if your app is running inside Fliplet Viewer 
 var isPreview = Fliplet.App.isPreview(true);
 ```
 
+---
+
 ### Lock the device orientation
 
 ```js
@@ -87,6 +105,8 @@ Fliplet.App.Orientation.lock(orientation)
 ```
 
 * `orientation` (String) `portrait` or `landscape`. If called with no parameters, the app orientation from the settings will be used.
+
+---
 
 ### Unlock the device orientation
 
@@ -106,6 +126,8 @@ To ensure a page doesn't force the orientation re-lock, add the following code t
 ```
 
 **Note** Landscape mode in smartphones are not officially supported by Fliplet and may have layout issues due to the shortened screen height and "notches" on devices such as the iPhone X.
+
+---
 
 ### Open the _About this app_ overlay
 
