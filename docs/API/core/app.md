@@ -9,6 +9,21 @@ Use the `Fliplet.App.getPublicSlug()` method to get the public URL of the curren
 var url = Fliplet.App.getPublicSlug();
 ```
 
+### Get the public URL of a specific screen for the current app
+
+Use the `Fliplet.App.getUrlForPage()` method to get the public URL of a specific screen (given its ID) for the current app. Note that this only works if you have enabled shareable URLs via Fliplet Studio under the App Settings.
+
+```js
+// e.g. "https://apps.fliplet.test/foo-bar/screen-name-1"
+var url = Fliplet.App.getUrlForPage(1);
+```
+
+You can optionally provide options to be added to the query parameters of the URL, e.g.:
+
+```js
+var url = Fliplet.App.getUrlForPage(1, { disableTracking: true, dataSourceEntryId: 123 });
+```
+
 ### Get the current app settings
 
 ```js
