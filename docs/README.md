@@ -72,11 +72,11 @@ To get a brief introduction to the technologies we use and the stack of the plat
 Here's a short list of requested features that are coming up on our platform in the near future or have just been released.
 
 <section class="blocks alt">
-  <a class="bl two" href="/API/core/app-tasks.html">
+  <a class="bl two" href="/API/core/app-actions.html">
     <div>
-      <span class="pin">Internal preview</span>
-      <h4>App Tasks</h4>
-      <p>Learn how App Tasks allow you to define scheduled automations for your app screens.</p>
+      <span class="pin">Open beta</span>
+      <h4>App Actions</h4>
+      <p>Learn how App Actions allow you to define scheduled automations for your app screens.</p>
       <button>Browse documentation &rarr;</button>
     </div>
   </a>
