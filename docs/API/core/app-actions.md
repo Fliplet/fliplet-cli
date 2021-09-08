@@ -122,7 +122,7 @@ Fliplet.App.Actions.create({
 <p class="warning"><strong>Note</strong>: if you only want to <strong>run your action on-demand</strong> (e.g. triggered by a user) make sure not to use the frequency parameter as shown below.</p>
 
 ```js
-// Create a action that is manually run by you
+// Create an action that is manually run by you
 Fliplet.App.Actions.create({
   name: 'confirm-booking',
   pageId: 456
@@ -138,10 +138,10 @@ Fliplet.App.Actions.create({
 If you have created an app action without a specific schedule, you can use the `run` and `runWithResult` functions to run your action:
 
 ```js
-// Run a action in asynchronous mode
+// Run an action in asynchronous mode
 Fliplet.App.Actions.run('confirm-booking');
 
-// Run a action in asynchronous mode with an
+// Run an action in asynchronous mode with an
 // input payload to be sent to the screen.
 Fliplet.App.Actions.run('confirm-booking', {
   FirstName: 'Nick',
@@ -151,7 +151,7 @@ Fliplet.App.Actions.run('confirm-booking', {
   // No result is given back.
 });
 
-// Run a action synchronously with an input payload
+// Run an action synchronously with an input payload
 // and retrieve back the result
 Fliplet.App.Actions.runWithResult('email-is-registered', {
   Email: 'john@example.org'
@@ -201,9 +201,9 @@ Here is a sample of the array of actions returned:
 
 ---
 
-## Get the logs for a action
+## Get the logs for an action
 
-Each time a action runs a new log record gets generated in our backend. You can access such logs for one of all actions:
+Each time n runs a new log record gets generated in our backend. You can access such logs for one of all actions:
 
 ```js
 // Fetch the last 50 completed and failed action results
@@ -272,7 +272,7 @@ Sample logs:
 
 ---
 
-## Update a action
+## Update an action
 
 Use the `update` JS API with the input action `id` or `name` to update any property of the action (among `pageId`, `name`, `frequency` and `active`):
 
@@ -288,7 +288,7 @@ Fliplet.App.Actions.update('confirm-booking', {
 
 ## Temporarily deactivate a scheduled action
 
-Simply update a action as `active: false` to temporarily disable the current scheduling for a action:
+Simply update an action as `active: false` to temporarily disable the current scheduling for an action:
 
 ```js
 // Temporarily deactivate a scheduled action
@@ -301,9 +301,9 @@ Fliplet.App.Actions.update('send-monday-weekly-reminder', {
 
 ---
 
-## Delete a action
+## Delete an action
 
-Use the `remove` JS API with the input action `id` or `name` to delete a action.
+Use the `remove` JS API with the input action `id` or `name` to delete an action.
 
 ```js
 Fliplet.App.Actions.remove('confirm-booking').then(function () {
