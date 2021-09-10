@@ -260,7 +260,8 @@ Request body:
 
 ```
 {
-  "name": "New name"
+  "name": "New name",
+  "columns": ["Foo", "Bar"]
 }
 ```
 
@@ -269,16 +270,17 @@ Response (Status code: 200 OK):
 ```json
 {
   "dataSource": {
-    "hooks": [],
-    "encrypted": false,
-    "public": false,
     "id": 6,
     "name": "New name",
+    "hooks": [],
+    "definition": {},
+    "encrypted": false,
+    "public": false,
     "organizationId": 123,
     "updatedAt": "2016-11-17T10:03:11.839Z",
     "createdAt": "2016-11-17T10:03:11.839Z",
     "appCapabilities": null,
-    "columns": null,
+    "columns": ["Foo", "Bar"],
     "type": null,
     "appId": null
   }
