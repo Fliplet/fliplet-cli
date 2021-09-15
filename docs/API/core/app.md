@@ -1,5 +1,7 @@
 # App
 
+## Public URLs
+
 ### Get the public URL of the current app
 
 Use the `Fliplet.App.getPublicSlug()` method to get the public URL of the current app. Note that this only works if you have enabled shareable URLs via Fliplet Studio under the App Settings.
@@ -28,6 +30,8 @@ var url = Fliplet.App.getPublicSlugForPage(1, { disableTracking: true, dataSourc
 
 ---
 
+## Settings
+
 ### Get the current app settings
 
 ```js
@@ -43,6 +47,28 @@ var settingValue = Fliplet.App.Settings.get('foo');
 ```
 
 ---
+
+### Save or update some settings of the current app
+
+```js
+Fliplet.App.Settings.set({ foo: 'bar', hello: 'world' }).then(function () {
+  // optional promise callback to be called when the APIs have saved the data
+});
+```
+
+---
+
+### Deletes a list of settings from the app
+
+```js
+Fliplet.App.Settings.unset(['foo', 'hello']).then(function () {
+  // optional promise callback to be called when the APIs have deleted the data
+});
+```
+
+---
+
+## Logs
 
 ### Get the logs for an app
 
@@ -68,25 +94,7 @@ Fliplet.App.Logs.create({
 
 ---
 
-### Save or update some settings of the current app
-
-```js
-Fliplet.App.Settings.set({ foo: 'bar', hello: 'world' }).then(function () {
-  // optional promise callback to be called when the APIs have saved the data
-});
-```
-
----
-
-### Deletes a list of settings from the app
-
-```js
-Fliplet.App.Settings.unset(['foo', 'hello']).then(function () {
-  // optional promise callback to be called when the APIs have deleted the data
-});
-```
-
----
+## Preview mode
 
 ### Check if your app is running in preview mode
 
@@ -97,6 +105,8 @@ var isPreview = Fliplet.App.isPreview(true);
 ```
 
 ---
+
+## Device orientation
 
 ### Lock the device orientation
 
@@ -128,6 +138,8 @@ To ensure a page doesn't force the orientation re-lock, add the following code t
 **Note** Landscape mode in smartphones are not officially supported by Fliplet and may have layout issues due to the shortened screen height and "notches" on devices such as the iPhone X.
 
 ---
+
+## About this app overlay
 
 ### Open the _About this app_ overlay
 

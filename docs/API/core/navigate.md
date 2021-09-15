@@ -1,10 +1,12 @@
 # Navigate
 
-### Query parameters
+## Query parameters
 
 ```js
 Fliplet.Navigate.query;
 ```
+
+## Navigation methods
 
 ### Navigate the app to the previous page
 
@@ -161,7 +163,7 @@ var data = {
 Fliplet.Navigate.to(data);
 ```
 
-### Exit app (to the portal app)
+## Exit app (to the portal app)
 
 When the App List component is used to build a portal app, the `Fliplet.Navigate.exitApp()` method can be used to leave an app and return to the portal app containing the App List component.
 
@@ -169,7 +171,7 @@ When the App List component is used to build a portal app, the `Fliplet.Navigate
 Fliplet.Navigate.exitApp();
 ```
 
-### Log out
+## Log out
 
 The `com.fliplet.link` link provider supports a log out action. The following code does the same thing as the provider.
 
@@ -214,7 +216,7 @@ Fliplet.Navigate.to({
 });
 ```
 
-### Open a popup
+## Open a popup
 
 Displays a native alert/popup dialog.
 
@@ -226,7 +228,9 @@ var options = {
 Fliplet.Navigate.popup(options);
 ```
 
-### Open a confirm dialog
+---
+
+## Open a confirm dialog
 
 Displays a native confirmation dialog.
 
@@ -246,7 +250,9 @@ Fliplet.Navigate.confirm(options)
   });
 ```
 
-### Open a prompt dialog
+---
+
+## Open a prompt dialog
 
 Displays a native prompt dialog.
 
@@ -271,7 +277,10 @@ Fliplet.Navigate.prompt(options)
   });
 ```
 
-### Open a gallery
+---
+
+## Open a gallery
+
 We are using [PhotoSwipe](http://photoswipe.com/).
 Note: You need to add `photoswipe` on your dependencies list to use this.
 ```js
