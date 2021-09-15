@@ -633,9 +633,11 @@ h2, h3, h4, h5, h6 {
   }
 
   h2 {
-    font-size: 14px;
+    font-size: 12px;
     color: $primaryBackground;
     margin-top: 0;
+    text-align: center;
+    text-transform: uppercase;
   }
 
   .list {
@@ -672,7 +674,9 @@ h2, h3, h4, h5, h6 {
       &.title-H3 {
         opacity: 0.6;
         font-size: 12px;
-        margin: 5px 0;
+        margin: 5px 0 0 7px;
+        padding-left: 7px;
+        border-left: 2px solid #AAA;
       }
 
       &.title-H4 {
