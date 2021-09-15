@@ -8,8 +8,6 @@ The **App Actions** library allows you to configure app screens to run automatic
 
 ![How it works](/assets/img/app-actions.png)
 
-<p class="quote"><strong>Early preview</strong>: this feature is currently in internal preview and it's not available to all our customers yet. Please get in touch with us if you want to try an early preview of App Actions.</p>
-
 #### Sample use cases:
 
 - Weekly reports on app usage via email

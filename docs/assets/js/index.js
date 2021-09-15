@@ -149,7 +149,7 @@ if (location.pathname !== '/') {
 }
 
 // Mark links as active
-var $a = $('a[href="' + location.pathname + '"]:eq(0)');
+var $a = $('#page a[href="' + location.pathname + '"]:eq(0)');
 
 if ($a.length) {
   $a.addClass('current');
