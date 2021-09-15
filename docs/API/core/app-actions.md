@@ -26,7 +26,7 @@ The **App Actions** library allows you to configure app screens to run automatic
 2. An app action can be created as **scheduled** (when using the `frequency` parameter) or to be run **on-demand**.
 3. Only **up to 5 app** actions can be defined for each app.
 4. An app action runs the target app screen in the cloud. A result can be given back by the screen both when running on a schedule and when on-demand.
-5. An app action is **limited to 30 seconds of execution time**. After 10 seconds, the action will be killed an a specific timeout error will be returned.
+5. An app action is **limited to 30 seconds of execution time**. After 30 seconds, the action will be killed and a specific timeout error will be returned and saved in the logs.
 6. Only JavaScript assets are loaded when the screen runs as an app action. Assets such as CSS and images will be ignored by the system.
 7. Scheduled app actions will only run the published version of a screen, whereas on-demand actions will run the version from the same environment they are fired from (e.g. Fliplet Viewer, Live apps  )
 
