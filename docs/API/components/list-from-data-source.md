@@ -559,7 +559,7 @@ For example:
 Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
   options.config.searchMatch = function(opt) {
     return _.some(opt.fields, function(field) {
-      var fieldValue = _.get(record, ['data', field]);
+      var fieldValue = _.get(opt.record, ['data', field]);
 
       // Field value is empty
       if (typeof fieldValue === 'undefined') {
@@ -567,13 +567,13 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
       }
 
       // Only return full string matches when the field value is not an array
-      if (!Array.isArray(value)) {
-        return ('' + fieldValue).toLowerCase().trim() === ('' + value).toLowerCase();
+      if (!Array.isArray(fieldValue)) {
+        return ('' + fieldValue).toLowerCase().trim() === ('' + opt.value).toLowerCase();
       }
 
       // If the field value is an array, check that it contains the search value
       return _.some(fieldValue, function(val) {
-        return ('' + val).toLowerCase().trim() === ('' + value).toLowerCase();
+        return ('' + val).toLowerCase().trim() === ('' + opt.value).toLowerCase();
       });
     })
   };
