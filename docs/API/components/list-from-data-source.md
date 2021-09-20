@@ -505,7 +505,7 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
 
 ### `beforeOpen`
 
-(Function(`options`)) Function executed before loading entry details. The `options` parameter contains the following properties. Return a rejected Promise if you need to stop the entry from opening.
+(Function(`opt`)) Function executed before loading entry details. The `opt` parameter contains the following properties. Return a rejected Promise if you need to stop the entry from opening.
   - `config` (Object) Configuration used to initialize the component
   - `entry` (Object) Entry being opened
   - `entryId` (Object) ID for entry being opened
@@ -514,20 +514,20 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
 
 ### `beforeShowDetails`
 
-(Function(`options`)) Function executed before showing the entry detail view, after the entry detail data is ready. The `options` parameter contains the following properties. Return a rejected Promise if you need to stop the entry from opening.
+(Function(`opt`)) Function executed before showing the entry detail view, after the entry detail data is ready. The `opt` parameter contains the following properties. Return a rejected Promise if you need to stop the entry from opening.
   - `src` (String) HTML source for the detail view template
   - `data` (Object) Data being used for rendering the detail view template
 
 ### `afterShowDetails`
 
-(Function(`options`)) Function executed after the entry detail view is shown. The `options` parameter contains the following properties.
+(Function(`opt`)) Function executed after the entry detail view is shown. The `opt` parameter contains the following properties.
   - `config` (Object) Configuration used to initialize the component
   - `src` (String) HTML source for the detail view template
   - `data` (Object) Data being used for rendering the detail view template
 
 ### `deleteData`
 
-(Function(`options`)) Function used to delete an entry. The `options` parameter contains the following properties.
+(Function(`opt`)) Function used to delete an entry. The `opt` parameter contains the following properties.
   - `entryId`
   - `config` (Object) Configuration used to initialize the component
   - `id` (Number) Component instance ID
@@ -536,9 +536,49 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
 
 ### `searchData`
 
-(Function(`options`)) Function used to execute a data search. The `options` parameter contains the following properties.
+(Function(`opt`)) Function used to execute a data search. The `opt` parameter contains the following properties.
   - `config` (object) Configuration used to initialize the component
-  - `query` (String) Query string entered by user
+  - `query` (String) Search value entered by user
+  - `activeFilters` (Object) A map of active filters
+  - `records` (Array) Records to be assessed for a match
+  - `showBookmarks` (Boolean) If TRUE, show bookmarks only
+  - `limit` (Number) Number of limited entries to display
+
+### `searchMatch`
+
+(Function(`opt`)) Function used to match an entry by string.
+
+The function includes a `opt` parameter that contains the following properties.
+  - `record` (Object) Record to be assessed for a string match
+  - `value` (String) Search value entered by user
+  - `fields` (Array) List of searchable fields defined for the instance
+
+For example:
+
+```js
+Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
+  options.config.searchMatch = function(opt) {
+    return _.some(opt.fields, function(field) {
+      var fieldValue = _.get(record, ['data', field]);
+
+      // Field value is empty
+      if (typeof fieldValue === 'undefined') {
+        return false;
+      }
+
+      // Only return full string matches when the field value is not an array
+      if (!Array.isArray(value)) {
+        return ('' + fieldValue).toLowerCase().trim() === ('' + value).toLowerCase();
+      }
+
+      // If the field value is an array, check that it contains the search value
+      return _.some(fieldValue, function(val) {
+        return ('' + val).toLowerCase().trim() === ('' + value).toLowerCase();
+      });
+    })
+  };
+});
+```
 
 ### `computedFields`
 
@@ -558,7 +598,7 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
 
 ### `dataPrimaryKey`
 
-(String or Function(`options`)) Provide a string to define the data source field name that contains the primary key. The primary key is used as a unique identifier when saving content for the social features, i.e. likes, comments and bookmarks. The primary key is also passed as the `sessionId` query parameter when user visits the allocated Poll, Survey and Question pages.<br><br>You can set this value so that if content is loaded into a different data source of changes entry ID, the social content won't be lost. Alternatively, define a function to return a unique primary key based on the record data (`options.record`).
+(String or Function(`opt`)) Provide a string to define the data source field name that contains the primary key. The primary key is used as a unique identifier when saving content for the social features, i.e. likes, comments and bookmarks. The primary key is also passed as the `sessionId` query parameter when user visits the allocated Poll, Survey and Question pages.<br><br>You can set this value so that if content is loaded into a different data source of changes entry ID, the social content won't be lost. Alternatively, define a function to return a unique primary key based on the record data (`opt.record`).
 
 To define a custom primary key:
 
