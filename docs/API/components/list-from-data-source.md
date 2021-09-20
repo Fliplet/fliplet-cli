@@ -546,7 +546,7 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
 
 ### `searchMatch`
 
-(Function(`opt`)) Function used to match an entry by string.
+(Function(`opt`)) Custom search function to use for matching an entry by string.
 
 The function includes a `opt` parameter that contains the following properties.
   - `record` (Object) Record to be assessed for a string match
