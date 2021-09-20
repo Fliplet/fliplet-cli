@@ -13,7 +13,7 @@ We regularly update our framework to support new features. If you have an older 
   <div class="bl two">
     <div>
       <h4>Android</h4>
-      <p>Latest stable release: 5.0.0</p>
+      <p>Latest stable release: 5.1.0</p>
     </div>
   </div>
 </section>
@@ -23,9 +23,13 @@ We regularly update our framework to support new features. If you have an older 
 
 ## Supported versions (4.3+)
 
+### Version 5.1.0 (Sep 20, 2021)
+
+- **Android**: Support for SDK 30 and bugfixes for the camera not working as expected on Android 12.
+
 ### Version 5.0.0 (Aug 3, 2021)
 
-- **Android**: Support for App Bundle and SDK 30.
+- **Android**: Support for App Bundle files on Google Play and initial beta support for SDK 30.
 
 ### Version 4.6.0 (June 17, 2021)
 

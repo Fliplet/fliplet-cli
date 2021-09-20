@@ -8,6 +8,10 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## September 2021
 
+### September 20th
+
+- New Android framework version 5.1.0 released with full support for SDK 30 including a bugfix for taking pictures with camera not working as expected on Android 12.
+
 ### September 1st
 
 - The new anti-virus feature has been rolled out to all customers. All files uploaded through the [Media APIs](https://developers.fliplet.com/API/fliplet-media.html#upload-one-or-more-files) will be scanned for viruses and quarantined when an infection is found.
