@@ -135,6 +135,22 @@ if (runningWidgets.length) {
   log();
 }
 
+function getTranslations() {
+  let file;
+
+  try {
+    file = fs.readFileSync(translationPackagePath, { encoding: 'utf8' });
+  } catch (err) {
+    return;
+  }
+
+  try {
+    return JSON.parse(file);
+  } catch (err) {
+    console.error(`[Translation] The file is not a valid JSON.`, err);
+  }
+}
+
 // --------------------------------------------------------------------------
 // Routes
 
@@ -186,13 +202,7 @@ app.get('/build', function (req, res) {
       };
     }
 
-    let translation;
-
-    try {
-      translation = require(translationPackagePath);
-    } catch (err) {
-      console.log('A translation file could not be found. Have you added "translation.json" in the root folder for this project?');
-    }
+    const translation = getTranslations();
 
     template.compile({
       topMenu,
@@ -233,7 +243,7 @@ function renderInterface (req, res) {
     }
 
     const widgets = getRunningWidgets();
-
+    const translation = getTranslations();
     const data = req.query.data || (req.body && req.body.__widgetData);
 
     if (data) {
@@ -257,6 +267,7 @@ function renderInterface (req, res) {
       development: true,
       interface: true,
       app: dummyApp,
+      translation,
       provider: !!req.query.providerId,
       providerId: req.query.providerId,
       providerMode: req.query.providerMode,
