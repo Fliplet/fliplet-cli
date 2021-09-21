@@ -74,7 +74,7 @@ You can see the version you have installed by running the command below:
 
 ```
 $ fliplet --version
-5.2.2
+5.2.3
 ```
 
 You can check the latest available version of the Fliplet CLI on the [npm](https://www.npmjs.com/package/fliplet-cli) website.
