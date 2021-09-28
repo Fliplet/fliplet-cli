@@ -732,10 +732,16 @@ dynamicListSearchValue=hello
 dynamicListFilterValue=England,Monthly&dynamicListFilterHideControls=true
 ```
 
-**Load only data that match names containing John and age less than 29**
+**Load only data where the name contains John and the age is less than 29**
 
 ```
 dynamicListPrefilterColumn=Name,Age&dynamicListPrefilterValue=John,29&dynamicListPrefilterLogic=contains,%3C
+```
+
+**Load only data with the category is either Fruit or Vegetable
+
+```
+dynamicListPrefilterColumn=Category&dynamicListPrefilterValue=[Fruit,Vegetable]&dynamicListPrefilterLogic=oneof
 ```
 
 ## Persistent Variable Queries (deprecated)
