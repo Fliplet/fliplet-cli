@@ -714,7 +714,7 @@ Use the following query parameters when linking to a screen with **List (from da
 
 ### Contains vs Is one of
 
-The **Contains** and **Is one of** operators could often be confusing. See the table below for some explanations on what each of them are suitable for.
+The **Contains** and **Is one of** operators could often be confused with one another. See the table below for some explanations on what each of them is suitable for.
 
 | Logic | Data source value | Comparison | Sample scenario |
 | -- | -- | -- | -- |
