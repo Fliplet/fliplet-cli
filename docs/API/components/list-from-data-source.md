@@ -747,7 +747,7 @@ dynamicListFilterValue=England,Monthly&dynamicListFilterHideControls=true
 dynamicListPrefilterColumn=Name,Age&dynamicListPrefilterValue=John,29&dynamicListPrefilterLogic=contains,%3C
 ```
 
-**Load only data with the category is either Fruit or Vegetable
+**Load only data with the category is either Fruit or Vegetable**
 
 ```
 dynamicListPrefilterColumn=Category&dynamicListPrefilterValue=[Fruit,Vegetable]&dynamicListPrefilterLogic=oneof
