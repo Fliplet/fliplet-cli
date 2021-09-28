@@ -699,7 +699,7 @@ Use the following query parameters when linking to a screen with **List (from da
 - **dynamicListPrefilterLogic** Pre-filter list based on the provided list of comma-separated logic operators to be applied on the columns and values. The valid operators are:
 
 | Operator | URL encoded operator | Description |
-| == | == | == |
+| -- | -- | -- |
 | `==` | `%3D%3D` | Equals |
 | `!=` | `%21%3D` |Not equal |
 | `>` | `%3E` | Greater than |
@@ -711,6 +711,15 @@ Use the following query parameters when linking to a screen with **List (from da
 | `oneof` | `oneof` | Is one of |
 | `between` | `between` | Is between |
 | `regex` | `regex` | RegExp |
+
+The **Contains** and **Is one of** operators could often be confusing. See the table below for some explanations on what each of them are suitable for.
+
+| Logic | Data source value | Comparison | Sample scenario |
+| -- | -- | -- | -- |
+| **Contains** (for arrays)<br><br>*Data contains the comparison value (many-to-1)* | ["**Project Management**", "Security"] | "**Project Management**" | Show any employees where their list of expertise contains "Project Management". |
+| **Contains** (for strings)<br><br>*Data contains the comparison value (substring)* | "**SW3** 8UE" | "**SW3**" | Show any employees where their postcode contains "SW3". |
+| **Is one of**<br><br>*Data is one of the comparison values (1-to-many)* | "**London**" | ["**London**", "Paris"] | Show any employees where their office location is either "London" or "Paris". |
+| **Is one of**<br><br>*Data contains one of the comparison values (many-to-many)* | ["Sales", "**Finance**"] | ["Project Management", "**Finance**"] | Show any employees where their list of expertise contains either "Project Management" or "Finance". |
 
 ### Examples
 
