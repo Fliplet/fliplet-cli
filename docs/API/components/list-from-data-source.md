@@ -712,6 +712,8 @@ Use the following query parameters when linking to a screen with **List (from da
 | `between` | `between` | Is between |
 | `regex` | `regex` | RegExp |
 
+### Contains vs Is one of
+
 The **Contains** and **Is one of** operators could often be confusing. See the table below for some explanations on what each of them are suitable for.
 
 | Logic | Data source value | Comparison | Sample scenario |
