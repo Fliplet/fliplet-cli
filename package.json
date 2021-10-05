@@ -41,5 +41,10 @@
     "temp": "^0.8.3",
     "turndown": "^5.0.3",
     "unzipper": "^0.9.3"
+  },
+  "devDependencies": {
+    "babel-eslint": "^10.1.0",
+    "eslint": "^7.32.0",
+    "eslint-config-fliplet": "^1.0.7"
   }
 }

@@ -1,0 +1,6 @@
+{
+  "extends": "fliplet",
+  "rules": {
+    // Additional, per-project rules...
+  }
+}
