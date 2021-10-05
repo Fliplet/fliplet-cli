@@ -4,7 +4,7 @@
 @import "./vendor.theme.css";
 
 $primary: #00abd1;
-$primaryBackground: #36344c;
+$primaryBackground: #1a182d;
 $lightBackground: #f8f6f7;
 
 $secondaryBackground: #4279ca;
@@ -943,13 +943,13 @@ h2, h3, h4, h5, h6 {
 }
 
 .quote {
-  border-left: 5px solid #36344c;
+  border-left: 5px solid $primaryBackground;
   padding: 8px 15px;
   background: #e6e5f1;
 }
 
 .info {
-  background: #36344c;
+  background: $primaryBackground;
   padding: 15px 20px;
   border-radius: 7px;
   color: rgba(255,255,255,0.8);
@@ -1483,7 +1483,7 @@ div.highlighter-rouge[class|="language"] {
   position: relative;
 
   &:before {
-    background: lighten(#36344c, 30%);
+    background: lighten($primaryBackground, 30%);
     color: white;
     position: absolute;
     top: 0;
