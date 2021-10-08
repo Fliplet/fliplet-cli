@@ -61,7 +61,7 @@ If your data source has defined specific permissions with security rules, additi
 
 1. Ensure the `auth_token` being used is an **App Token** created via Fliplet Studio.
 2. Ensure the app for the created app token has access to the Data Source.
-3. Add the `Fliplet Agent/REST-1.0` header to all requests.
+3. **Add the `User-Agent Fliplet Agent/REST-1.0` header to all requests.**
 
 ---
 
