@@ -536,6 +536,20 @@ module.exports.setup = (agent) => {
       // result.commits contains a report of the sync
     }
   });
+
+  // 4. Example reading from a local CSV file
+  agent.push({
+    description: 'Pushes data from a local CSV file to Fliplet',
+    frequency: '* * * * *',
+    source() {
+      // This assumes you have installed "csvtojson" via the following command
+      // from an elevated command prompt: "npm i csvtojson -g"
+      const csv = require('csvtojson');
+      return csv().fromFile('./path/to/file.csv');
+    },
+    primaryColumnName: 'id',
+    targetDataSourceId: 123
+  });
 };
 ```
 
