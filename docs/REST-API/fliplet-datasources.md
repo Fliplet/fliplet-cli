@@ -61,15 +61,15 @@ If your data source has defined specific permissions with security rules, additi
 
 1. Ensure the `auth_token` being used is an **App Token** created via Fliplet Studio.
 2. Ensure the app for the created app token has access to the Data Source.
-3. **Add the `User-Agent Fliplet Agent/REST-1.0` header to all requests.** as shown in the example below.
+3. **Add the `User-Agent: Fliplet Agent/REST-1.0` header to all requests.** as shown in the example below.
 
 Here is a sample cURL request that contains the header:
 
 ```
 curl -X GET \
 	'https://api.fliplet.com/v1/data-sources/123/data/456' \
-	-H 'Auth-token': 'eu--abcdef-123456678' \
-	-H 'User-Agent': 'Fliplet Agent/REST-1.0'
+	-H 'Auth-token: 'eu--abcdef-123456678' \
+	-H 'User-Agent: 'Fliplet Agent/REST-1.0'
 ```
 
 ---
