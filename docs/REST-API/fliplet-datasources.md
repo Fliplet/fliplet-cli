@@ -67,9 +67,9 @@ Here is a sample cURL request that contains the header:
 
 ```
 curl -X GET \
-	'https://api.fliplet.com/v1/data-sources/123/data/456' \
-	-H 'Auth-token: 'eu--abcdef-123456678' \
-	-H 'User-Agent: 'Fliplet Agent/REST-1.0'
+	"https://api.fliplet.com/v1/data-sources/123/data/456" \
+	-H "Auth-token: eu--abcdef-123456678" \
+	-H "User-Agent: Fliplet Agent/REST-1.0"
 ```
 
 ---
