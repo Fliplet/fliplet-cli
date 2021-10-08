@@ -55,6 +55,16 @@ Please head to the [how to authenticate](authenticate.md) page of the documentat
 
 ---
 
+## Authenticating when using security rules
+
+If your data source has defined specific permissions with security rules, additional steps must be taken to sign the requests:
+
+1. Ensure the `auth_token` being used is an **App Token** created via Fliplet Studio.
+2. Ensure the app for the created app token has access to the Data Source.
+3. Add the `Fliplet Agent/REST-1.0` header to all requests.
+
+---
+
 ## Access roles
 
 Data sources requires ​roles​ to be accessed to. Roles can have multiple permissions: **create, read, update, delete, query**. We call them ​`crudq​`. Once you create a data source, your user automatically gets all these permissions assigned to it, since you own the data source.
