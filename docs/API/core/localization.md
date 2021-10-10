@@ -127,10 +127,25 @@ TD(value, options)
 
 * `value` {*} The date or time value to be used for formatting. The input type can be a `Moment` object, `Date` object or a string. Strings must be formatted as `YYYY-MM-DD` for dates and `HH:mm` (24-hour time) for times.
 * `options` {Object} A map of options
-* `options.format` {String} The formatting to be used. See [Moment documentation](https://github.com/moment/momentjs.com/blob/master/docs/moment/07-customization/06-long-date-formats.md) for the supported locale formats, e.g. `LL` for long form localized dates or `LT` for localized time without seconds.
+* `options.format` {String} The formatting to be used. You can use one of the supported formats in the table below, e.g. `LL` for long form localized dates or `LT` for localized time without seconds, or one of the following options for relative time: `fromNow`, `from`, `toNow` and `to`.
+* `options.from` {*} (Optional) If `options.format` is `from`, use this parameter to set the reference date.
+* `options.to` {*} (Optional) If `options.format` is `to`, use this parameter to set the reference date.
 * `options.locale` {String} (Optional) Use a specific locale for the formatting. Default: device/browser language settings or `en` when that's not found or valid.
 
 Supported formats
+
+| Description                                       | Format | Example                             |
+|---------------------------------------------------|--------|-------------------------------------|
+| Time                                              | LT     | 8:30 PM                             |
+| Time with seconds                                 | LTS    | 8:30:25 PM                          |
+| Month numeral, day of month, year                 | L      | 09/04/1986                          |
+|                                                   | l      | 9/4/1986                            |
+| Month name, day of month, year                    | LL     | September 4, 1986                   |
+|                                                   | ll     | Sep 4, 1986                         |
+| Month name, day of month, year, time              | LLL    | September 4, 1986 8:30 PM           |
+|                                                   | lll    | Sep 4, 1986 8:30 PM                 |
+| Month name, day of month, day of week, year, time | LLLL   | Thursday, September 4, 1986 8:30 PM |
+|                                                   | llll   | Thu, Sep 4, 1986 8:30 PM            |
 
 **Examples**
 
