@@ -160,6 +160,14 @@ Handlebars.compile('{{ TD foo format="LL" }}')({ foo: '2021-03-04' }) // 4 March
 Handlebars.compile('{{ TD foo format="LL" locale="en-US" }}')({ foo: '2021-03-04' }) // March 4, 2021
 Handlebars.compile('{{ TD foo format="LT" }}')({ foo: '14:23' }) // 14:23 (UK) 2:23 PM (US) 下午2點23分 (ZH-TW)
 Handlebars.compile('{{ TD foo format="LT" locale="en-US" }}')({ foo: '14:23' }) // 2:23 PM
+
+// For US locale
+
+Fliplet.Locale.date('2021-01-03', { format: 'fromNow' }) // 9 months ago as of October 2021
+Fliplet.Locale.date('2021-01-03', { format: 'from', from: '2021-01-05' }) // 2 days ago
+
+Handlebars.compile('{{ TD foo format="fromNow" }}')({ foo: '2021-01-03' }) // 9 months ago as of October 2021
+Handlebars.compile('{{ TD foo format="from" from="2021-01-05" }}')({ foo: '2021-01-03' }) // 2 days ago
 ```
 {% endraw %}
 
