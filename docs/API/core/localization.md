@@ -132,7 +132,7 @@ TD(value, options)
 * `options.to` {*} (Optional) If `options.format` is `to`, use this parameter to set the reference date.
 * `options.locale` {String} (Optional) Use a specific locale for the formatting. Default: device/browser language settings or `en` when that's not found or valid.
 
-Supported formats
+**Supported formats**
 
 | Description                                       | Format | Example                             |
 |---------------------------------------------------|--------|-------------------------------------|
