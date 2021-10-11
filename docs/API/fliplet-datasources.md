@@ -305,7 +305,7 @@ connection.commit({
   // keep remote columns not sent with
   // the updates of entry ID 123
   extend: true
-])
+});
 ```
 
 ---
