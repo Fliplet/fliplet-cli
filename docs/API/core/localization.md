@@ -127,10 +127,25 @@ TD(value, options)
 
 * `value` {*} The date or time value to be used for formatting. The input type can be a `Moment` object, `Date` object or a string. Strings must be formatted as `YYYY-MM-DD` for dates and `HH:mm` (24-hour time) for times.
 * `options` {Object} A map of options
-* `options.format` {String} The formatting to be used. See [Moment documentation](https://github.com/moment/momentjs.com/blob/master/docs/moment/07-customization/06-long-date-formats.md) for the supported locale formats, e.g. `LL` for long form localized dates or `LT` for localized time without seconds.
+* `options.format` {String} The formatting to be used. You can use one of the supported formats in the table below, e.g. `LL` for long form localized dates or `LT` for localized time without seconds, or one of the following options for relative time: `fromNow`, `from`, `toNow` and `to`.
+* `options.from` {*} (Optional) If `options.format` is `from`, use this parameter to set the reference date.
+* `options.to` {*} (Optional) If `options.format` is `to`, use this parameter to set the reference date.
 * `options.locale` {String} (Optional) Use a specific locale for the formatting. Default: device/browser language settings or `en` when that's not found or valid.
 
-Supported formats
+**Supported formats**
+
+| Description                                       | Format | Example                             |
+|---------------------------------------------------|--------|-------------------------------------|
+| Time                                              | LT     | 8:30 PM                             |
+| Time with seconds                                 | LTS    | 8:30:25 PM                          |
+| Month numeral, day of month, year                 | L      | 09/04/1986                          |
+|                                                   | l      | 9/4/1986                            |
+| Month name, day of month, year                    | LL     | September 4, 1986                   |
+|                                                   | ll     | Sep 4, 1986                         |
+| Month name, day of month, year, time              | LLL    | September 4, 1986 8:30 PM           |
+|                                                   | lll    | Sep 4, 1986 8:30 PM                 |
+| Month name, day of month, day of week, year, time | LLLL   | Thursday, September 4, 1986 8:30 PM |
+|                                                   | llll   | Thu, Sep 4, 1986 8:30 PM            |
 
 **Examples**
 
@@ -145,6 +160,14 @@ Handlebars.compile('{{ TD foo format="LL" }}')({ foo: '2021-03-04' }) // 4 March
 Handlebars.compile('{{ TD foo format="LL" locale="en-US" }}')({ foo: '2021-03-04' }) // March 4, 2021
 Handlebars.compile('{{ TD foo format="LT" }}')({ foo: '14:23' }) // 14:23 (UK) 2:23 PM (US) 下午2點23分 (ZH-TW)
 Handlebars.compile('{{ TD foo format="LT" locale="en-US" }}')({ foo: '14:23' }) // 2:23 PM
+
+// For US locale
+
+Fliplet.Locale.date('2021-01-03', { format: 'fromNow' }) // 9 months ago as of October 2021
+Fliplet.Locale.date('2021-01-03', { format: 'from', from: '2021-01-05' }) // 2 days ago
+
+Handlebars.compile('{{ TD foo format="fromNow" }}')({ foo: '2021-01-03' }) // 9 months ago as of October 2021
+Handlebars.compile('{{ TD foo format="from" from="2021-01-05" }}')({ foo: '2021-01-03' }) // 2 days ago
 ```
 {% endraw %}
 

@@ -176,6 +176,26 @@ Fliplet.Hooks.on('beforeChartRender', function (options) {
 });
 ```
 
+**Add a unit to the bar chart label**
+
+```js
+Fliplet.Hooks.on('beforeChartRender', function(options) {
+  options.chartOptions.series[0].dataLabels.format = '{point.y} votes';
+});
+```
+
+**Use a custom the bar chart label format function**
+
+```js
+Fliplet.Hooks.on('beforeChartRender', function(options) {
+  // Unset the format template to use a custom function
+  options.chartOptions.series[0].dataLabels.format = null;
+  options.chartOptions.series[0].dataLabels.formatter = function() {
+    return this.point.category + ': ' + this.point.y;
+  };
+});
+```
+
 ### `afterChartRender`
 
 The hook is run after the chart is rendered.
