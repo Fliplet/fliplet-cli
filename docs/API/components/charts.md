@@ -83,6 +83,7 @@ The **Chart** components exposes hooks that you can use to modify the component 
 
 - [`beforeChartQuery`](#beforechartquery)
 - [`afterChartQuery`](#afterchartquery)
+- [`afterChartSummary`](#afterchartsummary)
 - [`beforeChartRender`](#beforechartrender)
 - [`afterChartRender`](#afterchartrender)
 
@@ -145,6 +146,60 @@ Fliplet.Hooks.on('afterChartQuery', function (options) {
   _.remove(options.records.dataSourceEntries, function (record) {
     return record.data.Color === 'green';
   });
+});
+```
+
+### `afterChartSummary`
+
+The hook is run after data is processed for summary. This only applies to the charts that support summary mode (Column, Bar, Pie and Donut). Return a rejected promise to stop the chart initialization with a suitable error message.
+
+```js
+Fliplet.Hooks.on('afterChartSummary', fn);
+```
+
+#### Parameters
+
+- `fn` (Function(`data`)) Callback function with an object parameter.
+  - `data` (Object) A map of data containing the following.
+    - `records` (Array) Collection of records to be used for the component. This would be the last point in the process for the data to be manipulated before the chart renders it. The records can be found in `records.dataSourceEntries`.
+    - `config` (Object) Configuration used to initialize the component
+    - `id` (Number) Component instance ID
+    - `uuid` (String) Component instance UUID
+    - `type` (String) Chart type
+
+#### Usage
+
+**Manipulate chart data after entries are counted**
+
+```js
+Fliplet.Hooks.on('afterChartSummary', function(options) {
+  switch (options.type) {
+    case 'column':
+    case 'bar':
+      // Double all values
+      options.config.values = options.config.values.map(function(value) {
+        return value * 2;
+      });
+
+      // Multiply 3rd value by 10
+      options.config.values[2] = options.config.values[2] * 10;
+
+      // Add a bar
+      options.config.columns.push('Foo');
+      options.config.values.push(7);
+      break;
+    case 'pie':
+    case 'donut':
+      // Multiply 1st value by 2
+      options.config.entries[0].y = options.config.entries[0].y * 2;
+
+      // Add an entry
+      options.config.entries.push({
+        name: 'Atlantis',
+        y: 7
+      });
+      break;
+  }
 });
 ```
 
