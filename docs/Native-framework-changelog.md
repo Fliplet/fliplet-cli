@@ -30,6 +30,7 @@ We regularly update our framework to support new features. If you have an older 
 ### Version 5.1.0 (Sep 20, 2021)
 
 - **Android**: Support for SDK 30 and bugfixes for the camera not working as expected on Android 12.
+
 ### Version 5.0.0 (Aug 3, 2021)
 
 - **Android**: Support for App Bundle files on Google Play and initial beta support for SDK 30.
