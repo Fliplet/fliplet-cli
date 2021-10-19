@@ -6,6 +6,14 @@ description: Changelog notes giving a summary of recent significant changes to t
 
 Each week, we provide changelog notes on this page giving a summary of recent significant changes to the documentation. If there haven't been any significant changes in a given week, we don't publish changelog notes.
 
+## October 2021
+
+### October 19th
+
+- New Android framework version 5.2.0 released with a bugfix for apps built with the SDK30 not properly dismissing the virtual keyboard.
+
+---
+
 ## September 2021
 
 ### September 20th
