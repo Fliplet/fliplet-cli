@@ -96,7 +96,15 @@ Here are a few examples for the frequency value:
 | `*/5 1 * * *`     | Run every 5th minute of every first hour (i.e., 01:00, 01:05, 01:10, up until 01:55)                   |
 | `0 0 1 1 *`       | Run once a year at midnight of 1 January	                                                             |
 
-<p class="warning">The timezone for the frequency can be defined via the <code>timezone</code> parameter using the <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones" target="_blank">full name of the zone</a>, e.g. "Europe/Dublin. Check out the example below for more information.</p>
+<p class="warning">The timezone for the frequency can be defined via the <code>timezone</code> parameter using the <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones" target="_blank">full name of the zone</a>, e.g. "Europe/Dublin".</p>
+
+Example timezones:
+
+- America/Los_Angeles
+- America/New_York
+- Europe/Dublin
+- Europe/London
+- Europe/Rome
 
 ### Create a scheduled action
 
