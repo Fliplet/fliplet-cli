@@ -22,7 +22,7 @@ The **App Actions** library allows you to configure app screens to run automatic
 
 ## Data models and key concepts
 
-1. An app action consists in a unique `name`, a target `pageId` (the screen to run) and an optional `frequency`.
+1. An app action consists in a unique `name`, a target `pageId` (the screen to run) and optional `frequency` and `timezone`.
 2. An app action can be created as **scheduled** (when using the `frequency` parameter) or to be run **on-demand**.
 3. Only **up to 5 app** actions can be defined for each app.
 4. An app action runs the target app screen in the cloud. A result can be given back by the screen both when running on a schedule and when on-demand.
@@ -67,6 +67,7 @@ Use the `create` JS API to create an app action. These are the supported paramet
 - `name` (String) a name for the action. Only numbers, letters, dashes and underscores are supported (e.g. `hello-world-123`)
 - `pageId` (Number) the target screen ID
 - `active` (Boolean) whether the action should be enabled (for scheduled actions only)
+- `timezone` (Optional String) [the timezone name](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones), e.g. "America/Phoenix"
 - `frequency` (Optional String) the "cron expression" to run the action periodically on a given schedule (e.g. `0 5 * * *`). See example frequency below:
 
 #### Frequency
@@ -95,7 +96,7 @@ Here are a few examples for the frequency value:
 | `*/5 1 * * *`     | Run every 5th minute of every first hour (i.e., 01:00, 01:05, 01:10, up until 01:55)                   |
 | `0 0 1 1 *`       | Run once a year at midnight of 1 January	                                                             |
 
-<p class="warning">The timezone for the frequency can be defined via the <code>timezone</code> parameter in <strong>RFC2822 format</strong>. Check out the example below for more information.</p>
+<p class="warning">The timezone for the frequency can be defined via the <code>timezone</code> parameter using the [full name of the zone](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones), e.g. "Europe/Dublin. Check out the example below for more information.</p>
 
 ### Create a scheduled action
 
@@ -105,7 +106,7 @@ Once you have figured out what frequency to use, use the `create` JS API to crea
 Fliplet.App.Actions.create({
   name: 'send-monday-weekly-reminder',
   frequency: '0 8 * * 1',
-  timezone: '+00',
+  timezone: 'Europe/Rome',
   active: true,
   pageId: 123
 }).then(function (action) {
@@ -186,7 +187,7 @@ Here is a sample of the array of actions returned:
     "name": "send-monday-weekly-reminder",
     "active": true,
     "frequency": "*/2 * * * *",
-    "timezone": "+00",
+    "timezone": "Europe/Dublin",
     "lastRunAt": "2021-07-21T12:32:02.495Z",
     "nextRunAt": "2021-07-21T12:34:00.000Z",
     "createdAt": "2021-07-20T09:29:00.366Z",
