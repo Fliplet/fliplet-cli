@@ -15,7 +15,7 @@ These are a few examples of rate limits we currently allow on a per-user basis:
 - **Data Source APIs**: up to 200 requests every 10 seconds
 - **Communicate APIs**: up to 20 requests every 30 seconds
 - **Audit logs APIs**: up to 30 requests every 10 seconds
-- **App tasks APIs**: up to 60 requests per minute (*for the entire app*)
+- **App Actions**: up to 60 runs per minute (*for the entire app*)
 
 If you get rate limited, our APIs will return a `429` status code with a message similar to this:
 

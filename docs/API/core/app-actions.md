@@ -170,7 +170,9 @@ Fliplet.App.Actions.runWithResult('email-is-registered', {
 });
 ```
 
-Please note that app actions do not save their result in the produced log entry when running on-demand.
+<p class="quote">Rate limiting: please note that app actions are rate limited and can run <strong>up to 60 times per minute for the entire app</strong>. The limit does not apply to scheduled tasks. Please get in touch with our team for more details.</p>
+
+As a further note, app actions do not save their result in the produced log entry when running on-demand.
 
 ---
 
