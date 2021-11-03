@@ -77,7 +77,7 @@ This is roughly the output you should see in your terminal:
 <div class="termynal1" data-termynal data-ty-typeDelay="40" data-ty-lineDelay="700">
   <span data-ty="input" data-ty-prompt="$ ~/User">npm install fliplet-agent -g</span>
   <span data-ty="progress" data-ty-progressChar="·"></span>
-  <span data-ty>+ fliplet-agent@1.14.0</span>
+  <span data-ty>+ fliplet-agent@1.14.1</span>
 </div>
 
 That's it! You can now jump to the [Get Started](#get-started) part of this documentation to create your first script.
@@ -967,6 +967,10 @@ In order to be able to update the agent via **npm**, [registry.npmjs.org](https:
 ---
 
 ## Releases changelog
+
+#### 1.14.1 (November 3rd, 2021)
+
+- Fixes when running a push operation without a primary key defined
 
 #### 1.14.0 (October 25th, 2021)
 
