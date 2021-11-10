@@ -322,6 +322,16 @@ Fliplet.App.Actions.remove('confirm-booking').then(function () {
 
 ---
 
+## Troubleshooting
+
+### Whitelist inbound requests from App Actions
+
+If you're using an app action to make requests to your server you may need to whitelist the IP address that our infrastructure uses to make inbound requests to your systems. Please use the relevant IP for your region:
+
+- European customers: `52.212.7.119`
+- US customers: `3.98.9.146`
+- Canadian customers: `54.151.38.62`
+
 ---
 
 [Back to API documentation](../API-Documentation.md)

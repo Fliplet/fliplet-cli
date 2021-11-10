@@ -71,6 +71,7 @@ Please note that the following list may change over time. We regularly update ou
 52.212.248.0/26
 3.249.28.0/23
 52.19.124.0/23
+52.212.7.119/32
 ```
 
 ### Additional IPs for US customers
@@ -85,4 +86,24 @@ Please note that the following list may change over time. We regularly update ou
 52.219.120.0/22
 52.219.112.0/21
 52.52.191.128/26
+54.151.38.62/32
 ```
+
+
+### Additional IPs for Canadian customers
+
+```
+3.98.17.196/32
+3.98.43.103/32
+54.151.38.62/32
+```
+
+---
+
+### Additional IPs for Fliplet App Actions
+
+If you need to whitelist inbound requests to your systems from App Actions, please add the following IP addresses:
+
+- European customers: `52.212.7.119`
+- US customers: `3.98.9.146`
+- Canadian customers: `54.151.38.62`
