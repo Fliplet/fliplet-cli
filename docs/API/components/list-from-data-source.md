@@ -760,7 +760,7 @@ dynamicListFilterColumn=Status,Office&dynamicListFilterValue=[Approved,Waitliste
 #### Apply in-app filters based on dates
 
 ```
-dynamicListFilterColumn=Publish%s0date&dynamicListFilterValue=2021-02-01..2021-03-01
+dynamicListFilterColumn=Publish%20date&dynamicListFilterValue=2021-02-01..2021-03-01
 ```
 
 #### Load only data where the name contains John and the age is less than 29
