@@ -77,7 +77,7 @@ This is roughly the output you should see in your terminal:
 <div class="termynal1" data-termynal data-ty-typeDelay="40" data-ty-lineDelay="700">
   <span data-ty="input" data-ty-prompt="$ ~/User">npm install fliplet-agent -g</span>
   <span data-ty="progress" data-ty-progressChar="·"></span>
-  <span data-ty>+ fliplet-agent@1.12.0</span>
+  <span data-ty>+ fliplet-agent@1.14.1</span>
 </div>
 
 That's it! You can now jump to the [Get Started](#get-started) part of this documentation to create your first script.
@@ -870,6 +870,7 @@ files:
   # Username and password must also be configured
   - column: userSharepointImage
     type: sharepoint
+    fileType: inherit
     username: myusername
     password: mypassword
 ```
@@ -896,7 +897,13 @@ module.exports.setup = (agent) => {
       { column: 'userAlternativeResume', type: 'local', directory: 'C:\\path\\to\\folder' },
 
       // Define a column containing a Sharepoint URL to a file, e.g. "https://example.org/John.jpg"
-      { column: 'userSharepointImage', type: 'sharepoint', username: 'myuserame', password: 'mypassword' }
+      {
+        column: 'userSharepointImage',
+        type: 'sharepoint',
+        fileType: 'inherit',
+        username: 'myuserame',
+        password: 'mypassword'
+        }
     ]
   });
 };
@@ -960,6 +967,18 @@ In order to be able to update the agent via **npm**, [registry.npmjs.org](https:
 ---
 
 ## Releases changelog
+
+#### 1.14.1 (November 3rd, 2021)
+
+- Fixes when running a push operation without a primary key defined
+
+#### 1.14.0 (October 25th, 2021)
+
+- Support for new `fileType` option on Sharepoint file integrations
+
+#### 1.13.0 (August 18th, 2021)
+
+- Support for new Canadian server region
 
 #### 1.12.0 (November 17th, 2020)
 

@@ -6,6 +6,14 @@ description: Changelog notes giving a summary of recent significant changes to t
 
 Each week, we provide changelog notes on this page giving a summary of recent significant changes to the documentation. If there haven't been any significant changes in a given week, we don't publish changelog notes.
 
+## November
+
+### November 3rd
+
+- Released new version 1.14.1 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html) with fixes for running a push operation without a primary key.
+
+---
+
 ## October 2021
 
 ### October 19th

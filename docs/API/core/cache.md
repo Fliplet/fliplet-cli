@@ -36,9 +36,11 @@ Fliplet.Cache.get({
 
 ### Clear cache for one or more keys
 
+Use the `remove` method to clear a single key from the cache. Likewise, use the `clear` method to remove all keys at once.
+
 ```js
 // Clear a single value
-Fliplet.Cache.delete('foo');
+Fliplet.Cache.remove('foo');
 
 // Clear everything for this app
 Fliplet.Cache.clear();
