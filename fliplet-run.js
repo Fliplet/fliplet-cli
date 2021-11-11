@@ -275,7 +275,7 @@ function renderInterface (req, res) {
     }).then(function (html) {
       res.send(html);
     }, function (err) {
-      res.send(err);
+      res.status(503).send(err);
     });
   });
 }
@@ -310,7 +310,7 @@ app.get('/templates/:template', function (req, res) {
   }).then(function (html) {
     res.send(html);
   }, function (err) {
-    res.send(err);
+    res.status(503).send(err);
   });
 });
 
