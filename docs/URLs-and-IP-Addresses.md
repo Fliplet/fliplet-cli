@@ -104,6 +104,6 @@ Please note that the following list may change over time. We regularly update ou
 
 If you need to whitelist inbound requests to your systems from App Actions, please add the following IP addresses:
 
+- Canadian customers: `3.98.9.146`
 - European customers: `52.212.7.119`
-- US customers: `3.98.9.146`
-- Canadian customers: `54.151.38.62`
+- US customers: `54.151.38.62`
