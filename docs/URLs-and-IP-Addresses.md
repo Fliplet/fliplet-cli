@@ -95,7 +95,7 @@ Please note that the following list may change over time. We regularly update ou
 ```
 3.98.17.196/32
 3.98.43.103/32
-54.151.38.62/32
+3.98.9.146/32
 ```
 
 ---
@@ -107,3 +107,5 @@ If you need to whitelist inbound requests to your systems from App Actions, plea
 - Canadian customers: `3.98.9.146`
 - European customers: `52.212.7.119`
 - US customers: `54.151.38.62`
+
+---
