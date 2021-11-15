@@ -74,7 +74,7 @@ More docs on [https://github.com/i18next/jquery-i18next](https://github.com/i18n
 
 **Handlebars**
 
-Client-side Handlebars templates can use the `{{ T }}` helper to print translations.
+Client-side Handlebars templates can use the {% raw %}<code>{{ T }}</code>{% endraw %} helper to print translations.
 
 {% raw %}
 ```js
