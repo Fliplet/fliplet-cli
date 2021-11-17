@@ -15,7 +15,7 @@ Fliplet.CSV.encode(data, options);
 ```
 
 * **data** (Object \| Array) JSON data to be encoded into CSV.
-* **options** (Object) Optional configuration for further CSV encoding. See [Papa Parse documentation](https://www.papaparse.com/docs#json-to-csv) for more. **Note** Fliplet CSV uses `\n` as the newline sequence by default to maximize CSV sharbility and support across all platforms. In addition, the following options are also supported:
+* **options** (Object) Optional configuration for further CSV encoding. See [Papa Parse documentation](https://www.papaparse.com/docs#json-to-csv) for more. **Note** Fliplet CSV uses `\n` as the newline sequence by default to maximize CSV shareability and support across all platforms. In addition, the following options are also supported:
    * **base64** (Boolean) Set as `true` to encode the CSV data in Base64 encoding. (**Default**: `false`)
    * **dataUrl** (Boolean) Set as `true` to encode the CSV data as `data:` URL. (**Default**: `false`)
 
@@ -83,7 +83,7 @@ Fliplet.CSV.download(data, options);
 
 ## `Fliplet.CSV.email()`
 
-Attachs CSV file to an email.
+Attaches CSV file to an email.
 
 (Returns `Promise`)
 
