@@ -55,7 +55,7 @@ Fliplet.Communicate.sendEmail(options);
 More options can be found on the [official Mandrill documentation](https://mandrillapp.com/api/docs/messages.JSON.html), the email provider Fliplet relies on.
 
 
-You can also {% raw %}`{{ variables }}`{% endraw %} expressions in your options if you want the template to be compiled with other data:
+You can also use {% raw %}`{{ variables }}`{% endraw %} expressions in your options if you want the template to be compiled with other data:
 
 {% raw %}
 ```js
