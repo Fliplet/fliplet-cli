@@ -175,8 +175,6 @@ Handlebars.compile('{{ TD foo format="from" from="2021-01-05" }}')({ foo: '2021-
 
 Powered by `Intl.NumberFormat()`, the number localization API can help you localize numbers to the language/regional preference.
 
-**Note** By default, numbers are localized and rendered with a minimum and maximum of 0–3 decimal places. This is due to the JavaScript's precision issues with floating points. If your data contains more decimal places, see [`Intl.NumberFormat()` documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat) for how to display more decimal places.
-
 **JS API**
 
 ```js
@@ -196,6 +194,10 @@ TN(value, options)
 
 * `value` {*} The value to be used for formatting. Numbers are preferred. Other types of input will be parsed to determine its numerical value.
 * `options` {Object} A map of options. See [`Intl.NumberFormat()` documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat) for the supported options.
+
+<p class="warning"><strong>Long decimal places</strong> By default, numbers are localized and rendered with a minimum and maximum of 0–3 decimal places. This is due to the JavaScript's precision issues with floating points. If your data contains more decimal places, see [`Intl.NumberFormat()` documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat) for how to display more decimal places.</p>
+
+<p class="warning"><strong>Large numbers</strong> If you have large numbers that you want to display, you may want to consider using the `notation` and `compactDisplay` parameters as supported by [`Intl.NumberFormat()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat). Also, numbers in JavaScript by default start to lose precision beyond positive or negative 9,007,199,254,740,991 (`Number.MAX_SAFE_INTEGER`) and cannot go beyond the value of `Number.MAX_VALUE`, which is around 10<sup>308</sup> and would be displayed as "∞" where appropriate.</p>
 
 **Examples**
 
