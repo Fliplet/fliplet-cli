@@ -197,7 +197,7 @@ TN(value, options)
 
 <p class="warning"><strong>Long decimal places</strong> By default, numbers are localized and rendered with a minimum and maximum of 0–3 decimal places. This is due to the JavaScript's precision issues with floating points. If your data contains more decimal places, see <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat">documentation</a> for <code>Intl.NumberFormat()</code> to learn how to display more decimal places.</p>
 
-<p class="warning"><strong>Large numbers</strong> If you have large numbers that you want to display, you may want to consider using the <code>notation</code> and <code>compactDisplay</code> parameters as supported by <code>Intl.NumberFormat()</code>. Also, numbers in JavaScript by default start to lose precision beyond positive or negative 9,007,199,254,740,991 (<code>Number.MAX_SAFE_INTEGER</code>) and cannot go beyond the value of <code>Number.MAX_VALUE</code>, which is around 10<sup>308</sup> and would be displayed as "∞" where appropriate.</p>
+<p class="warning"><strong>Large numbers</strong> If you have large numbers that you want to display, you may want to consider using the <code>notation</code> and <code>compactDisplay</code> parameters as supported by <code>Intl.NumberFormat()</code> to display larnumbers. Also, numbers in JavaScript by default start to lose precision beyond positive or negative 9,007,199,254,740,991 (<code>Number.MAX_SAFE_INTEGER</code>) and cannot go beyond the value of <code>Number.MAX_VALUE</code>, which is around 10<sup>308</sup> and would be displayed as "∞" where appropriate.</p>
 
 **Examples**
 
@@ -207,11 +207,13 @@ Fliplet.Locale.number(1234) // 1,234 (UK) 1.234 (IT) or 1 234 (FR)
 Fliplet.Locale.number(1234, { locale: 'en-US' }) // 1,234
 Fliplet.Locale.number(1234, { minimumFractionDigits: 2 }) // 1,234.00 (UK) 1.234,00 (IT) or 1 234,00 (FR)
 Fliplet.Locale.number(1234, { minimumFractionDigits: 2, useGrouping: false }) // 1234.00 (UK) 1234,00 (IT) or 1234,00 (FR)
+Fliplet.Locale.number(1234000000, { notation: 'compact', compactDisplay: 'long' }) // 1.2 billion (UK) 1,2 miliardi (IT) 1,2 milliard (FR)
 
 Handlebars.compile('{{ TN foo }}')({ foo: 1234 }) // 1,234 (UK) 1.234 (IT) or 1 234 (FR)
 Handlebars.compile('{{ TN foo locale="en-US" }}')({ foo: 1234 }) // 1,234
 Handlebars.compile('{{ TN foo minimumFractionDigits=2 }}')({ foo: 1234 }) // 1,234.00 (UK) 1.234,00 (IT) or 1 234,00 (FR)
 Handlebars.compile('{{ TN foo minimumFractionDigits=2 useGrouping=false }}')({ foo: 1234 }) // 1234.00 (UK) 1234,00 (IT) or 1234,00 (FR)
+Handlebars.compile('{{ TN foo notation="compact" compactDisplay="long" }}')({ foo: 1234000000 }) // 1.2 billion (UK) 1,2 miliardi (IT) 1,2 milliard (FR)
 ```
 {% endraw %}
 
