@@ -175,6 +175,8 @@ Handlebars.compile('{{ TD foo format="from" from="2021-01-05" }}')({ foo: '2021-
 
 Powered by `Intl.NumberFormat()`, the number localization API can help you localize numbers to the language/regional preference.
 
+**Note** By default, numbers are localized and rendered with a minimum and maximum of 0–3 decimal places. This is due to the JavaScript's precision issues with floating points. If your data contains more decimal places, see [`Intl.NumberFormat()` documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat) for how to display more decimal places.
+
 **JS API**
 
 ```js
