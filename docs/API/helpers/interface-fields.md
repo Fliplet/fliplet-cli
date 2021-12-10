@@ -24,6 +24,7 @@ The following property can be defined for all field types (except when specified
 * Textarea (`textarea`)
 * Checkbox (`checkbox`)
 * Radio (`radio`)
+* Dropdown (`dropdown`)
 * Toggle (`toggle`)
 * Hidden (`hidden`)
 * Provider (`provider`)
@@ -153,12 +154,33 @@ Example with different label and value:
 ```js
 {
   type: 'radio',
-  name: 'fruits',
+  name: 'stocks',
   label: 'Which stock do you like most?',
   options: [
     { value: 'AAPL', label: 'Apple' },
     { value: 'GOOGL', label: 'Google' }
   ]
+}
+```
+
+---
+
+### Dropdown (`dropdown`)
+
+A dropdown for the user to allow a single choice selection. Supports the following properties:
+
+- `options` (Array[*]) List of values. Each value can be a string or an object
+  - (String) Use a string to use the same value as the label
+  - (Object`{ value, label }`) Use an object to set different labels that are different from the value. If a `value` is provided without `label`, `label` will match the `value`.
+
+Example:
+
+```js
+{
+  type: 'dropdown',
+  name: 'continent',
+  label: 'Choose a continent',
+  options: ['Africa', 'Antarctica', 'Asia', 'Australia', 'Europe', 'North America', 'South America']
 }
 ```
 
