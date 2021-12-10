@@ -180,7 +180,15 @@ Example:
   type: 'dropdown',
   name: 'continent',
   label: 'Choose a continent',
-  options: ['Africa', 'Antarctica', 'Asia', 'Australia', 'Europe', 'North America', 'South America']
+  options: [
+    'Africa',
+    'Antarctica',
+    'Asia',
+    'Australia',
+    'Europe',
+    { value: 'North America', label: 'N. America' },
+    { value: 'South America', label: 'S. America' }
+  ]
 }
 ```
 
