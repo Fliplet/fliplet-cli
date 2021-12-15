@@ -165,7 +165,7 @@ Example with different label and value:
 
 ---
 
-### Dropdown (`dropdown`) -- Coming soon
+### Dropdown (`dropdown`)
 
 A dropdown for the user to allow a single choice selection. Supports the following properties:
 
