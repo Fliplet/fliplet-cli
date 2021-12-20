@@ -93,10 +93,11 @@ Please see below a table with a recap of all available log types for organizatio
 | Communication Audits        | email.validate                     | An email was sent because of a data source login                      |
 | App analytics               | app.analytics.event                | Analytics event logged from app                                       |
 | App analytics               | app.analytics.pageView             | Screen view logged from app                                           |
-| App analytics               | app.update                         | An app user is requesting for in-app updates                          |
+| App analytics               | app.update                         | An app user is checking for published app updates                     |
 | App analytics               | app.view                           | Screen viewed from web app                                            |
 | Data Sources                | dataSource.entry.create            | A data source entry was created                                       |
 | Data Sources                | dataSource.entry.update            | A data source entry was updated                                       |
 | Data Sources                | dataSource.entry.delete            | A data source entry was deleted                                       |
 | Data Sources                | dataSource.event                   | A custom event on a data source (unused)                              |
 | Media Files management      | mediaFile.create                   | A media file was created (uploaded)                                   |
+| User session                | session.locale.updated             | The current user switched its language settings to a new locale       |

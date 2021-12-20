@@ -144,5 +144,29 @@ Fliplet.User.getCachedSession().then(function (session) {
 });
 ```
 
+---
+
+## Language (locale)
+
+<p class="warning"><strong>[Closed beta]</strong> This feature is currently in development and it's not available yet to all customers.</p>
+
+### Update the current user's language to a new locale
+
+```js
+// Change the language to a new country code
+Fliplet.Session.Locale.set('fr');
+
+// Change the language to a new country + territory code
+Fliplet.Session.Locale.set('fr-ca');
+```
+
+### Get the current user's language
+
+```js
+Fliplet.Session.Locale.get().then(function (language) {
+  // language will be the locale string, e.g. "en"
+});
+```
+
 [Back to API documentation](../API-Documentation.md)
 {: .buttons}
