@@ -150,7 +150,7 @@ Fliplet.User.getCachedSession().then(function (session) {
 
 <p class="warning"><strong>[Closed beta]</strong> This feature is currently in development and it's not available yet to all customers.</p>
 
-### Update the current user's language to a new locale
+### Set the current user's language to a new locale
 
 ```js
 // Change the language to a new country code
@@ -163,8 +163,18 @@ Fliplet.Session.Locale.set('fr-ca');
 ### Get the current user's language
 
 ```js
+// Get the user's locale, taking into account its device settings
+// e.g. "fr" if the user has either set its device to French or the language
+// has been set using the above JS API to "fr".
+var locale = Fliplet.Env.get('userLocale');
+
+// Get the list of user's locales. As an example, when the locale has been set to "fr-ca"
+// the resulting list will be: ['fr-ca', 'fr', 'en-GB', 'en-US', 'en', 'it']
+var locales = Fliplet.Env.get('userLocales');
+
+// Get the locale that has previously been set with the "set()" method.
 Fliplet.Session.Locale.get().then(function (language) {
-  // language will be the locale string, e.g. "en"
+  // language will be the locale string you previously set, e.g. "fr-ca"
 });
 ```
 
