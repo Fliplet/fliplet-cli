@@ -227,7 +227,7 @@ Fliplet.App.Actions.getLogs().then(function (response) {
 Fliplet.App.Actions.getLogs({
   id: 123,
   limit: 10,
-  where: { type: 'app.action.failed' }
+  where: { type: 'app.task.failed' }
 }).then(function (response) {
   console.log(response.logs);
 });
@@ -251,7 +251,7 @@ Sample logs:
   {
     "id": 2,
     "createdAt": "2021-07-21T12:36:02.663Z",
-    "type": "app.action.completed",
+    "type": "app.task.completed",
     "data": {
       "mode": "scheduled",
       "duration": 3000,
@@ -263,7 +263,7 @@ Sample logs:
   {
     "id": 3,
     "createdAt": "2021-07-21T12:36:02.663Z",
-    "type": "app.action.failed",
+    "type": "app.task.failed",
     "data": {
       "mode": "scheduled",
       "duration": 5000,
