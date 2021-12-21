@@ -1,6 +1,6 @@
 {
   "name": "fliplet-cli",
-  "version": "5.2.4",
+  "version": "6.0.0",
   "description": "Command line utility for creating and running components, themes and menus to be used on the Fliplet platform.",
   "main": "fliplet.js",
   "scripts": {
@@ -11,6 +11,9 @@
   "license": "ISC",
   "bin": {
     "fliplet": "./fliplet.js"
+  },
+  "jest": {
+    "preset": "jest-puppeteer"
   },
   "homepage": "https://www.fliplet.com",
   "repository": "Fliplet/fliplet-cli",
@@ -24,15 +27,13 @@
     "configstore": "^4.0.0",
     "express": "^4.16.3",
     "grunt": "^1.0.3",
-    "grunt-contrib-handlebars": "^1.0.0",
+    "grunt-contrib-handlebars": "^3.0.0",
     "grunt-contrib-watch": "^1.1.0",
     "handlebars": "^4.0.12",
     "lodash": "^4.17.11",
-    "mocha": "^5.2.0",
     "ncp": "^2.0.0",
-    "nightmare": "^3.0.1",
     "node-notifier": "^9.0.0",
-    "node-sass": "^4.14.0",
+    "node-sass": "^7.0.0",
     "openport": "0.0.5",
     "prompt": "^1.0.0",
     "replace": "^1.0.0",
@@ -45,6 +46,9 @@
   "devDependencies": {
     "babel-eslint": "^10.1.0",
     "eslint": "^7.32.0",
-    "eslint-config-fliplet": "^1.0.7"
+    "eslint-config-fliplet": "^1.0.7",
+    "jest": "^27.4.3",
+    "jest-puppeteer": "^6.0.2",
+    "puppeteer": "^12.0.1"
   }
 }
