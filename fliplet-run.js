@@ -28,8 +28,6 @@ const template = require('./lib/template');
 var isTheme;
 var isMenu;
 
-const assets = require(path.join(__dirname, 'lib', 'assets'));
-
 var app = express();
 
 var package;
@@ -75,11 +73,9 @@ try {
       process.exit();
     }
 
-    const vars = [];
-
     package.scssVars = {};
 
-    const defaultValues = _.forIn(package.settings.defaults || {}, function(val, key) {
+    _.forIn(package.settings.defaults || {}, function(val, key) {
       package.scssVars[key] = val;
     });
 
@@ -238,6 +234,10 @@ app.post('/interface', renderInterface);
 
 function renderInterface(req, res) {
   fs.readFile('./interface.html', 'utf8', function(err, html) {
+    if (err) {
+      console.error(err);
+    }
+
     if (!html) {
       return res.send('The interface.html file was not found');
     }

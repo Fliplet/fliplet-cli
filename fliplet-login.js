@@ -29,6 +29,10 @@ prompt.get([
     required: true
   }
 ], function(err, result) {
+  if (err) {
+    console.log(err);
+  }
+
   if (!result) {
     return;
   }
@@ -38,7 +42,7 @@ prompt.get([
 
 function login(email, password, twofactor) {
   auth.login({ email, password, twofactor })
-    .then(function(login) {
+    .then(function() {
       console.log('Logged in successfully. You can now publish widgets.');
     })
     .catch(function(error) {
@@ -51,6 +55,10 @@ function login(email, password, twofactor) {
             required: true
           }
         ], function(err, result) {
+          if (err) {
+            console.error(err);
+          }
+
           if (!result) {
             return;
           }

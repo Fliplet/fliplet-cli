@@ -8,11 +8,10 @@ const config = require('./lib/config');
 const user = config.data.user || {};
 const email = user.email;
 const auth_token = user.auth_token;
-const organization = config.data.organization;
 const widgetId = process.argv[2];
 
 if (!widgetId) {
-  log('Package name is required');
+  console.log('Package name is required');
   process.exit();
 }
 
@@ -45,6 +44,8 @@ request(`${config.api_url}v1/widgets/${widgetId}`, function(error, response, bod
   }
 
   const widgetName = widget.name.toLowerCase().trim().replace(/ /g, '-').replace(/^com-/, '');
+
+  // eslint-disable-next-line no-nested-ternary
   const prefix = widget.isTheme ? 'theme' : (widget.tags.indexOf('type:menu') !== -1 ? 'menu' : 'widget');
   let folderName = `${prefix}-${widgetName}`;
 
@@ -60,6 +61,10 @@ request(`${config.api_url}v1/widgets/${widgetId}`, function(error, response, bod
       default: folderName
     }
   ], function(err, result) {
+    if (err) {
+      console.error(err);
+    }
+
     if (!result) {
       return;
     }

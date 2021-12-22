@@ -1,6 +1,3 @@
-/* eslint-disable no-process-exit */
-/* eslint-disable no-console */
-
 const puppeteer = require('puppeteer');
 const Mocha = require('mocha');
 const { expect, should } = require('chai');

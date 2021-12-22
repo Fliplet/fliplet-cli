@@ -41,6 +41,6 @@ organizations.getOrganizationsList()
       });
   })
   .catch(function onGetOrganizationsError(error) {
-    log(error);
+    console.error(error);
     process.exit(1);
   });
