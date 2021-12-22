@@ -11,6 +11,7 @@ const publish = require('./lib/publish');
 const api = require('./lib/api');
 
 const authToken = _.get(config.data, 'user.auth_token', process.env.AUTH_TOKEN);
+const debug = !!(process.argv[2] || '').match('--debug');
 
 const runner = async function run() {
   let file;
@@ -33,16 +34,17 @@ const runner = async function run() {
 
     // puppeteer options
     const opts = {
-      headless: true,
+      headless: !debug,
       slowMo: 100,
       timeout: 10000
     };
 
     console.log('[BOOTSTRAP] Launching Puppeteer...');
 
+    const browser = await puppeteer.launch(opts);
+
     // Globals to be used on Mocha tests
-    global.interfaceBrowser = await puppeteer.launch(opts);
-    global.buildBrowser = await puppeteer.launch(opts);
+    global.browser = browser;
     global.expect = expect;
     global.should = should;
     global.casual = require('casual');
@@ -107,14 +109,40 @@ const runner = async function run() {
       layout
     });
 
-    // Export interface/build urls and widgetInstance. They can be used on tests if dev needs it.
-    global.interfaceUrl = `${config.api_url}v1/widget-instances/${widgetInstance.id}/interface?auth_token=${authToken}`;
-    global.buildUrl = `${config.api_url}v1/apps/${app.id}/pages/${page.id}/preview?auth_token=${authToken}`;
     global.widgetInstance = widgetInstance;
     global.buildSelector = `[data-fl-widget-instance][data-id="${widgetInstance.id}"]`;
 
-    await global.interfaceBrowser.goto(global.interfaceUrl);
-    await global.buildBrowser.goto(global.buildUrl);
+    browser.renderWidget = async function(isInterface) {
+      if (global.page) {
+        global.page.close();
+      }
+
+      global.page = await global.browser.newPage();
+
+      const uri = isInterface
+        ? `v1/widget-instances/${widgetInstance.id}/interface`
+        : `v1/apps/${app.id}/pages/${page.id}/preview`;
+
+      const url = `${config.api_url}${uri}?auth_token=${authToken}`;
+
+      await global.page.goto(url);
+    };
+
+    browser.renderWidgetWithData = async function(data, isInterface = false) {
+      if (data) {
+        await api.widgetInstance.put(widgetInstance.id, data);
+      }
+
+      return browser.renderWidget(isInterface);
+    };
+
+    browser.renderInterface = async function() {
+      return browser.renderWidget(true);
+    };
+
+    browser.renderInterfaceWithData = async function(data) {
+      return browser.renderWidgetWithData(data, true);
+    };
 
     console.log('[BOOTSTRAP] Loading tests from', testDir);
 
@@ -123,8 +151,13 @@ const runner = async function run() {
         return file.match(/\.js$/);
       })
       .forEach(function(file) {
+        console.log('[MOCHA] Adding file', file);
         mocha.addFile(path.join(testDir, file));
       });
+
+    console.log('[MOCHA] Running test suite...');
+
+    mocha.timeout(15000);
 
     mocha
       .run(function(failures) {
@@ -133,9 +166,7 @@ const runner = async function run() {
         });
       })
       .on('end', async function() {
-        // Close any open browsers
-        await global.interfaceBrowser.close();
-        await global.buildBrowser.close();
+        await browser.close();
 
         // Clean created data
         await Promise.all([
@@ -147,11 +178,9 @@ const runner = async function run() {
       });
   } catch (error) {
     console.error(error);
-    restoreWidgetJson();
 
-    // Close any open browsers
-    await global.interfaceBrowser.close();
-    await global.buildBrowser.close();
+    restoreWidgetJson();
+    await global.browser.close();
 
     process.exit();
   }
