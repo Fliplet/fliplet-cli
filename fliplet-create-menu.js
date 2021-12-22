@@ -15,7 +15,7 @@ const folderPath = path.join(process.cwd(), packageName);
 
 log('Creating new menu', widgetName, 'to', folderPath);
 
-ncp(path.join(__dirname, 'menu-template'), folderPath, function (err) {
+ncp(path.join(__dirname, 'menu-template'), folderPath, function(err) {
   if (err) {
     return console.error(err);
   }

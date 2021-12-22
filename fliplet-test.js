@@ -1,19 +1,35 @@
+/* eslint-disable no-process-exit */
+/* eslint-disable no-console */
+
+const puppeteer = require('puppeteer');
+const Mocha = require('mocha');
+const { expect, should } = require('chai');
+const casual = require('casual');
+const fs = require('fs');
+const path = require('path');
+const _ = require('lodash');
+
+const config = require('./lib/config');
+const publish = require('./lib/publish');
+const api = require('./lib/api');
+const authToken = _.get(config.user, 'auth_token', process.env.AUTH_TOKEN);
+
 const runner = async function run() {
+  let file;
+  let fileName;
+  let tags;
+  let packageName;
+
+  function restoreWidgetJson() {
+    // Restore widget.json file
+    file.package = packageName;
+    file.tags = tags;
+    fs.writeFileSync(fileName, JSON.stringify(file, null, 2));
+  }
+
   try {
-    const puppeteer = require("puppeteer");
-    const Mocha = require("mocha");
-    const { expect, should } = require("chai");
-    const fs = require("fs");
-    const path = require("path");
-
-    const config = require("./lib/config");
-    const publish = require("./lib/publish");
-    const api = require("./lib/api");
-    const user = config.data.user || {};
-    const authToken = user.auth_token;
-
     if (!authToken) {
-      console.log("You must log in first with: fliplet login");
+      console.log('You must log in first with: fliplet login');
       process.exit(1);
     }
 
@@ -21,21 +37,21 @@ const runner = async function run() {
     const opts = {
       headless: true,
       slowMo: 100,
-      timeout: 10000,
+      timeout: 10000
     };
 
-    console.log("[BOOTSTRAP] Launching Puppeteer...");
+    console.log('[BOOTSTRAP] Launching Puppeteer...');
 
     // Globals to be used on Mocha tests
     global.interfaceBrowser = await puppeteer.launch(opts);
     global.buildBrowser = await puppeteer.launch(opts);
     global.expect = expect;
     global.should = should;
-    global.casual = require("casual");
+    global.casual = require('casual');
 
     // Instantiate a Mocha instance.
     const mocha = new Mocha({
-      reporter: "spec",
+      reporter: 'spec'
     });
 
     /*
@@ -63,21 +79,15 @@ const runner = async function run() {
     });
     */
 
-    // Change package name to avoid using an existing one on the environment
-    const fileName = "./widget.json";
-    const file = require(`${process.cwd()}/widget.json`);
-    const packageName = file.package;
-    const tags = file.tags;
+    fileName = './widget.json';
+    file = require(`${process.cwd()}/widget.json`);
+    packageName = file.package;
+    tags = file.tags;
+
+    // Generate a random package name for this test
     file.package = `test.${packageName}.${casual.unix_time}`;
     file.tags = [];
     fs.writeFileSync(fileName, JSON.stringify(file, null, 2));
-
-    function restoreWidgetJson() {
-      // Restore widget.json file
-      file.package = packageName;
-      file.tags = tags;
-      fs.writeFileSync(fileName, JSON.stringify(file, null, 2));
-    }
 
     const { widget } = await publish.run();
 
@@ -88,7 +98,7 @@ const runner = async function run() {
     const { page } = await api.page.post({ appId: app.id });
     const { widgetInstance } = await api.widgetInstance.post({
       pageId: page.id,
-      widgetId: widget.id,
+      widgetId: widget.id
     });
 
     const layout = `<section>{{{widget ${widgetInstance.id}}}}</section>`;
@@ -96,7 +106,7 @@ const runner = async function run() {
     await api.page.put({
       appId: app.id,
       id: page.id,
-      layout,
+      layout
     });
 
     // Export interface/build urls and widgetInstance. They can be used on tests if dev needs it.
@@ -105,48 +115,45 @@ const runner = async function run() {
     global.widgetInstance = widgetInstance;
     global.buildSelector = `[data-fl-widget-instance][data-id="${widgetInstance.id}"]`;
 
-    await interfaceBrowser.goto(interfaceUrl);
-    await buildBrowser.goto(buildUrl);
+    await global.interfaceBrowser.goto(global.interfaceUrl);
+    await global.buildBrowser.goto(global.buildUrl);
 
-    console.log("[BOOTSTRAP] Loading tests from", testDir);
+    console.log('[BOOTSTRAP] Loading tests from', testDir);
 
     fs.readdirSync(testDir)
-      .filter(function (file) {
+      .filter(function(file) {
         return file.match(/\.js$/);
       })
-      .forEach(function (file) {
+      .forEach(function(file) {
         mocha.addFile(path.join(testDir, file));
       });
 
     mocha
-      .run(function (failures) {
-        process.on("exit", function () {
+      .run(function(failures) {
+        process.on('exit', function() {
           process.exit(failures); // exit with non-zero status if there were failures
         });
       })
-      .on("end", async function () {
+      .on('end', async function() {
         // Close any open browsers
-        await interfaceBrowser.close();
-        await buildBrowser.close();
+        await global.interfaceBrowser.close();
+        await global.buildBrowser.close();
 
         // Clean created data
         await Promise.all([
           api.widgetInstance.del(widgetInstance.id),
-          api.page.del({ id: page.id, appId: app.id }),
+          api.page.del({ id: page.id, appId: app.id })
         ]);
 
-        await Promise.all([
-          api.app.del(app.id),
-          api.widget.del(widget.id),
-        ]);
+        await Promise.all([api.app.del(app.id), api.widget.del(widget.id)]);
       });
   } catch (error) {
     console.error(error);
     restoreWidgetJson();
 
     // Close any open browsers
-    await interfaceBrowser.close();
-    await buildBrowser.close();
+    await global.interfaceBrowser.close();
+    await global.buildBrowser.close();
 
     process.exit();
   }

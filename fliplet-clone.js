@@ -6,7 +6,7 @@ const Spinner = require('cli-spinner').Spinner;
 const config = require('./lib/config');
 
 const user = config.data.user || {};
-const email = user.email
+const email = user.email;
 const auth_token = user.auth_token;
 const organization = config.data.organization;
 const widgetId = process.argv[2];
@@ -21,9 +21,10 @@ if (!email || !auth_token) {
   process.exit();
 }
 
-request(`${config.api_url}v1/widgets/${widgetId}`, function (error, response, body) {
+request(`${config.api_url}v1/widgets/${widgetId}`, function(error, response, body) {
   if (error) {
     console.error(error);
+
     return process.exit();
   }
 
@@ -31,6 +32,7 @@ request(`${config.api_url}v1/widgets/${widgetId}`, function (error, response, bo
 
   if (body.error) {
     console.error(body.error);
+
     return process.exit();
   }
 
@@ -38,6 +40,7 @@ request(`${config.api_url}v1/widgets/${widgetId}`, function (error, response, bo
 
   if (!widget.sourceUrl) {
     console.error('Source code for this widget is not available');
+
     return process.exit();
   }
 
@@ -46,7 +49,7 @@ request(`${config.api_url}v1/widgets/${widgetId}`, function (error, response, bo
   let folderName = `${prefix}-${widgetName}`;
 
   console.log(`Cloning widget ${widget.name} (${widget.package}).`);
-  console.log(``);
+  console.log('');
   console.log(`Please type the path where this widget should be saved to. Press return to use "${folderName}".`);
 
   prompt.start();
@@ -56,7 +59,7 @@ request(`${config.api_url}v1/widgets/${widgetId}`, function (error, response, bo
       required: true,
       default: folderName
     }
-  ], function (err, result) {
+  ], function(err, result) {
     if (!result) {
       return;
     }
@@ -64,18 +67,19 @@ request(`${config.api_url}v1/widgets/${widgetId}`, function (error, response, bo
     folderName = result.folder;
 
     var spinner = new Spinner('Downloading source code %s');
+
     spinner.setSpinnerString(19);
     spinner.start();
 
     request(widget.sourceUrl)
       .pipe(unzipper.Extract({ path: folderName }))
       .promise()
-      .then(function () {
+      .then(function() {
         spinner.stop(true);
         console.log(`Done! Widget cloned to "${folderName}".`);
-      }).catch(function (err) {
+      }).catch(function(err) {
         spinner.stop(true);
         console.error(err);
-      })
+      });
   });
 });

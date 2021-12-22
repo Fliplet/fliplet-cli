@@ -26,7 +26,7 @@ const template = boilerplate === 'vue'
   ? 'widget-vue-template'
   : 'widget-template';
 
-ncp(path.join(__dirname, template), folderPath, function (err) {
+ncp(path.join(__dirname, template), folderPath, function(err) {
   if (err) {
     return console.error(err);
   }
