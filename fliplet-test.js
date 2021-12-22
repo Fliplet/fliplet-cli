@@ -93,6 +93,8 @@ const runner = async function run() {
 
     restoreWidgetJson();
 
+    api.setAuthToken(authToken);
+
     const testDir = `${process.cwd()}/tests`;
     const { app } = await api.app.post();
     const { page } = await api.page.post({ appId: app.id });
