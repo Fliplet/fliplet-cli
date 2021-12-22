@@ -9,7 +9,8 @@ const _ = require('lodash');
 const config = require('./lib/config');
 const publish = require('./lib/publish');
 const api = require('./lib/api');
-const authToken = _.get(config.user, 'auth_token', process.env.AUTH_TOKEN);
+
+const authToken = _.get(config.data, 'user.auth_token', process.env.AUTH_TOKEN);
 
 const runner = async function run() {
   let file;
