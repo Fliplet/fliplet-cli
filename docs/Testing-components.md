@@ -20,7 +20,7 @@ $ fliplet test --debug
 - Headless browser: [Puppeteer](https://github.com/puppeteer/puppeteer/blob/v13.0.1/docs/api.md)
 
 
-## Where should my tests go
+## Adding tests
 
 You should include your tests under `tests` folder of your component.
 
