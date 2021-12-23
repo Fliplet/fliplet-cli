@@ -11,6 +11,13 @@ if (!organizationId) {
   return config.set('organization', null);
 }
 
+if (process.argv[3] === '--force') {
+  config.set('organization', { id: organizationId });
+  console.log(`Organization set to ID ${organizationId}`);
+
+  return;
+}
+
 organizations.getOrganizationsList()
   .then(function(organizations) {
     var organization = _.find(organizations, { id: organizationId });
