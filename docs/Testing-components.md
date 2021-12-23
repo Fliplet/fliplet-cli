@@ -24,10 +24,17 @@ $ fliplet test --debug
 
 You should include your tests under `tests` folder of your component.
 
-## Variables available when writing tests
+## Core variables
 
 - `browser` - The puppeteer browser instance
 - `page` - The current page displayed in the browser (Puppeteer object)
+
+## Core methods
+
+- `browser.renderWidgetWithData(object)`: Renders the output of your widget after setting the widget instance data with an object
+- `browser.renderWidget()`: Renders the output of your widget without making any change to the widget instance data
+- `browser.renderInterfaceWithData(object)`: Renders the interface of your widget after setting the widget instance data with an object
+- `browser.renderInterface()`: Renders the interface of your widget without making any change to the widget instance data
 
 ## Sample test
 
