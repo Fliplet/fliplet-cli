@@ -10,6 +10,7 @@ const config = require('./lib/config');
 const publish = require('./lib/publish');
 const api = require('./lib/api');
 
+
 const authToken = _.get(config.data, 'user.auth_token', process.env.AUTH_TOKEN);
 const debug = !!(process.argv[2] || '').match('--debug');
 
@@ -28,7 +29,7 @@ const runner = async function run() {
 
   try {
     if (!authToken) {
-      console.log('You must log in first with: fliplet login');
+      console.error('[ERROR] Please login before running tests.');
       process.exit(1);
     }
 
@@ -89,7 +90,7 @@ const runner = async function run() {
     file.tags = [];
     fs.writeFileSync(fileName, JSON.stringify(file, null, 2));
 
-    const { widget } = await publish.run();
+    const { widget } = await publish.run({ auth_token: authToken });
 
     restoreWidgetJson();
 
