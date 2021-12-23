@@ -185,7 +185,7 @@ const runner = async function run() {
     restoreWidgetJson();
     await global.browser.close();
 
-    process.exit();
+    process.exit(1);
   }
 };
 
