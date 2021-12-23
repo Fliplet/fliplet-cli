@@ -7,62 +7,95 @@ To test a component, use the CLI to run your tests:
 $ fliplet test
 ```
 
-The above code will:
- - publish the widget with a unique name (it's always a new widget for the environment)
- - create an app, page and a widget instance (the tests will run on our engine)
- - run your tests
+If you want to see the browser output when running tests, run the command with the `--debug` option:
 
+```bash
+$ fliplet test --debug
+```
 
 ## Tech-stack used for tests
 
-- [Nightmare](http://nightmarejs.org)
-- Expect/Should from [Chai](http://chaijs.com/)
+- Test runner: [Mocha](https://mochajs.org/)
+- Assertion library: [Chai](http://chaijs.com/)
+- Headless browser: [Puppeteer](https://github.com/puppeteer/puppeteer/blob/v13.0.1/docs/api.md)
 
 
 ## Where should my tests go
 
-You should include your tests under `tests` folder of the widget.
+You should include your tests under `tests` folder of your component.
 
 ## Variables available when writing tests
 
-- `interfaceBrowser` - A Nightmare instance of your widget interface.
-- `buildBrowser` - A Nightmare instance of your widget instance build.
-- `interfaceUrl` - The url for the interface.
-- `buildUrl` - The ural for your widget instance build.
-- `widgetInstance` - The widgetInstance as it was saved on the database.
-- `buildSelector` - A querySelector to select the all block of your build HTML.
-- `interfaceBrowser.save()` - Method to save your settings on the widget interface
+- `browser` - The puppeteer browser instance
+- `page` - The current page displayed in the browser (Puppeteer object)
 
 ## Sample test
 
 ```js
-describe('WHEN start component', function() {
-  this.timeout(10000);
-  describe('Interface', function() {
-    it('should have empty username', function(done) {
-      interfaceBrowser
-        .evaluate(function (selector) {
-          return document.querySelector(selector).value;
-        }, '#username')
-        .then(function(username) {
-          expect(username).to.equal('');
-          done();
-        })
+describe('WHEN a button is rendered', function() {
+  describe('GIVEN no label and action have been selected', function() {
+    before(async function() {
+      await browser.renderWidget();
+    });
+
+    it('THEN it should have default button label', async function() {
+      const label = await page.$eval('.btn-primary', input => input.getAttribute('value'));
+
+      expect(label).to.equal('Primary button');
     });
   });
 
-  describe('Build', function() {
-    it('should have message to configure widget', function(done) {
-      const selector = `${buildSelector} h3`;
-      buildBrowser
-        .evaluate(function (selector) {
-          return document.querySelector(selector).textContent;
-        }, selector)
-        .then(function(message) {
-          expect(message).to.equal('This is the output of your widget');
-          done();
-        });
+  describe('GIVEN a label has been set', function() {
+    const sampleLabel = casual.name;
+
+    before(async function() {
+      await browser.renderWidgetWithData({ label: sampleLabel });
+    });
+
+    it('THEN the label value should be rendered as button text', async function() {
+      const label = await page.$eval('.btn-primary', input => input.getAttribute('value'));
+
+      expect(label).to.equal(sampleLabel);
     });
   });
 });
+
+```
+
+---
+
+## GitHub Actions workflow integration
+
+The following sample file can be saved as `.github/workflows/test.yml` to automatically run tests when your component changes are pushed to GitHub.
+
+Make sure to set the values for the following secrets in GitHub before running tests:
+
+- `TESTS_ORGANIZATION_ID` (the Fliplet Organization ID of your user, e.g. 1)
+- `TESTS_AUTH_TOKEN` (the Fliplet Auth token of your test user)
+
+```yml
+name: Fliplet E2E
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: 12.x
+        cache: 'npm'
+    - run: npm install fliplet-cli -g
+    - run: fliplet env development
+    - name: Set organization
+      env:
+        ORGANIZATION_ID: ${{ secrets.TESTS_ORGANIZATION_ID }}
+      run: fliplet organization $ORGANIZATION_ID --force
+    - name: Test
+      env:
+        AUTH_TOKEN: ${{ secrets.TESTS_AUTH_TOKEN }}
+      run: AUTH_TOKEN=$AUTH_TOKEN fliplet test
 ```
