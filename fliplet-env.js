@@ -11,5 +11,6 @@ if (environments.indexOf(input) === -1) {
 }
 
 const environment = config.getCurrentEnvironment(input);
+
 configstore.set('env', environment);
 console.log(`Environment set to ${environment}`);

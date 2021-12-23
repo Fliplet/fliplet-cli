@@ -28,7 +28,11 @@ prompt.get([
     replace: '*',
     required: true
   }
-], function (err, result) {
+], function(err, result) {
+  if (err) {
+    console.log(err);
+  }
+
   if (!result) {
     return;
   }
@@ -38,18 +42,23 @@ prompt.get([
 
 function login(email, password, twofactor) {
   auth.login({ email, password, twofactor })
-    .then(function(login) {
+    .then(function() {
       console.log('Logged in successfully. You can now publish widgets.');
     })
-    .catch(function (error) {
+    .catch(function(error) {
       if (error.response && error.response.statusCode && error.response.statusCode === 428) {
         prompt.start();
+
         return prompt.get([
           {
             name: 'twofactor',
             required: true
           }
-        ], function (err, result) {
+        ], function(err, result) {
+          if (err) {
+            console.error(err);
+          }
+
           if (!result) {
             return;
           }

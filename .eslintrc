@@ -1,6 +1,14 @@
 {
-  "extends": "fliplet",
+  "extends": ["eslint:recommended", "fliplet"],
   "rules": {
-    // Additional, per-project rules...
+    "no-console": "off",
+    "camelcase": "off",
+    "no-process-exit": "off"
+  },
+  "parserOptions": {
+    "ecmaVersion": 2017
+  },
+  "env": {
+    "es6": true
   }
 }

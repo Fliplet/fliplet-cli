@@ -1,11 +1,12 @@
+/* eslint-disable no-console */
 const assets = require('./lib/assets');
 
 log('Requesting up to date assets list from the server...');
 
-assets.getAssetsList().then(function (assets) {
+assets.getAssetsList().then(function(assets) {
   log('');
 
-  Object.keys(assets).forEach(function (assetName) {
+  Object.keys(assets).forEach(function(assetName) {
     var asset = assets[assetName];
     var versions = Object.keys(asset.versions);
 

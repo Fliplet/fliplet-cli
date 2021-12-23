@@ -15,7 +15,7 @@ const folderPath = path.join(process.cwd(), packageName);
 
 log('Creating new theme', widgetName, 'to', folderPath);
 
-ncp(path.join(__dirname, 'theme-template'), folderPath, function (err) {
+ncp(path.join(__dirname, 'theme-template'), folderPath, function(err) {
   if (err) {
     return console.error(err);
   }

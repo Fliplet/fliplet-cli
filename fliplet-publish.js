@@ -5,7 +5,7 @@ const publish = require('./lib/publish');
 const configstore = require('./lib/configstore');
 
 publish.run()
-  .then(function (response) {
+  .then(function(response) {
     console.log(`The package ${response.widget.name} (${response.widget.version}) has been imported`);
 
     notifier.notify({
@@ -14,6 +14,6 @@ publish.run()
       icon: path.join(__dirname, 'assets', 'logo.png')
     });
   })
-  .catch(function (error) {
+  .catch(function(error) {
     console.log(error);
   });

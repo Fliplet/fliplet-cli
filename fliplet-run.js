@@ -13,7 +13,9 @@ const exec = child_process.exec;
 var sass; // optionally required if theme
 
 const gruntFile = require('./lib/gruntfile');
+
 grunt.task.init = function() {};
+
 gruntFile(grunt);
 
 const folderPath = process.cwd();
@@ -25,8 +27,6 @@ const template = require('./lib/template');
 
 var isTheme;
 var isMenu;
-
-const assets = require(path.join(__dirname, 'lib', 'assets'));
 
 var app = express();
 
@@ -73,15 +73,14 @@ try {
       process.exit();
     }
 
-    const vars = [];
     package.scssVars = {};
 
-    const defaultValues = _.forIn(package.settings.defaults || {}, function (val, key) {
+    _.forIn(package.settings.defaults || {}, function(val, key) {
       package.scssVars[key] = val;
     });
 
-    (package.settings.configuration || []).forEach(function (section) {
-      (section.variables || []).forEach(function (variable) {
+    (package.settings.configuration || []).forEach(function(section) {
+      (section.variables || []).forEach(function(variable) {
         package.scssVars[variable.name] = variable.default;
       });
     });
@@ -104,7 +103,7 @@ if (isTheme) {
 }
 
 log();
-log('Please note: if you make any change to the package json file, the server needs to be restarted.')
+log('Please note: if you make any change to the package json file, the server needs to be restarted.');
 log('Starting up package development server for', package.name, '(' + package.package + ')...');
 log();
 log();
@@ -127,9 +126,10 @@ const templateHtml = fs.readFileSync(path.join(__dirname, 'assets', `run-${templ
 const runWidgetHtml = template.engine.compile(templateHtml);
 
 let runningWidgets = getRunningWidgets();
+
 if (runningWidgets.length) {
   log('Just so you know, these packages are also running on your machine:');
-  runningWidgets.forEach((w) => { log(`• ${w.id} -> ${w.data.url}`) });
+  runningWidgets.forEach((w) => { log(`• ${w.id} -> ${w.data.url}`); });
   log();
   log('If you think this is an error, run "fliplet cleanup" to reset the local state.');
   log();
@@ -147,22 +147,22 @@ function getTranslations() {
   try {
     return JSON.parse(file);
   } catch (err) {
-    console.error(`[Translation] The file is not a valid JSON.`, err);
+    console.error('[Translation] The file is not a valid JSON.', err);
   }
 }
 
 // --------------------------------------------------------------------------
 // Routes
 
-app.get('/', function (req, res) {
+app.get('/', function(req, res) {
   res.send(runWidgetHtml(package));
 });
 
-app.get('/build', function (req, res) {
+app.get('/build', function(req, res) {
   var topMenu;
   var page;
 
-  fs.readFile('./build.html', 'utf8', function (err, html) {
+  fs.readFile('./build.html', 'utf8', function(err, html) {
     if (err || typeof html !== 'string') {
       return res.send('The build.html file was not found');
     }
@@ -184,7 +184,7 @@ app.get('/build', function (req, res) {
           return {
             label: casual.catch_phrase,
             action: JSON.stringify({ action: 'page' })
-          }
+          };
         })
       };
 
@@ -221,9 +221,9 @@ app.get('/build', function (req, res) {
         data: widgetInstanceData,
         tags: package.tags
       }]
-    }).then(function (html) {
+    }).then(function(html) {
       res.send(html);
-    }, function (err) {
+    }, function(err) {
       res.send(err);
     });
   });
@@ -232,8 +232,12 @@ app.get('/build', function (req, res) {
 app.get('/interface', renderInterface);
 app.post('/interface', renderInterface);
 
-function renderInterface (req, res) {
-  fs.readFile('./interface.html', 'utf8', function (err, html) {
+function renderInterface(req, res) {
+  fs.readFile('./interface.html', 'utf8', function(err, html) {
+    if (err) {
+      console.error(err);
+    }
+
     if (!html) {
       return res.send('The interface.html file was not found');
     }
@@ -272,27 +276,27 @@ function renderInterface (req, res) {
       providerId: req.query.providerId,
       providerMode: req.query.providerMode,
       widgets
-    }).then(function (html) {
+    }).then(function(html) {
       res.send(html);
-    }, function (err) {
+    }, function(err) {
       res.status(503).send(err);
     });
   });
 }
 
-app.post('/save-widget-data', function (req, res) {
+app.post('/save-widget-data', function(req, res) {
   widgetInstanceData = _.assign({}, widgetInstanceData, req.body);
   res.status(200).send();
 });
 
-app.get('/templates/:template', function (req, res) {
+app.get('/templates/:template', function(req, res) {
   const tpl = fs.readFileSync(path.join(folderPath, req.params.template), 'utf8');
 
   let assets = [`__scss.css?_=${Date.now()}`].concat(package.assets);
 
   api.themes.assets({
-    inherits: package.settings.inherits || [],
-  }).then(function (result) {
+    inherits: package.settings.inherits || []
+  }).then(function(result) {
     assets = _.map(_.reject(result.renderingAssets || {}, (asset) => {
       return /\.scss$/.test(asset.name);
     }), 'url').concat(assets);
@@ -307,36 +311,37 @@ app.get('/templates/:template', function (req, res) {
         })
       }]
     });
-  }).then(function (html) {
+  }).then(function(html) {
     res.send(html);
-  }, function (err) {
+  }, function(err) {
     res.status(503).send(err);
   });
 });
 
-app.get('/__scss.css', function (req, res) {
-  const files = _.filter(package.assets, (a) => { return /\.scss$/.test(a) });
+app.get('/__scss.css', function(req, res) {
+  const files = _.filter(package.assets, (a) => { return /\.scss$/.test(a); });
   let inheritedThemes;
 
   let scssConfig = [];
 
-  _.forIn(package.scssVars, (function (val, key) {
+  _.forIn(package.scssVars, function(val, key) {
     scssConfig.push(`$${key}: ${val};`);
-  }));
+  });
 
   scssConfig = scssConfig.join('\r\n');
 
   return api.themes.compile({
     inherits: package.settings.inherits || [],
     instanceValues: package.scssVars || {}
-  }).then(function (result) {
+  }).then(function(result) {
     inheritedThemes = result;
-  }).then(function () {
-    return Promise.all(files.map(function (file) {
-      return new Promise(function (resolve, reject) {
+  }).then(function() {
+    return Promise.all(files.map(function(file) {
+      return new Promise(function(resolve, reject) {
         var fileData = fs.readFileSync(path.join(folderPath, file), 'utf8');
 
         var dir = file.split('/');
+
         dir.pop();
         dir = path.join(folderPath, dir.join('/'));
 
@@ -354,18 +359,18 @@ app.get('/__scss.css', function (req, res) {
         });
       });
     }));
-  }).then(function (css) {
+  }).then(function(css) {
     if (inheritedThemes.css) {
-      css = [inheritedThemes.css, css.join("\r\n")];
+      css = [inheritedThemes.css, css.join('\r\n')];
     }
 
     res.type('text/css');
-    res.send(css.join("\r\n"));
-  }).catch(function (err) {
+    res.send(css.join('\r\n'));
+  }).catch(function(err) {
     console.error(err);
     res.send(`/* Error compiling scss: ${err} */`);
   });
-})
+});
 
 // --------------------------------------------------------------------------
 // Startup configuration
@@ -374,8 +379,9 @@ op.find({
   startingPort: 3000,
   endingPort: 4000
 }, function(err, port) {
-  if(err) {
+  if (err) {
     console.log(err);
+
     return;
   }
 
@@ -383,12 +389,13 @@ op.find({
 
   const host = `http://localhost:${port}`;
 
-  app.listen(port, function () {
+  app.listen(port, function() {
     log('[' + package.name + '] development server is up on', host);
     log();
 
     // mark this widget as running
     const runningPackages = configstore.get('runningPackages') || {};
+
     runningPackages[package.package] = { url: `http://localhost:${runningPort}` };
     configstore.set('runningPackages', runningPackages);
 
@@ -398,7 +405,7 @@ op.find({
 
     grunt.tasks(['default']);
 
-    setTimeout(function () {
+    setTimeout(function() {
       try {
         exec(['open', host].join(' '));
       } catch (e) {
@@ -408,10 +415,11 @@ op.find({
   });
 });
 
-['exit', 'SIGINT', 'uncaughtException'].forEach(function (signal) {
-  process.on(signal, function () {
+['exit', 'SIGINT', 'uncaughtException'].forEach(function(signal) {
+  process.on(signal, function() {
     // mark this widget as not running
     const runningPackages = configstore.get('runningPackages') || {};
+
     delete runningPackages[package.package];
     configstore.set('runningPackages', runningPackages);
 
@@ -422,7 +430,7 @@ op.find({
 function getRunningWidgets() {
   const runningPackages = configstore.get('runningPackages') || {};
 
-  return _.reject(Object.keys(runningPackages), package.package).map(function (packageName) {
+  return _.reject(Object.keys(runningPackages), package.package).map(function(packageName) {
     const data = runningPackages[packageName];
 
     return {
@@ -442,6 +450,7 @@ function uuid() {
       .toString(16)
       .substring(1);
   }
+
   return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
     s4() + '-' + s4() + s4() + s4();
 }
