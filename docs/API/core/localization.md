@@ -78,7 +78,7 @@ Client-side Handlebars templates can use the {% raw %}<code>{{ T }}</code>{% end
 
 {% raw %}
 ```js
-Handlebars.compile("{{ T "widgets.form.errors.required" n=3 }}")()
+Handlebars.compile('{{ T "widgets.form.errors.required" n=3 }}')()
 ```
 {% endraw %}
 
