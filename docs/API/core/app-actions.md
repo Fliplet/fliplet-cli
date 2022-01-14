@@ -27,8 +27,9 @@ The **App Actions** library allows you to configure app screens to run automatic
 3. Only **up to 5 app** actions can be defined for each app.
 4. An app action runs the target app screen in the cloud. A result can be given back by the screen both when running on a schedule and when on-demand.
 5. An app action is **limited to 30 seconds of execution time**. After 30 seconds, the action will be killed and a specific timeout error will be returned and saved in the logs.
-6. Only JavaScript assets are loaded when the screen runs as an app action. Assets such as CSS and images will be ignored by the system.
-7. Scheduled app actions will only run the published version of a screen, whereas on-demand actions will run the version from the same environment they are fired from (e.g. Fliplet Viewer, Live apps  )
+6. The payload for on-demand actions is limited to 2048 characters.
+7. Only JavaScript assets are loaded when the screen runs as an app action. Assets such as CSS and images will be ignored by the system.
+8. Scheduled app actions will only run the published version of a screen, whereas on-demand actions will run the version from the same environment they are fired from (e.g. Fliplet Viewer, Live apps  )
 
 ---
 
@@ -171,6 +172,8 @@ Fliplet.App.Actions.runWithResult('email-is-registered', {
 ```
 
 <p class="quote">Rate limiting: please note that app actions are rate limited and can run <strong>up to 60 times per minute for the entire app</strong>. The limit does not apply to scheduled tasks. Please get in touch with our team for more details.</p>
+
+<p class="quote">Payload size limit: please note that the input payload for app actions is limited to <strong>2048 characters</strong>.</p>
 
 As a further note, app actions do not save their result in the produced log entry when running on-demand.
 

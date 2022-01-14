@@ -10,7 +10,7 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ### December 23rd
 
-- Released new version 6.0.0 of the Fliplet CLI with improved support for creating tests for your components.
+- Released new version 6.0.0 of the Fliplet CLI with improved support for [creating tests](/Testing-components.html) for your components.
 
 ## November
 
