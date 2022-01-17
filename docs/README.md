@@ -16,7 +16,7 @@
   </div>
   <div class="alt">
     <h2>Write code that works on any device and platform</h2>
-    <p>Fliplet allows you to code once and have your app fully function on <a href="http://localhost:4000/Native-framework-changelog.html">all platforms we support</a>, including <strong>iOS</strong>, <strong>Android</strong> and <strong>Web</strong>.<br /><br />Stop worrying about compatibility and let us do the heavy lifting for you. Just focus on coding!</p>
+    <p>Fliplet allows you to code once and have your app fully function on <a href="https://help.fliplet.com/supported-devices-browsers/">all the platforms we support</a>, including <strong>iOS</strong>, <strong>Android</strong> and <strong>Web</strong>.<br /><br />Stop worrying about compatibility and let us do the heavy lifting for you. Just focus on coding!</p>
   </div>
 </section>
 
