@@ -4,11 +4,38 @@ description: Learn how to create your own custom rules for Data Source access.
 
 # Securing your Data Sources
 
+## Security rules
+
+Access to Data Sources can be secured via the "Access Rules" tab of the "App Data" section in Fliplet Studio. If you're using specific "Request data requirements" settings in your rules, querying your Data Sources won't work in Fliplet core components unless you write custom queries.
+
+Here's a table showing the type of allowed queries for each data requirement type:
+
+| Data requirement type | Allowed queries                                                                       |
+|-----------------------|---------------------------------------------------------------------------------------|
+| Field is required     | All queries given they provide the specified column.                                  |
+| Field equals          | `{ Field: value }` or `{ Field: { $eq: value } }`                                     |
+| Field not equals      | All queries given the value for the field does not contain the specified value        |
+| Field contains        | `{ Field: value }` or `{ Field: { $iLike: value } }` or `{ Field: { $like: value } }` |
+
+Here's a sample query for the "contains" data requirement type:
+
+```js
+Fliplet.DataSources.connect(123).then(function (connection) {
+  return connection.find({
+    where: { Email: { $like: '@fliplet.com' } }
+  });
+});
+```
+
+---
+
+## Custom security rules
+
+<p class="warning">This feature is currently available to beta users only.</p>
+
 Fliplet apps can have each of their screens and data sources secured so that they can only be accessed when certain conditions are met. Our Data Sources management UI allows you to define security rules through a easy-to-use wizard. However, depending on the case you may want to write your own security rule from scratch using JavaScript as explained further below.
 
 ![Custom security](assets/img/datasource-custom-security.png)
-
-## Custom security rules
 
 If you need more control on your security rules granting access to Data Sources, you can write your custom conditions using Javascript. When doing so, **these variables are available to the context of the script**:
 
