@@ -133,7 +133,7 @@ if (location.pathname !== '/') {
   $html.removeClass('with-sidebar');
   $html.addClass('with-hero');
 
-  $('.hiring').slideDown(300);
+  $('.hiring').css('display', 'block');
   $('.project-name').remove();
 
   new Typed('.hero h6', {
