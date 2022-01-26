@@ -6,13 +6,19 @@ description: Changelog notes giving a summary of recent significant changes to t
 
 Each week, we provide changelog notes on this page giving a summary of recent significant changes to the documentation. If there haven't been any significant changes in a given week, we don't publish changelog notes.
 
-## December
+## January 2022
+
+- No release notes have been published yet.
+
+---
+
+## December 2021
 
 ### December 23rd
 
 - Released new version 6.0.0 of the Fliplet CLI with improved support for [creating tests](/Testing-components.html) for your components.
 
-## November
+## November 2021
 
 ### November 3rd
 
