@@ -8,6 +8,7 @@ The `fliplet-datasources` package contains the following namespaces:
   - [Data Sources](#data-sources)
     - [Get the list of data sources for the current organization](#get-the-list-of-data-sources-for-the-current-organization)
     - [Create a new data source](#create-a-new-data-source)
+    - [Get a data source by ID](#get-a-data-source-by-id)
     - [Connect to a data source by ID](#connect-to-a-data-source-by-id)
     - [Connect to a data source by Name](#connect-to-a-data-source-by-name)
   - [Connection instance methods](#connection-instance-methods)
@@ -38,6 +39,18 @@ The `fliplet-datasources` package contains the following namespaces:
 
 ```js
 Fliplet.DataSources.get().then(function (dataSources) {});
+```
+
+### Get a data source by ID
+
+Use the `getById` function to fetch details about a data source by its ID. You can optionally pass a list of `attributes` to return.
+
+```js
+Fliplet.DataSources.getById(123, {
+  attributes: ['name', 'hooks', 'columns']
+}).then(function (dataSource) {
+
+});
 ```
 
 ### Create a new data source
