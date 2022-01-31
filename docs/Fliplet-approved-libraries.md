@@ -17,6 +17,7 @@ Other approved libraries you can add to your apps
 
 Optionally add any of the libraries to your app for additional functionality:
 
+*   **bootstrap-datepicker** `1.9.0` Include the Bootstrap DatePicker library to initialize a date picker. ([Documentation](https://bootstrap-datepicker.readthedocs.io/en/stable/))
 *   **bootstrap-js** `3.3.7` Include the JavaScript code to make Bootstrap components work. ([Documentation](https://getbootstrap.com/docs/3.3/javascript/))
 *   **bootstrap-select** `1.12.4` Bring additional features to Boostrap's dropdowns. ([Documentation](https://developer.snapappointments.com/bootstrap-select/))
 *   **clipboardjs** `2.0.4` A modern approach to copy text to clipboard ([Documentation](https://clipboardjs.com/))
@@ -33,7 +34,7 @@ Optionally add any of the libraries to your app for additional functionality:
 *   **fliplet-datasources** `1.0` Integrate your app with Data Source functionalities to read and write new entries. ([Documentation](http://developers.fliplet.com/API/fliplet-datasources.html))
 *   **fliplet-encryption** `1.0` Encrypt the content of Data Sources to secure your data. ([Documentation](https://developers.fliplet.com/API/fliplet-encryption.html))
 *   **fliplet-gamify** `0.1` Easily configure gamification logic for your app. ([Documentation](http://developers.fliplet.com/API/fliplet-gamify.html))
-*   **fliplet-helper** `1.0` Fliplet helpers ([Documentation](http://developers.fliplet.com/API/helpers/overview.html))
+*   **fliplet-helper** `1.0` Fliplet helpers ([Documentation](http://developers.fliplet.com/API/fliplet-helper.html))
 *   **fliplet-icons** `1.0.0` Fliplet own icon font. ([Documentation](https://fliplet.com/icons-demo-page/))
 *   **fliplet-like** `0.2` Helper to display a like button that saves the result into a data source. ([Documentation](http://developers.fliplet.com/API/like-buttons.html))
 *   **fliplet-media** `1.0` Upload media files and read media folders from your app. ([Documentation](http://developers.fliplet.com/API/fliplet-media.html))
@@ -45,9 +46,11 @@ Optionally add any of the libraries to your app for additional functionality:
 *   **fliplet-socket** `1.0` Real-time bidirectional event-based communication ([Documentation](https://socket.io/))
 *   **fliplet-studio-ui** `1.0` Include styles in your component to match the Fliplet Studio UI styles. ([Documentation](http://developers.fliplet.com/UI-guidelines-interface.html))
 *   **fliplet-themes** `1.0` Read your current theme settings as Javascript variables. ([Documentation](http://developers.fliplet.com/API/fliplet-themes.html))
+*   **fliplet-ui-datetime** `1.0` Add date and time pickers to your app that's optimized for all device types and localization.
+*   **fliplet-ui-number** `1.0` Add number inputs to your app that's optimized for all device types and localization.
 *   **fliplet-ui-panzoom** `1.0` Library to add Pan/Zoom capabilities to an element, as well as being able to place markers. ([Documentation](http://developers.fliplet.com/API/fliplet-ui-panzoom.html))
 *   **hammer.js** `2.0.8` Recognize gestures made by touch, mouse and pointerEvents in your app. ([Documentation](https://hammerjs.github.io/))
-*   **handsontable** `0.38.0` A fully-featured Javascript spreadsheet component. ([Documentation](https://handsontable.com/examples))
+*   **handsontable** `0.38.0` A fully-featured Javascript spreadsheet component. ([Documentation](https://handsontable.com/docs/1.18.0/tutorial-introduction.html))
 *   **highcharts** `6.1.1` Set up interactive charts in their apps. ([Documentation](https://www.highcharts.com/docs/getting-started/your-first-chart))
 *   **jquery-ui** `1.12.0` A curated set of user interface interactions, effects, widgets, and themes built on top of the jQuery. ([Documentation](http://jqueryui.com/))
 *   **jssocials** `1.4.0` A simple social network sharing jQuery plugin. ([Documentation](http://js-socials.com/))
@@ -62,4 +65,4 @@ Optionally add any of the libraries to your app for additional functionality:
 *   **tinymce** `4.8.1` Include the most advanced WYSIWYG HTML editor. ([Documentation](https://www.tiny.cloud/docs/))
 *   **vue-resource** `1.2.1`
 *   **vue-router** `2.2.1`
-*   **vue.js** `2.2.4` A modern progressive framework for building user interfaces. ([Documentation](https://vuejs.org/v2/guide/))
+*   **vue.js** `2.6.14` A modern progressive framework for building user interfaces. ([Documentation](https://vuejs.org/v2/guide/))
