@@ -109,3 +109,36 @@ If you need to whitelist inbound requests to your systems from App Actions, plea
 - US customers: `54.151.38.62`
 
 ---
+
+### Additional IPs for emails sent by Fliplet Studio and Apps
+
+If you need to whitelist inbound emails to your infrastructure received from system@fliplet.com, please add the following IP address ranges:
+
+```
+199.255.192.0/22
+199.127.232.0/22
+54.240.0.0/18
+69.169.224.0/20
+23.249.208.0/20
+23.251.224.0/19
+76.223.176.0/20
+54.240.64.0/19
+54.240.96.0/19
+52.82.172.0/22
+```
+
+Keep in mind that those IP addresses are subject to change. If Fliplet adds or removes any outgoing IP address, we will update the SPF record, so you need to check back from time to time, if you want to make sure you have the latest list of IP address ranges.
+
+You can use the `dig` unix command to get an up to date list of our SPF records at any time:
+
+```
+$ dig TXT amazonses.com +short| grep 'v=spf1'
+```
+
+Here’s the equivalent query (and result) using the Windows command prompt:
+
+```
+C:>nslookup -type=TXT amazonses.com | find "v=spf1"
+```
+
+---

@@ -17,7 +17,7 @@ Available options:
 - `from_name`: the sender's name
 - `html`: HTML string for the email body
 - `headers`: "key:value" object with headers to add to the email (most headers are allowed). We recommend using `X-*` prefixes to any custom header, e.g. `X-My-Custom-Header: "value"`
-- `attachments`: array of attachments
+- `attachments`: array of attachments with `type` (the content type), `content` (String or Buffer), `name` (the filename including extension) and optional `encoding` (base64, hex, binary, etc)
 - `images`: array of images
 
 ```js
@@ -51,9 +51,6 @@ var options = {
 // Returns a promise
 Fliplet.Communicate.sendEmail(options);
 ```
-
-More options can be found on the [official Mandrill documentation](https://mandrillapp.com/api/docs/messages.JSON.html), the email provider Fliplet relies on.
-
 
 You can also use {% raw %}`{{ variables }}`{% endraw %} expressions in your options if you want the template to be compiled with other data:
 
