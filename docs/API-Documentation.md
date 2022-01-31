@@ -96,7 +96,7 @@ These JS APIs falls into the most common category and almost all apps, component
 - [Studio UI](UI-guidelines-interface.md) (`fliplet-studio-ui`)
 - [Themes](API/fliplet-themes.md) (`fliplet-themes`)
 - [Page](API/fliplet-page.md) (`fliplet-pages`)
-- [UI](API/fliplet-ui.md) (`fliplet-pages`)
+- [UI](API/fliplet-ui.md)
 
 ---
 
