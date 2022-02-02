@@ -10,6 +10,8 @@ The `fliplet-communicate` package contains the namespace `Fliplet.Communicate` a
 
 ## Send an email
 
+Use our APIs to send an email to one or more recipients. Note that this feature is rate limited and improper use will result in your account being flagged for suspension.
+
 Available options:
 
 - `to`: array of recipients for "to", "cc" or "bcc"
@@ -17,8 +19,7 @@ Available options:
 - `from_name`: the sender's name
 - `html`: HTML string for the email body
 - `headers`: "key:value" object with headers to add to the email (most headers are allowed). We recommend using `X-*` prefixes to any custom header, e.g. `X-My-Custom-Header: "value"`
-- `attachments`: array of attachments with `type` (the content type), `content` (String or Buffer), `name` (the filename including extension) and optional `encoding` (base64, hex, binary, etc)
-- `images`: array of images
+- `attachments`: array of attachments with `type` (the MIME type), `content` (String or Buffer), `name` (the filename including extension) and optional `encoding` (base64, hex, binary, etc)
 
 ```js
 var options = {
@@ -37,13 +38,13 @@ var options = {
       type: "text/plain",
       name: "myfile.txt",
       content: "Hello World"
-    }
-  ],
-  images: [
+    },
     {
       type: "image/png",
       name: "test.png",
-      content: "insert_base64_content_here"
+      encoding: 'base64',
+      // You can use our JS API to encode your content string to base64
+      content: Fliplet.Encode.base64("hello world")
     }
   ]
 };
