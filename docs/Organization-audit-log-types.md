@@ -82,22 +82,27 @@ Please see below a table with a recap of all available log types for organizatio
 
 ## Logs from Fliplet Apps
 
-| Section                     | Type                               | Description                                                           |
-|-----------------------------|------------------------------------|-----------------------------------------------------------------------|
-| Communication Audits        | sms.2fa                            | An SMS was sent because of 2FA login                                  |
-| Communication Audits        | sms.communicate                    | An SMS was sent via JS APIs                                           |
-| Communication Audits        | sms.dataSourceHook                 | An SMS was sent from a data source hook                               |
-| Communication Audits        | sms.validate                       | An SMS was sent because of a data source login                        |
-| Communication Audits        | email.communicate                  | An email was sent via JS APIs                                         |
-| Communication Audits        | email.dataSourceHook               | An email was sent from a data source hook                             |
-| Communication Audits        | email.validate                     | An email was sent because of a data source login                      |
-| App analytics               | app.analytics.event                | Analytics event logged from app                                       |
-| App analytics               | app.analytics.pageView             | Screen view logged from app                                           |
-| App analytics               | app.update                         | An app user is checking for published app updates                     |
-| App analytics               | app.view                           | Screen viewed from web app                                            |
-| Data Sources                | dataSource.entry.create            | A data source entry was created                                       |
-| Data Sources                | dataSource.entry.update            | A data source entry was updated                                       |
-| Data Sources                | dataSource.entry.delete            | A data source entry was deleted                                       |
-| Data Sources                | dataSource.event                   | A custom event on a data source (unused)                              |
-| Media Files management      | mediaFile.create                   | A media file was created (uploaded)                                   |
-| User session                | session.locale.updated             | The current user switched its language settings to a new locale       |
+| Section                     | Type                               | Description                                                                 |
+|-----------------------------|------------------------------------|-----------------------------------------------------------------------------|
+| Communication Audits        | sms.2fa                            | An SMS was sent because of 2FA login                                        |
+| Communication Audits        | sms.communicate                    | An SMS was sent via JS APIs                                                 |
+| Communication Audits        | sms.dataSourceHook                 | An SMS was sent from a data source hook                                     |
+| Communication Audits        | sms.validate                       | An SMS was sent because of a data source login                              |
+| Communication Audits        | email.communicate                  | An email was sent via Communicate JS APIs                                   |
+| Communication Audits        | email.delivered                    | An email was delivered to the target recipient                              |
+| Communication Audits        | email.delayed                      | An email was delayed and could not be delivered yet to the recipient        |
+| Communication Audits        | email.bounced                      | An email was bounced back and could not be delivered yet to the recipient   |
+| Communication Audits        | email.complaint                    | A complaint was received when attempting to deliver the email               |
+| Communication Audits        | email.rejected                     | An email was not delivered due to the recipient server rejecting the email  |
+| Communication Audits        | email.dataSourceHook               | An email was sent from a data source hook                                   |
+| Communication Audits        | email.validate                     | An email was sent because of a data source login                            |
+| App analytics               | app.analytics.event                | Analytics event logged from app                                             |
+| App analytics               | app.analytics.pageView             | Screen view logged from app                                                 |
+| App analytics               | app.update                         | An app user is checking for published app updates                           |
+| App analytics               | app.view                           | Screen viewed from web app                                                  |
+| Data Sources                | dataSource.entry.create            | A data source entry was created                                             |
+| Data Sources                | dataSource.entry.update            | A data source entry was updated                                             |
+| Data Sources                | dataSource.entry.delete            | A data source entry was deleted                                             |
+| Data Sources                | dataSource.event                   | A custom event on a data source (unused)                                    |
+| Media Files management      | mediaFile.create                   | A media file was created (uploaded)                                         |
+| User session                | session.locale.updated             | The current user switched its language settings to a new locale             |
