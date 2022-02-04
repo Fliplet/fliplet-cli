@@ -110,9 +110,15 @@ If you need to whitelist inbound requests to your systems from App Actions, plea
 
 ---
 
-### Additional IPs for emails sent by Fliplet Studio and Apps
+### Additional domains and IPs for emails sent by Fliplet Studio and Apps
 
-If you need to whitelist inbound emails to your infrastructure received from system@fliplet.com, please add the following IP address ranges:
+If you need to whitelist inbound emails to your infrastructure received from system@fliplet.com, please consider whitelisting the following domains:
+
+- Canadian customers: `ca.email.fliplet.com` and `ca-alt1.email.fliplet.com`
+- European customers: `eu.email.fliplet.com` and `eu-alt1.email.fliplet.com`
+- US customers: `us.email.fliplet.com` and `us-alt1.email.fliplet.com`
+
+Additionally, if you need to whitelist emails by IP please add the following IP address ranges:
 
 ```
 199.255.192.0/22
