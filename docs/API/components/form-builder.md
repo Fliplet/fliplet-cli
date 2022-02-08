@@ -288,7 +288,7 @@ Fliplet.FormBuilder.get()
   });
 ```
 
-The callback will also be fired when the form initialized with a value. If you want to avoid this behaviour, pass `false` as second parameter of the `change()` method:
+The callback will also be fired when the form initialized with a value. If you want to avoid this behavior, pass `false` as second parameter of the `change()` method:
 
 ```js
 Fliplet.FormBuilder.get()
