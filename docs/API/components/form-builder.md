@@ -61,7 +61,6 @@ For more details, check the JS API documentation on the `Fliplet.DataSources` na
 
 `form.load` can also be used in conjunction with `Fliplet.Session` to populate a form with the logged user's data:
 
-
 ```js
 Fliplet.FormBuilder.get().then(function (form) {
   form.load(function () {
@@ -122,6 +121,7 @@ Fliplet.FormBuilder.get().then(function (form) {
 ### form.fields.get()
 
 Get the form fields
+
 ```
 var fields = form.fields.get();
 ```
@@ -147,6 +147,18 @@ form.fields.set([
     "name": "enquiryType",
     "label": "What is your enquiry about?",
     "options": [{ "id": "Support" }, { "id": "Feedback" }]
+  },
+  {
+    "_type": "flCheckbox",
+    "name": "How would you like us to contact you",
+    "label": "How would you like us to contact you",
+    "options": [{ "label": "By phone" }, { "label": "By email" }]
+  },
+  {
+    "_type": "flRadio",
+    "name": "What's the best time to contact you",
+    "label": "What's the best time to contact you",
+    "options": [{ "label": "In the morning" }, { "label": "In the afternoon" }]
   },
   {
     "_type": "flTextarea",
@@ -198,12 +210,12 @@ Fliplet.FormBuilder.get()
 
 Sets the value of a form field to one of the following:
 
-- a **literal value** (e.g. a `String`, a `Number`, a `Boolean` or an `Object`)
-- a value from the **user's profile**
-- a value from the **device shared storage**
-- a value from the **current app's private storage**
-- a value from a **query parameter**
-- a value as **result of a function** (optionally returning a promise when asynchronous)
+  - a **literal value** (e.g. a `String`, a `Number`, a `Boolean` or an `Object`)
+  - a value from the **user's profile**
+  - a value from the **device shared storage**
+  - a value from the **current app's private storage**
+  - a value from a **query parameter**
+  - a value as **result of a function** (optionally returning a promise when asynchronous)
 
 ```js
 Fliplet.FormBuilder.get()
@@ -346,7 +358,6 @@ Fliplet.FormBuilder.get()
   });
 ```
 
-
 ## Hooks
 
 ### isFormInvalid
@@ -394,8 +405,8 @@ Fliplet.Hooks.on('beforeFormSubmit', function(data) {
 
 If you reject the hook, the form will be stopped from submitting the data. Rejecting the promise with an error will display such error while a simply rejection will not display any message to the user:
 
-- `return Promise.reject("An error message")` this will display the error message
-- `return Promise.reject("")` this won't display anything to the user
+  - `return Promise.reject("An error message")` this will display the error message
+  - `return Promise.reject("")` this won't display anything to the user
 
 ---
 
