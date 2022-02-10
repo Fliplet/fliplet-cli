@@ -25,20 +25,20 @@ If an action is chosen, the Promise is resolved when the specified action is com
 Fliplet.UI.Actions(options)
 ```
 
-* **options** (Object) A map of options to pass to the constructor.
-  * **title** (String) A title that appears above the options.
-  * **labels** (Array) Options to show the user. Each label object contains the following properties:
-    * **label** (String) Option label to show the user.
-    * **action** (Object or Function)
-      * (Object) If the object contains a `type` key with a value of `copyText`, the value for `text` will be copied ot the clipboard. Otherwise, the object will be passed to `Fliplet.Navigate.to()` and executed accordingly.
-      * (Function) If a function is provided, the function will be run with the 0-based index of the label as the first parameter.
-  * **cancel** (Boolean or String) Unless this is `false` or an empty string, a cancel button will be added at the bottom with the provided string used as the button label. (**Default**: `Cancel`)
+  - **options** (Object) A map of options to pass to the constructor.
+    - **title** (String) A title that appears above the options.
+    - **labels** (Array) Options to show the user. Each label object contains the following properties:
+      - **label** (String) Option label to show the user.
+      - **action** (Object or Function)
+        - (Object) If the object contains a `type` key with a value of `copyText`, the value for `text` will be copied to the clipboard. Otherwise, the object will be passed to `Fliplet.Navigate.to()` and executed accordingly.
+        - (Function) If a function is provided, the function will be run with the 0-based index of the label as the first parameter.
+    - **cancel** (Boolean or String) Unless this is `false` or an empty string, a cancel button will be added at the bottom with the provided string used as the button label. (**Default**: `Cancel`)
 
 ## Properties
 
 The toast instance returned in the promise resolving function will contain the following properties.
 
-* **data** (Object) A data object containing the configuration fro the Toast notification.
+  - **data** (Object) A data object containing the configuration fro the Toast notification.
 
 ## Examples
 
