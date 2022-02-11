@@ -14,20 +14,18 @@ Fliplet.Organizations.get().then(function (organizations) {
 
 Use the logs JS API to fetch audit logs for an organization.
 
-<p class="warning"><strong>Note</strong>: this feature is only available for the <strong>gold plan</strong> and above. Please contact our sales team for more details.</p>
-
 Optional parameters:
 
-- `type`: String or Array of strings ([see list of available types](/Organization-audit-log-types.html))
-- `appId`: Number (ID)
-- `fields`: Array of strings
-- `startDate`: ISODATE String
-- `endDate`: ISODATE String
-- `sort`: String (column name: `id`, `createdAt`, `type`; defaults to `createdAt`)
-- `order`: String (ASC or DESC; defaults to DESC)
-- `limit`: Number (defaults to 50, max 500)
-- `offset`: Number
-- `format` (`json` or `csv`; defaults to `json`)
+  - `type`: String or Array of strings ([see list of available types](/Organization-audit-log-types.html))
+  - `appId`: Number (ID)
+  - `fields`: Array of strings
+  - `startDate`: ISODATE String
+  - `endDate`: ISODATE String
+  - `sort`: String (column name: `id`, `createdAt`, `type`; defaults to `createdAt`)
+  - `order`: String (ASC or DESC; defaults to DESC)
+  - `limit`: Number (defaults to 50, max 500)
+  - `offset`: Number
+  - `format` (`json` or `csv`; defaults to `json`)
 
 ```js
 // Get the latest 50 audit logs
@@ -58,7 +56,6 @@ Fliplet.Organizations.Logs.get({
 ```
 
 ---
-
 
 ## Settings
 

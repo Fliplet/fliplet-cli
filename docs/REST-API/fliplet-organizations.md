@@ -10,22 +10,20 @@ Please head to the [how to authenticate](authenticate.md) page of the documentat
 
 ### Get the audit logs for an organization
 
-<p class="warning"><strong>Note</strong>: this feature is only available for the <strong>gold plan</strong> and above. Please contact our sales team for more details.</p>
-
 #### `GET or POST v1/organizations/:id/logs`
 
 Optional parameters:
 
-- `type`: String or Array of strings ([see list of available types](/Organization-audit-log-types.html))
-- `appId`: Number (ID)
-- `fields`: Array of strings
-- `startDate`: ISODATE String
-- `endDate`: ISODATE String
-- `sort`: String (column name: `id`, `createdAt`, `type`; defaults to `createdAt`)
-- `order`: String (ASC or DESC; defaults to DESC)
-- `limit`: Number (defaults to 50, max 500)
-- `offset`: Number
-- `format` (`json` or `csv`; defaults to `json`)
+  - `type`: String or Array of strings ([see list of available types](/Organization-audit-log-types.html))
+  - `appId`: Number (ID)
+  - `fields`: Array of strings
+  - `startDate`: ISODATE String
+  - `endDate`: ISODATE String
+  - `sort`: String (column name: `id`, `createdAt`, `type`; defaults to `createdAt`)
+  - `order`: String (ASC or DESC; defaults to DESC)
+  - `limit`: Number (defaults to 50, max 500)
+  - `offset`: Number
+  - `format` (`json` or `csv`; defaults to `json`)
 
 <p class="quote">Note: when using GET requests, arrays can be given as a CSV string (e.g. <code>type=foo,bar</code>)</p>
 
