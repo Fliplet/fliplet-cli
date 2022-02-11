@@ -45,7 +45,7 @@ To generate a token, please follow the docs [here](REST-API/authenticate.md).
 
 ## Minimum requirements
 
-- Operative System: Windows (7, 8, 10, Server), macOS, Linux (x64, ARM)
+- Operative System: Windows (7, 8, 10, 11, Server), macOS, Linux (x64, ARM)
 - Intel® processors are recommended for maximum compatibility
 - 2GB of available RAM
 - 8GB of available storage
