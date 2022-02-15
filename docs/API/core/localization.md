@@ -10,17 +10,16 @@ The `Fliplet.Locale` JS API and Fliplet's localization framework allow you to cu
 
 There are 3 key aspects of a component that can be localized to the device or browser language/region settings.
 
-- String translation
-- Date format
-- Number format
+  - String translation
+  - Date format
+  - Number format
 
 ## String translation
 
 Components can now define a `translation.json` file in their root to list out all keys and default English translation value.
 
-* Keys can be nested
-* Plurals and placeholders are expected to use the i18n notation
-
+  - Keys can be nested
+  - Plurals and placeholders are expected to use the i18n notation
 
 ```json
 {
@@ -59,9 +58,11 @@ T("widgets.form.success.message", { msg: "<img..>" });
 **Handlebars**
 
 {% raw %}
+
 ```html
 {{ T "widgets.form.success.message" }}
 ```
+
 {% endraw %}
 
 ### Localization helper libraries and frameworks
@@ -70,6 +71,8 @@ T("widgets.form.success.message", { msg: "<img..>" });
 
 Components can use `$(this).translate()` (e.g. in `Fliplet.Widget.instance()`) after having initialized their template to automatically bind `data-translate="key"` properties in the target element.
 
+When a DOM element is added to the page with translation keys assigned using `data-translate`, the translations are not automatically applied. `$.fn.translate()` must be applied on the rendered DOM to apply the translations.
+
 More docs on [https://github.com/i18next/jquery-i18next](https://github.com/i18next/jquery-i18next).
 
 **Handlebars**
@@ -77,9 +80,11 @@ More docs on [https://github.com/i18next/jquery-i18next](https://github.com/i18n
 Client-side Handlebars templates can use the {% raw %}<code>{{ T }}</code>{% endraw %} helper to print translations.
 
 {% raw %}
+
 ```js
 Handlebars.compile('{{ T "widgets.form.errors.required" n=3 }}')()
 ```
+
 {% endraw %}
 
 More docs on [https://github.com/UUDigitalHumanitieslab/handlebars-i18next](https://github.com/UUDigitalHumanitieslab/handlebars-i18next)
@@ -95,14 +100,14 @@ var $form = new Vue({ i18n: Fliplet.Locale.plugins.vue() });
 Then, strings can be translated using the $t helper in vue templates in build.html or Vue templates in general:
 
 {% raw %}
+
 ```html
 {{ $t("widgets.form.required.label") }}
 ```
+
 {% endraw %}
 
-
 More docs on [https://panter.github.io/vue-i18next/guide/component-interpolation.html](https://panter.github.io/vue-i18next/guide/component-interpolation.html)
-
 
 ## Date format
 
@@ -118,19 +123,21 @@ TD(value, options)
 **Handlebars helpers**
 
 {% raw %}
+
 ```html
 {{ TD value [options] }}
 ```
+
 {% endraw %}
 
 **Parameters**
 
-* `value` {*} The date or time value to be used for formatting. The input type can be a `Moment` object, `Date` object or a string. Strings must be formatted as `YYYY-MM-DD` for dates and `HH:mm` (24-hour time) for times.
-* `options` {Object} A map of options
-* `options.format` {String} The formatting to be used. You can use one of the supported formats in the table below, e.g. `LL` for long form localized dates or `LT` for localized time without seconds, or one of the following options for relative time: `fromNow`, `from`, `toNow` and `to`.
-* `options.from` {*} (Optional) If `options.format` is `from`, use this parameter to set the reference date.
-* `options.to` {*} (Optional) If `options.format` is `to`, use this parameter to set the reference date.
-* `options.locale` {String} (Optional) Use a specific locale for the formatting. Default: device/browser language settings or `en` when that's not found or valid.
+  - `value` {*} The date or time value to be used for formatting. The input type can be a `Moment` object, `Date` object or a string. Strings must be formatted as `YYYY-MM-DD` for dates and `HH:mm` (24-hour time) for times.
+  - `options` {Object} A map of options
+  - `options.format` {String} The formatting to be used. You can use one of the supported formats in the table below, e.g. `LL` for long form localized dates or `LT` for localized time without seconds, or one of the following options for relative time: `fromNow`, `from`, `toNow` and `to`.
+  - `options.from` {*} (Optional) If `options.format` is `from`, use this parameter to set the reference date.
+  - `options.to` {*} (Optional) If `options.format` is `to`, use this parameter to set the reference date.
+  - `options.locale` {String} (Optional) Use a specific locale for the formatting. Default: device/browser language settings or `en` when that's not found or valid.
 
 **Supported formats**
 
@@ -150,6 +157,7 @@ TD(value, options)
 **Examples**
 
 {% raw %}
+
 ```js
 Fliplet.Locale.date('2021-03-04', { format: 'LL' }) // 4 March 2021 (UK) 4 marzo 2021 (IT) or 4 mars 2021 (FR)
 Fliplet.Locale.date('2021-03-04', { format: 'LL', locale: 'en-US' }) // March 4, 2021
@@ -169,6 +177,7 @@ Fliplet.Locale.date('2021-01-03', { format: 'from', from: '2021-01-05' }) // 2 d
 Handlebars.compile('{{ TD foo format="fromNow" }}')({ foo: '2021-01-03' }) // 9 months ago as of October 2021
 Handlebars.compile('{{ TD foo format="from" from="2021-01-05" }}')({ foo: '2021-01-03' }) // 2 days ago
 ```
+
 {% endraw %}
 
 ## Number format
@@ -185,15 +194,17 @@ TN(value, options)
 **Handlebars helpers**
 
 {% raw %}
+
 ```html
 {{ TN value [options] }}
 ```
+
 {% endraw %}
 
 **Parameters**
 
-* `value` {*} The value to be used for formatting. Numbers are preferred. Other types of input will be parsed to determine its numerical value.
-* `options` {Object} A map of options. See [`Intl.NumberFormat()` documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat) for the supported options.
+  - `value` {*} The value to be used for formatting. Numbers are preferred. Other types of input will be parsed to determine its numerical value.
+  - `options` {Object} A map of options. See [`Intl.NumberFormat()` documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat) for the supported options.
 
 <p class="warning"><strong>Long decimal places</strong> By default, numbers are localized and rendered with a minimum and maximum of 0–3 decimal places. This is due to the JavaScript's precision issues with floating points. If your data contains more decimal places, see <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat">documentation</a> for <code>Intl.NumberFormat()</code> to learn how to display more decimal places.</p>
 
@@ -202,6 +213,7 @@ TN(value, options)
 **Examples**
 
 {% raw %}
+
 ```js
 Fliplet.Locale.number(1234) // 1,234 (UK) 1.234 (IT) or 1 234 (FR)
 Fliplet.Locale.number(1234, { locale: 'en-US' }) // 1,234
@@ -215,6 +227,7 @@ Handlebars.compile('{{ TN foo minimumFractionDigits=2 }}')({ foo: 1234 }) // 1,2
 Handlebars.compile('{{ TN foo minimumFractionDigits=2 useGrouping=false }}')({ foo: 1234 }) // 1234.00 (UK) 1234,00 (IT) or 1234,00 (FR)
 Handlebars.compile('{{ TN foo notation="compact" compactDisplay="long" }}')({ foo: 1234000000 }) // 1.2 billion (UK) 1,2 miliardi (IT) 1,2 milliard (FR)
 ```
+
 {% endraw %}
 
 ---
