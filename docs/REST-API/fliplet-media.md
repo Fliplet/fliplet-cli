@@ -190,7 +190,9 @@ This endpoint accepts a `size` query parameter (which defaults to `large` when i
 - `small` image is resized so that the smallest dimension is equal to `640` px
 - `medium` image is resized so that the smallest dimension is equal to `960` px
 - `large` image is resized so that the smallest dimension is equal to `1366` px
-- `xlarge` image is resized so that the smallest dimension is equal to `1980` px
+- `xlarge` image is resized so that the smallest dimension is equal to `1980` px (**default size applied whe not specified**)
+- `xxlarge` image is resized so that the smallest dimension is equal to `2560` px
+- `xxxlarge` image is resized so that the smallest dimension is equal to `3840` px
 - `320>?` image width will be resized to `320` while height will be automatic keeping the same scale ratio
 - `320>240` image will be resized (keeping the scale ratio) to ensure the smallest dimension is equal to the given size on each axis
 - `320!320` image dimensions will both be resized to be equal to the target size. This resize may result in a **stretched image if the source image is not a square**.
