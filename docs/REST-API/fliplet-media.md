@@ -164,6 +164,15 @@ Sample response:
 }
 ```
 
+Please note that the following image content types are automatically resized to have both dimensions no larger than `3840px`; when a resizing occurs, the scale of the image will be kept intact:
+
+- `image/apng`: Animated Portable Network Graphics (APNG)
+- `image/avif`: AV1 Image File Format (AVIF)
+- `image/jpeg`: Joint Photographic Expert Group image (JPEG / JPG)
+- `image/png`: Portable Network Graphics (PNG)
+- `image/svg+xml`: Scalable Vector Graphics (SVG)
+- `image/webp`: Web Picture format (WEBP)
+
 ---
 
 ## Stream the contents of a file
