@@ -117,7 +117,7 @@ Note: when moving a folder out from a subfolder (and to an app or organization),
 
 Files can be added using the standard HTML APIs for [FormData](https://developer.mozilla.org/en/docs/Web/API/FormData).
 
-<p class="quote"><strong>Note:</strong> Fliplet scans all uploaded files for viruses. If a file is found to be infected the system will automatically quarantine it and not allow apps to download it. Quarantined files can be seen in the trash folder the File Manager in Fliplet Studio.</p>
+<p class="quote"><strong>Note:</strong> Fliplet scans all uploaded files for viruses. If a file is found to be infected the system will automatically quarantine it and not allow apps to download it. Quarantined files can be seen in the trash folder of the File Manager in Fliplet Studio.</p>
 
 ```js
 Fliplet.Media.Files.upload({
