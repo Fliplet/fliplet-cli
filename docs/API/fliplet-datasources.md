@@ -173,6 +173,13 @@ connection.find({
   }
 });
 
+// Find a case insensitive and partial match to the "Email" column. For e.g. it will match with bobsmith@email.com or Bobsmith@email.com or smith@email.com
+connection.find({
+  where: {
+    Email: { $iLike: 'BobSmith@email.com' }
+  }
+});
+
 // Find records where column "email" matches the domain "example.org"
 connection.find({
   where: {
