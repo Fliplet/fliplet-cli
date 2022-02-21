@@ -4,21 +4,21 @@ If you have started you widget from our boilerplate you already have a sample te
 To test a component, use the CLI to run your tests:
 
 ```bash
-$ fliplet test
+fliplet test
 ```
 
 If you want to see the browser output when running tests, run the command with the `--debug` option:
 
 ```bash
-$ fliplet test --debug
+fliplet test --debug
 ```
 
 ## Tech-stack used for tests
 
-- Test runner: [Mocha](https://mochajs.org/)
-- Assertion library: [Chai](http://chaijs.com/)
-- Headless browser: [Puppeteer](https://github.com/puppeteer/puppeteer/blob/v13.0.1/docs/api.md)
-
+  - Test runner: [Mocha](https://mochajs.org/)
+  - Assertion library: [Chai](http://chaijs.com/)
+  - Headless browser: [Puppeteer](https://github.com/puppeteer/puppeteer/blob/v13.0.1/docs/api.md)
+  - Fake data generator: [casual](https://github.com/boo1ean/casual)
 
 ## Adding tests
 
@@ -26,15 +26,15 @@ You should include your tests under `tests` folder of your component.
 
 ## Core variables
 
-- `browser` - The puppeteer browser instance
-- `page` - The current page displayed in the browser (Puppeteer object)
+  - `browser` - The puppeteer browser instance
+  - `page` - The current page displayed in the browser (Puppeteer object)
 
 ## Core methods
 
-- `browser.renderWidgetWithData(object)`: Renders the output of your widget after setting the widget instance data with an object
-- `browser.renderWidget()`: Renders the output of your widget without making any change to the widget instance data
-- `browser.renderInterfaceWithData(object)`: Renders the interface of your widget after setting the widget instance data with an object
-- `browser.renderInterface()`: Renders the interface of your widget without making any change to the widget instance data
+  - `browser.renderWidgetWithData(object)`: Renders the output of your widget after setting the widget instance data with an object
+  - `browser.renderWidget()`: Renders the output of your widget without making any change to the widget instance data
+  - `browser.renderInterfaceWithData(object)`: Renders the interface of your widget after setting the widget instance data with an object
+  - `browser.renderInterface()`: Renders the interface of your widget without making any change to the widget instance data
 
 ## Sample test
 
@@ -77,8 +77,8 @@ The following sample file can be saved as `.github/workflows/test.yml` to automa
 
 Make sure to set the values for the following secrets in GitHub before running tests:
 
-- `TESTS_ORGANIZATION_ID` (the Fliplet Organization ID of your user, e.g. 1)
-- `TESTS_AUTH_TOKEN` (the Fliplet Auth token of your test user)
+  - `TESTS_ORGANIZATION_ID` (the Fliplet Organization ID of your user, e.g. 1)
+  - `TESTS_AUTH_TOKEN` (the Fliplet Auth token of your test user)
 
 ```yml
 name: Fliplet E2E
