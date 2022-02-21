@@ -2,11 +2,11 @@
 
 The `fliplet-communicate` package contains the namespace `Fliplet.Communicate` and a set of helper methods for sending communications from the app.
 
-- [`.sendEmail()`](#send-an-email) - Sends an HTML formatted email
-- [`.composeEmail()`](#compose-an-email) - Composes an email on the device
-- [`.sendSMS()`](#send-an-sms) - Sends an SMS message
-- [`.shareURL()`](#share-a-url) - Share a URL
-- [`.sendPushNotification()`](#send-push-notifications) - Send push notifications
+  - [`.sendEmail()`](#send-an-email) - Sends an HTML formatted email
+  - [`.composeEmail()`](#compose-an-email) - Composes an email on the device
+  - [`.sendSMS()`](#send-an-sms) - Sends an SMS message
+  - [`.shareURL()`](#share-a-url) - Share a URL
+  - [`.sendPushNotification()`](#send-push-notifications) - Send push notifications
 
 ## Send an email
 
@@ -14,12 +14,13 @@ Use our APIs to send an email to one or more recipients. Note that this feature 
 
 Available options:
 
-- `to`: array of recipients for "to", "cc" or "bcc"
-- `subject`: subject of the email
-- `from_name`: the sender's name
-- `html`: HTML string for the email body
-- `headers`: "key:value" object with headers to add to the email (most headers are allowed). We recommend using `X-*` prefixes to any custom header, e.g. `X-My-Custom-Header: "value"`
-- `attachments`: array of attachments with `type` (the MIME type), `content` (String or Buffer), `name` (the filename including extension) and optional `encoding` (base64, hex, binary, etc)
+  - `to`: array of recipients for "to", "cc" or "bcc"
+  - `subject`: subject of the email
+  - `from_name`: the sender's name
+  - `html`: HTML string for the email body
+  - `headers`: "key:value" object with headers to add to the email (most headers are allowed). We recommend using `X-*` prefixes to any custom header, e.g. `X-My-Custom-Header: "value"`
+  - `attachments`: array of attachments with `type` (the MIME type), `content` (String or Buffer), `name` (the filename including extension) and optional `encoding` (base64, hex, binary, etc)
+  - `required`: Set to `true` to cache the request if the device is offline. When the device comes online, the cached requests will be sent. Default: `false`
 
 ```js
 var options = {
@@ -56,6 +57,7 @@ Fliplet.Communicate.sendEmail(options);
 You can also use {% raw %}`{{ variables }}`{% endraw %} expressions in your options if you want the template to be compiled with other data:
 
 {% raw %}
+
 ```js
 var options = {
   to: [ { email: "{{ emailTo }}", type: "to" } ],
@@ -69,6 +71,7 @@ Fliplet.Communicate.sendEmail(options, {
   userName: 'John Doe'
 });
 ```
+
 {% endraw %}
 
 Note: input `options` will get their value altered by the function as a result of the compilation process. If you want to preserve the input object original value, please make a copy as follows:
@@ -89,12 +92,12 @@ Compose an email on the device.
 Fliplet.Communicate.composeEmail(options, data);
 ```
 
-* **options** (Object) A map of options to pass to the function. The following properties found are supported:
-  * **to** (Array) array of recipients for "to", "cc" or "bcc"
-  * **subject** (String) subject of the email
-  * **html** (String) HTML email body
-  * **body** (String) Plaintext email body. Note: If **html** and **body** are both set, **html** will be used.
-* **data** (Array) An optional array of Base64 strings for the files to be attached. This only works on native devices. Each Base64 string should start with the format `data:%mimeType%;base64,`, e.g. `data:text/csv;base64,`, `data:image/png;base64,` etc.
+  - **options** (Object) A map of options to pass to the function. The following properties found are supported:
+    - **to** (Array) array of recipients for "to", "cc" or "bcc"
+    - **subject** (String) subject of the email
+    - **html** (String) HTML email body
+    - **body** (String) Plaintext email body. Note: If **html** and **body** are both set, **html** will be used.
+  - **data** (Array) An optional array of Base64 strings for the files to be attached. This only works on native devices. Each Base64 string should start with the format `data:%mimeType%;base64,`, e.g. `data:text/csv;base64,`, `data:image/png;base64,` etc.
 
 ```js
 var options = {
@@ -115,6 +118,7 @@ Fliplet.Communicate.composeEmail(options);
 ## Send an SMS
 
 ### Default provider
+
 ```js
 var options = {
   data: {
@@ -211,10 +215,10 @@ Fliplet.Communicate.shareURL({
 
 [jsSocials](http://js-socials.com/docs/#custom-share) is used in web apps to let users share URLs using the following services:
 
-* Email (`email`)
-* LinkedIn (`linkedin`)
-* Twitter (`twitter`)
-* Facebook (`facebook`)
+  - Email (`email`)
+  - LinkedIn (`linkedin`)
+  - Twitter (`twitter`)
+  - Facebook (`facebook`)
 
 Optionally provide an array of services in `shares` to use any of the services supported by jsSocials (see **Example** below).
 
@@ -235,10 +239,10 @@ Fliplet.Communicate.shareURL({
 
 **Note:** The following services only work on native devices if the app is installed.
 
-* WhatsApp (`whatsapp`)
-* Viber (`viber`)
-* Facebook Messenger (`messenger`)
-* Telegram (`telegram`)
+  - WhatsApp (`whatsapp`)
+  - Viber (`viber`)
+  - Facebook Messenger (`messenger`)
+  - Telegram (`telegram`)
 
 ### Share a page in a Fliplet app
 
@@ -252,11 +256,11 @@ See [documentation for `Fliplet.Content`](fliplet-content.md#share-a-page-with-a
 
 Available options:
 
-- `title` (required, the title of the notification)
-- `body` (required, the message of the notification)
-- `sandbox` (optional, when `true`, notifications are only sent to people using Fliplet Viewer. This is useful for testing.)
-- `subscription` (optional, an array of **push subscription IDs** to target specific users. These IDs can be found in the "About this app" section of Fliplet apps, accessible via the top menu)
-- `badge` (optional, sets the badge on iOS to a specific number)
+  - `title` (required, the title of the notification)
+  - `body` (required, the message of the notification)
+  - `sandbox` (optional, when `true`, notifications are only sent to people using Fliplet Viewer. This is useful for testing.)
+  - `subscription` (optional, an array of **push subscription IDs** to target specific users. These IDs can be found in the "About this app" section of Fliplet apps, accessible via the top menu)
+  - `badge` (optional, sets the badge on iOS to a specific number)
 
 ```js
 Fliplet.Communicate.sendPushNotification(appId, {
