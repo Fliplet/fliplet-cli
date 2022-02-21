@@ -4,32 +4,32 @@ The Data Source JS APIs allows you to interact and make any sort of change to yo
 
 The `fliplet-datasources` package contains the following namespaces:
 
-- [Data Sources JS APIs](#data-sources-js-apis)
-  - [Data Sources](#data-sources)
-    - [Get the list of data sources for the current organization](#get-the-list-of-data-sources-for-the-current-organization)
-    - [Create a new data source](#create-a-new-data-source)
-    - [Get a data source by ID](#get-a-data-source-by-id)
-    - [Connect to a data source by ID](#connect-to-a-data-source-by-id)
-    - [Connect to a data source by Name](#connect-to-a-data-source-by-name)
-  - [Connection instance methods](#connection-instance-methods)
-    - [Fetch all records from a data source](#fetch-all-records-from-a-data-source)
-    - [Find a specific record](#find-a-specific-record)
-    - [Find a record by its ID](#find-a-record-by-its-id)
-    - [Filter the columns returned when finding records](#filter-the-columns-returned-when-finding-records)
-    - [Run aggregation queries](#run-aggregation-queries)
-    - [Replace the contents of the data source with new records](#replace-the-contents-of-the-data-source-with-new-records)
-    - [Insert an array of new records into a data source](#insert-an-array-of-new-records-into-a-data-source)
-    - [Commit changes at once to a data source](#commit-changes-at-once-to-a-data-source)
-    - [Insert a single record into the data source](#insert-a-single-record-into-the-data-source)
-      - [**Options: folderId**](#options-folderid)
-      - [**Options: ack**](#options-ack)
-    - [Update a record (entry)](#update-a-record-entry)
-    - [Import a file into the data sources](#import-a-file-into-the-data-sources)
-    - [Remove a record by its ID](#remove-a-record-by-its-id)
-  - [Join data from other dataSources](#join-data-from-other-datasources)
-  - [Define views to filter a data source](#define-views-to-filter-a-data-source)
-  - [Configurable operations](#configurable-operations)
-    - [Automatically generate a unique ID for your entries](#automatically-generate-a-unique-id-for-your-entries)
+  - [Data Sources JS APIs](#data-sources-js-apis)
+    - [Data Sources](#data-sources)
+      - [Get the list of data sources for the current organization](#get-the-list-of-data-sources-for-the-current-organization)
+      - [Create a new data source](#create-a-new-data-source)
+      - [Get a data source by ID](#get-a-data-source-by-id)
+      - [Connect to a data source by ID](#connect-to-a-data-source-by-id)
+      - [Connect to a data source by Name](#connect-to-a-data-source-by-name)
+    - [Connection instance methods](#connection-instance-methods)
+      - [Fetch all records from a data source](#fetch-all-records-from-a-data-source)
+      - [Find a specific record](#find-a-specific-record)
+      - [Find a record by its ID](#find-a-record-by-its-id)
+      - [Filter the columns returned when finding records](#filter-the-columns-returned-when-finding-records)
+      - [Run aggregation queries](#run-aggregation-queries)
+      - [Replace the contents of the data source with new records](#replace-the-contents-of-the-data-source-with-new-records)
+      - [Insert an array of new records into a data source](#insert-an-array-of-new-records-into-a-data-source)
+      - [Commit changes at once to a data source](#commit-changes-at-once-to-a-data-source)
+      - [Insert a single record into the data source](#insert-a-single-record-into-the-data-source)
+        - [**Options: folderId**](#options-folderid)
+        - [**Options: ack**](#options-ack)
+      - [Update a record (entry)](#update-a-record-entry)
+      - [Import a file into the data sources](#import-a-file-into-the-data-sources)
+      - [Remove a record by its ID](#remove-a-record-by-its-id)
+    - [Join data from other dataSources](#join-data-from-other-datasources)
+    - [Define views to filter a data source](#define-views-to-filter-a-data-source)
+    - [Configurable operations](#configurable-operations)
+      - [Automatically generate a unique ID for your entries](#automatically-generate-a-unique-id-for-your-entries)
 
 ---
 
@@ -287,17 +287,16 @@ connection.append([{ name: 'Nick' }], { runHooks: false })
 Use `connection.commit(Array)` to commit more than one change at once to a data source. You can use this to insert, update and delete entries at the same time with a single request. This makes it very efficient in terms of both minimizing the network requests and computation required from both sides.
 
 List of input parameters:
-- `entries`: (required array): the list of entries to insert or update (`{ data }` for insert and `{ id, data }` for updates).
-- `append`: (optional boolean, defaults to false): set to `true` to keep existing remote entries not sent in the updates to be made. When this is set to `false` you will essentially be replacing the whole data source with just the data you are sending.
-- `delete`: (optional array): the list of entry IDs to remove (when used in combination with `append: true`).
-- `extend` (optional boolean, defaults to false): set to `true` to enable merging the local columns you are sending with any existing columns for the affected data source entries.
-- `runHooks` (optional array) the list of hooks (`insert` or `update`) to run on the data source during the operation.
-
+  - `entries`: (required array): the list of entries to insert or update (`{ data }` for insert and `{ id, data }` for updates).
+  - `append`: (optional boolean, defaults to false): set to `true` to keep existing remote entries not sent in the updates to be made. When this is set to `false` you will essentially be replacing the whole data source with just the data you are sending.
+  - `delete`: (optional array): the list of entry IDs to remove (when used in combination with `append: true`).
+  - `extend` (optional boolean, defaults to false): set to `true` to enable merging the local columns you are sending with any existing columns for the affected data source entries.
+  - `runHooks` (optional array) the list of hooks (`insert` or `update`) to run on the data source during the operation.
 
 The following sample request applies the following changes to the data source:
-- inserts a new entry
-- updates the entry with ID 123 merging its data with the new added column(s)
-- deletes the entry with ID 456
+  - inserts a new entry
+  - updates the entry with ID 123 merging its data with the new added column(s)
+  - deletes the entry with ID 456
 
 ```js
 connection.commit({
@@ -342,8 +341,8 @@ connection.insert(FormData);
 
 The second parameter of the `connection.insert` function accepts various options as described below:
 
-- [folderId](#options-folderid) (Number)
-- [ack](#options-ack) (Boolean)
+  - [folderId](#options-folderid) (Number)
+  - [ack](#options-ack) (Boolean)
 
 #### **Options: folderId**
 
@@ -426,6 +425,7 @@ You can instruct the system to automatically generate a [GUID](https://en.wikipe
 ```json
 { "guid": "myPrimaryGuidColumn" }
 ```
+
 When this is set, all entries will automatically get a random 36-characters GUID once they get saved in the data source.
 
 ---
