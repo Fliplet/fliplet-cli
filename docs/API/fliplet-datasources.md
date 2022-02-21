@@ -159,7 +159,7 @@ connection.findOne({
 
 Querying options are based on the [Sift.js](https://github.com/Fliplet/sift.js) operators, which mimic MongoDB querying operators. Here's the supported operators:
 
-  - `$in`, `$nin`, `$exists`, `$gte`, `$gt`, `$lte`, `$lt`, `$eq`, `$ne`, `$iLike`, `$mod`, `$all`, `$and`, `$or`, `$nor`, `$not`, `$size`, `$type`, `$regex`, `$elemMatch`
+  - `$in`, `$nin`, `$exists`, `$gte`, `$gt`, `$lte`, `$lt`, `$eq`, `$ne`, `$iLike`, `$mod`, `$all`, `$and`, `$or`, `$nor`, `$not`, `$size`, `$type`, `$regex`, `$elemMatch`, `$iLike`
 
 A few examples to get you started:
 
@@ -170,6 +170,13 @@ connection.find({
   where: {
     sum: { $gt: 10 },
     name: { $in: ['Nick', 'Tony'] }
+  }
+});
+
+// Find a case insensitive match to the "name" column
+connection.find({
+  where: {
+    name: { $iLike: 'Bob Smith' }
   }
 });
 
