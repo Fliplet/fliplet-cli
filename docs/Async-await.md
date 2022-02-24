@@ -10,7 +10,7 @@ Fliplet.App.Storage.get('foo').then(function (result) {
 });
 ```
 
-**Promises** are great, but they make the code less procedural hence more difficult to read and maintain. If you don't need to support **Internet Explorer 11**, there's a nice new feature of Javascript you can use right now in your Fliplet apps to make your code more readable and it's called `await/async`.
+**Promises** are great, but they make the code less procedural hence more difficult to read and maintain. You can also use the `await/async` syntax in JavaScript to make your code more readable.
 
 ## The "await" keyword
 
@@ -31,8 +31,6 @@ var newEntry = await connection.insert({ foo: 'bar' });
 // here I can use the "entries" array and also "newEntry"
 ```
 
-<p class="warning"><strong>Note</strong>: the <code>await</code> feature is not supported on <u>Internet Explorer 11</u>.</p>
-
 ## Catching errors with async/await
 
 When using `await`, errors can be caught in the more traditional **try/catch** way:
@@ -49,8 +47,6 @@ try {
 
 ---
 
----
-
 ## Behind the scenes
 
 The above works because when we detect the **await** keyword in your apps and screens custom code we wrap your code into a asynchronous function, like:
@@ -60,5 +56,3 @@ The above works because when we detect the **await** keyword in your apps and sc
   // your code which uses "await" is here
 })();
 ```
-
-Don't forget that using `async/await` is not supported on IE11.
