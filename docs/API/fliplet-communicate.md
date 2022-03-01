@@ -130,6 +130,8 @@ var options = {
 Fliplet.Communicate.sendSMS(options);
 ```
 
+Optionally, add `required: true` in `options` to cache the request if the device is offline. When the device comes online, the cached requests will be sent.
+
 ### Twilio
 
 ```js
@@ -261,6 +263,7 @@ Available options:
   - `sandbox` (optional, when `true`, notifications are only sent to people using Fliplet Viewer. This is useful for testing.)
   - `subscription` (optional, an array of **push subscription IDs** to target specific users. These IDs can be found in the "About this app" section of Fliplet apps, accessible via the top menu)
   - `badge` (optional, sets the badge on iOS to a specific number)
+  - `required`: Set to `true` to cache the request if the device is offline. When the device comes online, the cached requests will be sent. Default: `false`
 
 ```js
 Fliplet.Communicate.sendPushNotification(appId, {
