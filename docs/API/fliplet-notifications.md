@@ -45,9 +45,9 @@ instance.insert({
 })
 ```
 
-#### Cache the request offline for later
+#### Queue the request offline for later
 
-Add `required: true` to cache the request if the device is offline. The request will be sent when the device becomes online again.
+Add `required: true` to queue the request if the device is offline. The queued request will be sent when the device becomes online again.
 
 ```js
 instance.insert({
@@ -56,7 +56,7 @@ instance.insert({
     title: 'Greetings',
     message: 'Hi John!'
   },
-  required: true // Cache the request for later if the device is offline
+  required: true // Queue the request for later if the device is offline
 })
 ```
 
