@@ -1,6 +1,12 @@
-# Form Builder JS APIs
+# Form
 
-These public JS APIs will be automatically available in your screens once a **Form Builder** component is dropped into such screens.
+## Edit mode
+
+To put the **Form** component into edit mode (to edit a data source entry), provide a `dataSourceEntryId` query parameter to the page with a valid data source entry ID.
+
+# JS APIs
+
+The following JS APIs are available in a screen once a **Form** component is dropped into the screen.
 
 ## Retrieve an instance
 
