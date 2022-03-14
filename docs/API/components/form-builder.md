@@ -2,9 +2,9 @@
 
 The following JS APIs are available in a screen once a **Form** component is dropped into the screen.
 
-## Edit mode
+## Edit a data source entry
 
-To put the **Form** component into edit mode and edit a data source entry, provide a `dataSourceEntryId` query parameter to the page with a valid data source entry ID.
+To use the **Form** component for editing a data source entry, provide a `dataSourceEntryId` query parameter to the page with a valid data source entry ID.
 
 ```
 ?dataSourceEntryId=123
