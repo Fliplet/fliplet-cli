@@ -178,7 +178,7 @@ Fliplet.Session.Locale.get().then(function (language) {
 });
 ```
 
-## Get the list of locales supported by the current app
+### Get the list of locales supported by the current app
 
 ```js
 // Gets the list of locales defined for the current app as set by the Studio user
