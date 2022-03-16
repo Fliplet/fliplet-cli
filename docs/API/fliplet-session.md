@@ -163,19 +163,26 @@ Fliplet.Session.Locale.set('fr-ca');
 ### Get the current user's language
 
 ```js
-// Get the user's locale, taking into account its device settings
-// e.g. "fr" if the user has either set its device to French or the language
-// has been set using the above JS API to "fr".
+// Get the primary locale in use by the user for the current app
 var locale = Fliplet.Env.get('userLocale');
 
 // Get the list of user's locales. As an example, when the locale has been set to "fr-ca"
-// the resulting list will be: ['fr-ca', 'fr', 'en-GB', 'en-US', 'en', 'it']
+// the resulting list may be: ['fr-ca', 'fr', 'en-GB', 'en-US', 'en', 'it']
 var locales = Fliplet.Env.get('userLocales');
 
-// Get the locale that has previously been set with the "set()" method.
+// Get the locale that has previously been set
+// in the user's session  with the "set()" method.
+// This allows you to check if a language has been explicitly set by the user.
 Fliplet.Session.Locale.get().then(function (language) {
   // language will be the locale string you previously set, e.g. "fr-ca"
 });
+```
+
+## Get the list of locales supported by the current app
+
+```js
+// Gets the list of locales defined for the current app as set by the Studio user
+var locales = Fliplet.App.Locales.get();
 ```
 
 [Back to API documentation](../API-Documentation.md)
