@@ -185,5 +185,7 @@ Fliplet.Session.Locale.get().then(function (language) {
 var locales = Fliplet.App.Locales.get();
 ```
 
+---
+
 [Back to API documentation](../API-Documentation.md)
 {: .buttons}
