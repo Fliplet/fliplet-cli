@@ -1,10 +1,6 @@
 # Widget
 
-### Emit an event to the parent widget or Fliplet Studio
-
-```js
-Fliplet.Widget.emit('foo', { bar: 1 });
-```
+## Core widget APIs
 
 ### Get the widget instance id
 
@@ -44,6 +40,14 @@ The widget instance ID might change overtime when an app is published. If you ne
 
 ```js
 var uuid = Fliplet.Widget.getUUID(1);
+```
+
+## Widget APIs for Studio interface
+
+### Emit an event to the parent widget or Fliplet Studio
+
+```js
+Fliplet.Widget.emit('foo', { bar: 1 });
 ```
 
 ### Display an error message in Fliplet Studio
@@ -118,9 +122,14 @@ Fliplet.Widget.autosize();
 
 As a rule of thumb, you are responsible of calling the above function every time the height of your widget (or provider) is changing.
 
+## Providers
+
+Provider widgets allow developers to reuse widget interface with a consistent UX for achieving certain tasks.
+
 ### Open a provider
 
 ```js
+// Fliplet.Widget.open() returns a Promise-like object
 var myProvider = Fliplet.Widget.open('com.fliplet.link', {
 
   // If provided, the iframe will be appended here,
@@ -140,9 +149,13 @@ var myProvider = Fliplet.Widget.open('com.fliplet.link', {
   }
 });
 
+// The returned variable from Fliplet.Widget.open() resolves when the provider is saved
 myProvider.then(function (data) {
   // data will contain the result
 });
+
+// The provider is triggered to start saving data
+myProvider.forwardSaveRequest();
 
 // You can also resolve an array of providers
 Fliplet.Widget.all([myProvider]).then(function (results) {
@@ -193,6 +206,7 @@ Fliplet.Foo = Fliplet.Widget.Namespace('foo');
 ```
 
 ### Add an instance
+
 ```js
 Fliplet.Foo.add(instance) // instance can be a promise but does not need to be
 ```
