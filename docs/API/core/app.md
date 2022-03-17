@@ -30,6 +30,17 @@ var url = Fliplet.App.getPublicSlugForPage(1, { disableTracking: true, dataSourc
 
 ---
 
+## Locales
+
+### Get the list of locales supported by the current app
+
+```js
+// Gets the list of locales defined for the current app as set by the Studio user
+var locales = Fliplet.App.Locales.get();
+```
+
+---
+
 ## Settings
 
 ### Get the current app settings
