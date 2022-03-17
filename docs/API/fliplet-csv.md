@@ -14,10 +14,11 @@ Encodes JSON data into CSV.
 Fliplet.CSV.encode(data, options);
 ```
 
-* **data** (Object \| Array) JSON data to be encoded into CSV.
-* **options** (Object) Optional configuration for further CSV encoding. See [Papa Parse documentation](https://www.papaparse.com/docs#json-to-csv) for more. **Note** Fliplet CSV uses `\n` as the newline sequence by default to maximize CSV shareability and support across all platforms. In addition, the following options are also supported:
-   * **base64** (Boolean) Set as `true` to encode the CSV data in Base64 encoding. (**Default**: `false`)
-   * **dataUrl** (Boolean) Set as `true` to encode the CSV data as `data:` URL. (**Default**: `false`)
+  - **data** (Object \| Array) JSON data to be encoded into CSV.
+  - **options** (Object) Optional configuration for further CSV encoding. See [Papa Parse documentation](https://www.papaparse.com/docs#json-to-csv) for more. **Note** Fliplet CSV uses `\n` as the newline sequence by default to maximize CSV shareability and support across all platforms. In addition, the following options are also supported:
+    - **base64** (Boolean) Set as `true` to encode the CSV data in Base64 encoding. (**Default**: `false`)
+    - **dataUrl** (Boolean) Set as `true` to encode the CSV data as `data:` URL. (**Default**: `false`)
+    - **columns** (Array) Include only the specified columns, in given order (**Default**: All columns)
 
 The CSV JS API uses [Papa Parse](https://www.papaparse.com/) as the underlying engine. This means it's capable of generating CSV with different data formats. Examples:
 
@@ -62,8 +63,8 @@ Decodes CSV string into JSON data.
 Fliplet.CSV.decode(csv, options);
 ```
 
-* **csv** (String) CSV string to be decoded.
-* **options** Optional configuration for further CSV encoding. See [Papa Parse documentation](https://www.papaparse.com/docs#config) for more.
+  - **csv** (String) CSV string to be decoded.
+  - **options** Optional configuration for further CSV encoding. See [Papa Parse documentation](https://www.papaparse.com/docs#config) for more.
 
 ## `Fliplet.CSV.download()`
 
@@ -77,9 +78,10 @@ Downloads JSON data as a CSV file.
 Fliplet.CSV.download(data, options);
 ```
 
-* **data** JSON data to be encoded into CSV.
-* **options** (Object) Optional configuration for further CSV encoding. See `Fliplet.CSV.encode()` above for more information. In addition, the following options are also supported:
-   * **fileName** (String) Full file name (including file extension) for the downloaded file. (**Default**: `Untitled.csv`)
+  - **data** JSON data to be encoded into CSV.
+  - **options** (Object) Optional configuration for further CSV encoding. See `Fliplet.CSV.encode()` above for more information. In addition, the following options are also supported:
+    - **fileName** (String) Full file name (including file extension) for the downloaded file. (**Default**: `Untitled.csv`)
+    - **columns** (Array) Include only the specified columns, in given order (**Default**: All columns)
 
 ## `Fliplet.CSV.email()`
 
@@ -95,9 +97,9 @@ Emails JSON data as a CSV attachment.
 Fliplet.CSV.email(data, options);
 ```
 
-* **data** JSON data to be encoded into CSV.
-* **options** (Object) Optional configuration for further CSV encoding. See `Fliplet.CSV.encode()` above for more information. In addition, the following options are also supported:
-   * **emailOptions** (String) A mapping object for configuring the email. See [`Fliplet.Communicate.composeEmail()`](https://developers.fliplet.com/API/fliplet-communicate.html#compose-an-email) for more information.
+  - **data** JSON data to be encoded into CSV.
+  - **options** (Object) Optional configuration for further CSV encoding. See `Fliplet.CSV.encode()` above for more information. In addition, the following options are also supported:
+    - **emailOptions** (String) A mapping object for configuring the email. See [`Fliplet.Communicate.composeEmail()`](https://developers.fliplet.com/API/fliplet-communicate.html#compose-an-email) for more information.
 
 ---
 
