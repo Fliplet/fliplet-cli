@@ -109,7 +109,11 @@ Fliplet.Organization.Settings.unset(['user','_password'])
   })
 ```
 
-### Set the list of blacklisted extensions on file uploads
+---
+
+## Policies
+
+### Set or update the list of blacklisted extensions for file uploads
 
 Run the snippet below in a Fliplet Studio app preview frame while you're logged in as an organization admin to set up a new policy blacklisting as list of file extensions for all media files upload.
 
