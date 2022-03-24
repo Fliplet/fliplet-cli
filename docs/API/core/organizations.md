@@ -108,3 +108,23 @@ Fliplet.Organization.Settings.unset(['user','_password'])
     // Your code
   })
 ```
+
+### Set the list of blacklisted extensions on file uploads
+
+Run the snippet below in a Fliplet Studio app preview frame while you're logged in as an organization admin to set up a new policy blacklisting as list of file extensions for all media files upload.
+
+```js
+Fliplet.Organizations.get().then(function (organizations) {
+  return Fliplet.API.request({
+    method: 'POST',
+    url: 'v1/organizations/' + _.first(organizations).id + '/policy',
+    data: {
+      blacklistedFileExtensions: ['exe', 'jar', 'sfx', 'bat', 'cmd', 'com']
+    }
+  });
+});
+```
+
+<p class="note">Note: updating the policy may require Studio users of your organization to update their password to ensure it's up to date with any other policy set up on your organization (e.g. security or password policies).</p>
+
+---
