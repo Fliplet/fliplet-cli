@@ -4,7 +4,7 @@
 
 Publishing your work on the Fliplet platform is done via the CLI command `publish` as follows:
 
-```bash
+```
 cd my-awesome-component
 fliplet publish
 ```
@@ -19,13 +19,13 @@ The command needs to be run in the root folder for the component that's to be pu
 
 Publishing requires you to log in against your Fliplet Studio account:
 
-```bash
+```
 fliplet login
 ```
 
 The above command will ask for your email and password. Once successfully authenticated, you will be able to publish components, themes and menus on Fliplet.
 
-```bash
+```
 $ fliplet login
 
 Please type your Fliplet Studio login details.
@@ -43,7 +43,7 @@ Furthermore, in order for you to publish you have to set a target `organizationI
 
 First, read your organizations (once you have logged in):
 
-```bash
+```
 $ fliplet list-organizations
 
 Requesting up to date organizations list from the server...
@@ -53,7 +53,7 @@ Requesting up to date organizations list from the server...
 
 Then, simply set which organization you want to use:
 
-```bash
+```
 $ fliplet organization 123
 
 Organization set.
@@ -65,7 +65,7 @@ Organization set.
 
 You are now ready to publish components, themes and menus on Fliplet:
 
-```bash
+```
 fliplet publish
 ````
 

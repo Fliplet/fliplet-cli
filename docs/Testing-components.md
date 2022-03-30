@@ -3,13 +3,13 @@
 If you have started you widget from our boilerplate you already have a sample test suite under the `tests` folder.
 To test a component, use the CLI to run your tests:
 
-```bash
+```
 fliplet test
 ```
 
 If you want to see the browser output when running tests, run the command with the `--debug` option:
 
-```bash
+```
 fliplet test --debug
 ```
 

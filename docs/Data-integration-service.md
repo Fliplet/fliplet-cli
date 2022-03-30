@@ -68,7 +68,7 @@ Once you have installed Node.js, please open the shell to continue and install o
 
 Then, run the following command to install the Fliplet Agent on your machine via the npm package manager:
 
-```bash
+```
 npm install fliplet-agent -g
 ```
 
@@ -92,13 +92,13 @@ You can verify this by running `npm config get prefix` on the shell. On Windows,
 
 To install packages for all users of a workstation, simply create a shared folder accessible by all users and sets its path to be the npm default directory via the following command:
 
-```bash
+```
 npm config set prefix 'C:\MySharedFolder\'
 ```
 
 Once you have set up the global folder, simply install the agent to have it installed for all users:
 
-```bash
+```
 npm install fliplet-agent -g
 ```
 
@@ -130,7 +130,7 @@ You can now use the command `fliplet-agent` from the command line. Just type `fl
 
 If you get the `SSL Error: SELF_SIGNED_CERT_IN_CHAIN` error when installing the agent, please update your npm settings to allow self-signed certificates to be used. Just run the following command and then try again to install the agent:
 
-```bash
+```
 npm config set strict-ssl false
 ```
 
@@ -140,7 +140,7 @@ npm config set strict-ssl false
 
 If you need to update the agent to the latest version available on npm, run the following command from the Node.js shell:
 
-```bash
+```
 npm update -g
 ```
 
@@ -460,7 +460,7 @@ You can define as many push operations as you want inside a single configuration
 
 Once you have a configuration file like the one above saved on disk, starting the agent is as simple as running the following command from your shell:
 
-```bash
+```
 fliplet-agent start ./path/to/configurationFile.js
 ```
 
