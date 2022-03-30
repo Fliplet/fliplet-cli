@@ -65,7 +65,7 @@ Organization set.
 
 You are now ready to publish components, themes and menus on Fliplet:
 
-```
+```bash
 fliplet publish
 ````
 
