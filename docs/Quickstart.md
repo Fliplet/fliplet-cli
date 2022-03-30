@@ -16,15 +16,15 @@ Our development tools rely on [Node.js](https://nodejs.org) and [Npm](https://ww
 
 The [Fliplet CLI](https://www.npmjs.com/package/fliplet-cli) is available through **Npm** and can be installed from the command line:
 
-```
-$ npm install -g fliplet-cli
+```bash
+npm install -g fliplet-cli
 ```
 
 Please note: on some systems you might require the `sudo` prefix in order to install the CLI as global (`-g`) on the machine.
 
 Once you have installed the CLI, typing `fliplet` in your command line should print out the available options:
 
-```
+```bash
 $ fliplet
 
 Usage: fliplet [options] [command]
@@ -38,15 +38,15 @@ Commands:
   publish               Publish the current component or theme on fliplet studio.
   test                  Run tests on the current component or theme on fliplet studio.
   list                  List components you can download for editing.
-  clone [package]       Downloads a component locally, given its ID or package name
+  clone <package>       Downloads a component locally from the target environment, given the specified ID or package name
   list-assets           Gets the list of the available assets in the system.
   list-organizations    Gets the list of the available organizations in the system.
   organization [id]     Set current working organization. Use without id to reset.
-  env [name]            Set the environment: local, development, staging or production.
+  env [name]            Set the environment: local, development, staging or production. Use without name to get the current environment.
   login                 Log in with your Fliplet Studio account.
   logout                Log out from Fliplet Studio.
   cleanup               Reset the local state of the CLI.
-  help [cmd]            display help for [cmd]
+  help                  Display help for fliplet
 
 Options:
 
@@ -60,19 +60,19 @@ We regularly update the development tools, so please make sure you're running th
 
 To check for updates, use the npm command `outdated`:
 
-```
-$ npm outdated
+```bash
+npm outdated
 ```
 
 To install or update to the latest version, simply run the install command as follows:
 
-```
-$ npm install -g fliplet-cli
+```bash
+npm install -g fliplet-cli
 ```
 
 You can see the version you have installed by running the command below:
 
-```
+```bash
 $ fliplet --version
 5.2.3
 ```
