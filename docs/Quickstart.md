@@ -42,7 +42,7 @@ Commands:
   list-assets           Gets the list of the available assets in the system.
   list-organizations    Gets the list of the available organizations in the system.
   organization [id]     Set current working organization. Use without id to reset.
-  env [name]            Set the environment: dev, staging or production.
+  env [name]            Set the environment: local, development, staging or production.
   login                 Log in with your Fliplet Studio account.
   logout                Log out from Fliplet Studio.
   cleanup               Reset the local state of the CLI.
