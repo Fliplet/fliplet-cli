@@ -161,6 +161,11 @@ Querying options are based on the [Sift.js](https://github.com/Fliplet/sift.js) 
 
   - `$in`, `$nin`, `$exists`, `$gte`, `$gt`, `$lte`, `$lt`, `$eq`, `$ne`, `$iLike`, `$mod`, `$all`, `$and`, `$or`, `$nor`, `$not`, `$size`, `$type`, `$regex`, `$elemMatch`
 
+The following operators and values are optimized to perform better with Fliplet's database.
+
+  - Operators: `$or`, `$and`, `$gte`, `$lte`, `$gt`, `$lt`, `$eq`
+  - Values: strings and numbers
+
 A few examples to get you started:
 
 ```js
