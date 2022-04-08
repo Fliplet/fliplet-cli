@@ -100,6 +100,7 @@ Fliplet.DataSources.connect(123)
       .then(function (secondRecords) {
         //Concatenate the two arrays into one using lodash _.concat() function
         var finalRecords = _.concat(firstRecords, secondRecords);
+        
         finalRecords.forEach(function (row) {
           // do something for each row, e.g. append it to a html tag
           $(".foo").append(row.data.bar);
