@@ -88,37 +88,36 @@ Fliplet.DataSources.connect(123)
     });
   })
   .then(function (firstRecords) {
-  //Connect to DS 456 and pass a query
+    //Connect to DS 456 and pass a query
     return Fliplet.DataSources.connect(456)
       .then(function (connection) {
         return connection.find({
           where: {
-            name: 'John'
+            name: "John",
           },
         });
       })
       .then(function (secondRecords) {
-      //Concatenate the two arrays into one using lodash _.concat() function
-        var finalRecords = _.concat(firstRecords, secondRecords)
+        //Concatenate the two arrays into one using lodash _.concat() function
+        var finalRecords = _.concat(firstRecords, secondRecords);
         finalRecords.forEach(function (row) {
           // do something for each row, e.g. append it to a html tag
           $(".foo").append(row.data.bar);
         });
       });
   });
-
 ```
 
 This example is using our List From Data Source (LFD) component’s hook and our Data Source JS API to ensure that we can connect to a data source and manipulate the data, for e.g merging the data into the LFD records. 
 
 ```js
 Fliplet.Hooks.on("flListDataAfterGetData", function (options) {
-//Connect to DS 1234 and get the record whose Office equals London
+  //Connect to DS 1234 and get the record whose Office equals London
   return Fliplet.DataSources.connect(1234).then(function (connection) {
     return connection
       .find({
         where: {
-          Office: { $eq: 'London' },
+          Office: { $eq: "London" },
         },
       })
       .then(function (records) {
@@ -126,7 +125,6 @@ Fliplet.Hooks.on("flListDataAfterGetData", function (options) {
       });
   });
 });
-
 ```
 
 Make sure you're familiar with promises before diving into building components.
