@@ -129,6 +129,8 @@ Fliplet.Organizations.get().then(function (organizations) {
 });
 ```
 
+Here's a list of the default blacklisted extensions we have in place: *exe, jar, sfx, bat, cmd, com, pyw, php, raw, py, pyc, ps1, ps2, pyo, jnlp, gz, appref-ms, udl, wsb, website, theme, webpnp, xll, pif, application, msi, msp, scr, vb, jse, ws, wsf, wsc, wsh, msh, scf, lnk, inf, reg.*
+
 <p class="note">Note: updating the policy may require Studio users of your organization to update their password to ensure it's up to date with any other policy set up on your organization (e.g. security or password policies).</p>
 
 ---
