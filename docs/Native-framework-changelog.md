@@ -23,6 +23,10 @@ We regularly update our framework to support new features. If you have an older 
 
 ## Supported versions (4.3+)
 
+### Version 5.3.0 (Apr 22, 2022)
+
+- **iOS**: Support for iOS 15.
+
 ### Version 5.2.0 (Oct 19, 2021)
 
 - **Android**: Bugfix for apps built with the SDK30 not properly dismissing the virtual keyboard.
