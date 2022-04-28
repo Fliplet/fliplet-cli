@@ -6,8 +6,7 @@ const webpackConfig = require('./config/webpack.config.js');
 
 const named = require('vinyl-named');
 const vueify = require('gulp-vueify2');
-const sass = require('gulp-sass');
-sass.compiler = require('node-sass');
+const sass = require('gulp-sass')(require('sass'));
 
 // Clean assets
 function clean() {
