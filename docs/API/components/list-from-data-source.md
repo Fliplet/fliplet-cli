@@ -119,6 +119,28 @@ Fliplet.Hooks.on('flListDataAfterGetData', function(options) {
 });
 ```
 
+**Adjust agenda timezone to the device timezone**
+
+```js
+Fliplet.Hooks.on('flListDataAfterGetData', function (options) {
+  var dateColumn = _.get(_.find(options.config['detailViewOptions'], { Location: 'Full Date' }), 'column', 'Date');
+  var startTimeColumn = _.get(_.find(options.config['summary-fields'], { Location: 'Start Time' }), 'column', 'Start Time');
+  var endTimeColumn = _.get(_.find(options.config['summary-fields'], { Location: 'End Time' }), 'column', 'End Time');
+
+  var dataTimezone = 'Europe/London'; // Change this to the timezone that the data source assumes
+  var userTimezone = moment.tz.guess();
+
+  options.records.forEach(function(record) {
+    var startAt = moment.tz(record.data[dateColumn] + ' ' + record.data[startTimeColumn], dataTimezone).tz(userTimezone);
+    var endAt = moment.tz(record.data[dateColumn] + ' ' + record.data[endTimeColumn], dataTimezone).tz(userTimezone);
+
+    record.data[dateColumn] = startAt.format('YYYY-MM-DD');
+    record.data[startTimeColumn] = startAt.format('HH:mm');
+    record.data[endTimeColumn] = endAt.format('HH:mm');
+  });
+});
+```
+
 ### `flListDataBeforeRenderList`
 
 The hook is run right before data is to be rendered in the list. This includes the initial render as well as any search and filter renders.
@@ -137,30 +159,6 @@ Fliplet.Hooks.on('flListDataBeforeRenderList', fn);
       - **fields** (Array) An array of fields from the data source that will be used to perform the search
       - **activeFilters** (Object) An object mapping all active filters
       - **showBookmarks** (Boolean) Indicating if the user has chosen to show bookmarks only
-
-#### Usage
-
-**Adjust agenda timezone to the device timezone**
-
-```js
-Fliplet.Hooks.on('flListDataBeforeRenderList', function (options) {
-  var dateColumn = _.get(_.find(options.config['detailViewOptions'], { Location: 'Full Date' }), 'column', 'Date');
-  var startTimeColumn = _.get(_.find(options.config['summary-fields'], { Location: 'Start Time' }), 'column', 'Start Time');
-  var endTimeColumn = _.get(_.find(options.config['summary-fields'], { Location: 'End Time' }), 'column', 'End Time');
-
-  var dataTimezone = 'Europe/London'; // Change this to the timezone that the data source assumes
-  var userTimezone = moment.tz.guess();
-
-  options.records.forEach(function(record) {
-    var startAt = moment.tz(record.data[dateColumn] + ' ' + record.data[startTimeColumn], dataTimezone).tz(userTimezone);
-    var endAt = moment.tz(record.data[dateColumn] + ' ' + record.data[endTimeColumn], dataTimezone).tz(userTimezone);
-
-    record.data[dateColumn] = startAt.format('YYYY-MM-DD');
-    record.data[startTimeColumn] = startAt.format('HH:mm');
-    record.data[endTimeColumn] = endAt.format('HH:mm');
-  });
-});
-```
 
 ### `flListDataAfterRenderList`
 
