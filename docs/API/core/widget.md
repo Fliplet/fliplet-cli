@@ -12,7 +12,7 @@ var id = Fliplet.Widget.getDefaultId();
 
 ### Get a widget instance data
 
-This method is usually meant to be called from a widget interface, to get the saved data.
+This method is usually meant to be called from a widget interface, to get the saved data. It also returns any data passed through the `data` query parameter for the interface URL.
 
 ```js
 var data = Fliplet.Widget.getData();
