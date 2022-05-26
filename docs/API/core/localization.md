@@ -58,12 +58,25 @@ T("widgets.form.success.message", { msg: "<img..>" });
 **Handlebars**
 
 {% raw %}
-
 ```html
 {{ T "widgets.form.success.message" }}
 ```
-
 {% endraw %}
+
+Please note that the `T` function is only available after the `Fliplet()` promise has resolved, so you may need to wrap your code as necessary to make use of translations:
+
+```js
+Fliplet().then(function () {
+  // Compile Handlebars templates only when translations have been initialized
+  const myTemplate = Handlebars.compile(Fliplet.Widget.Templates['templates.foo']());
+
+  Fliplet.Widget.instance('my-component', function(data) {
+    // Use the "T" function only when translations have been initialized
+    const translatedText = T('widgets.myComponent.pleaseWait');
+    const translatedTemplate = myTemplate({ foo: 'bar' });
+  });
+});
+```
 
 ### Localization helper libraries and frameworks
 
@@ -72,6 +85,14 @@ T("widgets.form.success.message", { msg: "<img..>" });
 Components can use `$(this).translate()` (e.g. in `Fliplet.Widget.instance()`) after having initialized their template to automatically bind `data-translate="key"` properties in the target element.
 
 When a DOM element is added to the page with translation keys assigned using `data-translate`, the translations are not automatically applied. `$.fn.translate()` must be applied on the rendered DOM to apply the translations.
+
+Please note that the `$(this).translate()` function is only available after the `Fliplet()` promise has resolved, so you may need to wrap your code as necessary to make use of translations:
+
+```js
+Fliplet().then(function () {
+  $('form').translate();
+});
+```
 
 More docs on [https://github.com/i18next/jquery-i18next](https://github.com/i18next/jquery-i18next).
 
@@ -104,8 +125,28 @@ Then, strings can be translated using the $t helper in vue templates in build.ht
 ```html
 {{ $t("widgets.form.required.label") }}
 ```
-
 {% endraw %}
+
+Please note that the `Fliplet.Locale.plugins.vue()` function is only available after the `Fliplet()` promise has resolved, so you may need to wrap your code as necessary to make use of translations:
+
+```js
+Fliplet().then(function () {
+  Fliplet.Widget.instance('my-component', function(data) {
+    var $form = new Vue({ i18n: Fliplet.Locale.plugins.vue() });
+  });
+});
+```
+
+If you need to configure the plugin before translations inizialization, you can refer to it via the `window.VueI18Next` variable:
+
+```js
+var $form = new Vue({ i18n: window.VueI18Next });
+
+Fliplet().then(function () {
+  // some other code
+});
+```
+
 
 More docs on [https://panter.github.io/vue-i18next/guide/component-interpolation.html](https://panter.github.io/vue-i18next/guide/component-interpolation.html)
 

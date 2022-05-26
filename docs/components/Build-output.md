@@ -53,51 +53,6 @@ Fliplet.Widget.instance('my-component', console.log);
 
 ---
 
-## Integrating with translations
-
-Components can make use of translations by defining a `trasnslation.json` file in the root folder. Here's a sample content to get you started:
-
-```json
-{
-  "widgets": {
-    "myComponent": {
-      "pleaseWait": "Please wait until content is saved"
-    }
-  }
-}
-```
-
-You can then use translations in your scripts by referencing the global `T` function:
-
-```js
-const translatedText = T('widgets.myComponent.pleaseWait');
-```
-
-Handlebars also supports this via the same `T` function:
-
-{% raw %}
-```handlebars
-<div>{{ T "widgets.myComponent.pleaseWait" }}</div>
-```
-{% endraw %}
-
-Please note that the `T` function is only available after the `Fliplet()` promise has resolved, so you may need to wrap your code as necessary to make use of translations:
-
-```js
-Fliplet().then(function () {
-  // Compile Handlebars templates only when translations have been initialized
-  const myTemplate = Handlebars.compile(Fliplet.Widget.Templates['templates.foo']());
-
-  Fliplet.Widget.instance('my-component', function(data) {
-    // Use the "T" function only when translations have been initialized
-    const translatedText = T('widgets.myComponent.pleaseWait');
-    const translatedTemplate = myTemplate({ foo: 'bar' });
-  });
-});
-```
-
----
-
 ## Interface of components
 
 Need to read more about the interface? Once you're familiar with the above documentation on the component output, have a read to the previous section which covers the output of components interfaces.
