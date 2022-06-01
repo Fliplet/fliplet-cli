@@ -367,6 +367,25 @@ connection.find({
 })
 ```
 
+## Connecting to a data source by name
+
+Use the `dataSourceName` parameter to connect to a data source by its name instead of ID:
+
+```js
+connection.find({
+  join: {
+    LikesForComments: {
+      dataSourceName: 'User comments',
+      on: {
+        'data.ID': 'data.ArticleID'
+      },
+      // only fetch the comment text
+      attributes: ['Comment text']
+    }
+  }
+})
+```
+
 ---
 
 [Back to DataSources general documentation](../fliplet-datasources.md)
