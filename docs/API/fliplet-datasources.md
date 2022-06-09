@@ -411,6 +411,16 @@ Use the `removeById` method to remove a entry from a data source given its ID.
 ```js
 connection.removeById(1).then(function onRemove() {});
 ```
+### Remove entries matching a query
+
+Set `type` to `delete` and specify a where clause. This will query the data source and delete any matching entries.
+
+```js
+connection.query({
+  type: 'delete',
+  where: { Email: 'test@fliplet.com' }
+});
+```
 
 ---
 
