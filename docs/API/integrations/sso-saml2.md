@@ -15,12 +15,12 @@ Once you've dropped the component in your screen, a "Sign in" button will appear
 The first thing you'll need is to **press the copy the link to the metadata XML** button on the bottom right of the screen. That will copy on your computer clipboard a URL to the metadata file which you will need to provide to your IT. Its format is the following:
 
 ```
-https://api.fliplet.com/v1/session/providers/saml2/metadata?appId=123
+https://api.fliplet.com/v1/session/providers/saml2/metadata/123
 ```
 
-Please note that the `appId=123` will change depending on your Fliplet app id. If your system does not allow importing the above XML, you can still configure the integration by manually getting the fields to use from the XML. These are the ones you will need and how to find them:
+Please note that the `123` will change depending on your Fliplet app ID. If your system does not allow importing the above XML, you can still configure the integration by manually getting the fields to use from the XML. These are the ones you will need and how to find them:
 
-1. **Entity ID** (or Identifier) this field has a fixed value and it's `https://api.fliplet.com/v1/session/providers/saml2/metadata` for any Fliplet app
+1. **Entity ID** (or Identifier) this field has a unique value for each Fliplet app and has the same value as the metadata URL above. It can also be seen in the `entityID` property of the XML.
 2. **Reply URL** (or Assertion URL) is dynamic and depends on your Fliplet App ID. Here's a sample value for it: `https://api.fliplet.com/v1/session/providers/saml2/callback?appId=123`
 2. Service Provider Certificate (PEM String format): [Download](../../assets/misc/saml2-certificate.txt)
 
