@@ -134,6 +134,20 @@ If you get the `SSL Error: SELF_SIGNED_CERT_IN_CHAIN` error when installing the 
 npm config set strict-ssl false
 ```
 
+#### UNABLE_TO_GET_ISSUER_CERT_LOCALLY
+
+The error `SELF_SIGNED_CERT_IN_CHAIN` will appear if you're behind a proxy reading encrypted traffic (e.g. a company firewall decrypts certain traffic and re-encrypts it with their certificate). If that's expected, just run the following command and then try again to install the agent:
+
+```
+npm config set strict-ssl false
+```
+
+Alternative, you can switch to use the HTTP version of the NPM registry:
+
+```
+npm config set registry http://registry.npmjs.org/
+```
+
 ---
 
 ## Update the agent to the latest version
