@@ -7,7 +7,7 @@ We regularly update our framework to support new features. If you have an older 
   <div class="bl two">
     <div>
       <h4>iOS</h4>
-      <p>Latest stable release: 5.3.0</p>
+      <p>Latest stable release: 5.3.2</p>
     </div>
   </div>
   <div class="bl two">
@@ -21,7 +21,11 @@ We regularly update our framework to support new features. If you have an older 
 
 ---
 
-## Supported versions (4.3+)
+## Supported versions (4.6+)
+
+### Version 5.3.2 (Jul 7, 2022)
+
+- **iOS**: Bugfix for the share dialog not working as expected when being used by the Communicate JS API.
 
 ### Version 5.3.0 (Apr 22, 2022)
 
@@ -42,6 +46,12 @@ We regularly update our framework to support new features. If you have an older 
 ### Version 4.6.0 (June 17, 2021)
 
 - **Android**: Security improvements.
+
+---
+
+## Deprecated versions
+
+Please note that these versions have limited support for newer Fliplet features. We encourage you to submit a new native update to your apps via the App Store or Google Play if you have users still running these versions of your app.
 
 ### Version 4.5.3 (June 15, 2021)
 
@@ -67,12 +77,6 @@ We regularly update our framework to support new features. If you have an older 
 ### Version 4.3.0 (December 14, 2020)
 
 - **iOS**: Improvements for push notifications.
-
----
-
-## Deprecated versions
-
-Please note that these versions have limited support for newer Fliplet features. We encourage you to submit a new native update to your apps via the App Store or Google Play if you have users still running these versions of your app.
 
 ### Version 4.2.4 (November 11, 2020)
 

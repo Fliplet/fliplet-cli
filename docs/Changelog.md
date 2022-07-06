@@ -6,6 +6,12 @@ description: Changelog notes giving a summary of recent significant changes to t
 
 Each week, we provide changelog notes on this page giving a summary of recent significant changes to the documentation. If there haven't been any significant changes in a given week, we don't publish changelog notes.
 
+## July 2022
+
+### July 7th
+
+- New iOS framework version 5.3.2 released with bugfixes for the share dialog.
+
 ## April 2022
 
 ### April 22nd
