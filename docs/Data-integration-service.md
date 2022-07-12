@@ -46,6 +46,7 @@ To generate a token, please follow the docs [here](REST-API/authenticate.md).
 ## Minimum requirements
 
 - Operative System: Windows (7, 8, 10, 11, Server), macOS, Linux (x64, ARM)
+- [TLS 1.2 or newer](https://www.andica.com/faq-enable-tls-in-different-windows-version.html)
 - Intel® processors are recommended for maximum compatibility
 - 2GB of available RAM
 - 8GB of available storage
@@ -977,6 +978,8 @@ If your company is behind a corporate firewall and specific network access shoul
 - For accounts with data in **Canada**: [ca.api.fliplet.com](https://ca.api.fliplet.com) on port *443*
 
 In order to be able to update the agent via **npm**, [registry.npmjs.org](https://registry.npmjs.org) needs to be whitelisted on port *443* too. However, if your internet connection is running behind a corporate firewall it might require specific settings for the proxy ([more details](https://www.beyondjava.net/guiding-npm-firewall)).
+
+Finally, make sure that **TLS 1.2 or 1.3** is [enabled on the OS settings](https://www.andica.com/faq-enable-tls-in-different-windows-version.html).
 
 ---
 

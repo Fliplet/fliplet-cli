@@ -29,7 +29,7 @@ Use this when you want to fetch additional data for your dataSource. Examples in
 
 Left joins must be defined by specifying:
 
-- the **target dataSource ID** with the `dataSourceId` parameter
+- the **target dataSource ID** with the `dataSourceId` parameter (or `dataSourceName` if you want to connect by using the data source name)
 - what data should be used to **reference entries** from the initial dataSource to the joined dataSource, using the `on` parameter, where the `key` is the column name from the source table and the `value` is the column name of the target (joined) table.
 
 Consider **an example** where two dataSources are created as follows:
