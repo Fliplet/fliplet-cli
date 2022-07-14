@@ -43,7 +43,7 @@ We now know what Helpers are. The next question is "what can we use them for?"
       <button>Next &rarr;</button>
     </div>
   </a>
-  <a class="bl two" href="reference.html">
+  <a class="bl two" href="references/constructor.html">
     <div class="secondary">
       <span class="pin"><i class="fa fa-file-alt"></i></span>
       <h4>Reference</h4>

@@ -335,8 +335,3 @@ If you're using an app action to make requests to your server you may need to wh
 - Canadian customers: `3.98.9.146`
 - European customers: `52.212.7.119`
 - US customers: `54.151.38.62`
-
----
-
-[Back to API documentation](../API-Documentation.md)
-{: .buttons}

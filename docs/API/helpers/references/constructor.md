@@ -156,7 +156,7 @@ Fliplet.Helper({
       <td><code>Object</code></td>
       <td>optional</td>
       <td>
-        <a href="/API/helpers/reference-interface.html">The list of fields to present in the configuration UI</a>.</td>
+        <a href="/API/helpers/interface.html">The list of fields to present in the configuration UI</a>.</td>
     </tr>
     <tr>
       <td><code>configuration.title</code></td>
