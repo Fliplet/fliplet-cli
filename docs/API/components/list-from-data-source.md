@@ -716,7 +716,7 @@ Use the following query parameters when linking to a screen with **List (from da
   - **dynamicListSortOrder** (`asc|desc`) Sort the list by the specified column in ascending (`asc`) or descending (`desc`) order.
   - **dynamicListSearchValue** Search term to be applied after the list is rendered. Search will be executed according to the component configuration or custom configuration. If only one entry is found, the entry will be automatically opened.
   - **dynamicListSearchColumn** Column to execute a search against. If provided, the component configuration will be ignored. (Optional)
-  - **dynamicListFilterValue** A comma-separated list of filter values to select. If `dynamicListFilterColumn` is not specified, all filters that match the value will be selected. **Note:** only filter values that are present in the dataset will be used. If the filter is based on a date range, use `..` to separate the start and end values, e.g. `2021-02-01..2021-03-01`.
+  - **dynamicListFilterValue** A comma-separated list of filter values to select. If `dynamicListFilterColumn` is not specified, all filters that match the value will be selected. **Note:** only filter values that are present in the dataset will be used. If the filter is based on a date range, use `..` to separate the start and end values, e.g. `2022-02-01..2022-03-01`.
   - **dynamicListFilterColumn** A comma-separated list of columns to select filter values within (optional). The number of columns provided must match the number of values provided. To select multiple values for a column, use `[]` to enclose the values and separate them by commas. e.g. `dynamicListFilterColumn=Tags,Category&dynamicListFilterValue=[Foo,Buzz],Enterprise%20software` selects the filters `Tags=Foo`, `Tags=Buzz` and `Category=Enterprise software`.
   - **dynamicListFilterHideControls** (`true|false`) Hide the filter controls when filter values are applied from the query. (Default: `false`)
   - **dynamicListPrefilterColumn** Pre-filter list based on the provided list of comma-separated column names.
@@ -783,7 +783,7 @@ dynamicListFilterColumn=Status,Office&dynamicListFilterValue=[Approved,Waitliste
 #### Apply in-app filters based on dates
 
 ```
-dynamicListFilterColumn=Publish%20date&dynamicListFilterValue=2021-02-01..2021-03-01
+dynamicListFilterColumn=Publish%20date&dynamicListFilterValue=2022-02-01..2022-03-01
 ```
 
 #### Load only data where the name contains John and the age is less than 29

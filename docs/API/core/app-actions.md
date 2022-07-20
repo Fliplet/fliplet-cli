@@ -154,7 +154,7 @@ Fliplet.App.Actions.run('confirm-booking');
 // input payload to be sent to the screen.
 Fliplet.App.Actions.run('confirm-booking', {
   FirstName: 'Nick',
-  Date: '2021-06-15'
+  Date: '2022-06-15'
 }).then(function () {
   // The action has been queued for processing.
   // No result is given back.
@@ -202,10 +202,10 @@ Here is a sample of the array of actions returned:
     "active": true,
     "frequency": "*/2 * * * *",
     "timezone": "Europe/Dublin",
-    "lastRunAt": "2021-07-21T12:32:02.495Z",
-    "nextRunAt": "2021-07-21T12:34:00.000Z",
-    "createdAt": "2021-07-20T09:29:00.366Z",
-    "updatedAt": "2021-07-20T09:29:00.366Z",
+    "lastRunAt": "2022-07-21T12:32:02.495Z",
+    "nextRunAt": "2022-07-21T12:34:00.000Z",
+    "createdAt": "2022-07-20T09:29:00.366Z",
+    "updatedAt": "2022-07-20T09:29:00.366Z",
     "appId": 123,
     "pageId": 456
   }
@@ -243,7 +243,7 @@ Sample logs:
 [
   {
     "id": 1,
-    "createdAt": "2021-07-21T12:36:02.663Z",
+    "createdAt": "2022-07-21T12:36:02.663Z",
     "type": "app.action.completed",
     "data": {
       "mode": "on-demand",
@@ -254,7 +254,7 @@ Sample logs:
   },
   {
     "id": 2,
-    "createdAt": "2021-07-21T12:36:02.663Z",
+    "createdAt": "2022-07-21T12:36:02.663Z",
     "type": "app.task.completed",
     "data": {
       "mode": "scheduled",
@@ -266,7 +266,7 @@ Sample logs:
   },
   {
     "id": 3,
-    "createdAt": "2021-07-21T12:36:02.663Z",
+    "createdAt": "2022-07-21T12:36:02.663Z",
     "type": "app.task.failed",
     "data": {
       "mode": "scheduled",

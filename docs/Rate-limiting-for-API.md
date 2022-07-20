@@ -23,7 +23,7 @@ If you get rate limited, our APIs will return a `429` status code with a message
 {
   "message":"You've made too many attempts in a short period of time, please try again in a few seconds. Read more about rate limiting and how you may be affected by reading our documentation.",
   "referenceUrl":"https://developers.fliplet.com/Rate-limiting-for-API.html",
-  "nextValidRequestDate":"2021-02-15T17:13:32.363Z"
+  "nextValidRequestDate":"2022-02-15T17:13:32.363Z"
 }
 ```
 
