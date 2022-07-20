@@ -7,13 +7,13 @@ We regularly update our framework to support new features. If you have an older 
   <div class="bl two">
     <div>
       <h4>iOS</h4>
-      <p>Latest stable release: 5.3.2</p>
+      <p>Latest stable release: 6.0.0</p>
     </div>
   </div>
   <div class="bl two">
     <div>
       <h4>Android</h4>
-      <p>Latest stable release: 5.2.0</p>
+      <p>Latest stable release: 6.0.0</p>
     </div>
   </div>
 </section>
@@ -22,6 +22,10 @@ We regularly update our framework to support new features. If you have an older 
 ---
 
 ## Supported versions (4.6+)
+
+### Version 6.0.0 (Jul 20, 2022)
+
+- **All platforms**: Support for the upcoming localization feature.
 
 ### Version 5.3.2 (Jul 7, 2022)
 

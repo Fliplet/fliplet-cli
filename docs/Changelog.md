@@ -8,6 +8,10 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## July 2022
 
+### Jul 20th
+
+- New iOS and Android framework version 6.0.0 released with support for the upcoming localization feature.
+
 ### July 7th
 
 - New iOS framework version 5.3.2 released with bugfixes for the share dialog.
