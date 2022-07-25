@@ -35,6 +35,11 @@ html, body {
   background-color: #f8f6f7;
 }
 
+body {
+  background-size: 10px 10px;
+  background-image: repeating-linear-gradient(45deg, #f3f3f3 0, #f3f3f3 1px, #f8f6f7 0, #f8f6f7 50%);
+}
+
 a {
   color: $secondaryBackground;
 }

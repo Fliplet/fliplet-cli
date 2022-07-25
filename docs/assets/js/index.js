@@ -151,6 +151,10 @@ if (location.pathname !== '/') {
     backSpeed: 30,
     loop: true
   });
+
+  if ($(window).width() > 1200) {
+    $('.search-input input').focus();
+  }
 }
 
 // Mark links as active
