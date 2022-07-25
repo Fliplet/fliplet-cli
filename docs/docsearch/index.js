@@ -1,3 +1,6 @@
+console.log('Disabled');
+process.exit();
+
 require('dotenv').config();
 
 const algoliasearch = require('algoliasearch');
