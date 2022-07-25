@@ -10,6 +10,7 @@ $lightBackground: #f8f6f7;
 $secondaryBackground: #4279ca;
 
 $warningColor: #fdff6b;
+$yellowColor: #ffd958;
 $warningTextColor: #6c6d00;
 
 $sidebarWidth: 286px;
@@ -1114,11 +1115,16 @@ h2, h3, h4, h5, h6 {
 
 /* Highlighted text */
 .algolia-autocomplete .algolia-docsearch-suggestion--highlight {
-  color: $secondaryBackground;
+  color: #4c4019;
+  background: $yellowColor;
 }
 
 .algolia-docsearch-footer {
   display: none !important;
+}
+
+.algolia-docsearch-suggestion--category-header {
+  font-size: 20px;
 }
 
 .ais-hits {
