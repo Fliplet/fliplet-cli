@@ -54,11 +54,14 @@ Then the website should be up and running at http://127.0.0.1:4000/
 
 ## Update the Algolia search index
 
+The index updates automatically via CircleCI. You can however rebuild it manually:
+
 1. Copy the contents of `docs/docsearch/.env.example` into `docs/docsearch/.env`
 2. Grab the Admin API key from [Algolia](https://www.algolia.com/account/api-keys/all?applicationId=8GRBFEV21Y).
 3. Set the `API_KEY` in `docs/docsearch/.env`
 4. Install [jq](https://github.com/stedolan/jq/wiki/Installation) on your machine
 5. [Clear the index on Algolia](https://www.algolia.com/apps/8GRBFEV21Y/explorer/browse/Fliplet%20Developers?searchMode=search) (Manage index > Clear)
+6. Clear the index by running `npm install && node index.js` from the `docs/docsearch`
 6. Run the following command from the `docs/docsearch` folder:
 
 ```
