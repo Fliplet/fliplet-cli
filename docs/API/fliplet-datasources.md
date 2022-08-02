@@ -301,7 +301,7 @@ Use `connection.commit(Array)` to commit more than one change at once to a data 
 List of input parameters:
   - `entries`: (required array): the list of entries to insert or update (`{ data }` for insert and `{ id, data }` for updates).
   - `append`: (optional boolean, defaults to false): set to `true` to keep existing remote entries not sent in the updates to be made. When this is set to `false` you will essentially be replacing the whole data source with just the data you are sending.
-  - `delete`: (optional array): the list of entry IDs to remove (when used in combination with `append: true`). Note: if you want to only delete entries then you need to pass an empty `entries` array. 
+  - `delete`: (optional array): the list of entry IDs to remove (when used in combination with `append: true`).
   - `extend` (optional boolean, defaults to false): set to `true` to enable merging the local columns you are sending with any existing columns for the affected data source entries.
   - `runHooks` (optional array) the list of hooks (`insert` or `update`) to run on the data source during the operation.
 
@@ -321,7 +321,6 @@ connection.commit({
   ],
 
   // delete the entry with ID 456
-  // keep the entries array above if you are only deleting records. 
   delete: [456],
 
   // ensure existing entries are unaffected
