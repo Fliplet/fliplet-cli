@@ -254,7 +254,7 @@ Example for an inline provider:
 Supported `full-screen` provider packages:
 
 - `com.fliplet.file-picker` Choose one or multiple files and folders
-- `com.fliplet.email` Configure an email
+- `com.fliplet.email-provider` Configure an email
 
 Example for a `full-screen` provider:
 
