@@ -6,9 +6,17 @@ description: Changelog notes giving a summary of recent significant changes to t
 
 Each week, we provide changelog notes on this page giving a summary of recent significant changes to the documentation. If there haven't been any significant changes in a given week, we don't publish changelog notes.
 
+## August 2022
+
+### August 5th
+
+- New Android framework version 6.0.2 with support to the SDK 31.
+
+---
+
 ## July 2022
 
-### Jul 20th
+### July 20th
 
 - New iOS and Android framework version 6.0.0 released with support for the upcoming localization feature.
 
