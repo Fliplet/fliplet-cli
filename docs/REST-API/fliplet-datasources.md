@@ -11,6 +11,7 @@ The Data Source REST APIs allows you to interact and make any sort of change to 
 - [Data Sources REST APIs](#data-sources-rest-apis)
     - [Table of contents](#table-of-contents)
   - [Authentication](#authentication)
+  - [Authenticating when using security rules](#authenticating-when-using-security-rules)
   - [Access roles](#access-roles)
   - [Entities](#entities)
     - [Data Source](#data-source)
@@ -395,7 +396,7 @@ The following sample request applies the following changes to the data source:
 }
 ```
 
-Response status code: 200 OK (the updated dataset will also be returned in the response)
+Response status code: 200 OK (the entire dataset will also be returned in the response in its latest state)
 
 Notes:
 - Use `append: false` to remove any entry that is not sent with the request (e.g. replace all existing entries)
