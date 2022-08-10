@@ -304,6 +304,7 @@ List of input parameters:
   - `delete`: (optional array): the list of entry IDs to remove (when used in combination with `append: true`).
   - `extend` (optional boolean, defaults to false): set to `true` to enable merging the local columns you are sending with any existing columns for the affected data source entries.
   - `runHooks` (optional array) the list of hooks (`insert` or `update`) to run on the data source during the operation.
+  - `returnEntries` (optional boolean, defaults to true): set to `false` to stop the API from returning all the entries in the data source
 
 The following sample request applies the following changes to the data source:
   - inserts a new entry
