@@ -328,7 +328,7 @@ Fliplet.App.Actions.remove('confirm-booking').then(function () {
 
 ## Testing and debugging an action
 
-Once you have created an app action and added the code you want to run to the onRemoteExecution() function you should test it and see if it running as expected. Note that you cannot use developer tools to view your console.log inside the onRemoteExecution() function as this is running on the server side. Here is the general steps to test an app action: 
+Once you have created an app action and added the code you want to run to the `onRemoteExecution()` function you should test it and see if it running as expected. Note that you cannot use developer tools to view your console.log inside the `onRemoteExecution()` function as this is running on the server side. Here is the general steps to test an app action: 
 
 1. Create the app action 
 2. Add code to `onRemoteExecution()` that you want to run in the app action. 
@@ -350,8 +350,8 @@ Fliplet.Page.onRemoteExecution(function (payload) {
         where: {
             Name: 'John'
         }
-      })
-    })
+      });
+    });
 });
 
 ```
