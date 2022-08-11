@@ -926,7 +926,15 @@ module.exports.setup = (agent) => {
 
 ---
 
-## List of messages logged by the agent
+## Logging
+
+The agent logs all output messages (including debug messages and errors) to a `fliplet-agent.log` file in the home folder of the user running the commands.
+
+For example, a Windows user called "John" will have its log file at `C:\Users\John\fliplet-agent.log`.
+
+Furthermore, when installed as a Windows Service you can monitor the logs through Windows Event Viewer, checking under the "Applications" logs.
+
+### List of messages logged by the agent
 
 Here follows a list of all log messages produced by the agent. **Critical** messages stops the agent and do require manual intervention from the user.
 
