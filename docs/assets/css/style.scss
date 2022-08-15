@@ -4,7 +4,7 @@
 @import "./vendor.theme.css";
 
 $primary: #00abd1;
-$primaryBackground: #36344c;
+$primaryBackground: #000047;
 $lightBackground: #f8f6f7;
 
 $secondaryBackground: #4279ca;
@@ -33,11 +33,6 @@ html, body {
   font-family: 'BASE1';
   -webkit-font-smoothing: antialiased;
   background-color: #f8f6f7;
-}
-
-body {
-  background-size: 10px 10px;
-  background-image: repeating-linear-gradient(45deg, #f3f3f3 0, #f3f3f3 1px, #f8f6f7 0, #f8f6f7 50%);
 }
 
 a {
@@ -1018,6 +1013,8 @@ h2, h3, h4, h5, h6 {
     }
 
     .side {
+      flex: 1;
+
       .links {
         display: flex;
 
