@@ -17,7 +17,8 @@ Use the logs JS API to fetch audit logs for an organization.
 Optional parameters:
 
   - `type`: String or Array of strings ([see list of available types](/Organization-audit-log-types.html))
-  - `appId`: Number (ID)
+  - `appId`: Number (ID) - the ID of the target app to filter logs for
+  - `sessionId`: Number (ID) - this is shown in the "About this app" overlay as "Device ID"
   - `fields`: Array of strings
   - `startDate`: ISODATE String
   - `endDate`: ISODATE String
@@ -44,6 +45,7 @@ Fliplet.Organizations.Logs.get({
   type: ['app.settings.update', 'app.create'],
   fields: ['id', 'type', 'data'],
   appId: 123,
+  sessionId: 456,
   startDate: '2022-01-01',
   endDate: '2022-12-31 23:59:59',
   sort: 'createdAt',
