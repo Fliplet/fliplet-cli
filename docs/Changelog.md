@@ -12,6 +12,8 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 - Updated Chat JS APIs with options to [open a group conversation](/API/components/chat.html#startopen-a-group-conversation-with-one-or-more-people).
 
+---
+
 ## August 2022
 
 ### August 5th
