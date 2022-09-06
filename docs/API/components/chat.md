@@ -6,8 +6,10 @@ These public JS APIs will be automatically available in your screens once a **Ch
 
 Add a `contactEmail` parameter when loading the chat screen to start/open a conversation with a specific contact:
 
-```
-Fliplet.Navigate.screen(chatScreenId, { query: '?contactEmail=john@example.org' });
+```js
+Fliplet.Navigate.screen(chatScreenId, {
+  query: '?contactEmail=john@example.org'
+});
 ```
 
 ---
@@ -16,8 +18,10 @@ Fliplet.Navigate.screen(chatScreenId, { query: '?contactEmail=john@example.org' 
 
 Add a `contactConversation` parameter with the list of **Data Source Entry IDs** of the contacts to include in the group, excluding the current user:
 
-```
-Fliplet.Navigate.screen(chatScreenId, { query: '?contactConversation=1,2,3,4' });
+```js
+Fliplet.Navigate.screen(chatScreenId, {
+  query: '?contactConversation=1,2,3,4'
+});
 ```
 
 ---
