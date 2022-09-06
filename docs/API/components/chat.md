@@ -2,13 +2,25 @@
 
 These public JS APIs will be automatically available in your screens once a **Chat layout** component is used. You can also include these by manually adding the `fliplet-chat` dependency to your app.
 
-## Start/open a conversation with someone
+## Start/open a private conversation with a specific person
 
-Add a `contactEmail` parameter when loading the screen to start/open a conversation with someone.
+Add a `contactEmail` parameter when loading the chat screen to start/open a conversation with a specific contact:
 
 ```
-?contactEmail=john@example.org
+Fliplet.Navigate.screen(chatScreenId, { query: '?contactEmail=john@example.org' });
 ```
+
+---
+
+## Start/open a group conversation with one or more people
+
+Add a `contactConversation` parameter with the list of **Data Source Entry IDs** of the contacts to include in the group, excluding the current user:
+
+```
+Fliplet.Navigate.screen(chatScreenId, { query: '?contactConversation=1,2,3,4' });
+```
+
+---
 
 ## Run a hook before the contacts are rendered
 
