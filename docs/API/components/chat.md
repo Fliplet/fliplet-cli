@@ -2,7 +2,9 @@
 
 These public JS APIs will be automatically available in your screens once a **Chat layout** component is used. You can also include these by manually adding the `fliplet-chat` dependency to your app.
 
-## Start/open a private conversation with a specific person
+### Starting conversations
+
+### Start/open a private conversation with a specific person
 
 Add a `contactEmail` parameter when loading the chat screen to start/open a conversation with a specific contact:
 
@@ -14,7 +16,7 @@ Fliplet.Navigate.screen(chatScreenId, {
 
 ---
 
-## Start/open a group conversation with one or more people
+### Start/open a group conversation with one or more people
 
 Add a `contactConversation` parameter with the list of **Data Source Entry IDs** of the contacts to include in the group, excluding the current user:
 
@@ -26,7 +28,9 @@ Fliplet.Navigate.screen(chatScreenId, {
 
 ---
 
-## Run a hook before the contacts are rendered
+## Hooks
+
+### Run a hook before the contacts are rendered
 
 ```js
 Fliplet.Hooks.on('beforeChatContactsRendering', function onBeforeChatContactsRendering(data) {
@@ -36,7 +40,7 @@ Fliplet.Hooks.on('beforeChatContactsRendering', function onBeforeChatContactsRen
 
 ---
 
-## Overwriting data to be rendered
+### Overwriting data to be rendered
 
 The  `beforeChatContactsRendering` hook explained above can be useful to modify the contacts list data. In the example below we will add the url from files in the File Manager, by comparing their name to the name entered in the data source's column called "Image". The code seems complex because we are also taking into consideration that the data source column can contain urls, base64 strings and file ids:
 
