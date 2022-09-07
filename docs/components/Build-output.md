@@ -26,8 +26,12 @@ Example:
 Data can be retrieved via Javascript using the `Fliplet.Widget.instance` method from `fliplet-core` as follows:
 
 ```js
-Fliplet.Widget.instance('my-component', function (data) {
-    var $el = $(this); // this gets you each component via jQuery
+Fliplet.Widget.instance('my-component', function (data, parent) {
+  const $el = $(this); // this gets you each component via jQuery
+}, {
+  // Set this to true if your component supports being initialized
+  // from a dynamic container
+  supportsDynamicContext: true
 });
 ```
 
