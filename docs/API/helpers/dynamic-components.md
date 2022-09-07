@@ -1,5 +1,7 @@
 # Dynamic components
 
+<p class="warning">This feature is currently available to beta users only.</p>
+
 Helpers can be dropped into what we refer as "dynamic components". These include the **Dynamic container** and **Repeater** components. Such components supports reactive data binding between the source of the data and the helpers you build.
 
 To support reactive data communication between the two, you must add the `supportsDynamicContext: true` property to your helper configuration:

@@ -1,5 +1,7 @@
 # Dynamic Container JS APIs
 
+<p class="warning">This feature is currently available to beta users only.</p>
+
 The following JS APIs are available in a screen once a **Dynamic container** component is dropped into the screen.
 
 ## Retrieve an instance
@@ -24,7 +26,19 @@ Fliplet.DynamicContainer.get('foo')
   });
 ```
 
-The `container` instance variable above makes available the following instance methods.
+---
+
+## Retrieve all instances
+
+Use the `getAll` method of the namespace to get all instances at once:
+
+```js
+Fliplet.DynamicContainer.getAll().then(function (containers) {
+  // Use containers
+});
+```
+
+---
 
 ## Instance methods
 
