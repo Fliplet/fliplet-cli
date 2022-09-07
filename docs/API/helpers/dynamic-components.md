@@ -1,6 +1,6 @@
 # Dynamic components
 
-Helpers can be dropped into what we refer as "dynamic components". These include the Dynamic container and List repeater components. Such components supports reactive data binding between the source of the data and the helpers you build.
+Helpers can be dropped into what we refer as "dynamic components". These include the **Dynamic container** and **Repeater** components. Such components supports reactive data binding between the source of the data and the helpers you build.
 
 To support reactive data communication between the two, you must add the `supportsDynamicContext: true` property to your helper configuration:
 
@@ -75,11 +75,11 @@ Fliplet.Helper({
 
 ---
 
-## List repeater
+## Repeater
 
 ### Data binding
 
-The List repeater component declares its own context under the `row` attribute. The example below demonstrates a helper that renders data from the `Name` column of a Data Source Entry. The helper reads the `row` context data from the List repeater component, which loops through an array of records.
+The repeater component declares its own context under the `row` attribute. The example below demonstrates a helper that renders data from the `Name` column of a Data Source Entry. The helper reads the `row` context data from the repeater component, which loops through an array of records.
 
 ```js
 Fliplet.Helper({

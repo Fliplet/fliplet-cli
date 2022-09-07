@@ -57,6 +57,46 @@ Fliplet.Widget.instance('my-component', console.log);
 
 ---
 
+## Support for dynamic components
+
+1. Add `supportsDynamicContext: true` to the `Fliplet.Widget.instance` options
+2. In the `build.html` file, add `data-widget-name="component-name"` alongside the current `data-component-name-id="{{id}}"`
+
+You can then receive parent context and subscribe for updates to it:
+
+```js
+Fliplet.Widget.instance('primary-button', function(data, parent) {
+  if (parent) {
+    parent.$watch('context', (ctx) => {
+      const value = _.get(ctx, data.label);
+
+      if (value) {
+        $(this).find('input').val(value);
+      }
+    });
+  }
+
+  // ...
+}, { supportsDynamicContext: true });
+```
+
+Likewise, you can use the `Fliplet.initializeChildren()` method if you're building a dynamic component that should initialize children components supporting the dynamic context:
+
+```js
+Fliplet.Widget.instance('dynamic-container', function(data, parent) {
+  const $el = $(this);
+
+  // fetch required data
+  let context;
+
+  Fliplet.Widget.initializeChildren(this, context);
+}, {
+  supportsDynamicContext: true
+});
+```
+
+---
+
 ## Interface of components
 
 Need to read more about the interface? Once you're familiar with the above documentation on the component output, have a read to the previous section which covers the output of components interfaces.
