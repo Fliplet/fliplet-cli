@@ -13,6 +13,8 @@ Fliplet.Helper({
  icon: String,
  supportUrl: String,
  data: Object,
+ supportsDynamicContext: Boolean,
+ watch: Array,
  category: {
    name: String,
    before: String,
@@ -61,6 +63,12 @@ Fliplet.Helper({
       <td><code>String</code></td>
       <td>optional</td>
       <td>The display name of the helper to show in the components list of Fliplet Studio.</td>
+    </tr>
+    <tr>
+      <td><code>supportsDynamicContext</code></td>
+      <td><code>Boolean</code></td>
+      <td>optional</td>
+      <td>Enable support for reactive data when used in a dynamic container component.</td>
     </tr>
     <tr>
       <td><code>icon</code></td>
@@ -115,6 +123,12 @@ Fliplet.Helper({
       <td><code>String</code></td>
       <td>optional</td>
       <td>Support URL for the component. Users can access this via the configuration interface in a "?" icon.</td>
+    </tr>
+    <tr>
+      <td><code>watch</code></td>
+      <td><code>Array</code></td>
+      <td>optional</td>
+      <td>The list of properties to add watchers for, when used in a dynamic container component. The most common value for this field is <code>['context']</code>.</td>
     </tr>
     <tr>
       <td><code>data</code></td>
