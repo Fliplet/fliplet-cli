@@ -93,3 +93,25 @@ Fliplet.Hooks.on('containerDataRetrieved', function(options) {
 ```
 
 ---
+
+### containerBeforeRetrieveData
+
+Use the `containerBeforeRetrieveData` hook to mutate data before it gets sent to the Data Source JS APIs for querying:
+
+```js
+Fliplet.Hooks.on('containerBeforeRetrieveData', function(options) {
+  // options contains "container" and "data"
+
+  // e.g. mutate the data
+  options.data.where = {
+    Office: 'London';
+  };
+
+  // change limit
+  options.data.limit = 10;
+
+  // Return a promise if this callback should be async.
+});
+```
+
+---
