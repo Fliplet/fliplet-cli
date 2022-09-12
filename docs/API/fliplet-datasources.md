@@ -13,7 +13,8 @@ The `fliplet-datasources` package contains the following namespaces:
       - [Connect to a data source by Name](#connect-to-a-data-source-by-name)
     - [Connection instance methods](#connection-instance-methods)
       - [Fetch all records from a data source](#fetch-all-records-from-a-data-source)
-      - [Find a specific record](#find-a-specific-record)
+      - [Fetch records with a pagination cursor](#fetch-records-with-a-pagination-cursor)
+      - [Find specific records](#find-specific-records)
       - [Find a record by its ID](#find-a-record-by-its-id)
       - [Filter the columns returned when finding records](#filter-the-columns-returned-when-finding-records)
       - [Run aggregation queries](#run-aggregation-queries)
@@ -118,6 +119,7 @@ Fliplet.DataSources.connectByName("Attendees").then(function (connection) {
 
 ### Fetch all records from a data source
 
+Use the `find` method to fetch all records from a Data source
 ```js
 // use "find" with no options to get all entries
 connection.find().then(function (records) {
@@ -145,7 +147,67 @@ Fliplet.DataSources.connect(123).then(function (connection) {
 });
 ```
 
-### Find a specific record
+### Fetch records with a pagination cursor
+
+A more powerful alternative to the `find` method is `findWithCursor`, which creates an array cursor with methods to navigate between pages of the dataset. This is useful if you want to add pagination to a Data Source. Start by creating a cursor with the `findWithCursor` method:
+
+```js
+Fliplet.DataSources.connect(123).then(function (connection) {
+  return connection.findWithCursor({ limit: 20 }); // 20 records per page
+}).then(function (cursor) {
+
+});
+```
+
+The cursor is an array with the results. It also supports the following properties, which can be overridden at any time:
+
+- `limit`: The page size (number of records per page).
+- `offset`: The current offset of records from the first page. This is 0 while the first page.
+- `currentPage`: The current page number.
+- `isFirstPage` Whether the current page is the first one of the dataset.
+- `isLastPage`: Whether the current page is the last one of the dataset.
+- `query`: The options used for the first argument of the `findWithCursor` method.
+
+The cursor also exports the following methods:
+
+- `next()`: Moves the cursor to the next page and returns it.
+- `prev()`: Moves the cursor to the previous page and returns it.
+- `setPage(n)`: Sets the cursor to a specific page number and returns it.
+- `update`: Updates the dataset for the current page (returns a `Promise`)
+
+Here's a full example on how you would typically use the cursor:
+
+```js
+Fliplet.DataSources.connect(123).then(function (connection) {
+  return connection.findWithCursor({
+    where: { Office: 'London' }, // find specific entries
+    limit: 20                    // limit to 20 records per page
+  });
+}).then(function (cursor) {
+  displayData(cursor);
+
+  // Moves the cursor to the first page, then fetch and display the new data
+  $('#prev').click((e) => cursor.prev().update().then(displayData));
+
+  // Moves the cursor to the next page, then fetch and display the new data
+  $('#next').click((e) => cursor.next().update().then(displayData));
+});
+
+function displayData(cursor) {
+  cursor.forEach((entry) => {
+    // Display data
+  });
+
+  if (cursor.isFirstPage) {
+    // Disable "previous" button
+  } else if (cursor.isLastPage) {
+    // Disable "next" button
+  }
+}
+```
+
+
+### Find specific records
 
 The `findOne` method allows you to look for up to one record, limiting the amount of entries returned if you're only looking for one specific entry.
 
@@ -166,7 +228,7 @@ The following operators and values are optimized to perform better with Fliplet'
   - Operators: `$or`, `$and`, `$gte`, `$lte`, `$gt`, `$lt`, `$eq`
   - Values: strings and numbers
 
-A few examples to get you started:
+All above operators are supported on `findOne` as well as `find`:
 
 ```js
 // Find records where column "sum" is greater than 10 and column "name"

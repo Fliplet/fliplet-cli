@@ -63,15 +63,18 @@ You can also return a `Promise` if you're loading the data asynchronously. In th
 Fliplet.DynamicContainer.get().then(function (container) {
   container.load(function () {
     return Fliplet.DataSources.connect(123).then(function (connection) {
-      return connection.find({
-        where: { Office: 'London' }
+      return connection.findWithCursor({
+        where: { Office: 'London' },
+        limit: 10
       });
     });
   });
 });
 ```
 
-For more details, check the JS API documentation for the `Fliplet.DataSources` namespace.
+Note that we used the [findWithCursor](/API/fliplet-datasources.html#fetch-all-records-from-a-data-source) method instead of `find` to let the system manage pagination when the data is displayed in a repeated list.
+
+For more details, check the JS API documentation for the [findWithCursor](/API/fliplet-datasources.html#fetch-all-records-from-a-data-source) method.
 
 ---
 
