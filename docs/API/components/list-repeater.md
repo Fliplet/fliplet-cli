@@ -47,6 +47,23 @@ Fliplet.ListRepeater.getAll().then(function (repeaters) {
 
 ---
 
+## Add infinite scroll to a list
+
+Here's a simple example on how you can add infinite scroll to a list using a dynamic container with a limit set:
+
+```js
+// Attach a jQuery event on window scroll
+$(window).scroll(function() {
+  // Check if the user is approaching the end of the screen
+  if ($(window).scrollTop() + $(window).height() >= ($(document).height() - 200)) {
+    Fliplet.DynamicContainer.get().then(function (container) {
+      // Move to the next page of the dataset and keep existing entries in the cursor
+      container.context.next().update({ keepExisting: true });
+    });
+  }
+});
+```
+
 ## Hooks
 
 No hooks are available for this component.
