@@ -93,6 +93,18 @@ Fliplet.App.Logs.get({
 
 ---
 
+## Tokens
+
+### Get the tokens for an app
+
+```js
+Fliplet.App.Tokens.get(options).then(function (tokens) {
+  // tokens<Object>
+});
+```
+
+---
+
 ### Create a log for an app
 
 ```js
