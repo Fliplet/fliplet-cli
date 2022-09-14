@@ -105,6 +105,18 @@ Fliplet.App.Logs.create({
 
 ---
 
+## Tokens
+
+### Get the Tokens for an app
+
+```js
+Fliplet.App.Tokens.get(options).then(function (tokens) {
+  // tokens<Array>
+});
+```
+
+---
+
 ## Preview mode
 
 ### Check if your app is running in preview mode
