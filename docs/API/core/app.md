@@ -111,7 +111,7 @@ Fliplet.App.Logs.create({
 
 ```js
 Fliplet.App.Tokens.get(options).then(function (tokens) {
-  // tokens<Object>
+  // tokens<Array>
 });
 ```
 
