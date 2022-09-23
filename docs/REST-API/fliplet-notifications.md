@@ -148,6 +148,53 @@ You can also target many people at once using any [Sift.js](https://github.com/F
 ```
 
 ---
+### Create Batch notification
+
+#### `POST v1/apps/:id/notifications/batch`
+
+Required parameters:
+- **notifications** (array of json object)
+<!-- - **data** (json object)
+
+Optional parameters:
+- **scope** (array of json objects or single json object)
+- **status** (string, defaults to `draft`. Use `published` to make the notification visible to live apps)
+- **orderAt** (number, defaults to the current time)
+- **pushNotification** (json object containing payload, delayUntilTimestamp) -->
+
+Sample request body:
+
+```json
+{
+"notifications":[{
+  "data": {
+    "title": "New article",
+    "message": "John posted an article."
+  },
+  "scope": { "Email": "nick@example.org" },
+  "pushNotification": {
+    "payload": {
+      "title": "New article",
+      "body": "John has posted a new article on the news page. Go check it out!"
+    }
+  }
+},{
+  "data": {
+    "title": "Next article",
+    "message": "John posted new article."
+  },
+  "scope": { "Email": "nick@example.org" },
+  "pushNotification": {
+    "payload": {
+      "title": "Next article",
+      "body": "John has posted a next article on the news page. Go check it out!"
+    }
+  }
+}]
+}
+```
+
+---
 
 ### Update a notification
 
