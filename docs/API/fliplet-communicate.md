@@ -3,10 +3,10 @@
 The `fliplet-communicate` package contains the namespace `Fliplet.Communicate` and a set of helper methods for sending communications from the app.
 
   - [`.sendEmail()`](#send-an-email) - Sends an HTML formatted email
-  - [`.sendBatchEmail()`](#send-batch-emails) - Sends batch of HTML formatted emails
+  - [`.batchSendEmail()`](#send-batch-emails) - Sends batch of HTML formatted emails
   - [`.composeEmail()`](#compose-an-email) - Composes an email on the device
   - [`.sendSMS()`](#send-an-sms) - Sends an SMS message
-  - [`.sendBatchSMS()`](#send-batch-sms) - Sends batch of SMS message
+  - [`.batchSendSMS()`](#send-batch-sms) - Sends batch of SMS messages
   - [`.shareURL()`](#share-a-url) - Share a URL
   - [`.sendPushNotification()`](#send-push-notifications) - Send push notifications
 
@@ -86,7 +86,7 @@ Fliplet.Communicate.sendEmail(_.extend({}, options));
 
 ---
 
-## Send batch email
+## Send batch emails
 
 Use our APIs to send batch of emails to one or more recipients. Note that this feature is rate limited and improper use will result in your account being flagged for suspension.
 
@@ -103,15 +103,12 @@ var emails = [
 ]
 ```
 
-Available options:
-
-  - `to`: array of recipients for "to", "cc" or "bcc"
-  - `subject`: subject of the email
-  - `from_name`: the sender's name
-  - `html`: HTML string for the email body
-  - `headers`: "key:value" object with headers to add to the email (most headers are allowed). We recommend using `X-*` prefixes to any custom header, e.g. `X-My-Custom-Header: "value"`
-  - `attachments`: array of attachments with `type` (the MIME type), `content` (String or Buffer), `name` (the filename including extension) and optional `encoding` (base64, hex, binary, etc)
-  - `required`: Set to `true` to cache the request if the device is offline. When the device comes online, the cached requests will be sent. Default: `false`
+  - **options** (Object) A map of options to pass to the function. The following properties found are supported:
+    - **to** (Array) array of recipients for "to", "cc" or "bcc"
+    - **subject** (String) subject of the email
+    - **html** (String) HTML email body
+    - **body** (String) Plaintext email body. Note: If **html** and **body** are both set, **html** will be used.
+  - **data** (Array) An optional array of Base64 strings for the files to be attached. This only works on native devices. Each Base64 string should start with the format `data:%mimeType%;base64,`, e.g. `data:text/csv;base64,`, `data:image/png;base64,` etc.
 
 ```js
 var emails = [{
@@ -169,7 +166,7 @@ var emails = [{
 ];
 
 // Returns a promise
-Fliplet.Communicate.sendBatchEmail(emails);
+Fliplet.Communicate.batchSendEmail(emails);
 ```
 
 ---
@@ -247,7 +244,7 @@ Let us know if you require to use another SMS provider and we'll check whether w
 
 Send batch of SMS with ```sms``` array of object with ```{provider, data, options}```.
 
-### Default provider
+### Default
 
 ```js
 var sms = [{
@@ -262,10 +259,10 @@ var sms = [{
   }
 }];
 
-Fliplet.Communicate.sendBatchSMS(sms);
+Fliplet.Communicate.batchSendSMS(sms);
 ```
 
-### Twilio
+### With Twilio provider
 
 ```js
 var sms = [{
@@ -293,7 +290,7 @@ var sms = [{
   }
 }];
 
-Fliplet.Communicate.sendBatchSMS(sms);
+Fliplet.Communicate.batchSendSMS(sms);
 ```
 
 Let us know if you require to use another SMS provider and we'll check whether we can integrate it on our system.

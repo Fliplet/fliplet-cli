@@ -1,4 +1,4 @@
-# communicate REST APIs
+# Communicate REST APIs
 
 The communicate REST APIs allows you to interact and make any sort of change to your app's communicate.
 
@@ -24,56 +24,63 @@ Use our APIs to send an email to one or more recipients. Note that this feature 
 
 #### `POST;/v1/communicate/email`
 
+Required parameters:
+- **to** (array of recipients for "to", "cc" or "bcc")
+
+Optional parameters:
+- **subject** (string, subject of the email)
+- **from_name** (string, the sender's name)
+- **html** (string, HTML string for the email body)
+- **headers** (json object containing "key:value" object with headers to add to the email (most headers are allowed). We recommend using `X-*` prefixes to any custom header, e.g. `X-My-Custom-Header: "value"`)
+- **attachments** (array of attachments with `type` (the MIME type), `content` (String or Buffer), `name` (the filename including extension) and optional `encoding` (base64, hex, binary, etc))
+- **required** (Set to `true` to cache the request if the device is offline. When the device comes online, the cached requests will be sent. Default: `false`)
+
 Sample request body:
 
 ```json
 
-{
-  "data": {
-    "title": "New article",
-    "message": "John posted an article."
-  },
-  "scope": { "Email": "nick@example.org" },
-  "pushNotification": {
-    "payload": {
-      "title": "New article",
-      "body": "John has posted a new article on the news page. Go check it out!"
-    }
+ {
+     "to": [
+          {
+              "email": "john@example.com",
+              "type": "to"
+          }
+      ],
+      "html": "<p>Hi John 1</p>",
+      "subject": "My subject",
+      "from_name": "Example Name",
+      "headers": {
+        "Reply-To": "message.reply@example.com"
+      },
+      "attachments": [],
+      "images": []
   }
-}
-```
-
-You can also target many people at once using any [Sift.js](https://github.com/Fliplet/sift.js) operator for the scope, e.g.:
-
-```json
-{
-  "data": {
-    "title": "Greetings",
-    "message": "Hi John and Nick!."
-  },
-  "scope": {
-    "Email": {
-      "$in": ["nick@example.org", "john@example.org"]
-    }
-  }
-}
 ```
 
 ---
 
-### send Batch Emails
+### send batch Emails
 
 Use our APIs to send batch of email to one or more recipients. Note that this feature is rate limited and improper use will result in your account being flagged for suspension.You need to pass emails with array of object as shown below.
 
-#### ``POST;/v1/communicate/email/batch`
+#### `POST;/v1/communicate/email/batch`
 
-Required parameters:
+Parameters:
 - **emails** (array of json object)
+    - Parameters for each object inside **emails** array
+        - Required parameters:
+            - **to** (array of recipients for "to", "cc" or "bcc")
+        - Optional parameters:
+            - **subject** (string, subject of the email)
+            - **from_name** (string, the sender's name)
+            - **html** (string, HTML string for the email body)
+            - **headers** (json object containing "key:value" object with headers to add to the email (most headers are allowed). We recommend using `X-*` prefixes to any custom header, e.g. `X-My-Custom-Header: "value"`)
+            - **attachments** (array of attachments with `type` (the MIME type), `content` (String or Buffer), `name` (the filename including extension) and optional `encoding` (base64, hex, binary, etc))
+            - **required** (Set to `true` to cache the request if the device is offline. When the device comes online, the cached requests will be sent. Default: `false`)
 
 Sample request body:
 
 ```json
-
 {
     "emails": [
         {
@@ -110,24 +117,6 @@ Sample request body:
         }
     ]
 }
-
-```
-
-You can also target many people at once using any [Sift.js](https://github.com/Fliplet/sift.js) operator for the scope, e.g.:
-
-```json
-{
-  "data": {
-    "title": "Greetings",
-    "message": "Hi John and Nick!."
-  },
-  "scope": {
-    "Email": {
-      "$in": ["nick@example.org", "john@example.org"]
-    }
-  }
-}
-
 ```
 
 ---
@@ -195,5 +184,3 @@ Sample request body:
   }
 }]
 }
-
----
