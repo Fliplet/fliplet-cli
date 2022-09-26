@@ -1,8 +1,8 @@
 # Communicate REST APIs
 
-The communicate REST APIs allows you to interact and make any sort of change to your app's communicate.
+The Communicate REST APIs allows you to interact and make any sort of change to your app's communicate.
 
-<p class="warning"><strong>Note:</strong> This RESTful API is intended to be used by 3rd party software such as external integrations. <strong>If you're using this in a Fliplet App, please use the <a href="/API/fliplet-communicate.html">communicate JS APIs</a> instead.</strong></p>
+<p class="warning"><strong>Note:</strong> This RESTful API is intended to be used by 3rd party software such as external integrations. <strong>If you're using this in a Fliplet App, please use the <a href="/API/fliplet-communicate.html">Communicate JS APIs</a> instead.</strong></p>
 
 ## Authentication
 
@@ -59,7 +59,7 @@ Sample request body:
 
 ---
 
-### send batch Emails
+### Send batch emails
 
 Use our APIs to send batch of email to one or more recipients. Note that this feature is rate limited and improper use will result in your account being flagged for suspension.You need to pass emails with array of object as shown below.
 
@@ -146,7 +146,7 @@ Sample request body:
 
 ---
 
-### send Batch SMS
+### send batch SMS
 
 Use our APIs to send batch of SMS to one or more recipients. Note that this feature is rate limited and improper use will result in your account being flagged for suspension.You need to pass emails with array of object as shown below.
 

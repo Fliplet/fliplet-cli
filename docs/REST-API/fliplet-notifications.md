@@ -148,7 +148,7 @@ You can also target many people at once using any [Sift.js](https://github.com/F
 ```
 
 ---
-### Create Batch notification
+### Create batch notifications
 
 #### `POST v1/apps/:id/notifications/batch`
 
