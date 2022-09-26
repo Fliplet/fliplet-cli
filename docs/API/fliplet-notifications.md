@@ -247,74 +247,74 @@ instance.insert({
 
 You can send batch of **push notifications** by specifying its type as `push`. This type of notification won't show up in the user's notifications inbox component.
 
-You need to pass ```notifications``` array of objects parameter as shown below.
+You need to pass `notifications` array of objects parameter as shown below.
 
 ```js
 // send batch of push notifications
 instance.batchInsert({
-  notifications:[
+  notifications: [
     {
-  type: 'push',
-  pushNotification: {
-    payload: {
-      title: 'Title of the push notification',
-      body: 'Message of the push notification',
-      // Optionally set the notification badge number to a fixed number.
-      // Omit this property to have the system automatically increment the
-      // badge count for each user and device receiving the push notification.
-      badge: 1,
-      custom: {
-        // Add a link to the push notification
-        customData: {
-          action: 'screen',
-          page: 123,
-          query: '?weather=sunny'
-        }
+      type: 'push',
+      pushNotification: {
+        payload: {
+          title: 'Title of the push notification',
+          body: 'Message of the push notification',
+          // Optionally set the notification badge number to a fixed number.
+          // Omit this property to have the system automatically increment the
+          // badge count for each user and device receiving the push notification.
+          badge: 1,
+          custom: {
+            // Add a link to the push notification
+            customData: {
+              action: 'screen',
+              page: 123,
+              query: '?weather=sunny'
+            }
+          }
+        },
+
+        // optionally schedule the push notification
+        // to be sent in 30 minutes
+        delayUntilTimestamp: moment().add(30, 'minute').unix()
+      },
+      // Optional scope: use a filter based on the connected Data Source
+      // fro your contacts (if your app has a login component)
+      scope: {
+        Email: 'john@example.org'
       }
     },
+    {
+      type: 'push',
+      pushNotification: {
+        payload: {
+          title: 'Title of the push notification',
+          body: 'Message of the push notification',
+          // Optionally set the notification badge number to a fixed number.
+          // Omit this property to have the system automatically increment the
+          // badge count for each user and device receiving the push notification.
+          badge: 1,
+          custom: {
+            // Add a link to the push notification
+            customData: {
+              action: 'screen',
+              page: 123,
+              query: '?weather=sunny'
+            }
+          }
+        },
 
-    // optionally schedule the push notification
-    // to be sent in 30 minutes
-    delayUntilTimestamp: moment().add(30, 'minute').unix()
-  },
-  // Optional scope: use a filter based on the connected Data Source
-  // fro your contacts (if your app has a login component)
-  scope: {
-    Email: 'john@example.org'
-  }
-},
-{
-  type: 'push',
-  pushNotification: {
-    payload: {
-      title: 'Title of the push notification',
-      body: 'Message of the push notification',
-      // Optionally set the notification badge number to a fixed number.
-      // Omit this property to have the system automatically increment the
-      // badge count for each user and device receiving the push notification.
-      badge: 1,
-      custom: {
-        // Add a link to the push notification
-        customData: {
-          action: 'screen',
-          page: 123,
-          query: '?weather=sunny'
-        }
+        // optionally schedule the push notification
+        // to be sent in 30 minutes
+        delayUntilTimestamp: moment().add(30, 'minute').unix()
+      },
+      // Optional scope: use a filter based on the connected Data Source
+      // fro your contacts (if your app has a login component)
+      scope: {
+        Email: 'john@example.org'
       }
-    },
-
-    // optionally schedule the push notification
-    // to be sent in 30 minutes
-    delayUntilTimestamp: moment().add(30, 'minute').unix()
-  },
-  // Optional scope: use a filter based on the connected Data Source
-  // fro your contacts (if your app has a login component)
-  scope: {
-    Email: 'john@example.org'
-  }
-}
-]
-})
+    }
+  ]
+});
 ```
 
 ### Update a notification

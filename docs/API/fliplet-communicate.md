@@ -90,17 +90,14 @@ Fliplet.Communicate.sendEmail(_.extend({}, options));
 
 Use our APIs to send batch of emails to one or more recipients. Note that this feature is rate limited and improper use will result in your account being flagged for suspension.
 
-There will ```emails``` array of object with ```{ options, data }``` template compilation.
+There will `emails` array of object with `{ options, data }` template compilation.
 
 ```js
 var emails = [
-  {options1,data1},
-  {options2,data2},
-  .
-  .
-  .
-  {optionN,dataN}
-]
+  { options1, data1 },
+  { options2, data2 },
+  { optionN, dataN }
+];
 ```
 
   - **options** (Object) A map of options to pass to the function. The following properties found are supported:
@@ -112,58 +109,28 @@ var emails = [
 
 ```js
 var emails = [{
-  to: [
-    { email: "john@example.org", name: "John", type: "to" },
-    { email: "jane@example.org", name: "Jane", type: "cc" }
-  ],
-  html: "<p>Some HTML content</p>",
-  subject: "My subject",
-  from_name: "Example Name",
-  headers: {
-    "Reply-To": "message.reply@example.com"
+  options: {
+    to: [
+      { email: 'john@example.org', name: 'John', type: 'to' },
+      { email: 'jane@example.org', name: 'Jane', type: 'cc' }
+    ],
+    html: '<p>Some HTML content</p>',
+    subject: 'My subject',
+    from_name: 'Example Name'
   },
-  attachments: [
-    {
-      type: "text/plain",
-      name: "myfile.txt",
-      content: "Hello World"
-    },
-    {
-      type: "image/png",
-      name: "test.png",
-      encoding: 'base64',
-      // You can use our JS API to encode your content string to base64
-      content: Fliplet.Encode.base64("hello world")
-    }
-  ]
-},
-{
-  to: [
-    { email: "john@example.org", name: "John", type: "to" },
-    { email: "jane@example.org", name: "Jane", type: "cc" }
-  ],
-  html: "<p>Some HTML content</p>",
-  subject: "My subject",
-  from_name: "Example Name",
-  headers: {
-    "Reply-To": "message.reply@example.com"
+  data: []
+}, {
+  options: {
+    to: [
+      { email: 'jack@example.org', name: 'Jack', type: 'to' },
+      { email: 'jimmy@example.org', name: 'Jimmy', type: 'cc' }
+    ],
+    html: '<p>Some HTML content</p>',
+    subject: 'My subject',
+    from_name: 'Example Name'
   },
-  attachments: [
-    {
-      type: "text/plain",
-      name: "myfile.txt",
-      content: "Hello World"
-    },
-    {
-      type: "image/png",
-      name: "test.png",
-      encoding: 'base64',
-      // You can use our JS API to encode your content string to base64
-      content: Fliplet.Encode.base64("hello world")
-    }
-  ]
-}
-];
+  data: []
+}];
 
 // Returns a promise
 Fliplet.Communicate.batchSendEmail(emails);
@@ -242,7 +209,7 @@ Let us know if you require to use another SMS provider and we'll check whether w
 
 ## Send batch SMS
 
-Send batch of SMS with ```sms``` array of object with ```{provider, data, options}```.
+Send batch of SMS with `sms` array of object with `{provider, data, options}`.
 
 ### Default
 
@@ -273,8 +240,8 @@ var sms = [{
     body: "Hey!"
   },
   options: {
-    twilio_sid: 'AC81caaa94b3b84bb7ba9c3cd96bcb152a', // Your Account SID from www.twilio.com/console
-    twilio_auth_token: 'AUTH_TOKEN';                  // Your Auth Token from www.twilio.com/console
+    twilio_sid: "AC81caaa94b3b84bb7ba9c3cd96bcb152a", // Your Account SID from www.twilio.com
+    twilio_auth_token: "AUTH_TOKEN" // Your Auth Token from www.twilio.com
   }
 },
 {
@@ -285,8 +252,8 @@ var sms = [{
     body: "Hey!"
   },
   options: {
-    twilio_sid: 'AC81caaa94b3b84bb7ba9c3cd96bcb152a', // Your Account SID from www.twilio.com/console
-    twilio_auth_token: 'AUTH_TOKEN';                  // Your Auth Token from www.twilio.com/console
+    twilio_sid: "AC81caaa94b3b84bb7ba9c3cd96bcb152a", // Your Account SID from www.twilio.com
+    twilio_auth_token: "AUTH_TOKEN" // Your Auth Token from www.twilio.com
   }
 }];
 
