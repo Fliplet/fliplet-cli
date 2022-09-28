@@ -13,7 +13,7 @@ We regularly update our framework to support new features. If you have an older 
   <div class="bl two">
     <div>
       <h4>Android</h4>
-      <p>Latest stable release: 6.0.2</p>
+      <p>Latest stable release: 6.0.3</p>
     </div>
   </div>
 </section>
@@ -22,6 +22,10 @@ We regularly update our framework to support new features. If you have an older 
 ---
 
 ## Supported versions (4.6+)
+
+### Version 6.0.3 (October, 2022)
+
+- **Android**: Security updates.
 
 ### Version 6.0.2 (Aug 5, 2022)
 

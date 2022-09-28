@@ -6,6 +6,14 @@ description: Changelog notes giving a summary of recent significant changes to t
 
 Each week, we provide changelog notes on this page giving a summary of recent significant changes to the documentation. If there haven't been any significant changes in a given week, we don't publish changelog notes.
 
+## October 2022
+
+### October 5th
+
+- New Android framework version 6.0.3 with security updates.
+
+---
+
 ## September 2022
 
 ## September 6th
