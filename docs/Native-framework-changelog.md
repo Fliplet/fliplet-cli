@@ -14,7 +14,7 @@ We regularly update our framework to support new features. If you have an older 
   <div class="bl two">
     <div>
       <h4>Android</h4>
-      <p>Current release: <u>6.0.3</u></p>
+      <p>Current release: <u>6.0.2</u></p>
       <p>Target API level: 31</p>
     </div>
   </div>
@@ -25,7 +25,7 @@ We regularly update our framework to support new features. If you have an older 
 
 ## Supported versions (4.6+)
 
-### Version 6.0.3 (October, 2022)
+### Version 6.0.3 (October, 2022) (beta channel)
 
 - **Android**: Security updates.
 
