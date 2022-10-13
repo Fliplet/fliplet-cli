@@ -243,11 +243,7 @@ instance.insert({
 })
 ```
 
-### Send batch of push notifications
-
-You can send batch of **push notifications** by specifying its type as `push`. This type of notification won't show up in the user's notifications inbox component.
-
-You need to pass `notifications` array of objects parameter as shown below.
+### Send multiple notifications at once (batch insert)
 
 ```js
 // send batch of push notifications
