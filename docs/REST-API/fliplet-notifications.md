@@ -149,20 +149,21 @@ You can also target many people at once using any [Sift.js](https://github.com/F
 ```
 
 ---
-### Create batch notifications
+### Create multiple notifications (batch)
 
 #### `POST v1/apps/:id/notifications/batch`
 
 Parameters:
-  - **notifications** (array of json object)
-    - Parameters for each object inside **notifications** array
-          - Required parameters:
-            - **data** (json object)
-          - Optional parameters:
-            - **scope** (array of json objects or single json object)
-            - **status** (string, defaults to `draft`. Use `published` to make the notification visible to live apps)
-            - **orderAt** (number, defaults to the current time)
-            - **pushNotification** (json object containing payload, delayUntilTimestamp)
+- **notifications** (array of json object)
+
+Parameters for each object inside **notifications** array:
+- **data** (json object)
+
+Optional parameters:
+- **scope** (array of json objects or single json object)
+- **status** (string, defaults to `draft`. Use `published` to make the notification visible to live apps)
+- **orderAt** (number, defaults to the current time)
+- **pushNotification** (json object containing payload, delayUntilTimestamp)
 
 Sample request body:
 
