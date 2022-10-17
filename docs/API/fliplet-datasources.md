@@ -243,6 +243,41 @@ connection.find({ attributes: [] }).then(function (records) {
 });
 ```
 
+### Sort / order the results
+
+Use the `order` array of arrays to specify the sorting order for the returned entries.
+
+You can order by:
+- Fliplet columns: `id`, `order`, `createdAt`, `deletedAt`, `updatedAt`
+- Entry columns, using the `data.` prefix (e.g. `data.Email`)
+
+The order direction is either `ASC` for ascending ordering or `DESC` for descending ordering.
+
+The `order` array accepts a list of arrays, where each includes the column and sorting order:
+
+```js
+// Sort records by their created time (first records are newer)
+connection.find({
+  where: { Office: 'London' },
+  order: [
+    ['createdAt', 'DESC']
+  ]
+}).then(function (records) {
+  // ...
+});
+
+// Sort records alphabetically by their last name first and then first name
+connection.find({
+  where: { Office: 'London' },
+  order: [
+    ['data.LastName', 'ASC'],
+    ['data.FirstName', 'ASC']
+  ]
+}).then(function (records) {
+  // ...
+});
+```
+
 ### Run aggregation queries
 
 You can use the built-in [Mingo](https://github.com/kofrasa/mingo) library to run complex aggregation queries or projections on top of Data Sources. Mingo operations can be provided to the `find` method via the `aggregate` attribute:
