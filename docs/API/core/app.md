@@ -139,7 +139,7 @@ Fliplet.App.Orientation.lock(orientation)
 
 * `orientation` (String) `portrait` or `landscape`. If called with no parameters, the app orientation from the settings will be used.
 
-<p class="info">This feature is only available on <strong>native apps</strong>. Web apps will simply ignore this setting.</p>
+<p class="warning">This feature is only available on <strong>native apps</strong>. Web apps will simply ignore this setting.</p>
 
 ---
 
@@ -151,7 +151,7 @@ Fliplet.App.Orientation.unlock()
 
 The orientation unlock is temporary. When the following events occur, the orientation will be re-locked according to the original app setting, which would always be **portrait** on **native apps only**.
 
-<p class="info">This feature is only available on <strong>native apps</strong>. Web apps will simply ignore this setting.</p>
+<p class="warning">This feature is only available on <strong>native apps</strong>. Web apps will simply ignore this setting.</p>
 
 1. App orientation is locked when exiting from the in-app browser.
 1. App orientation is locked when exiting from a full screen video playback.
