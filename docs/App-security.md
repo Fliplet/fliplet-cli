@@ -116,7 +116,7 @@ More docs on the `ipRangeCheck` function can be found [here](https://github.com/
 
 ---
 
-### Session expiration
+## Session expiration
 
 When your app is using the login component connected to a Data Source, you can enable two optional features to improve security for your users:
 

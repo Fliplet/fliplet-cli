@@ -8,6 +8,10 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## October 2022
 
+### October 25th
+
+- Documentation added for [session expiration](https://developers.fliplet.com/App-security.html#session-expiration).
+
 ### October 5th
 
 - New Android framework version 6.0.3 with security updates.
