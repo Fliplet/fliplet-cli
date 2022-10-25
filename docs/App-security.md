@@ -50,7 +50,46 @@ if (client) {
 
 ---
 
-### Whitelist or Blacklist access by IP address
+### Session expiration
+
+When your app is using the login component connected to a Data Source, you can enable two optional features to improve security for your users:
+
+- **Require the user to reauthenticate after a certain time**
+  - The user will be logged out after the defined period of time (in minutes) has past since the login date.
+  - Configure this via the `sessionMaxDurationMinutes` option as per example below.
+- **Log the user out when the app has not been used for a period of time**
+  - The user will be logged out when the session has been idle for the defined period of time (in minutes) since the last recorded activity
+  - Configure this via the `sessionIdleTimeoutMinutes` option as per example below.
+
+These option must be set in the **Data Source definition JSON** via the "App data" section of Fliplet Studio, **in the settings of your login Data Source**.
+
+The following setup will ensure a user is logged out 2 hours past the login date:
+
+```json
+"sessionMaxDurationMinutes": 120
+```
+
+Likewise, this setup will automatically log the user out when the app is inactive for 30 minutes:
+
+```json
+"sessionIdleTimeoutMinutes": 30
+```
+
+The two options can also be used together:
+
+```json
+// Sample extract Data Source definition JSON
+{
+  "sessionMaxDurationMinutes": 120,
+  "sessionIdleTimeoutMinutes": 30,
+
+  // other definition settings ...
+}
+```
+
+---
+
+## Whitelist or Blacklist access by IP address
 
 Using the `ipRangeCheck` function you can write a custom rule to check if the user's IP address is within a range:
 
