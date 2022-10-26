@@ -162,7 +162,7 @@ Fliplet.DataSources.connect(123).then(function (connection) {
 The cursor is an array with the results. It also supports the following properties, which can be overridden at any time:
 
 - `limit`: The page size (number of records per page).
-- `offset`: The current offset of records from the first page. This is 0 while the first page.
+- `offset`: The current offset of records from the first page. This is 0 for the first page.
 - `currentPage`: The current page number.
 - `isFirstPage` Whether the current page is the first one of the dataset.
 - `isLastPage`: Whether the current page is the last one of the dataset.
