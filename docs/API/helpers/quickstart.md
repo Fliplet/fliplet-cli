@@ -25,9 +25,9 @@ Fliplet.Helper({
       { name: 'content', type: 'text', label: 'Content' }
     ]
   },
-  // Enable support for reactive data when used
+  // Change this to "true" to enable support for reactive data when used
   // in a dynamic container or list repeater component.
-  supportsDynamicContext: true
+  supportsDynamicContext: false
 });
 ```
 
