@@ -31,7 +31,10 @@ Usage: fliplet [options] [command]
 
 Commands:
 
-  create-widget [name]  Create a new component.
+  create-widget [package] [name]          Create a new component using the standard jQuery boilerplate.
+  create-widget [package] [name] --vue    Create a new component using the advanced Vue.js-based boilerplate.
+  create-widget [package] [name] --helper Create a new component using the helper framework boilerplate.
+
   create-theme [name]   Create a new theme.
   create-menu [name]    Create a new menu.
   run                   Run the current component or theme for development.
