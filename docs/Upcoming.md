@@ -9,7 +9,6 @@ This page lists upcoming changes and features that are going to be documented in
 <section class="blocks alt">
   <a class="bl two" href="/API/core/app-actions.html">
     <div>
-      <span class="pin">Now available to all customers</span>
       <h4>App Actions</h4>
       <p>Learn how App Actions allow you to define scheduled and complex automations for your app screens and solve some challenging use cases.</p>
       <button>Browse documentation &rarr;</button>

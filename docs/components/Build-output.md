@@ -31,7 +31,7 @@ Fliplet.Widget.instance('my-component', function (data, parent) {
 }, {
   // Set this to true if your component supports being initialized
   // from a dynamic container
-  supportsDynamicContext: true
+  supportsDynamicContext: false
 });
 ```
 
@@ -80,7 +80,7 @@ Fliplet.Widget.instance('primary-button', function(data, parent) {
 }, { supportsDynamicContext: true });
 ```
 
-Likewise, you can use the `Fliplet.initializeChildren()` method if you're building a dynamic component that should initialize children components supporting the dynamic context:
+Likewise, you can use the `Fliplet.Widget.initializeChildren()` method if you're building a dynamic component that should initialize children components supporting the dynamic context:
 
 ```js
 Fliplet.Widget.instance('dynamic-container', function(data, parent) {

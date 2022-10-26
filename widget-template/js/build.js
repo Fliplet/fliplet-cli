@@ -11,5 +11,5 @@ Fliplet.Widget.instance('{{safeName}}-1-0-0', function (data, parent) {
 }, {
   // Set this to true if your component supports being initialized
   // from a dynamic container
-  supportsDynamicContext: true
+  supportsDynamicContext: false
 });
