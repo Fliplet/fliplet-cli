@@ -173,7 +173,7 @@ The cursor also exports the following methods:
 - `next()`: Moves the cursor to the next page and returns it.
 - `prev()`: Moves the cursor to the previous page and returns it.
 - `setPage(n)`: Sets the cursor to a specific page number and returns it.
-- `update`: Updates the dataset for the current page (returns a `Promise`)
+- `update()`: Updates the dataset for the current page (returns a `Promise`)
 
 Here's a full example on how you would typically use the cursor:
 
