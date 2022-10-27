@@ -993,6 +993,10 @@ Finally, make sure that **TLS 1.2 or 1.3** is [enabled on the OS settings](https
 
 ## Releases changelog
 
+#### 1.14.2 (October 27th, 2022)
+
+- Improved error logs for failures due to invalid rows in the source dataset
+
 #### 1.14.1 (November 3rd, 2021)
 
 - Fixes when running a push operation without a primary key defined

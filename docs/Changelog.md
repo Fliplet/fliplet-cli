@@ -8,6 +8,10 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## October 2022
 
+### October 27th
+
+- Released new version 1.14.2 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html) with improvements to error logging.
+
 ### October 25th
 
 - Documentation added for [session expiration](https://developers.fliplet.com/App-security.html#session-expiration).
