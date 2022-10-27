@@ -93,8 +93,13 @@ In a nutshell, the above tells the system that the value at the path `actions.pa
 
 Possible values for the references are:
 
-- **page** (a `pageId`)
-- **dataSource** (a `dataSourceId`)
+- **organization** (Organization ID)
+- **app** (App ID)
+- **page** (page ID)
+- **dataSource** (Data Source ID)
+- **dataSourceView** (A Data Source View)
+- **mediaFolder** (Media Folder ID)
+- **richContent** (A rich content view)
 
 Component which uses array or complex objects can use the `$` operator to specify when iterate over arrays of objects. Given your component saves data like the following:
 

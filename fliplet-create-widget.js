@@ -13,9 +13,9 @@ const packageName = process.argv[2].trim().replace(/ /g, '-').toLowerCase();
 const widgetName = process.argv[3];
 const boilerplate = (process.argv[4] || '').replace('--', '');
 const safeName = widgetName.trim().toLowerCase().replace(/ /g, '-').replace(/[^A-z0-9-]/g, '');
-const folderPath = path.join(process.cwd(), packageName);
+const folderPath = path.join(process.cwd(), safeName);
 
-if (packageName.test(/[A-z]{1,4}\.[A-z-]{3,16}\.[A-z]{3,64}/)) {
+if (!/[A-z]{1,4}\.[A-z-]{3,16}\.[A-z]{3,64}/.test(packageName)) {
   log(`Package name ${packageName} is invalid. Please make sure it follows the reverse domain name notation, e.g. "com.example.my-component"`);
   process.exit();
 }
@@ -66,7 +66,7 @@ ncp(path.join(__dirname, template), folderPath, function(err) {
 
   log('Widget has been successfully created. To run it for development:');
   log('');
-  log('    $ cd ' + packageName);
+  log('    $ cd ' + safeName);
   log('    $ fliplet run');
   log('');
 });
