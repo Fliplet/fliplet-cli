@@ -113,3 +113,36 @@ Sample error page for the above code:
 ![img](https://user-images.githubusercontent.com/574210/48259419-2b345c80-e418-11e8-9430-c66b7ec7dfb5.png)
 
 More docs on the `ipRangeCheck` function can be found [here](https://github.com/danielcompton/ip-range-check#ipv4)
+
+---
+
+## Session expiration
+
+When your app is using the login component connected to a Data Source, you can enable two optional features to improve security for your users:
+
+- **Require the user to reauthenticate after a certain time**
+  - The user will be logged out after the defined period of time (in minutes) has past since the login date.
+  - Configure this via the `sessionMaxDurationMinutes` option as per example below.
+- **Log the user out when the app has not been used for a period of time**
+  - The user will be logged out when the session has been idle for the defined period of time (in minutes) since the last recorded activity
+  - Configure this via the `sessionIdleTimeoutMinutes` option as per example below.
+
+These option must be set in the **Data Source definition JSON** via the "App data" section of Fliplet Studio, **in the settings of your login Data Source**.
+
+The following setup will ensure a user is logged out 2 hours past the login date:
+
+```json
+"sessionMaxDurationMinutes": 120
+```
+
+Likewise, this setup will automatically log the user out when the app is inactive for 30 minutes:
+
+```json
+"sessionIdleTimeoutMinutes": 30
+```
+
+The two options can also be used together:
+
+![Data Sources](https://user-images.githubusercontent.com/574210/197834498-dceeecdc-f5ac-4315-b629-dd8434c4a5b0.png)
+
+---

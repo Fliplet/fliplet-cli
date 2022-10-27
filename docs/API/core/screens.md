@@ -4,7 +4,9 @@
 
 ```js
 Fliplet.Pages.get().then(function (appPages) {
-
+  appPages.forEach((page) => {
+    // page.id, page.title, page.masterPageId
+  });
 });
 ```
 
@@ -14,5 +16,16 @@ Use the `Fliplet.Page.getPublicSlug()` method to get the public URL of the curre
 
 ```js
 // e.g. "https://apps.fliplet.test/foo-bar/my-screen-abc"
-var url = Fliplet.Page.getPublicSlug();
+const url = Fliplet.Page.getPublicSlug();
+```
+
+---
+
+### Get the public URL of any screen in your app
+
+Use the `Fliplet.App.getPublicSlugForPage()` method to get the public URL of a screen, given its page **ID**. Note that this only works if you have enabled shareable URLs via Fliplet Studio under the App Settings.
+
+```js
+// e.g. https://apps.fliplet.com/sample-app/company-info-abcd
+const url = Fliplet.App.getPublicSlugForPage(12345);
 ```

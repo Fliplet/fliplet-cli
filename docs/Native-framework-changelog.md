@@ -7,13 +7,15 @@ We regularly update our framework to support new features. If you have an older 
   <div class="bl two">
     <div>
       <h4>iOS</h4>
-      <p>Latest stable release: 6.0.0</p>
+      <p>Current release: <u>6.0.0</u></p>
+      <p>Target SDK version: 15</p>
     </div>
   </div>
   <div class="bl two">
     <div>
       <h4>Android</h4>
-      <p>Latest stable release: 6.0.2</p>
+      <p>Current release: <u>6.0.4</u></p>
+      <p>Target API level: 31</p>
     </div>
   </div>
 </section>
@@ -21,7 +23,11 @@ We regularly update our framework to support new features. If you have an older 
 
 ---
 
-## Supported versions (4.6+)
+## Supported versions (5.0.0+)
+
+### Version 6.0.4 (October 17, 2022)
+
+- **Android**: Security updates.
 
 ### Version 6.0.2 (Aug 5, 2022)
 
@@ -51,15 +57,15 @@ We regularly update our framework to support new features. If you have an older 
 
 - **Android**: Support for App Bundle files on Google Play and initial beta support for SDK 30.
 
-### Version 4.6.0 (June 17, 2021)
-
-- **Android**: Security improvements.
-
 ---
 
 ## Deprecated versions
 
 Please note that these versions have limited support for newer Fliplet features. We encourage you to submit a new native update to your apps via the App Store or Google Play if you have users still running these versions of your app.
+
+### Version 4.6.0 (June 17, 2021)
+
+- **Android**: Security improvements.
 
 ### Version 4.5.3 (June 15, 2021)
 
