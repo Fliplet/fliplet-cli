@@ -101,7 +101,7 @@ Possible values for the references are:
 - **mediaFolder** (Media Folder ID)
 - **richContent** (A rich content view)
 
-Component which uses array or complex objects can use the `$` operator to specify when iterate over arrays of objects. Given your component saves data like the following:
+Components defining an array or complex objects can use the `$` operator to specify when to iterate over arrays of objects. Given your component saves data like the following:
 
 ```js
 Fliplet.Widget.save({
@@ -112,7 +112,7 @@ Fliplet.Widget.save({
 });
 ```
 
-You can use the following references when describing the behaviour of your component:
+You can use the following references when describing the behavior of your component:
 
 ```json
 {
@@ -124,7 +124,7 @@ You can use the following references when describing the behaviour of your compo
 
 ## "html_tag"
 
-App and page components can optionally output html via the `build.html` template. When doing that, the output is wrapped around a main html tag which also holds some metadata about the component instance. Your definition can specify which tag you want to use. This is mainly to be used with `div` and `span` to declare whether your output is block or inline.
+App and page components can optionally output HTML via the `build.html` template. When doing that, the output is wrapped around a main html tag which also holds some metadata about the component instance. Your definition can specify which tag you want to use. This is mainly used with `div` and `span` to declare whether your output is block or inline.
 
 Having said that, **any html tag** is allowed to be specified.
 
