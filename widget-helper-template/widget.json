@@ -7,8 +7,7 @@
   "provider_only": false,
   "references": [],
   "settings": {
-    "interfaceWidgetPackage": "com.fliplet.helper-configuration",
-    "referencedWidgets": ["{{package}}"]
+    "interfaceWidgetPackage": "com.fliplet.helper-configuration"
   },
   "html_tag": "div",
   "interface": {

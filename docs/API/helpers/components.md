@@ -35,7 +35,7 @@ Component has been successfully created.
 Before you start copying the helper code into the component, open the `widget.json` file you find in the created folder and configure the component by reviewing and tweaking the following properties:
 
 - **`references`**
-  - This array property should list all [references](/components/Definition.html#references) between the fields used in your helper and Fliplet entities such as a **Data Source ID**, a **Screen ID** or a **Media File ID**. Furthermore, **views should be listed here as well** using the `richContent` reference type.
+  - This array property should list all [references](/components/Definition.html#references) between the fields used in your helper and Fliplet entities, such as a **Data Source ID**, a **Screen ID** or a **Media File ID**. Furthermore, **views should be listed here as well** using the `richContent` reference type.
 
     [References](/components/Definition.html#references) use the following structure: `<propertyName>:<referenceType>`
 
@@ -60,7 +60,7 @@ Before you start copying the helper code into the component, open the `widget.js
 
 ## 4. Copy the interface configuration
 
-Copy all contents of the `configuration` property of your helper JS code and paste it in the `js/interface.js` file of the component folder in the contents of the `Fliplet.Widget.generateInterface` function you will find in the boilerplate:
+Copy all contents of the `configuration` property of your helper JS code and paste it into the `js/interface.js`` file of the component folder in the contents of the `Fliplet.Widget.generateInterface` function you will find in the boilerplate:
 
 ```js
 // ---- js/interface.js
@@ -75,7 +75,40 @@ Fliplet.Widget.generateInterface({
 
 ---
 
-## 5. Copy the helper definition code
+## 5. Update lookup functions
+
+Your interface configuration above should also be updated if you're using the following functions:
+
+- `Fliplet.Helper.find()`
+- `Fliplet.Helper.findOne()`
+
+These two functions are asynchronous when running in the widget framework, so they must be updated to wait for the promise to fetch the data:
+
+```js
+// Helper framework syntax
+// !!! THIS DOES NOT WORK IN THE WIDGET FRAMEWORK !!!
+Fliplet.Helper.find({ name: 'question' });
+
+// New syntax used when the helper is packaged as a widget
+Fliplet.Helper.find({ name: 'question' }).then(function (helpers) {
+
+});
+```
+
+Likewise, you can use two new functions when you need to discover other widget instances on the screen:
+
+- `Fliplet.Widget.find()`
+- `Fliplet.Widget.findOne()`
+
+```js
+Fliplet.Widget.find({ package: 'com.fliplet.primary-button' }).then(function (widgetInstances) {
+
+});
+```
+
+---
+
+## 6. Copy the helper definition code
 
 Grab all contents of your helper JS code and paste it in the `js/build.js` file of the component folder in the contents of the `Fliplet.Widget.instance` function you will find in the boilerplate.
 
@@ -97,19 +130,19 @@ As you may have guessed, your helper code only needs changing the base function 
 
 ---
 
-## 6. Add any relevant CSS
+## 7. Add any relevant CSS
 
 If you have CSS code to add to your helper, simply copy those declarations in the `css/build.css` file of the project folder.
 
 ---
 
-## 7. Replace the default icon
+## 8. Replace the default icon
 
 Fliplet components are displayed in the components list with a unique icon for each component. The default icon added by the boilerplate can be found in `img/icon.png`. You should be replacing this to your transparent PNG icon representing the component before publishing it on Studio.
 
 ---
 
-## 7. Publish your component to Fliplet Studio
+## 9. Publish your component to Fliplet Studio
 
 Publishing the component is as simple as running the `fliplet publish` CLI command after having [logged in](/Publishing.html) with your Studio account.
 
