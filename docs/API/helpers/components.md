@@ -1,6 +1,6 @@
 # Distribute helpers as components
 
-Helpers can be distributed as components through a simple process to repackage them using our components (widgets) framework.
+Helpers can be distributed as components through a simple process to repackage them using our widgets framework.
 
 ## 1. Install the basic software
 
@@ -32,7 +32,7 @@ Component has been successfully created.
 
 ## 3. Configure the component
 
-Before we starting copying over the helper code to the component, it's best to open up the `widget.json` file you find in the created folder and configure the component by reviewing and tweaking the following properties:
+Before you start copying the helper code into the component, open the `widget.json` file you find in the created folder and configure the component by reviewing and tweaking the following properties:
 
 - **`references`**
   - This array property should list all [references](/components/Definition.html#references) between the fields used in your helper and Fliplet entities such as a **Data Source ID**, a **Screen ID** or a **Media File ID**. Furthermore, **views should be listed here as well** using the `richContent` reference type.
@@ -60,7 +60,7 @@ Before we starting copying over the helper code to the component, it's best to o
 
 ## 4. Copy the interface configuration
 
-Grab all contents of the `configuration` property of your helper JS code and paste it in the `js/interface.js` file of the component folder in the contents of the `Fliplet.Widget.generateInterface` function you will find in the boilerplate:
+Copy all contents of the `configuration` property of your helper JS code and paste it in the `js/interface.js` file of the component folder in the contents of the `Fliplet.Widget.generateInterface` function you will find in the boilerplate:
 
 ```js
 // ---- js/interface.js
