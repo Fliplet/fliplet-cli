@@ -13,7 +13,7 @@ The Data Source REST APIs allows you to interact and make any sort of change to 
   - [Authentication](#authentication)
   - [Authenticating when using security rules](#authenticating-when-using-security-rules)
   - [Access roles](#access-roles)
-  - [Entities](#entities)
+  - [Resources](#resources)
     - [Data Source](#data-source)
     - [Data Source Entry](#data-source-entry)
   - [Endpoints](#endpoints)
@@ -93,7 +93,7 @@ If the app token you're using doesn't have access to one of your organization da
 
 ---
 
-## Entities
+## Resources
 
 Before heading deep into describing the API endpoints, let's describe what a **Data Source** and **Data Source Entry** are.
 
