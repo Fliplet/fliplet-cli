@@ -6,7 +6,7 @@ Please head to the [how to authenticate](authenticate.md) page of the documentat
 
 ---
 
-## Entities
+## Resources
 
 Before heading deep into describing the API endpoints, let's describe what a **Media Folder** and **Media File** are.
 
