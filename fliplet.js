@@ -15,6 +15,7 @@ program
   .command('create-menu [name]', 'Create a new menu.')
   .command('run', 'Run the current widget or theme for development.')
   .command('publish', 'Publish the current widget or theme on fliplet studio.')
+  .command('run-local', 'Debug the current widget or theme for development.')
   .command('test', 'Run tests on the current widget or theme on fliplet studio.')
   .command('list', 'List widgets you can download for editing.')
   .command('clone [package]', 'Downloads a widget locally, given its ID or package name')
