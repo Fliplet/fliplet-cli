@@ -1,5 +1,4 @@
 const _ = require('lodash');
-const colors = require('colors');
 
 const auth = require('./lib/auth');
 const config = require('./lib/config');
@@ -12,7 +11,9 @@ console.log(`
 ----------------------------------------------------------
 
 Your internet browser should now open up a new tab
-to continue the login process...
+to continue the login process.
+
+${'Press Ctrl+C to exit.'.blue}
 `);
 
 const port = 9001;
@@ -43,12 +44,18 @@ require('http').createServer(function(req, res) {
           return console.error('Your organization has not been found.');
         }
 
-        config.set('organization', organizations[0]);
+        if (organizations.length > 1) {
+          return console.error('You belong to multiple organizations.');
+        }
+
+        const userOrganization = organizations[0];
+
+        config.set('organization', userOrganization);
 
         console.log('----------------------------------------------------------\r\n');
         console.log(`You have logged in successfully. Welcome back, ${user.fullName.yellow.underline}!`);
-        console.log(`Your organization has been set to ${organizations[0].name.green.underline}. Your account email is ${user.email.yellow.underline}.`);
-        console.log(`You can now develop and publish components via the ${'fliplet run'.bgBlack} command!
+        console.log(`Your organization has been set to ${userOrganization.name.green.underline} (#${userOrganization.id}). Your account email is ${user.email.yellow.underline}.`);
+        console.log(`You can now develop and publish components via the ${'fliplet run'.bgBlack.red} command!
 `);
 
         res.writeHead(302, {
