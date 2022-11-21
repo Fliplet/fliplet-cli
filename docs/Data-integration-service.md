@@ -993,6 +993,10 @@ Finally, make sure that **TLS 1.2 or 1.3** is [enabled on the OS settings](https
 
 ## Releases changelog
 
+#### 1.14.3 (November 21st, 2022)
+
+- Improved merge support on error handling when files can't be fetched from disk
+
 #### 1.14.2 (October 27th, 2022)
 
 - Improved error logs for failures due to invalid rows in the source dataset

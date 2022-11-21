@@ -6,6 +6,14 @@ description: Changelog notes giving a summary of recent significant changes to t
 
 Each week, we provide changelog notes on this page giving a summary of recent significant changes to the documentation. If there haven't been any significant changes in a given week, we don't publish changelog notes.
 
+## November 2022
+
+### November 21st
+
+- Released new version 1.14.3 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html) with improved merge support on error handling when files can't be fetched from disk.
+
+---
+
 ## October 2022
 
 ### October 27th
