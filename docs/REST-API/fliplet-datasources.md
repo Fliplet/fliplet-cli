@@ -60,17 +60,16 @@ Please head to the [how to authenticate](authenticate.md) page of the documentat
 
 If your data source has defined specific permissions with security rules, additional steps must be taken to sign the requests:
 
-1. Ensure the `auth_token` being used is an **App Token** created via Fliplet Studio.
-2. Ensure the app for the created app token has access to the Data Source.
-3. **Add the `User-Agent: Fliplet Agent/REST-1.0` header to all requests.** as shown in the example below.
+1. Ensure the `auth_token` being used is an **API token** created via Fliplet Studio.
+2. Ensure the app for the created API token has access to the Data Source.
+3. Set up the relevant **security rules** for the API token (e.g. read/write access)
 
-Here is a sample cURL request that contains the header:
+Here is a sample cURL request requesting data for a data source:
 
 ```
 curl -X GET \
 	"https://api.fliplet.com/v1/data-sources/123/data/456" \
 	-H "Auth-token: eu--abcdef-123456678" \
-	-H "User-Agent: Fliplet Agent/REST-1.0"
 ```
 
 ---
@@ -79,13 +78,14 @@ curl -X GET \
 
 Data sources requires ​roles​ to be accessed to. Roles can have multiple permissions: **create, read, update, delete, query**. We call them ​`crudq​`. Once you create a data source, your user automatically gets all these permissions assigned to it, since you own the data source.
 
-If the app token you're using doesn't have access to one of your organization data sources, you will need to grant permissions to it via Fliplet Studio:
+If the API token you're using doesn't have access to one of your organization data sources, you will need to grant permissions to it via Fliplet Studio:
 
-1. Go to the **App settings**<sup>1</sup> >> **App tokens**<sup>2</sup> section of Fliplet Studio
-2. Copy the **numerical app token ID**<sup>3</sup> for the token you need to add access to
+1. Go to the **App settings**<sup>1</sup> >> **API tokens**<sup>2</sup> section of Fliplet Studio
+2. Copy the **numerical API token ID**<sup>3</sup> for the token you need to add access to
 2. Go to the **App data**<sup>4</sup> section, then click on the data source you want to add the user to
 3. Click the **User permissions**<sup>5</sup> tab
 4. **Add new user**<sup>6</sup> button to grant access to a user to the specific data source and when asked paste the ID you got above, then the list of permissions to add (e.g. `crudq`) as described a few lines above.
+5. Set up the relevant **security rules** for your API token.
 
 ![img1](https://cl.ly/9a01714eb200/Image%2525202019-01-14%252520at%2525203.37.14%252520PM.png)
 

@@ -240,7 +240,7 @@ Required parameters:
 
 #### `GET v1/apps/:id/subscriptions`
 
-<p class="warning"><strong>Note:</strong> for security reasons this endpoint can only be used by Studio users. App tokens are not allowed to read the list of subscriptions for an app.</p>
+<p class="warning"><strong>Note:</strong> for security reasons this endpoint can only be used by Studio users. API tokens are not allowed to read the list of subscriptions for an app.</p>
 
 Sample cURL request:
 
