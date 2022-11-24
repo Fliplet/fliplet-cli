@@ -335,7 +335,7 @@ Fliplet.Hooks.on('flListDataBeforeDeleteConfirmation', fn);
 The hook is run before deleting an entry.
 
 ```js
-Fliplet.Hooks.on('flListDataBeforeDeleteConfirmation', fn);
+Fliplet.Hooks.on('flListDataBeforeDeleteEntry', fn);
 ```
 
 #### Parameters
