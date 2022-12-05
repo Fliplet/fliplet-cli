@@ -100,7 +100,7 @@ npm config set prefix 'C:\MySharedFolder\'
 Once you have set up the global folder, simply install the agent to have it installed for all users:
 
 ```
-npm install fliplet-agent -g
+npm install fliplet-agent -g --force
 ```
 
 Note that each user must set its npm prefix to the shared folder before being able to use its packages.
@@ -125,7 +125,9 @@ You can now use the command `fliplet-agent` from the command line. Just type `fl
   <span data-ty="input" data-ty-prompt="">&nbsp;&nbsp;uninstall [path/to/config.js]       Uninstall a background service.</span>
 </div>
 
-### Troubleshooting installation errors
+---
+
+## Troubleshooting installation errors
 
 #### SSL Error: SELF_SIGNED_CERT_IN_CHAIN
 
@@ -148,6 +150,21 @@ Alternative, you can switch to use the HTTP version of the NPM registry:
 ```
 npm config set registry http://registry.npmjs.org/
 ```
+
+#### Installing on Mac
+
+When installing DIS on Mac, you may get an error due to your user not having permissions to install npm modules as global binaries (the `-g` option). To fix this, follow these steps:
+
+1. Type `npm config set prefix /usr/local` in your terminal
+2. Re-run the install command with the `sudo` prefix, e.g. `sudo npm install -g fliplet-agent --force`
+
+The `fliplet-agent` command should now work.
+
+Alternatively, you can install [Node Version Manager](https://github.com/nvm-sh/nvm) to avoid using sudo commands:
+
+1. Install nvm: `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | zsh`
+2. Install node 12: `nvm install 12`
+3. Re-run the DIS install command: `npm install -g fliplet-agent --force`
 
 ---
 
