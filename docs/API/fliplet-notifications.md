@@ -198,7 +198,7 @@ instance.insert({
     delayUntilTimestamp: moment().add(30, 'minute').unix()
   },
   // Optional scope: use a filter based on the connected Data Source
-  // fro your contacts (if your app has a login component)
+  // from your contacts (if your app has a login component)
   scope: {
     Email: 'john@example.org'
   }
@@ -236,7 +236,7 @@ instance.insert({
     delayUntilTimestamp: moment().add(30, 'minute').unix()
   },
   // Optional scope: use a filter based on the connected Data Source
-  // fro your contacts (if your app has a login component)
+  // from your contacts (if your app has a login component)
   scope: {
     Email: 'john@example.org'
   }
@@ -274,7 +274,7 @@ instance.batchInsert({
         delayUntilTimestamp: moment().add(30, 'minute').unix()
       },
       // Optional scope: use a filter based on the connected Data Source
-      // fro your contacts (if your app has a login component)
+      // from your contacts (if your app has a login component)
       scope: {
         Email: 'john@example.org'
       }
@@ -304,7 +304,7 @@ instance.batchInsert({
         delayUntilTimestamp: moment().add(30, 'minute').unix()
       },
       // Optional scope: use a filter based on the connected Data Source
-      // fro your contacts (if your app has a login component)
+      // from your contacts (if your app has a login component)
       scope: {
         Email: 'john@example.org'
       }
