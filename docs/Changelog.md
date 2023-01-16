@@ -14,15 +14,15 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## 2022
 
-- **November**: Released new version 1.14.3 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html) with improved merge support on error handling when files can't be fetched from disk.
-- **October**: Released new version 1.14.2 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html) with improvements to error logging.
-- **October**: Documentation added for [session expiration](https://developers.fliplet.com/App-security.html#session-expiration).
-- **October**: New Android framework version 6.0.3 with security updates.
-- **September**: Updated Chat JS APIs with options to [open a group conversation](/API/components/chat.html#startopen-a-group-conversation-with-one-or-more-people).
-- **August**: New Android framework version 6.0.2 with support to the SDK 31.
-- **July**: New iOS and Android framework version 6.0.0 released with support for the upcoming localization feature.
-- **July**: New iOS framework version 5.3.2 released with bugfixes for the share dialog.
-- **April**: New iOS framework version 5.3.0 released with support for iOS 15.
+- **November, 21st**: Released new version 1.14.3 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html) with improved merge support on error handling when files can't be fetched from disk.
+- **October, 27th**: Released new version 1.14.2 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html) with improvements to error logging.
+- **October, 25th**: Documentation added for [session expiration](https://developers.fliplet.com/App-security.html#session-expiration).
+- **October, 5th**: New Android framework version 6.0.3 with security updates.
+- **September, 6th**: Updated Chat JS APIs with options to [open a group conversation](/API/components/chat.html#startopen-a-group-conversation-with-one-or-more-people).
+- **August, 5th**: New Android framework version 6.0.2 with support to the SDK 31.
+- **July, 20th**: New iOS and Android framework version 6.0.0 released with support for the upcoming localization feature.
+- **July, 7th**: New iOS framework version 5.3.2 released with bugfixes for the share dialog.
+- **April, 22nd**: New iOS framework version 5.3.0 released with support for iOS 15.
 
 ---
 
