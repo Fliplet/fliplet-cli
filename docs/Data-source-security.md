@@ -31,8 +31,6 @@ Fliplet.DataSources.connect(123).then(function (connection) {
 
 ## Custom security rules
 
-<p class="warning">This feature is currently available to beta users only.</p>
-
 Fliplet apps can have each of their screens and data sources secured so that they can only be accessed when certain conditions are met. Our Data Sources management UI allows you to define security rules through a easy-to-use wizard. However, depending on the case you may want to write your own security rule from scratch using JavaScript as explained further below.
 
 ![Custom security](assets/img/datasource-custom-security.png)
@@ -93,7 +91,11 @@ Custom rules can also read data from different Data Sources using the `find` (fo
 ```js
 if (type === 'select') {
   var entry = await DataSources(123).findOne({
-    where: { Office: user.Office, Managers: { $in: user.Manager } }
+    where: {
+      Office: user.Office,
+      Managers: { $in: user.Manager },
+      Country: { $like: '%United Kingdom%' }
+    }
   });
 
   // Allow reading data if the user has a manager in the same office
@@ -103,10 +105,10 @@ if (type === 'select') {
 }
 
 if (type === 'insert') {
-  var entry = await DataSources(123).find();
+  var entries = await DataSources(123).find();
 
   // Only allow writes as long as there are less than 10 entries in the target Data Source
-  if (entry && entry.length < 10) {
+  if (entries && entries.length < 10) {
     return { granted: true };
   }
 }
@@ -114,8 +116,8 @@ if (type === 'insert') {
 
 As you can see, the `DataSource` function accepts the input ID of the target Data Source and exposes two interfaces for reading one or multiple records. Both `find` and `findOne` supports the following properties:
 
-- `where` (Object) Sequelize query to run
-- `limit` (Number, defaults to `1` on `findOne`)
+- `where` (Object) query to run (supports common operators such as `$like`, `$iLike`, `$lt`, `$gt`, `$lte`, `$gte`, `$eq`, `$in`)
+- `limit` (Number, defaults to `100`)
 - `offset` (Number, defaults to `0`)
 
 ---
