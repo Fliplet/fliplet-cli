@@ -8,7 +8,7 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## 2023
 
-- **January, 16th**: Added documentation for [custom security rules](https://developers.fliplet.com/Data-source-security.html#custom-security-rules)
+- **January, 16th**: Added documentation for [custom Data Source security rules](https://developers.fliplet.com/Data-source-security.html#custom-security-rules)
 
 ---
 

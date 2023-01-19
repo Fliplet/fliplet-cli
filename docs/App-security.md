@@ -8,7 +8,7 @@ Such security rule can be set up as follows:
 
 ![img](https://dzwonsemrish7.cloudfront.net/items/0M0R2h3W0p1F112r3u01/Image%202018-07-02%20at%2012.50.22%20PM.png)
 
-## Custom security rules
+## Custom app security rules
 
 If you need more control on your security rules, you can also write your custom conditions using Javascript. When doing so, these variables are available to the context:
 
