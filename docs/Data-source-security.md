@@ -61,6 +61,16 @@ if (type === 'select') {
 // No further access is granted by this rule to other type of operations
 ```
 
+### Dealing with different type of operations
+
+Depending on the operation being made, the `query` parameter will have a different value as follows:
+
+- Reading data (selects): the input query to filter the data
+- Writing data (inserts and updates): the data being written to the entry
+- Deleting data (deletes): the data of the entry being deleted
+
+Additionally, when using the "commit" JS API and REST API the `query` will contain the payload found in the request body. As an example, if you're deleting a list of entries by ID using such endpoint then the `query` parameter will include the `delete` key with the array of IDs being made.
+
 ### Make changes to the input query
 
 Rules can also make changes to the input `query` object if required:
