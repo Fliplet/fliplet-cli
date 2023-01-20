@@ -305,7 +305,7 @@ connection.find({
         to: {
           value: '1978-12-31'
         }
-      },
+      }
     ]
   }
 });
