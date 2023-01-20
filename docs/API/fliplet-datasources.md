@@ -142,7 +142,7 @@ The following operators and values are optimized to perform better with Fliplet'
   - Operators: `$or`, `$and`, `$gte`, `$lte`, `$gt`, `$lt`, `$eq`
   - Values: strings and numbers
 
-Fliplet also supports a custom `$filters` operator with some unique conditional logic. See example below.
+Fliplet also supports a custom `$filters` operator with some unique conditional logic such as case-insensitive match or date & time comparison. See example below.
 
 A few examples to get you started:
 
