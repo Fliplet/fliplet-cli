@@ -133,7 +133,7 @@ connection.find().then(function (records) {
 
 #### Fetch records with a query
 
-Querying options are based on the [Sift.js](https://github.com/Fliplet/sift.js) operators, which mimic MongoDB querying operators. Here's the supported operators:
+Querying options are based on the [Sift.js](https://github.com/Fliplet/sift.js) operators, which mimic MongoDB querying operators. Here are the supported operators from Sift.js:
 
   - `$in`, `$nin`, `$exists`, `$gte`, `$gt`, `$lte`, `$lt`, `$eq`, `$ne`, `$iLike`, `$mod`, `$all`, `$and`, `$or`, `$nor`, `$not`, `$size`, `$type`, `$regex`, `$elemMatch`
 
@@ -142,7 +142,7 @@ The following operators and values are optimized to perform better with Fliplet'
   - Operators: `$or`, `$and`, `$gte`, `$lte`, `$gt`, `$lt`, `$eq`
   - Values: strings and numbers
 
-Fliplet also supports a custom `$filters` operator with some unique conditional logic.
+Fliplet also supports a custom `$filters` operator with some unique conditional logic. See example below.
 
 A few examples to get you started:
 
@@ -264,38 +264,46 @@ connection.find({
         // value can also be a CSV string
         value: ['News', 'Tutorial']
       },
-      // Find entries where the column matches the date
+      // Find entries where the column matches a date comparison
       {
         column: 'Birthday',
+        // Use dateis, datebefore or dateafter to match
+        // dates before and after the comparison value
         condition: 'dateis',
-        value: '1978-04-30',
-        unit: 'day' // Optionally provide a unit to match based on the year, quarter, month, week, day, hour, minute or second
+        value: '1978-04-30'
+        // Optionally provide a unit of comparison:
+        //  - year
+        //  - quarter
+        //  - month
+        //  - week
+        //  - day
+        //  - hour
+        //  - minute
+        //  - second
+        // unit: 'month'
       },
-      // Find entries where the column is before the date
+      // Find entries where the column is before the a certain time of the day
       {
-        column: 'Birthday',
+        column: 'Start time',
         condition: 'datebefore',
-        value: '1978-04-30',
-        unit: 'day' // Optionally provide a unit to match based on the year, quarter, month, week, day, hour, minute or second
+        value: '17:30'
       },
-      // Find entries where the column is after the date
+      // Find entries where the column is after a timestamp
       {
         column: 'Birthday',
         condition: 'dateafter',
-        value: '1978-04-30',
-        unit: 'day' // Optionally provide a unit to match based on the year, quarter, month, week, day, hour, minute or second
+        // Provide a full timestamp for comparison in YYYY-MM-DD HH:mm format
+        value: '2020-03-10 13:03'
       },
       // Find entries where the column is between 2 dates (inclusive)
       {
         column: 'Birthday',
         condition: 'datebetween',
         from: {
-          value: '1978-01-01',
-          unit: 'day' // Optionally provide a unit to match based on the year, quarter, month, week, day, hour, minute or second
+          value: '1978-01-01'
         },
         to: {
-          value: '1978-12-31',
-          unit: 'day' // Optionally provide a unit to match based on the year, quarter, month, week, day, hour, minute or second
+          value: '1978-12-31'
         }
       },
     ]
