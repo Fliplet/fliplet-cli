@@ -1,4 +1,4 @@
-# Hooks & Events
+# Helper Hooks & Events
 
 Lifecycle:
 1. `beforeReady`

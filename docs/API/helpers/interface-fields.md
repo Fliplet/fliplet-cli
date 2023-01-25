@@ -1,4 +1,4 @@
-# Fields
+# Helper Fields
 
 Specify a list of fields to be displayed to the user in Fliplet Studio. The fields are displayed in the order as defined.
 ## Properties for all fields

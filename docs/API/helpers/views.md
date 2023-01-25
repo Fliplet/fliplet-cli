@@ -1,4 +1,4 @@
-# Views
+# Helper Views
 
 ## Define a rich-content view
 

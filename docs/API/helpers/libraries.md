@@ -1,4 +1,4 @@
-# External libraries
+# Helper External libraries
 
 Define a `dependencies` array in the `render` property to include libraries in your helpers. These can include:
 
