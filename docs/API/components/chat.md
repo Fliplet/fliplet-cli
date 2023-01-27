@@ -99,6 +99,16 @@ Fliplet.Hooks.on('beforeChatContactsRendering', function onBeforeChatContactsRen
 
 ## Private conversations
 
+### Get the list of conversations for the current user
+
+```js
+Fliplet.Chat.get().then(function (chat) {
+  return chat.conversations();
+}).then(function (conversations) {
+  // ...
+});
+```
+
 ### Create a new private conversation with a group of people
 
 Use the Fliplet Chat JS APIs from the chat screen to create a new private conversation between multiple people.
@@ -108,11 +118,11 @@ You do not need to list the current user's entry ID in the list of participants,
 ```js
 Fliplet.Chat.get().then(function (chat) {
   return chat.create({
-    name: 'Running team', // Group name
+    name: 'Running team', // Conversation name
     participants: [1, 2, 3] // List of Data source entry ID for the participants
   });
-}).then(function (channel) {
-  // Group has been created
+}).then(function (conversation) {
+  // The conversation has been created
 });
 ```
 
