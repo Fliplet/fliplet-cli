@@ -109,6 +109,56 @@ Fliplet.Chat.get().then(function (chat) {
 });
 ```
 
+### Instance methods for the conversation object
+
+#### Get the list of participants
+
+```js
+const participants = conversation.participants.get();
+```
+
+#### Add new participants to the conversation
+
+```js
+conversation.participants.add([
+  1, 2, 3 // List of Data source entry ID for the participants to add
+]).then(function () {
+  // People have been added to the conversation
+});
+```
+
+#### Remove participants from the conversation
+
+```js
+conversation.participants.remove([
+  1, 2, 3 // List of Data source entry ID for the participants to remove
+]).then(function () {
+  // People have been removed from the conversation
+});
+```
+
+#### Mute notifications for a conversation for the current user
+
+```js
+// Check if a conversation is already muted
+const isMuted = conversation.isMuted;
+
+// Mute a conversation
+conversation.mute().then(function () {
+  // Notifications have been muted for the conversation
+});
+```
+
+#### Receive notifications for a conversation for the current user
+
+```js
+conversation.unmute().then(function () {
+  // Notifications have been unmuted for the conversation
+});
+```
+
+---
+
 ### Create a new private conversation with a group of people
 
 Use the Fliplet Chat JS APIs from the chat screen to create a new private conversation between multiple people.
