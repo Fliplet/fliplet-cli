@@ -370,6 +370,40 @@ connection.find({
 
 Please refer to the [Mingo](https://github.com/kofrasa/mingo) documentation to read more about all the different usages and types of aggregation queries.
 
+### Sort / order the results
+
+Use the `order` array of arrays to specify the sorting order for the returned entries.
+
+You can order by:
+- Fliplet columns: `id`, `order`, `createdAt`, `deletedAt`, `updatedAt`
+- Entry columns, using the `data.` prefix (e.g. `data.Email`)
+
+The order direction is either `ASC` for ascending ordering or `DESC` for descending ordering.
+
+The `order` array accepts a list of arrays, where each includes the column and sorting order:
+
+```js
+// Sort records by their created time (first records are newer)
+connection.find({
+  where: { Office: 'London' },
+  order: [
+    ['createdAt', 'DESC']
+  ]
+}).then(function (records) {
+  // ...
+});
+// Sort records alphabetically by their last name first and then first name
+connection.find({
+  where: { Office: 'London' },
+  order: [
+    ['data.LastName', 'ASC'],
+    ['data.FirstName', 'ASC']
+  ]
+}).then(function (records) {
+  // ...
+});
+```
+
 ### Find a specific record
 
 The `findOne` method allows you to look for up to one record, limiting the amount of entries returned if you're only looking for one specific entry.
