@@ -392,6 +392,7 @@ connection.find({
 }).then(function (records) {
   // ...
 });
+
 // Sort records alphabetically by their last name first and then first name
 connection.find({
   where: { Office: 'London' },
