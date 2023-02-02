@@ -66,7 +66,6 @@ Copy all contents of the `configuration` property of your helper JS code and pas
 // ---- js/interface.js
 
 Fliplet.Widget.generateInterface({
-  title: 'Decision tree',
   fields: [
     // ...
   ]
