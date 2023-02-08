@@ -41,6 +41,8 @@ To synchronize your data with Fliplet servers you will need an authorization tok
 
 To generate a token, please follow the docs [here](REST-API/authenticate.md).
 
+<p class="warning">Please note that upon creating the API token you will also need to set up appropriate <a href="Data-source-security.html">Data Source security rules</a> on the specific <strong>API token</strong> for the Data Sources you will be reading or writing data to.</p>
+
 ---
 
 ## Minimum requirements
@@ -1009,6 +1011,10 @@ Finally, make sure that **TLS 1.2 or 1.3** is [enabled on the OS settings](https
 ---
 
 ## Releases changelog
+
+#### Data Source security rules enforcement (February 8th, 2023)
+
+- [Data Source security rules](/Data-source-security.html) are now required by all API tokens and DIS integrations when interacting with Data Sources
 
 #### 1.14.3 (November 21st, 2022)
 
