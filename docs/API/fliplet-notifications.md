@@ -183,6 +183,7 @@ instance.insert({
       // Omit this property to have the system automatically increment the
       // badge count for each user and device receiving the push notification.
       badge: 1,
+      sound: 'default',
       custom: {
         // Add a link to the push notification
         customData: {
@@ -221,6 +222,7 @@ instance.insert({
       // Omit this property to have the system automatically increment the
       // badge count for each user and device receiving the push notification.
       badge: 1,
+      sound: 'default',
       custom: {
         // Add a link to the push notification
         customData: {
@@ -258,6 +260,7 @@ instance.batchInsert([
         // Omit this property to have the system automatically increment the
         // badge count for each user and device receiving the push notification.
         badge: 1,
+        sound: 'default',
         custom: {
           // Add a link to the push notification
           customData: {
@@ -288,6 +291,7 @@ instance.batchInsert([
         // Omit this property to have the system automatically increment the
         // badge count for each user and device receiving the push notification.
         badge: 1,
+        sound: 'default',
         custom: {
           // Add a link to the push notification
           customData: {
