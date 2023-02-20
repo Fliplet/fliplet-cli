@@ -114,6 +114,8 @@ For example:
 <div data-view="content" data-node-name="Content">{{{ content }}}</div>
 ```
 
+**If the widget is built using Fliplet Helper, the `richContent` reference still needs to be declared in `widget.json`, but does not need a view container defined as above. The Helper framework has built-in support for the management of rich content views.**
+
 ---
 
 ## Interface of components
