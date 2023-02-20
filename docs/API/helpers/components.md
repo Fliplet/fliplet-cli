@@ -88,7 +88,7 @@ These two functions are asynchronous when running in the widget framework, so th
 ```js
 // Helper framework syntax
 // !!! THIS DOES NOT WORK IN THE WIDGET FRAMEWORK !!!
-Fliplet.Helper.find({ name: 'question' });
+var helpers = Fliplet.Helper.find({ name: 'question' });
 
 // New syntax used when the helper is packaged as a widget
 Fliplet.Helper.find({ name: 'question' }).then(function (helpers) {
