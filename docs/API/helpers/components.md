@@ -39,11 +39,13 @@ Before you start copying the helper code into the component, open the `widget.js
 
     [References](/components/Definition.html#references) use the following structure: `<propertyName>:<referenceType>`
 
-    The following example assumes that you have a **view** field stored under the `content` property, a **dataSourceId** stored under the `contactsDataSource` property and a target action configured using the link provider, which has a **page** reference under `goTo`:
+    The following example found in `widget.json` assumes that you have the follow properties:
+
+    -  `content` - a **rich content view** field
+    -  `contactsDataSource` - a **data source ID** reference
+    -  `goTo` - a **page** reference found in a target action configured via the link provider
 
     ```json
-    widget.json
-
     {
       "references": [
         "content:richContent",
