@@ -97,6 +97,25 @@ Fliplet.Widget.instance('dynamic-container', function(data, parent) {
 
 ---
 
+## Support for rich content in Fliplet Studio
+
+If your component includes references to `richContent` properties (see [References](/components/Definition.html#references), each `richContent` property needs to be rendered on the page. This can be done using the `{{{ prop }}}` syntax.
+
+`richContent` data is managed in Fliplet Studio by allowing users to drag and drop content into a container. To add support for this drag and drop interaction, make the following changes to your `build.html` template:
+
+1. Make sure the rich content is rendered as `{{{ prop }}}` where `prop` is the name of your rich content property
+2. Wrap the `{{{ prop }}}` syntax in a DOM element with a `data-view` property and a `data-node-name` property:
+   - The `data-view` value is should match the property name.
+   - The `data-node-name` value is what will be displayed in Fliplet Studio in the **Screen structure** panel.
+
+For example:
+
+```html
+<div data-view="content" data-node-name="Content">{{{ content }}}</div>
+```
+
+---
+
 ## Interface of components
 
 Need to read more about the interface? Once you're familiar with the above documentation on the component output, have a read to the previous section which covers the output of components interfaces.
