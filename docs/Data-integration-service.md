@@ -1012,6 +1012,11 @@ Finally, make sure that **TLS 1.2 or 1.3** is [enabled on the OS settings](https
 
 ## Releases changelog
 
+#### 1.15.0 (February 21st, 2023)
+
+- The log file found in the user's home directory under the name `fliplet-agent.log` will now keep any existing content (instead of cleaning up the file) when the jobs execute.
+- All errors produced when fetching images to be sync will now be reported in full to the log file and when forwarded to Windows Events.
+
 #### Data Source security rules enforcement (February 8th, 2023)
 
 - [Data Source security rules](/Data-source-security.html) are now required by all API tokens and DIS integrations when interacting with Data Sources

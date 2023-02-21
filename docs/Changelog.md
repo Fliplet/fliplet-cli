@@ -8,6 +8,7 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## 2023
 
+- **February, 21st**: Released new version 1.15.0 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html) with improved logging.
 - **February, 8th**: [Data Source security rules](/Data-source-security.html) are now required by all API tokens and DIS integrations when interacting with Data Sources
 - **January, 16th**: Added documentation for [custom Data Source security rules](https://developers.fliplet.com/Data-source-security.html#custom-security-rules)
 
