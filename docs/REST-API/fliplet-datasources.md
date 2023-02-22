@@ -411,6 +411,16 @@ Notes:
 
 e.g. `v1/data-sources/123/data/query`
 
+All operators of the [Data Source "find" JS API](https://developers.fliplet.com/API/fliplet-datasources.html#fetch-records-from-a-data-source) are supported, including:
+
+- [where](https://developers.fliplet.com/API/fliplet-datasources.html#fetch-records-from-a-data-source)
+- [aggregate](https://developers.fliplet.com/API/fliplet-datasources.html#run-aggregation-queries)
+- [join](https://developers.fliplet.com/API/datasources/joins.html)
+- [attributes](https://developers.fliplet.com/API/fliplet-datasources.html#filter-the-columns-returned-when-finding-records)
+- [order](https://developers.fliplet.com/API/fliplet-datasources.html#sort--order-the-results)
+- [limit](https://developers.fliplet.com/API/fliplet-datasources.html#fetch-records-with-pagination)
+- [offset](https://developers.fliplet.com/API/fliplet-datasources.html#fetch-records-with-pagination)
+
 Request body (JSON):
 
 ```json
