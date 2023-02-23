@@ -224,7 +224,7 @@ description: Push my users to Fliplet every 15 minutes
 
 # If set to true, the sync will also run when the script starts.
 # Otherwise, it will only run according to the frequency setting above.
-sync_on_init: true
+sync_on_init: false
 
 # Frequency of running using unix cronjob syntax.
 # Syntax is [Minute] [Hour] [Day of month] [Month of year] [Day of week]
