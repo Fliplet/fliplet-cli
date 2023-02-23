@@ -80,10 +80,12 @@ This is roughly the output you should see in your terminal:
 <div class="termynal1" data-termynal data-ty-typeDelay="40" data-ty-lineDelay="700">
   <span data-ty="input" data-ty-prompt="$ ~/User">npm install fliplet-agent -g</span>
   <span data-ty="progress" data-ty-progressChar="·"></span>
-  <span data-ty>+ fliplet-agent@1.14.1</span>
+  <span data-ty>+ fliplet-agent@2.0.0</span>
 </div>
 
 That's it! You can now jump to the [Get Started](#get-started) part of this documentation to create your first script.
+
+Note: on `Unix` and `macOS` you may need the `--force` option to install the agent as a global package.
 
 ---
 
@@ -172,11 +174,13 @@ Alternatively, you can install [Node Version Manager](https://github.com/nvm-sh/
 
 ## Update the agent to the latest version
 
-If you need to update the agent to the latest version available on npm, run the following command from the Node.js shell:
+If you need to update the agent to the latest version available on npm, run the following command from the **Node.js command prompt**:
 
 ```
-npm update -g
+npm update fliplet-agent -g
 ```
+
+<p class="warning">Please make sure all <strong>Windows Services installed for the Fliplet Agent</strong> are stopped before updating the agent.</p>
 
 ---
 
@@ -341,6 +345,8 @@ On Windows you can install any number instances of the agent to run as a service
 ```
 fliplet-agent install C:\path\to\sample.yml
 ```
+
+<p class="info">We strongly recommend turning the <code>sync_on_init</code> option off when installing the agent as a service, to ensure it only runs as its scheduled time rather than on startup.</p>
 
 Once you run the above command, you're likely to get asked for confirmation by the OS. A series of 3-4 popups similar to these ones will appear:
 
@@ -951,7 +957,7 @@ The agent logs all output messages (including debug messages and errors) to a `f
 
 For example, a Windows user called "John" will have its log file at `C:\Users\John\fliplet-agent.log`.
 
-Furthermore, when installed as a Windows Service you can monitor the logs through Windows Event Viewer, checking under the "Applications" logs.
+Furthermore, when installed as a Windows Service you can monitor the logs through Windows Event Viewer, checking under the "Applications" logs for the "Fliplet Agent (filename)" source name.
 
 ### List of messages logged by the agent
 
@@ -1011,6 +1017,11 @@ Finally, make sure that **TLS 1.2 or 1.3** is [enabled on the OS settings](https
 ---
 
 ## Releases changelog
+
+#### 2.0.0 (February 23rd, 2023)
+
+- Improves SSL compatibility when running as a Windows Service (the agent will now trust self-signed certificates from proxies and company firewalls).
+- Improved logging: (1) all output to the log file and the terminal will include a prefix with the script name; (2) all events logged to Windows Events will include the script name as a suffix in the "Source" field.
 
 #### 1.15.0 (February 21st, 2023)
 
