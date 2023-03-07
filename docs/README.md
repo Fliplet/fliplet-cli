@@ -74,7 +74,7 @@ Here's a short list of requested features that are coming up on our platform in 
 <section class="blocks alt">
   <a class="bl two" href="/API/core/app-actions.html">
     <div>
-      <span class="pin">Open beta</span>
+      <span class="pin">Available to all customers</span>
       <h4>App Actions</h4>
       <p>Learn how App Actions allow you to define scheduled automations for your app screens.</p>
       <button>Browse documentation &rarr;</button>
@@ -82,7 +82,7 @@ Here's a short list of requested features that are coming up on our platform in 
   </a>
   <a class="bl two" href="/API/core/localization.html">
     <div>
-      <span class="pin">Internal preview</span>
+      <span class="pin">Available to all customers</span>
       <h4>Localization</h4>
       <p>Learn how to localize your component for different languages and regions.</p>
       <button>Browse documentation &rarr;</button>

@@ -2,14 +2,14 @@
 description: Upcoming features to be added in the Fliplet Developer documentation.
 ---
 
-# Upcoming features
+# Upcoming and recently launched features
 
-This page lists upcoming changes and features that are going to be documented in the developers website you're looking at.
+This page lists upcoming changes and features that have recently been documented in the developers website you're looking at.
 
 <section class="blocks alt">
   <a class="bl two" href="/API/core/app-actions.html">
     <div>
-      <span class="pin">Open beta</span>
+      <span class="pin">Now available to all customers</span>
       <h4>App Actions</h4>
       <p>Learn how App Actions allow you to define scheduled and complex automations for your app screens and solve some challenging use cases.</p>
       <button>Browse documentation &rarr;</button>
@@ -17,9 +17,9 @@ This page lists upcoming changes and features that are going to be documented in
   </a>
   <a class="bl two" href="/Data-source-security.html">
     <div>
-      <span class="pin">Internal preview</span>
+      <span class="pin">Now available to all customers</span>
       <h4>Data Source Custom Access rules</h4>
-      <p>Learn how Data Sources will soon be able to support writing custom access rules having JavaScript.</p>
+      <p>Learn how Data Sources now support writing custom access rules with JavaScript code.</p>
       <button>Browse documentation &rarr;</button>
     </div>
   </a>
