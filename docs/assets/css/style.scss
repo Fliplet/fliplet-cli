@@ -1115,7 +1115,8 @@ h2, h3, h4, h5, h6 {
 }
 
 /* Highlighted text */
-.algolia-autocomplete .algolia-docsearch-suggestion--highlight {
+.algolia-autocomplete .algolia-docsearch-suggestion--highlight,
+.algolia-docsearch-suggestion--title em {
   color: #4c4019 !important;
   background: $warningColor !important;
 }
