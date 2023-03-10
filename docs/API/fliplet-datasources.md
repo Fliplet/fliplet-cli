@@ -336,14 +336,19 @@ You can use the `limit` and `offset` parameters to filter down the returned entr
 
 ```js
 // use limit and offset for pagination
-connection.find({ limit: 50, offset: 10 });
+connection.find({
+  limit: 50,
+  offset: 10
+});
 ```
 
 Full example:
 
 ```js
 Fliplet.DataSources.connect(123).then(function (connection) {
-  return connection.find({ limit: 1000 });
+  return connection.find({ limit: 1000 }).then(function (results) {
+
+  });
 });
 ```
 
@@ -354,18 +359,18 @@ connection.find({
   limit: 50,
   offset: 10,
   includePagination: true
-}).then(function (result) {
-  // result.entries []
-  // result.pagination = { total, limit, offset }
+}).then(function (response) {
+  // response.entries []
+  // response.pagination = { total, limit, offset }
 });
 ```
 
-Here's a sample of the result:
+Note that when using the above parameter, the returned object from the `find()` method changes from an array of records to an object with the following structure:
 
 ```json
 {
   "entries": [],
-  "dataSourceId": 709540,
+  "dataSourceId": 123456,
   "count": 50,
   "pagination": {
     "total": 1000,
