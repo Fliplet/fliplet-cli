@@ -332,6 +332,8 @@ connection.find({ attributes: [] }).then(function (records) {
 
 #### Fetch records with pagination
 
+You can use the `limit` and `offset` parameters to filter down the returned entries to a specific chunk (page) of the Data Source.
+
 ```js
 // use limit and offset for pagination
 connection.find({ limit: 50, offset: 10 });
@@ -343,6 +345,34 @@ Full example:
 Fliplet.DataSources.connect(123).then(function (connection) {
   return connection.find({ limit: 1000 });
 });
+```
+
+Moreover, the `includePagination` parameter enables the response to return the count of total entries in the Data Source:
+
+```js
+connection.find({
+  limit: 50,
+  offset: 10,
+  includePagination: true
+}).then(function (result) {
+  // result.entries []
+  // result.pagination = { total, limit, offset }
+});
+```
+
+Here's a sample of the result:
+
+```json
+{
+  "entries": [],
+  "dataSourceId": 709540,
+  "count": 50,
+  "pagination": {
+    "total": 1000,
+    "limit": 50,
+    "offset": 10
+  }
+}
 ```
 
 #### Join data from other dataSources
