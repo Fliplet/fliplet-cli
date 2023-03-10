@@ -375,9 +375,13 @@ Here's a sample of the result:
 }
 ```
 
+---
+
 #### Join data from other dataSources
 
 [View documentation for joining data from other data sources](datasources/joins.md)
+
+---
 
 #### Run aggregation queries
 
