@@ -8,6 +8,7 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## 2023
 
+- **March, 10th**: Added [new pagination options](https://developers.fliplet.com/API/fliplet-datasources.html#fetch-records-with-pagination) for the Data Source JS API
 - **February, 23rd**: Released new version 2.0.0 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html##releases-changelog) with improved SSL compatibility and logging.
 - **February, 21st**: Released new version 1.15.0 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html##releases-changelog) with improved logging when synchronizing files.
 - **February, 8th**: [Data Source security rules](/Data-source-security.html) are now required by all API tokens and DIS integrations when interacting with Data Sources
