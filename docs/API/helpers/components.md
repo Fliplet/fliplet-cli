@@ -62,7 +62,7 @@ Before you start copying the helper code into the component, open the `widget.js
 
 ## 4. Copy the interface configuration
 
-Copy all contents of the `configuration` property of your helper JS code and paste it into the `js/interface.js`` file of the component folder in the contents of the `Fliplet.Widget.generateInterface` function you will find in the boilerplate:
+Move all contents of the `configuration` property of your helper JS code and paste it into the `js/interface.js` file of the component folder in the contents of the `Fliplet.Widget.generateInterface` function you will find in the boilerplate:
 
 ```js
 // ---- js/interface.js
