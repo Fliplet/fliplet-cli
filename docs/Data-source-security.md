@@ -39,7 +39,8 @@ If you need more control on your security rules granting access to Data Sources,
 
 - `type` (String) the type of operation the user is attempting to run on the Data Source (`select`, `insert`, `update`, `delete`)
 - `user` (Object) the user's session with its data, when the user is logged in
-- `query` (Object) the input query (when reading data) or data to write (when inserting or updating an entry)
+- `query` (Object or Array) the input query (when reading data) or data to write (when inserting or updating an entry). When using the commit endpoint, this will be the array of entries being inserted or updated.
+- `entry` (Object) the existing entry being updated, if applicable
 
 ### Granting access with a custom security rule
 
@@ -91,6 +92,20 @@ if (type === 'insert') {
   query.CreatedAt = Date.now();
 
   return { granted: true };
+}
+```
+
+### Checking data when committing changes
+
+If the data source is being updated via the `commit` endpoint (or JS API), the input `query` will reflect the array of entries being inserted or updated — as **the security rule will be called twice** (once per operation).
+
+```js
+if (type === 'insert') {
+  // This code block will run when evaluating entries to be inserted
+  // "query" here is array of entries to insert
+} else if (type === 'update') {
+  // This code block will run when evaluating entries to be inserted
+  // "query" here is the array of entries to update
 }
 ```
 
