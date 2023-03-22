@@ -510,22 +510,26 @@ The following sample request applies the following changes to the data source:
 ```js
 connection.commit({
   entries: [
-    // insert a new entry
+    // Insert a new entry
     { data: { foo: 'bar' } },
 
-    // update the entry with ID 123
+    // Update the entry with ID 123
     { id: 123, data: { foo: 'barbaz' } }
   ],
 
-  // delete the entry with ID 456
+  // Delete the entry with ID 456
   delete: [456],
 
-  // ensure existing entries are unaffected
+  // Ensure existing entries are unaffected
   append: true,
 
-  // keep remote columns not sent with
+  // Keep remote columns not sent with
   // the updates of entry ID 123
-  extend: true
+  extend: true,
+
+  // Do not return the whole data source after updating the data.
+  // Keep this as "false" to speed up the response.
+  returnEntries: false
 });
 ```
 

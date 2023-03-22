@@ -42,6 +42,54 @@ If you need more control on your security rules granting access to Data Sources,
 - `query` (Object or Array) the input query (when reading data) or data to write (when inserting or updating an entry). When using the commit endpoint, this will be the array of entries being inserted or updated.
 - `entry` (Object) the existing entry being updated, if applicable
 
+Given the possible values of the `query` object, you may need to write your code in a way that it can handle all situations. Here's a full example of a security rule handling all scenarios at once:
+
+```js
+switch (type) {
+  case 'select':
+    // Check scenario when selecting records
+    // "query" here is the input query from the API request
+    return { granted: query.foo !== 'bar' };
+
+  case 'insert':
+    // Check scenario when inserting records.
+    // "query" here is the input data being inserted.
+    // It can also be an array when committing multiple records at once.
+    if (Array.isArray(query)) {
+      // Check each object in the input data
+      return { granted: query.every(data => data.foo === 'bar') };
+    }
+
+    // Check the input data
+    return { granted: query.foo === 'bar' };
+
+  case 'update':
+    // Check scenario when updating records.
+    // "query" here is the input data being updated.
+    // It can also be an array when committing multiple records at once.
+    // You will also receive the input "entry" object when applicable.
+    if (Array.isArray(query)) {
+      // Check each object in the input data
+      return { granted: query.every(data => data.foo === 'bar') };
+    }
+
+    // Check the input data to update and the existing entry
+    return { granted: query.foo === 'bar' && entry.data.foobar === true };
+
+  case 'delete':
+    // Check scenario when deleting records.
+    // "query" here is the input data being updated.
+    // It can also be an array when deleting multiple records at once.
+    if (Array.isArray(query)) {
+      // Check each object in the input data
+      return { granted: query.every(data => data.foo === 'bar') };
+    }
+
+    // Check the input data
+    return { granted: query.foo === 'bar' };
+}
+```
+
 ### Granting access with a custom security rule
 
 A rule needs to return an object with `granted: true` when access is granted to the user. The rule can also return an `exclude` array property alongside the same object with a list of columns that are not allowed to be read, written or updated.
