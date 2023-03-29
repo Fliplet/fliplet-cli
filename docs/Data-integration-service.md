@@ -1018,6 +1018,11 @@ Finally, make sure that **TLS 1.2 or 1.3** is [enabled on the OS settings](https
 
 ## Releases changelog
 
+#### 2.0.1 (March 29th, 2023)
+
+- Improved checksum validation for media files
+- The agent will now check whether the client version is the latest available on npm. When a version update is found, the user is be notified.
+
 #### 2.0.0 (February 23rd, 2023)
 
 - Improves SSL compatibility when running as a Windows Service (the agent will now trust self-signed certificates from proxies and company firewalls).

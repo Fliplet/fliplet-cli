@@ -8,6 +8,7 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## 2023
 
+- **March, 29th**: Released new version 2.0.1 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html##releases-changelog) with improved checksum validation for media files.
 - **March, 28th**: New iOS framework version 6.1.0 released with support for iOS 16.
 - **March, 10th**: Added [new pagination options](https://developers.fliplet.com/API/fliplet-datasources.html#fetch-records-with-pagination) for the Data Source JS API
 - **February, 23rd**: Released new version 2.0.0 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html##releases-changelog) with improved SSL compatibility and logging.
