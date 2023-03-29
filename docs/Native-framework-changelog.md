@@ -7,8 +7,8 @@ We regularly update our framework to support new features. If you have an older 
   <div class="bl two">
     <div>
       <h4>iOS</h4>
-      <p>Current release: <u>6.0.0</u></p>
-      <p>Target SDK version: 15</p>
+      <p>Current release: <u>6.1.0</u></p>
+      <p>Target SDK version: 16</p>
     </div>
   </div>
   <div class="bl two">
@@ -23,7 +23,11 @@ We regularly update our framework to support new features. If you have an older 
 
 ---
 
-## Supported versions (5.3.0+)
+## Supported versions
+
+### Version 6.1.0 (March 28, 2023)
+
+- **iOS**: The target SDK has now been set to iOS 16.
 
 ### Version 6.0.4 (October 17, 2022)
 
