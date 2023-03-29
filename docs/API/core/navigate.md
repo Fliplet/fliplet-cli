@@ -173,7 +173,7 @@ Fliplet.Navigate.exitApp();
 
 ## Play a video
 
-Play a video in full screen mode.
+Play a video in full screen.
 
 ```js
 Fliplet.Navigate.video(videoFileUrl);
