@@ -159,7 +159,9 @@ if (type === 'insert') {
 
 ### Reading data from other Data Sources
 
-Custom rules can also read data from different Data Sources using the `find` (for finding multiple records) and `findOne` (for finding a single record) methods of the `DataSource` server-side library:
+Custom rules can also read data from different Data Sources using the `find` (for finding multiple records) and `findOne` (for finding a single record) methods of the `DataSource` server-side library.
+
+When connecting to a Data Source, you can connect using the ID by passing a number or the Data Source name by passing a string. For example, to connect to a sample data source named "Users", you can use `DataSources('Users')`.
 
 ```js
 if (type === 'select') {
@@ -178,7 +180,7 @@ if (type === 'select') {
 }
 
 if (type === 'insert') {
-  var entries = await DataSources(123).find();
+  var entries = await DataSources('Users').find();
 
   // Only allow writes as long as there are less than 10 entries in the target Data Source
   if (entries && entries.length < 10) {
@@ -187,7 +189,7 @@ if (type === 'insert') {
 }
 ```
 
-As you can see, the `DataSource` function accepts the input ID of the target Data Source and exposes two interfaces for reading one or multiple records. Both `find` and `findOne` supports the following properties:
+As you can see, the `DataSource` function accepts the **input ID or name** of the target Data Source and exposes two interfaces for reading one or multiple records. Both `find` and `findOne` supports the following properties:
 
 - `where` (Object) query to run (supports common operators such as `$like`, `$iLike`, `$lt`, `$gt`, `$lte`, `$gte`, `$eq`, `$in`)
 - `limit` (Number, defaults to `100`)
