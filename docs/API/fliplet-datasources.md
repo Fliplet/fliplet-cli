@@ -456,6 +456,10 @@ connection.findOne({
 
 ### Find a record by its ID
 
+This is a code snippet for finding a record in a specific Data Source by its ID.
+
+The `findById()` method accepts a single parameter, which is the ID of the entry to search for in the Data Source. Once the entry has been found, it will be returned as a record object in the response, and the code inside the promise callback function will be executed.
+
 ```js
 connection.findById(1).then(function (record) {
   // records is the found object
