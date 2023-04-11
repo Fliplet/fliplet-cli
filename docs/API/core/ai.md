@@ -123,3 +123,30 @@ const result = await Fliplet.AI.createCompletion({
 AI features are currently available to a subset of paying customers. A rate limiting of **up to 10 requests per minute** is currently enforced throughout the entire AI JS API namespace.
 
 ---
+
+## Examples
+
+### Generate a form from the user's prompt
+
+```js
+Fliplet.Widget.getSchema("com.fliplet.form-builder").then(async function (schema) {
+  const message = `I want you to act as a JSON code generator. Below within ### you will find the a JSON schema of a Form Builder widget. This is the schema that defines the structure of the JSON code that is used to generate the form. The schema is as follows:
+  ###
+  ${JSON.stringify(schema)}
+  ###
+
+  Do not provide any explanations.
+
+  Generate the JSON code for the following form:
+
+  I want a form for a user to accept terms and conditions. The user should type their name and age. 18 is the minimum age required to submit the form. Add some sample content before the "I agree" and "do not agree" options to accept. Display a nice message to the user once the form is submitted.
+  `;
+
+  const chat = Fliplet.AI();
+
+  const result = await chat.ask(message);
+
+  // Print the output
+  console.log(JSON.parse(result));
+});
+```
