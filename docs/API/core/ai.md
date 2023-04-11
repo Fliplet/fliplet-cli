@@ -1,6 +1,6 @@
-# AI (Artificial Intelligence) JS API
+# AI (Artificial Intelligence)
 
-<p class="warning">AI features are currently available to a subset of paying customers.</p>
+<p class="warning">AI features are currently available to a subset of paying customers. These features are still in beta and are subject to change before they are released to all apps and customers.</p>
 
 The Fliplet AI JS API is built on top of the [OpenAI API](https://openai.com/docs/api-reference/) to provide developers with an easy way to build AI-powered applications.
 
@@ -10,9 +10,9 @@ These APIs empower your apps with OpenAI models such as `GPT 3.5` to do things l
 - Write JavaScript or JSON code
 - Answer questions about a set of documents
 - Create conversational agents
-- Give your software a natural language interface
+- Give your apps a natural language interface
 - Tutor in a range of subjects
-- Translate languages and much more
+- Translate app screens and much more
 
 ---
 
@@ -94,7 +94,7 @@ const result = await firstConversation.ask('Write a function to multiply two num
 const result2 = await secondConversation.ask('Write a welcome email for users that signed up to my website');
 ```
 
-### Create a completion
+### Manually construct a completion request
 
 When you need access to the [full range of completions options provided by OpenAI](https://platform.openai.com/docs/api-reference/completions/create), use the low-level `createCompletion` JS API:
 

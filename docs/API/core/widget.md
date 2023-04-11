@@ -14,27 +14,74 @@ Fliplet.Widget.getSchema("com.fliplet.form-builder").then(function (schema) {
 });
 ```
 
-### Get the widget instance id
+### Get the current widget instance id
 
-This method is usually meant to be called from a widget interface, to get the widget instance id if necessary.
-
-```js
-var id = Fliplet.Widget.getDefaultId();
-```
-
-### Get a widget instance data
-
-This method is usually meant to be called from a widget interface, to get the saved data. It also returns any data passed through the `data` query parameter for the interface URL.
+<p class="info">This method is usually meant to be called from a widget interface, to get the widget instance id if necessary.</p>
 
 ```js
-var data = Fliplet.Widget.getData();
+const id = Fliplet.Widget.getDefaultId();
 ```
 
-You can also get the data of a specific widget instance in the current page by passing its ID:
+### Get the current widget instance settings
+
+<p class="info">This method is usually meant to be called from a widget interface, to get the saved settings.</p>
+
+The returned settings also include any data passed through the `data` query parameter of the interface URL.
 
 ```js
-var data = Fliplet.Widget.getData(1);
+const settings = Fliplet.Widget.getData();
 ```
+
+### Get a widget instance settings by ID
+
+You can get the settings of a specific widget instance in the current page by passing its ID:
+
+```js
+const settings = Fliplet.Widget.getData(123);
+```
+
+If the widget instance does not belong to the current page, you can fetch its settings via the JS APIs:
+
+```js
+Fliplet.API.request('v1/widget-instances/123').then(function (response) {
+  // response.widgetInstance.settings
+})
+```
+
+### Update the settings of a widget instance
+
+You can use the following JS API to update a widget instance settings:
+
+```js
+Fliplet.API.request({
+  method: 'PUT',
+  url: 'v1/widget-instances/123',
+  data: {
+    // Include here the new settings
+    foo: 'bar',
+    bar: 'barbaz'
+  }
+}).then(function (result) {
+  // data has been saved
+});
+```
+
+Once a widget instance settings are updated, use this JS API to reload the widget instance being rendered on the Studio device preview frame:
+
+```js
+// Reloads widget instance 123
+Fliplet.Widget.instance(123);
+```
+
+If your code is running in a different context, e.g. a widget or helper configuration interface run this code instead:
+
+```js
+Fliplet.Studio.emit('widget-save-complete', {
+  data: result // use result from the save operation above
+});
+```
+
+---
 
 ### Get the URL to an asset from the relative path of a widget
 
