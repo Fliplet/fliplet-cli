@@ -7,6 +7,14 @@ description: Upcoming features to be added in the Fliplet Developer documentatio
 This page lists upcoming changes and features that have recently been documented in the developers website you're looking at.
 
 <section class="blocks alt">
+  <a class="bl two" href="/API/core/ai.html">
+    <div>
+      <span class="pin">Open beta</span>
+      <h4>AI</h4>
+      <p>Learn how to use and integrate AI (Artificial Intellicence) capabilities to your apps.</p>
+      <button>Browse documentation &rarr;</button>
+    </div>
+  </a>
   <a class="bl two" href="/API/core/app-actions.html">
     <div>
       <span class="pin">Now available to all customers</span>
@@ -15,22 +23,14 @@ This page lists upcoming changes and features that have recently been documented
       <button>Browse documentation &rarr;</button>
     </div>
   </a>
+</section>
+<hr />
+<section class="blocks alt">
   <a class="bl two" href="/Data-source-security.html">
     <div>
       <span class="pin">Now available to all customers</span>
       <h4>Data Source Custom Access rules</h4>
       <p>Learn how Data Sources now support writing custom access rules with JavaScript code.</p>
-      <button>Browse documentation &rarr;</button>
-    </div>
-  </a>
-</section>
-<hr />
-<section class="blocks alt">
-  <a class="bl two" href="/API/helpers/overview.html">
-    <div>
-      <span class="pin">Now available to all customers</span>
-      <h4>Helpers</h4>
-      <p>Fliplet Helpers have gone through a complete overhaul to enhance their functionality and list of use cases. See the new changes we released.</p>
       <button>Browse documentation &rarr;</button>
     </div>
   </a>

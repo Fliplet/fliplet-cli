@@ -80,11 +80,11 @@ Here's a short list of requested features that are coming up on our platform in 
       <button>Browse documentation &rarr;</button>
     </div>
   </a>
-  <a class="bl two" href="/API/core/localization.html">
+  <a class="bl two" href="/API/core/ai.html">
     <div>
-      <span class="pin">Available to all customers</span>
-      <h4>Localization</h4>
-      <p>Learn how to localize your component for different languages and regions.</p>
+      <span class="pin">Open beta</span>
+      <h4>AI</h4>
+      <p>Learn how to use and integrate AI (Artificial Intellicence) capabilities to your apps.</p>
       <button>Browse documentation &rarr;</button>
     </div>
   </a>

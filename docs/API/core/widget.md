@@ -2,6 +2,18 @@
 
 ## Core widget APIs
 
+### Get the JSON schema of a widget
+
+You can use this method to fetch the JSON schema of a widget. The following widget packages are currently supporting this feature:
+
+- `com.fliplet.form-builder`
+
+```js
+Fliplet.Widget.getSchema("com.fliplet.form-builder").then(function (schema) {
+  // Use the schema
+});
+```
+
 ### Get the widget instance id
 
 This method is usually meant to be called from a widget interface, to get the widget instance id if necessary.
