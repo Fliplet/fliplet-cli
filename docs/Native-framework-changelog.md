@@ -7,7 +7,7 @@ We regularly update our framework to support new features. If you have an older 
   <div class="bl two">
     <div>
       <h4>iOS</h4>
-      <p>Current release: <u>6.1.0</u></p>
+      <p>Current release: <u>6.2.0</u></p>
       <p>Target SDK version: 16</p>
     </div>
   </div>
@@ -24,6 +24,10 @@ We regularly update our framework to support new features. If you have an older 
 ---
 
 ## Supported versions
+
+### Version 6.2.0 (April 14, 2023)
+
+- **iOS**: Improved screen transitions for the launch screen on iPad.
 
 ### Version 6.1.0 (March 28, 2023)
 
