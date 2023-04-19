@@ -48,6 +48,47 @@ Fliplet.API.request('v1/widget-instances/123').then(function (response) {
 })
 ```
 
+### Create a new widget instance
+
+First, fetch widget IDs via [our API](https://api.fliplet.com/v1/widgets?fields=id,name,package). You can also fetch the `widgetId` for a specific package name, e.g. [see specific request](https://api.fliplet.com/v1/widgets?fields=id,name,package&package=com.fliplet.dynamic-lists) for the List from Data Source component.
+
+```js
+// Create a new widget instance for a screen
+Fliplet.API.request({
+  url: '/v1/widget-instances',
+  method: 'POST',
+  data: {
+    widgetId: 123, // from the list of widgets above
+    pageId: 456, // target screen ID
+    settings: { foo: 'bar' } // initial configuration for the widget
+  }
+})
+```
+
+### Fetch the HTML layout of a page
+
+```js
+Fliplet.API.request({
+  url: 'v1/apps/123/pages/456?richLayout'
+}).then(function (response) {
+  // response.page.richLayout
+})
+```
+
+### Update the HTML layout of a page
+
+Assuming a widget instance with ID 789, this endpoint updates the whole page content with the new layout you send.
+
+```js
+Fliplet.API.request({
+  url: 'v1/apps/123/pages/456/rich-layout',
+  method: 'PUT',
+  data: {
+    richLayout: '<fl-component cid="789"></fl-component>'
+  }
+})
+```
+
 ### Update the settings of a widget instance
 
 You can use the following JS API to update a widget instance settings:
