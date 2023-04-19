@@ -122,12 +122,17 @@ Fliplet.Widget.instance({
   name: 'decision-tree',
   displayName: 'Decision tree',
   render: {
-    // ...
+    ready: function () {
+      // Initialize children components when this widget is ready
+      Fliplet.Widget.initializeChildren(this.$el, this);
+    }
   }
 });
 ```
 
-As you may have guessed, your helper code only needs changing the base function name from `Fliplet.Helper` to `Fliplet.Widget.instance`, so it's just a simple copy and paste of the helper code you have.
+As you may have noticed, the only change required in your helper code is to replace the base function name from `Fliplet.Helper` to `Fliplet.Widget.instance`. Therefore, you can simply copy and paste the helper code you have.
+
+One small change you will need to make — as shown in the example above — is to call the `Fliplet.Widget.instance()` function once your widget is ready, if it has a `richContent` view which could contain children widgets that need to be initialized.
 
 ---
 

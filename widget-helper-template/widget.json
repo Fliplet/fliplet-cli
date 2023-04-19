@@ -7,6 +7,7 @@
   "provider_only": false,
   "references": [],
   "settings": {
+    "asyncRendering": true,
     "interfaceWidgetPackage": "com.fliplet.helper-configuration"
   },
   "html_tag": "div",
