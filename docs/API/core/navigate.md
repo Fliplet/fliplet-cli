@@ -10,15 +10,25 @@ Fliplet.Navigate.query;
 
 ### Navigate the app to the previous page
 
+This method is used to navigate back to the previous page or screen of the app.
+
 ```js
 Fliplet.Navigate.back();
 ```
 
+The method does not take any arguments, it simply causes a navigation action to be performed that takes the user back to the previous page or screen in the app. This method works by leveraging the browser's (or app's) history stack to determine the previous page visited by the user.
+
+This method can be useful in situations where the user needs the ability to go back to the previous page or screen in the app. For example, if the user has navigated to a new page or screen and wants to return to the previous one, they can use this method to do so.
+
 ### Navigate the app to a URL
+
+This method is used to navigate to a new page or screen in the app by providing a URL.
 
 ```js
 Fliplet.Navigate.url('http://fliplet.com');
 ```
+
+The method takes a single argument, which is a string representing the URL of the page or screen that the user should be navigated to. In this case, the URL being provided is "http://fliplet.com".
 
 The above will use the in-app browser by default so your users won't leave from the app. If you wish to use the device's system browser, you can pass `inAppBrowser: false` in the configuration as follows:
 
