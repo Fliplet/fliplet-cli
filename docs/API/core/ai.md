@@ -20,7 +20,7 @@ These APIs empower your apps with OpenAI models such as `GPT 3.5` to do things l
 
 The `Fliplet.AI()` function is used to initialize an instance of the AI APIs. It optionally supports the [OpenAI completion attributes](https://platform.openai.com/docs/api-reference/chat/create) as first argument. These include:
 
-- `model`: ID of the model to use. See the [model endpoint compatibility](https://platform.openai.com/docs/models/model-endpoint-compatibility) table for details on which models work with.This defaults to `gpt-3.5-turbo`.
+- `model`: ID of the model to use. See the [model endpoint compatibility](https://platform.openai.com/docs/models/model-endpoint-compatibility) table for details on which models work with. This defaults to `gpt-3.5-turbo`.
 - `temperature`: (Number, defaults to `1`) What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random, while lower values like 0.2 will make it more focused and deterministic.
 - `n`: (Number) How many chat completion choices to generate for each input message. Defaults to `1`.
 - `stop`: (String or Array) Up to 4 sequences where the API will stop generating further tokens, e.g. `["\n"]`
@@ -64,6 +64,7 @@ An example scenario looks as follows:
 
 ```js
 // Create a conversation instance
+// The temperature option controls how "creative" or unpredictable the chatbot's responses will be.
 const conversation = Fliplet.AI({ temperature: 1 });
 
 // Create a chat completion and wait for the result from the AI
@@ -77,10 +78,12 @@ const thirdResponse = await conversation.ask('Write a longer summary for the fir
 
 // You can also access a transcript of the whole conversation
 // via the "conversation.messages"
-messages.forEach(function (message) {
+conversation.messages.forEach(function (message) {
   // Each message has "role" and "content"
-})
+});
 ```
+
+The first message is sent to the "system" role, which likely means that the chatbot will respond with some kind of introduction or greeting. The second and third messages are not sent to any specific role, so they can be interpreted as follow-up questions or statements in an ongoing conversation.
 
 Typically, a conversation is formatted with a system message first, followed by alternating user and assistant messages.
 
@@ -135,7 +138,17 @@ const result = await Fliplet.AI.createCompletion({
 });
 ```
 
-Likewise, you can use the [chat completions OpenAI API](https://platform.openai.com/docs/api-reference/chat/create) with the same JS API by providing the `messages` attribute:
+This code uses the OpenAI API through the `Fliplet.AI` namespace to generate text completion using an AI model. The `result` variable in the example holds the response from the AI model.
+
+The `Fliplet.AI.createCompletion()` method takes several arguments to customize the text completion. In this case, it is passed an object with the following properties:
+
+- `model`: Indicates which AI model to use for text generation, in this case "text-davinci-003". This model is one of several language prediction models developed by OpenAI.
+- `prompt`: Specifies the text prompt to generate completion for. In this case, the prompt is "Say this is a test".
+- `max_tokens`: Controls how many tokens (words or characters) the AI should generate in response to the prompt. Here, it is set to 7.
+- `temperature`: Controls the "creativity" or randomness of the generated text. A higher temperature value produces more unpredictable responses. Here, the temperature is set to 0, which means the AI will always choose the most likely next token.
+
+
+Likewise, you can use the [chat completions OpenAI API](https://platform.openai.com/docs/api-reference/chat/create) with the same JS API by providing the `messages` attribute instead of `prompt`:
 
 ```js
 const result = await Fliplet.AI.createCompletion({
@@ -143,6 +156,13 @@ const result = await Fliplet.AI.createCompletion({
   messages: [{ role: 'user', content: 'Hello!' }]
 });
 ```
+
+In this case, it is passed an object with two properties:
+
+- `model`: Specifies the name of the AI model to use for generating text. If no model is specified, the default model used is 'gpt-3.5-turbo'.
+- `messages`: An array of objects representing the conversation messages between participants. In this case, there is only one message from the user with content "Hello!" and role "user".
+
+The GPT-3.5 Turbo model is one of several language prediction models developed by OpenAI, which generates human-like responses to prompts or message inputs. Here, the model will use the input message "Hello!" to generate a text completion response based on its trained knowledge about conversational English.
 
 ---
 
