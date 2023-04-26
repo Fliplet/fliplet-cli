@@ -78,47 +78,6 @@ For more details, check the JS API documentation for the [findWithCursor](/API/f
 
 ---
 
-## Hooks
-
-### containerDataRetrieved
-
-Use the `containerDataRetrieved` hook to mutate data before it gets sent to any children component in the dynamic container:
-
-```js
-Fliplet.Hooks.on('containerDataRetrieved', function(options) {
-  // options contains "container" and "data"
-
-  // e.g. mutate the data array/object before it's sent
-  options.data.push({ Name: 'Tony' });
-
-  // Return a promise if this callback should be async.
-});
-```
-
----
-
-### containerBeforeRetrieveData
-
-Use the `containerBeforeRetrieveData` hook to mutate data before it gets sent to the Data Source JS APIs for querying:
-
-```js
-Fliplet.Hooks.on('containerBeforeRetrieveData', function(options) {
-  // options contains "container" and "data"
-
-  // e.g. mutate the data
-  options.data.where = {
-    Office: 'London';
-  };
-
-  // change limit
-  options.data.limit = 10;
-
-  // Return a promise if this callback should be async.
-});
-```
-
----
-
 ## Advanced scenarios
 
 ### Load more data for infinite scroll
