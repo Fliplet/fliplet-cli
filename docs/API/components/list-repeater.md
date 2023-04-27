@@ -110,16 +110,29 @@ The following code will load the next page of the dataset when the user is appro
 $(window).on('scroll', _.throttle(updatePosition, 200));
 
 function updatePosition() {
-  // Check if the user is approaching the end of the screen
+  // Check if the user is approaching the end of the screen (200px from the bottom)
   if ($(window).scrollTop() + $(window).height() >= ($(document).height() - 200)) {
     loadMore();
   }
 }
 
+// Function to load the next page of the dataset
 function loadMore() {
   Fliplet.ListRepeater.get().then(function (repeater) {
     // Move to the next page of the dataset and keep existing entries in the cursor
-    container.context.next().update({ keepExisting: true });
+    repeater.rows.next().update({ keepExisting: true });
   });
 }
+```
+
+On the other hand, if you're paginating a list (e.g. moving the cursor between pages), you may need to manually refresh the list repeater:
+
+```js
+Fliplet.ListRepeater.get().then(function (repeater) {
+  // Move to the next page of the dataset
+  repeater.rows.next().update();
+
+  // Force the repeater to redraw the list
+  repeater.$forceUpdate();
+});
 ```

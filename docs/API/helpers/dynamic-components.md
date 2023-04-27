@@ -19,7 +19,7 @@ When the above property is set, the `parent` property of your instance will refe
 
 ### Data binding
 
-The dynamic container component exports a `$watch` function which you can use to automatically bind the external context to your helper's:
+You can use the Dynamic container's connection object to retrieve data from a data source:
 
 ```js
 Fliplet.Helper({
@@ -27,13 +27,20 @@ Fliplet.Helper({
   supportsDynamicContext: true,
   render: {
     ready() => {
-      // Watch for the parent context and trigger view updates on this helper
-      this.parent.$watch('context', ctx => this.set('foo', ctx));
+      // Get the connection object from the parent component
+      this.parent.connection().then((connection) => {
+        // Find all entries in the data source
+        return connection.findWithCursor(cursorData);
+      }).then((rows) => {
+        // Set the data to the helper
+        this.set('foo', rows);
+      });
     }
   }
 });
 ```
 
+<!--
 You can also automatically bind the parent context to your helper via the `watch`:
 
 ```js
@@ -43,6 +50,7 @@ Fliplet.Helper({
   watch: ['context']
 });
 ```
+-->
 
 Here's a working example of a helper using data from the dynamic container component:
 
@@ -52,7 +60,6 @@ Fliplet.Helper({
   displayName: 'Question',
   icon: 'fa-check',
   supportsDynamicContext: true,
-  watch: ['context'],
   render: {
     template:
       '{! each person in context !}' +
