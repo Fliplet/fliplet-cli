@@ -7,6 +7,7 @@ The `fliplet-datasources` package contains the following namespaces:
 
 - [Data Sources](#data-sources)
   - [Get the list of data sources for the current organization](#get-the-list-of-data-sources-for-the-current-organization)
+  - [Get the list of data sources in use by the current app](#get-the-list-of-data-sources-in-use-by-the-current-app)
   - [Get a data source by ID](#get-a-data-source-by-id)
   - [Create a new data source](#create-a-new-data-source)
   - [Connect to a data source by ID](#connect-to-a-data-source-by-id)
@@ -39,8 +40,25 @@ The `fliplet-datasources` package contains the following namespaces:
 
 ### Get the list of data sources for the current organization
 
+Use the `get` function to fetch the list of data sources for the current organization. You can optionally pass a list of `attributes` to return.
+
 ```js
-Fliplet.DataSources.get().then(function (dataSources) {});
+Fliplet.DataSources.get({ attributes: ['id', 'name'] }).then(function (dataSources) {
+  // dataSources is an array of data sources
+});
+```
+
+### Get the list of data sources in use by the current app
+
+Use the `appId` and `includeInUse` options together to get the list of data sources owned or in use by the current app.
+
+```js
+Fliplet.DataSources.get({
+  appId: Fliplet.Env.get('masterAppId'),
+  includeInUse: true
+}).then(function (dataSources) {
+ // dataSources is an array of data sources in use by the current app
+});
 ```
 
 ### Get a data source by ID
