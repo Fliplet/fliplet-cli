@@ -1,6 +1,20 @@
+---
+description: Navigate the app to a new page, screen, document or URL
+---
+
 # Navigate
 
 ## Query parameters
+
+### Set query parameters
+
+You can set query parameters when navigating to a screen by using the `query` attribute. This examples takes two arguments: the first argument is the screen to navigate to, and the second argument is an object containing the query parameters to set in the URL.
+
+```js
+Fliplet.Navigate.screen(123, { query: '?foo=bar&baz=qux' });
+```
+
+### Read query parameters
 
 If you need to read query parameters from the URL, you can use the `Fliplet.Navigate.query` object. This object will be populated with the query parameters of the current URL.
 
