@@ -15,6 +15,14 @@ e.g. if the current URL is `http://apps.fliplet.com/myapp?foo=bar&baz=qux`, the 
 
 Therefore, if you need to read the value of the `foo` parameter, you can do so by using `Fliplet.Navigate.query.foo`.
 
+Here is an example of how you can use the `Fliplet.Navigate.query` object:
+
+```js
+// If the current URL is http://apps.fliplet.com/myapp?foo=bar&baz=qux
+console.log(Fliplet.Navigate.query.foo); // bar
+console.log(Fliplet.Navigate.query.baz); // qux
+```
+
 ## Navigation methods
 
 ### Navigate the app to the previous page
