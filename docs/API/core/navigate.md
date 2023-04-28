@@ -2,9 +2,18 @@
 
 ## Query parameters
 
+If you need to read query parameters from the URL, you can use the `Fliplet.Navigate.query` object. This object will be populated with the query parameters of the current URL.
+
+e.g. if the current URL is `http://apps.fliplet.com/myapp?foo=bar&baz=qux`, the `Fliplet.Navigate.query` object will be:
+
 ```js
-Fliplet.Navigate.query;
+{
+  foo: 'bar',
+  baz: 'qux'
+}
 ```
+
+Therefore, if you need to read the value of the `foo` parameter, you can do so by using `Fliplet.Navigate.query.foo`.
 
 ## Navigation methods
 
