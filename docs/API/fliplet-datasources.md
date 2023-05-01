@@ -2,6 +2,39 @@
 
 The Data Source JS APIs allows you to interact and make any sort of change to your app's Data Sources from the app itself.
 
+The `fliplet-datasources` package contains the following namespaces:
+
+
+- [Data Sources](#data-sources)
+  - [Get the list of data sources for the current organization](#get-the-list-of-data-sources-for-the-current-organization)
+  - [Get the list of data sources in use by the current app](#get-the-list-of-data-sources-in-use-by-the-current-app)
+  - [Get a data source by ID](#get-a-data-source-by-id)
+  - [Create a new data source](#create-a-new-data-source)
+  - [Connect to a data source by ID](#connect-to-a-data-source-by-id)
+  - [Connect to a data source by Name](#connect-to-a-data-source-by-name)
+- [Connection instance methods](#connection-instance-methods)
+  - [Fetch records from a data source](#fetch-records-from-a-data-source)
+    - [Fetch all records](#fetch-all-records)
+    - [Fetch records with a query](#fetch-records-with-a-query)
+    - [Filter the columns returned when finding records](#filter-the-columns-returned-when-finding-records)
+    - [Fetch records with pagination](#fetch-records-with-pagination)
+    - [Fetch records with a pagination cursor](#fetch-records-with-a-pagination-cursor)
+    - [Join data from other dataSources](#join-data-from-other-datasources)
+    - [Run aggregation queries](#run-aggregation-queries)
+  - [Find a specific record](#find-a-specific-record)
+  - [Find a record by its ID](#find-a-record-by-its-id)
+  - [Replace the contents of the data source with new records](#replace-the-contents-of-the-data-source-with-new-records)
+  - [Insert an array of new records into a data source](#insert-an-array-of-new-records-into-a-data-source)
+  - [Commit changes at once to a data source](#commit-changes-at-once-to-a-data-source)
+  - [Insert a single record into the data source](#insert-a-single-record-into-the-data-source)
+  - [Update a record (entry)](#update-a-record-entry)
+  - [Import a file into the data sources](#import-a-file-into-the-data-sources)
+  - [Remove a record by its ID](#remove-a-record-by-its-id)
+  - [Remove entries matching a query](#remove-entries-matching-a-query)
+- [Define views to filter a data source](#define-views-to-filter-a-data-source)
+- [Configurable operations](#configurable-operations)
+  - [Automatically generate a unique ID for your entries](#automatically-generate-a-unique-id-for-your-entries)
+
 ---
 
 ## Data Sources
@@ -104,9 +137,10 @@ Fliplet.DataSources.connectByName("Attendees").then(function (connection) {
 
 ## Connection instance methods
 
-### Fetch all records from a data source
+### Fetch records from a data source
 
-Use the `find` method to fetch all records from a Data source
+#### Fetch all records
+
 ```js
 // use "find" with no options to get all entries
 connection.find().then(function (records) {
@@ -114,10 +148,214 @@ connection.find().then(function (records) {
 });
 ```
 
+#### Fetch records with a query
+
+Querying options are based on the [Sift.js](https://github.com/Fliplet/sift.js) operators, which mimic MongoDB querying operators. Here are the supported operators from Sift.js:
+
+  - `$in`, `$nin`, `$exists`, `$gte`, `$gt`, `$lte`, `$lt`, `$eq`, `$ne`, `$iLike`, `$mod`, `$all`, `$and`, `$or`, `$nor`, `$not`, `$size`, `$type`, `$regex`, `$elemMatch`
+
+The following operators and values are optimized to perform better with Fliplet's database.
+
+  - Operators: `$or`, `$and`, `$gte`, `$lte`, `$gt`, `$lt`, `$eq`
+  - Values: strings and numbers
+
+Fliplet also supports a custom `$filters` operator with some unique conditional logic such as case-insensitive match or date & time comparison. See example below.
+
+A few examples to get you started:
+
+```js
+// Find records where column "sum" is greater than 10 and column "name"
+// is either "Nick" or "Tony"
+connection.find({
+  where: {
+    sum: { $gt: 10 },
+    name: { $in: ['Nick', 'Tony'] }
+  }
+});
+
+// Find a case insensitive and partial match to the "Email" column. For e.g. it will match with bobsmith@email.com or Bobsmith@email.com or smith@email.com
+connection.find({
+  where: {
+    Email: { $iLike: 'BobSmith@email.com' }
+  }
+});
+
+// Find records where column "email" matches the domain "example.org"
+connection.find({
+  where: {
+    email: { $regex: /example\.org$/i }
+  }
+});
+
+// Nested queries using the $or operator: find records where either "name" is "Nick"
+// or "address" is "UK" and "name" is "Tony"
+connection.find({
+  where: {
+    $or: [
+      { name: 'Nick' },
+      { address: 'UK', name: 'Tony' }
+    ]
+  }
+});
+
+// Find records where the column "country" is not "Germany" or "France"
+// and "createdAt" is on or after a specific date
+connection.find({
+  where: {
+    country: { $nin: ['Germany', 'France'] },
+    createdAt: { $gte: '2018-03-20' }
+  }
+});
+
+// Use Fliplet's custom $filters operator
+// The "==" and "contains" conditions are optimized to perform better with Fliplet's database
+connection.find({
+  where: {
+    // Find entries that match ALL of the following conditions
+    $filters: [
+      // Find entries with a case insensitive match on the column
+      {
+        column: 'Email',
+        condition: '==',
+        value: 'user@email.com'
+      },
+      // Find entries where the column does not match the value
+      {
+        column: 'Email',
+        condition: '!=',
+        value: 'user@email.com'
+      },
+      // Find entries where the column is greater than the value
+      {
+        column: 'Size',
+        condition: '>',
+        value: 10
+      },
+      // Find entries where the column is greater than or equal to the value
+      {
+        column: 'Size',
+        condition: '>=',
+        value: 10
+      },
+      // Find entries where the column is less than the value
+      {
+        column: 'Size',
+        condition: '<',
+        value: 10
+      },
+      // Find entries where the column is less than or equal to the value
+      {
+        column: 'Size',
+        condition: '<=',
+        value: 10
+      },
+      // Find entries with a case insensitive partial match on the column
+      {
+        column: 'Email',
+        condition: 'contains',
+        value: '@email.com'
+      },
+      // Find entries where the column is empty based on _.isEmpty()
+      {
+        column: 'Tags',
+        condition: 'empty'
+      },
+      // Find entries where the column is not empty based on _.isEmpty()
+      {
+        column: 'Tags',
+        condition: 'notempty'
+      },
+      // Find entries where the column is in between 2 numeric values (inclusive)
+      {
+        column: 'Size',
+        condition: 'between',
+        value: {
+          from: 10,
+          to: 20
+        }
+      },
+      // Find entries where the column is one of the values
+      {
+        column: 'Category',
+        condition: 'oneof',
+        // value can also be a CSV string
+        value: ['News', 'Tutorial']
+      },
+      // Find entries where the column matches a date comparison
+      {
+        column: 'Birthday',
+        // Use dateis, datebefore or dateafter to match
+        // dates before and after the comparison value
+        condition: 'dateis',
+        value: '1978-04-30'
+        // Optionally provide a unit of comparison:
+        //  - year
+        //  - quarter
+        //  - month
+        //  - week
+        //  - day
+        //  - hour
+        //  - minute
+        //  - second
+        // unit: 'month'
+      },
+      // Find entries where the column is before the a certain time of the day
+      {
+        column: 'Start time',
+        condition: 'datebefore',
+        value: '17:30'
+      },
+      // Find entries where the column is after a timestamp
+      {
+        column: 'Birthday',
+        condition: 'dateafter',
+        // Provide a full timestamp for comparison in YYYY-MM-DD HH:mm format
+        value: '2020-03-10 13:03'
+      },
+      // Find entries where the column is between 2 dates (inclusive)
+      {
+        column: 'Birthday',
+        condition: 'datebetween',
+        from: {
+          value: '1978-01-01'
+        },
+        to: {
+          value: '1978-12-31'
+        }
+      }
+    ]
+  }
+});
+```
+
+#### Filter the columns returned when finding records
+
+Use the `attributes` array to optionally define a list of the columns that should be returned for the records.
+
+```js
+// use "find" with "attributes" to filter the columns returned
+connection.find({ attributes: ['Foo', 'Bar'] }).then(function (records) {
+  // records is an array
+});
+```
+
+You can also use this by passing an empty array as an efficient method to count the number of entries without requesting much data from the server:
+
+```js
+connection.find({ attributes: [] }).then(function (records) {
+  // use records.length as the number of records
+});
+```
+
+#### Fetch records with pagination
+
+You can use the `limit` and `offset` parameters to filter down the returned entries to a specific chunk (page) of the Data Source.
+
 ```js
 // use limit and offset for pagination
-connection.find({ limit: 50, offset: 10 }).then(function (records) {
-  // records is an array
+connection.find({
+  limit: 50,
+  offset: 10
 });
 ```
 
@@ -125,14 +363,41 @@ Full example:
 
 ```js
 Fliplet.DataSources.connect(123).then(function (connection) {
-  return connection.find({ limit: 1000 });
-}).then(function (records) {
-  records.forEach(function (row) {
-    // do something for each row, e.g. append it to a html tag
-    $('.foo').append(row.data.bar)
+  return connection.find({ limit: 1000 }).then(function (results) {
+
   });
 });
 ```
+
+Moreover, the `includePagination` parameter enables the response to return the count of total entries in the Data Source:
+
+```js
+connection.find({
+  limit: 50,
+  offset: 10,
+  includePagination: true
+}).then(function (response) {
+  // response.entries []
+  // response.pagination = { total, limit, offset }
+});
+```
+
+Note that when using the above parameter, the returned object from the `find()` method changes from an array of records to an object with the following structure:
+
+```json
+{
+  "entries": [],
+  "dataSourceId": 123456,
+  "count": 50,
+  "pagination": {
+    "total": 1000,
+    "limit": 50,
+    "offset": 10
+  }
+}
+```
+
+---
 
 ### Fetch records with a pagination cursor
 
@@ -193,106 +458,15 @@ function displayData(cursor) {
 }
 ```
 
+---
 
-### Find specific records
+#### Join data from other dataSources
 
-The `findOne` method allows you to look for up to one record, limiting the amount of entries returned if you're only looking for one specific entry.
+[View documentation for joining data from other data sources](datasources/joins.md)
 
-```js
-connection.findOne({
-  where: { name: 'John' }
-}).then(function (record) {
-  // record is either the found entry "object" or "undefined"
-});
-```
+---
 
-Querying options are based on the [Sift.js](https://github.com/Fliplet/sift.js) operators, which mimic MongoDB querying operators. Here's the supported operators:
-
-  - `$in`, `$nin`, `$exists`, `$gte`, `$gt`, `$lte`, `$lt`, `$eq`, `$ne`, `$iLike`, `$mod`, `$all`, `$and`, `$or`, `$nor`, `$not`, `$size`, `$type`, `$regex`, `$elemMatch`
-
-The following operators and values are optimized to perform better with Fliplet's database.
-
-  - Operators: `$or`, `$and`, `$gte`, `$lte`, `$gt`, `$lt`, `$eq`
-  - Values: strings and numbers
-
-All above operators are supported on `findOne` as well as `find`:
-
-```js
-// Find records where column "sum" is greater than 10 and column "name"
-// is either "Nick" or "Tony"
-connection.find({
-  where: {
-    sum: { $gt: 10 },
-    name: { $in: ['Nick', 'Tony'] }
-  }
-});
-
-// Find a case insensitive and partial match to the "Email" column. For e.g. it will match with bobsmith@email.com or Bobsmith@email.com or smith@email.com
-connection.find({
-  where: {
-    Email: { $iLike: 'BobSmith@email.com' }
-  }
-});
-
-// Find records where column "email" matches the domain "example.org"
-connection.find({
-  where: {
-    email: { $regex: /example\.org$/i }
-  }
-});
-
-// Nested queries using the $or operator: find records where either "name" is "Nick"
-// or "address" is "UK" and "name" is "Tony"
-connection.find({
-  where: {
-    $or: [
-      { name: 'Nick' },
-      { address: 'UK', name: 'Tony' }
-    ]
-  }
-});
-
-// Find records where the column "country" is not "Germany" or "France"
-// and "createdAt" is on or after a specific date
-connection.find({
-  where: {
-    country: { $nin: ['Germany', 'France'] },
-    createdAt: { $gte: '2018-03-20' }
-  }
-});
-
-```
-
-### Find a record by its ID
-
-```js
-connection.findById(1).then(function (record) {
-  // records is the found object
-});
-```
-
-### Filter the columns returned when finding records
-
-Use the `attributes` array to optionally define a list of the columns that should be returned for the records.
-
-```js
-// use "find" with "attributes" to filter the columns returned
-connection.find({ attributes: ['Foo', 'Bar'] }).then(function (records) {
-  // records is an array
-});
-```
-
-You can also use this by passing an empty array as an efficient method to count the number of entries without requesting much data from the server:
-
-```js
-connection.find({ attributes: [] }).then(function (records) {
-  return records.length;
-}).then(function (count) {
-  // use count
-});
-```
-
-### Run aggregation queries
+#### Run aggregation queries
 
 You can use the built-in [Mingo](https://github.com/kofrasa/mingo) library to run complex aggregation queries or projections on top of Data Sources. Mingo operations can be provided to the `find` method via the `aggregate` attribute:
 
@@ -308,12 +482,69 @@ connection.find({
       }
     }
   ]
-}).then(function (records) {
-  // user records as required
 });
 ```
 
 Please refer to the [Mingo](https://github.com/kofrasa/mingo) documentation to read more about all the different usages and types of aggregation queries.
+
+### Sort / order the results
+
+Use the `order` array of arrays to specify the sorting order for the returned entries.
+
+You can order by:
+- Fliplet columns: `id`, `order`, `createdAt`, `deletedAt`, `updatedAt`
+- Entry columns, using the `data.` prefix (e.g. `data.Email`)
+
+The order direction is either `ASC` for ascending ordering or `DESC` for descending ordering.
+
+The `order` array accepts a list of arrays, where each includes the column and sorting order:
+
+```js
+// Sort records by their created time (first records are newer)
+connection.find({
+  where: { Office: 'London' },
+  order: [
+    ['createdAt', 'DESC']
+  ]
+}).then(function (records) {
+  // ...
+});
+
+// Sort records alphabetically by their last name first and then first name
+connection.find({
+  where: { Office: 'London' },
+  order: [
+    ['data.LastName', 'ASC'],
+    ['data.FirstName', 'ASC']
+  ]
+}).then(function (records) {
+  // ...
+});
+```
+
+### Find a specific record
+
+The `findOne` method allows you to look for up to one record, limiting the amount of entries returned if you're only looking for one specific entry.
+
+```js
+connection.findOne({
+  where: { name: 'John' }
+}).then(function (record) {
+  // record is either the found entry "object" or "undefined"
+});
+```
+
+### Find a record by its ID
+
+This is a code snippet for finding a record in a specific Data Source by its ID.
+
+The `findById()` method accepts a single parameter, which is the ID of the entry to search for in the Data Source. Once the entry has been found, it will be returned as a record object in the response, and the code inside the promise callback function will be executed.
+
+```js
+connection.findById(1).then(function (record) {
+  // records is the found object
+});
+```
 
 ### Replace the contents of the data source with new records
 
@@ -363,22 +594,26 @@ The following sample request applies the following changes to the data source:
 ```js
 connection.commit({
   entries: [
-    // insert a new entry
+    // Insert a new entry
     { data: { foo: 'bar' } },
 
-    // update the entry with ID 123
+    // Update the entry with ID 123
     { id: 123, data: { foo: 'barbaz' } }
   ],
 
-  // delete the entry with ID 456
+  // Delete the entry with ID 456
   delete: [456],
 
-  // ensure existing entries are unaffected
+  // Ensure existing entries are unaffected
   append: true,
 
-  // keep remote columns not sent with
+  // Keep remote columns not sent with
   // the updates of entry ID 123
-  extend: true
+  extend: true,
+
+  // Do not return the whole data source after updating the data.
+  // Keep this as "false" to speed up the response.
+  returnEntries: false
 });
 ```
 
@@ -471,13 +706,6 @@ connection.query({
   where: { Email: 'test@fliplet.com' }
 });
 ```
-
----
-
-## Join data from other dataSources
-
-[View documentation on how to join data from other dataSources](datasources/joins.md)
-{: .buttons}
 
 ---
 
