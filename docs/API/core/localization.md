@@ -6,8 +6,6 @@ description: Customize your component to localize to different languages and reg
 
 The `Fliplet.Locale` JS API and Fliplet's localization framework allow you to customize your component to different languages and regions.
 
-<p class="quote"><strong>Early preview</strong>: this feature is currently in internal preview and it's not available to all our customers yet. Please get in touch with us if you want to learn more.</p>
-
 There are 3 key aspects of a component that can be localized to the device or browser language/region settings.
 
   - String translation

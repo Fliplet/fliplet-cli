@@ -34,7 +34,7 @@ Fliplet.FormBuilder.get('foo')
 
 The `form` instance variable above makes available the following instance methods.
 
-## Instance methods
+## Form instance methods
 
 ### `form.load(Function)`
 
@@ -365,6 +365,25 @@ Fliplet.FormBuilder.get()
     ]);
   });
 ```
+
+---
+
+## Field instance
+
+Use the field `instance` property (e.g. `form.field('name').instance`) to access the raw `Vue` instance oa form field.
+
+### Set a field as required
+
+Programmatically set a field as required using the raw field instance:
+
+```js
+Fliplet.FormBuilder.get()
+  .then(function (form) {
+    form.field('foo').instance.required = true;
+  });
+```
+
+---
 
 ## Hooks
 

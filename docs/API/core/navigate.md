@@ -212,6 +212,14 @@ When the App List component is used to build a portal app, the `Fliplet.Navigate
 Fliplet.Navigate.exitApp();
 ```
 
+## Play a video
+
+Play a video in full screen.
+
+```js
+Fliplet.Navigate.video(videoFileUrl);
+```
+
 ## Log out
 
 The `com.fliplet.link` link provider supports a log out action. The following code does the same thing as the provider.

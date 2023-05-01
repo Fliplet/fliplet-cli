@@ -2,20 +2,34 @@
 
 ## Core widget APIs
 
-### Get the widget instance id
+### Get the JSON schema of a widget
 
-This method is usually meant to be called from a widget interface, to get the widget instance id if necessary.
+You can use this method to fetch the JSON schema of a widget. The following widget packages are currently supporting this feature:
+
+- `com.fliplet.form-builder`
 
 ```js
-var id = Fliplet.Widget.getDefaultId();
+Fliplet.Widget.getSchema("com.fliplet.form-builder").then(function (schema) {
+  // Use the schema
+});
 ```
 
-### Get a widget instance data
+### Get the current widget instance id
 
-This method is usually meant to be called from a widget interface, to get the saved data. It also returns any data passed through the `data` query parameter for the interface URL.
+<p class="info">This method is usually meant to be called from a widget interface, to get the widget instance id if necessary.</p>
 
 ```js
-var data = Fliplet.Widget.getData();
+const id = Fliplet.Widget.getDefaultId();
+```
+
+### Get the current widget instance settings
+
+<p class="info">This method is usually meant to be called from a widget interface, to get the saved settings.</p>
+
+The returned settings also include any data passed through the `data` query parameter of the interface URL.
+
+```js
+const settings = Fliplet.Widget.getData();
 ```
 
 ### Get a widget instance settings by ID

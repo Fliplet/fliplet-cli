@@ -25,27 +25,78 @@ When editing the HTML templates, the {% raw %}`{{ }}`{% endraw %} templates are 
 
 The **List (from data source)** component exposes hooks that you can use to modify the component data and behavior. Here are the hooks and their specific life cycle:
 
-  - [`flListDataBeforeGetData`](#fllistdatabeforegetdata)
-  - [`flListDataAfterGetData`](#fllistdataaftergetdata)
-  - [`flListDataBeforeRenderList`](#fllistdatabeforerenderlist)
-  - [`flListDataAfterRenderList`](#fllistdataafterrenderlist)
-  - [`flListDataAfterRenderListSocial`](#fllistdataafterrenderlistSocial)
-  - [`flListDataBeforeRenderFilters`](#fllistdatabeforerenderfilters)
-  - [`flListDataAfterRenderFilters`](#fllistdataafterrenderfilters)
-  - [`flListDataSearchKeyUp`](#flListDataSearchKeyUp)
-  - [`flListDataSearchInput`](#flListDataSearchInput)
-  - [`flListDataBeforeDeleteConfirmation`](#fllistdatabeforedeleteconfirmation)
-  - [`flListDataBeforeDeleteEntry`](#fllistdatabeforedeleteentry)
-  - [`flListDataBeforeShowComments`](#flListdatabeforeshowcomments)
-  - [`flListDataAfterShowComments`](#flListdataaftershowcomments)
-  - [`flListDataBeforeNewComment`](#flListDataBeforeNewComment)
-  - [`flListDataAfterNewComment`](#flListDataAfterNewComment)
-  - [`flListDataAfterNewCommentShown`](#flListDataAfterNewCommentShown)
-  - [`flListDataBeforeUpdateComment`](#flListDataBeforeUpdateComment)
-  - [`flListDataAfterUpdateComment`](#flListDataAfterUpdateComment)
-  - [`flListDataAfterUpdateCommentShown`](#flListDataAfterUpdateCommentShown)
-  - [`flListDataBeforeDeleteComment`](#flListDataBeforeDeleteComment)
-  - [`flListDataAfterDeleteComment`](#flListDataAfterDeleteComment)
+- [List (from data source)](#list-from-data-source)
+  - [Templates](#templates)
+  - [Hooks](#hooks)
+    - [`flListDataBeforeGetData`](#fllistdatabeforegetdata)
+      - [Parameters](#parameters)
+      - [Usage](#usage)
+    - [`flListDataAfterGetData`](#fllistdataaftergetdata)
+      - [Parameters](#parameters-1)
+      - [Usage](#usage-1)
+    - [`flListDataBeforeRenderList`](#fllistdatabeforerenderlist)
+      - [Parameters](#parameters-2)
+    - [`flListDataAfterRenderList`](#fllistdataafterrenderlist)
+      - [Parameters](#parameters-3)
+    - [`flListDataAfterRenderListSocial`](#fllistdataafterrenderlistsocial)
+    - [`flListDataBeforeRenderFilters`](#fllistdatabeforerenderfilters)
+      - [Parameters](#parameters-4)
+    - [`flListDataAfterRenderFilters`](#fllistdataafterrenderfilters)
+      - [Parameters](#parameters-5)
+    - [`flListDataSearchKeyUp`](#fllistdatasearchkeyup)
+      - [Parameters](#parameters-6)
+    - [`flListDataSearchInput`](#fllistdatasearchinput)
+      - [Parameters](#parameters-7)
+    - [`flListDataBeforeDeleteConfirmation`](#fllistdatabeforedeleteconfirmation)
+      - [Parameters](#parameters-8)
+    - [`flListDataBeforeDeleteEntry`](#fllistdatabeforedeleteentry)
+      - [Parameters](#parameters-9)
+      - [Usage](#usage-2)
+    - [`flListDataBeforeShowComments`](#fllistdatabeforeshowcomments)
+      - [Parameters](#parameters-10)
+    - [`flListDataAfterShowComments`](#fllistdataaftershowcomments)
+      - [Parameters](#parameters-11)
+    - [`flListDataBeforeNewComment`](#fllistdatabeforenewcomment)
+      - [Parameters](#parameters-12)
+    - [`flListDataAfterNewComment`](#fllistdataafternewcomment)
+      - [Parameters](#parameters-13)
+    - [`flListDataAfterNewCommentShown`](#fllistdataafternewcommentshown)
+      - [Parameters](#parameters-14)
+    - [`flListDataBeforeUpdateComment`](#fllistdatabeforeupdatecomment)
+      - [Parameters](#parameters-15)
+    - [`flListDataAfterUpdateComment`](#fllistdataafterupdatecomment)
+      - [Parameters](#parameters-16)
+    - [`flListDataAfterUpdateCommentShown`](#fllistdataafterupdatecommentshown)
+      - [Parameters](#parameters-17)
+    - [`flListDataBeforeDeleteComment`](#fllistdatabeforedeletecomment)
+      - [Parameters](#parameters-18)
+    - [`flListDataAfterDeleteComment`](#fllistdataafterdeletecomment)
+      - [Parameters](#parameters-19)
+  - [Configurations](#configurations)
+    - [`getData`](#getdata)
+    - [`dataQuery`](#dataquery)
+    - [`beforeOpen`](#beforeopen)
+    - [`beforeShowDetails`](#beforeshowdetails)
+    - [`afterShowDetails`](#aftershowdetails)
+    - [`deleteData`](#deletedata)
+    - [`searchData`](#searchdata)
+    - [`searchMatch`](#searchmatch)
+    - [`computedFields`](#computedfields)
+    - [`dataPrimaryKey`](#dataprimarykey)
+    - [`filterOptions`](#filteroptions)
+    - [`summaryLinkAction`](#summarylinkaction)
+    - [`forceRenderList`](#forcerenderlist)
+  - [Query parameters](#query-parameters)
+    - [Contains vs Is one of](#contains-vs-is-one-of)
+    - [Examples](#examples)
+      - [Open entry with ID 123](#open-entry-with-id-123)
+      - [Execute a search with the search term "hello"](#execute-a-search-with-the-search-term-hello)
+      - [Apply in-app sorting based on the last name](#apply-in-app-sorting-based-on-the-last-name)
+      - [Render with an in-app filter and hide the filter bar](#render-with-an-in-app-filter-and-hide-the-filter-bar)
+      - [Apply in-app filters based on different Status and Office fields](#apply-in-app-filters-based-on-different-status-and-office-fields)
+      - [Apply in-app filters based on dates](#apply-in-app-filters-based-on-dates)
+      - [Load only data where the name contains John and the age is less than 29](#load-only-data-where-the-name-contains-john-and-the-age-is-less-than-29)
+      - [Load only data with the category is either Fruit or Vegetable](#load-only-data-with-the-category-is-either-fruit-or-vegetable)
 
 ### `flListDataBeforeGetData`
 
@@ -284,7 +335,7 @@ Fliplet.Hooks.on('flListDataBeforeDeleteConfirmation', fn);
 The hook is run before deleting an entry.
 
 ```js
-Fliplet.Hooks.on('flListDataBeforeDeleteConfirmation', fn);
+Fliplet.Hooks.on('flListDataBeforeDeleteEntry', fn);
 ```
 
 #### Parameters
@@ -718,7 +769,7 @@ Use the following query parameters when linking to a screen with **List (from da
   - **dynamicListSearchColumn** Column to execute a search against. If provided, the component configuration will be ignored. (Optional)
   - **dynamicListFilterValue** A comma-separated list of filter values to select. If `dynamicListFilterColumn` is not specified, all filters that match the value will be selected. **Note:** only filter values that are present in the dataset will be used. If the filter is based on a date range, use `..` to separate the start and end values, e.g. `2022-02-01..2022-03-01`.
   - **dynamicListFilterColumn** A comma-separated list of columns to select filter values within (optional). The number of columns provided must match the number of values provided. To select multiple values for a column, use `[]` to enclose the values and separate them by commas. e.g. `dynamicListFilterColumn=Tags,Category&dynamicListFilterValue=[Foo,Buzz],Enterprise%20software` selects the filters `Tags=Foo`, `Tags=Buzz` and `Category=Enterprise software`.
-  - **dynamicListFilterHideControls** (`true|false`) Hide the filter controls when filter values are applied from the query. (Default: `false`)
+  - **dynamicListFilterHideControls** (`true|false`) Hide the filter options when filter values are applied from the query. (Default: `false`). The UI for toggling filters will still be accessible.
   - **dynamicListPrefilterColumn** Pre-filter list based on the provided list of comma-separated column names.
   - **dynamicListPrefilterValue** Pre-filter list based on the provided list of comma-separated values for the column names. Any values that contain a comma (`,`) should be wrapped in URL-encoded double quotes (`%22`).
   - **dynamicListPrefilterLogic** Pre-filter list based on the provided list of comma-separated logic operators to be applied on the columns and values. The valid operators are:
