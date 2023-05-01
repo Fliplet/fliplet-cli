@@ -1,6 +1,24 @@
 # Dynamic Container JS APIs
 
-<p class="warning">This feature is currently available to beta users only.</p>
+The dynamic container allows you to dynamically load data from a data source in a screen. It is useful when you want to display a list of records in a screen using the [list repeater](/API/components/list-repeater.html) component.
+
+Here's a HTML sample of a dynamic container with a list repeater component rendering a dynamic value from the loaded data source entries:
+
+```html
+<fl-dynamic-container cid="123">
+  <view name="content">
+    <fl-repeater cid="456">
+      <view name="content">
+        <fl-text cid="34"><p>ID: {! entry.id !}</p></fl-text>
+      </view>
+    </fl-repeater>
+  </view>
+</fl-dynamic-container>
+```
+
+If you want to display a single record in a screen, for example a contact card, you can use the [record container](/API/components/record-container.html) component instead.
+
+---
 
 The following JS APIs are available in a screen once a **Dynamic container** component is dropped into the screen.
 
@@ -10,16 +28,16 @@ Since you can have many dynamic containers in a screen, we provide a handy funct
 
 ### `Fliplet.DynamicContainer.get()`
 
-Retrieves the first or a specific form instance.
+Retrieves the first or a specific dynamic container.
 
 ```js
-// Gets the first Dynamic Container instance
+// Gets the first dynamic container instance
 Fliplet.DynamicContainer.get()
   .then(function (container) {
     // Use container to perform various actions
   });
 
-// Gets the first Dynamic Container instance named 'foo'
+// Gets the first dynamic container instance named 'foo'
 Fliplet.DynamicContainer.get('foo')
   .then(function (container) {
     // Use container to perform various actions

@@ -1,6 +1,22 @@
 # Repeater JS APIs
 
-<p class="warning">This feature is currently available to beta users only.</p>
+The list repeater component is a container for a list of records. It is used to display a list of records from a data source.
+
+Here's a HTML sample of a list repeater component in a dynamic container rendering a dynamic value from the loaded data source entries:
+
+```html
+<fl-dynamic-container cid="123">
+  <view name="content">
+    <fl-repeater cid="456">
+      <view name="content">
+        <fl-text cid="34"><p>ID: {! entry.id !}</p></fl-text>
+      </view>
+    </fl-repeater>
+  </view>
+</fl-dynamic-container>
+```
+
+If you want to display a single record in a screen, for example a contact card, you can use the [record container](/API/components/record-container.html) component instead.
 
 The following JS APIs are available in a screen once a **Repeater** component is dropped into the screen.
 
@@ -10,7 +26,7 @@ Since you can have many list repeater components in a screen, we provide a handy
 
 ### `Fliplet.ListRepeater.get()`
 
-Retrieves the first or a specific form instance.
+Retrieves the first or a specific record container instance.
 
 ```js
 // Get the first repeater instance
