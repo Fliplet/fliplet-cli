@@ -150,7 +150,7 @@ The cursor is an array with the results. It also supports the following properti
 
 - `limit`: The page size (number of records per page).
 - `offset`: The current offset of records from the first page. This is 0 for the first page.
-- `currentPage`: The current page number.
+- `currentPage`: The current page number (`0` for the first page)
 - `isFirstPage` Whether the current page is the first one of the dataset.
 - `isLastPage`: Whether the current page is the last one of the dataset.
 - `query`: The options used for the first argument of the `findWithCursor` method.
