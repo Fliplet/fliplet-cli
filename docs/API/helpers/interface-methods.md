@@ -1,4 +1,4 @@
-# Methods
+# Helper Methods
 
 Both configuration interface and configuration fields have available the following methods to fetch details regarding children helpers nested into the current helper:
 

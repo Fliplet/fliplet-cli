@@ -1,4 +1,4 @@
-# External libraries
+# Helper External libraries
 
 Define a `dependencies` array to include libraries in your interfaces. These can include:
 
