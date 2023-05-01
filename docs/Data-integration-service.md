@@ -41,6 +41,8 @@ To synchronize your data with Fliplet servers you will need an authorization tok
 
 To generate a token, please follow the docs [here](REST-API/authenticate.md).
 
+<p class="warning">Please note that upon creating the API token you will also need to set up appropriate <a href="Data-source-security.html">Data Source security rules</a> on the specific <strong>API token</strong> for the Data Sources you will be reading or writing data to.</p>
+
 ---
 
 ## Minimum requirements
@@ -78,10 +80,12 @@ This is roughly the output you should see in your terminal:
 <div class="termynal1" data-termynal data-ty-typeDelay="40" data-ty-lineDelay="700">
   <span data-ty="input" data-ty-prompt="$ ~/User">npm install fliplet-agent -g</span>
   <span data-ty="progress" data-ty-progressChar="·"></span>
-  <span data-ty>+ fliplet-agent@1.14.1</span>
+  <span data-ty>+ fliplet-agent@2.0.0</span>
 </div>
 
 That's it! You can now jump to the [Get Started](#get-started) part of this documentation to create your first script.
+
+Note: on `Unix` and `macOS` you may need the `--force` option to install the agent as a global package.
 
 ---
 
@@ -100,7 +104,7 @@ npm config set prefix 'C:\MySharedFolder\'
 Once you have set up the global folder, simply install the agent to have it installed for all users:
 
 ```
-npm install fliplet-agent -g
+npm install fliplet-agent -g --force
 ```
 
 Note that each user must set its npm prefix to the shared folder before being able to use its packages.
@@ -125,7 +129,9 @@ You can now use the command `fliplet-agent` from the command line. Just type `fl
   <span data-ty="input" data-ty-prompt="">&nbsp;&nbsp;uninstall [path/to/config.js]       Uninstall a background service.</span>
 </div>
 
-### Troubleshooting installation errors
+---
+
+## Troubleshooting installation errors
 
 #### SSL Error: SELF_SIGNED_CERT_IN_CHAIN
 
@@ -149,15 +155,32 @@ Alternative, you can switch to use the HTTP version of the NPM registry:
 npm config set registry http://registry.npmjs.org/
 ```
 
+#### Installing on Mac
+
+When installing DIS on Mac, you may get an error due to your user not having permissions to install npm modules as global binaries (the `-g` option). To fix this, follow these steps:
+
+1. Type `npm config set prefix /usr/local` in your terminal
+2. Re-run the install command with the `sudo` prefix, e.g. `sudo npm install -g fliplet-agent --force`
+
+The `fliplet-agent` command should now work.
+
+Alternatively, you can install [Node Version Manager](https://github.com/nvm-sh/nvm) to avoid using sudo commands:
+
+1. Install nvm: `curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.2/install.sh | zsh`
+2. Install node 12: `nvm install 12`
+3. Re-run the DIS install command: `npm install -g fliplet-agent --force`
+
 ---
 
 ## Update the agent to the latest version
 
-If you need to update the agent to the latest version available on npm, run the following command from the Node.js shell:
+If you need to update the agent to the latest version available on npm, run the following command from the **Node.js command prompt**:
 
 ```
-npm update -g
+npm update fliplet-agent -g
 ```
+
+<p class="warning">Please make sure all <strong>Windows Services installed for the Fliplet Agent</strong> are stopped before updating the agent.</p>
 
 ---
 
@@ -201,7 +224,7 @@ description: Push my users to Fliplet every 15 minutes
 
 # If set to true, the sync will also run when the script starts.
 # Otherwise, it will only run according to the frequency setting above.
-sync_on_init: true
+sync_on_init: false
 
 # Frequency of running using unix cronjob syntax.
 # Syntax is [Minute] [Hour] [Day of month] [Month of year] [Day of week]
@@ -309,7 +332,7 @@ Any error found in your configuration will be printed out for you to look at.
 
 ### Troubleshoot errors with permissions
 
-The app token you have created via Fliplet Studio (see [documentation](REST-API/authenticate.md)) requires specific access to the Data Source you want to access via DIS. To grant such access to the app token, please copy its ID from the "App tokens" UI in Fliplet Studio. You then will need to paste such ID in the "Studio users permissions" tab of the Data Source after clicking the "Add new user" button:
+The API token you have created via Fliplet Studio (see [documentation](REST-API/authenticate.md)) requires specific access to the Data Source you want to access via DIS. To grant such access to the API token, please copy its ID from the "API tokens" UI in Fliplet Studio. You then will need to paste such ID in the "Studio users permissions" tab of the Data Source after clicking the "Add new user" button:
 
 ![img](assets/img/dis-permissions.png)
 
@@ -322,6 +345,8 @@ On Windows you can install any number instances of the agent to run as a service
 ```
 fliplet-agent install C:\path\to\sample.yml
 ```
+
+<p class="info">We strongly recommend turning the <code>sync_on_init</code> option off when installing the agent as a service, to ensure it only runs as its scheduled time rather than on startup.</p>
 
 Once you run the above command, you're likely to get asked for confirmation by the OS. A series of 3-4 popups similar to these ones will appear:
 
@@ -932,7 +957,7 @@ The agent logs all output messages (including debug messages and errors) to a `f
 
 For example, a Windows user called "John" will have its log file at `C:\Users\John\fliplet-agent.log`.
 
-Furthermore, when installed as a Windows Service you can monitor the logs through Windows Event Viewer, checking under the "Applications" logs.
+Furthermore, when installed as a Windows Service you can monitor the logs through Windows Event Viewer, checking under the "Applications" logs for the "Fliplet Agent (filename)" source name.
 
 ### List of messages logged by the agent
 
@@ -992,6 +1017,29 @@ Finally, make sure that **TLS 1.2 or 1.3** is [enabled on the OS settings](https
 ---
 
 ## Releases changelog
+
+#### 2.0.1 (March 29th, 2023)
+
+- Improved checksum validation for media files
+- The agent will now check whether the client version is the latest available on npm. When a version update is found, the user is be notified.
+
+#### 2.0.0 (February 23rd, 2023)
+
+- Improves SSL compatibility when running as a Windows Service (the agent will now trust self-signed certificates from proxies and company firewalls).
+- Improved logging: (1) all output to the log file and the terminal will include a prefix with the script name; (2) all events logged to Windows Events will include the script name as a suffix in the "Source" field.
+
+#### 1.15.0 (February 21st, 2023)
+
+- The log file found in the user's home directory under the name `fliplet-agent.log` will now keep any existing content (instead of cleaning up the file) when the jobs execute.
+- All errors produced when fetching images to be sync will now be reported in full to the log file and when forwarded to Windows Events.
+
+#### Data Source security rules enforcement (February 8th, 2023)
+
+- [Data Source security rules](/Data-source-security.html) are now required by all API tokens and DIS integrations when interacting with Data Sources
+
+#### 1.14.3 (November 21st, 2022)
+
+- Improved merge support on error handling when files can't be fetched from disk
 
 #### 1.14.2 (October 27th, 2022)
 

@@ -97,7 +97,7 @@ Possible values for the references are:
 - **app** (App ID)
 - **page** (page ID)
 - **dataSource** (Data Source ID)
-- **dataSourceView** (A Data Source view)
+- **dataSourceView** (A Data Source View)
 - **mediaFolder** (Media Folder ID)
 - **richContent** (A rich content view)
 

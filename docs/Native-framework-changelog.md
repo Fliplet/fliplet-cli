@@ -7,8 +7,8 @@ We regularly update our framework to support new features. If you have an older 
   <div class="bl two">
     <div>
       <h4>iOS</h4>
-      <p>Current release: <u>6.0.0</u></p>
-      <p>Target SDK version: 15</p>
+      <p>Current release: <u>6.2.0</u></p>
+      <p>Target SDK version: 16</p>
     </div>
   </div>
   <div class="bl two">
@@ -23,7 +23,15 @@ We regularly update our framework to support new features. If you have an older 
 
 ---
 
-## Supported versions (5.0.0+)
+## Supported versions
+
+### Version 6.2.0 (April 14, 2023)
+
+- **iOS**: Improved screen transitions for the launch screen on iPad.
+
+### Version 6.1.0 (March 28, 2023)
+
+- **iOS**: The target SDK has now been set to iOS 16.
 
 ### Version 6.0.4 (October 17, 2022)
 
@@ -45,6 +53,12 @@ We regularly update our framework to support new features. If you have an older 
 
 - **iOS**: Support for iOS 15.
 
+---
+
+## Deprecated versions
+
+Please note that these versions have limited support for newer Fliplet features. We encourage you to submit a new native update to your apps via the App Store or Google Play if you have users still running these versions of your app.
+
 ### Version 5.2.0 (Oct 19, 2021)
 
 - **Android**: Bugfix for apps built with the SDK30 not properly dismissing the virtual keyboard.
@@ -56,12 +70,6 @@ We regularly update our framework to support new features. If you have an older 
 ### Version 5.0.0 (Aug 3, 2021)
 
 - **Android**: Support for App Bundle files on Google Play and initial beta support for SDK 30.
-
----
-
-## Deprecated versions
-
-Please note that these versions have limited support for newer Fliplet features. We encourage you to submit a new native update to your apps via the App Store or Google Play if you have users still running these versions of your app.
 
 ### Version 4.6.0 (June 17, 2021)
 
