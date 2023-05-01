@@ -15,6 +15,12 @@ Here's a HTML sample of a record container with a text component rendering a dyn
 </fl-record-container>
 ```
 
+The record container automatically loads the data source entry based on the `dataSourceEntryId` query parameter, when available. If the query parameter is not available, the record container will not load any data.
+
+The entry loaded by the record container is available in the `entry` variable in the context of the components inside the record container.
+
+You can use the component's hooks to perform actions when the data is retrieved from the data source or before the data is retrieved. See the [hooks](#hooks) section below for more information.
+
 ---
 
 The following JS APIs are available in a screen once a **Record container** component is dropped into the screen.
