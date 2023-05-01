@@ -1,24 +1,65 @@
+---
+description: Navigate the app to a new page, screen, document or URL
+---
+
 # Navigate
 
 ## Query parameters
 
+### Set query parameters
+
+You can set query parameters when navigating to a screen by using the `query` attribute. This examples takes two arguments: the first argument is the screen to navigate to, and the second argument is an object containing the query parameters to set in the URL.
+
 ```js
-Fliplet.Navigate.query;
+Fliplet.Navigate.screen(123, { query: '?foo=bar&baz=qux' });
+```
+
+### Read query parameters
+
+If you need to read query parameters from the URL, you can use the `Fliplet.Navigate.query` object. This object will be populated with the query parameters of the current URL.
+
+e.g. if the current URL is `http://apps.fliplet.com/myapp?foo=bar&baz=qux`, the `Fliplet.Navigate.query` object will be:
+
+```js
+{
+  foo: 'bar',
+  baz: 'qux'
+}
+```
+
+Therefore, if you need to read the value of the `foo` parameter, you can do so by using `Fliplet.Navigate.query.foo`.
+
+Here is an example of how you can use the `Fliplet.Navigate.query` object:
+
+```js
+// If the current URL is http://apps.fliplet.com/myapp?foo=bar&baz=qux
+console.log(Fliplet.Navigate.query.foo); // bar
+console.log(Fliplet.Navigate.query.baz); // qux
 ```
 
 ## Navigation methods
 
 ### Navigate the app to the previous page
 
+This method is used to navigate back to the previous page or screen of the app.
+
 ```js
 Fliplet.Navigate.back();
 ```
 
+The method does not take any arguments, it simply causes a navigation action to be performed that takes the user back to the previous page or screen in the app. This method works by leveraging the browser's (or app's) history stack to determine the previous page visited by the user.
+
+This method can be useful in situations where the user needs the ability to go back to the previous page or screen in the app. For example, if the user has navigated to a new page or screen and wants to return to the previous one, they can use this method to do so.
+
 ### Navigate the app to a URL
+
+This method is used to navigate to a new page or screen in the app by providing a URL.
 
 ```js
 Fliplet.Navigate.url('http://fliplet.com');
 ```
+
+The method takes a single argument, which is a string representing the URL of the page or screen that the user should be navigated to. In this case, the URL being provided is "http://fliplet.com".
 
 The above will use the in-app browser by default so your users won't leave from the app. If you wish to use the device's system browser, you can pass `inAppBrowser: false` in the configuration as follows:
 

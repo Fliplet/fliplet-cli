@@ -2,44 +2,31 @@
 
 The Data Source JS APIs allows you to interact and make any sort of change to your app's Data Sources from the app itself.
 
-The `fliplet-datasources` package contains the following namespaces:
-
-  - [Data Sources JS APIs](#data-sources-js-apis)
-    - [Data Sources](#data-sources)
-      - [Get the list of data sources for the current organization](#get-the-list-of-data-sources-for-the-current-organization)
-      - [Create a new data source](#create-a-new-data-source)
-      - [Get a data source by ID](#get-a-data-source-by-id)
-      - [Connect to a data source by ID](#connect-to-a-data-source-by-id)
-      - [Connect to a data source by Name](#connect-to-a-data-source-by-name)
-    - [Connection instance methods](#connection-instance-methods)
-      - [Fetch all records from a data source](#fetch-all-records-from-a-data-source)
-      - [Fetch records with a pagination cursor](#fetch-records-with-a-pagination-cursor)
-      - [Find specific records](#find-specific-records)
-      - [Find a record by its ID](#find-a-record-by-its-id)
-      - [Filter the columns returned when finding records](#filter-the-columns-returned-when-finding-records)
-      - [Run aggregation queries](#run-aggregation-queries)
-      - [Replace the contents of the data source with new records](#replace-the-contents-of-the-data-source-with-new-records)
-      - [Insert an array of new records into a data source](#insert-an-array-of-new-records-into-a-data-source)
-      - [Commit changes at once to a data source](#commit-changes-at-once-to-a-data-source)
-      - [Insert a single record into the data source](#insert-a-single-record-into-the-data-source)
-        - [**Options: folderId**](#options-folderid)
-        - [**Options: ack**](#options-ack)
-      - [Update a record (entry)](#update-a-record-entry)
-      - [Import a file into the data sources](#import-a-file-into-the-data-sources)
-      - [Remove a record by its ID](#remove-a-record-by-its-id)
-    - [Join data from other dataSources](#join-data-from-other-datasources)
-    - [Define views to filter a data source](#define-views-to-filter-a-data-source)
-    - [Configurable operations](#configurable-operations)
-      - [Automatically generate a unique ID for your entries](#automatically-generate-a-unique-id-for-your-entries)
-
 ---
 
 ## Data Sources
 
 ### Get the list of data sources for the current organization
 
+Use the `get` function to fetch the list of data sources for the current organization. You can optionally pass a list of `attributes` to return.
+
 ```js
-Fliplet.DataSources.get().then(function (dataSources) {});
+Fliplet.DataSources.get({ attributes: ['id', 'name'] }).then(function (dataSources) {
+  // dataSources is an array of data sources
+});
+```
+
+### Get the list of data sources in use by the current app
+
+Use the `appId` and `includeInUse` options together to get the list of data sources owned or in use by the current app.
+
+```js
+Fliplet.DataSources.get({
+  appId: Fliplet.Env.get('masterAppId'),
+  includeInUse: true
+}).then(function (dataSources) {
+ // dataSources is an array of data sources in use by the current app
+});
 ```
 
 ### Get a data source by ID
