@@ -4,10 +4,10 @@ These public JS APIs will be automatically available in your screens once a **Ch
 
 ## Access the chat JS API
 
-Use the `init()` constuctor to initialize the chat JS API. This will return a promise that will resolve to the chat JS API instance.
+Use the `init()` constructor to initialize the chat JS API. This will return a promise that will resolve to the chat JS API instance. You can then use the instance to access the chat JS API methods.
 
 ```js
-// Initialize the chat JS API
+// Initialize the chat JS API and wait for it to be ready
 const chat = await Fliplet.Chat.init();
 ```
 
