@@ -2,6 +2,25 @@
 
 These public JS APIs will be automatically available in your screens once a **Chat layout** component is used. You can also include these by manually adding the `fliplet-chat` dependency to your app.
 
+## Access the chat JS API
+
+Use the `init()` constuctor to initialize the chat JS API. This will return a promise that will resolve to the chat JS API instance.
+
+```js
+// Initialize the chat JS API
+const chat = await Fliplet.Chat.init();
+```
+
+The chat instance has access to the following methods:
+
+- `chat.create()` - Create a new private conversation with one or more people
+- `chat.conversations()` - Get the list of conversations for the current user
+- `chat.contacts()` - Get the list of contacts available to chat with
+- `chat.unread.count()` - Get the number of unread messages for the current user
+- `chat.unread.get()` - Get the list of unread messages for the current user
+
+---
+
 ## Starting conversations
 
 ### Start/open a private conversation with a specific person
@@ -26,11 +45,48 @@ Fliplet.Navigate.screen(chatScreenId, {
 });
 ```
 
+### Navigate to the chat screen opening up a specific conversation
+
+Add a `conversationId` query parameter when navigating to a chat screen to open a specific conversation:
+
+```js
+// Fetch the first conversation's ID from the chat JS API
+const conversationId = _.first(await chat.conversations()).id;
+
+// Navigate to the chat screen opening up the first conversation
+Fliplet.Navigate.screen(123, '?conversationId=' + conversationId);
+```
+
 ---
 
 ## Hooks
 
-### Run a hook before the contacts are rendered
+### Run a hook before the conversations are displayed
+
+Use the `beforeChatConversationsRendering` hook to modify the list of conversations before they are displayed. The hook will receive the following data:
+
+- `data.conversations` - The list of conversations to be displayed
+- `data.container` - The chat component jQuery element
+
+```js
+Fliplet.Hooks.on('beforeChatConversationsRendering', function onBeforeChatConversationsRendering(data) {
+  // data.conversations
+});
+```
+
+Your hook can return a promise that will resolve to the modified list of conversations. For example, the following code will remove the last two conversations from the list:
+
+```js
+Fliplet.Hooks.on('beforeChatConversationsRendering', function onBeforeChatConversationsRendering(data) {
+  return { conversations: _.dropRight(data.conversations, 2) };
+});
+```
+
+### Run a hook before the contacts are displayed
+
+Use the `beforeChatContactsRendering` hook to modify the list of contacts before they are displayed. The hook will receive the following data:
+- `data.contacts` - The list of contacts to be displayed
+- `data.container` - The chat component jQuery element
 
 ```js
 Fliplet.Hooks.on('beforeChatContactsRendering', function onBeforeChatContactsRendering(data) {
@@ -38,9 +94,17 @@ Fliplet.Hooks.on('beforeChatContactsRendering', function onBeforeChatContactsRen
 });
 ```
 
+Your hook can return a promise that will resolve to the modified list of contacts. For example, the following code will remove the last two contacts from the list:
+
+```js
+Fliplet.Hooks.on('beforeChatContactsRendering', function onBeforeChatContactsRendering(data) {
+  return { contacts: _.dropRight(data.contacts, 2) };
+});
+```
+
 ---
 
-### Overwriting data to be rendered
+#### Overwriting data to be rendered
 
 The  `beforeChatContactsRendering` hook explained above can be useful to modify the contacts list data. In the example below we will add the url from files in the File Manager, by comparing their name to the name entered in the data source's column called "Image". The code seems complex because we are also taking into consideration that the data source column can contain urls, base64 strings and file ids:
 
@@ -101,17 +165,39 @@ Fliplet.Hooks.on('beforeChatContactsRendering', function onBeforeChatContactsRen
 
 ### Get the list of conversations for the current user
 
+Use the `conversations()` method to get the list of conversations for the current user. This will return a promise that will resolve to the list of conversations.
+
 ```js
-Fliplet.Chat.get().then(function (chat) {
-  return chat.conversations();
-}).then(function (conversations) {
-  // ...
-});
+const conversations = await chat.conversations();
 ```
+
+See the [Instance methods for the conversation object](#instance-methods-for-the-conversation-object) section below for more information on the conversation object.
 
 ### Instance methods for the conversation object
 
+The `conversations()` method returns a list of conversation objects. Each conversation object has the following methods and properties:
+
+- `conversation.participants` - Methods to manage the participants of the conversation
+- `conversation.messages` - Methods to manage the messages of the conversation
+- `conversation.contacts` - Methods to manage the contacts of the conversation
+- `conversation.mute()` - Mute notifications for the current user
+- `conversation.unmute()` - Receive notifications for the current user
+- `conversation.isMuted` - Check if the current user has muted notifications for the conversation
+
+
 #### Get the list of participants
+
+Use the `fetch()` method to get the list of participants for the conversation. This will return a promise that will resolve to the list of participants.
+
+Each participant object has the following properties:
+- `participant.id` - The Data source entry ID of the participant
+- `participant.data` - The Data source entry data of the participant, containing the full name, email, etc.
+
+```js
+const participants = await conversation.participants.fetch();
+```
+
+If you only need the list of internal chat IDs of the conversation participants, you can use the `get()` method instead:
 
 ```js
 const participants = conversation.participants.get();
@@ -119,12 +205,24 @@ const participants = conversation.participants.get();
 
 #### Add new participants to the conversation
 
+Use the `add()` method to add new participants to the conversation. This will return a promise that will resolve when the participants have been added. You can pass a single ID or an array of IDs.
+
+```js
+await conversation.participants.add(123);
+```
+
 ```js
 conversation.participants.add([
   1, 2, 3 // List of Data source entry ID for the participants to add
 ]).then(function () {
   // People have been added to the conversation
 });
+```
+
+The list of contacts can be fetched using the `chat.contacts()` method:
+
+```js
+const contacts = await chat.contacts();
 ```
 
 #### Remove participants from the conversation
@@ -136,6 +234,37 @@ conversation.participants.remove([
   // People have been removed from the conversation
 });
 ```
+
+#### Get the list of messages for the conversation
+
+Use the `fetch()` method to get the list of messages for the conversation. This will return a promise that will resolve to the list of messages.
+
+Each message object has the following properties:
+- `message.id` - The Data source entry ID of the message
+- `message.data` - The Data source entry data of the message, containing the message `body`, `files` and the sender in `fromUserId`
+- `message.createdAt` - The timestamp when the message was sent
+- `message.isReadByCurrentUser` - Whether the message has been read by the current user
+
+
+```js
+const messages = await conversation.messages.fetch();
+```
+
+To add a reference with the message to the sender's contact, you can use the following code:
+
+```js
+// Fetch the list of contacts for the chat
+const contacts = await chat.contacts();
+
+// Fetch the list of messages for the conversation
+const messages = await conversation.messages.fetch();
+
+// Loop through the messages and add a reference to
+// the sender's contact under the `user` property
+// by matching the `fromUserId` with the contact flUserId
+messages.forEach(message => message.user = _.find(contacts, c => c.data.flUserId === message.data.fromUserId));
+```
+
 
 #### Mute notifications for a conversation for the current user
 
@@ -159,20 +288,16 @@ conversation.unmute().then(function () {
 
 ---
 
-### Create a new private conversation with a group of people
+### Create a new private conversation with one or more people
 
-Use the Fliplet Chat JS APIs from the chat screen to create a new private conversation between multiple people.
+Use the `chat.create` method to create a new private conversation between multiple people.
 
 You do not need to list the current user's entry ID in the list of participants, as that will be included automatically by the system.
 
 ```js
-Fliplet.Chat.get().then(function (chat) {
-  return chat.create({
-    name: 'Running team', // Conversation name
-    participants: [1, 2, 3] // List of Data source entry ID for the participants
-  });
-}).then(function (conversation) {
-  // The conversation has been created
+const conversation = await return chat.create({
+  name: 'Running team', // Conversation name
+  participants: [1, 2, 3] // List of Data source entry ID for the participants
 });
 ```
 
@@ -247,6 +372,26 @@ Fliplet.API.request({
 }).then(function () {
   // Channel has been deleted
 })
+```
+
+---
+
+## Messages
+
+### Get the count of unread messages for the current user
+
+Use the `unread.count()` method to get the number of unread messages for the current user. This will return a promise that will resolve to the number of unread messages.
+
+```js
+const unreadCount = await chat.unread.count();
+```
+
+### Get the list of unread messages for the current user
+
+Use the `unread.get()` method to get the list of unread messages for the current user. This will return a promise that will resolve to the list of unread messages.
+
+```js
+const unreadMessages = await chat.unread.get();
 ```
 
 ---
