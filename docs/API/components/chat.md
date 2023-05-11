@@ -109,18 +109,21 @@ Fliplet.Hooks.on('beforeChatContactsRendering', function onBeforeChatContactsRen
 The  `beforeChatContactsRendering` hook explained above can be useful to modify the contacts list data. In the example below we will add the url from files in the File Manager, by comparing their name to the name entered in the data source's column called "Image". The code seems complex because we are also taking into consideration that the data source column can contain urls, base64 strings and file ids:
 
 ```js
-var folderId = 325;
-var imageColumn = 'Image';
+const folderId = 325;
+const imageColumn = 'Image';
 
 Fliplet.Hooks.on('beforeChatContactsRendering', function onBeforeChatContactsRendering(data) {
   return Fliplet.Media.Folders.get({ folderId: folderId }).then(function(response) {
-    var allFiles = response.files;
+    const allFiles = response.files;
+
     // Test pattern for URLS
-    var urlPattern = /^https?:\/\//i;
+    const urlPattern = /^https?:\/\//i;
+
     // Test pattern for BASE64 images
-    var base64Pattern = /^data:image\/[^;]+;base64,/i;
+    const base64Pattern = /^data:image\/[^;]+;base64,/i;
+
     // Test pattern for Numbers/IDs
-    var numberPattern = /^\d+$/i;
+    const numberPattern = /^\d+$/i;
 
     allFiles.forEach(function(file) {
       // Add this IF statement to make the URLs to work with encrypted organizations
@@ -295,7 +298,7 @@ Use the `chat.create` method to create a new private conversation between multip
 You do not need to list the current user's entry ID in the list of participants, as that will be included automatically by the system.
 
 ```js
-const conversation = await return chat.create({
+const conversation = await chat.create({
   name: 'Running team', // Conversation name
   participants: [1, 2, 3] // List of Data source entry ID for the participants
 });
@@ -310,11 +313,7 @@ const conversation = await return chat.create({
 You can get the list of public channel for a chat using the following method:
 
 ```js
-Fliplet.Chat.get().then(function (chat) {
-  return chat.channels.get();
-}).then(function (channels) {
-  console.log(channels);
-});
+const channels = await chat.channels.get();
 ```
 
 ### Create a channel
@@ -322,55 +321,16 @@ Fliplet.Chat.get().then(function (chat) {
 Channels can be created by simply running this simple snippet via custom code (or by running it in the console). Make sure to change the channel name with the actual words you want to use:
 
 ```js
-Fliplet.Chat.get().then(function (chat) {
-  return chat.channels.create('My channel name');
-}).then(function (channel) {
-  // Channel has been created
-});
-```
-
-<p class="quote">Please note that <strong>the above snippet only works in a screen with a chat component</strong>. If you want to create a channel from a different screen please use the low-level JS API that follows.</p>
-
-```js
-// Creates a chat public channel from any screen
-Fliplet.DataSources.create({
-  appId: Fliplet.Env.get('masterAppId'),
-  type: 'conversation',
-  name: 'My channel name',
-  definition: { participants: [], group: { public: true } },
-  bundle: false,
-  hooks: [{
-    runOn: ['insert'],
-    type: 'push-message',
-    appId: Fliplet.Env.get('appId')
-  }],
-  accessRules: [
-    { type: ['select', 'insert', 'update', 'delete'], allow: 'all' }
-  ]
-});
+const channel = await chat.channels.create('My channel name');
 ```
 
 ### Delete a channel
 
-You can delete a channel by using the `delete` instance method as follows:
+You can delete a channel by running the following snippet. Make sure to change the channel ID with the actual ID of the channel you want to delete:
 
 ```js
-Fliplet.Chat.get().then(function (chat) {
-  // Deletes a channel by its ID
-  return chat.channels.delete(123);
-}).then(function () {
-  // Channel has been deleted
-});
-```
-
-Likewise, you can also delete a channel from any screen using the low-level JS API:
-
-```js
-Fliplet.API.request({
-  method: 'DELETE',
-  url: 'v1/data-sources/123'
-}).then(function () {
-  // Channel has been deleted
+// Deletes a channel by its ID
+await chat.channels.delete(123);
 })
 ```
 
