@@ -78,15 +78,14 @@ Fliplet.DataSources.getById(123, {
 Use the `create` function to programmatically create a new data source.
 
 ```js
-Fliplet.DataSources.create({
-  name: 'foo',
-  organizationId: 1 // optional
-}).then(function (dataSource) {
-  // created
+Fliplet.DataSources.create({ name: 'foo' }).then(function (dataSource) {
+  // The data source has been created
 });
 ```
 
-If you don't want your data source to be displayed in the **Data Source Manager** in Fliplet Studio (available under the "App data" menu in the top header), simply add a specific `type` to it when it's being created, e.g.:
+If you don't want your data source to be displayed in the **Data Source Manager** in Fliplet Studio (available under the "App data" menu in the top header), simply add a specific `type` to it when it's being created, e.g. `type: 'comments'`.
+
+The following example creates a data source with 2 columns and 2 entries. It also attaches the data source to the current app and organization.
 
 ```js
 Fliplet.DataSources.create({
