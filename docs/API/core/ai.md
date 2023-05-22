@@ -228,5 +228,11 @@ Fliplet.Widget.getSchema("com.fliplet.data-sources").then(async function (schema
 
   // Print the output
   console.log(JSON.parse(result));
+
+  // Create the data source
+  return Fliplet.DataSources.create(_.extend({
+    appId: Fliplet.Env.get('appId'),
+    organizationId: Fliplet.Env.get('organizationId')
+  }, JSON.parse(result)));
 });
 ```
