@@ -7,6 +7,7 @@
 You can use this method to fetch the JSON schema of a widget. The following widget packages are currently supporting this feature:
 
 - `com.fliplet.form-builder`
+- `com.fliplet.data-sources`
 
 ```js
 Fliplet.Widget.getSchema("com.fliplet.form-builder").then(function (schema) {
