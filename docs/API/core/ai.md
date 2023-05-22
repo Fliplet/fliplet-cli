@@ -198,3 +198,35 @@ Fliplet.Widget.getSchema("com.fliplet.form-builder").then(async function (schema
   console.log(JSON.parse(result));
 });
 ```
+
+---
+
+### Generate a data source from the user's prompt
+
+```js
+Fliplet.Widget.getSchema("com.fliplet.data-sources").then(async function (schema) {
+  const message = `I want you to act as a JSON code generator. Below within ### you will find the a JSON schema of a Data Source. This is the schema that defines the structure of the JSON code that is used to generate the Data Source. The schema is as follows:
+  ###
+  ${JSON.stringify(schema)}
+  ###
+
+  Do not provide any explanations.
+
+  Generate the JSON code for the following data source:
+
+  I want a data source for a list of people. Each person should have the following fields:
+  - Name
+  - Age
+  - Email
+
+  Add 5 sample records to the data source. The data source should be called "People".
+  `;
+
+  const chat = Fliplet.AI();
+
+  const result = await chat.ask(message);
+
+  // Print the output
+  console.log(JSON.parse(result));
+});
+```
