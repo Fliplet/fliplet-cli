@@ -54,7 +54,7 @@ Add a `conversationId` query parameter when navigating to a chat screen to open 
 const conversationId = _.first(await chat.conversations()).id;
 
 // Navigate to the chat screen opening up the first conversation
-Fliplet.Navigate.screen(123, '?conversationId=' + conversationId);
+Fliplet.Navigate.screen(123, { query: '?conversationId=' + conversationId });
 ```
 
 ---
