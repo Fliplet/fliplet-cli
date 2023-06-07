@@ -68,4 +68,68 @@ The following [types](/Organization-audit-log-types.html) are filtered out by de
 
 ```
 
+### Get the aggregated logs for an organization
+
+#### `GET or POST v1/organizations/:id/analytics`
+
+Optional parameters:
+
+  - `startDate`: ISODATE String
+  - `endDate`: ISODATE String
+
+**Response  (Status code: 200 OK):**
+
+```json
+{
+  "appSessions": [{ "day": "2023-05-18", "count": 1 }],
+  "studioSessions": [{ "day": "2023-05-18", "count": 0 }],
+  "stats": {
+    "uniqueAppUsers": { "count": 0, "previousPeriodCount": 0 },
+    "totalAppUsers": { "count": 0, "previousPeriodCount": 0 },
+    "appSessions": { "count": 0, "previousPeriodCount": 0 },
+    "studioSessions": { "count": 0, "previousPeriodCount": 0 },
+    "studioUsers": { "count": 0, "previousPeriodCount": 0 },
+    "newStudioUsers": { "count": 0, "previousPeriodCount": 0 },
+    "appsCreated": { "count": 0, "previousPeriodCount": 0 },
+    "appsEdited": { "count": 0, "previousPeriodCount": 0 },
+    "appsPublished": { "count": 0, "previousPeriodCount": 0 }
+  },
+  "apps": [
+    {
+      "id": 1,
+      "name": "Sample App",
+      "createdAt": "2022-06-08T05:44:53.968Z",
+      "updatedAt": "2022-08-04T11:11:05.469Z",
+      "publishedAt": "2022-07-26T11:31:31.984Z",
+      "publishedAppleAt": "2022-07-26T11:31:31.984Z",
+      "publishedGoogleAt": "2022-07-26T11:31:31.984Z",
+      "publishedWebAt": "2022-06-08T05:49:50.076Z",
+      "stats": {
+        "users": { "count": 0, "previousPeriodCount": 0 },
+        "sessions": { "count": 0, "previousPeriodCount": 0 },
+        "events": { "count": 0, "previousPeriodCount": 0 },
+        "devices": { "count": 0, "previousPeriodCount": 0 },
+        "updates": { "count": 0, "previousPeriodCount": 0 },
+        "publishes": { "count": 0, "previousPeriodCount": 0 }
+      }
+    }
+  ],
+  "users": [
+    {
+      "id": 1,
+      "email": "foo@example.org",
+      "lastSeenAt": "2023-06-07T10:02:48.203Z",
+      "createdAt": "2022-05-10T07:17:17.944Z",
+      "stats": {
+        "studioSessions": { "count": 0 },
+        "viewerSessions": { "count": 0 },
+        "appPublishes": { "count": 0 },
+        "appsAvailable": { "count": 4 },
+        "appsCreated": { "count": 0 }
+      }
+    }
+  ]
+}
+```
+
 ---
