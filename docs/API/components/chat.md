@@ -328,6 +328,8 @@ Finally, any user having the code can join the conversation using the `chat.conv
 const conversation = await chat.conversations.join(inviteCode);
 ```
 
+<p class="warning">Make sure the <code>inviteCode</code> is securely stored to avoid issues with unauthorized access to the conversation.</p>
+
 ---
 
 ## Public channels
