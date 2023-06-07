@@ -304,6 +304,30 @@ const conversation = await chat.create({
 });
 ```
 
+#### Enable conversation sharing with an invite code
+
+If you want to enable the conversation to have an invite code that can be shared with other people to join the conversation, you can use the `allowInvite: true` parameter as shown in the following example:
+
+```js
+const conversation = await chat.create({
+  name: 'Running team', // Conversation name
+  participants: [1, 2, 3], // List of Data source entry ID for the participants
+  allowInvite: true // Allow the conversation to have an invite code
+});
+```
+
+You can then get the invite code for the conversation using the `getInviteCode()` function returning a promise that will resolve to the invite code:
+
+```js
+const inviteCode = await conversation.getInviteCode();
+```
+
+Finally, any user having the code can join the conversation using the `chat.conversations.join()` method passing the invite code as a parameter:
+
+```js
+const conversation = await chat.conversations.join(inviteCode);
+```
+
 ---
 
 ## Public channels
