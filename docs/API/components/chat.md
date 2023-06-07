@@ -331,7 +331,7 @@ const conversations = await conversations.get();
 const myConversation = _.find(conversations, c => _.get(c, 'definition.metadata.guid') === 'running-team'));
 ```
 
-#### Enable conversation sharing with an invite code
+### Enable conversation sharing with an invite code
 
 If you want to enable the conversation to have an invite code that can be shared with other people to join the conversation, you can use the `allowInvite: true` parameter as shown in the following example:
 

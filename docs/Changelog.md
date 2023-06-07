@@ -8,7 +8,7 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## 2023
 
-- **May, 10th**: Added new JS API for the chat component. See [Chat JS API](https://developers.fliplet.com/API/components/chat.html) for more details.
+- **June, 7th**: Added new JS API for the chat component. See [Chat JS API](https://developers.fliplet.com/API/components/chat.html) for more details.
 - **April, 14th**: New iOS framework version 6.2.0 released with improvements for screen transitions on iPad.
 - **April, 11th**: Added draft documentation for the upcoming [AI JS API](https://developers.fliplet.com/API/core/ai.html).
 - **March, 29th**: Released new version 2.0.1 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html##releases-changelog) with improved checksum validation for media files.
