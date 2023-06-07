@@ -304,6 +304,33 @@ const conversation = await chat.create({
 });
 ```
 
+### Add metadata to a conversation
+
+You can add metadata to a conversation by adding a `metadata` parameter to the `chat.create` method.
+
+```js
+const conversation = await chat.create({
+  name: 'Running team',
+  participants: [1, 2, 3],
+  allowInvite: true,
+  metadata: { guid: 'running-team' }
+});
+```
+
+The metadata can be retrieved at the `definition.metadata` property on the conversation object:
+
+```js
+const guid = _.get(conversation, 'definition.metadata.guid');
+```
+
+As an example, you can use the metadata to store the ID of a record in a data source that is related to the conversation and use it to find the conversation later on:
+
+```js
+const conversations = await conversations.get();
+
+const myConversation = _.find(conversations, c => _.get(c, 'definition.metadata.guid') === 'running-team'));
+```
+
 #### Enable conversation sharing with an invite code
 
 If you want to enable the conversation to have an invite code that can be shared with other people to join the conversation, you can use the `allowInvite: true` parameter as shown in the following example:
