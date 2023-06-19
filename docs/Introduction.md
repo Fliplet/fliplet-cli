@@ -50,6 +50,10 @@ A menu consists in a handlebars template, and optionally CSS and Javascript file
 
 ---
 
+All our components are open source and can be found at [github.com/fliplet](https://github.com/fliplet).
+
+---
+
 ## Development tools
 
 Our primary development tool is called [Fliplet CLI](https://github.com/Fliplet/fliplet-cli) (Command Line Interface), it's written in [Node.js](https://nodejs.org) and is available through [Npm](https://www.npmjs.com/package/fliplet-cli).
