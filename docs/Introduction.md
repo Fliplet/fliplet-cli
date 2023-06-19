@@ -8,6 +8,9 @@ We also support some preprocessors like [SASS](http://sass-lang.com/) and templa
 
 ## What can you build
 
+All of our components are open source and available on [github.com/fliplet](https://github.com/fliplet). Take a look at the variety of components you can create using Fliplet's platform below.
+
+
 ### App components
 
 App components will enable your apps to run Javascript on all screens of a Fliplet App. CSS files and HTML/Handlebars templates will also be available on all screens.
@@ -47,10 +50,6 @@ A theme consists in CSS (or SCSS) and Javascript files.
 Menus allow you to change the default header / top bar you in all Fliplet apps. It also contains the styles for when the hamburger menu is tapped and the list of the menu screens is presented to the user.
 
 A menu consists in a handlebars template, and optionally CSS and Javascript files.
-
----
-
-All our components are open source and can be found at [github.com/fliplet](https://github.com/fliplet).
 
 ---
 
