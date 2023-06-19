@@ -37,3 +37,12 @@ field.toggle(); // Toggle the field
 field.toggle(true); // Show the field
 field.toggle(false); // Hide the field
 ```
+
+### Access provider instance for a provider field
+
+```js
+var field = Fliplet.Helper.field('name');
+
+// Access the field provider instance and its methods
+field.provider.emit('event-name');
+```

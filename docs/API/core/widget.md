@@ -258,8 +258,11 @@ myProvider.then(function (data) {
 // The provider is triggered to start saving data
 myProvider.forwardSaveRequest();
 
-// You can also resolve an array of providers
-Fliplet.Widget.all([myProvider]).then(function (results) {
+// Trigger events to the provider
+myProvider.emit('event-name');
+
+// You can also resolve an array of providers (similar to Promise.all)
+Fliplet.Widget.all([myProviderA, myProviderB, myProviderC]).then(function () {
   // results is an array with data from all providers you resolved
 });
 ```

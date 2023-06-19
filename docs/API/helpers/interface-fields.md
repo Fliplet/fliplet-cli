@@ -231,6 +231,8 @@ Use a hidden field to save a value without showing an input to the user. This co
 A provider (Fliplet first-party component) to perform a variety of tasks. These are commonly used to reuse existing functionality, e.g. let the user choose a screen or a data source.
 
 - `package` (String) Name of the package e.g. `com.fliplet.link`)
+- `ready` (Function) Provider interface has been presented to the user
+- `onEvent` (Function) Listen for events fired from the provider
 - `mode` (String) If set to `full-screen`, the provider will be loaded to cover the entire configuration interface
 - `html` (String) When used in `full-screen` mode, this is the Handlebars template for defining a placeholder to launch the provider. Add an `data-open-provider` attribute to the element that would be used to open the provider. The available variables for the Handlebars context are:
   - `value` (*) Value of the field
@@ -247,7 +249,13 @@ Example for an inline provider:
   type: 'provider',
   name: 'action',
   label: 'Choose an action to do when the button is pressed',
-  package: 'com.fliplet.link'
+  package: 'com.fliplet.link',
+  ready: function(el, value, provider) {
+    // Link provider is rendered
+  },
+  onEvent: function(eventName, data) {
+    // Listen for events fired from the provider
+  }
 }
 ```
 
