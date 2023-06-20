@@ -8,7 +8,7 @@ We also support some preprocessors like [SASS](http://sass-lang.com/) and templa
 
 ## What can you build
 
-All of our components are open source and available on [github.com/fliplet](https://github.com/fliplet). Take a look at the variety of components you can create using Fliplet's platform below.
+[All of our components are open source](/open-source) and available on [github.com/fliplet](https://github.com/fliplet). Take a look at the variety of components you can create using Fliplet's platform below.
 
 
 ### App components
