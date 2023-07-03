@@ -185,6 +185,7 @@ The rate limiting for the AI JS API namespace is enforced based on the pricing p
 **Free Plan**
 - Per Day: 100 requests
 - Per Minute: 10 requests
+
 ---
 
 ## Examples
