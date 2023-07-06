@@ -70,7 +70,7 @@ if (server && ipRangeCheck(ipAddress, "170.18.0.1/24")) {
 }
 ```
 
-Or redirect to another screen:
+Or redirect the user to a specific screen of the app with a custom message:
 
 ```js
 if (server && !ipRangeCheck(ipAddress, "170.18.0.1/24")) {
@@ -81,7 +81,7 @@ if (server && !ipRangeCheck(ipAddress, "170.18.0.1/24")) {
 }
 ```
 
-Or redirect to another screen:
+Or redirect the user to another URL:
 
 ```js
 if (server && !ipRangeCheck(ipAddress, "170.18.0.1/24")) {
@@ -89,7 +89,9 @@ if (server && !ipRangeCheck(ipAddress, "170.18.0.1/24")) {
 }
 ```
 
-Note: `ipRangeCheck` always returns `true` when run on the `client`.
+<p class="warning">Your code must be able to handle connections from both IPv4 and IPv6 addresses. As an example, the <code>ipAddress</code> variable may have values such as <code>2001:db8:3333:4444:5555:6666:7777:8888</code> when the user is connected via an <strong>IPv6 address</strong>.</p>
+
+Additionally, please note that `ipRangeCheck` always returns `true` when run on the `client`.
 
 Since app hooks allow javascript code in the custom rule, you're free to declare the list of whitelisted IPs as follows:
 

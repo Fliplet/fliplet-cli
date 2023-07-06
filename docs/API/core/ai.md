@@ -1,6 +1,6 @@
 # AI (Artificial Intelligence)
 
-<p class="warning">AI features are currently available only to paying customers. These features are still in beta and are subject to change before they are released to all apps and customers.</p>
+<p class="warning">These features are still in beta and are subject to change before they are released to all apps and customers.</p>
 
 The Fliplet AI JS API is built on top of the [OpenAI API](https://openai.com/docs/api-reference/) to provide developers with an easy way to build AI-powered applications.
 
@@ -168,7 +168,23 @@ The GPT-3.5 Turbo model is one of several language prediction models developed b
 
 ## Rate limiting
 
-AI features are currently available only to paying customers. A rate limiting of **up to 10 requests per minute** is currently enforced throughout the entire AI JS API namespace.
+The rate limiting for the AI JS API namespace is enforced based on the pricing plan selected. The following table provides an overview of the rate limits for each pricing plan, including the maximum number of requests allowed per day and per minute.
+
+**Enterprise Plans (Enterprise, Bronze, Silver, Gold, Platinum)**
+- Per Day: 10,000 requests
+- Per Minute: 100 requests
+
+**Private and Private+ Plans**
+- Per Day: 10,000 requests
+- Per Minute: 100 requests
+
+**Public Plan**
+- Per Day: 1,000 requests
+- Per Minute: 100 requests
+
+**Free Plan**
+- Per Day: 100 requests
+- Per Minute: 10 requests
 
 ---
 
@@ -196,5 +212,43 @@ Fliplet.Widget.getSchema("com.fliplet.form-builder").then(async function (schema
 
   // Print the output
   console.log(JSON.parse(result));
+});
+```
+
+---
+
+### Generate a data source from the user's prompt
+
+```js
+Fliplet.Widget.getSchema("com.fliplet.data-sources").then(async function (schema) {
+  const message = `I want you to act as a JSON code generator. Below within ### you will find the a JSON schema of a Data Source. This is the schema that defines the structure of the JSON code that is used to generate the Data Source. The schema is as follows:
+  ###
+  ${JSON.stringify(schema)}
+  ###
+
+  Do not provide any explanations.
+
+  Generate the JSON code for the following data source:
+
+  I want a data source for a list of people. Each person should have the following fields:
+  - Name
+  - Age
+  - Email
+
+  Add 5 sample records to the data source. The data source should be called "People".
+  `;
+
+  const chat = Fliplet.AI();
+
+  const result = await chat.ask(message);
+
+  // Print the output
+  console.log(JSON.parse(result));
+
+  // Create the data source
+  return Fliplet.DataSources.create(_.extend({
+    appId: Fliplet.Env.get('appId'),
+    organizationId: Fliplet.Env.get('organizationId')
+  }, JSON.parse(result)));
 });
 ```

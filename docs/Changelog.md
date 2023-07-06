@@ -8,13 +8,15 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## 2023
 
+- **June, 8th**: Released new version 2.0.3 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html##releases-changelog) with new auto-retry for failed sync operations.
+- **June, 7th**: Added new JS API for the chat component. See [Chat JS API](https://developers.fliplet.com/API/components/chat.html) for more details.
 - **April, 14th**: New iOS framework version 6.2.0 released with improvements for screen transitions on iPad.
 - **April, 11th**: Added draft documentation for the upcoming [AI JS API](https://developers.fliplet.com/API/core/ai.html).
 - **March, 29th**: Released new version 2.0.1 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html##releases-changelog) with improved checksum validation for media files.
 - **March, 28th**: New iOS framework version 6.1.0 released with support for iOS 16.
 - **March, 10th**: Added [new pagination options](https://developers.fliplet.com/API/fliplet-datasources.html#fetch-records-with-pagination) for the Data Source JS API
-- **February, 23rd**: Released new version 2.0.0 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html##releases-changelog) with improved SSL compatibility and logging.
-- **February, 21st**: Released new version 1.15.0 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html##releases-changelog) with improved logging when synchronizing files.
+- **February, 23rd**: Released new version 2.0.0 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html#releases-changelog) with improved SSL compatibility and logging.
+- **February, 21st**: Released new version 1.15.0 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html#releases-changelog) with improved logging when synchronizing files.
 - **February, 8th**: [Data Source security rules](/Data-source-security.html) are now required by all API tokens and DIS integrations when interacting with Data Sources
 - **January, 16th**: Added documentation for [custom Data Source security rules](https://developers.fliplet.com/Data-source-security.html#custom-security-rules)
 
