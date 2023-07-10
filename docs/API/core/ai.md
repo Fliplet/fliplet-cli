@@ -1,6 +1,6 @@
 # AI (Artificial Intelligence)
 
-<p class="warning">AI features are currently available only to paying customers. These features are still in beta and are subject to change before they are released to all apps and customers.</p>
+<p class="warning">These features are still in beta and are subject to change before they are released to all apps and customers.</p>
 
 The Fliplet AI JS API is built on top of the [OpenAI API](https://openai.com/docs/api-reference/) to provide developers with an easy way to build AI-powered applications.
 
@@ -168,7 +168,23 @@ The GPT-3.5 Turbo model is one of several language prediction models developed b
 
 ## Rate limiting
 
-AI features are currently available only to paying customers. A rate limiting of **up to 10 requests per minute** is currently enforced throughout the entire AI JS API namespace.
+The rate limiting for the AI JS API namespace is enforced based on the pricing plan selected. The following table provides an overview of the rate limits for each pricing plan, including the maximum number of requests allowed per day and per minute.
+
+**Enterprise Plans (Enterprise, Bronze, Silver, Gold, Platinum)**
+- Per Day: 10,000 requests
+- Per Minute: 100 requests
+
+**Private and Private+ Plans**
+- Per Day: 10,000 requests
+- Per Minute: 100 requests
+
+**Public Plan**
+- Per Day: 1,000 requests
+- Per Minute: 100 requests
+
+**Free Plan**
+- Per Day: 100 requests
+- Per Minute: 10 requests
 
 ---
 

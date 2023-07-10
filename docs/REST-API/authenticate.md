@@ -53,7 +53,7 @@ Note: The token does not expire, but can be revoked at any time should you want 
 
 <p class="quote">Some API endpoints may require you to use the app's production ID for extra added security, since API tokens don't have access to the working draft apps you see in Studio. You can grab the production app's ID by heading to the <strong>https://api.fliplet.com/v1/apps/</strong> endpoint and verify the value for the <code>productionAppId</code> for the apps you have access to</p>
 
-Please note that you may need to set up appropriate Data Source [security rules](Data-source-security.md) on the API token for the Data Sources you are reading or writing data to.
+Please note that you may need to set up appropriate Data Source [security rules](/Data-source-security.html) on the API token for the Data Sources you are reading or writing data to.
 
 ---
 
