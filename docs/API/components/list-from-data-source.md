@@ -86,6 +86,7 @@ The **List (from data source)** component exposes hooks that you can use to modi
     - [`filterOptions`](#filteroptions)
     - [`summaryLinkAction`](#summarylinkaction)
     - [`forceRenderList`](#forcerenderlist)
+    - [`useApiFilters`](#useapifilters)
   - [Query parameters](#query-parameters)
     - [Contains vs Is one of](#contains-vs-is-one-of)
     - [Examples](#examples)
@@ -750,6 +751,15 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
 ### `forceRenderList`
 
 (Boolean) When a search/filter is applied to a list, the list is sometimes shortened by removing unneeded entries. Set this configuration to `true` so that every list render is forced to re-rendered instead of patching it. (**Default**: `false`)
+
+### `useApiFilters`
+
+(Boolean) To enable API filters, set the value to `true` when using any of the following features:
+
+- `flListDataAfterGetData` hook
+- `dataQuery` configuration
+- `computedFields` configuration
+
 
 ## Query parameters
 
