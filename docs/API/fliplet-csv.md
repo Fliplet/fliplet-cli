@@ -15,10 +15,11 @@ Fliplet.CSV.encode(data, options);
 ```
 
   - **data** (Object \| Array) JSON data to be encoded into CSV.
-  - **options** (Object) Optional configuration for further CSV encoding. See [Papa Parse documentation](https://www.papaparse.com/docs#json-to-csv) for more. **Note** Fliplet CSV uses `\n` as the newline sequence by default to maximize CSV shareability and support across all platforms. In addition, the following options are also supported:
+  - **options** (Object) Optional configuration for further CSV encoding. **Note** Fliplet CSV uses `\n` as the newline sequence by default to maximize CSV shareability and support across all platforms. In addition, the following options are also supported:
     - **base64** (Boolean) Set as `true` to encode the CSV data in Base64 encoding. (**Default**: `false`)
     - **dataUrl** (Boolean) Set as `true` to encode the CSV data as `data:` URL. (**Default**: `false`)
     - **columns** (Array) Include only the specified columns, in given order (**Default**: All columns)
+    - **config** (Object) See [Papa Parse documentation](https://www.papaparse.com/docs#json-to-csv) for the supported parameters supported by `Papa.unparse()`.
 
 The CSV JS API uses [Papa Parse](https://www.papaparse.com/) as the underlying engine. This means it's capable of generating CSV with different data formats. Examples:
 
