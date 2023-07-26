@@ -43,6 +43,8 @@ The Data Source REST APIs allows you to interact and make any sort of change to 
       - [`PUT v1/data-sources/<dataSourceId>/data`](#put-v1data-sourcesdatasourceiddata)
     - [Insert a new entry with files into a data source](#insert-a-new-entry-with-files-into-a-data-source)
       - [`PUT v1/data-sources/<dataSourceId>/data`](#put-v1data-sourcesdatasourceiddata-1)
+    - [Get unique values for indexes](#get-unique-values-for-indexes)
+      - [`GET v1/data-sources/<dataSourceId>/indexes/<indexes>`](#get-v1data-sourcesdatasourceidindexesindexes)
   - [Versioning](#versioning)
     - [Get list of versions of a data source](#get-list-of-versions-of-a-data-source)
     - [Get all entries for a version](#get-all-entries-for-a-version)
@@ -566,6 +568,31 @@ Sample response (Status code: 201 Created):
   "updatedAt": "2017-12-14T16:18:14.954Z",
   "createdAt": "2017-12-14T16:18:14.214Z",
   "deletedAt": null
+}
+```
+
+---
+
+### Get unique values for indexes
+
+#### `GET v1/data-sources/<dataSourceId>/indexes/<indexes>`
+
+e.g. `v1/data-sources/123/indexes/Name,Role.Name`
+
+Response (Status code: 200 OK):
+
+```json
+{
+    "indexes": {
+        "Name": [
+            "Foo",
+            "Bar"
+        ],
+        "Role.Name": [
+            "Manager",
+            "Developer"
+        ]
+    }
 }
 ```
 
