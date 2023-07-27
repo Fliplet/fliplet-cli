@@ -43,7 +43,7 @@ The Data Source REST APIs allows you to interact and make any sort of change to 
       - [`PUT v1/data-sources/<dataSourceId>/data`](#put-v1data-sourcesdatasourceiddata)
     - [Insert a new entry with files into a data source](#insert-a-new-entry-with-files-into-a-data-source)
       - [`PUT v1/data-sources/<dataSourceId>/data`](#put-v1data-sourcesdatasourceiddata-1)
-    - [Get unique values for indexes](#get-unique-values-for-indexes)
+    - [Get unique values for data source columns](#get-unique-values-for-data-source-columns)
       - [`GET v1/data-sources/<dataSourceId>/indexes/<indexes>`](#get-v1data-sourcesdatasourceidindexesindexes)
   - [Versioning](#versioning)
     - [Get list of versions of a data source](#get-list-of-versions-of-a-data-source)
@@ -573,9 +573,11 @@ Sample response (Status code: 201 Created):
 
 ---
 
-### Get unique values for indexes
+### Get unique values for data source columns
 
 #### `GET v1/data-sources/<dataSourceId>/indexes/<indexes>`
+
+Include the list of columns you need unique value as a comma separated list of column names.
 
 e.g. `v1/data-sources/123/indexes/Name,Role.Name`
 

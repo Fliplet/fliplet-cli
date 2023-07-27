@@ -31,7 +31,7 @@ The `fliplet-datasources` package contains the following namespaces:
   - [Remove a record by its ID](#remove-a-record-by-its-id)
   - [Remove entries matching a query](#remove-entries-matching-a-query)
   - [Get unique values for a column](#get-unique-values-for-a-column)
-  - [Get unique values for columns](#get-unique-values-for-columns)
+  - [Get unique values for multiple columns at once](#get-unique-values-for-multiple-columns-at-once)
 - [Define views to filter a data source](#define-views-to-filter-a-data-source)
 - [Configurable operations](#configurable-operations)
   - [Automatically generate a unique ID for your entries](#automatically-generate-a-unique-id-for-your-entries)
@@ -667,7 +667,7 @@ connection.query({
 
 ### Get unique values for a column
 
-Use the `getIndex` method to get unique values for a given index(column name)
+Use the `getIndex` method to get unique values for a given column of the Data Source:
 
 ```js
 connection.getIndex('name').then(function onSuccess(values) {
@@ -675,13 +675,14 @@ connection.getIndex('name').then(function onSuccess(values) {
 });
 ```
 
-### Get unique values for columns
+### Get unique values for multiple columns at once
 
-Use the `getIndexes` method to get unique values for a given array of indexes(column names)
+Use the `getIndexes` method to get unique values for a given array of columns of the Data Source:
 
 ```js
 connection.getIndexes(['name','email']).then(function onSuccess(values) {
   // an object having key representing each index and the value being the array of values
+  // e.g. { name: ['a', 'b'], email: ['c', 'd'] }
 });
 ```
 
