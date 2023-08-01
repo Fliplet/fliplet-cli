@@ -2,7 +2,7 @@
 
 ## Authentication
 
-Please head to the [how to authenticate](authenticate.md) page of the documentation to read more about how you can authorize your client to make API requests to Fliplet.
+Please head to the [how to authenticate](#organization-tokens) page of the documentation to read more about how you can authorize your client to make API requests to Fliplet.
 
 ---
 
@@ -131,5 +131,97 @@ Optional parameters:
   ]
 }
 ```
+
+---
+
+## Organization Tokens
+
+The following REST APIs enable you to handle organization tokens, facilitating authorized access to organization-specific REST APIs.
+
+---
+
+### Create your organization token
+
+#### `POST v1/organizations/:id/tokens`
+
+e.g. `v1/organizations/123/tokens`
+
+Request body:
+
+```json
+{
+  "name": "My token"
+}
+```
+
+Sample cURL request:
+
+```
+curl -X POST -H "Auth-token: eu--abcdef123456" -H "Content-Type: application/json" -d '{"name": "My token"}' "https://api.fliplet.com/v1/organizations/123/tokens"
+```
+
+Response  (Status code: 201 Created):
+
+```json
+{
+    "token": "eu--abcdef12345678",
+    "id": 1,
+    "name": "My token"
+}
+```
+
+---
+
+### Get your organization tokens
+
+#### `GET v1/organizations/:id/tokens`
+
+e.g. `v1/organizations/123/tokens`
+
+Sample cURL request:
+
+```
+curl -X GET -H "Auth-token: eu--abcdef123456" "https://api.fliplet.com/v1/organizations/123/tokens"
+```
+
+Response (Status code: 200 OK):
+
+```json
+{
+    "organizationTokens": [
+        {
+            "fullName": "My token",
+            "id": 1,
+            "firstName": "My token",
+            "lastName": null,
+            "email": "token@fliplet.com",
+            "type": "integrationToken",
+            "organizationUser": {
+                "createdAt": "2023-08-01T13:07:20.008Z",
+                "updatedAt": "2023-08-01T13:07:20.008Z",
+                "userId": 1,
+                "organizationId": 123,
+                "organizationRoleId": 3
+            }
+        }
+    ]
+}
+```
+
+---
+
+### Delete your organization token
+
+#### `DELETE v1/organizations/:orgId/tokens/:tokenId`
+
+e.g. `v1/organizations/123/tokens/1`
+
+Sample cURL request:
+
+```
+curl -X DELETE -H "Auth-token: eu--abcdef123456" "https://api.fliplet.com/v1/organizations/123/tokens/1"
+```
+
+Response status code: 200 (no body)
 
 ---
