@@ -138,8 +138,6 @@ Optional parameters:
 
 The following REST APIs enable you to handle organization tokens, facilitating authorized access to organization-specific REST APIs.
 
----
-
 ### Create your organization token
 
 #### `POST v1/organizations/:id/tokens`
@@ -169,6 +167,8 @@ Response  (Status code: 201 Created):
     "name": "My token"
 }
 ```
+
+Once you have a token, see [how to use it](authenticate.md) when making API requests.
 
 ---
 
