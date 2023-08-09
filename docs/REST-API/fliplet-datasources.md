@@ -82,9 +82,9 @@ Data sources requires access to be accessed to. Roles can have multiple permissi
 
 If an API token you're using doesn't have access to one of your organization data sources, you will need to grant permissions to it via Fliplet Studio:
 
-1. Go to the **App settings**<sup>1</sup> >> **API tokens**<sup>2</sup> section of Fliplet Studio
+1. Go to the **App settings**<sup>1</sup> >> **API tokens**<sup>2</sup> section of Fliplet Studio.
 2. Click **Edit**<sup>3</sup> for the token you need to add access to. This will list all the data sources accessible by the app in an overlay.
-3. In the overlay, find the data source you want to add the user to and click **Manage Security Rules**<sup>4</sup>
+3. In the overlay, find the data source you want to add the user to and click **Manage Security Rules**<sup>4</sup>.
 4. Set up the relevant security rules for your API token.
 
 ![img](../assets/img/app-token-security-1.jpg)
