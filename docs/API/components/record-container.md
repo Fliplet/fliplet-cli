@@ -70,7 +70,7 @@ Fliplet.RecordContainer.getAll().then(function (containers) {
 
 ## Hooks
 
-### repeaterDataRetrieved
+### `recordContainerDataRetrieved`
 
 This hook is triggered when the data is retrieved from the data source.
 
@@ -81,7 +81,7 @@ Attributes returned in the `options` object:
 - `vm`: the Vue instance of the widget
 
 ```js
-Fliplet.Hooks.on('repeaterDataRetrieved', function(options) {
+Fliplet.Hooks.on('recordContainerDataRetrieved', function(options) {
   // options contains "container", "entry" and "vm"
 });
 ```
