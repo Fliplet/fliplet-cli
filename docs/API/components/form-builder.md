@@ -469,6 +469,7 @@ Fliplet.Hooks.on('afterFormEntryLoad', function(data) {
   // form loads and gets entryID
 });
 ```
+
 ### beforeRichFieldInitialize
 
 Runs when a **Rich text** field type is about to initialize. You can use this hook to make changes to the `config` initialization object which is then passed to **TinyMCE** after the hook runs.
