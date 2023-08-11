@@ -387,6 +387,16 @@ Fliplet.FormBuilder.get()
 
 ## Hooks
 
+### afterLoadForm
+
+Runs when the form is loaded. The `data` parameter contains the data loaded into the form.
+
+```js
+Fliplet.Hooks.on('afterFormEntryLoad', function (data) {
+ return Promise.resolve(data);
+});
+```
+
 ### isFormInvalid
 
 Runs when the form is found in valid after submission. The `invalidFields` parameter contains a collection of fields that are invalid.
