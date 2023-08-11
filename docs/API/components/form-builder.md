@@ -387,7 +387,7 @@ Fliplet.FormBuilder.get()
 
 ## Hooks
 
-### afterLoadForm
+### afterFormEntryLoad
 
 Runs when the form is loaded. The `data` parameter contains the data loaded into the form.
 
