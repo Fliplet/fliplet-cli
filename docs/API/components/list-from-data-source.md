@@ -87,6 +87,9 @@ The **List (from data source)** component exposes hooks that you can use to modi
     - [`summaryLinkAction`](#summarylinkaction)
     - [`forceRenderList`](#forcerenderlist)
     - [`useApiFilters`](#useapifilters)
+    - [`getLikeIdentifier`](#getlikeidentifier)
+    - [`getBookmarkIdentifier`](#getbookmarkidentifier)
+    - [`getCommentIdentifier`](#getcommentidentifier)
   - [Query parameters](#query-parameters)
     - [Contains vs Is one of](#contains-vs-is-one-of)
     - [Examples](#examples)
@@ -760,6 +763,60 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
 - `dataQuery` configuration
 - `computedFields` configuration
 
+### `getLikeIdentifier`
+
+(Function) Use a custom function to compute the unique identifier when generating a _Like_ entry.
+
+For example:
+
+```js
+Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
+  // Customize the like identifier
+  options.config.getLikeIdentifier = function(data) {
+    return {
+      entryId: data.id + '-like',
+      pageId: Fliplet.Env.get('pageId')
+    };
+  };
+});
+```
+
+**Quirk** This is particularly useful because _Likes_ are specific to the page whereas _Bookmarks_ and _Comments_ are not. To make the _Like_ entries accessible across all pages, remove the `pageId` from the identifier.
+
+### `getBookmarkIdentifier`
+
+(Function) Use a custom function to compute the unique identifier when generating a _Bookmark_ entry.
+
+For example:
+
+```js
+Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
+  // Customize the bookmark identifier
+  options.config.getBookmarkIdentifier = function(data) {
+    return {
+      entryId: data.id + '-bookmark'
+    };
+  };
+});
+```
+
+### `getCommentIdentifier`
+
+(Function) Use a custom function to compute the unique identifier when generating a _Comment_ entry.
+
+For example:
+
+```js
+Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
+  // Customize the comment identifier
+  options.config.getCommentIdentifier = function(data) {
+    return {
+      contentDataSourceEntryId: data.id,
+      type: 'comment'
+    };
+  };
+});
+```
 
 ## Query parameters
 
