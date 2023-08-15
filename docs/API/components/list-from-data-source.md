@@ -781,7 +781,7 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
 });
 ```
 
-**Quirk** This is particularly useful because _Likes_ are specific to the page whereas _Bookmarks_ and _Comments_ are not. To make the _Like_ entries accessible across all pages, remove the `pageId` from the identifier.
+This is particularly useful because _Likes_ are specific to the page whereas _Bookmarks_ and _Comments_ are not. To make the _Like_ entries accessible across all pages, remove the `pageId` from the identifier.
 
 ### `getBookmarkIdentifier`
 
