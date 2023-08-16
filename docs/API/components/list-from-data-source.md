@@ -774,7 +774,7 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
   // Customize the like identifier
   options.config.getLikeIdentifier = function(data) {
     return {
-      entryId: data.id + '-like',
+      entryId: data.record.id + '-like'
       pageId: Fliplet.Env.get('pageId')
     };
   };
@@ -794,7 +794,7 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
   // Customize the bookmark identifier
   options.config.getBookmarkIdentifier = function(data) {
     return {
-      entryId: data.id + '-bookmark'
+      entryId: data.record.id + '-bookmark'
     };
   };
 });
@@ -811,7 +811,7 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
   // Customize the comment identifier
   options.config.getCommentIdentifier = function(data) {
     return {
-      contentDataSourceEntryId: data.id,
+      contentDataSourceEntryId: data.record.id,
       type: 'comment'
     };
   };
