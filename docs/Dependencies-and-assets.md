@@ -1,6 +1,6 @@
 # Dependencies and assets
 
-Both **components** and **themes** can specify a list of dependencies and local assets which should be used when rendering it.
+**Components**, **themes**, **menus** and **functions** can specify a list of dependencies and local assets which should be used when rendering it.
 
 ---
 
@@ -23,13 +23,13 @@ Example of dependencies:
 
 It's worth saying that in the above example `fliplet-media` will also include `fliplet-core` as it's a dependency of it. Likewise, `fliplet-core` will include `jquery` too because is required for it to work.
 
-Note: **components can specify different dependencies for their interface and build output**, since they will most likely be different.
+Note: **components, themes and menus can specify different dependencies for their interface and build output**, since they will most likely be different.
 
 ---
 
 ## Assets
 
-Components and themes using assets such as Javascript, CSS and font files **should never include them directly in the html**. This is by design, because assets get bundled from the server engine when sent to the devices to be consumed.
+Components, themes and functions using assets such as Javascript, CSS and font files **should never include them directly in the html**. This is by design, because assets get bundled from the server engine when sent to the devices to be consumed.
 
 Therefore, all assets that requires to be bundled will need to be listed in the **assets** of the component (or theme) definition.
 

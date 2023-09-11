@@ -4,7 +4,13 @@ description: Configure your app screens to run scheduled or ad-hoc operation in 
 
 # App Actions
 
-The **App Actions** library allows you to configure app screens to run automatically at a scheduled time or carry out an ad-hoc operations and automations in the cloud.
+The **App Actions** library allows you to configure a pipeline of functions to run either on-device or in the cloud, either ad-hoc or at a scheduled time.
+
+![How it works](/assets/img/app-actions-v2.png)
+
+---
+
+Additionally, our first generation (now deprecated) app actions allow you to configure app screens to run as app actions. The code defined in the custom Javascript of the screen will be executed when the screen is triggered by an app action (see more below).
 
 ![How it works](/assets/img/app-actions.png)
 
@@ -22,10 +28,10 @@ The **App Actions** library allows you to configure app screens to run automatic
 
 ## Data models and key concepts
 
-1. An app action consists in a unique `name`, a target `pageId` (the screen to run) and optional `frequency` and `timezone`.
-2. An app action can be created as **scheduled** (when using the `frequency` parameter) or to be run **on-demand**.
-3. Only **up to 5 app** actions can be defined for each app.
-4. An app action runs the target app screen in the cloud. A result can be given back by the screen both when running on a schedule and when on-demand.
+1. An app action consists in a unique `name`, an optional `frequency`, `timezone` and `triggers`.
+2. An app action has a pipeline of `functions` (2nd gen), or a target `pageId` (1st gen).
+3. An app action can be created as **scheduled** (when using the `frequency` parameter) or to be run **on-demand**. Additionally, our 2nd generation actions can be triggered by external events (e.g. a data source being updated). This can be configured via the `triggers` property.
+4. An app action can contain a pipeline of functions to run either locally (on device) or remote, or target an app screen to run in the cloud. A result can be given back by the screen both when running on a schedule and when on-demand.
 5. An app action is **limited to 30 seconds of execution time**. After 30 seconds, the action will be killed and a specific timeout error will be returned and saved in the logs.
 6. The payload for on-demand actions is **limited to 2048 characters**.
 7. The result sent from an on-demand app action is **limited to 6MB**.
@@ -34,7 +40,105 @@ The **App Actions** library allows you to configure app screens to run automatic
 
 ---
 
-## Configuring the target screen
+## 2nd generation app actions
+
+Our latest iteration of app actions require you to define a pipeline of functions to execute when the action runs. Additionally, functions can be nested into sub-pipelines.
+
+First, you want to fetch the array of functions available in the system:
+
+```js
+Fliplet.App.Tasks.Functions.get().then(function (listOfFunctions) {
+  // ...
+});
+```
+
+Each function has the following properties:
+
+- `id`: the Fliplet ID (formerly `widgetId`) of the function
+- `name`: the display name of the function
+- `package`: the package name of the function
+
+Here'a a sample code that creates a new app action with a pipeline of function.
+
+In the example, widget `123` is Fliplet's first-party `com.fliplet.function.if` function that behaves like an [if statement](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/if...else) and evaluates the contents of the input payload and checks if `foo` is `true`. If so, it will execute widget `456` with the given settings. If `foo` is `false`, the function will be skipped.
+
+```js
+Fliplet.App.Actions.create({
+  name: 'sayHello',
+  functions: [
+    {
+      widgetId: 123,
+      settings: {
+        condition: "foo === true"
+      },
+      functions: [
+        { widgetId: 456, settings: { message: "Hello world" } }
+      ]
+    }
+  ]
+})
+```
+
+Each function will be executed with the configured settings. An additional payload can be added when calling the action:
+
+```js
+Fliplet.App.Actions.run('sayHello', { foo: true });
+```
+
+### Action triggers
+
+An action can be triggered as a result of a system event (e.g. a data source being updated, a log entry being created). You can configure the triggers for an action using the `triggers` property.
+
+These are the available types of triggers:
+
+- `log`: A log entry is created.
+
+The following example creates an action that is triggered when a log entry is created with a `type` of `dataSource.entry.create` (i.e. a new entry is created in a data source) in the data source with ID 789:
+
+```js
+Fliplet.App.Actions.create({
+  name: 'send-email-on-error',
+  triggers: [
+    {
+      trigger: 'log',
+      where: { operation: 'dataSource.entry.create', dataSourceId: 789 }
+    }
+  ],
+  functions: [
+    { widgetId: 456, settings: { } }
+  ]
+});
+```
+
+The `context` of the app action will contain the `trigger` name as well as the `log` object that triggered it. See an example below:
+
+```js
+{
+  trigger: "log",
+  log: {
+    id: 123,
+    appId: 2,
+    organizationId: 3,
+    dataSourceId: 789,
+    dataSourceEntryId: 4,
+    appNotificationId: null,
+    sessionId: 1,
+    type: "dataSource.entry.create",
+    data: {
+      columns: [
+        "foo"
+      ],
+    },
+    createdAt: "2023-09-13T15:50:50.797Z"
+  },
+}
+```
+
+---
+
+## 1st generation app actions for screens
+
+### Configuring the target screen
 
 <p class="warning"><strong>[Required]</strong> Before you create an app action, <strong>your target app screen must be configured</strong> as described below to ensure it's ready to process inbound requests made by the app action when running on a schedule or on-demand.</p>
 
@@ -48,7 +152,7 @@ To start, use the `Fliplet.Page.onRemoteExecution()` function to register your c
 Fliplet.Page.onRemoteExecution(function (payload) {
   // This code will run when the screen is triggered by an app action.
 
-  // Here you can access the `payload` sent to the action when it was called. 
+  // Here you can access the `payload` sent to the action when it was called.
 
   // Here you can return the result to be send back to the user (if running an on-demand action)
   // or stored in the produced log.
@@ -62,9 +166,9 @@ That's simply it! Once you have added the above handler to the target screen you
 
 ---
 
-## Creating an app action
+### Creating a page app action
 
-Use the `create` JS API to create an app action. These are the supported parameters:
+Use the `create` JS API to create a page app action. These are the supported parameters:
 
 - `name` (String) a name for the action. Only numbers, letters, dashes and underscores are supported (e.g. `hello-world-123`)
 - `pageId` (Number) the target screen ID
@@ -328,12 +432,12 @@ Fliplet.App.Actions.remove('confirm-booking').then(function () {
 
 ## Testing and debugging an action
 
-Once you have created an app action and added the code you want to run to the `onRemoteExecution()` function you should test it and see if it running as expected. Note that you cannot use developer tools to view your console.log inside the `onRemoteExecution()` function as this is running on the server side. Here is the general steps to test an app action: 
+Once you have created an app action and added the code you want to run to the `onRemoteExecution()` function you should test it and see if it running as expected. Note that you cannot use developer tools to view your console.log inside the `onRemoteExecution()` function as this is running on the server side. Here is the general steps to test an app action:
 
-1. Create the app action 
-2. Add code to `onRemoteExecution()` that you want to run in the app action. 
-3. Call the app action on demand and log the returned data to see if it working as expected. 
-4. If there are multiple steps in your code then move the `return Promise.resolve()` to the point where you want to see the data available. 
+1. Create the app action
+2. Add code to `onRemoteExecution()` that you want to run in the app action.
+3. Call the app action on demand and log the returned data to see if it working as expected.
+4. If there are multiple steps in your code then move the `return Promise.resolve()` to the point where you want to see the data available.
 
 ```js
 // If an app action called 'test-action' exists then we can call in on another screen
@@ -356,7 +460,7 @@ Fliplet.Page.onRemoteExecution(function (payload) {
 
 ```
 
-Note: You have to ensure that if you are executing asynchronous JavaScript then the promises are chained correctly. If you do not chain the promises correctly then it is likely that no payload will be returned. 
+Note: You have to ensure that if you are executing asynchronous JavaScript then the promises are chained correctly. If you do not chain the promises correctly then it is likely that no payload will be returned.
 
 ## Troubleshooting
 
