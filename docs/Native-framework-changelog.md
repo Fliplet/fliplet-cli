@@ -14,7 +14,7 @@ We regularly update our framework to support new features. If you have an older 
   <div class="bl two">
     <div>
       <h4>Android</h4>
-      <p>Current release: <u>6.3.1</u></p>
+      <p>Current release: <u>6.3.2</u></p>
       <p>Target API level: 33</p>
     </div>
   </div>
@@ -24,6 +24,10 @@ We regularly update our framework to support new features. If you have an older 
 ---
 
 ## Supported versions
+
+### Version 6.3.2 (September 13, 2023)
+
+- **Android**: Change AlarmManager API to use inexact alarm functions to schedule local notification.
 
 ### Version 6.3.1 (August 29, 2023)
 
