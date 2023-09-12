@@ -28,9 +28,9 @@ Additionally, our first generation (now deprecated) app actions allow you to con
 
 ## Data models and key concepts
 
-1. An app action consists in a unique `name`, an optional `frequency` and `timezone`.
+1. An app action consists in a unique `name`, an optional `frequency`, `timezone` and `triggers`.
 2. An app action has a pipeline of `functions` (2nd gen), or a target `pageId` (1st gen).
-3. An app action can be created as **scheduled** (when using the `frequency` parameter) or to be run **on-demand**.
+3. An app action can be created as **scheduled** (when using the `frequency` parameter) or to be run **on-demand**. Additionally, our 2nd generation actions can be triggered by external events (e.g. a data source being updated). This can be configured via the `triggers` property.
 4. An app action can contain a pipeline of functions to run either locally (on device) or remote, or target an app screen to run in the cloud. A result can be given back by the screen both when running on a schedule and when on-demand.
 5. An app action is **limited to 30 seconds of execution time**. After 30 seconds, the action will be killed and a specific timeout error will be returned and saved in the logs.
 6. The payload for on-demand actions is **limited to 2048 characters**.
@@ -83,6 +83,31 @@ Each function will be executed with the configured settings. An additional paylo
 
 ```js
 Fliplet.App.Actions.run('sayHello', { foo: true });
+```
+
+### Action triggers
+
+An action can be triggered as a result of a system event (e.g. a data source being updated, a log entry being created). You can configure the triggers for an action using the `triggers` property.
+
+These are the available types of triggers:
+
+- `log`: A log entry is created.
+
+The following example creates an action that is triggered when a log entry is created with a `type` of `dataSource.entry.create	` (i.e. a new entry is created in a data source) in the data source with ID 123:
+
+```js
+Fliplet.App.Actions.create({
+  name: 'send-email-on-error',
+  triggers: [
+    {
+      type: 'log',
+      where: { type: 'dataSource.entry.create', dataSourceId: 123 }
+    }
+  ],
+  functions: [
+    { widgetId: 456, settings: { } }
+  ]
+});
 ```
 
 ---
