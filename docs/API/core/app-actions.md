@@ -93,21 +93,45 @@ These are the available types of triggers:
 
 - `log`: A log entry is created.
 
-The following example creates an action that is triggered when a log entry is created with a `type` of `dataSource.entry.create	` (i.e. a new entry is created in a data source) in the data source with ID 123:
+The following example creates an action that is triggered when a log entry is created with a `type` of `dataSource.entry.create` (i.e. a new entry is created in a data source) in the data source with ID 789:
 
 ```js
 Fliplet.App.Actions.create({
   name: 'send-email-on-error',
   triggers: [
     {
-      type: 'log',
-      where: { type: 'dataSource.entry.create', dataSourceId: 123 }
+      trigger: 'log',
+      where: { operation: 'dataSource.entry.create', dataSourceId: 789 }
     }
   ],
   functions: [
     { widgetId: 456, settings: { } }
   ]
 });
+```
+
+The `context` of the app action will contain the `trigger` name as well as the `log` object that triggered it. See an example below:
+
+```js
+{
+  trigger: "log",
+  log: {
+    id: 123,
+    appId: 2,
+    organizationId: 3,
+    dataSourceId: 789,
+    dataSourceEntryId: 4,
+    appNotificationId: null,
+    sessionId: 1,
+    type: "dataSource.entry.create",
+    data: {
+      columns: [
+        "foo"
+      ],
+    },
+    createdAt: "2023-09-13T15:50:50.797Z"
+  },
+}
 ```
 
 ---

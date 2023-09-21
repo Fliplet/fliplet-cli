@@ -46,8 +46,8 @@ Fliplet.Functions.register('com.example.function.say-hello', function(settings, 
 
 The above function will be executed when the function is called from the app. The function will receive two arguments:
 
-- `settings`: an object containing the settings of the function, as defined in the app action
-- `context`: an object containing the context of the function, including the `context.event` object that triggered the function
+- `settings`: an object containing the settings of the function, as defined in the app action.
+- `context`: an object containing the shared context of the app action being run. This for example may include a `context.event` with the name of the event that triggered the function.
 
 The function can return a value, which will be passed to the app action as the result of the function. If the function returns a promise, the app action will wait for the promise to be resolved before continuing.
 
