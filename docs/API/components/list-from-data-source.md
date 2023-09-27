@@ -86,6 +86,10 @@ The **List (from data source)** component exposes hooks that you can use to modi
     - [`filterOptions`](#filteroptions)
     - [`summaryLinkAction`](#summarylinkaction)
     - [`forceRenderList`](#forcerenderlist)
+    - [`useApiFilters`](#useapifilters)
+    - [`getLikeIdentifier`](#getlikeidentifier)
+    - [`getBookmarkIdentifier`](#getbookmarkidentifier)
+    - [`getCommentIdentifier`](#getcommentidentifier)
   - [Query parameters](#query-parameters)
     - [Contains vs Is one of](#contains-vs-is-one-of)
     - [Examples](#examples)
@@ -750,6 +754,69 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
 ### `forceRenderList`
 
 (Boolean) When a search/filter is applied to a list, the list is sometimes shortened by removing unneeded entries. Set this configuration to `true` so that every list render is forced to re-rendered instead of patching it. (**Default**: `false`)
+
+### `useApiFilters`
+
+(Boolean) To enable API filters, set the value to `true` when using any of the following features:
+
+- `flListDataAfterGetData` hook
+- `dataQuery` configuration
+- `computedFields` configuration
+
+### `getLikeIdentifier`
+
+(Function) Use a custom function to compute the unique identifier when generating a _Like_ entry.
+
+For example:
+
+```js
+Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
+  // Customize the like identifier
+  options.config.getLikeIdentifier = function(data) {
+    return {
+      entryId: data.record.id + '-like'
+      pageId: Fliplet.Env.get('pageId')
+    };
+  };
+});
+```
+
+This is particularly useful because _Likes_ are specific to the page whereas _Bookmarks_ and _Comments_ are not. To make the _Like_ entries accessible across all pages, remove the `pageId` from the identifier.
+
+### `getBookmarkIdentifier`
+
+(Function) Use a custom function to compute the unique identifier when generating a _Bookmark_ entry.
+
+For example:
+
+```js
+Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
+  // Customize the bookmark identifier
+  options.config.getBookmarkIdentifier = function(data) {
+    return {
+      entryId: data.record.id + '-bookmark'
+    };
+  };
+});
+```
+
+### `getCommentIdentifier`
+
+(Function) Use a custom function to compute the unique identifier when generating a _Comment_ entry.
+
+For example:
+
+```js
+Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
+  // Customize the comment identifier
+  options.config.getCommentIdentifier = function(data) {
+    return {
+      contentDataSourceEntryId: data.record.id,
+      type: 'comment'
+    };
+  };
+});
+```
 
 ## Query parameters
 

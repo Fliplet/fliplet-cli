@@ -1018,6 +1018,10 @@ Finally, make sure that **TLS 1.2 or 1.3** is [enabled on the OS settings](https
 
 ## Releases changelog
 
+#### 2.0.4 (September 7th, 2023)
+
+- Some of the libraries in the agent have been updated to their latest versions.
+
 #### 2.0.3 (June 8th, 2023)
 
 - The agent now supports auto-retry on failed requests to Fliplet APIs. This is useful when the agent is running on a machine with an unstable internet connection. The number of retries is currently set to 5. A retry is attempted every minute.

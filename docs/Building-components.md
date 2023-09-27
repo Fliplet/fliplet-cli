@@ -26,7 +26,7 @@ fliplet run
 
 The above command will run the development server at [http://localhost:3000](http://localhost:3000). The local development server uses sample data to speed up your development, so you don't have to worry about creating apps, screens, data etc.
 
-While the development server is running, any changes made to Handlebars `.hbs` template files will compiled so that templates access from `Fliplet.Widget.Templates()` are up to date.
+While the development server is running, any changes made to Handlebars `.hbs` template files will compiled so that templates access from `Fliplet.Widget.Templates` are up to date.
 
 We'll first focus on the `widget.json`, which is the definition of your component. If you're used to npm, it's similar to the `package.json` file for npm modules.
 
