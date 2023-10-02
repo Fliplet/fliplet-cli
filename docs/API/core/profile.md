@@ -23,3 +23,11 @@ The following variables are reserved for common use and publicly accessible.
 * `department`
 * `company`
 * `phone`
+
+## Device UUID
+
+Use `Fliplet.Profile.getDeviceUuid()` to get the device's UUID.
+
+**Response**
+
+- `uuid` (String) Device UUID
