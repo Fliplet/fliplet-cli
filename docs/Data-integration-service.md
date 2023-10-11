@@ -1033,7 +1033,7 @@ Finally, make sure that **TLS 1.2 or 1.3** is [enabled on the OS settings](https
 
 ## Releases changelog
 
-#### 2.0.5 (October 4th, 2023)
+#### 2.0.5 (October 11th, 2023)
 
 - The agent now supports batch processing when mode is set to `replace`. This is useful while processing large number of records.
 
