@@ -94,6 +94,17 @@ Note that we used the [findWithCursor](/API/fliplet-datasources.html#fetch-all-r
 
 For more details, check the JS API documentation for the [findWithCursor](/API/fliplet-datasources.html#fetch-all-records-from-a-data-source) method.
 
+### `container.connection()`
+
+Use the `connection` function to load the data source connection object.
+
+```js
+Fliplet.DynamicContainer.get().then(function (container) {
+  container.connection().then(function (connection) {
+    // Use connection instance as documented for the Data Sources JS API
+  });
+});
+```
 ---
 
 ## Advanced scenarios
