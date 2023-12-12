@@ -502,8 +502,7 @@ This is the default config options which we use for **TinyMCE** ([version 4.8.1]
     'directionality',
     'autoresize',
     'fullscreen',
-    'code',
-    'paste'
+    'code'
   ],
   toolbar: [
     'bold italic underline',
