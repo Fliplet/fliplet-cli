@@ -26,7 +26,7 @@ The following UI elements are optionally available by adding extra packages to y
 ## Number
 
   - [Number Input](fliplet-ui-number.md) (`fliplet-ui-number`)
-  - [Range Slider](fliple-ui-rangeslider.md) (`fliplet-ui-rangeslider`)
+  - [Range Slider](fliplet-ui-rangeslider.md) (`fliplet-ui-rangeslider`)
 
 ## Multiple choice
 
