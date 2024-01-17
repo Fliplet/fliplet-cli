@@ -350,3 +350,18 @@ var data = {
 };
 Fliplet.Navigate.previewImages(data);
 ```
+
+## Define a JavaScript function as action
+
+When using the `com.fliplet.link` provider to run a custom function you need to register the function by using the following JS API.
+
+```js
+// This JS API can help you register your own custom function
+Fliplet.Navigate.registerFunction(functionName, function(parameter) {
+  // Your code here
+});
+
+// You can run the registered functions by calling the following JS API.
+// context is optional
+Fliplet.Navigate.runFunction(functionName, context);
+```
