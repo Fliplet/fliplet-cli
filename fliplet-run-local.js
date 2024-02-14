@@ -141,7 +141,7 @@ function getTranslations() {
   try {
     file = fs.readFileSync(translationPackagePath, { encoding: 'utf8' });
   } catch (err) {
-    return;
+    return undefined;
   }
 
   try {
