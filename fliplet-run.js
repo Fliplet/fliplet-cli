@@ -146,7 +146,7 @@ function publishWidget() {
   if (isPublishing) {
     enqueuePublishing = true;
 
-    return;
+    return Promise.resolve();
   }
 
   log(`${'[SYNC]'.yellow} Your changes are being synchronized to Fliplet Studio...`);
