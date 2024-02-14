@@ -1,0 +1,20 @@
+{
+  "name": "{{name}}",
+  "package": "{{package}}",
+  "version": "1.0.0",
+  "icon": "img/icon.png",
+  "tags": ["type:function"],
+  "interface": {
+    "dependencies": [],
+    "assets": []
+  },
+  "build": {
+    "dependencies": [],
+    "assets": [
+      "js/build.js"
+    ],
+    "appAssets": []
+  },
+  "settings": {
+  }
+}
