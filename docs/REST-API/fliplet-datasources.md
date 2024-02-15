@@ -392,8 +392,8 @@ The following sample request applies the following changes to the data source:
     { "data": { "email": "alice@example.org" } }
   ],
   "delete": [456],
-  "append": "true",
-  "extend": "true",
+  "append": true,
+  "extend": true,
   "runHooks": []
 }
 ```
