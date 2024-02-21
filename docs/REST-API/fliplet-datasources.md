@@ -41,6 +41,8 @@ The Data Source REST APIs allows you to interact and make any sort of change to 
       - [`GET v1/data-sources/<dataSourceId>/data/<entryId>`](#get-v1data-sourcesdatasourceiddataentryid)
     - [Insert a new entry to a data source](#insert-a-new-entry-to-a-data-source)
       - [`PUT v1/data-sources/<dataSourceId>/data`](#put-v1data-sourcesdatasourceiddata)
+    - [Update an existing entry in a data source](#update-an-existing-entry-in-a-data-source)
+      - [`PUT v1/data-sources/<dataSourceId>/data/<entryId>`](#put-v1data-sourcesdatasourceiddataentryid)
     - [Insert a new entry with files into a data source](#insert-a-new-entry-with-files-into-a-data-source)
       - [`PUT v1/data-sources/<dataSourceId>/data`](#put-v1data-sourcesdatasourceiddata-1)
     - [Get unique values for data source columns](#get-unique-values-for-data-source-columns)
@@ -511,6 +513,40 @@ Response  (Status code: 201 Created):
 ```
 
 ---
+
+### Update an existing entry in a data source
+
+#### `PUT v1/data-sources/<dataSourceId>/data/<entryId>`
+
+e.g. `v1/data-sources/123/data/456`
+
+Request body:
+
+```json
+{
+  "email": "bob@fliplet.com",
+  "date" : "2024-01-01"
+}
+```
+
+Response  (Status code: 201 Created):
+
+```json
+{
+  "id": 1,
+  "data": {
+    "email": "bob@fliplet.com",
+    "date" : "2024-01-01"
+  },
+  "dataSourceId": 5,
+  "updatedAt": "2016-11-17T10:32:38.411Z",
+  "createdAt": "2016-11-17T10:32:38.411Z"
+}
+```
+
+---
+
+
 
 ### Insert a new entry with files into a data source
 
