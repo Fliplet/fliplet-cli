@@ -36,7 +36,7 @@ Fliplet.API.request('v1/widget-instances/123').then(function (response) {
 })
 ```
 
-### Find widgets for a page
+### Find widgets
 
 ```js
 Fliplet.Widget.find().then(function(instances) {
