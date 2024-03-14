@@ -52,6 +52,22 @@ Fliplet.Widget.findOne({ package: 'com.fiplet.image' }).then(function(instance) 
 });
 ```
 
+### Find parent widgets
+
+```js
+Fliplet.Widget.findParents().then(function(widgets) {
+  // Can be called directly from the widget interface to find out all the parent widget instances of the current instance
+});
+
+Fliplet.Widget.findParents({ instanceId: 1234 }).then(function(widgets) {
+  // Return parent widget instances of a specific instance
+});
+
+Fliplet.Widget.findParents({ instance: 1234, filter: { package: 'com.fliplet.container' } }).then(function(widgets) {
+  // Return parent widget instances of a specific instance that match the specified filter
+});
+```
+
 ### Get the JSON schema of a widget
 
 You can use this method to fetch the JSON schema of a widget. The following widget packages are currently supporting this feature:
