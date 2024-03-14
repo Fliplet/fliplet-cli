@@ -99,7 +99,7 @@ Fliplet.Helper({
               && question.id !== field.$parent.instanceId;
           });
 
-					this.warning = question ? 'Question ID already in use' : '';
+          this.warning = question ? 'Question ID already in use' : '';
         }
       },
       {

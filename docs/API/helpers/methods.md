@@ -1,4 +1,4 @@
-# Helper Methods
+# Methods
 
 Helpers are can define instance methods which can then be called at any time during the lifecycle of the app.
 

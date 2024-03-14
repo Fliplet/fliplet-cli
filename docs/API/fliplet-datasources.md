@@ -19,6 +19,7 @@ The `fliplet-datasources` package contains the following namespaces:
       - [Fetch records with a query](#fetch-records-with-a-query)
       - [Filter the columns returned when finding records](#filter-the-columns-returned-when-finding-records)
       - [Fetch records with pagination](#fetch-records-with-pagination)
+      - [Fetch records with a pagination cursor](#fetch-records-with-a-pagination-cursor)
       - [Join data from other dataSources](#join-data-from-other-datasources)
       - [Run aggregation queries](#run-aggregation-queries)
     - [Sort / order the results](#sort--order-the-results)
@@ -421,6 +422,67 @@ Note that when using the above parameter, the returned object from the `find()` 
     "total": 1000,
     "limit": 50,
     "offset": 10
+  }
+}
+```
+
+---
+
+### Fetch records with a pagination cursor
+
+A more powerful alternative to the `find` method is `findWithCursor`, which creates an array cursor with methods to navigate between pages of the dataset. This is useful if you want to add pagination to a Data Source. Start by creating a cursor with the `findWithCursor` method:
+
+```js
+Fliplet.DataSources.connect(123).then(function (connection) {
+  return connection.findWithCursor({ limit: 20 }); // 20 records per page
+}).then(function (cursor) {
+
+});
+```
+
+The cursor is an array with the results. It also supports the following properties, which can be overridden at any time:
+
+- `limit`: The page size (number of records per page).
+- `offset`: The current offset of records from the first page. This is 0 for the first page.
+- `currentPage`: The current page number (`0` for the first page)
+- `isFirstPage` Whether the current page is the first one of the dataset.
+- `isLastPage`: Whether the current page is the last one of the dataset.
+- `query`: The options used for the first argument of the `findWithCursor` method.
+
+The cursor also exports the following methods:
+
+- `next()`: Moves the cursor to the next page and returns it.
+- `prev()`: Moves the cursor to the previous page and returns it.
+- `setPage(n)`: Sets the cursor to a specific page number and returns it.
+- `update()`: Updates the dataset for the current page (returns a `Promise`)
+
+Here's a full example on how you would typically use the cursor:
+
+```js
+Fliplet.DataSources.connect(123).then(function (connection) {
+  return connection.findWithCursor({
+    where: { Office: 'London' }, // find specific entries
+    limit: 20                    // limit to 20 records per page
+  });
+}).then(function (cursor) {
+  displayData(cursor);
+
+  // Moves the cursor to the first page, then fetch and display the new data
+  $('#prev').click((e) => cursor.prev().update().then(displayData));
+
+  // Moves the cursor to the next page, then fetch and display the new data
+  $('#next').click((e) => cursor.next().update().then(displayData));
+});
+
+function displayData(cursor) {
+  cursor.forEach((entry) => {
+    // Display data
+  });
+
+  if (cursor.isFirstPage) {
+    // Disable "previous" button
+  } else if (cursor.isLastPage) {
+    // Disable "next" button
   }
 }
 ```

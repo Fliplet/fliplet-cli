@@ -1,4 +1,4 @@
-# Helper Hooks & Events
+# Hooks & Events
 
 Lifecycle:
 1. `beforeReady`
@@ -61,12 +61,20 @@ Fliplet.Hooks.on('afterHelpersRender', function () {
 ## Further reading
 
 <section class="blocks alt">
-  <a class="bl two" href="views.html">
+  <a class="bl two" href="dynamic-components.html">
     <div>
       <span class="pin">Next article in this series</span>
+      <h4>Dynamic components</h4>
+      <p>Learn how to add support for dynamic components to your helper.</p>
+      <button>Next &rarr;</button>
+    </div>
+  </a>
+  <a class="bl two alt" href="views.html">
+    <div class="secondary">
+      <span class="pin"><i class="fa fa-file-alt"></i></span>
       <h4>Views</h4>
       <p>Learn more about how to add rich-content views to your helper.</p>
-      <button>Next &rarr;</button>
+      <button>Read more &rarr;</button>
     </div>
   </a>
 </section>

@@ -4,27 +4,36 @@ const ncp = require('ncp').ncp;
 
 ncp.limit = 16;
 
-if (process.argv.length < 3) {
-  log('Widget name is required');
+if (process.argv.length < 4) {
+  log('Component name and package is required');
   process.exit();
 }
 
-const widgetName = process.argv[2];
-const boilerplate = (process.argv[3] || '').replace('--', '');
+const packageName = process.argv[2].trim().replace(/ /g, '-').toLowerCase();
+const widgetName = process.argv[3];
+const boilerplate = (process.argv[4] || '').replace('--', '');
 const safeName = widgetName.trim().toLowerCase().replace(/ /g, '-').replace(/[^A-z0-9-]/g, '');
-const packageName = widgetName.trim().replace(/ /g, '-').toLowerCase();
-const folderPath = path.join(process.cwd(), packageName);
+const folderPath = path.join(process.cwd(), safeName);
 
-log('Creating new widget', widgetName, 'to', folderPath);
-
-if (boilerplate && boilerplate !== 'vue') {
-  console.log('Chosen boilerplate is not valid.');
+if (!/[A-z]{1,4}\.[A-z-]{3,16}\.[A-z]{3,64}/.test(packageName)) {
+  log(`Package name ${packageName} is invalid. Please make sure it follows the reverse domain name notation, e.g. "com.example.my-component"`);
   process.exit();
 }
 
-const template = boilerplate === 'vue'
-  ? 'widget-vue-template'
-  : 'widget-template';
+let template;
+
+switch (boilerplate) {
+  case 'vue':
+    template = 'widget-vue-template';
+    break;
+  case 'helper':
+    template = 'widget-helper-template';
+    break;
+  default:
+    template = 'widget-template';
+}
+
+log(`Creating new widget ${widgetName} to ${folderPath} using ${template} boilerplate`);
 
 ncp(path.join(__dirname, template), folderPath, function(err) {
   if (err) {
@@ -57,7 +66,7 @@ ncp(path.join(__dirname, template), folderPath, function(err) {
 
   log('Widget has been successfully created. To run it for development:');
   log('');
-  log('    $ cd ' + packageName);
+  log('    $ cd ' + safeName);
   log('    $ fliplet run');
   log('');
 });

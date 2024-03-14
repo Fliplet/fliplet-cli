@@ -13,7 +13,7 @@ jobs:
       - run: fliplet env staging
       - run: fliplet login -u $TEST_USER -p $TEST_PASSWORD
       - run: fliplet organization $TEST_ORGANIZATION
-      - run: fliplet create-widget awesome-widget
+      - run: fliplet create-widget com.foo.awesome awesome-widget
       #- run: cd awesome-widget && fliplet test
   publish:
     machine: true

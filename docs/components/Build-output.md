@@ -26,8 +26,12 @@ Example:
 Data can be retrieved via Javascript using the `Fliplet.Widget.instance` method from `fliplet-core` as follows:
 
 ```js
-Fliplet.Widget.instance('my-component', function (data) {
-    var $el = $(this); // this gets you each component via jQuery
+Fliplet.Widget.instance('my-component', function (data, parent) {
+  const $el = $(this); // this gets you each component via jQuery
+}, {
+  // Set this to true if your component supports being initialized
+  // from a dynamic container
+  supportsDynamicContext: false
 });
 ```
 
@@ -50,6 +54,69 @@ Fliplet.Widget.instance('my-component', console.log);
 // { id: 2, url: 'bar.mp4' }
 // { id: 3, url: 'baz.mp4' }
 ```
+
+---
+
+## Support for dynamic components
+
+1. Add `supportsDynamicContext: true` to the `Fliplet.Widget.instance` options
+2. In the `build.html` file, add `data-widget-name="component-name"` alongside the current `data-component-name-id="{{id}}"`
+
+You can then receive parent context and subscribe for updates to it:
+
+```js
+Fliplet.Widget.instance('primary-button', function(data, parent) {
+  if (parent) {
+    parent.$watch('context', (ctx) => {
+      const value = _.get(ctx, data.label);
+
+      if (value) {
+        $(this).find('input').val(value);
+      }
+    });
+  }
+
+  // ...
+}, { supportsDynamicContext: true });
+```
+
+Likewise, you can use the `Fliplet.Widget.initializeChildren()` method if you're building a dynamic component that should initialize children components supporting the dynamic context:
+
+```js
+Fliplet.Widget.instance('dynamic-container', function(data, parent) {
+  const $el = $(this);
+
+  // fetch required data
+  let context;
+
+  Fliplet.Widget.initializeChildren(this, context);
+}, {
+  supportsDynamicContext: true
+});
+```
+
+---
+
+## Support for rich content in Fliplet Studio
+
+If your component includes references to `richContent` properties (see [References](/components/Definition.html#references), each `richContent` property needs to be rendered on the page. This can be done using the {% raw %}`{{{ prop }}}`{% endraw %} syntax.
+
+`richContent` data is managed in Fliplet Studio by allowing users to drag and drop content into a container. To add support for this drag and drop interaction, make the following changes to your `build.html` template:
+
+1. Make sure the rich content is rendered as {% raw %}`{{{ prop }}}`{% endraw %} where `prop` is the name of your rich content property
+2. Wrap the {% raw %}`{{{ prop }}}`{% endraw %} syntax in a DOM element with a `data-view` property and a `data-node-name` property:
+   - The `data-view` value is should match the property name.
+   - The `data-node-name` value is what will be displayed in Fliplet Studio in the **Screen structure** panel.
+
+For example:
+
+{% raw %}
+```html
+<div data-view="content" data-node-name="Content">{{{ content }}}</div>
+```
+{% endraw %}
+
+**If the widget is built using Fliplet Helper, the `richContent` reference still needs to be declared in `widget.json`, but does not need a view container defined as above. The Helper framework has built-in support for the management of rich content views.**
 
 ---
 

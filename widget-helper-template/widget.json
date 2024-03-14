@@ -1,0 +1,36 @@
+{
+  "name": "{{name}}",
+  "package": "{{package}}",
+  "version": "1.0.0",
+  "icon": "img/icon.png",
+  "tags": ["type:component", "category:general"],
+  "provider_only": false,
+  "references": [],
+  "settings": {
+    "asyncRendering": true,
+    "interfaceWidgetPackage": "com.fliplet.helper-configuration"
+  },
+  "html_tag": "div",
+  "interface": {
+    "dependencies": [
+      "fliplet-core",
+      "fliplet-studio-ui"
+    ],
+    "assets": [
+      "js/interface.js"
+    ]
+  },
+  "build": {
+    "dependencies": [
+      "jquery",
+      "bootstrap",
+      "fliplet-core",
+      "fliplet-helper"
+    ],
+    "assets": [
+      "css/build.css",
+      "js/build.js"
+    ],
+    "appAssets": []
+  }
+}
