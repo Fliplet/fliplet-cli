@@ -2,35 +2,6 @@
 
 ## Core widget APIs
 
-### Find widgets for a page
-
-```js
-Fliplet.Widget.find().then(function(instances) {
-  // Returns all widget instances for a page
-});
-
-Fliplet.Widget.find({ package: 'com.fiplet.image' }).then(function(instances) {
-  // Returns all image widget instances for a page
-});
-
-Fliplet.Widget.findOne({ package: 'com.fiplet.image' }).then(function(instance) {
-  // Returns the first image widget instance found on a page
-});
-```
-
-### Get the JSON schema of a widget
-
-You can use this method to fetch the JSON schema of a widget. The following widget packages are currently supporting this feature:
-
-- `com.fliplet.form-builder`
-- `com.fliplet.data-sources`
-
-```js
-Fliplet.Widget.getSchema("com.fliplet.form-builder").then(function (schema) {
-  // Use the schema
-});
-```
-
 ### Get the current widget instance id
 
 <p class="info">This method is usually meant to be called from a widget interface, to get the widget instance id if necessary.</p>
@@ -63,6 +34,35 @@ If the widget instance does not belong to the current page, you can fetch its se
 Fliplet.API.request('v1/widget-instances/123').then(function (response) {
   // response.widgetInstance.settings
 })
+```
+
+### Find widgets for a page
+
+```js
+Fliplet.Widget.find().then(function(instances) {
+  // Returns all widget instances for a page
+});
+
+Fliplet.Widget.find({ package: 'com.fiplet.image' }).then(function(instances) {
+  // Returns all image widget instances for a page
+});
+
+Fliplet.Widget.findOne({ package: 'com.fiplet.image' }).then(function(instance) {
+  // Returns the first image widget instance found on a page
+});
+```
+
+### Get the JSON schema of a widget
+
+You can use this method to fetch the JSON schema of a widget. The following widget packages are currently supporting this feature:
+
+- `com.fliplet.form-builder`
+- `com.fliplet.data-sources`
+
+```js
+Fliplet.Widget.getSchema("com.fliplet.form-builder").then(function (schema) {
+  // Use the schema
+});
 ```
 
 ### Create a new widget instance
