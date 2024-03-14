@@ -30,6 +30,17 @@ var url = Fliplet.App.getPublicSlugForPage(1, { disableTracking: true, dataSourc
 
 ---
 
+## Locales
+
+### Get the list of locales supported by the current app
+
+```js
+// Gets the list of locales defined for the current app as set by the Studio user
+var locales = Fliplet.App.Locales.get();
+```
+
+---
+
 ## Settings
 
 ### Get the current app settings
@@ -94,6 +105,18 @@ Fliplet.App.Logs.create({
 
 ---
 
+## Tokens
+
+### Get the Tokens for an app
+
+```js
+Fliplet.App.Tokens.get(options).then(function (tokens) {
+  // tokens<Array>
+});
+```
+
+---
+
 ## Preview mode
 
 ### Check if your app is running in preview mode
@@ -116,6 +139,8 @@ Fliplet.App.Orientation.lock(orientation)
 
 * `orientation` (String) `portrait` or `landscape`. If called with no parameters, the app orientation from the settings will be used.
 
+<p class="warning">This feature is only available on <strong>native apps</strong>. Web apps will simply ignore this setting.</p>
+
 ---
 
 ### Unlock the device orientation
@@ -124,7 +149,9 @@ Fliplet.App.Orientation.lock(orientation)
 Fliplet.App.Orientation.unlock()
 ```
 
-The orientation unlock is temporary. When the following events occur, the orientation will be re-locked according to the original app setting, which would always be **portrait** on smartphones.
+The orientation unlock is temporary. When the following events occur, the orientation will be re-locked according to the original app setting, which would always be **portrait** on **native apps only**.
+
+<p class="warning">This feature is only available on <strong>native apps</strong>. Web apps will simply ignore this setting.</p>
 
 1. App orientation is locked when exiting from the in-app browser.
 1. App orientation is locked when exiting from a full screen video playback.
@@ -135,7 +162,7 @@ To ensure a page doesn't force the orientation re-lock, add the following code t
 <script>Fliplet.Env.get('appSettings').orientation = 'all'</script>
 ```
 
-**Note** Landscape mode in smartphones are not officially supported by Fliplet and may have layout issues due to the shortened screen height and "notches" on devices such as the iPhone X.
+**Note** Landscape mode in smartphones is not officially supported by Fliplet and may have layout issues due to the shortened screen height and "notches" on devices such as the iPhone X.
 
 ---
 

@@ -6,8 +6,14 @@ A menu consist in:
 - CSS and Javascript assets.
 - A `build.html` handlebars template with the output of the menu
 
+## Menu settings
 
-Menus can also specify whether they appear at the top of the HTML (right after the body tag is opened) or at the bottom before the body tag gets closed. This can be configured through the `settings.position` on the `menu.json` file as we do on the [default menu](https://github.com/Fliplet/fliplet-menu-default/blob/master/menu.json#L22).
+Through the `menu.json` file, the `settings` property can control the behavioral properties of the menu.
+
+- `settings.position` (String) `top` or `bottom` indicates whether the menu DOM markup appear at the top of the HTML (right after the body tag is opened) or at the bottom before the body tag gets closed. See [default menu](https://github.com/Fliplet/fliplet-menu-bottom-bar/blob/master/menu.json#L32) for an example
+- `settings.showSettings` (Boolean) Default: `false` Set this to `true` to allow additional settings to be added via `interface.html` and any JavaScript added via the `interface` property of the `menu.json` file. See [component interfaces](components/Interface.md).
+
+Menus can also specify . This can be configured through the `settings.position` on the `menu.json` file as we do on the .
 
 ---
 

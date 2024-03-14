@@ -149,5 +149,9 @@ Delete existing entries.
     * **action** (Object) An object containing the action to query for deleting. This can use JSON-based queries.
   * **exact** (Boolean) If `true`, only entries with exact `content` matches will be deleted. (**Default**: `true`)
 
+## Related
+
+* [`Fliplet.Profile.Content()`](fliplet-profile-content.md)
+
 [Back to API documentation](../API-Documentation.md)
 {: .buttons}

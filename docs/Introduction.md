@@ -8,6 +8,9 @@ We also support some preprocessors like [SASS](http://sass-lang.com/) and templa
 
 ## What can you build
 
+[All of our components are open source](/open-source) and available on [github.com/fliplet](https://github.com/fliplet). Take a look at the variety of components you can create using Fliplet's platform below.
+
+
 ### App components
 
 App components will enable your apps to run Javascript on all screens of a Fliplet App. CSS files and HTML/Handlebars templates will also be available on all screens.

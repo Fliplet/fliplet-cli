@@ -49,17 +49,18 @@ App notifications can optionally send a notification. When doing so, you should 
 
 Optional query parameters:
 
-- **limit** (number, defaults to `100`)
-- **order** (string, defaults to "orderAt")
-- **direction** (string, defaults to "DESC")
-- **count** (boolean, defaults to `false`. When `true`, only the total count of matched notifications is returned)
-- **includeDeleted** (boolean, whether deleted notifications should be returned)
-- **where** (object, sequelize "where" query condition)
-- **scope** (array, list of scopes to fetch from)
+  - **limit** (number, defaults to `100`)
+  - **order** (string, defaults to "orderAt")
+  - **direction** (string, defaults to "DESC")
+  - **count** (boolean, defaults to `false`. When `true`, only the total count of matched notifications is returned)
+  - **includeDeleted** (boolean, whether deleted notifications should be returned)
+  - **where** (object, sequelize "where" query condition)
+  - **scope** (array, list of scopes to fetch from)
 
 Please note that when making the request as `GET`, supplying the `where` and `scope` parameters is not supported. Therefore, in most occasions you'll need to make a POST request so that you can filter notifications by query and/or a list of scopes.
 
 Request body:
+
 ```json
 {
   "limit": 50,
@@ -148,6 +149,62 @@ You can also target many people at once using any [Sift.js](https://github.com/F
 ```
 
 ---
+### Create multiple notifications (batch)
+
+#### `POST v1/apps/:id/notifications/batch`
+
+Parameters:
+- **notifications** (array of json object)
+
+Parameters for each object inside **notifications** array:
+- **data** (json object)
+
+Optional parameters:
+- **scope** (array of json objects or single json object)
+- **status** (string, defaults to `draft`. Use `published` to make the notification visible to live apps)
+- **orderAt** (number, defaults to the current time)
+- **pushNotification** (json object containing payload, delayUntilTimestamp)
+
+Sample request body:
+
+```json
+{
+  "notifications": [
+    {
+      "data": {
+        "title": "New article",
+        "message": "NIck posted an article."
+      },
+      "scope": {
+        "Email": "nick@example.org"
+      },
+      "pushNotification": {
+        "payload": {
+          "title": "New article",
+          "body": "Nick has posted a new article on the news page. Go check it out!"
+        }
+      }
+    },
+    {
+      "data": {
+        "title": "Next article",
+        "message": "John posted new article."
+      },
+      "scope": {
+        "Email": "john@example.org"
+      },
+      "pushNotification": {
+        "payload": {
+          "title": "Next article",
+          "body": "John has posted a next article on the news page. Go check it out!"
+        }
+      }
+    }
+  ]
+}
+```
+
+---
 
 ### Update a notification
 
@@ -183,7 +240,7 @@ Required parameters:
 
 #### `GET v1/apps/:id/subscriptions`
 
-<p class="warning"><strong>Note:</strong> for security reasons this endpoint can only be used by Studio users. App tokens are not allowed to read the list of subscriptions for an app.</p>
+<p class="warning"><strong>Note:</strong> for security reasons this endpoint can only be used by Studio users. API tokens are not allowed to read the list of subscriptions for an app.</p>
 
 Sample cURL request:
 

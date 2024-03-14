@@ -3,8 +3,10 @@
 The `fliplet-communicate` package contains the namespace `Fliplet.Communicate` and a set of helper methods for sending communications from the app.
 
   - [`.sendEmail()`](#send-an-email) - Sends an HTML formatted email
+  - [`.batchSendEmail()`](#send-batch-emails) - Sends batch of HTML formatted emails
   - [`.composeEmail()`](#compose-an-email) - Composes an email on the device
   - [`.sendSMS()`](#send-an-sms) - Sends an SMS message
+  - [`.batchSendSMS()`](#send-batch-sms) - Sends batch of SMS messages
   - [`.shareURL()`](#share-a-url) - Share a URL
   - [`.sendPushNotification()`](#send-push-notifications) - Send push notifications
 
@@ -84,6 +86,58 @@ Fliplet.Communicate.sendEmail(_.extend({}, options));
 
 ---
 
+## Send batch emails
+
+Use our APIs to send batch of emails to one or more recipients. Note that this feature is rate limited and improper use will result in your account being flagged for suspension.
+
+There will `emails` array of object with `{ options, data }` template compilation.
+
+```js
+var emails = [
+  { options1, data1 },
+  { options2, data2 },
+  { optionN, dataN }
+];
+```
+
+  - **options** (Object) A map of options to pass to the function. The following properties found are supported:
+    - **to** (Array) array of recipients for "to", "cc" or "bcc"
+    - **subject** (String) subject of the email
+    - **html** (String) HTML email body
+    - **body** (String) Plaintext email body. Note: If **html** and **body** are both set, **html** will be used.
+  - **data** (Array) An optional array of Base64 strings for the files to be attached. This only works on native devices. Each Base64 string should start with the format `data:%mimeType%;base64,`, e.g. `data:text/csv;base64,`, `data:image/png;base64,` etc.
+
+```js
+var emails = [{
+  options: {
+    to: [
+      { email: 'john@example.org', name: 'John', type: 'to' },
+      { email: 'jane@example.org', name: 'Jane', type: 'cc' }
+    ],
+    html: '<p>Some HTML content</p>',
+    subject: 'My subject',
+    from_name: 'Example Name'
+  },
+  data: []
+}, {
+  options: {
+    to: [
+      { email: 'jack@example.org', name: 'Jack', type: 'to' },
+      { email: 'jimmy@example.org', name: 'Jimmy', type: 'cc' }
+    ],
+    html: '<p>Some HTML content</p>',
+    subject: 'My subject',
+    from_name: 'Example Name'
+  },
+  data: []
+}];
+
+// Returns a promise
+Fliplet.Communicate.batchSendEmail(emails);
+```
+
+---
+
 ## Compose an email
 
 Compose an email on the device.
@@ -149,6 +203,63 @@ var options = {
 };
 
 Fliplet.Communicate.sendSMS(options);
+```
+
+Let us know if you require to use another SMS provider and we'll check whether we can integrate it on our system.
+
+---
+
+## Send batch SMS
+
+Send batch of SMS with `sms` array of object with `{provider, data, options}`.
+
+### Default
+
+```js
+var sms = [{
+  data: {
+    to: "+123456789",
+    body: "Hey!"
+  }
+},{
+  data: {
+    to: "+987654321",
+    body: "Hey!"
+  }
+}];
+
+Fliplet.Communicate.batchSendSMS(sms);
+```
+
+### With Twilio provider
+
+```js
+var sms = [{
+  provider: "twilio"
+  data: {
+    from: "+123456789"
+    to: "+123456789",
+    body: "Hey!"
+  },
+  options: {
+    twilio_sid: "AC81caaa94b3b84bb7ba9c3cd96bcb152a", // Your Account SID from www.twilio.com
+    twilio_auth_token: "AUTH_TOKEN" // Your Auth Token from www.twilio.com
+  }
+},
+{
+  provider: "twilio"
+  data: {
+    from: "+123456789"
+    to: "+987654321",
+    body: "Hey!"
+  },
+  options: {
+    twilio_sid: "AC81caaa94b3b84bb7ba9c3cd96bcb152a", // Your Account SID from www.twilio.com
+    twilio_auth_token: "AUTH_TOKEN" // Your Auth Token from www.twilio.com
+  }
+}];
+
+Fliplet.Communicate.batchSendSMS(sms);
 ```
 
 Let us know if you require to use another SMS provider and we'll check whether we can integrate it on our system.

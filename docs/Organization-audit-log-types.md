@@ -57,7 +57,7 @@ Please see below a table with a recap of all available log types for organizatio
 | App Access management       | app.user.create                    | A user was added to the app                                           |
 | App Access management       | app.user.update                    | A user role was updated for the app                                   |
 | App Access management       | app.user.remove                    | A user was removed from the app                                       |
-| App Access management       | app.token.remove                   | An app token was removed                                              |
+| App Access management       | app.token.remove                   | An API token was removed                                              |
 | Data Sources management     | dataSource.create                  | A data source was created (by a user)                                 |
 | Data Sources management     | dataSource.update                  | The settings of a data source (including access rules) were changed   |
 | Data Sources management     | dataSource.remove                  | A data source was moved to the bin                                    |

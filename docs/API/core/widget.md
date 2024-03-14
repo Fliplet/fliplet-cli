@@ -1,32 +1,129 @@
 # Widget
 
-### Emit an event to the parent widget or Fliplet Studio
+## Core widget APIs
+
+### Get the JSON schema of a widget
+
+You can use this method to fetch the JSON schema of a widget. The following widget packages are currently supporting this feature:
+
+- `com.fliplet.form-builder`
+- `com.fliplet.data-sources`
 
 ```js
-Fliplet.Widget.emit('foo', { bar: 1 });
+Fliplet.Widget.getSchema("com.fliplet.form-builder").then(function (schema) {
+  // Use the schema
+});
 ```
 
-### Get the widget instance id
+### Get the current widget instance id
 
-This method is usually meant to be called from a widget interface, to get the widget instance id if necessary.
+<p class="info">This method is usually meant to be called from a widget interface, to get the widget instance id if necessary.</p>
 
 ```js
-var id = Fliplet.Widget.getDefaultId();
+const id = Fliplet.Widget.getDefaultId();
 ```
 
-### Get a widget instance data
+### Get the current widget instance settings
 
-This method is usually meant to be called from a widget interface, to get the saved data.
+<p class="info">This method is usually meant to be called from a widget interface, to get the saved settings.</p>
+
+The returned settings also include any data passed through the `data` query parameter of the interface URL.
 
 ```js
-var data = Fliplet.Widget.getData();
+const settings = Fliplet.Widget.getData();
 ```
 
-You can also get the data of a specific widget instance in the current page by passing its ID:
+### Get a widget instance settings by ID
+
+You can get the settings of a specific widget instance in the current page by passing its ID:
 
 ```js
-var data = Fliplet.Widget.getData(1);
+const settings = Fliplet.Widget.getData(123);
 ```
+
+If the widget instance does not belong to the current page, you can fetch its settings via the JS APIs:
+
+```js
+Fliplet.API.request('v1/widget-instances/123').then(function (response) {
+  // response.widgetInstance.settings
+})
+```
+
+### Create a new widget instance
+
+First, fetch widget IDs via [our API](https://api.fliplet.com/v1/widgets?fields=id,name,package). You can also fetch the `widgetId` for a specific package name, e.g. [see specific request](https://api.fliplet.com/v1/widgets?fields=id,name,package&package=com.fliplet.dynamic-lists) for the List from Data Source component.
+
+```js
+// Create a new widget instance for a screen
+Fliplet.API.request({
+  url: '/v1/widget-instances',
+  method: 'POST',
+  data: {
+    widgetId: 123, // from the list of widgets above
+    pageId: 456, // target screen ID
+    settings: { foo: 'bar' } // initial configuration for the widget
+  }
+})
+```
+
+### Fetch the HTML layout of a page
+
+```js
+Fliplet.API.request({
+  url: 'v1/apps/123/pages/456?richLayout'
+}).then(function (response) {
+  // response.page.richLayout
+})
+```
+
+### Update the HTML layout of a page
+
+Assuming a widget instance with ID 789, this endpoint updates the whole page content with the new layout you send.
+
+```js
+Fliplet.API.request({
+  url: 'v1/apps/123/pages/456/rich-layout',
+  method: 'PUT',
+  data: {
+    richLayout: '<fl-component cid="789"></fl-component>'
+  }
+})
+```
+
+### Update the settings of a widget instance
+
+You can use the following JS API to update a widget instance settings:
+
+```js
+Fliplet.API.request({
+  method: 'PUT',
+  url: 'v1/widget-instances/123',
+  data: {
+    // Include here the new settings
+    foo: 'bar',
+    bar: 'barbaz'
+  }
+}).then(function (result) {
+  // data has been saved
+});
+```
+
+Once a widget instance settings are updated, use this JS API to reload the widget instance being rendered on the Studio device preview frame:
+
+```js
+// Reloads widget instance 123
+Fliplet.Widget.instance(123);
+```
+
+If your code is running in a different context, e.g. a widget or helper configuration interface run this code instead:
+
+```js
+Fliplet.Studio.emit('widget-save-complete', {
+  data: result // use result from the save operation above
+});
+```
+
+---
 
 ### Get the URL to an asset from the relative path of a widget
 
@@ -44,6 +141,14 @@ The widget instance ID might change overtime when an app is published. If you ne
 
 ```js
 var uuid = Fliplet.Widget.getUUID(1);
+```
+
+## Widget APIs for Studio interface
+
+### Emit an event to the parent widget or Fliplet Studio
+
+```js
+Fliplet.Widget.emit('foo', { bar: 1 });
 ```
 
 ### Display an error message in Fliplet Studio
@@ -118,9 +223,14 @@ Fliplet.Widget.autosize();
 
 As a rule of thumb, you are responsible of calling the above function every time the height of your widget (or provider) is changing.
 
+## Providers
+
+Provider widgets allow developers to reuse widget interface with a consistent UX for achieving certain tasks.
+
 ### Open a provider
 
 ```js
+// Fliplet.Widget.open() returns a Promise-like object
 var myProvider = Fliplet.Widget.open('com.fliplet.link', {
 
   // If provided, the iframe will be appended here,
@@ -140,12 +250,19 @@ var myProvider = Fliplet.Widget.open('com.fliplet.link', {
   }
 });
 
+// The returned variable from Fliplet.Widget.open() resolves when the provider is saved
 myProvider.then(function (data) {
   // data will contain the result
 });
 
-// You can also resolve an array of providers
-Fliplet.Widget.all([myProvider]).then(function (results) {
+// The provider is triggered to start saving data
+myProvider.forwardSaveRequest();
+
+// Trigger events to the provider
+myProvider.emit('event-name');
+
+// You can also resolve an array of providers (similar to Promise.all)
+Fliplet.Widget.all([myProviderA, myProviderB, myProviderC]).then(function () {
   // results is an array with data from all providers you resolved
 });
 ```
@@ -193,6 +310,7 @@ Fliplet.Foo = Fliplet.Widget.Namespace('foo');
 ```
 
 ### Add an instance
+
 ```js
 Fliplet.Foo.add(instance) // instance can be a promise but does not need to be
 ```

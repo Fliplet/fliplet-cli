@@ -49,7 +49,8 @@ Fliplet adds some custom tests to Modernizr to help detect and target the follow
 | Native | `native` |
 | Mobile `width < 640px` | `mobile` |
 | Tablet `width >= 640px` | `tablet` |
-| iPhone X | `iphonex` |
+| Desktop `width >= 1024px` | `desktop` |
+| Device with a notch | `notch` |
 
 ---
 

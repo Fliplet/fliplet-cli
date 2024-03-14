@@ -9,12 +9,12 @@ $lightBackground: #f8f6f7;
 
 $secondaryBackground: #4279ca;
 
-$warningColor: #fdff6b;
+$warningColor: #ffd958;
 $warningTextColor: #6c6d00;
 
 $sidebarWidth: 286px;
 
-$header-height: 66px;
+$header-height: 70px;
 
 @font-face {
   font-family: 'BASE1';
@@ -947,13 +947,13 @@ h2, h3, h4, h5, h6 {
 }
 
 .quote {
-  border-left: 5px solid #36344c;
+  border-left: 5px solid $primaryBackground;
   padding: 8px 15px;
   background: #e6e5f1;
 }
 
 .info {
-  background: #36344c;
+  background: $primaryBackground;
   padding: 15px 20px;
   border-radius: 7px;
   color: rgba(255,255,255,0.8);
@@ -1013,6 +1013,8 @@ h2, h3, h4, h5, h6 {
     }
 
     .side {
+      flex: 1;
+
       .links {
         display: flex;
 
@@ -1113,12 +1115,18 @@ h2, h3, h4, h5, h6 {
 }
 
 /* Highlighted text */
-.algolia-autocomplete .algolia-docsearch-suggestion--highlight {
-  color: $secondaryBackground;
+.algolia-autocomplete .algolia-docsearch-suggestion--highlight,
+.algolia-docsearch-suggestion--title em {
+  color: #4c4019 !important;
+  background: $warningColor !important;
 }
 
 .algolia-docsearch-footer {
   display: none !important;
+}
+
+.algolia-docsearch-suggestion--category-header {
+  font-size: 20px !important;
 }
 
 .ais-hits {
@@ -1487,7 +1495,7 @@ div.highlighter-rouge[class|="language"] {
   position: relative;
 
   &:before {
-    background: lighten(#36344c, 30%);
+    background: lighten($primaryBackground, 30%);
     color: white;
     position: absolute;
     top: 0;

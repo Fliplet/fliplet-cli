@@ -1,4 +1,4 @@
-# Views
+# Helper Views
 
 ## Define a rich-content view
 
@@ -54,33 +54,6 @@ Fliplet.Helper({
   ]
 });
 ```
-
----
-
-## Define where a helper can be dropped into
-
-By default, helpers are not allowed to be dropped into other helpers. However, they can optionally be allowed <strong>to be dropped any into rich-content views defined by other helpers</strong>. To do so you must define the `childOf` array property in the child helper with a list of helpers it can be dropped to:
-
-```js
-// This helper can only be dropped in the "slider" helper
-Fliplet.Helper({
-  name: 'slide',
-  childOf: ['slider']
-});
-```
-
-Furthermore, if your parent helper is declaring more than one rich-content view you can restrict your child helper to only be allowed <strong>to be dropped into a specific view</strong> by using the <strong>dot notation</strong> as follows:
-
-```js
-// This helper can only be dropped in the
-// "slider" helper view named "mySecondView"
-Fliplet.Helper({
-  name: 'slide',
-  childOf: ['slider.mySecondView']
-});
-```
-
-<p class="quote"><strong>Note:</strong> If you want to allow an helper to be dropped in any other helper with no restrictions, you don't need to define the <code>childOf</code> property.</p>
 
 ---
 

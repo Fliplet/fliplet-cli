@@ -6,8 +6,6 @@ description: Customize your component to localize to different languages and reg
 
 The `Fliplet.Locale` JS API and Fliplet's localization framework allow you to customize your component to different languages and regions.
 
-<p class="quote"><strong>Early preview</strong>: this feature is currently in internal preview and it's not available to all our customers yet. Please get in touch with us if you want to learn more.</p>
-
 There are 3 key aspects of a component that can be localized to the device or browser language/region settings.
 
   - String translation
@@ -58,12 +56,25 @@ T("widgets.form.success.message", { msg: "<img..>" });
 **Handlebars**
 
 {% raw %}
-
 ```html
 {{ T "widgets.form.success.message" }}
 ```
-
 {% endraw %}
+
+Please note that the `T` function is only available after the `Fliplet()` promise has resolved, so you may need to wrap your code as necessary to make use of translations:
+
+```js
+Fliplet().then(function () {
+  // Compile Handlebars templates only when translations have been initialized
+  const myTemplate = Handlebars.compile(Fliplet.Widget.Templates['templates.foo']());
+
+  Fliplet.Widget.instance('my-component', function(data) {
+    // Use the "T" function only when translations have been initialized
+    const translatedText = T('widgets.myComponent.pleaseWait');
+    const translatedTemplate = myTemplate({ foo: 'bar' });
+  });
+});
+```
 
 ### Localization helper libraries and frameworks
 
@@ -72,6 +83,14 @@ T("widgets.form.success.message", { msg: "<img..>" });
 Components can use `$(this).translate()` (e.g. in `Fliplet.Widget.instance()`) after having initialized their template to automatically bind `data-translate="key"` properties in the target element.
 
 When a DOM element is added to the page with translation keys assigned using `data-translate`, the translations are not automatically applied. `$.fn.translate()` must be applied on the rendered DOM to apply the translations.
+
+Please note that the `$(this).translate()` function is only available after the `Fliplet()` promise has resolved, so you may need to wrap your code as necessary to make use of translations:
+
+```js
+Fliplet().then(function () {
+  $('form').translate();
+});
+```
 
 More docs on [https://github.com/i18next/jquery-i18next](https://github.com/i18next/jquery-i18next).
 
@@ -104,8 +123,28 @@ Then, strings can be translated using the $t helper in vue templates in build.ht
 ```html
 {{ $t("widgets.form.required.label") }}
 ```
-
 {% endraw %}
+
+Please note that the `Fliplet.Locale.plugins.vue()` function is only available after the `Fliplet()` promise has resolved, so you may need to wrap your code as necessary to make use of translations:
+
+```js
+Fliplet().then(function () {
+  Fliplet.Widget.instance('my-component', function(data) {
+    var $form = new Vue({ i18n: Fliplet.Locale.plugins.vue() });
+  });
+});
+```
+
+If you need to configure the plugin before translations inizialization, you can refer to it via the `window.VueI18Next` variable:
+
+```js
+var $form = new Vue({ i18n: window.VueI18Next });
+
+Fliplet().then(function () {
+  // some other code
+});
+```
+
 
 More docs on [https://panter.github.io/vue-i18next/guide/component-interpolation.html](https://panter.github.io/vue-i18next/guide/component-interpolation.html)
 
@@ -159,23 +198,23 @@ TD(value, options)
 {% raw %}
 
 ```js
-Fliplet.Locale.date('2021-03-04', { format: 'LL' }) // 4 March 2021 (UK) 4 marzo 2021 (IT) or 4 mars 2021 (FR)
-Fliplet.Locale.date('2021-03-04', { format: 'LL', locale: 'en-US' }) // March 4, 2021
+Fliplet.Locale.date('2022-03-04', { format: 'LL' }) // 4 March 2022 (UK) 4 marzo 2022 (IT) or 4 mars 2022 (FR)
+Fliplet.Locale.date('2022-03-04', { format: 'LL', locale: 'en-US' }) // March 4, 2022
 Fliplet.Locale.date('14:23', { format: 'LT' }) // 14:23 (UK) 2:23 PM (US) 下午2點23分 (ZH-TW)
 Fliplet.Locale.date('14:23', { format: 'LT', locale: 'en-US' }) // 2:23 PM
 
-Handlebars.compile('{{ TD foo format="LL" }}')({ foo: '2021-03-04' }) // 4 March 2021 (UK) 4 marzo 2021 (IT) or 4 mars 2021 (FR)
-Handlebars.compile('{{ TD foo format="LL" locale="en-US" }}')({ foo: '2021-03-04' }) // March 4, 2021
+Handlebars.compile('{{ TD foo format="LL" }}')({ foo: '2022-03-04' }) // 4 March 2022 (UK) 4 marzo 2022 (IT) or 4 mars 2022 (FR)
+Handlebars.compile('{{ TD foo format="LL" locale="en-US" }}')({ foo: '2022-03-04' }) // March 4, 2022
 Handlebars.compile('{{ TD foo format="LT" }}')({ foo: '14:23' }) // 14:23 (UK) 2:23 PM (US) 下午2點23分 (ZH-TW)
 Handlebars.compile('{{ TD foo format="LT" locale="en-US" }}')({ foo: '14:23' }) // 2:23 PM
 
 // For US locale
 
-Fliplet.Locale.date('2021-01-03', { format: 'fromNow' }) // 9 months ago as of October 2021
-Fliplet.Locale.date('2021-01-03', { format: 'from', from: '2021-01-05' }) // 2 days ago
+Fliplet.Locale.date('2022-01-03', { format: 'fromNow' }) // 9 months ago as of October 2022
+Fliplet.Locale.date('2022-01-03', { format: 'from', from: '2022-01-05' }) // 2 days ago
 
-Handlebars.compile('{{ TD foo format="fromNow" }}')({ foo: '2021-01-03' }) // 9 months ago as of October 2021
-Handlebars.compile('{{ TD foo format="from" from="2021-01-05" }}')({ foo: '2021-01-03' }) // 2 days ago
+Handlebars.compile('{{ TD foo format="fromNow" }}')({ foo: '2022-01-03' }) // 9 months ago as of October 2022
+Handlebars.compile('{{ TD foo format="from" from="2022-01-05" }}')({ foo: '2022-01-03' }) // 2 days ago
 ```
 
 {% endraw %}
@@ -206,9 +245,9 @@ TN(value, options)
   - `value` {*} The value to be used for formatting. Numbers are preferred. Other types of input will be parsed to determine its numerical value.
   - `options` {Object} A map of options. See [`Intl.NumberFormat()` documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat) for the supported options.
 
-<p class="warning"><strong>Long decimal places</strong> By default, numbers are localized and rendered with a minimum and maximum of 0–3 decimal places. This is due to the JavaScript's precision issues with floating points. If your data contains more decimal places, see <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat">documentation</a> for <code>Intl.NumberFormat()</code> to learn how to display more decimal places.</p>
+<p class="warning"><strong>Long decimal places</strong>: by default, numbers are localized and rendered with a minimum and maximum of 0–3 decimal places. This is due to the JavaScript's precision issues with floating points. If your data contains more decimal places, see <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/NumberFormat/NumberFormat">documentation</a> for <code>Intl.NumberFormat()</code> to learn how to display more decimal places.</p>
 
-<p class="warning"><strong>Large numbers</strong> If you have large numbers that you want to display, you may want to consider using the <code>notation</code> and <code>compactDisplay</code> parameters as supported by <code>Intl.NumberFormat()</code> to display large numbers. Also, numbers in JavaScript by default start to lose precision beyond positive or negative 9,007,199,254,740,991 (<code>Number.MAX_SAFE_INTEGER</code>) and cannot go beyond the value of <code>Number.MAX_VALUE</code>, which is around 10<sup>308</sup> and would be displayed as "∞" where appropriate.</p>
+<p class="warning"><strong>Large numbers</strong>: if you have large numbers that you want to display, you may want to consider using the <code>notation</code> and <code>compactDisplay</code> parameters as supported by <code>Intl.NumberFormat()</code> to display large numbers. Also, numbers in JavaScript by default start to lose precision beyond positive or negative 9,007,199,254,740,991 (<code>Number.MAX_SAFE_INTEGER</code>) and cannot go beyond the value of <code>Number.MAX_VALUE</code>, which is around 10<sup>308</sup> and would be displayed as "∞" where appropriate.</p>
 
 **Examples**
 
@@ -232,5 +271,5 @@ Handlebars.compile('{{ TN foo notation="compact" compactDisplay="long" }}')({ fo
 
 ---
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](/API-Documentation.html)
 {: .buttons}

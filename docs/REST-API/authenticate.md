@@ -8,7 +8,7 @@ All our APIs uses **​RESTful​ web services** which supports both **JSON** an
 
 The request **body size ​limit​** on all endpoints is set to **1​ GB​**, which is then a hard limit for uploaded files.
 
-**All requests must contain the authentication token** in the request headers ​or​ as a GET parameter. Alternatively, it can also be sent as a cookie, although sending it in the headers is preferred for security.
+**All requests must contain the API authentication token** in the request headers ​or​ as a GET parameter. Alternatively, it can also be sent as a cookie, although sending it in the headers is preferred for security.
 
 **Option 1) as a header**
 
@@ -46,12 +46,14 @@ If the provided token has been revoked, an error message will be returned as fol
 1. Login to Fliplet Studio with your account
 2. Edit the app you want to have API access to
 3. Go to ‘App Settings’
-4. Go to ‘App tokens’ tab of app settings
-5. Create a new token
+4. Go to ‘API tokens’ tab of app settings
+5. Create a new API token
 
 Note: The token does not expire, but can be revoked at any time should you want to (e.g. when unauthorized access is found or your token has been compromised).
 
-<p class="quote">Some API endpoints may require you to use the app's production ID for extra added security, since app tokens don't have access to the working draft apps you see in Studio. You can grab the production app's ID by heading to the <strong>https://api.fliplet.com/v1/apps/</strong> endpoint and verify the value for the <code>productionAppId</code> for the apps you have access to</p>
+<p class="quote">Some API endpoints may require you to use the app's production ID for extra added security, since API tokens don't have access to the working draft apps you see in Studio. You can grab the production app's ID by heading to the <strong>https://api.fliplet.com/v1/apps/</strong> endpoint and verify the value for the <code>productionAppId</code> for the apps you have access to</p>
+
+Please note that you may need to set up appropriate Data Source [security rules](/Data-source-security.html) on the API token for the Data Sources you are reading or writing data to.
 
 ---
 

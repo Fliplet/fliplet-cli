@@ -27,7 +27,14 @@ request(`${config.api_url}v1/widgets/${widgetId}`, function(error, response, bod
     return process.exit();
   }
 
-  body = JSON.parse(body);
+  try {
+    body = JSON.parse(body);
+  } catch (err) {
+    console.error('Error parsing widget JSON data');
+    console.error(body);
+
+    return process.exit();
+  }
 
   if (body.error) {
     console.error(body.error);
@@ -36,6 +43,12 @@ request(`${config.api_url}v1/widgets/${widgetId}`, function(error, response, bod
   }
 
   const widget = body.widget;
+
+  if (!widget) {
+    console.error(`Widget not found. Please make sure the package name ${widgetId} is correct and present in the database.`);
+
+    return process.exit();
+  }
 
   if (!widget.sourceUrl) {
     console.error('Source code for this widget is not available');

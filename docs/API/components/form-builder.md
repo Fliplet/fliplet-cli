@@ -1,6 +1,14 @@
-# Form Builder JS APIs
+# Form JS APIs
 
-These public JS APIs will be automatically available in your screens once a **Form Builder** component is dropped into such screens.
+The following JS APIs are available in a screen once a **Form** component is dropped into the screen.
+
+## Edit a data source entry
+
+To use the **Form** component for editing a data source entry, provide a `dataSourceEntryId` query parameter to the page with a valid data source entry ID.
+
+```
+?dataSourceEntryId=123
+```
 
 ## Retrieve an instance
 
@@ -26,7 +34,7 @@ Fliplet.FormBuilder.get('foo')
 
 The `form` instance variable above makes available the following instance methods.
 
-## Instance methods
+## Form instance methods
 
 ### `form.load(Function)`
 
@@ -358,7 +366,36 @@ Fliplet.FormBuilder.get()
   });
 ```
 
+---
+
+## Field instance
+
+Use the field `instance` property (e.g. `form.field('name').instance`) to access the raw `Vue` instance oa form field.
+
+### Set a field as required
+
+Programmatically set a field as required using the raw field instance:
+
+```js
+Fliplet.FormBuilder.get()
+  .then(function (form) {
+    form.field('foo').instance.required = true;
+  });
+```
+
+---
+
 ## Hooks
+
+### afterFormEntryLoad
+
+Runs when the form is loaded. The `data` parameter contains the data loaded into the form.
+
+```js
+Fliplet.Hooks.on('afterFormEntryLoad', function (data) {
+ return Promise.resolve(data);
+});
+```
 
 ### isFormInvalid
 
@@ -454,13 +491,19 @@ This is the default config options which we use for **TinyMCE** ([version 4.8.1]
   theme: 'modern',
   mobile: {
     theme: 'mobile',
-    plugins: [ 'autosave', 'lists', 'autolink' ],
-    toolbar: [ 'bold', 'italic', 'underline', 'bullist', 'numlist', 'removeformat' ]
+    plugins: ['autosave', 'lists', 'autolink'],
+    toolbar: ['bold', 'italic', 'underline', 'bullist', 'numlist', 'removeformat']
   },
   plugins: [
-    'advlist autolink lists link directionality',
-    'autoresize fullscreen code paste'
-  ].join(' '),
+    'advlist',
+    'autolink',
+    'lists',
+    'link',
+    'directionality',
+    'autoresize',
+    'fullscreen',
+    'code'
+  ],
   toolbar: [
     'bold italic underline',
     'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent',

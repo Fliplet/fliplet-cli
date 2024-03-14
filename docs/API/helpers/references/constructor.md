@@ -35,8 +35,7 @@ Fliplet.Helper({
    ready: Function,
    beforeSave: Function
  },
- views: Object,
- childOf: Array
+ views: Object
 });
 ```
 
@@ -156,7 +155,7 @@ Fliplet.Helper({
       <td><code>Object</code></td>
       <td>optional</td>
       <td>
-        <a href="/API/helpers/reference-interface.html">The list of fields to present in the configuration UI</a>.</td>
+        <a href="/API/helpers/interface.html">The list of fields to present in the configuration UI</a>.</td>
     </tr>
     <tr>
       <td><code>configuration.title</code></td>
@@ -197,13 +196,6 @@ Fliplet.Helper({
       <td>optional</td>
       <td>
         <a href="/API/helpers/views.html">The list of rich content views</a>.</td>
-    </tr>
-    <tr>
-      <td><code>childOf</code></td>
-      <td><code>Array</code></td>
-      <td>optional</td>
-      <td>
-        <a href="/API/helpers/views.html#define-where-a-helper-can-be-dropped-into">The list of helpers an helper can be dropped in</a>.</td>
     </tr>
   </tbody>
 </table>

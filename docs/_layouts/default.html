@@ -6,7 +6,7 @@
     <title>{{ page.title | default: site.title }} | Fliplet Developers Documentation</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#36344C">
-    <meta property="og:image" content="https://developers.fliplet.com/assets/img/social.jpg">
+    <meta property="og:image" content="https://developers.fliplet.com/assets/img/social.jpg?v2">
     <meta name="description" content="{{ page.description | default: defaultDescription }}">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.3/dist/instantsearch.min.css">
@@ -15,9 +15,22 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.3/dist/instantsearch-theme-algolia.min.css">
     <link rel="stylesheet" href="{{ '/assets/css/termynal.css?v=' | append: site.github.build_revision | relative_url }}">
     <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
+
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+      new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+      j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+      'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+      })(window,document,'script','dataLayer','GTM-KLZKCRD');</script>
+    <!-- End Google Tag Manager -->
+
     <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.3"></script>
   </head>
   <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KLZKCRD" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+
     <header id="header">
       <div class="content">
         <a class="brand" href="/" title="Back to documentation home">
@@ -30,6 +43,7 @@
           <ul class="nav">
             <li class="active"><a href="/">Documentation</a></li>
             <li><a href="https://help.fliplet.com/">Help centre</a></li>
+            <li><a href="https://community.fliplet.com/">Community</a></li>
             <li><a href="https://status.fliplet.com/">Service status</a></li>
             <li><a href="https://studio.fliplet.com">Your apps</a></li>
           </ul>
@@ -78,15 +92,17 @@
                 <li><a href="/API/core/misc.html">Common functions</a></li>
                 <li><span class="divider"></span></li>
                 <li><strong>Namespaces</strong></li>
+                <li><a href="/API/core/ai.html">AI <span class="label">Beta</span></a></a></li>
                 <li><a href="/API/core/analytics.html">Analytics</a></li>
                 <li><a href="/API/core/api.html">API</a></li>
                 <li><a href="/API/core/app.html">App</a></li>
-                <li><a href="/API/core/app-actions.html">App Actions <span class="label">NEW</span></a></a></li>
+                <li><a href="/API/core/app-actions.html">App Actions</a></li>
                 <li><a href="/API/core/apps.html">Apps</a></li>
                 <li><a href="/API/core/biometrics.html">Biometrics</li>
                 <li><a href="/API/core/cache.html">Cache</a></li>
                 <li><a href="/API/core/encode.html">Encode</a></li>
                 <li><a href="/API/core/environment.html">Environment</a></li>
+                <li><a href="/API/core/error.html">Error</a></li>
                 <li><a href="/API/core/hooks.html">Hooks</a></li>
                 <li><a href="/API/core/localization.html">Localization</a></li>
                 <li><a href="/API/core/modal.html">Modal</a></li>
@@ -135,9 +151,9 @@
                 <li><a href="/API/helpers/example-decision-tree.html">Decision Tree</a></li>
               </ul>
             </div>
-            <a class="hiring" href="https://fliplet.com/fliplet-careers?utm_source=developers">
-              <h4>We're hiring</h4>
-              <p>Fliplet is now hiring <strong>developers</strong>, check out our <u>careers</u> page to find out more.</p>
+            <a class="hiring" href="/engineering/infrastructure-performance-update-2023-q1.html">
+              <h4>Engineering update</h4>
+              <p>Read the latest exciting infrastructure updates from the Fliplet engineering team.</p>
             </a>
             <ul class="nav">
               <li>
@@ -182,7 +198,7 @@
                 <ul>
                   <li><a href="/API-Documentation.html">Overview</a></li>
                   <li><p>Libraries</p></li>
-                  <li><a href="/API/core/overview.html">Core <span class="label label-warning">UPDATED</span></a></a></li>
+                  <li><a href="/API/core/overview.html">Core</a></a></li>
                   <li><a href="/API/fliplet-communicate.html">Communicate</a></li>
                   <li><a href="/API/fliplet-datasources.html">Data Sources</a></li>
                   <li><a href="/API/fliplet-encryption.html">Encryption</a></li>
@@ -191,10 +207,10 @@
                   <li><a href="/API-Documentation.html">View all &rarr;</a></li>
 
                   <li><p>Components</p></li>
-                  <li><a href="/API/components/form-builder.html">Form Builder</a></li>
+                  <li><a href="/API/components/form-builder.html">Form</a></li>
                   <li><a href="/API/components/list-from-data-source.html">List (from Data Source)</a></li>
-                  <li><a href="/API/helpers/overview.html">Helpers <span class="label label-warning">UPDATED</span></a></li>
-                  <li><a href="/API/components/chat.html">Chat</a></li>
+                  <li><a href="/API/helpers/overview.html">Helpers</a></li>
+                  <li><a href="/API/components/chat.html">Chat <span class="label label-warning">UPDATED</span></a></li>
                   <li><a href="/API/components/email-verification.html">Email Verification</a></li>
                   <li><a href="/API-Documentation.html#fliplet-components">View all &rarr;</a></li>
                 </ul>
@@ -210,6 +226,7 @@
                   <li><a href="/REST-API/authenticate.html">Authentication</a></li>
                   <li><p>Endpoints</p></li>
                   <li><a href="/REST-API/fliplet-apps.html">Apps</a></li>
+                  <li><a href="/REST-API/fliplet-app-analytics.html">App Analytics</a></li>
                   <li><a href="/REST-API/fliplet-app-subscriptions.html">App Subscriptions</a></li>
                   <li><a href="/REST-API/fliplet-datasources.html">Data Sources</a></li>
                   <li><a href="/REST-API/fliplet-media.html">Media</a></li>
@@ -279,11 +296,12 @@
             <a href="https://status.fliplet.com">Service status</a>
             <a href="/Changelog.html">Changelog</a>
             <a href="/Upcoming.html">Upcoming features</a>
-            <a href="https://help.fliplet.com/code-library">Code library</a>
-            <a href="https://help.fliplet.com/how-to-use-the-developer-options">Developer Options</a>
+            <a href="https://help.fliplet.com/code-library/">Code library</a>
+            <a href="https://help.fliplet.com/how-to-use-the-developer-options/">Developer Options</a>
+            <a href="/open-source.html">Open Source with Fliplet</a>
             <a href="https://help.fliplet.com">Get support</a>
             <a href="https://fliplet.com/security/">Enterprise security</a>
-            <a class="btn" href="https://fliplet.com/contact"><i class="fas fa-question-circle"></i> Get help</a>
+            <a class="btn" href="https://fliplet.com/contact/"><i class="fas fa-question-circle"></i> Get help</a>
           </div>
         </aside>
         <div id="page-content">
@@ -310,10 +328,11 @@
             <div class="links">
               <ul>
                 <li><h3>Company</h3></li>
+                <li><a href="https://fliplet.com/about-us/">About Us</a></li>
                 <li><a href="https://studio.fliplet.com/signup?utm_source=fliplet&utm_medium=developers&utm_campaign=footer-menu-signup">Free account</a></li>
                 <li><a href="https://fliplet.com/contact/">Contact us</a></li>
-                <li><a href="https://fliplet.com/fliplet-careers/">Careers</a></li>
-                <li><a href="https://fliplet.com/partners/">Partners</a></li>
+                <li><a href="https://careers.fliplet.com/">Careers</a></li>
+                <li><a href="https://community.fliplet.com/c/developers-partners/10">Partners</a></li>
                 <li><a href="https://fliplet.com/terms/">Terms and policies</a></li>
               </ul>
               <ul>
@@ -326,9 +345,9 @@
               <ul>
                 <li><h3>Resources</h3></li>
                 <li><a href="https://fliplet.com/webinars/">Webinar</a></li>
-                <li><a href="https://fliplet.com/reports/">Reports</a></li>
-                <li><a href="https://fliplet.com/articles/">Articles</a></li>
-                <li><a href="https://fliplet.com/press-releases/">Press</a></li>
+                <li><a href=" https://fliplet.com/white-papers/">White Papers</a></li>
+                <li><a href="https://fliplet.com/blogs/">Blogs</a></li>
+                <li><a href="https://fliplet.com/press/">Press</a></li>
               </ul>
               <ul>
                 <li><h3>Stay in touch</h3></li>
@@ -337,7 +356,7 @@
               </ul>
             </div>
             <div>
-              <span class="site-footer-owner">Fliplet &copy;2021 — This documentation is maintained by <a href="//fliplet.com">Fliplet</a>. Full text search provided by <a href="http://algolia.com">Algolia</a>.</span>
+              <span class="site-footer-owner">Fliplet &copy;2023 — This documentation is maintained by <a href="//fliplet.com">Fliplet</a>.</span>
             </div>
           </div>
         </div>

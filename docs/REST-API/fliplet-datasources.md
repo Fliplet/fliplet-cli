@@ -11,8 +11,9 @@ The Data Source REST APIs allows you to interact and make any sort of change to 
 - [Data Sources REST APIs](#data-sources-rest-apis)
     - [Table of contents](#table-of-contents)
   - [Authentication](#authentication)
-  - [Access roles](#access-roles)
-  - [Entities](#entities)
+  - [Authenticating when using security rules](#authenticating-when-using-security-rules)
+  - [Data source access](#data-source-access)
+  - [Resources](#resources)
     - [Data Source](#data-source)
     - [Data Source Entry](#data-source-entry)
   - [Endpoints](#endpoints)
@@ -40,8 +41,12 @@ The Data Source REST APIs allows you to interact and make any sort of change to 
       - [`GET v1/data-sources/<dataSourceId>/data/<entryId>`](#get-v1data-sourcesdatasourceiddataentryid)
     - [Insert a new entry to a data source](#insert-a-new-entry-to-a-data-source)
       - [`PUT v1/data-sources/<dataSourceId>/data`](#put-v1data-sourcesdatasourceiddata)
+    - [Update an existing entry in a data source](#update-an-existing-entry-in-a-data-source)
+      - [`PUT v1/data-sources/<dataSourceId>/data/<entryId>`](#put-v1data-sourcesdatasourceiddataentryid)
     - [Insert a new entry with files into a data source](#insert-a-new-entry-with-files-into-a-data-source)
       - [`PUT v1/data-sources/<dataSourceId>/data`](#put-v1data-sourcesdatasourceiddata-1)
+    - [Get unique values for data source columns](#get-unique-values-for-data-source-columns)
+      - [`GET v1/data-sources/<dataSourceId>/indexes/<indexes>`](#get-v1data-sourcesdatasourceidindexesindexes)
   - [Versioning](#versioning)
     - [Get list of versions of a data source](#get-list-of-versions-of-a-data-source)
     - [Get all entries for a version](#get-all-entries-for-a-version)
@@ -59,40 +64,38 @@ Please head to the [how to authenticate](authenticate.md) page of the documentat
 
 If your data source has defined specific permissions with security rules, additional steps must be taken to sign the requests:
 
-1. Ensure the `auth_token` being used is an **App Token** created via Fliplet Studio.
-2. Ensure the app for the created app token has access to the Data Source.
-3. **Add the `User-Agent: Fliplet Agent/REST-1.0` header to all requests.** as shown in the example below.
+1. Ensure the `auth_token` being used is an **API token** created via Fliplet Studio.
+2. Ensure the app for the created API token has access to the Data Source.
+3. Set up the relevant **security rules** for the API token (e.g. read/write access)
 
-Here is a sample cURL request that contains the header:
+Here is a sample cURL request requesting data for a data source:
 
 ```
 curl -X GET \
 	"https://api.fliplet.com/v1/data-sources/123/data/456" \
 	-H "Auth-token: eu--abcdef-123456678" \
-	-H "User-Agent: Fliplet Agent/REST-1.0"
 ```
 
 ---
 
-## Access roles
+## Data source access
 
-Data sources requires ​roles​ to be accessed to. Roles can have multiple permissions: **create, read, update, delete, query**. We call them ​`crudq​`. Once you create a data source, your user automatically gets all these permissions assigned to it, since you own the data source.
+Data sources requires access to be accessed to. Roles can have multiple permissions: **read, write, update, delete**. Once you create a data source, permissions need to be assigned to it.
 
-If the app token you're using doesn't have access to one of your organization data sources, you will need to grant permissions to it via Fliplet Studio:
+If an API token you're using doesn't have access to one of your organization data sources, you will need to grant permissions to it via Fliplet Studio:
 
-1. Go to the **App settings**<sup>1</sup> >> **App tokens**<sup>2</sup> section of Fliplet Studio
-2. Copy the **numerical app token ID**<sup>3</sup> for the token you need to add access to
-2. Go to the **App data**<sup>4</sup> section, then click on the data source you want to add the user to
-3. Click the **User permissions**<sup>5</sup> tab
-4. **Add new user**<sup>6</sup> button to grant access to a user to the specific data source and when asked paste the ID you got above, then the list of permissions to add (e.g. `crudq`) as described a few lines above.
+1. Go to the **App settings**<sup>1</sup> >> **API tokens**<sup>2</sup> section of Fliplet Studio.
+2. Click **Edit**<sup>3</sup> for the token you need to add access to. This will list all the data sources accessible by the app in an overlay.
+3. In the overlay, find the data source you want to add the user to and click **Manage Security Rules**<sup>4</sup>.
+4. Set up the relevant security rules for your API token.
 
-![img1](https://cl.ly/9a01714eb200/Image%2525202019-01-14%252520at%2525203.37.14%252520PM.png)
+![img](../assets/img/app-token-security-1.jpg)
 
-![img2](https://cl.ly/971aaeb5c6de/Image%2525202019-01-14%252520at%2525203.39.58%252520PM.png)
+![img](../assets/img/app-token-security-2.jpg)
 
 ---
 
-## Entities
+## Resources
 
 Before heading deep into describing the API endpoints, let's describe what a **Data Source** and **Data Source Entry** are.
 
@@ -395,7 +398,7 @@ The following sample request applies the following changes to the data source:
 }
 ```
 
-Response status code: 200 OK (the updated dataset will also be returned in the response)
+Response status code: 200 OK (the entire dataset will also be returned in the response in its latest state)
 
 Notes:
 - Use `append: false` to remove any entry that is not sent with the request (e.g. replace all existing entries)
@@ -409,6 +412,16 @@ Notes:
 #### `POST v1/data-sources/<dataSourceId>/data/query`
 
 e.g. `v1/data-sources/123/data/query`
+
+All operators of the [Data Source "find" JS API](https://developers.fliplet.com/API/fliplet-datasources.html#fetch-records-from-a-data-source) are supported, including:
+
+- [where](https://developers.fliplet.com/API/fliplet-datasources.html#fetch-records-from-a-data-source)
+- [aggregate](https://developers.fliplet.com/API/fliplet-datasources.html#run-aggregation-queries)
+- [join](https://developers.fliplet.com/API/datasources/joins.html)
+- [attributes](https://developers.fliplet.com/API/fliplet-datasources.html#filter-the-columns-returned-when-finding-records)
+- [order](https://developers.fliplet.com/API/fliplet-datasources.html#sort--order-the-results)
+- [limit](https://developers.fliplet.com/API/fliplet-datasources.html#fetch-records-with-pagination)
+- [offset](https://developers.fliplet.com/API/fliplet-datasources.html#fetch-records-with-pagination)
 
 Request body (JSON):
 
@@ -501,6 +514,40 @@ Response  (Status code: 201 Created):
 
 ---
 
+### Update an existing entry in a data source
+
+#### `PUT v1/data-sources/<dataSourceId>/data/<entryId>`
+
+e.g. `v1/data-sources/123/data/456`
+
+Request body:
+
+```json
+{
+  "email": "bob@fliplet.com",
+  "date" : "2024-01-01"
+}
+```
+
+Response  (Status code: 201 Created):
+
+```json
+{
+  "id": 1,
+  "data": {
+    "email": "bob@fliplet.com",
+    "date" : "2024-01-01"
+  },
+  "dataSourceId": 5,
+  "updatedAt": "2016-11-17T10:32:38.411Z",
+  "createdAt": "2016-11-17T10:32:38.411Z"
+}
+```
+
+---
+
+
+
 ### Insert a new entry with files into a data source
 
 #### `PUT v1/data-sources/<dataSourceId>/data`
@@ -555,6 +602,33 @@ Sample response (Status code: 201 Created):
   "updatedAt": "2017-12-14T16:18:14.954Z",
   "createdAt": "2017-12-14T16:18:14.214Z",
   "deletedAt": null
+}
+```
+
+---
+
+### Get unique values for data source columns
+
+#### `GET v1/data-sources/<dataSourceId>/indexes/<indexes>`
+
+Include the list of columns you need unique value as a comma separated list of column names.
+
+e.g. `v1/data-sources/123/indexes/Name,Role.Name`
+
+Response (Status code: 200 OK):
+
+```json
+{
+    "indexes": {
+        "Name": [
+            "Foo",
+            "Bar"
+        ],
+        "Role.Name": [
+            "Manager",
+            "Developer"
+        ]
+    }
 }
 ```
 

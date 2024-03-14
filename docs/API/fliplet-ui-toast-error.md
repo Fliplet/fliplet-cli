@@ -34,9 +34,8 @@ Fliplet.DataSources.connect(0)
     return connection.find();
   })
   .catch(function (error) {
-    Fliplet.UI.Toast.error({
-      message: 'Error loading data',
-      error: error
+    Fliplet.UI.Toast.error(error, {
+      message: 'Error loading data'
     });
   });
 ```

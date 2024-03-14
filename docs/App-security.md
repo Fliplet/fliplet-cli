@@ -8,7 +8,7 @@ Such security rule can be set up as follows:
 
 ![img](https://dzwonsemrish7.cloudfront.net/items/0M0R2h3W0p1F112r3u01/Image%202018-07-02%20at%2012.50.22%20PM.png)
 
-## Custom security rules
+## Custom app security rules
 
 If you need more control on your security rules, you can also write your custom conditions using Javascript. When doing so, these variables are available to the context:
 
@@ -70,7 +70,7 @@ if (server && ipRangeCheck(ipAddress, "170.18.0.1/24")) {
 }
 ```
 
-Or redirect to another screen:
+Or redirect the user to a specific screen of the app with a custom message:
 
 ```js
 if (server && !ipRangeCheck(ipAddress, "170.18.0.1/24")) {
@@ -81,7 +81,7 @@ if (server && !ipRangeCheck(ipAddress, "170.18.0.1/24")) {
 }
 ```
 
-Or redirect to another screen:
+Or redirect the user to another URL:
 
 ```js
 if (server && !ipRangeCheck(ipAddress, "170.18.0.1/24")) {
@@ -89,7 +89,9 @@ if (server && !ipRangeCheck(ipAddress, "170.18.0.1/24")) {
 }
 ```
 
-Note: `ipRangeCheck` always returns `true` when run on the `client`.
+<p class="warning">Your code must be able to handle connections from both IPv4 and IPv6 addresses. As an example, the <code>ipAddress</code> variable may have values such as <code>2001:db8:3333:4444:5555:6666:7777:8888</code> when the user is connected via an <strong>IPv6 address</strong>.</p>
+
+Additionally, please note that `ipRangeCheck` always returns `true` when run on the `client`.
 
 Since app hooks allow javascript code in the custom rule, you're free to declare the list of whitelisted IPs as follows:
 
@@ -113,3 +115,36 @@ Sample error page for the above code:
 ![img](https://user-images.githubusercontent.com/574210/48259419-2b345c80-e418-11e8-9430-c66b7ec7dfb5.png)
 
 More docs on the `ipRangeCheck` function can be found [here](https://github.com/danielcompton/ip-range-check#ipv4)
+
+---
+
+## Session expiration
+
+When your app is using the login component connected to a Data Source, you can enable two optional features to improve security for your users:
+
+- **Require the user to reauthenticate after a certain time**
+  - The user will be logged out after the defined period of time (in minutes) has past since the login date.
+  - Configure this via the `sessionMaxDurationMinutes` option as per example below.
+- **Log the user out when the app has not been used for a period of time**
+  - The user will be logged out when the session has been idle for the defined period of time (in minutes) since the last recorded activity
+  - Configure this via the `sessionIdleTimeoutMinutes` option as per example below.
+
+These option must be set in the **Data Source definition JSON** via the "App data" section of Fliplet Studio, **in the settings of your login Data Source**.
+
+The following setup will ensure a user is logged out 2 hours past the login date:
+
+```json
+"sessionMaxDurationMinutes": 120
+```
+
+Likewise, this setup will automatically log the user out when the app is inactive for 30 minutes:
+
+```json
+"sessionIdleTimeoutMinutes": 30
+```
+
+The two options can also be used together:
+
+![Data Sources](https://user-images.githubusercontent.com/574210/197834498-dceeecdc-f5ac-4315-b629-dd8434c4a5b0.png)
+
+---

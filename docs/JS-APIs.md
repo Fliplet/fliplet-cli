@@ -70,12 +70,61 @@ Our dependencies also include common Javascript libraries such as jQuery, lodash
 
 ## Promises
 
-Our SDK uses [Javascript promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) for all asynchronous code. Check the following example:
+Our SDK uses [Javascript promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) for all asynchronous results, e.g. when content needs to be read from an API or the device.
+
+These are some examples of using Promises so that asynchronous calls are chained together effectively.
+
+This is an example that chains two data source calls together and outputs the result to an html tag. Notice the `return` before any asynchronous call to ensure proper chaining.
 
 ```js
-// Fetch the pages of my app
-Fliplet.Pages.get().then(function (pages) {
+//Connect to DS 123 and pass a query
+Fliplet.DataSources.connect(123)
+  .then(function (connection) {
+    return connection.find({
+      where: {
+        sum: { $gt: 10 },
+        name: { $in: ["Nick", "Tony"] },
+      },
+    });
+  })
+  .then(function (firstRecords) {
+    //Connect to DS 456 and pass a query
+    return Fliplet.DataSources.connect(456)
+      .then(function (connection) {
+        return connection.find({
+          where: {
+            name: "John",
+          },
+        });
+      })
+      .then(function (secondRecords) {
+        //Concatenate the two arrays into one using lodash _.concat() function
+        var finalRecords = _.concat(firstRecords, secondRecords);
 
+        finalRecords.forEach(function (row) {
+          // do something for each row, e.g. append it to a html tag
+          $(".foo").append(row.data.bar);
+        });
+      });
+  });
+```
+
+This example is using our List From Data Source (LFD) component’s hook and our Data Source JS API to ensure that we can connect to a data source and manipulate the data, for e.g merging the data into the LFD records.
+
+```js
+Fliplet.Hooks.on("flListDataAfterGetData", function (options) {
+  //Connect to DS 1234 and get the record whose Office equals London
+  return Fliplet.DataSources.connect(1234).then(function (connection) {
+    return connection
+      .find({
+        where: {
+          Office: { $eq: "London" },
+        },
+      })
+      .then(function (records) {
+        //Here you can merge the records with the options.records from the LFD.
+      });
+  });
 });
 ```
 

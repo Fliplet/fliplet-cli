@@ -48,7 +48,7 @@ To start, use the `Fliplet.Page.onRemoteExecution()` function to register your c
 Fliplet.Page.onRemoteExecution(function (payload) {
   // This code will run when the screen is triggered by an app action.
 
-  console.log('App action sent this payload', payload);
+  // Here you can access the `payload` sent to the action when it was called. 
 
   // Here you can return the result to be send back to the user (if running an on-demand action)
   // or stored in the produced log.
@@ -154,7 +154,7 @@ Fliplet.App.Actions.run('confirm-booking');
 // input payload to be sent to the screen.
 Fliplet.App.Actions.run('confirm-booking', {
   FirstName: 'Nick',
-  Date: '2021-06-15'
+  Date: '2022-06-15'
 }).then(function () {
   // The action has been queued for processing.
   // No result is given back.
@@ -185,7 +185,7 @@ As a further note, app actions do not save their result in the produced log entr
 Use the `get` method to fetch the list of app actions you have created. Each action will contain a `lastRunAt` and `nextRunAt` timestamps to help you figuring out when the action has run the last time and when it's scheduled to be run.
 
 ```js
-return Fliplet.App.Actions.get().then(function (actions) {
+Fliplet.App.Actions.get().then(function (actions) {
   actions.forEach(function (action) {
     console.log(action);
   });
@@ -202,10 +202,10 @@ Here is a sample of the array of actions returned:
     "active": true,
     "frequency": "*/2 * * * *",
     "timezone": "Europe/Dublin",
-    "lastRunAt": "2021-07-21T12:32:02.495Z",
-    "nextRunAt": "2021-07-21T12:34:00.000Z",
-    "createdAt": "2021-07-20T09:29:00.366Z",
-    "updatedAt": "2021-07-20T09:29:00.366Z",
+    "lastRunAt": "2022-07-21T12:32:02.495Z",
+    "nextRunAt": "2022-07-21T12:34:00.000Z",
+    "createdAt": "2022-07-20T09:29:00.366Z",
+    "updatedAt": "2022-07-20T09:29:00.366Z",
     "appId": 123,
     "pageId": 456
   }
@@ -243,7 +243,7 @@ Sample logs:
 [
   {
     "id": 1,
-    "createdAt": "2021-07-21T12:36:02.663Z",
+    "createdAt": "2022-07-21T12:36:02.663Z",
     "type": "app.action.completed",
     "data": {
       "mode": "on-demand",
@@ -254,7 +254,7 @@ Sample logs:
   },
   {
     "id": 2,
-    "createdAt": "2021-07-21T12:36:02.663Z",
+    "createdAt": "2022-07-21T12:36:02.663Z",
     "type": "app.task.completed",
     "data": {
       "mode": "scheduled",
@@ -266,7 +266,7 @@ Sample logs:
   },
   {
     "id": 3,
-    "createdAt": "2021-07-21T12:36:02.663Z",
+    "createdAt": "2022-07-21T12:36:02.663Z",
     "type": "app.task.failed",
     "data": {
       "mode": "scheduled",
@@ -326,6 +326,38 @@ Fliplet.App.Actions.remove('confirm-booking').then(function () {
 
 ---
 
+## Testing and debugging an action
+
+Once you have created an app action and added the code you want to run to the `onRemoteExecution()` function you should test it and see if it running as expected. Note that you cannot use developer tools to view your console.log inside the `onRemoteExecution()` function as this is running on the server side. Here is the general steps to test an app action: 
+
+1. Create the app action 
+2. Add code to `onRemoteExecution()` that you want to run in the app action. 
+3. Call the app action on demand and log the returned data to see if it working as expected. 
+4. If there are multiple steps in your code then move the `return Promise.resolve()` to the point where you want to see the data available. 
+
+```js
+// If an app action called 'test-action' exists then we can call in on another screen
+Fliplet.App.Actions.runWithResult('test-action').then(function (result) {
+  // If your app action is working then it should return the entries from the data source query
+  console.log(result);
+});
+
+// This code exists on another screen and queries the data source and returns the data
+Fliplet.Page.onRemoteExecution(function (payload) {
+  return Fliplet.DataSources.connect(123)
+    .then(function (connection) {
+      return connection.find({
+        where: {
+            Name: 'John'
+        }
+      });
+    });
+});
+
+```
+
+Note: You have to ensure that if you are executing asynchronous JavaScript then the promises are chained correctly. If you do not chain the promises correctly then it is likely that no payload will be returned. 
+
 ## Troubleshooting
 
 ### Whitelist inbound requests from App Actions
@@ -335,8 +367,3 @@ If you're using an app action to make requests to your server you may need to wh
 - Canadian customers: `3.98.9.146`
 - European customers: `52.212.7.119`
 - US customers: `54.151.38.62`
-
----
-
-[Back to API documentation](../API-Documentation.md)
-{: .buttons}

@@ -1,9 +1,9 @@
 # List (from data source)
 
-- [Templates](#templates)
-- [Hooks](#hooks)
-- [Configurations](#configurations)
-- [Query parameters](#query-parameters)
+  - [Templates](#templates)
+  - [Hooks](#hooks)
+  - [Configurations](#configurations)
+  - [Query parameters](#query-parameters)
 
 ## Templates
 
@@ -14,36 +14,93 @@ The summary and detail view templates are rendered using a predefined list of ke
 When editing the HTML templates, the {% raw %}`{{ }}`{% endraw %} templates are referring to these predefined variables. To access fields directly from the data source, use the `originalData.` prefix, e.g. a {% raw %}`{{#if}}`{% endraw %} statement would look like the below.
 
 {% raw %}
+
 ```handlebars
 {{#if originalData.[Status]}}
 ```
+
 {% endraw %}
 
 ## Hooks
 
 The **List (from data source)** component exposes hooks that you can use to modify the component data and behavior. Here are the hooks and their specific life cycle:
 
-- [`flListDataBeforeGetData`](#fllistdatabeforegetdata)
-- [`flListDataAfterGetData`](#fllistdataaftergetdata)
-- [`flListDataBeforeRenderList`](#fllistdatabeforerenderlist)
-- [`flListDataAfterRenderList`](#fllistdataafterrenderlist)
-- [`flListDataAfterRenderListSocial`](#fllistdataafterrenderlistSocial)
-- [`flListDataBeforeRenderFilters`](#fllistdatabeforerenderfilters)
-- [`flListDataAfterRenderFilters`](#fllistdataafterrenderfilters)
-- [`flListDataSearchKeyUp`](#flListDataSearchKeyUp)
-- [`flListDataSearchInput`](#flListDataSearchInput)
-- [`flListDataBeforeDeleteConfirmation`](#fllistdatabeforedeleteconfirmation)
-- [`flListDataBeforeDeleteEntry`](#fllistdatabeforedeleteentry)
-- [`flListDataBeforeShowComments`](#flListdatabeforeshowcomments)
-- [`flListDataAfterShowComments`](#flListdataaftershowcomments)
-- [`flListDataBeforeNewComment`](#flListDataBeforeNewComment)
-- [`flListDataAfterNewComment`](#flListDataAfterNewComment)
-- [`flListDataAfterNewCommentShown`](#flListDataAfterNewCommentShown)
-- [`flListDataBeforeUpdateComment`](#flListDataBeforeUpdateComment)
-- [`flListDataAfterUpdateComment`](#flListDataAfterUpdateComment)
-- [`flListDataAfterUpdateCommentShown`](#flListDataAfterUpdateCommentShown)
-- [`flListDataBeforeDeleteComment`](#flListDataBeforeDeleteComment)
-- [`flListDataAfterDeleteComment`](#flListDataAfterDeleteComment)
+- [List (from data source)](#list-from-data-source)
+  - [Templates](#templates)
+  - [Hooks](#hooks)
+    - [`flListDataBeforeGetData`](#fllistdatabeforegetdata)
+      - [Parameters](#parameters)
+      - [Usage](#usage)
+    - [`flListDataAfterGetData`](#fllistdataaftergetdata)
+      - [Parameters](#parameters-1)
+      - [Usage](#usage-1)
+    - [`flListDataBeforeRenderList`](#fllistdatabeforerenderlist)
+      - [Parameters](#parameters-2)
+    - [`flListDataAfterRenderList`](#fllistdataafterrenderlist)
+      - [Parameters](#parameters-3)
+    - [`flListDataAfterRenderListSocial`](#fllistdataafterrenderlistsocial)
+    - [`flListDataBeforeRenderFilters`](#fllistdatabeforerenderfilters)
+      - [Parameters](#parameters-4)
+    - [`flListDataAfterRenderFilters`](#fllistdataafterrenderfilters)
+      - [Parameters](#parameters-5)
+    - [`flListDataSearchKeyUp`](#fllistdatasearchkeyup)
+      - [Parameters](#parameters-6)
+    - [`flListDataSearchInput`](#fllistdatasearchinput)
+      - [Parameters](#parameters-7)
+    - [`flListDataBeforeDeleteConfirmation`](#fllistdatabeforedeleteconfirmation)
+      - [Parameters](#parameters-8)
+    - [`flListDataBeforeDeleteEntry`](#fllistdatabeforedeleteentry)
+      - [Parameters](#parameters-9)
+      - [Usage](#usage-2)
+    - [`flListDataBeforeShowComments`](#fllistdatabeforeshowcomments)
+      - [Parameters](#parameters-10)
+    - [`flListDataAfterShowComments`](#fllistdataaftershowcomments)
+      - [Parameters](#parameters-11)
+    - [`flListDataBeforeNewComment`](#fllistdatabeforenewcomment)
+      - [Parameters](#parameters-12)
+    - [`flListDataAfterNewComment`](#fllistdataafternewcomment)
+      - [Parameters](#parameters-13)
+    - [`flListDataAfterNewCommentShown`](#fllistdataafternewcommentshown)
+      - [Parameters](#parameters-14)
+    - [`flListDataBeforeUpdateComment`](#fllistdatabeforeupdatecomment)
+      - [Parameters](#parameters-15)
+    - [`flListDataAfterUpdateComment`](#fllistdataafterupdatecomment)
+      - [Parameters](#parameters-16)
+    - [`flListDataAfterUpdateCommentShown`](#fllistdataafterupdatecommentshown)
+      - [Parameters](#parameters-17)
+    - [`flListDataBeforeDeleteComment`](#fllistdatabeforedeletecomment)
+      - [Parameters](#parameters-18)
+    - [`flListDataAfterDeleteComment`](#fllistdataafterdeletecomment)
+      - [Parameters](#parameters-19)
+  - [Configurations](#configurations)
+    - [`getData`](#getdata)
+    - [`dataQuery`](#dataquery)
+    - [`beforeOpen`](#beforeopen)
+    - [`beforeShowDetails`](#beforeshowdetails)
+    - [`afterShowDetails`](#aftershowdetails)
+    - [`deleteData`](#deletedata)
+    - [`searchData`](#searchdata)
+    - [`searchMatch`](#searchmatch)
+    - [`computedFields`](#computedfields)
+    - [`dataPrimaryKey`](#dataprimarykey)
+    - [`filterOptions`](#filteroptions)
+    - [`summaryLinkAction`](#summarylinkaction)
+    - [`forceRenderList`](#forcerenderlist)
+    - [`useApiFilters`](#useapifilters)
+    - [`getLikeIdentifier`](#getlikeidentifier)
+    - [`getBookmarkIdentifier`](#getbookmarkidentifier)
+    - [`getCommentIdentifier`](#getcommentidentifier)
+  - [Query parameters](#query-parameters)
+    - [Contains vs Is one of](#contains-vs-is-one-of)
+    - [Examples](#examples)
+      - [Open entry with ID 123](#open-entry-with-id-123)
+      - [Execute a search with the search term "hello"](#execute-a-search-with-the-search-term-hello)
+      - [Apply in-app sorting based on the last name](#apply-in-app-sorting-based-on-the-last-name)
+      - [Render with an in-app filter and hide the filter bar](#render-with-an-in-app-filter-and-hide-the-filter-bar)
+      - [Apply in-app filters based on different Status and Office fields](#apply-in-app-filters-based-on-different-status-and-office-fields)
+      - [Apply in-app filters based on dates](#apply-in-app-filters-based-on-dates)
+      - [Load only data where the name contains John and the age is less than 29](#load-only-data-where-the-name-contains-john-and-the-age-is-less-than-29)
+      - [Load only data with the category is either Fruit or Vegetable](#load-only-data-with-the-category-is-either-fruit-or-vegetable)
 
 ### `flListDataBeforeGetData`
 
@@ -55,12 +112,12 @@ Fliplet.Hooks.on('flListDataBeforeGetData', fn);
 
 #### Parameters
 
-- **fn** (Function(`options`)) Callback function with an object parameter.
-  - **options** (Object) A map of data containing the following.
-    - **config** (Object) Configuration used to initialize the component.
-    - **id** (Number) Component instance ID.
-    - **uuid** (String) Component instance UUID.
-    - **container** (jQuery object) jQuery object for the component container element.
+  - **fn** (Function(`options`)) Callback function with an object parameter.
+    - **options** (Object) A map of data containing the following.
+      - **config** (Object) Configuration used to initialize the component.
+      - **id** (Number) Component instance ID.
+      - **uuid** (String) Component instance UUID.
+      - **container** (jQuery object) jQuery object for the component container element.
 
 #### Usage
 
@@ -85,7 +142,6 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
 
 *Note: `data.config.getData` must return an array of objects. Each object must contain both `id` and `data` properties.*
 
-
 ### `flListDataAfterGetData`
 
 The hook is run after data is retrieved for rendering.
@@ -96,17 +152,17 @@ Fliplet.Hooks.on('flListDataAfterGetData', fn);
 
 #### Parameters
 
-- **fn** (Function(`options`)) Callback function with an object parameter.
-  - **options** (Object) A map of data containing the following.
-    - **config** (Object) Configuration used to initialize the component.
-    - **id** (Number) Component instance ID.
-    - **uuid** (String) Component instance UUID.
-    - **container** (jQuery object) jQuery object for the component container element.
-    - **records** (Array) Collection of records to be used for the component. This can be manipulated to affect the output.
+  - **fn** (Function(`options`)) Callback function with an object parameter.
+    - **options** (Object) A map of data containing the following.
+      - **config** (Object) Configuration used to initialize the component.
+      - **id** (Number) Component instance ID.
+      - **uuid** (String) Component instance UUID.
+      - **container** (jQuery object) jQuery object for the component container element.
+      - **records** (Array) Collection of records to be used for the component. This can be manipulated to affect the output.
 
 #### Usage
 
-**Add custom classes the container of each list item**
+**Add custom classes to the container of each list item**
 
 ```js
 Fliplet.Hooks.on('flListDataAfterGetData', function(options) {
@@ -116,7 +172,29 @@ Fliplet.Hooks.on('flListDataAfterGetData', function(options) {
     _.set(record, 'data.flClasses', 'text-danger text-muted');
   });
 });
-````
+```
+
+**Adjust agenda timezone to the device timezone**
+
+```js
+Fliplet.Hooks.on('flListDataAfterGetData', function (options) {
+  var dateColumn = _.get(_.find(options.config['detailViewOptions'], { Location: 'Full Date' }), 'column', 'Date');
+  var startTimeColumn = _.get(_.find(options.config['summary-fields'], { Location: 'Start Time' }), 'column', 'Start Time');
+  var endTimeColumn = _.get(_.find(options.config['summary-fields'], { Location: 'End Time' }), 'column', 'End Time');
+
+  var dataTimezone = 'Europe/London'; // Change this to the timezone that the data source assumes
+  var userTimezone = moment.tz.guess();
+
+  options.records.forEach(function(record) {
+    var startAt = moment.tz(record.data[dateColumn] + ' ' + record.data[startTimeColumn], dataTimezone).tz(userTimezone);
+    var endAt = moment.tz(record.data[dateColumn] + ' ' + record.data[endTimeColumn], dataTimezone).tz(userTimezone);
+
+    record.data[dateColumn] = startAt.format('YYYY-MM-DD');
+    record.data[startTimeColumn] = startAt.format('HH:mm');
+    record.data[endTimeColumn] = endAt.format('HH:mm');
+  });
+});
+```
 
 ### `flListDataBeforeRenderList`
 
@@ -128,14 +206,14 @@ Fliplet.Hooks.on('flListDataBeforeRenderList', fn);
 
 #### Parameters
 
-- **fn** (Function(`options`)) Callback function with an object parameter.
-  - **options** (Object) A map of data containing the following.
-    - **config** (Object) Configuration used to initialize the component.
-    - **records** (Array) Collection of records to be used for the component. This would be the last point in the process for the data to be manipulated before rendering.
-    - **value** (String) Any search term that is being applied
-    - **fields** (Array) An array of fields from the data source that will be used to perform the search
-    - **activeFilters** (Object) An object mapping all active filters
-    - **showBookmarks** (Boolean) Indicating if the user has chosen to show bookmarks only
+  - **fn** (Function(`options`)) Callback function with an object parameter.
+    - **options** (Object) A map of data containing the following.
+      - **config** (Object) Configuration used to initialize the component.
+      - **records** (Array) Collection of records to be used for the component. This would be the last point in the process for the data to be manipulated before rendering.
+      - **value** (String) Any search term that is being applied
+      - **fields** (Array) An array of fields from the data source that will be used to perform the search
+      - **activeFilters** (Object) An object mapping all active filters
+      - **showBookmarks** (Boolean) Indicating if the user has chosen to show bookmarks only
 
 ### `flListDataAfterRenderList`
 
@@ -147,14 +225,14 @@ Fliplet.Hooks.on('flListDataAfterRenderList', fn);
 
 #### Parameters
 
-- **fn** (Function(`options`)) Callback function with an object parameter.
-  - **options** (Object) A map of data containing the following.
-    - **config** (Object) Configuration used to initialize the component.
-    - **records** (Array) Collection of records to be used for the component.
-    - **value** (String) Any search term that is being applied
-    - **activeFilters** (Object) An object mapping all active filters
-    - **showBookmarks** (Boolean) Indicating if the user has chosen to show bookmarks only
-    - **initialRender** (Boolean) Indicating if the hook is fired from the initial component load
+  - **fn** (Function(`options`)) Callback function with an object parameter.
+    - **options** (Object) A map of data containing the following.
+      - **config** (Object) Configuration used to initialize the component.
+      - **records** (Array) Collection of records to be used for the component.
+      - **value** (String) Any search term that is being applied
+      - **activeFilters** (Object) An object mapping all active filters
+      - **showBookmarks** (Boolean) Indicating if the user has chosen to show bookmarks only
+      - **initialRender** (Boolean) Indicating if the hook is fired from the initial component load
 
 ### `flListDataAfterRenderListSocial`
 
@@ -176,11 +254,11 @@ Fliplet.Hooks.on('flListDataBeforeRenderFilters', fn);
 
 #### Parameters
 
-- **fn** (Function(`options`)) Callback function with an object parameter.
-  - **options** (Object) A map of data containing the following.
-    - **config** (Object) Configuration used to initialize the component.
-    - **filters** (Array) Array of filters and values to be rendered.
-    - **records** (Array) Collection of records to be used for the component. This can be manipulated to affect the output.
+  - **fn** (Function(`options`)) Callback function with an object parameter.
+    - **options** (Object) A map of data containing the following.
+      - **config** (Object) Configuration used to initialize the component.
+      - **filters** (Array) Array of filters and values to be rendered.
+      - **records** (Array) Collection of records to be used for the component. This can be manipulated to affect the output.
 
 ### `flListDataAfterRenderFilters`
 
@@ -192,11 +270,11 @@ Fliplet.Hooks.on('flListDataAfterRenderFilters', fn);
 
 #### Parameters
 
-- **fn** (Function(`options`)) Callback function with an object parameter.
-  - **options** (Object) A map of data containing the following.
-    - **config** (Object) Configuration used to initialize the component.
-    - **filters** (Array) Array of filters and values to be rendered.
-    - **records** (Array) Collection of records to be used for the component. This can be manipulated to affect the output.
+  - **fn** (Function(`options`)) Callback function with an object parameter.
+    - **options** (Object) A map of data containing the following.
+      - **config** (Object) Configuration used to initialize the component.
+      - **filters** (Array) Array of filters and values to be rendered.
+      - **records** (Array) Collection of records to be used for the component. This can be manipulated to affect the output.
 
 ### `flListDataSearchKeyUp`
 
@@ -208,15 +286,15 @@ Fliplet.Hooks.on('flListDataSearchKeyUp', fn);
 
 #### Parameters
 
-- **fn** (Function(`options`)) Callback function with an object parameter.
-  - **options** (Object) A map of data containing the following.
-    - **config** (Object) Configuration used to initialize the component.
-    - **id** (Number) Component instance ID.
-    - **uuid** (String) Component instance UUID.
-    - **container** (jQuery object) jQuery object for the component container element.
-    - **input** (jQuery object) jQuery object for the search input field.
-    - **value** (String) Search value.
-    - **event** (Event) Event object that triggered the hook.
+  - **fn** (Function(`options`)) Callback function with an object parameter.
+    - **options** (Object) A map of data containing the following.
+      - **config** (Object) Configuration used to initialize the component.
+      - **id** (Number) Component instance ID.
+      - **uuid** (String) Component instance UUID.
+      - **container** (jQuery object) jQuery object for the component container element.
+      - **input** (jQuery object) jQuery object for the search input field.
+      - **value** (String) Search value.
+      - **event** (Event) Event object that triggered the hook.
 
 ### `flListDataSearchInput`
 
@@ -228,15 +306,15 @@ Fliplet.Hooks.on('flListDataSearchKeyUp', fn);
 
 #### Parameters
 
-- **fn** (Function(`options`)) Callback function with an object parameter.
-  - **options** (Object) A map of data containing the following.
-    - **config** (Object) Configuration used to initialize the component.
-    - **id** (Number) Component instance ID.
-    - **uuid** (String) Component instance UUID.
-    - **container** (jQuery object) jQuery object for the component container element.
-    - **input** (jQuery object) jQuery object for the search input field.
-    - **value** (String) Search value.
-    - **event** (Event) Event object that triggered the hook.
+  - **fn** (Function(`options`)) Callback function with an object parameter.
+    - **options** (Object) A map of data containing the following.
+      - **config** (Object) Configuration used to initialize the component.
+      - **id** (Number) Component instance ID.
+      - **uuid** (String) Component instance UUID.
+      - **container** (jQuery object) jQuery object for the component container element.
+      - **input** (jQuery object) jQuery object for the search input field.
+      - **value** (String) Search value.
+      - **event** (Event) Event object that triggered the hook.
 
 ### `flListDataBeforeDeleteConfirmation`
 
@@ -248,31 +326,31 @@ Fliplet.Hooks.on('flListDataBeforeDeleteConfirmation', fn);
 
 #### Parameters
 
-- **fn** (Function(`options`)) Callback function with an object parameter.
-  - **options** (Object) A map of data containing the following.
-    - **config** (Object) Configuration used to initialize the component.
-    - **id** (Number) Component instance ID.
-    - **uuid** (String) Component instance UUID.
-    - **container** (jQuery object) jQuery object for the component container element.
-    - **entryId** (Number) Data source entry ID of the record to be deleted.
+  - **fn** (Function(`options`)) Callback function with an object parameter.
+    - **options** (Object) A map of data containing the following.
+      - **config** (Object) Configuration used to initialize the component.
+      - **id** (Number) Component instance ID.
+      - **uuid** (String) Component instance UUID.
+      - **container** (jQuery object) jQuery object for the component container element.
+      - **entryId** (Number) Data source entry ID of the record to be deleted.
 
 ### `flListDataBeforeDeleteEntry`
 
 The hook is run before deleting an entry.
 
 ```js
-Fliplet.Hooks.on('flListDataBeforeDeleteConfirmation', fn);
+Fliplet.Hooks.on('flListDataBeforeDeleteEntry', fn);
 ```
 
 #### Parameters
 
-- **fn** (Function((`options`)) Callback function with an object parameter.
-  - **options** (Object) A map of data containing the following.
-    - **config** (Object) Configuration used to initialize the component.
-    - **id** (Number) Component instance ID.
-    - **uuid** (String) Component instance UUID.
-    - **container** (jQuery object) jQuery object for the component container element.
-    - **entryId** (Number) Data source entry ID of the record to be deleted.
+  - **fn** (Function((`options`)) Callback function with an object parameter.
+    - **options** (Object) A map of data containing the following.
+      - **config** (Object) Configuration used to initialize the component.
+      - **id** (Number) Component instance ID.
+      - **uuid** (String) Component instance UUID.
+      - **container** (jQuery object) jQuery object for the component container element.
+      - **entryId** (Number) Data source entry ID of the record to be deleted.
 
 #### Usage
 
@@ -300,15 +378,15 @@ Fliplet.Hooks.on('flListDataBeforeShowComments', fn);
 
 #### Parameters
 
-- **fn** (Function((`options`)) Callback function with an object parameter.
-  - **options** (Object) A map of data containing the following.
-    - **config** (Object) Configuration used to initialize the component.
-    - **id** (Number) Component instance ID.
-    - **uuid** (String) Component instance UUID.
-    - **container** (jQuery object) jQuery object for the component container element.
-    - **html** (String) HTML code that is to be rendered for all the comments.
-    - **comments** (Array) Comments retrieved for the entry.
-    - **record** (Object) Data source entry that the comments are attached to.
+  - **fn** (Function((`options`)) Callback function with an object parameter.
+    - **options** (Object) A map of data containing the following.
+      - **config** (Object) Configuration used to initialize the component.
+      - **id** (Number) Component instance ID.
+      - **uuid** (String) Component instance UUID.
+      - **container** (jQuery object) jQuery object for the component container element.
+      - **html** (String) HTML code that is to be rendered for all the comments.
+      - **comments** (Array) Comments retrieved for the entry.
+      - **record** (Object) Data source entry that the comments are attached to.
 
 ### `flListDataAfterShowComments`
 
@@ -320,15 +398,15 @@ Fliplet.Hooks.on('flListDataAfterShowComments', fn);
 
 #### Parameters
 
-- **fn** (Function((`options`)) Callback function with an object parameter.
-  - **options** (Object) A map of data containing the following.
-    - **config** (Object) Configuration used to initialize the component.
-    - **id** (Number) Component instance ID.
-    - **uuid** (String) Component instance UUID.
-    - **container** (jQuery object) jQuery object for the component container element.
-    - **html** (String) HTML code that is to be rendered for all the comments.
-    - **comments** (Array) Comments retrieved for the entry.
-    - **record** (Object) Data source entry that the comments are attached to.
+  - **fn** (Function((`options`)) Callback function with an object parameter.
+    - **options** (Object) A map of data containing the following.
+      - **config** (Object) Configuration used to initialize the component.
+      - **id** (Number) Component instance ID.
+      - **uuid** (String) Component instance UUID.
+      - **container** (jQuery object) jQuery object for the component container element.
+      - **html** (String) HTML code that is to be rendered for all the comments.
+      - **comments** (Array) Comments retrieved for the entry.
+      - **record** (Object) Data source entry that the comments are attached to.
 
 ### `flListDataBeforeNewComment`
 
@@ -336,15 +414,15 @@ The hook is run before a comment is added to a data source entry.
 
 #### Parameters
 
-- **fn** (Function((`options`)) Callback function with an object parameter.
-  - **options** (Object) A map of data containing the following.
-    - **config** (Object) Configuration used to initialize the component.
-    - **id** (Number) Component instance ID.
-    - **uuid** (String) Component instance UUID.
-    - **container** (jQuery object) jQuery object for the component container element.
-    - **record** (Object) Data source entry that the comments are attached to.
-    - **comment** (String) Comment entered by user.
-    - **commentGuid** (String) A temporary ID given to the new comment.
+  - **fn** (Function((`options`)) Callback function with an object parameter.
+    - **options** (Object) A map of data containing the following.
+      - **config** (Object) Configuration used to initialize the component.
+      - **id** (Number) Component instance ID.
+      - **uuid** (String) Component instance UUID.
+      - **container** (jQuery object) jQuery object for the component container element.
+      - **record** (Object) Data source entry that the comments are attached to.
+      - **comment** (String) Comment entered by user.
+      - **commentGuid** (String) A temporary ID given to the new comment.
 
 ### `flListDataAfterNewComment`
 
@@ -352,15 +430,15 @@ The hook is run after a comment is added to a data source entry.
 
 #### Parameters
 
-- **fn** (Function((`options`)) Callback function with an object parameter.
-  - **options** (Object) A map of data containing the following.
-    - **config** (Object) Configuration used to initialize the component.
-    - **id** (Number) Component instance ID.
-    - **uuid** (String) Component instance UUID.
-    - **container** (jQuery object) jQuery object for the component container element.
-    - **record** (Object) Data source entry that the comments are attached to.
-    - **commentEntry** (String) Comment entry returned by the API.
-    - **commentGuid** (String) A temporary ID given to the new comment.
+  - **fn** (Function((`options`)) Callback function with an object parameter.
+    - **options** (Object) A map of data containing the following.
+      - **config** (Object) Configuration used to initialize the component.
+      - **id** (Number) Component instance ID.
+      - **uuid** (String) Component instance UUID.
+      - **container** (jQuery object) jQuery object for the component container element.
+      - **record** (Object) Data source entry that the comments are attached to.
+      - **commentEntry** (String) Comment entry returned by the API.
+      - **commentGuid** (String) A temporary ID given to the new comment.
 
 ### `flListDataAfterNewCommentShown`
 
@@ -368,16 +446,16 @@ The hook is run after a comment is added and rendered on the page.
 
 #### Parameters
 
-- **fn** (Function((`options`)) Callback function with an object parameter.
-  - **options** (Object) A map of data containing the following.
-    - **config** (Object) Configuration used to initialize the component.
-    - **id** (Number) Component instance ID.
-    - **uuid** (String) Component instance UUID.
-    - **container** (jQuery object) jQuery object for the component container element.
-    - **record** (Object) Data source entry that the comments are attached to.
-    - **commentEntry** (String) Comment entry returned by the API.
-    - **commentGuid** (String) A temporary ID given to the new comment.
-    - **commentContainer** (jQuery object) jQuery object for the new comment container element.
+  - **fn** (Function((`options`)) Callback function with an object parameter.
+    - **options** (Object) A map of data containing the following.
+      - **config** (Object) Configuration used to initialize the component.
+      - **id** (Number) Component instance ID.
+      - **uuid** (String) Component instance UUID.
+      - **container** (jQuery object) jQuery object for the component container element.
+      - **record** (Object) Data source entry that the comments are attached to.
+      - **commentEntry** (String) Comment entry returned by the API.
+      - **commentGuid** (String) A temporary ID given to the new comment.
+      - **commentContainer** (jQuery object) jQuery object for the new comment container element.
 
 ### `flListDataBeforeUpdateComment`
 
@@ -385,15 +463,15 @@ The hook is run before a comment is updated.
 
 #### Parameters
 
-- **fn** (Function((`options`)) Callback function with an object parameter.
-  - **options** (Object) A map of data containing the following.
-    - **config** (Object) Configuration used to initialize the component.
-    - **id** (Number) Component instance ID.
-    - **uuid** (String) Component instance UUID.
-    - **container** (jQuery object) jQuery object for the component container element.
-    - **record** (Object) Data source entry that the comments are attached to.
-    - **oldCommentData** (Object) Comment entry object for the comment to be updated.
-    - **newComment** (String) New comment for the comment.
+  - **fn** (Function((`options`)) Callback function with an object parameter.
+    - **options** (Object) A map of data containing the following.
+      - **config** (Object) Configuration used to initialize the component.
+      - **id** (Number) Component instance ID.
+      - **uuid** (String) Component instance UUID.
+      - **container** (jQuery object) jQuery object for the component container element.
+      - **record** (Object) Data source entry that the comments are attached to.
+      - **oldCommentData** (Object) Comment entry object for the comment to be updated.
+      - **newComment** (String) New comment for the comment.
 
 ### `flListDataAfterUpdateComment`
 
@@ -401,15 +479,15 @@ The hook is run after a comment is updated.
 
 #### Parameters
 
-- **fn** (Function((`options`)) Callback function with an object parameter.
-  - **options** (Object) A map of data containing the following.
-    - **config** (Object) Configuration used to initialize the component.
-    - **id** (Number) Component instance ID.
-    - **uuid** (String) Component instance UUID.
-    - **container** (jQuery object) jQuery object for the component container element.
-    - **record** (Object) Data source entry that the comments are attached to.
-    - **oldCommentData** (Object) Comment entry object for the comment before it is updated.
-    - **newCommentData** (Object) Comment entry object for the comment after it is updated.
+  - **fn** (Function((`options`)) Callback function with an object parameter.
+    - **options** (Object) A map of data containing the following.
+      - **config** (Object) Configuration used to initialize the component.
+      - **id** (Number) Component instance ID.
+      - **uuid** (String) Component instance UUID.
+      - **container** (jQuery object) jQuery object for the component container element.
+      - **record** (Object) Data source entry that the comments are attached to.
+      - **oldCommentData** (Object) Comment entry object for the comment before it is updated.
+      - **newCommentData** (Object) Comment entry object for the comment after it is updated.
 
 ### `flListDataAfterUpdateCommentShown`
 
@@ -417,16 +495,16 @@ The hook is run after a comment is updated and rendered on the page.
 
 #### Parameters
 
-- **fn** (Function((`options`)) Callback function with an object parameter.
-  - **options** (Object) A map of data containing the following.
-    - **config** (Object) Configuration used to initialize the component.
-    - **id** (Number) Component instance ID.
-    - **uuid** (String) Component instance UUID.
-    - **container** (jQuery object) jQuery object for the component container element.
-    - **record** (Object) Data source entry that the comments are attached to.
-    - **oldCommentData** (Object) Comment entry object for the comment before it is updated.
-    - **newCommentData** (Object) Comment entry object for the comment after it is updated.
-    - **commentContainer** (jQuery object) jQuery object for the updated comment container element.
+  - **fn** (Function((`options`)) Callback function with an object parameter.
+    - **options** (Object) A map of data containing the following.
+      - **config** (Object) Configuration used to initialize the component.
+      - **id** (Number) Component instance ID.
+      - **uuid** (String) Component instance UUID.
+      - **container** (jQuery object) jQuery object for the component container element.
+      - **record** (Object) Data source entry that the comments are attached to.
+      - **oldCommentData** (Object) Comment entry object for the comment before it is updated.
+      - **newCommentData** (Object) Comment entry object for the comment after it is updated.
+      - **commentContainer** (jQuery object) jQuery object for the updated comment container element.
 
 ### `flListDataBeforeDeleteComment`
 
@@ -434,15 +512,15 @@ The hook is run before a comment is deleted.
 
 #### Parameters
 
-- **fn** (Function((`options`)) Callback function with an object parameter.
-  - **options** (Object) A map of data containing the following.
-    - **config** (Object) Configuration used to initialize the component.
-    - **id** (Number) Component instance ID.
-    - **uuid** (String) Component instance UUID.
-    - **container** (jQuery object) jQuery object for the component container element.
-    - **record** (Object) Data source entry that the comments are attached to.
-    - **commentId** (Number) Comment ID to be deleted.
-    - **commentContainer** (jQuery object) jQuery object for the updated comment container element.
+  - **fn** (Function((`options`)) Callback function with an object parameter.
+    - **options** (Object) A map of data containing the following.
+      - **config** (Object) Configuration used to initialize the component.
+      - **id** (Number) Component instance ID.
+      - **uuid** (String) Component instance UUID.
+      - **container** (jQuery object) jQuery object for the component container element.
+      - **record** (Object) Data source entry that the comments are attached to.
+      - **commentId** (Number) Comment ID to be deleted.
+      - **commentContainer** (jQuery object) jQuery object for the updated comment container element.
 
 ### `flListDataAfterDeleteComment`
 
@@ -450,15 +528,15 @@ The hook is run after a comment is deleted and removed from the page.
 
 #### Parameters
 
-- **fn** (Function((`options`)) Callback function with an object parameter.
-  - **options** (Object) A map of data containing the following.
-    - **config** (Object) Configuration used to initialize the component.
-    - **id** (Number) Component instance ID.
-    - **uuid** (String) Component instance UUID.
-    - **container** (jQuery object) jQuery object for the component container element.
-    - **record** (Object) Data source entry that the comments are attached to.
-    - **commentId** (Number) Comment ID to be deleted.
-    - **commentContainer** (jQuery object) jQuery object for the updated comment container element.
+  - **fn** (Function((`options`)) Callback function with an object parameter.
+    - **options** (Object) A map of data containing the following.
+      - **config** (Object) Configuration used to initialize the component.
+      - **id** (Number) Component instance ID.
+      - **uuid** (String) Component instance UUID.
+      - **container** (jQuery object) jQuery object for the component container element.
+      - **record** (Object) Data source entry that the comments are attached to.
+      - **commentId** (Number) Comment ID to be deleted.
+      - **commentContainer** (jQuery object) jQuery object for the updated comment container element.
 
 ## Configurations
 
@@ -677,28 +755,91 @@ Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
 
 (Boolean) When a search/filter is applied to a list, the list is sometimes shortened by removing unneeded entries. Set this configuration to `true` so that every list render is forced to re-rendered instead of patching it. (**Default**: `false`)
 
+### `useApiFilters`
+
+(Boolean) To enable API filters, set the value to `true` when using any of the following features:
+
+- `flListDataAfterGetData` hook
+- `dataQuery` configuration
+- `computedFields` configuration
+
+### `getLikeIdentifier`
+
+(Function) Use a custom function to compute the unique identifier when generating a _Like_ entry.
+
+For example:
+
+```js
+Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
+  // Customize the like identifier
+  options.config.getLikeIdentifier = function(data) {
+    return {
+      entryId: data.record.id + '-like'
+      pageId: Fliplet.Env.get('pageId')
+    };
+  };
+});
+```
+
+This is particularly useful because _Likes_ are specific to the page whereas _Bookmarks_ and _Comments_ are not. To make the _Like_ entries accessible across all pages, remove the `pageId` from the identifier.
+
+### `getBookmarkIdentifier`
+
+(Function) Use a custom function to compute the unique identifier when generating a _Bookmark_ entry.
+
+For example:
+
+```js
+Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
+  // Customize the bookmark identifier
+  options.config.getBookmarkIdentifier = function(data) {
+    return {
+      entryId: data.record.id + '-bookmark'
+    };
+  };
+});
+```
+
+### `getCommentIdentifier`
+
+(Function) Use a custom function to compute the unique identifier when generating a _Comment_ entry.
+
+For example:
+
+```js
+Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
+  // Customize the comment identifier
+  options.config.getCommentIdentifier = function(data) {
+    return {
+      contentDataSourceEntryId: data.record.id,
+      type: 'comment'
+    };
+  };
+});
+```
+
 ## Query parameters
 
 When navigating to a screen that contains a **List (from data source)** component, you can use queries to execute logic accordingly, e.g. load a specific list item, apply filters and/or search, or add a new pre-filter.
 
 Use the following query parameters when linking to a screen with **List (from data source)** components.
 
-- **dynamicListOpenId** Entry ID to be opened after the list is rendered.
-- **dynamicListOpenColumn** Column name to use for opening an entry after the list is rendered
-- **dynamicListOpenValue** Value to match in the given column for opening an entry after the list is rendered
-- **dynamicListOpenComments** (`true|false`) Open the comments view, if applicable (Default: `false`)
-- **dynamicListCommentId** Open the comments view and scroll to the provided comment based on the comment ID
-- **dynamicListPreviousScreen** (`true|false`) If a query was used to open an entry, return to the previous page when users close the detail view. (Default: `false`)
-- **dynamicListSortColumn** Column to sort the data with. The column must be added as a sortable field for the LFD first.
-- **dynamicListSortOrder** (`asc|desc`) Sort the list by the specified column in ascending (`asc`) or descending (`desc`) order.
-- **dynamicListSearchValue** Search term to be applied after the list is rendered. Search will be executed according to the component configuration or custom configuration. If only one entry is found, the entry will be automatically opened.
-- **dynamicListSearchColumn** Column to execute a search against. If provided, the component configuration will be ignored. (Optional)
-- **dynamicListFilterValue** A comma-separated list of filter values to select. If `dynamicListFilterColumn` is not specified, all filters that match the value will be selected. **Note:** only filter values that are present in the dataset will be used. If the filter is based on a date range, use `..` to separate the start and end values, e.g. `2021-02-01..2021-03-01`.
-- **dynamicListFilterColumn** A comma-separated list of columns to select filter values within (optional). The number of columns provided must match the number of values provided. To select multiple values for a column, use `[]` to enclose the values and separate them by commas. e.g. `dynamicListFilterColumn=Tags,Category&dynamicListFilterValue=[Foo,Buzz],Enterprise%20software` selects the filters `Tags=Foo`, `Tags=Buzz` and `Category=Enterprise software`.
-- **dynamicListFilterHideControls** (`true|false`) Hide the filter controls when filter values are applied from the query. (Default: `false`)
-- **dynamicListPrefilterColumn** Pre-filter list based on the provided list of comma-separated column names.
-- **dynamicListPrefilterValue** Pre-filter list based on the provided list of comma-separated values for the column names. Any values that contain a comma (`,`) should be wrapped in URL-encoded double quotes (`%22`).
-- **dynamicListPrefilterLogic** Pre-filter list based on the provided list of comma-separated logic operators to be applied on the columns and values. The valid operators are:
+  - **dynamicListOpenId** Entry ID to be opened after the list is rendered.
+  - **dynamicListOpenColumn** Column name to use for opening an entry after the list is rendered
+  - **dynamicListOpenValue** Value to match in the given column for opening an entry after the list is rendered
+  - **dynamicListOpenComments** (`true|false`) Open the comments view, if applicable (Default: `false`)
+  - **dynamicListCommentId** Open the comments view and scroll to the provided comment based on the comment ID
+  - **dynamicListPreviousScreen** (`true|false`) If a query was used to open an entry, return to the previous page when users close the detail view. (Default: `false`)
+  - **dynamicListSortColumn** Column to sort the data with. The column must be added as a sortable field for the LFD first.
+  - **dynamicListSortOrder** (`asc|desc`) Sort the list by the specified column in ascending (`asc`) or descending (`desc`) order.
+  - **dynamicListSearchValue** Search term to be applied after the list is rendered. Search will be executed according to the component configuration or custom configuration. If only one entry is found, the entry will be automatically opened.
+  - **dynamicListSearchColumn** Column to execute a search against. If provided, the component configuration will be ignored. (Optional)
+  - **dynamicListFilterValue** A comma-separated list of filter values to select. If `dynamicListFilterColumn` is not specified, all filters that match the value will be selected. **Note:** only filter values that are present in the dataset will be used. If the filter is based on a date range, use `..` to separate the start and end values, e.g. `2022-02-01..2022-03-01`.
+  - **dynamicListFilterColumn** A comma-separated list of columns to select filter values within (optional). The number of columns provided must match the number of values provided. To select multiple values for a column, use `[]` to enclose the values and separate them by commas. e.g. `dynamicListFilterColumn=Tags,Category&dynamicListFilterValue=[Foo,Buzz],Enterprise%20software` selects the filters `Tags=Foo`, `Tags=Buzz` and `Category=Enterprise software`.
+  - **dynamicListFilterHideControls** (`true|false`) Hide the filter options when filter values are applied from the query. (Default: `false`). The UI for toggling filters will still be accessible.
+  - **dynamicListPrefilterColumn** Pre-filter list based on the provided list of comma-separated column names.
+  - **dynamicListPrefilterValue** Pre-filter list based on the provided list of comma-separated values for the column names. Any values that contain a comma (`,`) should be wrapped in URL-encoded double quotes (`%22`).
+  - **dynamicListPrefilterLogic** Pre-filter list based on the provided list of comma-separated logic operators to be applied on the columns and values. The valid operators are:
 
 | Operator | URL encoded operator | Description |
 | -- | -- | -- |
@@ -760,7 +901,7 @@ dynamicListFilterColumn=Status,Office&dynamicListFilterValue=[Approved,Waitliste
 #### Apply in-app filters based on dates
 
 ```
-dynamicListFilterColumn=Publish%20date&dynamicListFilterValue=2021-02-01..2021-03-01
+dynamicListFilterColumn=Publish%20date&dynamicListFilterValue=2022-02-01..2022-03-01
 ```
 
 #### Load only data where the name contains John and the age is less than 29

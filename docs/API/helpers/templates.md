@@ -1,4 +1,4 @@
-# Templates
+# Helper Templates
 Helpers are required to define a HTML template which is used to render them in the app screen.
 
 Templates support the following features:

@@ -99,7 +99,7 @@ try {
 
 // Load packages for themes-only
 if (isTheme) {
-  sass = require('node-sass');
+  sass = require('sass');
 }
 
 log();

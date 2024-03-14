@@ -15,6 +15,7 @@ These are a few examples of rate limits we currently allow on a per-user basis:
 - **Data Source APIs**: up to 200 requests every 10 seconds
 - **Communicate APIs**: up to 20 requests every 30 seconds
 - **Audit logs APIs**: up to 30 requests every 10 seconds
+- **AI APIs**: up to 10 requests every 60 seconds
 - **App Actions**: up to 60 runs per minute (*for the entire app*)
 
 If you get rate limited, our APIs will return a `429` status code with a message similar to this:
@@ -23,7 +24,7 @@ If you get rate limited, our APIs will return a `429` status code with a message
 {
   "message":"You've made too many attempts in a short period of time, please try again in a few seconds. Read more about rate limiting and how you may be affected by reading our documentation.",
   "referenceUrl":"https://developers.fliplet.com/Rate-limiting-for-API.html",
-  "nextValidRequestDate":"2021-02-15T17:13:32.363Z"
+  "nextValidRequestDate":"2022-02-15T17:13:32.363Z"
 }
 ```
 

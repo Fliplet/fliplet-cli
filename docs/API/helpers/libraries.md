@@ -1,8 +1,8 @@
-# External libraries
+# Helper External libraries
 
 Define a `dependencies` array in the `render` property to include libraries in your helpers. These can include:
 
-- [Fliplet approved libraries](Fliplet-approved-libraries.md)
+- [Fliplet approved libraries](/Fliplet-approved-libraries.html)
 - Any 3rd party Javascript and CSS library
 
 ## Include Fliplet approved libraries

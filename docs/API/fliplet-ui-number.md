@@ -93,8 +93,7 @@ Fliplet.UI.NumberInput.get(el)
 
 ## Related
 
-  - [Date Picker](fliplet-ui-datepicker.md)
-  - [Time Picker](fliplet-ui-timepicker.md)
+  - [Number Input](fliplet-ui-number.md) (`fliplet-ui-number`)
 
 ---
 

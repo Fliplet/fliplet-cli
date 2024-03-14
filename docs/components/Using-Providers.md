@@ -29,14 +29,20 @@ var myProvider = Fliplet.Widget.open('com.fliplet.link', {
   }
 });
 
-// Once the promise is resolved
+// The returned variable from Fliplet.Widget.open() resolves when the provider is saved
 myProvider.then(function (data) {
-  // This will get called once the provider has called "Fliplet.Widget.save()"
+  // data will contain the result
 });
+
+// The provider is triggered to start saving data
+myProvider.forwardSaveRequest();
+
+// Trigger events to the provider
+myProvider.emit('event-name');
 
 // You can also resolve an array of providers (similar to Promise.all)
 Fliplet.Widget.all([myProviderA, myProviderB, myProviderC]).then(function () {
-
+  // results is an array with data from all providers you resolved
 });
 ```
 

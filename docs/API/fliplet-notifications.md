@@ -198,6 +198,7 @@ instance.insert({
       // Omit this property to have the system automatically increment the
       // badge count for each user and device receiving the push notification.
       badge: 1,
+      sound: 'default',
       custom: {
         // Add a link to the push notification
         customData: {
@@ -213,7 +214,7 @@ instance.insert({
     delayUntilTimestamp: moment().add(30, 'minute').unix()
   },
   // Optional scope: use a filter based on the connected Data Source
-  // fro your contacts (if your app has a login component)
+  // from your contacts (if your app has a login component)
   scope: {
     Email: 'john@example.org'
   }
@@ -236,6 +237,7 @@ instance.insert({
       // Omit this property to have the system automatically increment the
       // badge count for each user and device receiving the push notification.
       badge: 1,
+      sound: 'default',
       custom: {
         // Add a link to the push notification
         customData: {
@@ -251,11 +253,81 @@ instance.insert({
     delayUntilTimestamp: moment().add(30, 'minute').unix()
   },
   // Optional scope: use a filter based on the connected Data Source
-  // fro your contacts (if your app has a login component)
+  // from your contacts (if your app has a login component)
   scope: {
     Email: 'john@example.org'
   }
 })
+```
+
+### Send multiple notifications at once (batch insert)
+
+```js
+// send batch of push notifications
+instance.batchInsert([
+  {
+    type: 'push',
+    pushNotification: {
+      payload: {
+        title: 'Title of the push notification',
+        body: 'Message of the push notification',
+        // Optionally set the notification badge number to a fixed number.
+        // Omit this property to have the system automatically increment the
+        // badge count for each user and device receiving the push notification.
+        badge: 1,
+        sound: 'default',
+        custom: {
+          // Add a link to the push notification
+          customData: {
+            action: 'screen',
+            page: 123,
+            query: '?weather=sunny'
+          }
+        }
+      },
+
+      // optionally schedule the push notification
+      // to be sent in 30 minutes
+      delayUntilTimestamp: moment().add(30, 'minute').unix()
+    },
+    // Optional scope: use a filter based on the connected Data Source
+    // from your contacts (if your app has a login component)
+    scope: {
+      Email: 'john@example.org'
+    }
+  },
+  {
+    type: 'push',
+    pushNotification: {
+      payload: {
+        title: 'Title of the push notification',
+        body: 'Message of the push notification',
+        // Optionally set the notification badge number to a fixed number.
+        // Omit this property to have the system automatically increment the
+        // badge count for each user and device receiving the push notification.
+        badge: 1,
+        sound: 'default',
+        custom: {
+          // Add a link to the push notification
+          customData: {
+            action: 'screen',
+            page: 123,
+            query: '?weather=sunny'
+          }
+        }
+      },
+
+      // optionally schedule the push notification
+      // to be sent in 30 minutes
+      delayUntilTimestamp: moment().add(30, 'minute').unix()
+    },
+    // Optional scope: use a filter based on the connected Data Source
+    // from your contacts (if your app has a login component)
+    scope: {
+      Email: 'john@example.org'
+    }
+  }
+]);
 ```
 
 ### Update a notification

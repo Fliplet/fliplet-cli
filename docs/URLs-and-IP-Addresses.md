@@ -96,6 +96,10 @@ Please note that the following list may change over time. We regularly update ou
 3.98.17.196/32
 3.98.43.103/32
 3.98.9.146/32
+143.204.170.71/32
+143.204.170.36/32
+143.204.170.28/32
+143.204.170.122/32
 ```
 
 ---
@@ -131,9 +135,12 @@ Additionally, if you need to whitelist emails by IP please add the following IP 
 54.240.64.0/19
 54.240.96.0/19
 52.82.172.0/22
+76.223.128.0/19
 ```
 
-Keep in mind that those IP addresses are subject to change. If Fliplet adds or removes any outgoing IP address, we will update the SPF record, so you need to check back from time to time, if you want to make sure you have the latest list of IP address ranges.
+<p class="warning">Please note that the list of IP addresses above is not used exclusively by Fliplet. <a href="https://aws.amazon.com/ses" target="_blank">Amazon SES</a> is our trusted cloud email provider, which uses the ranges above for transactional emails sent by all its customers.</p>
+
+Keep in mind that those IP addresses are subject to change and be added over time. If Amazon SES adds or removes any outgoing IP address, we will update the SPF record, so you need to check back from time to time, if you want to make sure you have the latest list of IP address ranges.
 
 You can use the `dig` unix command to get an up to date list of our SPF records at any time:
 

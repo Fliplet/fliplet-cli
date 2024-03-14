@@ -74,6 +74,9 @@ Fliplet apps and widget interfaces are loaded with the following helpers.
    - `str` String to be processed
 - `toJSONString` changes any objects to a JSON string, e.g. `{{toJSONString obj}}`
    - `obj` Object to be parsed into a JSON string
+- `get` gets the value at path of object based on `_.get()`, with support for a custom default value if the resolved value is undefined, e.g. `{{ get path defaultValue }}`
+  - `path` Path of the property to get
+  - `defaultValue` The value returned for undefined resolved values
 
 **Available with _List (from data source)_ component only**
 

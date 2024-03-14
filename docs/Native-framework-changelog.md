@@ -7,13 +7,15 @@ We regularly update our framework to support new features. If you have an older 
   <div class="bl two">
     <div>
       <h4>iOS</h4>
-      <p>Latest stable release: 4.5.2</p>
+      <p>Current release: <u>6.2.0</u></p>
+      <p>Target SDK version: 16</p>
     </div>
   </div>
   <div class="bl two">
     <div>
       <h4>Android</h4>
-      <p>Latest stable release: 5.2.0</p>
+      <p>Current release: <u>6.3.2</u></p>
+      <p>Target API level: 33</p>
     </div>
   </div>
 </section>
@@ -21,7 +23,53 @@ We regularly update our framework to support new features. If you have an older 
 
 ---
 
-## Supported versions (4.3+)
+## Supported versions
+
+### Version 6.3.2 (September 13, 2023)
+
+- **Android**: Change AlarmManager API to use inexact alarm functions to schedule local notification.
+
+### Version 6.3.1 (August 29, 2023)
+
+- **Android**: Disables ad ID permission.
+
+### Version 6.3.0 (August 9, 2023)
+
+- **Android**: The target SDK has now been set to 33 (Android 13).
+
+### Version 6.2.0 (April 14, 2023)
+
+- **iOS**: Improved screen transitions for the launch screen on iPad.
+
+### Version 6.1.0 (March 28, 2023)
+
+- **iOS**: The target SDK has now been set to iOS 16.
+
+### Version 6.0.4 (October 17, 2022)
+
+- **Android**: Security updates.
+
+### Version 6.0.2 (Aug 5, 2022)
+
+- **Android**: The target SDK has now been set to 31.
+
+### Version 6.0.0 (Jul 20, 2022)
+
+- **All platforms**: Support for the upcoming localization feature.
+
+### Version 5.3.2 (Jul 7, 2022)
+
+- **iOS**: Bugfix for the share dialog not working as expected when being used by the Communicate JS API.
+
+### Version 5.3.0 (Apr 22, 2022)
+
+- **iOS**: Support for iOS 15.
+
+---
+
+## Deprecated versions
+
+Please note that these versions have limited support for newer Fliplet features. We encourage you to submit a new native update to your apps via the App Store or Google Play if you have users still running these versions of your app.
 
 ### Version 5.2.0 (Oct 19, 2021)
 
@@ -63,12 +111,6 @@ We regularly update our framework to support new features. If you have an older 
 ### Version 4.3.0 (December 14, 2020)
 
 - **iOS**: Improvements for push notifications.
-
----
-
-## Deprecated versions
-
-Please note that these versions have limited support for newer Fliplet features. We encourage you to submit a new native update to your apps via the App Store or Google Play if you have users still running these versions of your app.
 
 ### Version 4.2.4 (November 11, 2020)
 

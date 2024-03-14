@@ -16,6 +16,12 @@ Fliplet.Cache.get('foo', function () {
 });
 ```
 
+This code demonstrates the usage of the `Fliplet.Cache.get()` method to retrieve data from a cache. The `get()` method takes two arguments, a cache key and a callback function that is executed if the requested value is not present in the cache.
+
+Here, the code provides the key `'foo'` as the first argument to `get()`. If there is no cached value associated with the key `'foo'`, then the anonymous function provided as the second argument will be executed to generate a value to cache. In this case, the function simply returns an object `{ bar: 1 }` as the value to cache.
+
+The `then()` method is called on the promise returned by `get()`, which allows asynchronous code execution after the data has been retrieved from the cache. The anonymous function provided as the argument to then() can receive the retrieved data as its argument (in this case, the previously returned object `{ bar: 1 }`).
+
 Here's a more complete example including all options:
 
 ```js
@@ -24,7 +30,7 @@ Fliplet.Cache.get({
   platform: 'native', // only cache on native
   expire: 60 * 10     // keep cache for 10 minutes
 }, function onFetchData() {
-  // Function to be called when data does not exist in the cache and needs to be fetched.
+  // Function to be called when data does not exist in the cache or when the cache has expired.
   // Return a promise if your operation is asynchronous.
   return Fliplet.API.request({
     url: 'v1/something'
