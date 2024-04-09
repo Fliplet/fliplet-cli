@@ -36,15 +36,6 @@ Fliplet.API.request('v1/widget-instances/123').then(function (response) {
 })
 ```
 
-### Get asset path for widget instance
-
-Depending on whether the app is rendered as a web app or on a native device, you can get the asset path for a widget instance:
-
-```js
-// Returns CDN or local file path based on platform
-Fliplet.Widget.getAsset(123, 'img/placeholder.jpg')
-```
-
 ### Find widgets
 
 ```js
@@ -152,12 +143,14 @@ Fliplet.Studio.emit('widget-save-complete', {
 
 ### Get the URL to an asset from the relative path of a widget
 
-```js
-// the first parameter is the widget id as usual
-var url = Fliplet.Widget.getAsset(123, 'img/icon.png');
+Depending on whether the app is rendered as a web app or on a native device, you can get the asset path for a widget instance:
 
-// on the interface, you can skip the id (same as getData and getUUID)
-var url = Fliplet.Widget.getAsset('img/icon.png');
+```js
+// Returns CDN or local file path based on platform
+var url = Fliplet.Widget.getAsset(123, 'img/placeholder.jpg');
+
+// When used on the configuration interface, you can skip the ID (same as getData and getUUID)
+var url = Fliplet.Widget.getAsset('img/placeholder.jpg');
 ```
 
 ### Get a widget instance unique identifier
