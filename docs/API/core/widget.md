@@ -36,6 +36,15 @@ Fliplet.API.request('v1/widget-instances/123').then(function (response) {
 })
 ```
 
+### Get asset path for widget instance
+
+Depending on whether the app is rendered as a web app or on a native device, you can get the asset path for a widget instance:
+
+```js
+// Returns CDN or local file path based on platform
+Fliplet.Widget.getAsset(123, 'img/placeholder.jpg')
+```
+
 ### Find widgets
 
 ```js
