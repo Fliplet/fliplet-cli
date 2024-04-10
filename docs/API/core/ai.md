@@ -180,7 +180,23 @@ In this case, it is passed an object with two properties:
 
 The GPT-3.5 Turbo model is one of several language prediction models developed by OpenAI, which generates human-like responses to prompts or message inputs. Here, the model will use the input message "Hello!" to generate a text completion response based on its trained knowledge about conversational English.
 
----
+User can stream the response by passing `stream: true` property
+
+```js
+Fliplet.AI.createCompletion({
+    model: 'gpt-4-0125-preview',
+    messages: [{ role: 'user', content: 'Write me a poem' }],
+    stream: true
+  }).stream(function onChunk(data) {
+    console.log(data) // Callback function to receive partial message deltas like in ChatGPT as they become available
+  }).then(function onComplete(){
+    console.log('done') // Called once all messages are received
+  }).catch(function reject(error){
+    console.log(error)
+  });
+```
+
+When user passes `stream: true` as parameter user can use `stream()` method as shown in above code example. It takes callback function as a parameter which will be called when partial message deltas received from OpenAI API.
 
 ### Generate images
 
