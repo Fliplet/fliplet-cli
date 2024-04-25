@@ -55,10 +55,8 @@ Fliplet.Helper({
     <li><code>.</code> before <code>[ ]</code> is supported but optional, <code>data[First name]</code> and <code>data.[First name]</code> are both supported</li>
     <li>
       If the key includes <code>[ ]</code> characters, use <code>""</code> within <code>[ ]</code> are required, e.g. <code>["Location [accuracy]"]</code>
-      <ul>
-        <li>You can choose to always include <code>""</code></li>
-      </ul>
     </li>
+    <li>You can choose to always include <code>[]</code> and <code>""</code>, e.g. <code>["Name"]</code>, <code>["First name"]</code>, <code>["Location [accuracy]"]</code></li>
   </ul>
 </div>
 
