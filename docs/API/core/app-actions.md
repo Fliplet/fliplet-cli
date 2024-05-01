@@ -101,7 +101,7 @@ Fliplet.App.Actions.create({
   triggers: [
     {
       trigger: 'log',
-      where: { operation: 'dataSource.entry.create', dataSourceId: 789 }
+      where: { type: 'dataSource.entry.create', dataSourceId: 789 }
     }
   ],
   functions: [
