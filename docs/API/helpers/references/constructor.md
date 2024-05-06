@@ -68,7 +68,7 @@ Fliplet.Helper({
       <td><code>supportsDynamicContext</code></td>
       <td><code>Boolean</code></td>
       <td>optional</td>
-      <td>Enable support for reactive data when used in a dynamic container component.</td>
+      <td>Indicates that a component needs to complete certain tasks or operations before its children are initialized. When set to true, `Fliplet.Widget.initializeChildren()` will be called when the component is ready to start initializing its child components.</td>
     </tr>
     <tr>
       <td><code>icon</code></td>
