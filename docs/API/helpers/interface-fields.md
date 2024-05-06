@@ -27,6 +27,7 @@ The following property can be defined for all field types (except when specified
 * Dropdown (`dropdown`)
 * Toggle (`toggle`)
 * Hidden (`hidden`)
+* Horizontal rule (`hr`)
 * Provider (`provider`)
 * HTML (`html`)
 * List of fields (`list`)
@@ -221,6 +222,18 @@ Use a hidden field to save a value without showing an input to the user. This co
 {
   name: 'showNavBar',
   type: 'hidden'
+}
+```
+
+---
+
+### Horizontal rule (`hr`)
+
+The `hr` type field is used to insert a horizontal rule (line) in the form. It can be used to visually separate different sections of the form for better readability. It does not hold any value or interact with the user input.
+
+```js
+{
+  type: 'hr'
 }
 ```
 
