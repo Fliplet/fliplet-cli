@@ -247,6 +247,8 @@ A provider (Fliplet first-party component) to perform a variety of tasks. These 
 - `package` (String) Name of the package e.g. `com.fliplet.link`)
 - `ready` (Function) Provider interface has been presented to the user
 - `onEvent` (Function) Listen for events fired from the provider
+- `beforeSave` (Function) Function to modify the data returned by the provider before it is saved. Similar to a middleware that intercepts the data for last-minute changes.
+- `data` (Function) Function to adjust the data already saved in the instance before it is passed to the provider. Useful for transforming the data into a format expected by the provider.
 - `mode` (String) If set to `full-screen`, the provider will be loaded to cover the entire configuration interface
 - `html` (String) When used in `full-screen` mode, this is the Handlebars template for defining a placeholder to launch the provider. Add an `data-open-provider` attribute to the element that would be used to open the provider. The available variables for the Handlebars context are:
   - `value` (*) Value of the field
@@ -264,6 +266,23 @@ Example for an inline provider:
   name: 'action',
   label: 'Choose an action to do when the button is pressed',
   package: 'com.fliplet.link',
+  beforeSave: function(data) {
+    // Modify the data before it's saved
+    // For example, add a timestamp or delete unnecessary/sensitive data
+    data.timestamp = new Date().getTime();
+    delete data.sensitiveProperty;
+
+    return data;
+  },
+  data: function(data) {
+    // Adjust the saved data before it's passed to the provider
+    // For example, change data structure
+    data = {
+      id: data
+    };
+
+    return data;
+  },
   ready: function(el, value, provider) {
     // Link provider is rendered
   },
