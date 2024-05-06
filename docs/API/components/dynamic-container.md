@@ -90,7 +90,7 @@ Fliplet.DynamicContainer.get().then(function (container) {
 });
 ```
 
-Note that we used the [findWithCursor](/API/fliplet-datasources.html#fetch-all-records-from-a-data-source) method instead of `find` to let the system manage pagination when the data is displayed in a repeated list.
+Note that we used the [findWithCursor](/API/fliplet-datasources.html#fetch-all-records-from-a-data-source) method instead of `find` to let the system manage pagination when the data is displayed in a list repeater.
 
 For more details, check the JS API documentation for the [findWithCursor](/API/fliplet-datasources.html#fetch-all-records-from-a-data-source) method.
 
