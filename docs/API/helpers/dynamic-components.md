@@ -2,7 +2,7 @@
 
 <p class="warning">This feature is currently available to beta users only.</p>
 
-Helpers can be dropped into what we refer as "dynamic components". These include the **Dynamic container** and **Repeater** components. Such components supports reactive data binding between the source of the data and the helpers you build.
+Helpers can be dropped into what we refer as "dynamic components". These include the **Dynamic container** and **List Repeater** components. Such components supports reactive data binding between the source of the data and the helpers you build.
 
 To support reactive data communication between the two, you must add the `supportsDynamicContext: true` property to your helper configuration:
 
@@ -39,18 +39,6 @@ Fliplet.Helper({
   }
 });
 ```
-
-<!--
-You can also automatically bind the parent context to your helper via the `watch`:
-
-```js
-Fliplet.Helper({
-  name: 'profile',
-  supportsDynamicContext: true,
-  watch: ['context']
-});
-```
--->
 
 Here's a working example of a helper using data from the dynamic container component:
 
