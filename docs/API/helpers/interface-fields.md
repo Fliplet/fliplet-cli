@@ -172,7 +172,8 @@ A dropdown for the user to allow a single choice selection. Supports the followi
 
 - `options` (Array[*]) List of values. Each value can be a string or an object
   - (String) Use a string to use the same value as the label
-  - (Object`{ value, label }`) Use an object to set different labels that are different from the value. If a `value` is provided without `label`, `label` will match the `value`.
+  - (Object `{ value, label }`) Use an object to set different labels that are different from the value. If a `value` is provided without `label`, `label` will match the `value`.
+- `placeholder` (String|Boolean) Defines a custom placeholder for an empty selection. Use `FALSE` to have no placeholder. The default value is `-- Select an option`. If `required` is set to `TRUE`, the placeholder will be displayed, but the user will not be able to select it as a valid option. If there's an option with an empty string as its value (i.e., `value: ''`), the `placeholder` property will be ignored.
 
 Example:
 
