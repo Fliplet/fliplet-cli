@@ -255,8 +255,8 @@ A provider (Fliplet first-party component) to perform a variety of tasks. These 
 
 Supported inline provider packages:
 
-- `com.fliplet.link` Choose an action to be performed
-- `com.fliplet.data-source-provider` Choose a data source
+- [Link Action Provider `com.fliplet.link`](https://github.com/Fliplet/fliplet-widget-link) - Choose an action to be performed
+- [Data Source Provider `com.fliplet.data-source-provider`](https://github.com/Fliplet/fliplet-widget-data-source-provider) - Choose a data source
 
 Example for an inline provider:
 
@@ -265,23 +265,26 @@ Example for an inline provider:
   type: 'provider',
   name: 'action',
   label: 'Choose an action to do when the button is pressed',
-  package: 'com.fliplet.link',
-  beforeSave: function(data) {
+  package: 'com.fliplet.data-source-provider',
+  beforeSave: function(value) {
     // Modify the data before it's saved
-    // For example, add a timestamp or delete unnecessary/sensitive data
-    data.timestamp = new Date().getTime();
-    delete data.sensitiveProperty;
-
-    return data;
+    // For example, only save the ID of an object
+    return value && value.id;
   },
-  data: function(data) {
+  data: function(value) {
     // Adjust the saved data before it's passed to the provider
-    // For example, change data structure
-    data = {
-      id: data
+    // For example, adding metadata useful only for the provider interface
+    return {
+      dataSourceTitle: 'Your list data',
+      dataSourceId: value,
+      appId: Fliplet.Env.get('appId'),
+      default: {
+        name: 'Your list data',
+        entries: [],
+        columns: []
+      },
+      accessRules: []
     };
-
-    return data;
   },
   ready: function(el, value, provider) {
     // Link provider is rendered
@@ -294,8 +297,8 @@ Example for an inline provider:
 
 Supported `full-screen` provider packages:
 
-- `com.fliplet.file-picker` Choose one or multiple files and folders
-- `com.fliplet.email-provider` Configure an email
+- [File Picker `com.fliplet.file-picker`](https://github.com/Fliplet/fliplet-widget-file-picker) - Choose one or multiple files and folders
+- [Email Provider `com.fliplet.email-provider`](https://github.com/Fliplet/fliplet-widget-email-provider) - Configure an email
 
 Example for a `full-screen` provider:
 
