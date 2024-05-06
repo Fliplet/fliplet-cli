@@ -22,6 +22,7 @@ The `fliplet-datasources` package contains the following namespaces:
       - [Fetch records with a pagination cursor](#fetch-records-with-a-pagination-cursor)
       - [Join data from other dataSources](#join-data-from-other-datasources)
       - [Run aggregation queries](#run-aggregation-queries)
+      - [Subscribe to data changes](#subscribe-to-data-changes)
     - [Sort / order the results](#sort--order-the-results)
     - [Find a specific record](#find-a-specific-record)
     - [Find a record by its ID](#find-a-record-by-its-id)
@@ -428,7 +429,7 @@ Note that when using the above parameter, the returned object from the `find()` 
 
 ---
 
-### Fetch records with a pagination cursor
+#### Fetch records with a pagination cursor
 
 A more powerful alternative to the `find` method is `findWithCursor`, which creates an array cursor with methods to navigate between pages of the dataset. This is useful if you want to add pagination to a Data Source. Start by creating a cursor with the `findWithCursor` method:
 
@@ -515,6 +516,49 @@ connection.find({
 ```
 
 Please refer to the [Mingo](https://github.com/kofrasa/mingo) documentation to read more about all the different usages and types of aggregation queries.
+
+---
+
+#### Subscribe to data changes
+
+The `subscribe()` method allows for listening to real-time updates on data source changes. This can be crucial for applications that need to react instantly to changes in data, such as collaborative platforms, live dashboards, or any application requiring instant data sync.
+
+**Usage**
+
+```js
+connection.subscribe(options, callback);
+```
+
+**Parameters**
+
+- `options` (Object): Configuration for subscription.
+  - `events` (Array of String): Types of changes to subscribe to. Possible values are `insert`, `update`, `delete`. Default: `['insert', 'update', 'delete']`.
+  - `cursor` (Cursor Object): An optional cursor object as received from the `findWithCursor` method to specify the scope of data to listen to.
+- `callback` (Function): A function that will be called whenever the subscribed events occur. The function receives an object containing arrays of `inserted`, `updated`, and `deleted` items depending on the subscribed events.
+
+**Example**
+
+This example demonstrates how to subscribe to insert and update events on a data source:
+
+```js
+Fliplet.DataSources.connect(123).then(function (connection) {
+  const options = {
+    events: ['insert', 'update'] // Assuming a cursor setup
+  };
+
+  connection.subscribe(options, function (changes) {
+    if (changes.inserted.length) {
+      console.log('New records:', changes.inserted);
+    }
+
+    if (changes.updated.length) {
+      console.log('Updated records:', changes.updated);
+    }
+  });
+});
+```
+
+In this example, `connection.subscribe()` is used to monitor for new inserts and updates. When changes are detected, the callback function processes the arrays of `inserted` and `updated` data to handle them appropriately, such as updating a UI element or triggering further actions.
 
 ### Sort / order the results
 
