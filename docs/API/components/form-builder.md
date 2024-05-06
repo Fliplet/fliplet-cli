@@ -491,13 +491,19 @@ This is the default config options which we use for **TinyMCE** ([version 4.8.1]
   theme: 'modern',
   mobile: {
     theme: 'mobile',
-    plugins: [ 'autosave', 'lists', 'autolink' ],
-    toolbar: [ 'bold', 'italic', 'underline', 'bullist', 'numlist', 'removeformat' ]
+    plugins: ['autosave', 'lists', 'autolink'],
+    toolbar: ['bold', 'italic', 'underline', 'bullist', 'numlist', 'removeformat']
   },
   plugins: [
-    'advlist autolink lists link directionality',
-    'autoresize fullscreen code paste'
-  ].join(' '),
+    'advlist',
+    'autolink',
+    'lists',
+    'link',
+    'directionality',
+    'autoresize',
+    'fullscreen',
+    'code'
+  ],
   toolbar: [
     'bold italic underline',
     'alignleft aligncenter alignright alignjustify | bullist numlist outdent indent',

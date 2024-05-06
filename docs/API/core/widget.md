@@ -2,19 +2,6 @@
 
 ## Core widget APIs
 
-### Get the JSON schema of a widget
-
-You can use this method to fetch the JSON schema of a widget. The following widget packages are currently supporting this feature:
-
-- `com.fliplet.form-builder`
-- `com.fliplet.data-sources`
-
-```js
-Fliplet.Widget.getSchema("com.fliplet.form-builder").then(function (schema) {
-  // Use the schema
-});
-```
-
 ### Get the current widget instance id
 
 <p class="info">This method is usually meant to be called from a widget interface, to get the widget instance id if necessary.</p>
@@ -47,6 +34,51 @@ If the widget instance does not belong to the current page, you can fetch its se
 Fliplet.API.request('v1/widget-instances/123').then(function (response) {
   // response.widgetInstance.settings
 })
+```
+
+### Find widgets
+
+```js
+Fliplet.Widget.find().then(function(instances) {
+  // Returns all widget instances for a page
+});
+
+Fliplet.Widget.find({ package: 'com.fiplet.image' }).then(function(instances) {
+  // Returns all image widget instances for a page
+});
+
+Fliplet.Widget.findOne({ package: 'com.fiplet.image' }).then(function(instance) {
+  // Returns the first image widget instance found on a page
+});
+```
+
+### Find parent widgets
+
+```js
+Fliplet.Widget.findParents().then(function(widgets) {
+  // Can be called directly from the widget interface to find out all the parent widget instances of the current instance
+});
+
+Fliplet.Widget.findParents({ instanceId: 1234 }).then(function(widgets) {
+  // Return parent widget instances of a specific instance
+});
+
+Fliplet.Widget.findParents({ instance: 1234, filter: { package: 'com.fliplet.container' } }).then(function(widgets) {
+  // Return parent widget instances of a specific instance that match the specified filter
+});
+```
+
+### Get the JSON schema of a widget
+
+You can use this method to fetch the JSON schema of a widget. The following widget packages are currently supporting this feature:
+
+- `com.fliplet.form-builder`
+- `com.fliplet.data-sources`
+
+```js
+Fliplet.Widget.getSchema("com.fliplet.form-builder").then(function (schema) {
+  // Use the schema
+});
 ```
 
 ### Create a new widget instance
@@ -127,12 +159,14 @@ Fliplet.Studio.emit('widget-save-complete', {
 
 ### Get the URL to an asset from the relative path of a widget
 
-```js
-// the first parameter is the widget id as usual
-var url = Fliplet.Widget.getAsset(123, 'img/icon.png');
+Depending on whether the app is rendered as a web app or on a native device, you can get the asset path for a widget instance:
 
-// on the interface, you can skip the id (same as getData and getUUID)
-var url = Fliplet.Widget.getAsset('img/icon.png');
+```js
+// Returns CDN or local file path based on platform
+var url = Fliplet.Widget.getAsset(123, 'img/placeholder.jpg');
+
+// When used on the configuration interface, you can skip the ID (same as getData and getUUID)
+var url = Fliplet.Widget.getAsset('img/placeholder.jpg');
 ```
 
 ### Get a widget instance unique identifier

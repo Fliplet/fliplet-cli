@@ -30,7 +30,7 @@ Fliplet.Cache.get({
   platform: 'native', // only cache on native
   expire: 60 * 10     // keep cache for 10 minutes
 }, function onFetchData() {
-  // Function to be called when data does not exist in the cache and needs to be fetched.
+  // Function to be called when data does not exist in the cache or when the cache has expired.
   // Return a promise if your operation is asynchronous.
   return Fliplet.API.request({
     url: 'v1/something'
