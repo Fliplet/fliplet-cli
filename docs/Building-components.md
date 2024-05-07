@@ -3,7 +3,7 @@
 To start creating a component, use the CLI to generate a boilerplate including the basic things you'll need:
 
 ```
-$ fliplet create-widget "my-awesome-component"
+$ fliplet create-widget com.mycompany.mycomponent "my-awesome-component"
 ```
 
 The above code will create a new folder named "my-awesome-component" including the skeleton of your component, including these files:
@@ -37,7 +37,7 @@ If you're building a component interface and want to use the advanced Vue.js-bas
 <p class="warning"><strong>Version 5.1.0 required:</strong> Please note that this feature does require the version 5.1.0 or newer of the Fliplet CLI.</p>
 
 ```
-$ fliplet create-widget "my-awesome-component" --vue
+$ fliplet create-widget com.mycompany.mycomponent "my-awesome-component" --vue
 ```
 
 Once done, follow the instructions in the `README.md` file in the generated folder to get started.

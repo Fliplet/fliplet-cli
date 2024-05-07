@@ -1,4 +1,4 @@
-# Helper Styling
+# Styling
 
 Helpers can be styles using any standard CSS property since they are rendered as HTML elements.
 

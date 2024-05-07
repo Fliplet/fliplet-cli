@@ -6,6 +6,10 @@ description: Changelog notes giving a summary of recent significant changes to t
 
 Each week, we provide changelog notes on this page giving a summary of recent significant changes to the documentation. If there haven't been any significant changes in a given week, we don't publish changelog notes.
 
+## 2024
+
+- **May, 7th**: JS APIs for subscribing to specific data source changes and converting helpers into widgets
+
 ## 2023
 
 - **August, 9th**: New Android framework version 6.3.0 with support for Android 13 (API Level 33).

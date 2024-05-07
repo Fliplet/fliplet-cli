@@ -23,7 +23,10 @@ These variables are usually available on app screens as long as components and p
 - `development` - `true / false` true when if developing via the Fliplet CLI
 - `interact` - `true / false` true when you are in edit mode in Fliplet Studio
 - `masterAppId` - when called from a live app, returns the ID of the master app seen through Fliplet Studio
-- `mode` - `'preview' / 'view' / 'interact'`
+- `mode`
+  - `interact`: The app is running in Fliplet Studio while in edit mode
+  - `preview`: The app is running in Fliplet Viewer or in Fliplet Studio while in preview mode
+  - `view`: The app is running in a live environment (e.g. web app or from an app distributed via App Store / Google Play / MDM)
 - `demo` - boolean indicating whether the app is running in demo mode (e.g. when browsed via app previews)
 - `organizationName` - the user's organization name
 - `organizationId` - the user's organization id

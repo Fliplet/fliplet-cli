@@ -13,6 +13,8 @@ Fliplet.Helper({
  icon: String,
  supportUrl: String,
  data: Object,
+ supportsDynamicContext: Boolean,
+ watch: Array,
  category: {
    name: String,
    before: String,
@@ -35,7 +37,8 @@ Fliplet.Helper({
    ready: Function,
    beforeSave: Function
  },
- views: Object
+ views: Object,
+ childOf: Array
 });
 ```
 
@@ -60,6 +63,12 @@ Fliplet.Helper({
       <td><code>String</code></td>
       <td>optional</td>
       <td>The display name of the helper to show in the components list of Fliplet Studio.</td>
+    </tr>
+    <tr>
+      <td><code>supportsDynamicContext</code></td>
+      <td><code>Boolean</code></td>
+      <td>optional</td>
+      <td>Indicates that a component needs to complete certain tasks or operations before its children are initialized. When set to true, `Fliplet.Widget.initializeChildren()` will be called when the component is ready to start initializing its child components.</td>
     </tr>
     <tr>
       <td><code>icon</code></td>
@@ -114,6 +123,12 @@ Fliplet.Helper({
       <td><code>String</code></td>
       <td>optional</td>
       <td>Support URL for the component. Users can access this via the configuration interface in a "?" icon.</td>
+    </tr>
+    <tr>
+      <td><code>watch</code></td>
+      <td><code>Array</code></td>
+      <td>optional</td>
+      <td>The list of properties to add watchers for, when used in a dynamic container component. The most common value for this field is <code>['context']</code>.</td>
     </tr>
     <tr>
       <td><code>data</code></td>
@@ -196,6 +211,13 @@ Fliplet.Helper({
       <td>optional</td>
       <td>
         <a href="/API/helpers/views.html">The list of rich content views</a>.</td>
+    </tr>
+    <tr>
+      <td><code>childOf</code></td>
+      <td><code>Array</code></td>
+      <td>optional</td>
+      <td>
+        <a href="/API/helpers/views.html#define-where-a-helper-can-be-dropped-into">The list of helpers an helper can be dropped in</a>.</td>
     </tr>
   </tbody>
 </table>

@@ -1,4 +1,4 @@
-# Helper Fields
+# Fields
 
 Specify a list of fields to be displayed to the user in Fliplet Studio. The fields are displayed in the order as defined.
 ## Properties for all fields
@@ -27,6 +27,7 @@ The following property can be defined for all field types (except when specified
 * Dropdown (`dropdown`)
 * Toggle (`toggle`)
 * Hidden (`hidden`)
+* Horizontal rule (`hr`)
 * Provider (`provider`)
 * HTML (`html`)
 * List of fields (`list`)
@@ -171,7 +172,8 @@ A dropdown for the user to allow a single choice selection. Supports the followi
 
 - `options` (Array[*]) List of values. Each value can be a string or an object
   - (String) Use a string to use the same value as the label
-  - (Object`{ value, label }`) Use an object to set different labels that are different from the value. If a `value` is provided without `label`, `label` will match the `value`.
+  - (Object `{ value, label }`) Use an object to set different labels that are different from the value. If a `value` is provided without `label`, `label` will match the `value`.
+- `placeholder` (String|Boolean) Defines a custom placeholder for an empty selection. Use `FALSE` to have no placeholder. The default value is `-- Select an option`. If `required` is set to `TRUE`, the placeholder will be displayed, but the user will not be able to select it as a valid option. If there's an option with an empty string as its value (i.e., `value: ''`), the `placeholder` property will be ignored.
 
 Example:
 
@@ -226,6 +228,18 @@ Use a hidden field to save a value without showing an input to the user. This co
 
 ---
 
+### Horizontal rule (`hr`)
+
+The `hr` type field is used to insert a horizontal rule (line) in the form. It can be used to visually separate different sections of the form for better readability. It does not hold any value or interact with the user input.
+
+```js
+{
+  type: 'hr'
+}
+```
+
+---
+
 ### Provider (`provider`)
 
 A provider (Fliplet first-party component) to perform a variety of tasks. These are commonly used to reuse existing functionality, e.g. let the user choose a screen or a data source.
@@ -233,14 +247,16 @@ A provider (Fliplet first-party component) to perform a variety of tasks. These 
 - `package` (String) Name of the package e.g. `com.fliplet.link`)
 - `ready` (Function) Provider interface has been presented to the user
 - `onEvent` (Function) Listen for events fired from the provider
+- `beforeSave` (Function) Function to modify the data returned by the provider before it is saved. Similar to a middleware that intercepts the data for last-minute changes.
+- `data` (Function) Function to adjust the data already saved in the instance before it is passed to the provider. Useful for transforming the data into a format expected by the provider.
 - `mode` (String) If set to `full-screen`, the provider will be loaded to cover the entire configuration interface
 - `html` (String) When used in `full-screen` mode, this is the Handlebars template for defining a placeholder to launch the provider. Add an `data-open-provider` attribute to the element that would be used to open the provider. The available variables for the Handlebars context are:
   - `value` (*) Value of the field
 
 Supported inline provider packages:
 
-- `com.fliplet.link` Choose an action to be performed
-- `com.fliplet.data-source-provider` Choose a data source
+- [Link Action Provider `com.fliplet.link`](https://github.com/Fliplet/fliplet-widget-link) - Choose an action to be performed
+- [Data Source Provider `com.fliplet.data-source-provider`](https://github.com/Fliplet/fliplet-widget-data-source-provider) - Choose a data source
 
 Example for an inline provider:
 
@@ -249,7 +265,27 @@ Example for an inline provider:
   type: 'provider',
   name: 'action',
   label: 'Choose an action to do when the button is pressed',
-  package: 'com.fliplet.link',
+  package: 'com.fliplet.data-source-provider',
+  beforeSave: function(value) {
+    // Modify the data before it's saved
+    // For example, only save the ID of an object
+    return value && value.id;
+  },
+  data: function(value) {
+    // Adjust the saved data before it's passed to the provider
+    // For example, adding metadata useful only for the provider interface
+    return {
+      dataSourceTitle: 'Your list data',
+      dataSourceId: value,
+      appId: Fliplet.Env.get('appId'),
+      default: {
+        name: 'Your list data',
+        entries: [],
+        columns: []
+      },
+      accessRules: []
+    };
+  },
   ready: function(el, value, provider) {
     // Link provider is rendered
   },
@@ -261,8 +297,8 @@ Example for an inline provider:
 
 Supported `full-screen` provider packages:
 
-- `com.fliplet.file-picker` Choose one or multiple files and folders
-- `com.fliplet.email-provider` Configure an email
+- [File Picker `com.fliplet.file-picker`](https://github.com/Fliplet/fliplet-widget-file-picker) - Choose one or multiple files and folders
+- [Email Provider `com.fliplet.email-provider`](https://github.com/Fliplet/fliplet-widget-email-provider) - Configure an email
 
 Example for a `full-screen` provider:
 

@@ -55,7 +55,7 @@ e.g. Given my company website is `fliplet.com` and the component I'm developing 
 
 ## "version"
 
-The semantic version of your component.
+The semantic version of your component. The newest version will automatically be made available to users. For app and screen components, older versions will continue to be functional and configurable, but users will not be able to set up new instances.
 
 ## "icon"
 
@@ -68,6 +68,7 @@ Tags are used by both the system and studio to filter components and organize th
 - A component is declared as a **page component** when the default tag `type:component` is included.
 - A component becomes an **app component** when the tag `type:appComponent` is included.
 - A component becomes unlisted when the none of the two above tags have been set. Therefore, **providers** usually don't include those tags.
+- A component that has an older version will be available for users to set up as a new instance if it has the `listable:true` tag.
 
 ## "provider_only"
 

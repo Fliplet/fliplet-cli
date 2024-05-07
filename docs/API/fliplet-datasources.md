@@ -19,8 +19,10 @@ The `fliplet-datasources` package contains the following namespaces:
       - [Fetch records with a query](#fetch-records-with-a-query)
       - [Filter the columns returned when finding records](#filter-the-columns-returned-when-finding-records)
       - [Fetch records with pagination](#fetch-records-with-pagination)
+      - [Fetch records with a pagination cursor](#fetch-records-with-a-pagination-cursor)
       - [Join data from other dataSources](#join-data-from-other-datasources)
       - [Run aggregation queries](#run-aggregation-queries)
+      - [Subscribe to data changes](#subscribe-to-data-changes)
     - [Sort / order the results](#sort--order-the-results)
     - [Find a specific record](#find-a-specific-record)
     - [Find a record by its ID](#find-a-record-by-its-id)
@@ -427,6 +429,67 @@ Note that when using the above parameter, the returned object from the `find()` 
 
 ---
 
+#### Fetch records with a pagination cursor
+
+A more powerful alternative to the `find` method is `findWithCursor`, which creates an array cursor with methods to navigate between pages of the dataset. This is useful if you want to add pagination to a Data Source. Start by creating a cursor with the `findWithCursor` method:
+
+```js
+Fliplet.DataSources.connect(123).then(function (connection) {
+  return connection.findWithCursor({ limit: 20 }); // 20 records per page
+}).then(function (cursor) {
+
+});
+```
+
+The cursor is an array with the results. It also supports the following properties, which can be overridden at any time:
+
+- `limit`: The page size (number of records per page).
+- `offset`: The current offset of records from the first page. This is 0 for the first page.
+- `currentPage`: The current page number (`0` for the first page)
+- `isFirstPage` Whether the current page is the first one of the dataset.
+- `isLastPage`: Whether the current page is the last one of the dataset.
+- `query`: The options used for the first argument of the `findWithCursor` method.
+
+The cursor also exports the following methods:
+
+- `next()`: Moves the cursor to the next page and returns it.
+- `prev()`: Moves the cursor to the previous page and returns it.
+- `setPage(n)`: Sets the cursor to a specific page number and returns it.
+- `update()`: Updates the dataset for the current page (returns a `Promise`)
+
+Here's a full example on how you would typically use the cursor:
+
+```js
+Fliplet.DataSources.connect(123).then(function (connection) {
+  return connection.findWithCursor({
+    where: { Office: 'London' }, // find specific entries
+    limit: 20                    // limit to 20 records per page
+  });
+}).then(function (cursor) {
+  displayData(cursor);
+
+  // Moves the cursor to the first page, then fetch and display the new data
+  $('#prev').click((e) => cursor.prev().update().then(displayData));
+
+  // Moves the cursor to the next page, then fetch and display the new data
+  $('#next').click((e) => cursor.next().update().then(displayData));
+});
+
+function displayData(cursor) {
+  cursor.forEach((entry) => {
+    // Display data
+  });
+
+  if (cursor.isFirstPage) {
+    // Disable "previous" button
+  } else if (cursor.isLastPage) {
+    // Disable "next" button
+  }
+}
+```
+
+---
+
 #### Join data from other dataSources
 
 [View documentation for joining data from other data sources](datasources/joins.md)
@@ -453,6 +516,49 @@ connection.find({
 ```
 
 Please refer to the [Mingo](https://github.com/kofrasa/mingo) documentation to read more about all the different usages and types of aggregation queries.
+
+---
+
+#### Subscribe to data changes
+
+The `subscribe()` method allows for listening to real-time updates on data source changes. This can be crucial for applications that need to react instantly to changes in data, such as collaborative platforms, live dashboards, or any application requiring instant data sync.
+
+**Usage**
+
+```js
+connection.subscribe(options, callback);
+```
+
+**Parameters**
+
+- `options` (Object): Configuration for subscription.
+  - `events` (Array of String): Types of changes to subscribe to. Possible values are `insert`, `update`, `delete`. Default: `['insert', 'update', 'delete']`.
+  - `cursor` (Cursor Object): An optional cursor object as received from the `findWithCursor` method to specify the scope of data to listen to.
+- `callback` (Function): A function that will be called whenever the subscribed events occur. The function receives an object containing arrays of `inserted`, `updated`, and `deleted` items depending on the subscribed events.
+
+**Example**
+
+This example demonstrates how to subscribe to insert and update events on a data source:
+
+```js
+Fliplet.DataSources.connect(123).then(function (connection) {
+  const options = {
+    events: ['insert', 'update'] // Assuming a cursor setup
+  };
+
+  connection.subscribe(options, function (changes) {
+    if (changes.inserted.length) {
+      console.log('New records:', changes.inserted);
+    }
+
+    if (changes.updated.length) {
+      console.log('Updated records:', changes.updated);
+    }
+  });
+});
+```
+
+In this example, `connection.subscribe()` is used to monitor for new inserts and updates. When changes are detected, the callback function processes the arrays of `inserted` and `updated` data to handle them appropriately, such as updating a UI element or triggering further actions.
 
 ### Sort / order the results
 

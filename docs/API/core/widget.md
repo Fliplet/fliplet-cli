@@ -296,12 +296,19 @@ myProvider.forwardSaveRequest();
 myProvider.emit('event-name');
 
 // You can also resolve an array of providers (similar to Promise.all)
-Fliplet.Widget.all([myProviderA, myProviderB, myProviderC]).then(function () {
+Fliplet.Widget.all([myProviderA, myProviderB, myProviderC]).then(function (results) {
   // results is an array with data from all providers you resolved
 });
 ```
 
 You can also stop the provider from being closed once resolved, by passing the `closeOnSave: false` option. You can then close it manually by calling `myProvider.close()` at any time.
+
+Here is a list of the current widget providers supported by our system.
+
+- [Link Action Provider `com.fliplet.link`](https://github.com/Fliplet/fliplet-widget-link) - Choose an action to be performed
+- [Data Source Provider `com.fliplet.data-source-provider`](https://github.com/Fliplet/fliplet-widget-data-source-provider) - Choose a data source
+- [File Picker `com.fliplet.file-picker`](https://github.com/Fliplet/fliplet-widget-file-picker) - Choose one or multiple files and folders
+- [Email Provider `com.fliplet.email-provider`](https://github.com/Fliplet/fliplet-widget-email-provider) - Configure an email
 
 ### Attach an event on save request
 

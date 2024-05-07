@@ -1,4 +1,4 @@
-# Helper Attributes (fields)
+# Attributes (fields)
 
 Attributes can be passed to helpers via the `field` HTML element and then accessed via `this.fields.<name>` in JavaScript.
 
