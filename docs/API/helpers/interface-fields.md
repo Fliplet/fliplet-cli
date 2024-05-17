@@ -255,8 +255,8 @@ A provider (Fliplet first-party component) to perform a variety of tasks. These 
 
 Supported inline provider packages:
 
-- [Link Action Provider `com.fliplet.link`](https://github.com/Fliplet/fliplet-widget-link) - Choose an action to be performed
-- [Data Source Provider `com.fliplet.data-source-provider`](https://github.com/Fliplet/fliplet-widget-data-source-provider) - Choose a data source
+- [Link action provider `com.fliplet.link`](../providers/link-action.html) - Choose an action to be performed
+- [Data source provider `com.fliplet.data-source-provider`](../providers/data-source.html) - Choose a data source
 
 Example for an inline provider:
 
@@ -297,8 +297,8 @@ Example for an inline provider:
 
 Supported `full-screen` provider packages:
 
-- [File Picker `com.fliplet.file-picker`](https://github.com/Fliplet/fliplet-widget-file-picker) - Choose one or multiple files and folders
-- [Email Provider `com.fliplet.email-provider`](https://github.com/Fliplet/fliplet-widget-email-provider) - Configure an email
+- [File picker `com.fliplet.file-picker`](../providers/file-picker.html) - Choose one or multiple files and folders
+- [Email provider `com.fliplet.email-provider`](../providers/email.html) - Configure an email
 
 Example for a `full-screen` provider:
 
