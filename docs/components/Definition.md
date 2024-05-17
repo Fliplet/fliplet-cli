@@ -67,6 +67,7 @@ Tags are used by both the system and studio to filter components and organize th
 
 - A component is declared as a **page component** when the default tag `type:component` is included.
 - A component becomes an **app component** when the tag `type:appComponent` is included.
+- A component is displayed in Studio with a *Beta* tag if it includes `beta:true`.
 - A component becomes unlisted when the none of the two above tags have been set. Therefore, **providers** usually don't include those tags.
 - A component that has an older version will be available for users to set up as a new instance if it has the `listable:true` tag.
 
