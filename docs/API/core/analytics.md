@@ -256,3 +256,92 @@ Fliplet.Apps.Analytics.count(appId, { group: [ 'data._userEmail' ] }).then(funct
   // console.log(count)
 });
 ```
+
+### Fetch aggregated analytics
+
+You can also use JS APIs to obtain pre-aggregated analytics data for your apps.
+
+<p class="quote"><strong>Note</strong>: this JS API is only available when app users have logged in with the <strong>Fliplet Studio</strong> component or when using <strong>Fliplet Viewer</strong>.</p>
+
+Here are some of the use cases for fetching pre aggregated data
+
+#### Fetch aggregated data for the app
+
+```js
+Fliplet.Apps.Analytics.Aggregate.get({
+    "source": "production",
+    "from": "2024-05-01",
+    "to": "2024-05-31",
+    "group":"app",
+    "sum": ['sentEmails', 'sentSMS', 'sentPushNotifications', 'totalDevices', 'totalSessionDuration'],
+}).then(function (data) {
+  // console.log(data)
+});
+```
+- `source`: can be either `production` or `master`. production will be used to fetch data for the live app
+- `from`: start date of the date range
+- `to`: end date of the date range
+- `group`: can be either `app` or `user`
+- `sum`: define array of fields you want to aggregated sum. values can be depend on the group type
+
+Here are the possible values for the `sum` property based on the `group` type
+#### Group type `app`
+
+This will return aggregated sum of the app, below are the possible values for `sum`
+
+- totalDevices
+- uniqueDevices
+- totalSessions
+- uniqueSessions
+- totalPageViews
+- totalPageEvents
+- sentEmails
+- sentSMS
+- sentPushNotifications
+- totalSessionDuration
+
+#### Group type `user`
+
+This will return aggregated sum for each user, below are the possible values for `sum`
+
+- `totalDevices
+- `uniqueDevices
+- `totalSessions
+- `uniqueSessions
+- `totalPageViews
+- `totalAppPublish
+- `totalAppUpdates
+- `totalAppCreate
+- `totalSessionDuration
+
+#### Fetch aggregated data for the app users
+
+```js
+Fliplet.Apps.Analytics.Aggregate.get({
+    "source": "production",
+    "from": "2024-05-01",
+    "to": "2024-05-31",
+    "group":"user",
+    "sum": ['totalSessionDuration'],
+}).then(function (data) {
+  // console.log(data)
+});
+```
+This will return total session duration for each user of the app.
+
+#### Fetch aggregated data for the app by operating system
+
+```js
+Fliplet.Apps.Analytics.Aggregate.get({
+    "source": "production",
+    "group": "os",
+    "from": "2023-05-01",
+    "to": "2024-04-30",
+    "includeCount": true,
+    "limit": false,
+    "offset": 0
+}).then(function (data) {
+  // console.log(data)
+});
+```
+This will return data by operation system and browser.
