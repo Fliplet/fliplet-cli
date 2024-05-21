@@ -17,8 +17,7 @@ Fliplet.Studio.emit(event, payload);
 
 ## Listen to events from Fliplet Studio
 
-- Used in build more
-- Event emitted from widget interface using `Fliplet.Studio.emit('page-preview-send-event', payload)`
+- Events are emitted from widget interface using `Fliplet.Studio.emit('page-preview-send-event', payload)`
 
 ```js
 Fliplet.Studio.onEvent(function(event) {
@@ -41,7 +40,7 @@ Fliplet.Studio.onEvent(fn);
 ## Handle messages from Fliplet Studio
 
 - Commonly used provider interface
-- Emitted to provider, e.g. `provider.emit()`
+- Messages are usually emitted to providers, e.g. `provider.emit()`
 
 ```js
 Fliplet.Studio.onMessage(function(message) {
