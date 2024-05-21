@@ -177,7 +177,7 @@ The widget instance ID might change overtime when an app is published. If you ne
 var uuid = Fliplet.Widget.getUUID(1);
 ```
 
-## Widget APIs for Studio interface
+## Widget APIs for Fliplet Studio interface
 
 ### Emit an event to the parent widget or Fliplet Studio
 
