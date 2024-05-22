@@ -304,15 +304,15 @@ This will return aggregated sum of the app, below are the possible values for `s
 
 This will return aggregated sum for each user, below are the possible values for `sum`
 
-- `totalDevices
-- `uniqueDevices
-- `totalSessions
-- `uniqueSessions
-- `totalPageViews
-- `totalAppPublish
-- `totalAppUpdates
-- `totalAppCreate
-- `totalSessionDuration
+- totalDevices
+- uniqueDevices
+- totalSessions
+- uniqueSessions
+- totalPageViews
+- totalAppPublish
+- totalAppUpdates
+- totalAppCreate
+- totalSessionDuration
 
 #### Fetch aggregated data for the app users
 
