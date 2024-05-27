@@ -531,10 +531,22 @@ connection.subscribe(options, callback);
 
 **Parameters**
 
-- `options` (Object): Configuration for subscription.
-  - `events` (Array of String): Types of changes to subscribe to. Possible values are `insert`, `update`, `delete`. Default: `['insert', 'update', 'delete']`.
-  - `cursor` (Cursor Object): An optional cursor object as received from the `findWithCursor` method to specify the scope of data to listen to.
-- `callback` (Function): A function that will be called whenever the subscribed events occur. The function receives an object containing arrays of `inserted`, `updated`, and `deleted` items depending on the subscribed events.
+- `options` (Object) Configuration for subscription.
+  - `events` (Array of String) Types of changes to subscribe to. Possible values are `insert`, `update`, `delete`. Default: `['insert', 'update', 'delete']`.
+  - `cursor` (Cursor Object) An optional cursor object as received from the `findWithCursor` method to specify the scope of data to listen to.
+- `callback` (Function) A function that will be called whenever the subscribed events occur. The function receives an object containing arrays of `inserted`, `updated`, and `deleted` items depending on the subscribed events.
+
+**Returns**
+
+- `subscription` (Object) Subscription object.
+  - `id` (Number) Unique ID of the subscription.
+  - `options` (Object) Options used to set up the subscription.
+  - `status` (Function) Status of subscription. Returns `active` or `paused`.
+  - `unsubscribe` (Function) Unsubscribe from the data changes.
+  - `pause` (Function) Pause the subscription and set the status to `paused`.
+  - `resume` (Function) Resume the subscription and set the status to `active`.
+  - `updateOptions` (Function(`options`)) Update the subscription options.
+  - `isInScope` (Function(`entry`)) Checks if an entry is within the scope of the subscription. Returns `true` or `false`.
 
 **Example**
 
@@ -542,11 +554,11 @@ This example demonstrates how to subscribe to insert and update events on a data
 
 ```js
 Fliplet.DataSources.connect(123).then(function (connection) {
-  const options = {
+  var options = {
     events: ['insert', 'update'] // Assuming a cursor setup
   };
 
-  connection.subscribe(options, function (changes) {
+  var subscription = connection.subscribe(options, function (changes) {
     if (changes.inserted.length) {
       console.log('New records:', changes.inserted);
     }
@@ -555,6 +567,8 @@ Fliplet.DataSources.connect(123).then(function (connection) {
       console.log('Updated records:', changes.updated);
     }
   });
+
+  console.log(subscription.status()); // active
 });
 ```
 
