@@ -68,7 +68,7 @@ Fliplet().then(function () {
   // Compile Handlebars templates only when translations have been initialized
   const myTemplate = Handlebars.compile(Fliplet.Widget.Templates['templates.foo']());
 
-  Fliplet.Widget.instance('my-component', function(data) {
+  Fliplet.Widget.instance('my-component', function() {
     // Use the "T" function only when translations have been initialized
     const translatedText = T('widgets.myComponent.pleaseWait');
     const translatedTemplate = myTemplate({ foo: 'bar' });
