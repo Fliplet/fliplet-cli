@@ -52,7 +52,7 @@ Fliplet.Helper({
   <ul>
     <li>Use <code>[ ]</code> to wrap around keys that include a space, e.g. <code>[First name]</code></li>
     <li><code>""</code> within <code>[ ]</code> is supported but optional in some cases, e.g. <code>[First name]</code> and <code>["First name"]</code> are both supported</li>
-    <li><code>.</code> before <code>[ ]</code> is supported but optional, <code>data[First name]</code> and <code>data.[First name]</code> are both supported</li>
+    <li>When referencing nested properties, <code>.</code> before <code>[ ]</code> is supported but optional, <code>data[First name]</code> and <code>data.[First name]</code> are both supported</li>
     <li>
       If the key includes <code>[ ]</code> characters, use <code>""</code> within <code>[ ]</code> are required, e.g. <code>["Location [accuracy]"]</code>
     </li>
