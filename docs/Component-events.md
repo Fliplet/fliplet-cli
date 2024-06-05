@@ -5,7 +5,7 @@ When components are moved around the page in *Edit* mode, Fliplet provides a set
 ## Usage
 
 ```js
-Fliplet.Hook.on('componentEvent', function(event) {
+Fliplet.Hooks.on('componentEvent', function(event) {
   console.log(event.type); // Event type
 });
 ```
@@ -13,7 +13,7 @@ Fliplet.Hook.on('componentEvent', function(event) {
 ## Parameters
 
 ```js
-Fliplet.Hook.on('componentEvent', fn);
+Fliplet.Hooks.on('componentEvent', fn);
 ```
 
 * `fn` (Function(`event`)) **Required** Callback function to process the event
