@@ -15,7 +15,7 @@ program
   .command('create-widget [package] [name] --helper', 'Create a new component using the helper framework boilerplate.')
   .command('create-theme [name]', 'Create a new theme.')
   .command('create-menu [name]', 'Create a new menu.')
-  .command('create-function [package] [name]', 'Create a new function using the App Actions framework boilerplate.')
+  .command('create-function [package] [name] [description] [icon path]', 'Create a new function using the App Actions framework boilerplate.')
   .command('run', 'Run the current widget or theme for development.')
   .command('publish', 'Publish the current widget or theme on fliplet studio.')
   .command('run-local', '(Deprecated) Debug the current widget or theme for development.')
