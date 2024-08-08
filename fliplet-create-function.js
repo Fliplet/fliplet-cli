@@ -11,6 +11,8 @@ if (process.argv.length < 4) {
 
 const packageName = process.argv[2].trim().replace(/ /g, '-').toLowerCase();
 const widgetName = process.argv[3];
+const widgetDescription = process.argv[4];
+const iconPath = process.argv[5];
 const safeName = widgetName.trim().toLowerCase().replace(/ /g, '-').replace(/[^A-z0-9-]/g, '');
 const folderPath = path.join(process.cwd(), safeName);
 
@@ -22,6 +24,17 @@ if (!/[A-z]{1,4}\.[A-z-]{3,32}\.function\.[A-z]{3,64}/.test(packageName)) {
 if (!/\.function\./.test(packageName)) {
   log(`Package name ${packageName} is missing the function part requirement. It should contain ".function." in the name, e.g. "com.example.function.message"`);
   process.exit();
+}
+
+if (iconPath) {
+  const fileType =  path.extname(iconPath);
+
+  const supportedImageType = ['.png', '.jpg', '.jpeg', '.ico'];
+
+  if (supportedImageType.indexOf(fileType) === -1) {
+    log('Invalid file type. Please upload an image with one of the following extensions: .jpg, .jpeg, .png, or .ico');
+    process.exit();
+  }
 }
 
 const template = 'function-template';
@@ -57,9 +70,30 @@ ncp(path.join(__dirname, template), folderPath, function(err) {
     silent: true
   });
 
-  log(`The function has been successfully created in the folder "${safeName}".\r\n`);
+  replace({
+    regex: '{{description}}',
+    replacement: widgetDescription,
+    paths: [folderPath],
+    recursive: true,
+    silent: true
+  });
+
+  if (iconPath) {
+    const destination = path.join(process.cwd(), safeName, 'img', `icon${path.extname(iconPath)}`);
+
+    ncp(iconPath, destination, function(err) {
+      if (err) {
+        return console.error(err);
+      }
+
+      log(`The function has been successfully created in the folder "${safeName}".\r\n`);
+    });
+  } else {
+    log(`The function has been successfully created in the folder "${safeName}".\r\n`);
+  }
 });
 
 function log() {
   console.log.apply(this, arguments);
 }
+
