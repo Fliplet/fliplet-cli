@@ -29,10 +29,10 @@ if (!/\.function\./.test(packageName)) {
 if (iconPath) {
   const fileType =  path.extname(iconPath);
 
-  const supportedImageType = ['.png', '.jpg', '.jpeg', '.ico'];
+  const supportedImageType = ['.png'];
 
   if (supportedImageType.indexOf(fileType) === -1) {
-    log('Invalid file type. Please upload an image with one of the following extensions: .jpg, .jpeg, .png, or .ico');
+    log('Invalid file type. Please upload an image with one of the following extensions: .png');
     process.exit();
   }
 }
