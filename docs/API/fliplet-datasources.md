@@ -5,35 +5,42 @@ The Data Source JS APIs allows you to interact and make any sort of change to yo
 The `fliplet-datasources` package contains the following namespaces:
 
 
-- [Data Sources](#data-sources)
-  - [Get the list of data sources for the current organization](#get-the-list-of-data-sources-for-the-current-organization)
-  - [Get the list of data sources in use by the current app](#get-the-list-of-data-sources-in-use-by-the-current-app)
-  - [Get a data source by ID](#get-a-data-source-by-id)
-  - [Create a new data source](#create-a-new-data-source)
-  - [Connect to a data source by ID](#connect-to-a-data-source-by-id)
-  - [Connect to a data source by Name](#connect-to-a-data-source-by-name)
-- [Connection instance methods](#connection-instance-methods)
-  - [Fetch records from a data source](#fetch-records-from-a-data-source)
-    - [Fetch all records](#fetch-all-records)
-    - [Fetch records with a query](#fetch-records-with-a-query)
-    - [Filter the columns returned when finding records](#filter-the-columns-returned-when-finding-records)
-    - [Fetch records with pagination](#fetch-records-with-pagination)
-    - [Fetch records with a pagination cursor](#fetch-records-with-a-pagination-cursor)
-    - [Join data from other dataSources](#join-data-from-other-datasources)
-    - [Run aggregation queries](#run-aggregation-queries)
-  - [Find a specific record](#find-a-specific-record)
-  - [Find a record by its ID](#find-a-record-by-its-id)
-  - [Replace the contents of the data source with new records](#replace-the-contents-of-the-data-source-with-new-records)
-  - [Insert an array of new records into a data source](#insert-an-array-of-new-records-into-a-data-source)
-  - [Commit changes at once to a data source](#commit-changes-at-once-to-a-data-source)
-  - [Insert a single record into the data source](#insert-a-single-record-into-the-data-source)
-  - [Update a record (entry)](#update-a-record-entry)
-  - [Import a file into the data sources](#import-a-file-into-the-data-sources)
-  - [Remove a record by its ID](#remove-a-record-by-its-id)
-  - [Remove entries matching a query](#remove-entries-matching-a-query)
-- [Define views to filter a data source](#define-views-to-filter-a-data-source)
-- [Configurable operations](#configurable-operations)
-  - [Automatically generate a unique ID for your entries](#automatically-generate-a-unique-id-for-your-entries)
+- [Data Sources JS APIs](#data-sources-js-apis)
+  - [Data Sources](#data-sources)
+    - [Get the list of data sources for the current organization](#get-the-list-of-data-sources-for-the-current-organization)
+    - [Get the list of data sources in use by the current app](#get-the-list-of-data-sources-in-use-by-the-current-app)
+    - [Get a data source by ID](#get-a-data-source-by-id)
+    - [Create a new data source](#create-a-new-data-source)
+    - [Connect to a data source by ID](#connect-to-a-data-source-by-id)
+    - [Connect to a data source by Name](#connect-to-a-data-source-by-name)
+  - [Connection instance methods](#connection-instance-methods)
+    - [Fetch records from a data source](#fetch-records-from-a-data-source)
+      - [Fetch all records](#fetch-all-records)
+      - [Fetch records with a query](#fetch-records-with-a-query)
+      - [Filter the columns returned when finding records](#filter-the-columns-returned-when-finding-records)
+      - [Fetch records with pagination](#fetch-records-with-pagination)
+      - [Fetch records with a pagination cursor](#fetch-records-with-a-pagination-cursor)
+      - [Join data from other dataSources](#join-data-from-other-datasources)
+      - [Run aggregation queries](#run-aggregation-queries)
+      - [Subscribe to data changes](#subscribe-to-data-changes)
+    - [Sort / order the results](#sort--order-the-results)
+    - [Find a specific record](#find-a-specific-record)
+    - [Find a record by its ID](#find-a-record-by-its-id)
+    - [Replace the contents of the data source with new records](#replace-the-contents-of-the-data-source-with-new-records)
+    - [Insert an array of new records into a data source](#insert-an-array-of-new-records-into-a-data-source)
+    - [Commit changes at once to a data source](#commit-changes-at-once-to-a-data-source)
+    - [Insert a single record into the data source](#insert-a-single-record-into-the-data-source)
+      - [**Options: folderId**](#options-folderid)
+      - [**Options: ack**](#options-ack)
+    - [Update a record (entry)](#update-a-record-entry)
+    - [Import a file into the data sources](#import-a-file-into-the-data-sources)
+    - [Remove a record by its ID](#remove-a-record-by-its-id)
+    - [Remove entries matching a query](#remove-entries-matching-a-query)
+    - [Get unique values for a column](#get-unique-values-for-a-column)
+    - [Get unique values for multiple columns at once](#get-unique-values-for-multiple-columns-at-once)
+  - [Define views to filter a data source](#define-views-to-filter-a-data-source)
+  - [Configurable operations](#configurable-operations)
+    - [Automatically generate a unique ID for your entries](#automatically-generate-a-unique-id-for-your-entries)
 
 ---
 
@@ -112,6 +119,11 @@ Fliplet.DataSources.create({
       Name: 'Jane Doe',
       Email: 'janedoe@example.com'
     }
+  ],
+
+  // Optionally define access rules
+  accessRules: [
+    { type: ['select', 'insert', 'update', 'delete'], allow: 'all' }
   ]
 }).then(function (dataSource) {
   // The data source has been created
@@ -417,7 +429,7 @@ Note that when using the above parameter, the returned object from the `find()` 
 
 ---
 
-### Fetch records with a pagination cursor
+#### Fetch records with a pagination cursor
 
 A more powerful alternative to the `find` method is `findWithCursor`, which creates an array cursor with methods to navigate between pages of the dataset. This is useful if you want to add pagination to a Data Source. Start by creating a cursor with the `findWithCursor` method:
 
@@ -504,6 +516,63 @@ connection.find({
 ```
 
 Please refer to the [Mingo](https://github.com/kofrasa/mingo) documentation to read more about all the different usages and types of aggregation queries.
+
+---
+
+#### Subscribe to data changes
+
+The `subscribe()` method allows for listening to real-time updates on data source changes. This can be crucial for applications that need to react instantly to changes in data, such as collaborative platforms, live dashboards, or any application requiring instant data sync.
+
+**Usage**
+
+```js
+connection.subscribe(options, callback);
+```
+
+**Parameters**
+
+- `options` (Object) Configuration for subscription.
+  - `events` (Array of String) Types of changes to subscribe to. Possible values are `insert`, `update`, `delete`. Default: `['insert', 'update', 'delete']`.
+  - `cursor` (Cursor Object) An optional cursor object as received from the `findWithCursor` method to specify the scope of data to listen to.
+- `callback` (Function) A function that will be called whenever the subscribed events occur. The function receives an object containing arrays of `inserted`, `updated`, and `deleted` items depending on the subscribed events.
+
+**Returns**
+
+- `subscription` (Object) Subscription object.
+  - `id` (Number) Unique ID of the subscription.
+  - `options` (Object) Options used to set up the subscription.
+  - `status` (Function) Status of subscription. Returns `active` or `paused`.
+  - `unsubscribe` (Function) Unsubscribe from the data changes.
+  - `pause` (Function) Pause the subscription and set the status to `paused`.
+  - `resume` (Function) Resume the subscription and set the status to `active`.
+  - `updateOptions` (Function(`options`)) Update the subscription options.
+  - `isInScope` (Function(`entry`)) Checks if an entry is within the scope of the subscription. Returns `true` or `false`.
+
+**Example**
+
+This example demonstrates how to subscribe to insert and update events on a data source:
+
+```js
+Fliplet.DataSources.connect(123).then(function (connection) {
+  var options = {
+    events: ['insert', 'update'] // Assuming a cursor setup
+  };
+
+  var subscription = connection.subscribe(options, function (changes) {
+    if (changes.inserted.length) {
+      console.log('New records:', changes.inserted);
+    }
+
+    if (changes.updated.length) {
+      console.log('Updated records:', changes.updated);
+    }
+  });
+
+  console.log(subscription.status()); // active
+});
+```
+
+In this example, `connection.subscribe()` is used to monitor for new inserts and updates. When changes are detected, the callback function processes the arrays of `inserted` and `updated` data to handle them appropriately, such as updating a UI element or triggering further actions.
 
 ### Sort / order the results
 
@@ -722,6 +791,27 @@ Set `type` to `delete` and specify a where clause. This will query the data sour
 connection.query({
   type: 'delete',
   where: { Email: 'test@fliplet.com' }
+});
+```
+
+### Get unique values for a column
+
+Use the `getIndex` method to get unique values for a given column of the Data Source:
+
+```js
+connection.getIndex('name').then(function onSuccess(values) {
+  // array of unique values
+});
+```
+
+### Get unique values for multiple columns at once
+
+Use the `getIndexes` method to get unique values for a given array of columns of the Data Source:
+
+```js
+connection.getIndexes(['name','email']).then(function onSuccess(values) {
+  // an object having key representing each index and the value being the array of values
+  // e.g. { name: ['a', 'b'], email: ['c', 'd'] }
 });
 ```
 

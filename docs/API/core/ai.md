@@ -25,6 +25,7 @@ The `Fliplet.AI()` function is used to initialize an instance of the AI APIs. It
 - `n`: (Number) How many chat completion choices to generate for each input message. Defaults to `1`.
 - `stop`: (String or Array) Up to 4 sequences where the API will stop generating further tokens, e.g. `["\n"]`
 - `max_tokens`: (Number) The maximum number of tokens to generate in the chat completion. The total length of input tokens and generated tokens is limited by the model's context length.
+- `stream`: (Boolean, Defaults to false) If set, partial message deltas will be sent, like in ChatGPT. Tokens will be sent as data-only server-sent events as they become available.
 
 Here's how you can create a new instance of the AI APIs:
 
@@ -51,6 +52,21 @@ The `ask` function [response format](https://platform.openai.com/docs/guides/cha
 ```js
 const response = await Fliplet.AI().ask('What are the top trends for 2023?');
 ```
+
+### `Streaming response`
+
+User can stream the response by passing `stream: true` as optional second parameter.
+
+```js
+Fliplet.AI({temperature: 1,stream: true}).ask('Give me 20 word sentence').stream(function onChunk(data) {
+    console.log(data) // Callback function to receive partial message deltas like in ChatGPT as they become available
+}).then(function onComplete(){
+  console.log('done') // Called once all messages are received
+}).catch(function reject(error){
+  console.log(error)
+});
+```
+When user passes `stream: true` as parameter user can use `stream()` method as shown in above code example. It takes callback function as a parameter which will be called when partial message deltas received from OpenAI API.
 
 ---
 
@@ -164,7 +180,71 @@ In this case, it is passed an object with two properties:
 
 The GPT-3.5 Turbo model is one of several language prediction models developed by OpenAI, which generates human-like responses to prompts or message inputs. Here, the model will use the input message "Hello!" to generate a text completion response based on its trained knowledge about conversational English.
 
----
+User can stream the response by passing `stream: true` property
+
+```js
+Fliplet.AI.createCompletion({
+    model: 'gpt-4-0125-preview',
+    messages: [{ role: 'user', content: 'Write me a poem' }],
+    stream: true
+  }).stream(function onChunk(data) {
+    console.log(data) // Callback function to receive partial message deltas like in ChatGPT as they become available
+  }).then(function onComplete(){
+    console.log('done') // Called once all messages are received
+  }).catch(function reject(error){
+    console.log(error)
+  });
+```
+
+When user passes `stream: true` as parameter user can use `stream()` method as shown in above code example. It takes callback function as a parameter which will be called when partial message deltas received from OpenAI API.
+
+### Generate images
+
+The image generations JS API allows you to create an original image given a text prompt.
+
+```js
+const result = await Fliplet.AI.generateImage({
+  prompt: "a white siamese cat",
+  n: 1,
+  size: "256x256",
+  response_format: "url"
+});
+```
+This code uses the [create image OpenAI API](https://platform.openai.com/docs/api-reference/images/create) through the `Fliplet.AI` namespace to generate image. The result variable in the example holds the response from the AI model.
+
+The `Fliplet.AI.generateImage()` method takes several arguments. In this case, it is passed an object with the following properties:
+
+- `prompt`: A text description of the desired image(s). The maximum length is 1000 characters. In this case, the prompt is "a white siamese cat".
+- `n`: The number of images to generate. Must be between 1 and 10.
+- `size`: The size of the generated images. Must be one of 256x256, 512x512, or 1024x1024.
+- `response_format`: The format in which the generated images are returned. Must be one of url or b64_json.
+
+### Create transcription
+
+The transcriptions JS API takes as input the audio file you want to transcribe and the desired output file format for the transcription of the audio.
+
+```js
+const file = new File([arrayBuffer], filename, { type: mimeType }); // see MDN for more detail
+const result = await Fliplet.AI.transcribeAudio(file);
+```
+This code uses the [create transcription OpenAI API](https://platform.openai.com/docs/api-reference/audio/createTranscription) through the `Fliplet.AI` namespace to create transcription from audio file. The result variable in the example holds the response from the AI model.
+
+The `Fliplet.AI.transcribeAudio()` method takes `File` object as an input, user can provide audio file as an `File` object and method with provide transcription for the provided file. Supported file formats are  `flac`, `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `ogg`, `wav`, or `webm`.
+
+### Create embeddings
+
+The embeddings JS API creates an embedding vector representing the input text
+
+```js
+const result = await Fliplet.AI.createEmbedding({
+  input: "The food was delicious and the waiter..."
+});
+```
+This code uses the [create embeddings OpenAI API](https://platform.openai.com/docs/api-reference/embeddings/create) through the `Fliplet.AI` namespace to create embeddings from the given input. The result variable in the example holds the response from the AI model.
+
+The `Fliplet.AI.createEmbedding()` method takes several arguments. In this case, it is passed an object with the following properties:
+
+- `input`: Input text to embed, encoded as a string or array of tokens. To embed multiple inputs in a single request, pass an array of strings or array of token arrays. Each input must not exceed the max input tokens for the model (8191 tokens for text-embedding-ada-002) and cannot be an empty string
 
 ## Rate limiting
 

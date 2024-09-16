@@ -18,11 +18,14 @@ This is because Fliplet apps make AJAX requests from the following domains:
 
   * `https://studio.fliplet.com/*`
   * `https://api.fliplet.com/*`
+  * `https://us.api.fliplet.com/*` (For US customers)
+  * `https://ca.api.fliplet.com/*` (For CA customers)
 
 **Web apps**
 
   * `https://apps.fliplet.com/*` (For EU customers)
   * `https://us-apps.fliplet.com/*` (For US customers)
+  * `https://ca-apps.fliplet.com/*` (For CA customers)
 
 **Native apps**
 

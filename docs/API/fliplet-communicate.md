@@ -22,7 +22,7 @@ Available options:
   - `html`: HTML string for the email body
   - `headers`: "key:value" object with headers to add to the email (most headers are allowed). We recommend using `X-*` prefixes to any custom header, e.g. `X-My-Custom-Header: "value"`
   - `attachments`: array of attachments with `type` (the MIME type), `content` (String or Buffer), `name` (the filename including extension) and optional `encoding` (base64, hex, binary, etc)
-  - `required`: Set to `true` to cache the request if the device is offline. When the device comes online, the cached requests will be sent. Default: `false`
+  - `required`: Set to `true` to queue the request if the device is offline. When the device comes online, the queued requests will be sent. Default: `false`
 
 ```js
 var options = {
@@ -183,6 +183,8 @@ var options = {
 
 Fliplet.Communicate.sendSMS(options);
 ```
+
+Optionally, add `required: true` in `options` to queue the request if the device is offline. When the device comes online, the queued requests will be sent.
 
 ### Twilio
 
@@ -372,6 +374,7 @@ Available options:
   - `sandbox` (optional, when `true`, notifications are only sent to people using Fliplet Viewer. This is useful for testing.)
   - `subscription` (optional, an array of **push subscription IDs** to target specific users. These IDs can be found in the "About this app" section of Fliplet apps, accessible via the top menu)
   - `badge` (optional, sets the badge on iOS to a specific number)
+  - `required`: Set to `true` to queue the request if the device is offline. When the device comes online, the queued requests will be sent. Default: `false`
 
 ```js
 Fliplet.Communicate.sendPushNotification(appId, {

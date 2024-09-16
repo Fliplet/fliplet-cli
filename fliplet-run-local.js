@@ -141,7 +141,7 @@ function getTranslations() {
   try {
     file = fs.readFileSync(translationPackagePath, { encoding: 'utf8' });
   } catch (err) {
-    return;
+    return undefined;
   }
 
   try {
@@ -451,6 +451,6 @@ function uuid() {
       .substring(1);
   }
 
-  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-    s4() + '-' + s4() + s4() + s4();
+  return s4() + s4() + '-' + s4() + '-' + s4() + '-'
+    + s4() + '-' + s4() + s4() + s4();
 }

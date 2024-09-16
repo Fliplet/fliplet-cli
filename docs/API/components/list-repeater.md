@@ -1,4 +1,4 @@
-# Repeater JS APIs
+# List Repeater JS APIs
 
 The list repeater component is a container for a list of records. It is used to display a list of records from a data source.
 
@@ -110,45 +110,5 @@ Use the `repeaterDataRetrieveError` hook to handle errors when retrieving data f
 Fliplet.Hooks.on('repeaterDataRetrieveError', function(result) {
   // result contains "instance" and "error"
   // e.g. show an alert
-});
-```
-
----
-
-## Add infinite scroll to a list
-
-Here's a simple example on how you can add infinite scroll to a list using a dynamic container and a list repeater with a limit set up to 10 entries per page.
-
-The following code will load the next page of the dataset when the user is approaching the end of the screen:
-
-```js
-// Attach a jQuery event on window scroll
-$(window).on('scroll', _.throttle(updatePosition, 200));
-
-function updatePosition() {
-  // Check if the user is approaching the end of the screen (200px from the bottom)
-  if ($(window).scrollTop() + $(window).height() >= ($(document).height() - 200)) {
-    loadMore();
-  }
-}
-
-// Function to load the next page of the dataset
-function loadMore() {
-  Fliplet.ListRepeater.get().then(function (repeater) {
-    // Move to the next page of the dataset and keep existing entries in the cursor
-    repeater.rows.next().update({ keepExisting: true });
-  });
-}
-```
-
-On the other hand, if you're paginating a list (e.g. moving the cursor between pages), you may need to manually refresh the list repeater:
-
-```js
-Fliplet.ListRepeater.get().then(function (repeater) {
-  // Move to the next page of the dataset
-  repeater.rows.next().update();
-
-  // Force the repeater to redraw the list
-  repeater.$forceUpdate();
 });
 ```

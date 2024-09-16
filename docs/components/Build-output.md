@@ -62,36 +62,35 @@ Fliplet.Widget.instance('my-component', console.log);
 1. Add `supportsDynamicContext: true` to the `Fliplet.Widget.instance` options
 2. In the `build.html` file, add `data-widget-name="component-name"` alongside the current `data-component-name-id="{{id}}"`
 
-You can then receive parent context and subscribe for updates to it:
+You can then receive parent context and access data from it.
 
 ```js
-Fliplet.Widget.instance('primary-button', function(data, parent) {
-  if (parent) {
-    parent.$watch('context', (ctx) => {
-      const value = _.get(ctx, data.label);
-
-      if (value) {
-        $(this).find('input').val(value);
-      }
-    });
-  }
-
-  // ...
+Fliplet.Widget.instance('dynamic-data-component', function(data, parent) {
+  console.log(parent.entry); // Reference the dynamic data entry for the component
 }, { supportsDynamicContext: true });
 ```
 
 Likewise, you can use the `Fliplet.Widget.initializeChildren()` method if you're building a dynamic component that should initialize children components supporting the dynamic context:
 
 ```js
-Fliplet.Widget.instance('dynamic-container', function(data, parent) {
-  const $el = $(this);
-
-  // fetch required data
-  let context;
-
-  Fliplet.Widget.initializeChildren(this, context);
+Fliplet.Widget.instance('dynamic-data-component', function(data, parent) {
+  // Pass the parent context to the children
+  Fliplet.Widget.initializeChildren(this, parent);
 }, {
   supportsDynamicContext: true
+});
+```
+
+If `Fliplet.Widget.instance()` is used to initialize [components converted from helpers](../API/helpers/components.html), the parent entry should be referenced differently.
+
+```js
+Fliplet.Widget.instance({
+  name: 'dynamic-data-component',
+  render: {
+    ready: function() {
+      console.log(this.parent.entry); // Reference the dynamic data entry for the component
+    }
+  }
 });
 ```
 

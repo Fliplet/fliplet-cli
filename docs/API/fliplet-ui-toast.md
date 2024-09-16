@@ -51,17 +51,18 @@ Fliplet.UI.Toast(options)
   * **html** (String) Use this to set a custom content to the Toast notification. If `html` is set, `title` and `message` will be ignored.
   * **actions** (Array) An array of call-to-actions to include in the Toast notification. Each call-to-action is configured through an object with the following properties:
     * **label** (String) Label text for the call-to-action.
+    * **icon** (String) FontAwesome icon name to be added to the action, e.g. `fa-times`.
     * **action** (Object or Function) If an object is passed, the object will be passed to `Fliplet.Navigate.to()` when user interacts with the call-to-action. If a function is passed, the function will be executed with the index passed as the first parameter and the `this` variable will contain the original object passed to the `Fliplet.UI.Toast()` constructor. **Note** Executing an action will automatically dismiss the Toast notification, unless the callback function returns `false`.
 
 ## Properties
 
-The toast instance returned as the first parameter in the promise resolving. The instance object contains the following properties.
+The promise resolves with the toast instance as its first parameter. This instance object comprises the following properties.
 
 * **data** (Object) A data object containing the configuration fro the Toast notification.
 
 ## Methods
 
-`Fliplet.UI.Toast` contains the following methods:
+`Fliplet.UI.Toast` contains the following methods. To utilize these methods, it's important to ensure that they are invoked after the resolution of the `Fliplet.UI.Toast()` function.
 
 ### `Fliplet.UI.Toast.dismiss()`
 

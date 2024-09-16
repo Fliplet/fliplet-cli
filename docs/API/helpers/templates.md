@@ -46,7 +46,19 @@ Fliplet.Helper({
 });
 ```
 
-<p class="quote"><strong>Note:</strong> variables must be declared using the camelCase naming convention, e.g. use something like <code>firstName</code> instead of "first_name" and "first-name".</p>
+<div class="quote">
+  <p><strong>Note:</strong> The paths are passed to <code>_.get(object, path)</code> <a href="https://lodash.com/docs/4.17.15#get" target="_blank">(ref)</a>  which supports <code>[ ]</code> notations for paths that contain spaces or <code>[ ]</code> characters.</p>
+
+  <ul>
+    <li>Use <code>[ ]</code> to wrap around keys that include a space, e.g. <code>[First name]</code></li>
+    <li><code>""</code> within <code>[ ]</code> is supported but optional in some cases, e.g. <code>[First name]</code> and <code>["First name"]</code> are both supported</li>
+    <li>When referencing nested properties, <code>.</code> before <code>[ ]</code> is supported but optional, <code>data[First name]</code> and <code>data.[First name]</code> are both supported</li>
+    <li>
+      If the key includes <code>[ ]</code> characters, use <code>""</code> within <code>[ ]</code> are required, e.g. <code>["Location [accuracy]"]</code>
+    </li>
+    <li>You can choose to always include <code>[]</code> and <code>""</code>, e.g. <code>["Name"]</code>, <code>["First name"]</code>, <code>["Location [accuracy]"]</code></li>
+  </ul>
+</div>
 
 ---
 

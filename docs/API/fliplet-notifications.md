@@ -45,6 +45,21 @@ instance.insert({
 })
 ```
 
+#### Queue the request offline for later
+
+Add `required: true` to queue the request if the device is offline. The queued request will be sent when the device becomes online again.
+
+```js
+instance.insert({
+  status: 'published',
+  data: {
+    title: 'Greetings',
+    message: 'Hi John!'
+  },
+  required: true // Queue the request for later if the device is offline
+})
+```
+
 #### Add a link to the notification
 
 Add a link to the in-app notification using the `navigate` option:

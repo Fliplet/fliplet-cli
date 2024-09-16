@@ -90,35 +90,19 @@ Fliplet.DynamicContainer.get().then(function (container) {
 });
 ```
 
-Note that we used the [findWithCursor](/API/fliplet-datasources.html#fetch-all-records-from-a-data-source) method instead of `find` to let the system manage pagination when the data is displayed in a repeated list.
+Note that we used the [findWithCursor](/API/fliplet-datasources.html#fetch-all-records-from-a-data-source) method instead of `find` to let the system manage pagination when the data is displayed in a list repeater.
 
 For more details, check the JS API documentation for the [findWithCursor](/API/fliplet-datasources.html#fetch-all-records-from-a-data-source) method.
 
----
+### `container.connection()`
 
-## Advanced scenarios
-
-### Load more data for infinite scroll
-
-Here's a simple example on how you can add an infinite scroll capability to your app when using a dynamic container with a limit set:
+Use the `connection` function to load the data source connection object.
 
 ```js
-// Attach a jQuery event on window scroll
-$(window).on('scroll', _.throttle(updatePosition, 200));
-
-function updatePosition() {
-  // Check if the user is approaching the end of the screen
-  if ($(window).scrollTop() + $(window).height() >= ($(document).height() - 200)) {
-    loadMore();
-  }
-}
-
-function loadMore() {
-  Fliplet.DynamicContainer.get().then(function (container) {
-    // Move to the next page of the dataset and keep existing entries in the cursor
-    container.context.next().update({ keepExisting: true });
+Fliplet.DynamicContainer.get().then(function (container) {
+  container.connection().then(function (connection) {
+    // Use connection instance as documented for the Data Sources JS API
   });
-}
+});
 ```
-
 ---

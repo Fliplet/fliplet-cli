@@ -263,6 +263,11 @@ timestamp_column: updatedAt
 # Using "update" will keep orphaned entries while "replace" will delete them.
 mode: update
 
+# Define the batch size in which records will be processed. If value not provided default will be 1000
+# If mode is set to replace, records will be processed in batch
+# else all the records processed at once
+batch_size: 1000
+
 # Define how many records and files should be parsed and requested at once.
 # Depending on how much load your system can sustain you can increase this number.
 concurrency: 1
@@ -397,6 +402,11 @@ module.exports.config = {
   // Define the log verbosity, between "debug", "info" and "critical".
   logVerbosity: 'debug',
 
+  // Define the batch size in which records will be processed. If value not provided default will be 1000
+  // If mode is set to replace, records will be processed in batch
+  // else all the records processed at once
+  batchSize: 1000,
+
   // Database connection settings (using Sequelize format)
   // http://docs.sequelizejs.com/
   database: {
@@ -530,6 +540,11 @@ module.exports.config = {
   // If set to true, operations will run when the script starts.
   // Otherwise, they will just run according to their frequency.
   syncOnInit: true
+
+  // Define the batch size in which records will be processed. If value not provided default will be 1000
+  // If mode is set to replace, records will be processed in batch
+  // else all the records processed at once
+  batchSize: 1000,
 };
 
 module.exports.setup = (agent) => {
@@ -1017,6 +1032,14 @@ Finally, make sure that **TLS 1.2 or 1.3** is [enabled on the OS settings](https
 ---
 
 ## Releases changelog
+
+#### 2.0.5 (October 11th, 2023)
+
+- The agent now supports batch processing when mode is set to `replace`. This is useful while processing large number of records.
+
+#### 2.0.4 (September 7th, 2023)
+
+- Some of the libraries in the agent have been updated to their latest versions.
 
 #### 2.0.3 (June 8th, 2023)
 

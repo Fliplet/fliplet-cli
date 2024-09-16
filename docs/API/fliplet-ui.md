@@ -16,7 +16,22 @@ All pages load the `fliplet-pages` by default. It includes support for the follo
 
 The following UI elements are optionally available by adding extra packages to your app.
 
+## Date & Time
+
   - [Date Picker](fliplet-ui-datepicker.md) (`fliplet-ui-datetime`)
-  - [Number Input](fliplet-ui-number.md) (`fliplet-ui-number`)
-  - [PanZoom](fliplet-ui-panzoom.md) (`fliplet-ui-panzoom`)
   - [Time Picker](fliplet-ui-timepicker.md) (`fliplet-ui-datetime`)
+  - [Date Range](fliplet-ui-daterange.md) (`fliplet-ui-datetime`)
+  - [Time Range](fliplet-ui-timerange.md) (`fliplet-ui-datetime`)
+
+## Number
+
+  - [Number Input](fliplet-ui-number.md) (`fliplet-ui-number`)
+  - [Range Slider](fliplet-ui-rangeslider.md) (`fliplet-ui-rangeslider`)
+
+## Multiple choice
+
+  - [Typeahead](fliplet-ui-typeahead.md) (`fliplet-ui-typeahead`)
+
+## Others
+
+  - [PanZoom](fliplet-ui-panzoom.md) (`fliplet-ui-panzoom`)

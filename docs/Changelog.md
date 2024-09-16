@@ -6,8 +6,13 @@ description: Changelog notes giving a summary of recent significant changes to t
 
 Each week, we provide changelog notes on this page giving a summary of recent significant changes to the documentation. If there haven't been any significant changes in a given week, we don't publish changelog notes.
 
+## 2024
+
+- **May, 7th**: JS APIs for subscribing to specific data source changes and converting helpers into widgets
+
 ## 2023
 
+- **August, 9th**: New Android framework version 6.3.0 with support for Android 13 (API Level 33).
 - **June, 8th**: Released new version 2.0.3 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html##releases-changelog) with new auto-retry for failed sync operations.
 - **June, 7th**: Added new JS API for the chat component. See [Chat JS API](https://developers.fliplet.com/API/components/chat.html) for more details.
 - **April, 14th**: New iOS framework version 6.2.0 released with improvements for screen transitions on iPad.
