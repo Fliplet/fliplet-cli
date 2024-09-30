@@ -25,10 +25,20 @@ The `widget.json` file defines your component as well as the **dependencies** an
 {
   "name": "Say hello",
   "package": "com.example.function.say-hello",
+  "description": "This function will create alert box with Hello message",
+  "version": "1.0.0",
+  "icon": "img/icon.png",
+  "tags": ["type:function"],
+   "interface": {
+    "dependencies": [],
+    "assets": []
+  },
   "build": {
     "dependencies": [],
-    "assets": ["js/build.js"]
-  }
+    "assets": ["js/build.js"],
+    "appAssets": []
+  },
+  "settings": {}
 }
 ```
 
@@ -64,22 +74,19 @@ Fliplet.Functions.register('com.example.function.say-hello', function(settings, 
 Let's try an example where the function settings define a data source ID to be used to retrieve data from. Furthermore, the app action input contains the email of a user to be used to filter the data source:
 
 ```js
-Fliplet.Functions.register('com.example.function.findUser', function(settings, context) {
-  return Fliplet.DataSources.connect(settings.dataSourceId)
-    .then(function(dataSource) {
-      return dataSource.findOne({
-        where: {
-          email: context.event.email
-        }
-      });
-    })
-    .then(function(records) {
-      if (!records.length) {
-        return Promise.reject('No records found');
-      }
+Fliplet.Functions.register('com.example.function.findUser', async function(settings, context) {
+  const dsConnection = await Fliplet.DataSources.connect(settings.dataSourceId);
+  const record = await dsConnection.findOne({
+    where: {
+      email: context.email
+    }
+  });
 
-      return records[0].name;
-    });
+  if (!record) {
+    throw new Error('No record found');
+  }
+
+  return record.data.name;
 });
 ```
 
@@ -88,7 +95,7 @@ The above function would have an app action pipeline as follows:
 ```json
 {
   "functions": [
-    { "widgetId": 123, "settings": { "dataSourceId": 456 } }
+    { "functionPackage": "com.example.function.findUser", "settings": { "dataSourceId": 456 } }
   ]
 }
 ```
