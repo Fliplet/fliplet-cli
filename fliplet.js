@@ -27,6 +27,7 @@ program
   .command('organization [id]', 'Set current working organization. Use without id to reset.')
   .command('env [name]', 'Set the environment: local, development, staging or production.')
   .command('login', 'Log in with your Fliplet Studio account.')
+  .command('login-cli', 'Log in with your Fliplet Studio account via CLI.')
   .command('logout', 'Log out from Fliplet Studio.')
   .command('cleanup', 'Reset the local state of the CLI.')
   .parse(process.argv);
