@@ -7,15 +7,15 @@ We regularly update our framework to support new features. If you have an older 
   <div class="bl two">
     <div>
       <h4>iOS</h4>
-      <p>Current release: <u>6.2.0</u></p>
-      <p>Target SDK version: 16</p>
+      <p>Current release: <u>6.4.0</u></p>
+      <p>Target SDK version: 17</p>
     </div>
   </div>
   <div class="bl two">
     <div>
       <h4>Android</h4>
-      <p>Current release: <u>6.3.2</u></p>
-      <p>Target API level: 33</p>
+      <p>Current release: <u>6.4.2</u></p>
+      <p>Target API level: 34</p>
     </div>
   </div>
 </section>
