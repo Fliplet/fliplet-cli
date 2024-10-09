@@ -63,6 +63,7 @@ In the example, function `com.fliplet.function.if` function that behaves like an
 ```js
 Fliplet.App.Actions.create({
   name: 'sayHello',
+  environment: "server",
   functions: [
     {
       functionPackage: "com.fliplet.function.if",
@@ -72,6 +73,11 @@ Fliplet.App.Actions.create({
       functions: [
         { functionPackage: "com.example.function.return-string", settings: { message: "Hello world" } }
       ]
+    }
+  ],
+  triggers:[
+    {
+      trigger: 'manual'
     }
   ]
 })
@@ -89,7 +95,7 @@ An action can be triggered as a result of a system event (e.g. a data source bei
 
 These are the available types of triggers:
 
-- `log`: Triggered when a log entry is created. <strong>Can be executed on server side only</strong>
+- `log`: Triggered when a [log](https://developers.fliplet.com/Organization-audit-log-types.html#logs-from-fliplet-apps) entry is created. <strong>Can be executed on server side only</strong>
 - `schedule`: Executes at a specific interval. <strong>Can be executed on server side only</strong>
 - `manual`: Executes manually using the JavaScript API. <strong>Can be executed on server or client side</strong>
 - `analytics`: Triggered when an analytics event occurs. <strong>Can be executed on client side only</strong>
@@ -99,6 +105,7 @@ The following example creates an action that is triggered when a log entry is cr
 ```js
 Fliplet.App.Actions.create({
   name: 'send-email-on-error',
+  environment:'server'
   triggers: [
     {
       trigger: 'log',
@@ -106,7 +113,7 @@ Fliplet.App.Actions.create({
     }
   ],
   functions: [
-    { functionPackage: "com.example.function.send-email", settings: { } }
+    { functionPackage: 'com.example.function.send-email', settings: { } }
   ]
 });
 ```
@@ -350,7 +357,7 @@ Fliplet.App.Actions.remove('confirm-booking').then(function () {
 ```
 ## Debug an action
 
-You can debug App action (2nd gen) in your browser. To debug the app actions open a browser tab on the tasks compile endpoint
+You can debug an action in your browser. To debug the app actions open a browser tab on the tasks compile endpoint
 - `URL` <strong>GET</strong> /v1/apps/{appId}/tasks/{taskId}/compile?html
 
 Below are the URLs for different region
@@ -362,7 +369,7 @@ Below are the URLs for different region
 - Open the browser DevTools by pressing the `F12` key
 - Go to Source tab and from the pages find the relevant function JS file
 - Put the Debug point in the code you want to debug
-- Go to the console and type Fliplet.App.Actions.Pipeline.run(). This is the command that gets executed by Lambda when running the action. It internally finds the pipeline in - - `ENV.taskPipeline` and the JSON payload from the query parameter payload
+- Go to the console and type Fliplet.App.Actions.Pipeline.run(). This is the command that gets executed by our infrastructure when running the action. It internally finds the pipeline in - - `ENV.taskPipeline` and the JSON payload from the query parameter payload
 
 ![Chrome Dev too](/assets/img/debug_action.png)
 
