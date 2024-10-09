@@ -415,7 +415,6 @@ Sample logs:
     "data": {
       "mode": "on-demand",
       "duration": 2000,
-      "pageId": 456,
       "actionId": 1
     }
   },
@@ -426,7 +425,6 @@ Sample logs:
     "data": {
       "mode": "scheduled",
       "duration": 3000,
-      "pageId": 456,
       "actionId": 1,
       "result": { "a": 1 }
     }
@@ -438,7 +436,6 @@ Sample logs:
     "data": {
       "mode": "scheduled",
       "duration": 5000,
-      "pageId": 456,
       "actionId": 1,
       "result": {
         "errorType": "Error",
