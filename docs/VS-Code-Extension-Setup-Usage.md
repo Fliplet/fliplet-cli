@@ -37,3 +37,7 @@ To link the extension with your Fliplet account:
 ### Extending App Features
 
 Developers can also use the Fliplet VS Code extension to manage and extend features like app navigation, custom themes, and data source integration. The integration with Fliplet Studio allows for real-time collaboration with your team.
+
+## Video Tutorial
+
+<iframe width="560" height="315" src="https://www.youtube.com/embed/BrFPgyxjut0?si=qA5rgAWIpErGLybB" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
