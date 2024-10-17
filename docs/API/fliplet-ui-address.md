@@ -104,7 +104,27 @@ instance.getAutocompleteSuggestions(input, countryRestrictions)
 - **input** (`String`): The input string to search for.
 - **countryRestrictions** (`Array<String>`): An array of country codes to restrict the search to specific countries.
 
-`Returns:` A Promise that resolves to an array of suggestion objects containing label and id.
+`Returns:` A Promise that resolves to an array of suggestion objects containing label and id. If an error occurs during the API request or if the data is not in the expected format, it returns an empty array.
+
+#### Example Response for `getAutocompleteSuggestions('london', ["GB", "US"])`
+
+```
+[
+  {
+    "label": "London, UK",
+    "id": "ChIJdd4hrwug2EcRmSrV3Vo6llI"
+  },
+  {
+    "label": "London, OH, USA",
+    "id": "ChIJc9zXPAXSOIgRF2Gq6XYsFXE"
+  },
+  {
+    "label": "London, KY, USA",
+    "id": "ChIJA0zCjKVgXogRcrfaaZhBT6M"
+  }
+]
+
+```
 
 
 ### `.getAddressComponents()`
@@ -117,8 +137,66 @@ instance.getAddressComponents(id)
 
 - **id** (`String`): A string representing the Google Maps place ID.
 
-`Returns:`  A promise that resolves to an array of address components.
+`Returns:`  A promise that resolves to an array of address components. Empty array would be returned if there was a network issue or if the data format was incorrect.
 
+#### Example Response for `getAddressComponents("ChIJY-kURM4EdkgRoDcrLliZifE")`
+```
+[
+    {
+        "long_name": "44",
+        "short_name": "44",
+        "types": [
+            "street_number"
+        ]
+    },
+    {
+        "long_name": "Trafalgar Square",
+        "short_name": "Trafalgar Sq",
+        "types": [
+            "route"
+        ]
+    },
+    {
+        "long_name": "London",
+        "short_name": "London",
+        "types": [
+            "postal_town"
+        ]
+    },
+    {
+        "long_name": "Greater London",
+        "short_name": "Greater London",
+        "types": [
+            "administrative_area_level_2",
+            "political"
+        ]
+    },
+    {
+        "long_name": "England",
+        "short_name": "England",
+        "types": [
+            "administrative_area_level_1",
+            "political"
+        ]
+    },
+    {
+        "long_name": "United Kingdom",
+        "short_name": "GB",
+        "types": [
+            "country",
+            "political"
+        ]
+    },
+    {
+        "long_name": "WC2N 5DS",
+        "short_name": "WC2N 5DS",
+        "types": [
+            "postal_code"
+        ]
+    }
+]
+
+```
 
 ## Helper functions
 
