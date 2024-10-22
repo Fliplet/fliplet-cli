@@ -16,6 +16,7 @@ program
   .command('create-theme [name]', 'Create a new theme.')
   .command('create-menu [name]', 'Create a new menu.')
   .command('run', 'Run the current widget or theme for development.')
+  .command('create-function [package] [name] [description] [icon path]', 'Create a new function using the App Actions framework boilerplate.')
   .command('publish', 'Publish the current widget or theme on fliplet studio.')
   .command('run-local', '(Deprecated) Debug the current widget or theme for development.')
   .command('test', 'Run tests on the current widget or theme on fliplet studio.')
@@ -26,6 +27,7 @@ program
   .command('organization [id]', 'Set current working organization. Use without id to reset.')
   .command('env [name]', 'Set the environment: local, development, staging or production.')
   .command('login', 'Log in with your Fliplet Studio account.')
+  .command('login-cli', 'Log in with your Fliplet Studio account via CLI.')
   .command('logout', 'Log out from Fliplet Studio.')
   .command('cleanup', 'Reset the local state of the CLI.')
   .parse(process.argv);

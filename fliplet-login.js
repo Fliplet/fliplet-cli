@@ -1,3 +1,5 @@
+require('colors');
+
 const _ = require('lodash');
 
 const auth = require('./lib/auth');

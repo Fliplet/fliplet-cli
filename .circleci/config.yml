@@ -11,7 +11,7 @@ jobs:
       - run: npm install
       - run: npm link && echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc
       - run: fliplet env staging
-      - run: fliplet login -u $TEST_USER -p $TEST_PASSWORD
+      - run: fliplet login-cli -u $TEST_USER -p $TEST_PASSWORD
       - run: fliplet organization $TEST_ORGANIZATION
       - run: fliplet create-widget com.foo.awesome awesome-widget
       #- run: cd awesome-widget && fliplet test
