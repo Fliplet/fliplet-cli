@@ -7,15 +7,15 @@ We regularly update our framework to support new features. If you have an older 
   <div class="bl two">
     <div>
       <h4>iOS</h4>
-      <p>Current release: <u>6.2.0</u></p>
-      <p>Target SDK version: 16</p>
+      <p>Current release: <u>6.4.0</u></p>
+      <p>Target SDK version: 17</p>
     </div>
   </div>
   <div class="bl two">
     <div>
       <h4>Android</h4>
-      <p>Current release: <u>6.3.2</u></p>
-      <p>Target API level: 33</p>
+      <p>Current release: <u>6.4.2</u></p>
+      <p>Target API level: 34</p>
     </div>
   </div>
 </section>
@@ -24,6 +24,18 @@ We regularly update our framework to support new features. If you have an older 
 ---
 
 ## Supported versions
+
+### Version 6.4.2 (August 20, 2024)
+
+- **Android**: The target SDK has now been set to 34 (Android 14)
+
+### Version 6.4.1 (June 12, 2024)
+
+- **Android**: Update the Firebase Messaging SDK to send push notifications via FCM(Firebase Cloud Messaging)
+
+### Version 6.4.0 (May 2, 2024)
+
+- **iOS**: The target SDK has now been set to iOS 17.
 
 ### Version 6.3.2 (September 13, 2023)
 
