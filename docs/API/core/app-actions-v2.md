@@ -2,9 +2,9 @@
 description: Configure your app screens to run scheduled or ad-hoc operation in the cloud and perform various automations.
 ---
 
-# App Actions
+# App Actions V2
 
-The **App Actions** library allows you to configure a pipeline of functions to run either on-device or in the cloud, either ad-hoc or at a scheduled time.
+The **App Actions V2** library allows you to configure a pipeline of functions to run either on-device or in the cloud, either ad-hoc or at a scheduled time.
 
 ![How it works](/assets/img/app-actions-v2.png)
 
@@ -365,7 +365,7 @@ Below are the URLs for different region
 - `US` https://us.api.fliplet.com/v1/apps/22/tasks/25/compile?html
 - `CA` https://ca.api.fliplet.com/v1/apps/22/tasks/25/compile?html
 
-#### Steps to debug an app actions
+#### Steps to debug an app actions V2
 - Open the browser DevTools by pressing the `F12` key
 - Go to Source tab and from the pages find the relevant function JS file
 - Put the Debug point in the code you want to debug
