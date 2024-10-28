@@ -242,6 +242,7 @@ Use the `create` JS API to create the action. The `analytics` trigger can be con
 
 <strong>Note</strong> that the `analytics` trigger can only be executed on the <strong>client side</strong>
 
+The following action will be executed when the user visits the page with pageId: 77.
 ```js
 Fliplet.App.Actions.create({
   name: 'update-website-visited-count',
@@ -258,7 +259,9 @@ Fliplet.App.Actions.create({
       trigger: 'analytics',
       where: {
         type: 'analytics.pageView',
-        _pageId: 77
+        data:{
+          _pageId: 77
+        }
       }
     }
   ]
@@ -266,6 +269,37 @@ Fliplet.App.Actions.create({
   // App action has been created and will be executed when page with id 77 is visited
 });
 ```
+The following action will be executed when the a form is submitted on the page with pageId: 77.
+
+```js
+Fliplet.App.Actions.create({
+  name: 'update-form-content',
+  active: true,
+  functions: [
+    {
+      settings: {},
+      functionPackage: 'com.example.function.update-form-content'
+    }
+  ],
+  environment: 'client',
+  triggers: [
+    {
+      trigger: 'analytics',
+      where: {
+        type: 'analytics.event',
+        data:{
+          category: "form",
+          action: "submit",
+          _pageId: 341,
+        }
+      }
+    }
+  ]
+}).then(function(action) {
+  // App action has been created and will be executed when a form has been submitted for page with id 77
+});
+```
+
 ### Create a manual action with manual trigger
 
 Use the `create` JS API to create the action. The `manual` trigger can be executed manually using `run` JS API.
