@@ -98,7 +98,7 @@ These are the available types of triggers:
 - `log`: Triggered when a [log](https://developers.fliplet.com/Organization-audit-log-types.html#logs-from-fliplet-apps) entry is created. <strong>Can be executed on server side only</strong>
 - `schedule`: Executes at a specific interval. <strong>Can be executed on server side only</strong>
 - `manual`: Executes manually using the JavaScript API. <strong>Can be executed on server or client side</strong>
-- `analytics`: Triggered when an analytics event occurs. <strong>Can be executed on client side only</strong>
+- `analytics`: Triggered when an analytics event occurs. See the list of client side analytics events [here] (https://developers.fliplet.com/Analytics-documentation.html)<strong>Can be executed on client side only</strong>
 
 The following example creates an action that is triggered when a log entry is created with a `type` of `dataSource.entry.create` (i.e. a new entry is created in a data source) in the data source with ID 789:
 
