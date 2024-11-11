@@ -1,11 +1,11 @@
-# Analytics Events Documentation
+# Analytics Events
 
 ## Page Analytics
 | Type | Action | Category | Description |
 |------|---------|-----------|-------------|
 | analytics.pageView | N/A | N/A | Screen view logged from app |
 
-## App Context
+## App Events
 ### Navigation & Core Actions
 | Type | Action | Category | Description |
 |------|---------|-----------|-------------|
@@ -51,7 +51,7 @@
 | analytics.event | "whatsapp" | "share_url" | User has shared content via WhatsApp |
 | analytics.event | "line" | "share_url" | User has shared content via Line |
 
-## Component Context
+## Component Events
 ### Authentication & Security
 #### Lock Screen
 | Type | Action | Category | Description |
