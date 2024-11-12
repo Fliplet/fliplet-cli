@@ -409,7 +409,7 @@ Below are the URLs for different region
 
 ## Publish an action
 
-Use the `publish` JS API to publish the actions. Only published actions can be used in the production app. Any changes made to actions that are not published will not be reflected in the production apps.
+Use the `publish` JS API to publish the actions. Only published actions can be used in the live app. Any changes made to actions that are not published will not be reflected in the live apps. If you unpublish an action it will stop working in the live app.
 `publish` JS API accept two arguments:
 - `actionId`: Action Id
 - `isPublish`: Boolean value. True to publish, false to unpublish
