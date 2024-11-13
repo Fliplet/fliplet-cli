@@ -422,6 +422,38 @@ Fliplet.App.Actions.publish(53,true);
 Fliplet.App.Actions.publish(53,false);
 ```
 
+## Get the list of app actions
+
+Use the `get` method to fetch the list of app actions you have created. Each action will contain a `lastRunAt` and `nextRunAt` timestamps to help you figuring out when the action has run the last time and when it's scheduled to be run.
+
+```js
+Fliplet.App.Actions.get().then(function (actions) {
+  actions.forEach(function (action) {
+    console.log(action);
+  });
+});
+```
+
+Here is a sample of the array of actions returned:
+
+```json
+[
+  {
+    "id": 1,
+    "name": "send-monday-weekly-reminder",
+    "active": true,
+    "frequency": "*/2 * * * *",
+    "timezone": "Europe/Dublin",
+    "lastRunAt": "2022-07-21T12:32:02.495Z",
+    "nextRunAt": "2022-07-21T12:34:00.000Z",
+    "createdAt": "2022-07-20T09:29:00.366Z",
+    "updatedAt": "2022-07-20T09:29:00.366Z",
+    "appId": 123,
+    "pageId": 456
+  }
+]
+```
+
 ## Get the logs for an action
 
 Each time n runs a new log record gets generated in our backend. You can access such logs for one of all actions:
