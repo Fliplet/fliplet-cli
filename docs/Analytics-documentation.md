@@ -4,7 +4,7 @@
 
 | Type | Action | Category | Description |
 |------|---------|-----------|-------------|
-| `analytics.pageView` | N/A | N/A | Screen view logged from app |
+| `analytics.pageView` | | | Screen view logged from app |
 
 ## App Events
 ### Navigation & Core Actions
@@ -291,5 +291,5 @@
 
 | Type | Action | Category | Description |
 |------|---------|-----------|-------------|
-| `analytics.event` | `user-added` | | User has been added to the system |
-| `analytics.event` | `user-removed` | | User has been removed from the system |
+| `analytics.event` | `user-added` | | User has been added to the custom list in the Directory Solution |
+| `analytics.event` | `user-removed` | | User has been removed from the custom list in the Directory Solution |
