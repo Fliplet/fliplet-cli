@@ -268,7 +268,7 @@ Here are some of the use cases for fetching pre aggregated data
 #### Fetch aggregated data for the app
 
 ```js
-Fliplet.Apps.Analytics.Aggregate.get({
+Fliplet.App.Analytics.Aggregate.get({
     "source": "production",
     "from": "2024-05-01",
     "to": "2024-05-31",
@@ -317,7 +317,7 @@ This will return aggregated sum for each user, below are the possible values for
 #### Fetch aggregated data for the app users
 
 ```js
-Fliplet.Apps.Analytics.Aggregate.get({
+Fliplet.App.Analytics.Aggregate.get({
     "source": "production",
     "from": "2024-05-01",
     "to": "2024-05-31",
@@ -332,7 +332,7 @@ This will return total session duration for each user of the app.
 #### Fetch aggregated data for the app by operating system
 
 ```js
-Fliplet.Apps.Analytics.Aggregate.get({
+Fliplet.App.Analytics.Aggregate.get({
     "source": "production",
     "group": "os",
     "from": "2023-05-01",
