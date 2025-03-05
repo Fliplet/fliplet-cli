@@ -521,6 +521,148 @@ Sample logs:
 ```
 ---
 
+## Loops
+### Loop Over Items
+
+Using loop user can configure action to iteration over an array of items and executes a defined set of functions for each item.
+
+#### Configuration
+- `type`: Must be set to `loop`
+- `items`: Context property containing the array to iterate
+- `functions`: Array of functions to execute per item
+
+```js
+Fliplet.App.Actions.create({
+  name: 'loop-action',
+  active: true,
+  functions: [
+    {
+      settings: { dataSourceId: 45268 },
+      functionPackage: 'com.fliplet.function.read-datasource'
+    },
+    {
+      type: 'loop',
+      items: 'records',
+      functions: [
+        {
+          settings: {},
+          functionPackage: 'com.fliplet.function.send-email'
+        }
+      ]
+    }
+  ],
+  environment: 'server',
+  triggers: [{ trigger: 'manual' }]
+});
+```
+### Loop With Range
+
+Iterates over a numeric range
+
+#### Configuration
+- `type`: Must be set to `loop`
+- `range`: Object with `from` and `to` properties defining the numeric range
+- `functions`: Array of functions to execute per item
+
+```js
+Fliplet.App.Actions.create({
+  name: 'range-loop-action',
+  active: true,
+  functions: [
+    {
+      type: 'loop',
+      range: { from: 0, to: 5 },
+      functions: [
+        {
+          settings: {},
+          functionPackage: 'com.fliplet.function.string-return'
+        }
+      ]
+    }
+  ],
+  environment: 'server',
+  triggers: [{ trigger: 'manual' }]
+});
+```
+## Conditional Operators
+### If-Else Statements
+Using conditional statements user can if else like conditional branching in the action pipeline.
+
+#### Configuration
+- `type`: Must be set to `if`
+- `conditions`: Array of condition blocks containing:
+  - `condition`: Expression or function to evaluate.
+  - `functions`: Array of functions to execute if the condition is true.
+- `elseFunctions` (optional): Functions executed if none of the conditions match.
+
+
+```js
+Fliplet.App.Actions.create({
+  name: 'conditional-action',
+  active: true,
+  functions: [
+    {
+      settings: { dataSource: 268 },
+      functionPackage: 'com.fliplet.function.read-datasource'
+    },
+    {
+      type: 'if',
+      conditions: [
+        {
+          condition: 'records[0].data.email == "user@example.com"',
+          functions: [
+            { type: 'function', functionPackage: 'com.fliplet.function.send-email' }
+          ]
+        }
+      ],
+      elseFunctions: [
+        { type: 'function', functionPackage: 'com.fliplet.function.send-notification' }
+      ]
+    }
+  ],
+  environment: 'server',
+  triggers: [{ trigger: 'manual' }]
+});
+```
+
+## Example: Combining Loops and Conditional Operators
+```js
+Fliplet.App.Actions.create({
+  name: 'loop-conditional-action',
+  active: true,
+  functions: [
+    {
+      settings: { dataSource: 8556 },
+      functionPackage: 'com.fliplet.function.read-datasource'
+    },
+    {
+      type: 'loop',
+      items: 'records',
+      functions: [
+        {
+          type: 'if',
+          conditions: [
+            {
+              condition: 'currentItem.data.Admin == true',
+              functions: [
+                {
+                  settings: { html: '<b>Admin user</b>', subject: 'Admin User' },
+                  functionPackage: 'com.fliplet.function.loop-send-email'
+                }
+              ]
+            }
+          ],
+          elseFunctions: [
+            { type: 'function', functionPackage: 'com.fliplet.function.loop-send-email' }
+          ]
+        }
+      ]
+    }
+  ],
+  environment: 'server',
+  triggers: [{ trigger: 'manual' }]
+});
+```
 
 ## Troubleshooting
 
