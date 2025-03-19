@@ -506,14 +506,20 @@ You can use the built-in [Mingo](https://github.com/kofrasa/mingo) library to ru
 connection.find({
   aggregate: [
     {
+      $project: {
+        numericData: { $convertToNumber: $data.myColumnName }
+      }
+    },
+    {
       $group: {
-        _id: '$data.myColumnName',
-        count: { $sum: 1 }
+        _id: '$numericData',
+        avg: { $avg: $numericData }
       }
     }
   ]
 });
 ```
+The version of Mingo we have used does not automatically typecast strings to numbers. Therefore, we have added our own custom operator ($convertToNumber) to type cast to a number before performing aggregation. To use this custom operator, please refer to above snippet.
 
 Please refer to the [Mingo](https://github.com/kofrasa/mingo) documentation to read more about all the different usages and types of aggregation queries.
 
