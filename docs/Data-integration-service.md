@@ -1033,6 +1033,14 @@ Finally, make sure that **TLS 1.2 or 1.3** is [enabled on the OS settings](https
 
 ## Releases changelog
 
+#### 2.0.7 (April 8th, 2025)
+
+- The agent now logs every successful and failed attempt to fetch and update the remote dataset.
+
+#### 2.0.6 (February 27th, 2024)
+
+- Fixes for correctly removing or keeping entries in the local dataset when performing an operation with the mode set to `replace` or `update`
+
 #### 2.0.5 (October 11th, 2023)
 
 - The agent now supports batch processing when mode is set to `replace`. This is useful while processing large number of records.
