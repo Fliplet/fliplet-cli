@@ -14,7 +14,7 @@ We regularly update our framework to support new features. If you have an older 
   <div class="bl two">
     <div>
       <h4>Android</h4>
-      <p>Current release: <u>6.4.2</u></p>
+      <p>Current release: <u>6.4.3</u></p>
       <p>Target API level: 34</p>
     </div>
   </div>
@@ -24,6 +24,10 @@ We regularly update our framework to support new features. If you have an older 
 ---
 
 ## Supported versions
+
+### Version 6.4.3 (May 8, 2025)
+
+- **Android**: Removed broad media permissions and updated media plugins to use system media narrow picker
 
 ### Version 6.4.2 (August 20, 2024)
 
