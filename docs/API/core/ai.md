@@ -46,11 +46,11 @@ It optionally accepts an `options` object as its first argument, which can conta
 
 | Parameter     | Type           | Optional | Default Value     | Description                                                                                                                                                           |
 |---------------|----------------|----------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `model`       | `String`       | Yes      | `'gpt-3.5-turbo'` | ID of the model to use. See the [model endpoint compatibility](https://platform.openai.com/docs/models/model-endpoint-compatibility) table for details.           |
-| `temperature` | `Number`       | Yes      | `1`               | What sampling temperature to use, between 0 and 2. Higher values (e.g., 0.8) make output more random; lower values (e.g., 0.2) make it more focused and deterministic. |
-| `n`           | `Number`       | Yes      | `1`               | How many chat completion choices to generate for each input message.                                                                                                    |
-| `stop`        | `String` or `Array` | Yes      | `null`            | Up to 4 sequences where the API will stop generating further tokens (e.g., `["\n"]`).                                                                             |
-| `stream`      | `Boolean`      | Yes      | `false`           | If `true`, partial message deltas will be sent like in ChatGPT. Tokens are sent as data-only server-sent events as they become available.                             |
+| model       | String       | Yes      | 'gpt-3.5-turbo' | ID of the model to use. See the [model endpoint compatibility](https://platform.openai.com/docs/models/model-endpoint-compatibility) table for details.           |
+| temperature | Number       | Yes      | 1               | What sampling temperature to use, between 0 and 2. Higher values (e.g., 0.8) make output more random; lower values (e.g., 0.2) make it more focused and deterministic. |
+| n           | Number       | Yes      | 1               | How many chat completion choices to generate for each input message.                                                                                                    |
+| stop        | String or Array | Yes      | null            | Up to 4 sequences where the API will stop generating further tokens (e.g., ["\n"]).                                                                             |
+| stream      | Boolean      | Yes      | false           | If true, partial message deltas will be sent like in ChatGPT. Tokens are sent as data-only server-sent events as they become available.                             |
 
 **Example:**
 
@@ -150,11 +150,11 @@ The instance object returned from `Fliplet.AI()` exposes the following methods.
 
 | Method   | Description                                      | Parameters                                        | Returns         |
 |----------|--------------------------------------------------|---------------------------------------------------|-----------------|
-| `ask()`  | Sends a message to the AI model in the current conversation. | `message (String)`, `roleOrOptions (String` or `AskOptions)` | `Promise<Object>` |
+| ask()  | Sends a message to the AI model in the current conversation. | message (String), roleOrOptions (String or AskOptions) | Promise<Object> |
 
-### `ask()`
+### ask()
 
-`instance.ask(message: String, roleOrOptions?: String` or `AskOptions): Promise<AskResponseObject>`
+`instance.ask(message: String, roleOrOptions?: String or AskOptions): Promise<AskResponseObject>`
 
 The `ask` instance function sends a message to the AI model within the context of the current conversation.
 
@@ -162,15 +162,15 @@ The `ask` instance function sends a message to the AI model within the context o
 
 | Parameter        | Type                        | Optional | Default Value | Description                                                                                                                               |
 |------------------|-----------------------------|----------|---------------|-------------------------------------------------------------------------------------------------------------------------------------------|
-| `message`        | `String`                    | No       |               | The text message prompt to send to the AI.                                                                                                |
-| `roleOrOptions`  | `String` or `AskOptions`   | Yes      | `'user'`      | Can be a `String` specifying the author's role (`'user'`, `'system'`, `'assistant'`) or an `AskOptions` object. Defaults to `'user'` role. |
+| message        | String                    | No       |               | The text message prompt to send to the AI.                                                                                                |
+| roleOrOptions  | String or AskOptions   | Yes      | 'user'      | Can be a String specifying the author's role ('user', 'system', 'assistant') or an AskOptions object. Defaults to 'user' role. |
 
 **`AskOptions` Object Properties:**
 
 | Parameter | Type      | Optional | Default Value | Description                                                                      |
 |-----------|-----------|----------|---------------|----------------------------------------------------------------------------------|
-| `role`    | `String`  | Yes      | `'user'`      | The role of the author of this message (`'user'`, `'system'`, `'assistant'`).     |
-| `stream`  | `Boolean` | Yes      | `false`       | If `true`, enables streaming for this specific `ask` call. See [Streaming with `ask()`](#streaming-with-ask). |
+| role    | String  | Yes      | 'user'      | The role of the author of this message ('user', 'system', 'assistant').     |
+| stream  | Boolean | Yes      | false       | If true, enables streaming for this specific ask call. See [Streaming with ask()](#streaming-with-ask). |
 
 **Returns:**
 
@@ -384,10 +384,10 @@ These methods are called directly on the `Fliplet.AI` namespace (e.g., `Fliplet.
 
 | Method                  | Description                                                                    | Key Parameters (see details below)            | Returns         |
 |-------------------------|--------------------------------------------------------------------------------|-----------------------------------------------|-----------------|
-| `createCompletion()`    | Creates a text completion based on a prompt or a series of messages.           | `options (Object)`                            | `Promise<Object>` |
-| `generateImage()`       | Generates an image from a text prompt.                                         | `options (Object)`                            | `Promise<Object>` |
-| `transcribeAudio()`     | Transcribes an audio file.                                                     | `file (File)`, `options (Object, optional)` | `Promise<Object>` |
-| `createEmbedding()`     | Creates an embedding vector for input text.                                    | `options (Object)`                            | `Promise<Object>` |
+| createCompletion()    | Creates a text completion based on a prompt or a series of messages.           | options (Object)                            | Promise<Object> |
+| generateImage()       | Generates an image from a text prompt.                                         | options (Object)                            | Promise<Object> |
+| transcribeAudio()     | Transcribes an audio file.                                                     | file (File), options (Object, optional) | Promise<Object> |
+| createEmbedding()     | Creates an embedding vector for input text.                                    | options (Object)                            | Promise<Object> |
 
 ### `Fliplet.AI.createCompletion()`
 
@@ -403,11 +403,11 @@ You can use most parameters available in the [OpenAI Completions API reference](
 
 | Parameter     | Type                        | Optional | Default        | Description                                                                                                                                                                                             |
 |---------------|-----------------------------|----------|----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `model`       | `String`                    | Yes      | See below      | ID of the model to use. For chat models (using `messages`), defaults to `'gpt-3.5-turbo'`. For older completion models (using `prompt`), a model like `'text-davinci-003'` must be specified.           |
-| `messages`    | `Array<MessageObject>`      | Yes      | `undefined`    | An array of message objects (see [Conversation Message Structure](#conversation-message-structure)) for chat-based completions. Use this for models like `gpt-3.5-turbo`.                                |
-| `prompt`      | `String` or `Array<String>` | Yes      | `undefined`    | The prompt(s) to generate completions for. Use this for older completion models like `text-davinci-003`.                                                                                                |
-| `temperature` | `Number`                    | Yes      | `1` (OpenAI)   | Sampling temperature (0-2).                                                                                                                                                                               |
-| `stream`      | `Boolean`                   | Yes      | `false`        | If `true`, enables streaming. See [Streaming with `createCompletion()`](#streaming-with-createcompletion).                                                                                                |
+| model       | String                    | Yes      | See below      | ID of the model to use. For chat models (using messages), defaults to 'gpt-3.5-turbo'. For older completion models (using prompt), a model like 'text-davinci-003' must be specified.           |
+| messages    | Array<MessageObject>      | Yes      | undefined    | An array of message objects (see [Conversation Message Structure](#conversation-message-structure)) for chat-based completions. Use this for models like gpt-3.5-turbo.                                |
+| prompt      | String or Array<String> | Yes      | undefined    | The prompt(s) to generate completions for. Use this for older completion models like text-davinci-003.                                                                                                |
+| temperature | Number                    | Yes      | 1 (OpenAI)   | Sampling temperature (0-2).                                                                                                                                                                               |
+| stream      | Boolean                   | Yes      | false        | If true, enables streaming. See [Streaming with createCompletion()](#streaming-with-createcompletion).                                                                                                |
 | ...           | ...                         | Yes      | ...            | Other valid OpenAI completion parameters (e.g., `top_p`, `n`, `stop`, `presence_penalty`, `frequency_penalty`).                                                                                           |
 
 **Important:**
@@ -539,14 +539,14 @@ Generates an original image based on a text prompt using OpenAI's image generati
 
 | Parameter        | Type     | Optional | Default Value | Description                                                                                                |
 |------------------|----------|----------|---------------|------------------------------------------------------------------------------------------------------------|
-| `prompt`         | `String` | No       |               | A text description of the desired image(s). Maximum length 1000 characters.                                |
-| `n`              | `Number` | Yes      | `1`           | The number of images to generate. Must be between 1 and 10.                                                |
-| `size`           | `String` | Yes      | `'1024x1024'` | The size of the generated images. Must be one of `'256x256'`, `'512x512'`, or `'1024x1024'`.                 |
-| `response_format`| `String` | Yes      | `'url'`       | The format in which the generated images are returned. Must be one of `'url'` or `'b64_json'`.               |
-| `model`          | `String` | Yes      | `dall-e-2`    | The model to use for image generation (e.g. `dall-e-2`, `dall-e-3`). `dall-e-3` currently only supports n=1. |
-| `quality`        | `String` | Yes      | `standard`    | For `dall-e-3` model, the quality of the image. `'standard'` or `'hd'`.                                       |
-| `style`          | `String` | Yes      | `vivid`       | For `dall-e-3` model, the style of the generated images. `'vivid'` or `'natural'`.                            |
-| `user`           | `String` | Yes      |               | A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.       |
+| prompt         | String | No       |               | A text description of the desired image(s). Maximum length 1000 characters.                                |
+| n              | Number | Yes      | 1           | The number of images to generate. Must be between 1 and 10.                                                |
+| size           | String | Yes      | '1024x1024' | The size of the generated images. Must be one of '256x256', '512x512', or '1024x1024'.                 |
+| response_format| String | Yes      | 'url'       | The format in which the generated images are returned. Must be one of 'url' or 'b64_json'.               |
+| model          | String | Yes      | dall-e-2    | The model to use for image generation (e.g. dall-e-2, dall-e-3). dall-e-3 currently only supports n=1. |
+| quality        | String | Yes      | standard    | For dall-e-3 model, the quality of the image. 'standard' or 'hd'.                                       |
+| style          | String | Yes      | vivid       | For dall-e-3 model, the style of the generated images. 'vivid' or 'natural'.                            |
+| user           | String | Yes      |               | A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.       |
 
 
 **Returns:**
@@ -617,18 +617,18 @@ Transcribes an audio file into text.
 
 | Parameter | Type                        | Optional | Default Value | Description                                                                                                                                                                                                                               |
 |-----------|-----------------------------|----------|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `file`    | `File`                      | No       |               | The audio `File` object to transcribe. Supported formats: `flac`, `mp3`, `mp4`, `mpeg`, `mpga`, `m4a`, `ogg`, `wav`, `webm`.                                                                                                             |
-| `options` | `TranscribeAudioOptions`    | Yes      | `{}`          | An optional object containing additional parameters for the transcription. See [OpenAI Audio Transcription API](https://platform.openai.com/docs/api-reference/audio/createTranscription) for available options. |
+| file    | File                      | No       |               | The audio File object to transcribe. Supported formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.                                                                                                             |
+| options | TranscribeAudioOptions    | Yes      | {}          | An optional object containing additional parameters for the transcription. See [OpenAI Audio Transcription API](https://platform.openai.com/docs/api-reference/audio/createTranscription) for available options. |
 
 **`TranscribeAudioOptions` Object Properties (Common):**
 
 | Parameter     | Type     | Optional | Default Value    | Description                                                                                                                                          |
 |---------------|----------|----------|------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `model`       | `String` | Yes      | `'whisper-1'`    | ID of the model to use (e.g., `'whisper-1'`).                                                                                                          |
-| `prompt`      | `String` | Yes      |                  | An optional text to guide the model's style or continue a previous audio segment.                                                                    |
-| `response_format` | `String` | Yes  | `'json'`         | The format of the transcript output (e.g., `'json'`, `'text'`, `'srt'`, `'verbose_json'`, `'vtt'`). Fliplet's wrapper might default or standardize this. |
-| `language`    | `String` | Yes      |                  | The language of the input audio in [ISO-639-1 format](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g., `'en'`, `'es'`).                   |
-| `temperature` | `Number` | Yes      | `0`              | Sampling temperature (0-1). Higher values increase randomness.                                                                                         |
+| model       | String | Yes      | 'whisper-1'    | ID of the model to use (e.g., 'whisper-1').                                                                                                          |
+| prompt      | String | Yes      |                  | An optional text to guide the model's style or continue a previous audio segment.                                                                    |
+| response_format | String | Yes  | 'json'         | The format of the transcript output (e.g., 'json', 'text', 'srt', 'verbose_json', 'vtt'). Fliplet's wrapper might default or standardize this. |
+| language    | String | Yes      |                  | The language of the input audio in [ISO-639-1 format](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g., 'en', 'es').                   |
+| temperature | Number | Yes      | 0              | Sampling temperature (0-1). Higher values increase randomness.                                                                                         |
 
 **Returns:**
 
@@ -705,11 +705,11 @@ Creates an embedding vector (a list of floating-point numbers) representing the 
 
 | Parameter | Type                        | Optional | Default Value             | Description                                                                                                                                                                                              |
 |-----------|-----------------------------|----------|---------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| `input`   | `String` or `Array<String>` | No       |                           | Input text to embed, encoded as a string or an array of strings (for multiple inputs in one request). Each input must not exceed the model's max input tokens (e.g., 8191 for `text-embedding-ada-002`). |
-| `model`   | `String`                    | No       | `'text-embedding-ada-002'` (usually) | ID of the embedding model to use (e.g., `'text-embedding-ada-002'`, `'text-embedding-3-small'`, `'text-embedding-3-large'`). **Must be specified.**                                                                    |
-| `encoding_format` | `String`          | Yes      | `'float'`                  | The format to return the embeddings in. Can be `float` or `base64`.                                                                                                                                      |
-| `dimensions` | `Number`                 | Yes      | Model dependent           | The number of dimensions the resulting output embedding should have. Only supported in `text-embedding-3` and later models.                                                                             |
-| `user`    | `String`                    | Yes      |                           | A unique identifier representing your end-user.                                                                                                                                                        |
+| input   | String or Array<String> | No       |                           | Input text to embed, encoded as a string or an array of strings (for multiple inputs in one request). Each input must not exceed the model's max input tokens (e.g., 8191 for text-embedding-ada-002). |
+| model   | String                    | No       | 'text-embedding-ada-002' (usually) | ID of the embedding model to use (e.g., 'text-embedding-ada-002', 'text-embedding-3-small', 'text-embedding-3-large'). **Must be specified.**                                                                    |
+| encoding_format | String          | Yes      | 'float'                  | The format to return the embeddings in. Can be float or base64.                                                                                                                                      |
+| dimensions | Number                 | Yes      | Model dependent           | The number of dimensions the resulting output embedding should have. Only supported in text-embedding-3 and later models.                                                                             |
+| user    | String                    | Yes      |                           | A unique identifier representing your end-user.                                                                                                                                                        |
 
 **Returns:**
 
