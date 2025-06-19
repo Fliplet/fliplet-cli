@@ -81,64 +81,50 @@ console.log('AI Instance Created:', conversation);
 
 ## Using Gemini Models
 
-In addition to OpenAI models, the Fliplet AI JS API now supports integration with Google's Gemini models. To use a Gemini model, specify the Gemini model ID (e.g., `'gemini-2.0-flash'` or `'gemini-1.5-flash'`) as the `model` property in the `options` object when initializing `Fliplet.AI(options)` or when calling `Fliplet.AI.createCompletion(options)`.
+In addition to OpenAI models, the Fliplet AI JS API now supports direct proxy integration with Google's Gemini models. To use a Gemini model, specify `aiProvider: 'gemini'` and the `model` ID (e.g., `'gemini-1.5-flash'`) in your `Fliplet.AI.createCompletion(options)` request.
 
-By selecting a Gemini model, your requests will be routed to the Gemini API, allowing you to leverage its unique capabilities for your tasks.
+This will route your request directly to the Gemini API, allowing you to leverage its full capabilities, including function calling. When using the Gemini provider, your payload must conform to the Gemini API's request body structure. For instance, instead of `messages`, you will use the `contents` property, and you can include other Gemini-specific parameters like `tools`.
 
-**Example using Gemini for `Fliplet.AI()` instance:**
-
-```javascript
-const geminiConversation = Fliplet.AI({
-  model: 'gemini-pro' // Specify the Gemini model ID
-  // Other options like temperature, stream, etc., can also be provided
-  // if supported and applicable to Gemini models via our API.
-});
-
-async function askGemini() {
-  try {
-    console.log("Asking Gemini model...");
-    const response = await geminiConversation.ask("Explain quantum computing in simple terms.");
-    console.log("Gemini Response:", response);
-    if (response.choices && response.choices.length > 0 && response.choices[0].message) {
-        console.log("Gemini Answer:", response.choices[0].message.content);
-    }
-  } catch (error) {
-    console.error("Error asking Gemini model:", error);
-  }
-}
-
-askGemini();
-```
+For more detailed information about Google's Gemini models, their capabilities, and the latest model IDs, please refer to the official Gemini API documentation: [https://ai.google.dev/gemini-api/docs/models](https://ai.google.dev/gemini-api/docs/models).
 
 **Example using Gemini for `Fliplet.AI.createCompletion()`:**
 
 ```javascript
-async function completeWithGemini() {
-  try {
-    const params = {
-      model: 'gemini-1.5-flash-latest', // Specify the Gemini model ID
-      messages: [{ role: 'user', content: 'Write a short story about a friendly robot.' }],
-      temperature: 0.7
-      // Note: Ensure that the parameters you use (e.g., messages, temperature) are compatible
-      // with the Gemini model and how our API passes them through.
-    };
-    console.log('Input for createCompletion (Gemini):', params);
-    const result = await Fliplet.AI.createCompletion(params);
-    console.log('createCompletion Response (Gemini):', result);
-    if (result.choices && result.choices.length > 0 && result.choices[0].message) {
-      console.log('Gemini Reply:', result.choices[0].message.content);
+// Example of a call to the Gemini API via Fliplet's proxy
+Fliplet.AI.createCompletion({
+  // For a list of available models, see: https://ai.google.dev/gemini-api/docs/models
+  model: 'gemini-2.5-flash',
+  aiProvider: 'gemini',
+  contents: [
+    { role: 'user', parts: [{ text: 'What is the weather in London' }] }
+  ],
+  'tools': [
+    {
+      'functionDeclarations': [
+        {
+          'name': 'get_current_temperature',
+          'description': 'Gets the current temperature for a given location.',
+          'parameters': {
+            'type': 'object',
+            'properties': {
+              'location': {
+                'type': 'string',
+                'description': 'The city name, e.g. San Francisco'
+              }
+            },
+            'required': ['location']
+          }
+        }
+      ]
     }
-  } catch (error) {
-    console.error('Error in createCompletion (Gemini):', error);
-  }
-}
-
-completeWithGemini();
+  ]
+}).then(function(result) {
+  // The result will be the direct response from the Gemini API
+  console.log(JSON.stringify(result, null, 2));
+});
 ```
 
-For more detailed information about Google's Gemini models, their capabilities, and specific model IDs, please refer to the official Gemini API documentation: [https://ai.google.dev/gemini-api/docs](https://ai.google.dev/gemini-api/docs).
-
-When using Gemini models, ensure that any other parameters (like `temperature`, `stream`, or the structure of `messages`) are compatible with how the Fliplet AI JS API integrates with Gemini.
+When using Gemini models, ensure that all parameters are compatible with how the Fliplet AI JS API integrates with Gemini. The `Fliplet.AI()` instance for multi-turn conversations is primarily designed for OpenAI models and may not support direct proxying to Gemini with a custom payload structure. For Gemini, using the static `Fliplet.AI.createCompletion()` method is recommended.
 
 ---
 
