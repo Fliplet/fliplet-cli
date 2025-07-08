@@ -14,8 +14,8 @@ We regularly update our framework to support new features. If you have an older 
   <div class="bl two">
     <div>
       <h4>Android</h4>
-      <p>Current release: <u>6.4.3</u></p>
-      <p>Target API level: 34</p>
+      <p>Current release: <u>6.4.4</u></p>
+      <p>Target API level: 36</p>
     </div>
   </div>
 </section>
@@ -24,6 +24,10 @@ We regularly update our framework to support new features. If you have an older 
 ---
 
 ## Supported versions
+
+### Version 6.4.4 (July 8, 2025)
+
+- **Android**: The target SDK has now been set to 36 (Android 16)
 
 ### Version 6.4.3 (May 8, 2025)
 
