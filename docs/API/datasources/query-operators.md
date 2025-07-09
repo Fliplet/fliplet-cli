@@ -95,7 +95,6 @@ const activeUsers = await connection.find({
 
 ```js
 // Example
-});
 
 const johnUsers = await connection.find({
   where: { name: { $iLike: 'john' } } // Matches John, JOHN, johnny, etc.
