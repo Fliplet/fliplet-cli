@@ -94,7 +94,7 @@ const activeUsers = await connection.find({
 | `$iLike` | Case-insensitive partial match | `{ name: { $iLike: 'john' } }` | Fliplet-specific, optimized |
 
 ```js
-// Examples
+// Example
 const companyEmails = await connection.find({
   where: { email: { $regex: /@(company|organization)\.com$/i } }
 });
