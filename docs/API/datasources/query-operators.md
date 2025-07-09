@@ -95,7 +95,6 @@ const activeUsers = await connection.find({
 
 ```js
 // Example
-const companyEmails = await connection.find({
   where: { email: { $regex: /@(company|organization)\.com$/i } }
 });
 
