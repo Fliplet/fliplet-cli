@@ -17,7 +17,7 @@ Fliplet allows you to set custom headers for your apps. This feature is useful f
 
 3. **Add the configuration code**: In the JavaScript section, paste the following code snippet, making sure to replace the example headers with your desired configuration:
 
-```javascript
+```js
 async function setCustomHeaders() {
   await Fliplet.App.Settings.set({
     enableCustomHeaders: true,
@@ -51,7 +51,7 @@ Once your custom headers are live, test them using these methods:
 
 ### Content Security Policy (CSP) Example
 
-```javascript
+```js
 async function setCSPHeaders() {
   await Fliplet.App.Settings.set({
     enableCustomHeaders: true,
@@ -67,7 +67,7 @@ async function setCSPHeaders() {
 
 ### Strict Security Headers Example
 
-```javascript
+```js
 async function setSecurityHeaders() {
   await Fliplet.App.Settings.set({
     enableCustomHeaders: true,
@@ -91,7 +91,7 @@ async function setSecurityHeaders() {
 
 ### Multiple Custom Headers Example
 
-```javascript
+```js
 async function setMultipleHeaders() {
   await Fliplet.App.Settings.set({
     enableCustomHeaders: true,
