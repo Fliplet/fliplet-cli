@@ -32,6 +32,10 @@ The following UI elements are optionally available by adding extra packages to y
 
   - [Typeahead](fliplet-ui-typeahead.md) (`fliplet-ui-typeahead`)
 
+## Data Display
+
+  - [Table](fliplet-table.md) (`fliplet-table`)
+
 ## Others
 
   - [PanZoom](fliplet-ui-panzoom.md) (`fliplet-ui-panzoom`)
