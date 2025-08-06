@@ -51,6 +51,52 @@ Each column in the `columns` array can have the following properties:
 | `sortFn` | Function | `undefined` | Custom sort function for this column |
 | `isExpandTrigger` | Boolean | `false` | Make this column trigger row expansion when clicked |
 
+### Row Data Properties
+
+The library recognizes special properties in row data objects that control their behavior and appearance:
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `_selected` | Boolean | When set to `true`, the row will be automatically selected when the table is initialized |
+| `_partiallySelected` | Boolean | When set to `true`, the row will be marked as partially selected (shows a blue minus-square icon instead of a checkbox) |
+
+#### Example
+
+```javascript
+const data = [
+  {
+    id: 1,
+    name: 'Documents',
+    type: 'folder',
+    _selected: true // This row will be selected initially
+  },
+  {
+    id: 2,
+    name: 'Projects',
+    type: 'folder',
+    _partiallySelected: true // This row will show as partially selected
+  },
+  {
+    id: 3,
+    name: 'file.txt',
+    type: 'file'
+    // This row will be unselected
+  }
+];
+
+const table = new Fliplet.UI.Table({
+  target: '#table',
+  selection: { enabled: true, multiple: true },
+  columns: [
+    { name: 'Name', field: 'name' },
+    { name: 'Type', field: 'type' }
+  ],
+  data: data
+});
+```
+
+**Note**: These properties work alongside the `initialSelection` and `initialPartialSelection` configuration options. You can use either approach or combine both for maximum flexibility.
+
 ### Selection Options
 
 ```javascript
@@ -70,6 +116,17 @@ Each column in the `columns` array can have the following properties:
 }
 ```
 
+#### Selection Configuration
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `enabled` | Boolean | `false` | Enable row selection functionality |
+| `multiple` | Boolean | `false` | Allow multiple row selection |
+| `rowClickEnabled` | Boolean | `false` | Enable row click to toggle selection (in addition to checkbox) |
+| `initialSelection` | Array | `[]` | Array of row IDs or row objects to select initially |
+| `initialPartialSelection` | Array | `[]` | Array of row IDs or row objects to mark as partially selected initially |
+| `onBeforeSelect` | Function | `undefined` | Optional validation function called before selection. Return `true`/`false` or a Promise that resolves to `true`/`false` |
+
 ### Pagination Options
 
 ```javascript
@@ -79,6 +136,14 @@ Each column in the `columns` array can have the following properties:
   }
 }
 ```
+
+#### Pagination Configuration
+
+| Property | Type | Default | Description |
+|----------|------|---------|-------------|
+| `pageSize` | Number | `10` | Number of rows to display per page |
+
+**Note**: Set `pagination: false` to disable pagination entirely.
 
 ### Expandable Rows Options
 
@@ -97,6 +162,33 @@ Each column in the `columns` array can have the following properties:
   }
 }
 ```
+
+#### Expandable Row Configuration
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `enabled` | Boolean | Enable expandable rows functionality |
+| `onBeforeExpand` | Function | Optional validation function called before row expansion. Return `true`/`false` or a Promise that resolves to `true`/`false` |
+| `onExpand` | Function | Required content provider function. Return HTML string, DOM element, or Promise that resolves to either |
+
+#### Expansion Triggers
+
+There are multiple ways to trigger row expansion:
+
+1. **Column-level triggers**: Set `isExpandTrigger: true` on any column to make the entire column clickable for expansion
+2. **Custom element triggers**: Add `data-expand` attribute to any element within a cell's custom render function to make that specific element trigger expansion
+
+```javascript
+// Example: Custom expand triggers using data-expand attribute
+{
+  name: 'Actions',
+  render: function(rowData) {
+    return '<button data-expand class="btn btn-primary">View Details</button>';
+  }
+}
+```
+
+**Note**: Elements with the `data-expand` attribute will automatically trigger row expansion when clicked, regardless of which column they appear in.
 
 ## Events
 
