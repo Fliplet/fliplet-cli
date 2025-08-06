@@ -10,15 +10,15 @@ Add the `fliplet-table` dependency to your screen or app libraries.
 
 ```javascript
 const table = new Fliplet.UI.Table({
-    target: '#table-container',
-    columns: [
-        { name: 'ID', field: 'id' },
-        { name: 'Name', field: 'name' }
-    ],
-    data: [
-        { id: 1, name: 'Item 1' },
-        { id: 2, name: 'Item 2' }
-    ]
+  target: '#table-container',
+  columns: [
+    { name: 'ID', field: 'id' },
+    { name: 'Name', field: 'name' }
+  ],
+  data: [
+    { id: 1, name: 'Item 1' },
+    { id: 2, name: 'Item 2' }
+  ]
 });
 ```
 
@@ -55,17 +55,18 @@ Each column in the `columns` array can have the following properties:
 
 ```javascript
 {
-    selection: {
-        enabled: true,        // Enable row selection
-        multiple: true,       // Allow multiple row selection
-        rowClickEnabled: true, // Enable row click selection
-        initialSelection: [], // Array of row IDs or row objects to select initially
-        initialPartialSelection: [], // Array of row IDs or row objects to mark as partially selected initially
-        onBeforeSelect: function(rowData) { // Optional validation before selection
-            // Return true/false or a Promise that resolves to true/false
-            return true; // or return Promise.resolve(true);
-        }
+  selection: {
+    enabled: true,         // Enable row selection
+    multiple: true,        // Allow multiple row selection
+    rowClickEnabled: true, // Enable row click selection
+    initialSelection: [],  // Array of row IDs or row objects to select initially
+    initialPartialSelection: [], // Array of row IDs or row objects to mark as partially selected initially
+    // Optional validation before selection
+    onBeforeSelect: function(rowData) {
+      // Return true/false or a Promise that resolves to true/false
+      return true; // or return Promise.resolve(true);
     }
+  }
 }
 ```
 
@@ -73,9 +74,9 @@ Each column in the `columns` array can have the following properties:
 
 ```javascript
 {
-    pagination: {
-        pageSize: 10  // Number of rows per page
-    }
+  pagination: {
+    pageSize: 10  // Number of rows per page
+  }
 }
 ```
 
@@ -83,17 +84,17 @@ Each column in the `columns` array can have the following properties:
 
 ```javascript
 {
-    expandable: {
-        enabled: true,           // Enable expandable rows
-        onBeforeExpand: function(rowData) { // Optional validation before expansion
-            // Return true/false or a Promise that resolves to true/false
-            return true; // or return Promise.resolve(true);
-        },
-        onExpand: function(rowData) { // Content provider function
-            // Return HTML string, DOM element, or Promise that resolves to either
-            return '<div>Details for ' + rowData.name + '</div>';
-        }
+  expandable: {
+    enabled: true,       // Enable expandable rows
+    onBeforeExpand: function(rowData) { // Optional validation before expansion
+      // Return true/false or a Promise that resolves to true/false
+      return true; // or return Promise.resolve(true);
+    },
+    onExpand: function(rowData) { // Content provider function
+      // Return HTML string, DOM element, or Promise that resolves to either
+      return '<div>Details for ' + rowData.name + '</div>';
     }
+  }
 }
 ```
 
@@ -118,9 +119,9 @@ Fliplet.UI.Table emits various events that you can listen to:
 
 ```javascript
 table.on('selection:change', function(detail) {
-    console.log('Selected rows:', detail.selected);
-    console.log('Deselected rows:', detail.deselected);
-    console.log('Selection source:', detail.source);
+  console.log('Selected rows:', detail.selected);
+  console.log('Deselected rows:', detail.deselected);
+  console.log('Selection source:', detail.source);
 });
 ```
 
@@ -180,11 +181,11 @@ You can customize cell rendering using the `render` function in column definitio
 
 ```javascript
 {
-    name: 'Status',
-    field: 'status',
-    render: function(data) {
-        return '<span class="badge ' + data.status + '">' + data.status + '</span>';
-    }
+  name: 'Status',
+  field: 'status',
+  render: function(data) {
+    return '<span class="badge ' + data.status + '">' + data.status + '</span>';
+  }
 }
 ```
 
@@ -194,14 +195,14 @@ Define custom sort logic using the `sortFn` in column definition:
 
 ```javascript
 {
-    name: 'Name',
-    field: 'name',
-    sortable: true,
-    sortFn: function(a, b, direction) {
-        var aLen = a.name.length;
-        var bLen = b.name.length;
-        return direction === 'asc' ? aLen - bLen : bLen - aLen;
-    }
+  name: 'Name',
+  field: 'name',
+  sortable: true,
+  sortFn: function(a, b, direction) {
+    var aLen = a.name.length;
+    var bLen = b.name.length;
+    return direction === 'asc' ? aLen - bLen : bLen - aLen;
+  }
 }
 ```
 
@@ -209,87 +210,87 @@ Define custom sort logic using the `sortFn` in column definition:
 
 ```javascript
 const table = new Fliplet.UI.Table({
-    target: '#table-container',
-    className: 'my-table',
-    searchable: true,
-    pagination: {
-        pageSize: 4
+  target: '#table-container',
+  className: 'my-table',
+  searchable: true,
+  pagination: {
+    pageSize: 4
+  },
+  selection: {
+    enabled: true,
+    multiple: true,
+    rowClickEnabled: true,
+    initialSelection: [1, 2],
+    onBeforeSelect: function(rowData) {
+      // Example validation
+      return rowData.isSelectable;
+    }
+  },
+  columns: [
+    {
+      name: '',
+      field: 'expand',
+      isExpandTrigger: true,
+      width: '30px'
     },
-    selection: {
-        enabled: true,
-        multiple: true,
-        rowClickEnabled: true,
-        initialSelection: [1, 2],
-        onBeforeSelect: function(rowData) {
-            // Example validation
-            return rowData.isSelectable;
-        }
+    {
+      name: 'Name',
+      field: 'name',
+      sortable: true,
+      searchable: true
     },
-    columns: [
-        {
-            name: '',
-            field: 'expand',
-            isExpandTrigger: true,
-            width: '30px'
-        },
-        {
-            name: 'Name',
-            field: 'name',
-            sortable: true,
-            searchable: true
-        },
-        {
-            name: 'Type',
-            field: 'type',
-            sortable: true,
-            render: function(data) {
-                return '<span class="type-badge">' + data.type + '</span>';
-            }
-        },
-        {
-            name: 'Price',
-            field: 'price',
-            sortable: true,
-            render: function(data) {
-                return '$' + data.price.toFixed(2);
-            }
-        }
-    ],
-    expandable: {
-        enabled: true,
-        onExpand: function(rowData) {
-            return '<div style="padding: 10px; background: #f0f8ff;">' +
-                   '<h4>Details for ' + rowData.name + '</h4>' +
-                   '<p>Type: ' + rowData.type + '</p>' +
-                   '<p>Price: $' + rowData.price + '</p>' +
-                   '</div>';
-        }
+    {
+      name: 'Type',
+      field: 'type',
+      sortable: true,
+      render: function(data) {
+        return '<span class="type-badge">' + data.type + '</span>';
+      }
     },
-    data: [
-        { id: 1, name: 'Item 1', type: 'Type A', price: 10.99, isSelectable: true },
-        { id: 2, name: 'Item 2', type: 'Type B', price: 20.50, isSelectable: false }
-    ]
+    {
+      name: 'Price',
+      field: 'price',
+      sortable: true,
+      render: function(data) {
+        return '$' + data.price.toFixed(2);
+      }
+    }
+  ],
+  expandable: {
+    enabled: true,
+    onExpand: function(rowData) {
+      return '<div style="padding: 10px; background: #f0f8ff;">' +
+             '<h4>Details for ' + rowData.name + '</h4>' +
+             '<p>Type: ' + rowData.type + '</p>' +
+             '<p>Price: $' + rowData.price + '</p>' +
+             '</div>';
+    }
+  },
+  data: [
+    { id: 1, name: 'Item 1', type: 'Type A', price: 10.99, isSelectable: true },
+    { id: 2, name: 'Item 2', type: 'Type B', price: 20.50, isSelectable: false }
+  ]
 });
 
 // Event handling
 table.on('selection:change', function(detail) {
-    console.log('Selection changed:', detail.selected);
-    console.log('Deselected:', detail.deselected);
-    console.log('Source:', detail.source);
+  console.log('Selection changed:', detail.selected);
+  console.log('Deselected:', detail.deselected);
+  console.log('Source:', detail.source);
 });
 
 table.on('sort:change', function(detail) {
-    console.log('Sort changed:', detail.field, detail.direction);
+  console.log('Sort changed:', detail.field, detail.direction);
 });
 
 table.on('search', function(detail) {
-    console.log('Search query:', detail.query);
-    console.log('Filtered data:', detail.data);
+  console.log('Search query:', detail.query);
+  console.log('Filtered data:', detail.data);
 });
 
 table.on('expand:complete', function(detail) {
-    console.log('Row expanded:', detail.row.name);
-    console.log('Expanded content element:', detail.contentEl);
+  console.log('Row expanded:', detail.row.name);
+  console.log('Expanded content element:', detail.contentEl);
 });
 ```
 
@@ -304,64 +305,64 @@ Fliplet.UI.Table supports two approaches for expandable rows:
 #### 1. Dedicated Trigger Column
 ```javascript
 const table = new Fliplet.UI.Table({
-    target: '#table',
-    columns: [
-        { name: '', field: 'expand', isExpandTrigger: true, width: '40px' },
-        { name: 'Name', field: 'name' },
-        { name: 'Email', field: 'email' }
-    ],
-    data: [
-        { id: 1, name: 'John Doe', email: 'john@example.com' },
-        { id: 2, name: 'Jane Smith', email: 'jane@example.com' }
-    ],
-    expandable: {
-        enabled: true,
-        onExpand: function(rowData) {
-            return '<div class="user-details">' +
-                   '<h4>Details for ' + rowData.name + '</h4>' +
-                   '<p>Email: ' + rowData.email + '</p>' +
-                   '<p>ID: ' + rowData.id + '</p>' +
-                   '</div>';
-        }
+  target: '#table',
+  columns: [
+    { name: '', field: 'expand', isExpandTrigger: true, width: '40px' },
+    { name: 'Name', field: 'name' },
+    { name: 'Email', field: 'email' }
+  ],
+  data: [
+    { id: 1, name: 'John Doe', email: 'john@example.com' },
+    { id: 2, name: 'Jane Smith', email: 'jane@example.com' }
+  ],
+  expandable: {
+    enabled: true,
+    onExpand: function(rowData) {
+      return '<div class="user-details">' +
+             '<h4>Details for ' + rowData.name + '</h4>' +
+             '<p>Email: ' + rowData.email + '</p>' +
+             '<p>ID: ' + rowData.id + '</p>' +
+             '</div>';
     }
+  }
 });
 ```
 
 #### 2. Custom Triggers Within Any Cell
 ```javascript
 const table = new Fliplet.UI.Table({
-    target: '#table',
-    columns: [
-        {
-            name: 'Name',
-            field: 'name',
-            render: function(rowData) {
-                // Any element with data-expand attribute becomes a trigger
-                return rowData.name + ' <span data-expand style="cursor: pointer; color: #007bff;">▶️</span>';
-            }
-        },
-        { name: 'Email', field: 'email' },
-        {
-            name: 'Actions',
-            render: function(rowData) {
-                return '<button data-expand class="details-btn">View Details</button>';
-            }
-        }
-    ],
-    data: [
-        { id: 1, name: 'John Doe', email: 'john@example.com' },
-        { id: 2, name: 'Jane Smith', email: 'jane@example.com' }
-    ],
-    expandable: {
-        enabled: true,
-        onExpand: function(rowData) {
-            return '<div class="user-details">' +
-                   '<h4>Details for ' + rowData.name + '</h4>' +
-                   '<p>Email: ' + rowData.email + '</p>' +
-                   '<p>ID: ' + rowData.id + '</p>' +
-                   '</div>';
-        }
+  target: '#table',
+  columns: [
+    {
+      name: 'Name',
+      field: 'name',
+      render: function(rowData) {
+        // Any element with data-expand attribute becomes a trigger
+        return rowData.name + ' <span data-expand style="cursor: pointer; color: #007bff;">▶️</span>';
+      }
+    },
+    { name: 'Email', field: 'email' },
+    {
+      name: 'Actions',
+      render: function(rowData) {
+        return '<button data-expand class="details-btn">View Details</button>';
+      }
     }
+  ],
+  data: [
+    { id: 1, name: 'John Doe', email: 'john@example.com' },
+    { id: 2, name: 'Jane Smith', email: 'jane@example.com' }
+  ],
+  expandable: {
+    enabled: true,
+    onExpand: function(rowData) {
+      return '<div class="user-details">' +
+             '<h4>Details for ' + rowData.name + '</h4>' +
+             '<p>Email: ' + rowData.email + '</p>' +
+             '<p>ID: ' + rowData.id + '</p>' +
+             '</div>';
+    }
+  }
 });
 ```
 
@@ -369,23 +370,23 @@ const table = new Fliplet.UI.Table({
 
 ```javascript
 const table = new Fliplet.UI.Table({
-    // ... other config
-    expandable: {
-        enabled: true,
-        onExpand: function(rowData) {
-            return new Promise((resolve, reject) => {
-                // Simulate API call
-                setTimeout(() => {
-                    if (rowData.id === 999) {
-                        reject(new Error('User details not found'));
-                    } else {
-                        const details = '<div>Async loaded details for ' + rowData.name + '</div>';
-                        resolve(details);
-                    }
-                }, 1000);
-            });
-        }
+  // ... other config
+  expandable: {
+    enabled: true,
+    onExpand: function(rowData) {
+      return new Promise((resolve, reject) => {
+        // Simulate API call
+        setTimeout(() => {
+          if (rowData.id === 999) {
+            reject(new Error('User details not found'));
+          } else {
+            const details = '<div>Async loaded details for ' + rowData.name + '</div>';
+            resolve(details);
+          }
+        }, 1000);
+      });
     }
+  }
 });
 ```
 
@@ -393,17 +394,17 @@ const table = new Fliplet.UI.Table({
 
 ```javascript
 const table = new Fliplet.UI.Table({
-    // ... other config
-    expandable: {
-        enabled: true,
-        onBeforeExpand: function(rowData) {
-            // Prevent expansion for inactive users
-            return rowData.status === 'active';
-        },
-        onExpand: function(rowData) {
-            return generateUserDetails(rowData);
-        }
+  // ... other config
+  expandable: {
+    enabled: true,
+    onBeforeExpand: function(rowData) {
+      // Prevent expansion for inactive users
+      return rowData.status === 'active';
+    },
+    onExpand: function(rowData) {
+      return generateUserDetails(rowData);
     }
+  }
 });
 ```
 
@@ -412,31 +413,31 @@ const table = new Fliplet.UI.Table({
 ```javascript
 // Listen for expansion lifecycle events
 table.on('expand:start', function(detail) {
-    console.log('Started expanding:', detail.row.name);
-    // You can show loading indicators here
+  console.log('Started expanding:', detail.row.name);
+  // You can show loading indicators here
 });
 
 table.on('expand:complete', function(detail) {
-    console.log('Expansion completed:', detail.row.name);
-    console.log('Content element:', detail.contentEl);
-    // Initialize any interactive elements in the expanded content
+  console.log('Expansion completed:', detail.row.name);
+  console.log('Content element:', detail.contentEl);
+  // Initialize any interactive elements in the expanded content
 });
 
 table.on('expand:error', function(detail) {
-    console.log('Expansion failed:', detail.row.name, detail.error.message);
-    // Handle error state
+  console.log('Expansion failed:', detail.row.name, detail.error.message);
+  // Handle error state
 });
 
 table.on('collapse:complete', function(detail) {
-    console.log('Row collapsed:', detail.row.name);
+  console.log('Row collapsed:', detail.row.name);
 });
 
 // Listen for custom trigger interactions
 table.on('cell:interaction', function(detail) {
-    console.log('Custom trigger clicked:', detail.target);
-    console.log('Row data:', detail.row);
-    console.log('Column:', detail.column.name);
-    console.log('Action:', detail.action); // 'expand'
+  console.log('Custom trigger clicked:', detail.target);
+  console.log('Row data:', detail.row);
+  console.log('Column:', detail.column.name);
+  console.log('Action:', detail.action); // 'expand'
 });
 ```
 
@@ -451,12 +452,12 @@ table.collapseRow(rowData);
 
 // Check if a row is expanded
 if (table.isRowExpanded(rowData)) {
-    console.log('Row is currently expanded');
+  console.log('Row is currently expanded');
 }
 
 // Check if a row is being expanded (useful for showing loading states)
 if (table.isRowExpanding(rowData)) {
-    console.log('Row is currently being expanded');
+  console.log('Row is currently being expanded');
 }
 ```
 
@@ -466,39 +467,39 @@ Fliplet.UI.Table supports creating tables within expanded rows, perfect for hier
 
 ```javascript
 const departmentTable = new Fliplet.UI.Table({
-    target: '#departments',
-    selection: { enabled: true, multiple: true }, // Enable department selection
-    columns: [
-        { name: 'Department', field: 'name' },
-        { name: 'Manager', field: 'manager' },
-        { name: 'Employee Count', field: 'count' }
-    ],
-    expandable: {
-        enabled: true,
-        onExpand: function(dept) {
-            // Create a container for the nested table
-            const container = document.createElement('div');
-            container.innerHTML = '<div id="employees-' + dept.id + '"></div>';
+  target: '#departments',
+  selection: { enabled: true, multiple: true }, // Enable department selection
+  columns: [
+    { name: 'Department', field: 'name' },
+    { name: 'Manager', field: 'manager' },
+    { name: 'Employee Count', field: 'count' }
+  ],
+  expandable: {
+    enabled: true,
+    onExpand: function(dept) {
+      // Create a container for the nested table
+      const container = document.createElement('div');
+      container.innerHTML = '<div id="employees-' + dept.id + '"></div>';
 
-            // Load employee data asynchronously
-            loadEmployees(dept.id).then(employees => {
-                // Create nested table with its own selection
-                const employeeTable = new Fliplet.UI.Table({
-                    target: '#employees-' + dept.id,
-                    selection: { enabled: true, multiple: true },
-                    columns: [
-                        { name: 'Name', field: 'name', sortable: true },
-                        { name: 'Position', field: 'position', sortable: true },
-                        { name: 'Email', field: 'email' }
-                    ],
-                    data: employees
-                });
-            });
+      // Load employee data asynchronously
+      loadEmployees(dept.id).then(employees => {
+        // Create nested table with its own selection
+        const employeeTable = new Fliplet.UI.Table({
+          target: '#employees-' + dept.id,
+          selection: { enabled: true, multiple: true },
+          columns: [
+            { name: 'Name', field: 'name', sortable: true },
+            { name: 'Position', field: 'position', sortable: true },
+            { name: 'Email', field: 'email' }
+          ],
+          data: employees
+        });
+      });
 
-            return container;
-        }
-    },
-    data: departments
+      return container;
+    }
+  },
+  data: departments
 });
 
 // Get selections at both levels
@@ -528,13 +529,13 @@ The select-all checkbox in the header shows three different visual states:
 ```css
 /* CSS classes for different states */
 .fl-table-select-all-checkbox {
-    font-size: 16px;
-    color: #007bff;
-    transition: color 0.2s ease;
+  font-size: 16px;
+  color: #007bff;
+  transition: color 0.2s ease;
 }
 
 .fl-table-header-checkbox-partial {
-    color: #007bff !important; /* Blue for partial state */
+  color: #007bff !important; /* Blue for partial state */
 }
 ```
 
@@ -550,24 +551,24 @@ The partial selection UI automatically updates based on the current selection st
 
 ```javascript
 const table = new Fliplet.UI.Table({
-    target: '#table',
-    selection: {
-        enabled: true,
-        multiple: true
-    },
-    pagination: {
-        pageSize: 10
-    },
-    columns: [
-        { name: 'Name', field: 'name' },
-        { name: 'Department', field: 'department' }
-    ],
-    data: userData
+  target: '#table',
+  selection: {
+    enabled: true,
+    multiple: true
+  },
+  pagination: {
+    pageSize: 10
+  },
+  columns: [
+    { name: 'Name', field: 'name' },
+    { name: 'Department', field: 'department' }
+  ],
+  data: userData
 });
 
 // Listen for selection changes to handle custom UI updates
 table.on('selection:change', function(detail) {
-    console.log('Selection changed:', detail.selected.length, 'rows selected');
+  console.log('Selection changed:', detail.selected.length, 'rows selected');
 });
 ```
 
@@ -601,14 +602,14 @@ table.clearAllPartialSelection();
 
 ```javascript
 const table = new Fliplet.UI.Table({
-    target: '#file-manager-table',
-    selection: { enabled: true, multiple: true },
-    columns: [
-        { name: 'Name', field: 'name' },
-        { name: 'Type', field: 'type' },
-        { name: 'Size', field: 'size' }
-    ],
-    data: fileData
+  target: '#file-manager-table',
+  selection: { enabled: true, multiple: true },
+  columns: [
+    { name: 'Name', field: 'name' },
+    { name: 'Type', field: 'type' },
+    { name: 'Size', field: 'size' }
+  ],
+  data: fileData
 });
 
 // Mark a folder as partially selected when some of its contents are selected
@@ -616,8 +617,8 @@ table.setRowPartialSelection({ name: 'Documents', type: 'folder' }, true);
 
 // Listen for selection changes
 table.on('selection:change', function(detail) {
-    // Update parent folders' partial selection state based on child selection
-    updateFolderStates();
+  // Update parent folders' partial selection state based on child selection
+  updateFolderStates();
 });
 ```
 
@@ -637,24 +638,24 @@ There are three convenient ways to initialize selection states when creating a t
 
 ```javascript
 const table = new Fliplet.UI.Table({
-    target: '#table',
-    selection: {
-        enabled: true,
-        multiple: true,
-        // Pre-select specific rows
-        initialSelection: [
-            { id: 1 }, // Select by partial object match
-            { name: 'Documents', type: 'folder' }, // Select by multiple fields
-            5 // Select by ID (assumes row has id: 5)
-        ],
-        // Mark specific rows as partially selected
-        initialPartialSelection: [
-            { name: 'Projects', type: 'folder' },
-            { id: 3 }
-        ]
-    },
-    columns: [...],
-    data: fileData
+  target: '#table',
+  selection: {
+    enabled: true,
+    multiple: true,
+    // Pre-select specific rows
+    initialSelection: [
+      { id: 1 }, // Select by partial object match
+      { name: 'Documents', type: 'folder' }, // Select by multiple fields
+      5 // Select by ID (assumes row has id: 5)
+    ],
+    // Mark specific rows as partially selected
+    initialPartialSelection: [
+      { name: 'Projects', type: 'folder' },
+      { id: 3 }
+    ]
+  },
+  columns: [...],
+  data: fileData
 });
 ```
 
@@ -662,31 +663,31 @@ const table = new Fliplet.UI.Table({
 
 ```javascript
 const fileData = [
-    {
-        id: 1,
-        name: 'Documents',
-        type: 'folder',
-        _selected: true // This row will be selected
-    },
-    {
-        id: 2,
-        name: 'Projects',
-        type: 'folder',
-        _partiallySelected: true // This row will show as partially selected
-    },
-    {
-        id: 3,
-        name: 'file.txt',
-        type: 'file'
-        // This row will be unselected
-    }
+  {
+    id: 1,
+    name: 'Documents',
+    type: 'folder',
+    _selected: true // This row will be selected
+  },
+  {
+    id: 2,
+    name: 'Projects',
+    type: 'folder',
+    _partiallySelected: true // This row will show as partially selected
+  },
+  {
+    id: 3,
+    name: 'file.txt',
+    type: 'file'
+    // This row will be unselected
+  }
 ];
 
 const table = new Fliplet.UI.Table({
-    target: '#table',
-    selection: { enabled: true, multiple: true },
-    columns: [...],
-    data: fileData
+  target: '#table',
+  selection: { enabled: true, multiple: true },
+  columns: [...],
+  data: fileData
 });
 ```
 
@@ -695,20 +696,20 @@ const table = new Fliplet.UI.Table({
 ```javascript
 // Combine both approaches for maximum flexibility
 const table = new Fliplet.UI.Table({
-    target: '#table',
-    selection: {
-        enabled: true,
-        multiple: true,
-        initialSelection: [{ id: 1 }], // Select Documents folder
-        initialPartialSelection: [{ id: 2 }] // Mark Projects as partial
-    },
-    columns: [...],
-    data: [
-        { id: 1, name: 'Documents', type: 'folder' },
-        { id: 2, name: 'Projects', type: 'folder' },
-        { id: 3, name: 'file.txt', type: 'file', _selected: true }, // Also selected
-        { id: 4, name: 'image.jpg', type: 'file', _partiallySelected: true } // Also partial
-    ]
+  target: '#table',
+  selection: {
+    enabled: true,
+    multiple: true,
+    initialSelection: [{ id: 1 }], // Select Documents folder
+    initialPartialSelection: [{ id: 2 }] // Mark Projects as partial
+  },
+  columns: [...],
+  data: [
+    { id: 1, name: 'Documents', type: 'folder' },
+    { id: 2, name: 'Projects', type: 'folder' },
+    { id: 3, name: 'file.txt', type: 'file', _selected: true }, // Also selected
+    { id: 4, name: 'image.jpg', type: 'file', _partiallySelected: true } // Also partial
+  ]
 });
 ```
 
@@ -718,38 +719,38 @@ Perfect for file/folder hierarchies where selection states need to be preserved:
 
 ```javascript
 const fileManagerData = [
-    {
-        id: 'folder-1',
-        name: 'Documents',
-        type: 'folder',
-        size: '1.2 GB',
-        _partiallySelected: true // Some files inside are selected
-    },
-    {
-        id: 'folder-2',
-        name: 'Images',
-        type: 'folder',
-        size: '850 MB',
-        _selected: true // All files inside are selected
-    },
-    {
-        id: 'file-1',
-        name: 'report.pdf',
-        type: 'file',
-        size: '2.3 MB'
-        // Not selected
-    }
+  {
+    id: 'folder-1',
+    name: 'Documents',
+    type: 'folder',
+    size: '1.2 GB',
+    _partiallySelected: true // Some files inside are selected
+  },
+  {
+    id: 'folder-2',
+    name: 'Images',
+    type: 'folder',
+    size: '850 MB',
+    _selected: true // All files inside are selected
+  },
+  {
+    id: 'file-1',
+    name: 'report.pdf',
+    type: 'file',
+    size: '2.3 MB'
+    // Not selected
+  }
 ];
 
 const fileManager = new Fliplet.UI.Table({
-    target: '#file-manager',
-    selection: { enabled: true, multiple: true },
-    columns: [
-        { name: 'Name', field: 'name' },
-        { name: 'Type', field: 'type' },
-        { name: 'Size', field: 'size' }
-    ],
-    data: fileManagerData
+  target: '#file-manager',
+  selection: { enabled: true, multiple: true },
+  columns: [
+    { name: 'Name', field: 'name' },
+    { name: 'Type', field: 'type' },
+    { name: 'Size', field: 'size' }
+  ],
+  data: fileManagerData
 });
 
 // All selection states are automatically applied on initialization!
