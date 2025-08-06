@@ -1,19 +1,10 @@
 # `Fliplet.UI.Table`
 
-These public JS APIs will be automatically available in your screen once you add the dependency `fliplet-table` in Developer options -> Resources.
-
 Fliplet.UI.Table is a powerful and flexible table component that provides features like sorting, searching, pagination, row selection, expandable rows, and custom rendering capabilities.
 
-## Installation
+## Install
 
-Include the required CSS and JavaScript files in your HTML:
-
-```html
-<link rel="stylesheet" href="path/to/fl-table.css">
-<script src="path/to/fl-table.js"></script>
-```
-
-Alternatively, include the library via the Fliplet Studio UI or by adding it as a dependency in your app's configuration.
+Add the `fliplet-table` dependency to your screen or app libraries.
 
 ## Basic Usage
 
