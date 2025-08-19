@@ -7,7 +7,7 @@ We regularly update our framework to support new features. If you have an older 
   <div class="bl two">
     <div>
       <h4>iOS</h4>
-      <p>Current release: <u>6.4.0</u></p>
+      <p>Current release: <u>6.4.5</u></p>
       <p>Target SDK version: 17</p>
     </div>
   </div>
