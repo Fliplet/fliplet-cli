@@ -25,6 +25,10 @@ We regularly update our framework to support new features. If you have an older 
 
 ## Supported versions
 
+### Version 6.4.5 (August 19, 2025)
+
+- **iOS**: Updated Fastlane to 2.228.0
+
 ### Version 6.4.4 (July 8, 2025)
 
 - **Android**: The target SDK has now been set to 36 (Android 16)
