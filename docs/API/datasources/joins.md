@@ -4,6 +4,25 @@ Both DataSources **JS APIs** and **REST APIs** allow you to **fetch data from mo
 
 Joins are defined by a unique name and their configuration options; any number of joins can be defined when fetching data from one data source:
 
+**Using async/await (recommended)**
+
+```js
+// 1. Extract articles from dataSource 123
+const connection = await Fliplet.DataSources.connect(123);
+const result = await connection.find({
+  join: {
+    // ... with their comments
+    Comments: { options },
+
+    // ... and users who posted them
+    Users: { options }
+  }
+});
+console.log(result);
+```
+
+**Using promises (optional)**
+
 ```js
 Fliplet.DataSources.connect(123).then(function (connection) {
   // 1. Extract articles from dataSource 123
@@ -50,6 +69,23 @@ Consider **an example** where two dataSources are created as follows:
 
 We can simply reference the entries between the two dataSources as follows:
 
+**Using async/await (recommended)**
+
+```js
+const result = await connection.find({
+  join: {
+    Comments: {
+      dataSourceId: 123,
+      on: {
+        'data.ID': 'data.ArticleID'
+      }
+    }
+  }
+});
+```
+
+**Using promises (optional)**
+
 ```js
 connection.find({
   join: {
@@ -68,6 +104,24 @@ connection.find({
 Use this when the entries of your dataSource should only be returned when there are matching entries from the join operations. Tweaking the above example, you might want to use this when you want to extract the articles and their comments and make sure only articles with at least one comment are returned.
 
 Inner joins are defined like left joins but with the `required` attribute set to `true`:
+
+**Using async/await (recommended)**
+
+```js
+const result = await connection.find({
+  join: {
+    Comments: {
+      dataSourceId: 123,
+      on: {
+        'data.ID': 'data.ArticleID'
+      },
+      required: true
+    }
+  }
+});
+```
+
+**Using promises (optional)**
 
 ```js
 connection.find({
@@ -88,6 +142,20 @@ connection.find({
 Use this when you want to **merge entries from the joined dataSource(s)** to the ones being extracted from your dataSource. The result will simply be **a concatenation** of both arrays.
 
 Outer joins are similar to other joins in regards to how they are defined, but don't need the `on` parameter defined since they don't need to reference entries between the two dataSources:
+
+**Using async/await (recommended)**
+
+```js
+const result = await connection.find({
+  join: {
+    MyOtherArticles: {
+      dataSourceId: 789
+    }
+  }
+});
+```
+
+**Using promises (optional)**
 
 ```js
 connection.find({
@@ -115,6 +183,23 @@ Joins can return data in several different ways:
 This is the default return behaviour for joins, hence no parameters are required.
 
 Example input:
+
+**Using async/await (recommended)**
+
+```js
+const result = await connection.find({
+  join: {
+    Comments: {
+      dataSourceId: 123,
+      on: {
+        'data.ID': 'data.ArticleID'
+      }
+    }
+  }
+});
+```
+
+**Using promises (optional)**
 
 ```js
 connection.find({
@@ -161,6 +246,24 @@ When the `has` parameter is set to `true`, a boolean will be returned to indica
 
 Example input:
 
+**Using async/await (recommended)**
+
+```js
+const result = await connection.find({
+  join: {
+    HasComments: {
+      dataSourceId: 123,
+      on: {
+        'data.ID': 'data.ArticleID'
+      },
+      has: true
+    }
+  }
+});
+```
+
+**Using promises (optional)**
+
 ```js
 connection.find({
   join: {
@@ -203,6 +306,24 @@ Example of the returned data:
 When the `count` parameter is set to `true`, a count of the matching entries will be returned.
 
 Example input:
+
+**Using async/await (recommended)**
+
+```js
+const result = await connection.find({
+  join: {
+    NumberOfComments: {
+      dataSourceId: 123,
+      on: {
+        'data.ID': 'data.ArticleID'
+      },
+      count: true
+    }
+  }
+});
+```
+
+**Using promises (optional)**
 
 ```js
 connection.find({
@@ -247,6 +368,24 @@ When the `sum` parameter is set to the name of a column, a sum taken by countin
 
 Example input:
 
+**Using async/await (recommended)**
+
+```js
+const result = await connection.find({
+  join: {
+    LikesForComments: {
+      dataSourceId: 123,
+      on: {
+        'data.ID': 'data.ArticleID'
+      },
+      sum: 'Likes'
+    }
+  }
+});
+```
+
+**Using promises (optional)**
+
 ```js
 connection.find({
   join: {
@@ -290,6 +429,27 @@ Example of the returned data:
 
 Use the `where` parameter to define a filtering query for the data to be selected on a particular join. This support the same exact syntax as `connection.find({ where })`:
 
+**Using async/await (recommended)**
+
+```js
+const result = await connection.find({
+  join: {
+    LikesForPopularComments: {
+      dataSourceId: 123,
+      on: {
+        'data.ID': 'data.ArticleID'
+      },
+      where: {
+        // only fetch a comment when it has more than 10 likes
+        Likes: { $gt: 10 }
+      }
+    }
+  }
+});
+```
+
+**Using promises (optional)**
+
 ```js
 connection.find({
   join: {
@@ -311,6 +471,25 @@ connection.find({
 
 Use the `attributes` parameter to define which fields should only be returned from the data in the joined entries:
 
+**Using async/await (recommended)**
+
+```js
+const result = await connection.find({
+  join: {
+    LikesForComments: {
+      dataSourceId: 123,
+      on: {
+        'data.ID': 'data.ArticleID'
+      },
+      // only fetch the comment text
+      attributes: ['Comment text']
+    }
+  }
+});
+```
+
+**Using promises (optional)**
+
 ```js
 connection.find({
   join: {
@@ -329,6 +508,25 @@ connection.find({
 ## Limit the number of returned entries
 
 Use the `limit` parameter to define how many entries should be returned at most for your join:
+
+**Using async/await (recommended)**
+
+```js
+const result = await connection.find({
+  join: {
+    LikesForComments: {
+      dataSourceId: 123,
+      on: {
+        'data.ID': 'data.ArticleID'
+      },
+      // only fetch up to 5 comments at most
+      limit: 5
+    }
+  }
+});
+```
+
+**Using promises (optional)**
 
 ```js
 connection.find({
@@ -351,6 +549,26 @@ Use the `order` parameter to define the order at which entries are returned for 
 
 <p class="warning"><strong>Note:</strong> this parameter can be used for attributes such as <strong>"id"</strong> and <strong>"createdAt"</strong>. If you need to order by actual data in your entry, use the <strong>"data."</strong> prefix (such as <code>data.Title</code>).</p>
 
+**Using async/await (recommended)**
+
+```js
+const result = await connection.find({
+  join: {
+    MostRecentComments: {
+      dataSourceId: 123,
+      on: {
+        'data.ID': 'data.ArticleID'
+      },
+      // only fetch the 5 most recent comments, combining order and limit
+      order: ['createdAt', 'DESC'],
+      limit: 5
+    }
+  }
+});
+```
+
+**Using promises (optional)**
+
 ```js
 connection.find({
   join: {
@@ -370,6 +588,25 @@ connection.find({
 ## Connecting to a data source by name
 
 Use the `dataSourceName` parameter to connect to a data source by its name instead of ID:
+
+**Using async/await (recommended)**
+
+```js
+const result = await connection.find({
+  join: {
+    LikesForComments: {
+      dataSourceName: 'User comments',
+      on: {
+        'data.ID': 'data.ArticleID'
+      },
+      // only fetch the comment text
+      attributes: ['Comment text']
+    }
+  }
+});
+```
+
+**Using promises (optional)**
 
 ```js
 connection.find({
