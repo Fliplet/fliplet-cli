@@ -246,31 +246,17 @@ Fliplet.API.request('v1/user')
 Fliplet.API.request('v1/user')
   .then(function(response) {
     const user = response.user;
-    console.log('User:', user.email, user.name);
+    console.log('User:', user.email);
   });
 ```
 
-### Updating App Settings
+### Creating Data Source Entries
 
 ```js
-Fliplet.API.request({
-  url: 'v1/apps/' + Fliplet.Env.get('appId') + '/settings',
-  method: 'PUT',
-  data: {
-    primaryColor: '#007bff',
-    secondaryColor: '#6c757d'
-  }
-}).then(function(response) {
-  console.log('Settings updated:', response.settings);
-});
-```
-
-### Uploading Data
-
-```js
+// Create a single entry using PUT
 Fliplet.API.request({
   url: 'v1/data-sources/' + dataSourceId + '/data',
-  method: 'POST',
+  method: 'PUT',
   data: {
     Name: 'John Doe',
     Email: 'john@example.com',
@@ -278,5 +264,27 @@ Fliplet.API.request({
   }
 }).then(function(response) {
   console.log('Data entry created:', response.id);
+});
+
+// Bulk import multiple entries using POST
+Fliplet.API.request({
+  url: 'v1/data-sources/' + dataSourceId + '/data',
+  method: 'POST',
+  data: {
+    entries: [
+      {
+        Name: 'John Doe',
+        Email: 'john@example.com',
+        Department: 'Engineering'
+      },
+      {
+        Name: 'Jane Smith',
+        Email: 'jane@example.com',
+        Department: 'Marketing'
+      }
+    ]
+  }
+}).then(function(response) {
+  console.log('Entries imported:', response.length);
 });
 ```
