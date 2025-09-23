@@ -14,7 +14,7 @@ Fliplet.API.request(options)
 
 ### Parameters
 
-**options** (Object|String) - Configuration object for the request, or a URL string for simple GET requests.
+**options** (Object\|String) - Configuration object for the request, or a URL string for simple GET requests.
 
 #### Options Object Properties
 
