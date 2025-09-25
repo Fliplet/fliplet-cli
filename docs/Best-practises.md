@@ -36,18 +36,37 @@ This makes sure your widget will work correctly when is dropped more than once i
 
 ## Escape variables when necessary
 
-Templates (`build.html` and `interface.html`) get compiled through Handlebars. If you are using Handlebars yourself in the JS at runtime, you might want to escape your html template variables from getting compiled. You can prefix any curly brackets to escape the command from getting compiled:
+All `build.html` and `interface.html` files are parsed as Handlebars templates during Fliplet's app compilation engine. This means that any syntax in these files that resembles Handlebars templates (such as `{{ }}` curly braces) will be processed by the Handlebars compiler, even if you intended them for other purposes like Vue.js templates, Angular templates, or other client-side templating systems.
+
+To prevent unwanted compilation, you need to escape any curly bracket syntax that should not be processed by Handlebars. You can do this by prefixing curly brackets with a backslash (`\`):
 
 {% raw %}
 ```handlebars
-<!-- this gets compiled -->
+<!-- This gets compiled by Handlebars during app compilation -->
 <div id="{{id}}">{{foo}}</div>
 
-<!-- these don't -->
+<!-- These are escaped and won't be compiled by Handlebars -->
 <div>\{{foo}}</div>
 <template name="bar">\{{#if foo}} \{{foo}} \{{/if}}</template>
+
+<!-- Example: Vue.js template syntax that needs escaping -->
+<div id="my-vue-app">
+  <p>\{{ message }}</p>
+  <button @click="updateMessage">\{{ buttonText }}</button>
+  <ul>
+    <li v-for="item in items" :key="item.id">\{{ item.name }}</li>
+  </ul>
+</div>
 ```
 {% endraw %}
+
+**Important:** This escaping is only necessary in `build.html` and `interface.html` files. JavaScript files (`.js`) and other assets are not processed through Handlebars and don't require escaping.
+
+**Common scenarios where escaping is needed:**
+
+  - Vue.js templates with `{{ }}` interpolation syntax
+  - Handlebars templates intended for client-side rendering
+  - Any other templating syntax that uses curly braces
 
 ---
 
@@ -65,7 +84,7 @@ Files that ends with `.interface.hbs` will be compiled to the interface template
 
 e.g. given the following template:
 
-```
+```text
 js/foo/bar.interface.hbs
 ```
 
