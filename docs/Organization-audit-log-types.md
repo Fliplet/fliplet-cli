@@ -104,3 +104,7 @@ Please see below a table with a recap of all available log types for organizatio
 | Data Sources                | dataSource.event                   | A custom event on a data source (unused)                                    |
 | Media Files management      | mediaFile.create                   | A media file was created (uploaded)                                         |
 | User session                | session.locale.updated             | The current user switched its language settings to a new locale             |
+| AI Services                 | ai.completions                     | AI text completion or chat completion was requested                          |
+| AI Services                 | ai.image                           | AI image generation was requested                                            |
+| AI Services                 | ai.audio                           | AI audio transcription was requested                                         |
+| AI Services                 | ai.embeddings                      | AI text embeddings were created                                             |
