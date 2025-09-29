@@ -102,6 +102,7 @@ Please see below a table with a recap of all available log types for organizatio
 | Data Sources                | dataSource.entry.update            | A data source entry was updated                                             |
 | Data Sources                | dataSource.entry.delete            | A data source entry was deleted                                             |
 | Data Sources                | dataSource.event                   | A custom event on a data source (unused)                                    |
+| Data Sources                | dataSource.import                   | A data source was overwritten via the import JS API                                    |
 | Media Files management      | mediaFile.create                   | A media file was created (uploaded)                                         |
 | User session                | session.locale.updated             | The current user switched its language settings to a new locale             |
 | AI Services                 | ai.completions                     | AI text completion or chat completion was requested                          |
