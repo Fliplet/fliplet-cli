@@ -6,18 +6,19 @@
 var encoded = Fliplet.Encode.base64('mystring');
 ```
 
-## Encoding URL 
-### Encode url query parameters
+## Encoding URL
 
-This method is used to doubly encode the url. So if browser is automatically parsing double encoding ensures that browser parsing doesn't effect the result.
+### Encode URL query parameters
+
+This method doubly encodes the URL. If the browser automatically parses query parameters, double encoding ensures the browser parsing does not affect the result.
 
 ```js
 var encodedUrl = Fliplet.Encode.encodeURI('my string');
+// Encoded URL will be 'my%2520string'
 ```
 
-#### Real-world use cases for URL encoding:
+#### Use case 1: Building query parameters with special characters
 
-**Use case 1: Building query parameters with special characters**
 ```js
 // When building URLs with user input that contains spaces, symbols, etc.
 var searchTerm = 'user@example.com & friends';
@@ -28,7 +29,8 @@ var encodedSearch = Fliplet.Encode.encodeURI(searchTerm);
 var searchUrl = 'https://api.example.com/search?q=' + encodedSearch;
 ```
 
-**Use case 2: Passing data through multiple redirects**
+#### Use case 2: Passing data through multiple redirects
+
 ```js
 // When data needs to survive multiple URL parsing/redirect cycles
 var userData = 'John Doe <john@company.com>';
@@ -39,7 +41,8 @@ var encodedData = Fliplet.Encode.encodeURI(userData);
 var redirectUrl = 'https://app.example.com/process?data=' + encodedData;
 ```
 
-**Use case 3: Form data with complex values**
+#### Use case 3: Form data with complex values
+
 ```js
 // Encoding form values that will be passed in URLs
 var formData = {
@@ -56,14 +59,16 @@ var encodedMessage = Fliplet.Encode.encodeURI(formData.message);
 var formUrl = `https://api.example.com/submit?name=${encodedName}&email=${encodedEmail}&message=${encodedMessage}`;
 ```
 
-### Decode url query parameters
-This method is used to doubly decode the url. This method will not effect the decoded URL. Please see the example belows
+### Decode URL query parameters
+
+This method doubly decodes the URL. It will not affect the decoded value. Please see the examples below.
 
 ```js
 var decodedUrl = Fliplet.Encode.decodeURI('my%20string');
 ```
 
-**Use case 1: Processing incoming URL parameters**
+#### Use case 1: Processing incoming URL parameters
+
 ```js
 // When receiving encoded data from URLs
 var encodedParam = 'user%2540example.com%2520%2526%2520friends';
@@ -74,7 +79,8 @@ var decodedParam = Fliplet.Encode.decodeURI(encodedParam);
 console.log('Search term:', decodedParam);
 ```
 
-**Use case 2: Handling redirect data**
+#### Use case 2: Handling redirect data
+
 ```js
 // When processing data that came through redirects
 var redirectData = 'John%2520Doe%2520%253Cjohn%2540company.com%253E';
@@ -89,7 +95,8 @@ if (nameMatch) {
 }
 ```
 
-**Use case 3: Processing form data from URLs**
+#### Use case 3: Processing form data from URLs
+
 ```js
 // When handling form submissions via URL parameters
 var urlParams = new URLSearchParams(window.location.search);
