@@ -109,17 +109,3 @@ var formData = {
   message: message
 };
 ```
-
-#### Basic Examples:
-```js
-// Simple encoding
-var encodedUrl = Fliplet.Encode.encodeURI('my string');
-// Result: 'my%2520string'
-
-// Simple decoding
-var decodedUrl = Fliplet.Encode.decodeURI('my%2520string');
-// Result: 'my string'
-
-var decodedUrl = Fliplet.Encode.decodeURI('my%20string');
-// Result: 'my string'
-```
