@@ -6,21 +6,22 @@ This document outlines the coding standards and documentation guidelines for Fli
 
 1. [Documentation Standards](#documentation-standards)
 2. [Development Environment Guidelines](#development-environment-guidelines)
-3. [JavaScript Coding Standards](javascript-coding-standards.md)
+3. [Fliplet Components and Hooks](#fliplet-components-and-hooks)
+4. [JavaScript Coding Standards](javascript-coding-standards.md)
    - 3.1. [Modern JavaScript (ES6+) - Recommended](javascript-coding-standards.md#modern-javascript-es6---recommended)
    - 3.2. [Legacy JavaScript (ES5) - Compatibility](javascript-coding-standards.md#legacy-javascript-es5---compatibility)
-4. [Fliplet API Patterns](code-api-patterns.md)
+5. [Fliplet API Patterns](code-api-patterns.md)
    - 4.1. [API Categories Overview](code-api-patterns.md#api-categories-overview)
    - 4.2. [Connection and Initialization Patterns](code-api-patterns.md#connection-and-initialization-patterns)
    - 4.3. [CRUD Operation Patterns](code-api-patterns.md#crud-operation-patterns-for-all-apis)
    - 4.4. [Navigation Patterns](code-api-patterns.md#navigation-patterns)
    - 4.5. [Communication Patterns](code-api-patterns.md#communication-patterns)
-5. [Quick Reference Guide](#quick-reference-guide)
-6. [Code Examples and Testing](#code-examples-and-testing)
+6. [Quick Reference Guide](#quick-reference-guide)
+7. [Code Examples and Testing](#code-examples-and-testing)
    - 6.1. [Complete Example Requirements](#complete-example-requirements)
    - 6.2. [Asset Provision Standards](#asset-provision-standards)
    - 6.3. [Test Templates and Setup](#test-templates-and-setup)
-7. [Approved Libraries](approved-libraries.md)
+8. [Approved Libraries](approved-libraries.md)
    - 7.1. [Available Libraries](approved-libraries.md#available-libraries)
    - 7.2. [Library Usage Guidelines](approved-libraries.md#library-usage-guidelines)
    - 7.3. [Performance Considerations](approved-libraries.md#performance-considerations)
@@ -572,6 +573,127 @@ Reference this section when:
 
 > **See also:** [Documentation Standards](#documentation-standards) for documentation structure requirements
 
+### Fliplet Components and Hooks
+
+#### Purpose and Importance
+
+Fliplet components are the building blocks of apps created in Fliplet Studio. A component represents a functional or visual part of a screen, such as a List from Data Source, Form, Map, or Chart. Components allow developers and app builders to add complex functionality without writing code from scratch.
+
+This section explains how to:
+
+- Drop and configure a component on a screen.
+- Use JavaScript hooks to modify or extend a component's behavior.
+
+The aim is to help both human developers and AI systems understand how Fliplet components work, how they interact with screens, and how hooks can dynamically modify their lifecycle.
+
+#### 1. What Is a Component
+
+A component in Fliplet is a reusable widget or feature that can be added to screens via the Studio interface. Examples include:
+
+- **List from Data Source**: Displays data entries in a configurable layout.
+- **Form**: Allows users to submit or edit data.
+- **Map**: Visualizes location data.
+- **Chart**: Displays analytical insights from datasets.
+
+Each component has its own configuration UI, internal JavaScript logic, and supports lifecycle hooks for developers to extend or modify default behavior.
+
+#### 2. Adding a Component to a Screen
+
+To add a component in Fliplet Studio:
+
+1. Open your app in Fliplet Studio.
+2. Select or create a screen.
+3. Click Add Component.
+4. Choose a component (e.g., List from Data Source) and drag and drop it onto the screen.
+5. Configure its settings such as data source, layout, and filters.
+
+Once placed, the component instance becomes part of the screen and can be targeted or modified through hooks in custom JavaScript.
+
+#### 3. Using Hooks to Manipulate Components
+
+Hooks are event-based entry points that allow developers to extend, intercept, or modify a component's behavior during its lifecycle. Hooks make it possible to inject logic before or after certain operations like data loading, rendering, or updating.
+
+**General Hook Syntax:**
+
+```javascript
+Fliplet.Hooks.on('<hookName>', function (options) {
+  // Custom logic
+});
+```
+
+Hooks are registered globally and executed whenever the associated component fires that lifecycle event.
+
+#### 4. Example – Hooks for the "List from Data Source" Component
+
+The List from Data Source component exposes several hooks that allow you to customize its data and rendering logic. Below are some of the most useful ones:
+
+| Hook Name | Description |
+|-----------|-------------|
+| `flListDataBeforeGetData` | Runs before the component retrieves data. Modify `options.config.getData()` to customize data fetching. |
+| `flListDataAfterGetData` | Runs after the data is retrieved. Modify `options.records` before rendering. |
+| `flListDataBeforeRenderList` | Runs before the list is rendered. Ideal for formatting or sorting. |
+| `flListDataAfterRenderList` | Runs after the list is rendered. Useful for DOM manipulation. |
+
+**Examples:**
+
+**Prevent default data fetch and supply your own data**
+
+```javascript
+Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
+  options.config.getData = function () {
+    return Promise.resolve([
+      { id: 1, data: { name: 'Alice' } },
+      { id: 2, data: { name: 'Bob' } }
+    ]);
+  };
+});
+```
+
+**Modify data after it's fetched**
+
+```javascript
+Fliplet.Hooks.on('flListDataAfterGetData', function (options) {
+  options.records.forEach(record => {
+    record.data.timestamp = new Date().toISOString();
+  });
+});
+```
+
+**Customize rendering**
+
+```javascript
+Fliplet.Hooks.on('flListDataBeforeRenderList', function (options) {
+  options.records = options.records.filter(r => r.data.status === 'Active');
+});
+
+Fliplet.Hooks.on('flListDataAfterRenderList', function (options) {
+  $(options.container).find('.list-item').addClass('highlighted');
+});
+```
+
+#### 5. Hook Parameters
+
+Hooks typically receive an options object, which contains useful properties:
+
+- `options.config` – The component configuration object.
+- `options.records` – Array of data records.
+- `options.container` – DOM element for the rendered list.
+- `options.id` / `options.uuid` – Unique identifiers for the component instance.
+
+#### 6. Best Practices
+
+- **Register hooks early**: Ideally inside `Fliplet.Hooks.on('flAppReady', ...)` or within your app's initialization.
+- **Avoid blocking UI**: Always return Promises for async operations.
+- **Target specific instances**: Use `options.id` or `options.uuid` if multiple components exist.
+- **Clean up dynamically**: Remove hooks if the screen is reloaded or destroyed.
+- **Document intent**: Describe each hook's purpose to ensure maintainability and clear AI interpretation.
+
+#### 7. Summary
+
+- Components are prebuilt Fliplet building blocks placed on screens in Studio.
+- Hooks enable developers to customize or override component logic without editing core code.
+- Most components provide lifecycle hooks like before data, after data, before render, and after render.
+- This system allows AI models or developers to understand and manipulate app behavior dynamically and safely.
 
 ### Complete Example Requirements
 
