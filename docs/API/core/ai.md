@@ -27,7 +27,7 @@ These APIs empower your apps with OpenAI models such as `GPT 3.5` to do things l
 - [Single-turn tasks](#single-turn-tasks)
 - [Static API Methods](#static-api-methods)
   - [`Fliplet.AI.createCompletion()`](#flipletaicreatecompletion)
-  - [Using the Responses Endpoint](#using-the-responses-endpoint)
+  - [Using the Responses API](#using-the-responses-api)
   - [Streaming with `createCompletion()`](#streaming-with-createcompletion)
   - [`Fliplet.AI.generateImage()`](#flipletaigenerateimage)
   - [`Fliplet.AI.transcribeAudio()`](#flipletaitranscribeaudio)
@@ -476,20 +476,20 @@ async function runPromptCompletion() {
 runPromptCompletion();
 ```
 
-### Using the Responses Endpoint
+### Using the Responses API
 
-The `Fliplet.AI.createCompletion()` method supports routing to OpenAI's `/v1/responses` endpoint via the `useResponses` parameter. The [Responses API](https://platform.openai.com/docs/api-reference/responses) is OpenAI's newest API that combines the strengths of the Chat Completions and Assistants APIs into a single streamlined interface, offering native integration for web search, file search, and other built-in tools.
+The `Fliplet.AI.createCompletion()` method supports OpenAI's newer [Responses API](https://platform.openai.com/docs/api-reference/responses) via the `useResponses` parameter. The Responses API combines the strengths of the Chat Completions and Assistants APIs into a single streamlined interface, offering native integration for web search, file search, and other built-in tools.
 
 **`useResponses` Parameter:**
 
 | Parameter     | Type    | Optional | Default | Description                                                                                                                                                           |
 |---------------|---------|----------|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| useResponses | Boolean | Yes      | false | When set to `true`, routes the request to the `/v1/responses` endpoint instead of `/v1/chat/completions`. The method acts as a pure proxy with no request/response transformation. |
+| useResponses | Boolean | Yes      | false | When set to `true`, uses OpenAI's newer Responses API format instead of the traditional Chat Completions format. This provides access to advanced features like built-in tools and stateful conversations. |
 
 **Important Notes:**
 
-- When `useResponses: true`, the request is sent directly to the `/v1/responses` endpoint without any transformation
-- The consumer is responsible for handling format differences between the two API endpoints
+- When `useResponses: true`, the method uses the Responses API format
+- You are responsible for formatting requests and handling responses according to the Responses API specification
 - **Request parameters must conform to the Responses API specification**, which differs from Chat Completions:
   - Responses API uses `input` (string or array) instead of `messages` array
   - Responses API uses `text.format` for structured outputs instead of `response_format`
