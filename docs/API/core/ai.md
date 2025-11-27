@@ -27,6 +27,7 @@ These APIs empower your apps with OpenAI models such as `GPT 3.5` to do things l
 - [Single-turn tasks](#single-turn-tasks)
 - [Static API Methods](#static-api-methods)
   - [`Fliplet.AI.createCompletion()`](#flipletaicreatecompletion)
+  - [Using the Responses Endpoint](#using-the-responses-endpoint)
   - [Streaming with `createCompletion()`](#streaming-with-createcompletion)
   - [`Fliplet.AI.generateImage()`](#flipletaigenerateimage)
   - [`Fliplet.AI.transcribeAudio()`](#flipletaitranscribeaudio)
@@ -473,6 +474,113 @@ async function runPromptCompletion() {
   }
 }
 runPromptCompletion();
+```
+
+### Using the Responses Endpoint
+
+The `Fliplet.AI.createCompletion()` method supports routing to OpenAI's `/v1/responses` endpoint via the `useResponses` parameter. The [Responses API](https://platform.openai.com/docs/api-reference/responses) is OpenAI's newest API that combines the strengths of the Chat Completions and Assistants APIs into a single streamlined interface, offering native integration for web search, file search, and other built-in tools.
+
+**`useResponses` Parameter:**
+
+| Parameter     | Type    | Optional | Default | Description                                                                                                                                                           |
+|---------------|---------|----------|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| useResponses | Boolean | Yes      | false | When set to `true`, routes the request to the `/v1/responses` endpoint instead of `/v1/chat/completions`. The method acts as a pure proxy with no request/response transformation. |
+
+**Important Notes:**
+
+- When `useResponses: true`, the request is sent directly to the `/v1/responses` endpoint without any transformation
+- The consumer is responsible for handling format differences between the two API endpoints
+- **Request parameters must conform to the Responses API specification**, which differs from Chat Completions:
+  - Responses API uses `input` (string or array) instead of `messages` array
+  - Responses API uses `text.format` for structured outputs instead of `response_format`
+  - Responses API uses `reasoning.effort` instead of `reasoning_effort`
+  - Function calling API shape is different in both request and response
+- **Response structure follows the Responses API format**, which differs from Chat Completions:
+  - Returns `output` instead of a `choices` array
+  - Returns a typed response object with its own `id`
+  - Stream events are distinct, typed events (e.g., `response.created`, `response.output_text.delta`)
+- The Responses API includes built-in tools like web search and file search
+- Supports stateful conversations via `previous_response_id` parameter
+- For detailed information, refer to:
+  - [OpenAI Responses API documentation](https://platform.openai.com/docs/api-reference/responses/create)
+  - [Responses vs. Chat Completions comparison](https://platform.openai.com/docs/guides/responses-vs-chat-completions)
+
+**Example (Using Responses Endpoint):**
+
+```javascript
+async function useResponsesEndpoint() {
+  try {
+    const params = {
+      model: 'gpt-4o',
+      input: 'Explain the concept of quantum computing in simple terms.', // Use 'input' instead of 'messages'
+      temperature: 0.7,
+      useResponses: true // Route to /v1/responses endpoint
+    };
+    console.log('Input for createCompletion (responses endpoint):', params);
+    const result = await Fliplet.AI.createCompletion(params);
+    console.log('createCompletion Response (responses endpoint):', result);
+    // Handle response according to Responses API format
+    // Response structure: result.output instead of result.choices[0].message.content
+    if (result.output) {
+      console.log('AI Reply:', result.output);
+    }
+  } catch (error) {
+    console.error('Error in createCompletion (responses endpoint):', error);
+  }
+}
+useResponsesEndpoint();
+```
+
+**Example (Using Responses Endpoint with Array Input):**
+
+```javascript
+async function useResponsesEndpointWithMessages() {
+  try {
+    const params = {
+      model: 'gpt-4o',
+      // Input can also be an array of messages for conversation context
+      input: [
+        { role: 'system', content: 'You are a helpful assistant specializing in quantum physics.' },
+        { role: 'user', content: 'Explain the concept of quantum computing in simple terms.' }
+      ],
+      temperature: 0.7,
+      useResponses: true
+    };
+    console.log('Input for createCompletion (responses endpoint with array):', params);
+    const result = await Fliplet.AI.createCompletion(params);
+    console.log('createCompletion Response (responses endpoint):', result);
+    if (result.output) {
+      console.log('AI Reply:', result.output);
+    }
+  } catch (error) {
+    console.error('Error in createCompletion (responses endpoint):', error);
+  }
+}
+useResponsesEndpointWithMessages();
+```
+
+**Example (Default Chat Completions Endpoint):**
+
+```javascript
+async function useChatCompletionsEndpoint() {
+  try {
+    const params = {
+      model: 'gpt-4',
+      messages: [{ role: 'user', content: 'Explain the concept of quantum computing in simple terms.' }],
+      temperature: 0.7,
+      useResponses: false // Or omit this parameter - defaults to /v1/chat/completions
+    };
+    console.log('Input for createCompletion (chat completions endpoint):', params);
+    const result = await Fliplet.AI.createCompletion(params);
+    console.log('createCompletion Response (chat completions endpoint):', result);
+    if (result.choices && result.choices.length > 0) {
+      console.log('AI Reply:', result.choices[0].message.content);
+    }
+  } catch (error) {
+    console.error('Error in createCompletion (chat completions endpoint):', error);
+  }
+}
+useChatCompletionsEndpoint();
 ```
 
 ### Streaming with `createCompletion()`
