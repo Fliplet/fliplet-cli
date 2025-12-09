@@ -53,6 +53,7 @@ Please see below a table with a recap of all available log types for organizatio
 | App Screens management      | app.page.widget.create             | A screen component was created                                        |
 | App Screens management      | app.page.widget.update             | A screen component was updated                                        |
 | App Screens management      | app.page.widget.remove             | A screen component was removed from the screen                        |
+| App Screens management      | app.ai.feature.component           | A feature was generated using the AI feature component                |
 | App Screens management      | app.pages.sort                     | Screens were sorted                                                   |
 | App Access management       | app.user.create                    | A user was added to the app                                           |
 | App Access management       | app.user.update                    | A user role was updated for the app                                   |
