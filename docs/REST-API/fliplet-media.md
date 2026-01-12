@@ -201,6 +201,44 @@ Note that this endpoint is meant to be called directly from the client since the
 
 ---
 
+## View a PDF file in the browser (without download)
+
+### `GET v1/media/files/<id>/pdf`
+
+Opens a PDF file in a built-in [pdf.js](https://mozilla.github.io/pdf.js/) viewer. This viewer does **not** include a download button, making it useful when you want users to view PDFs without being able to download them.
+
+**Example URL:**
+
+```
+https://api.fliplet.com/v1/media/files/123/pdf
+```
+
+**Usage in your app:**
+
+```js
+// Get the PDF viewer URL for a file
+var pdfViewerUrl = Fliplet.Env.get('apiUrl') + 'v1/media/files/' + fileId + '/pdf';
+
+// Open in the in-app browser
+Fliplet.Navigate.url(pdfViewerUrl);
+```
+
+<p class="quote"><strong>Important notes:</strong></p>
+
+- This endpoint only works **online** — the PDF is streamed from the server and cannot be used offline
+- The viewer does not include download functionality, preventing users from saving the file
+- If the file is not a PDF, the endpoint will redirect to the standard `/contents` endpoint instead
+- Authentication is handled automatically — the auth token is appended for mobile devices
+
+**Controlling download behavior:**
+
+If you need some PDFs to be downloadable and others not:
+
+- Use this `/pdf` endpoint for PDFs that should **not** be downloadable
+- Use the standard `/contents` endpoint or the direct CDN URL for PDFs that **can** be downloaded
+
+---
+
 ## Download contents of a folder or a list of files as a ZIP package
 
 ### `GET v1/media/zip?folderId=33&files=1359,5336`
