@@ -209,7 +209,7 @@ Opens a PDF file in a built-in [pdf.js](https://mozilla.github.io/pdf.js/) viewe
 
 **Example URL:**
 
-```
+```text
 https://api.fliplet.com/v1/media/files/123/pdf
 ```
 
@@ -225,17 +225,17 @@ Fliplet.Navigate.url(pdfViewerUrl);
 
 <p class="quote"><strong>Important notes:</strong></p>
 
-- This endpoint only works **online** — the PDF is streamed from the server and cannot be used offline
-- The viewer does not include download functionality, preventing users from saving the file
-- If the file is not a PDF, the endpoint will redirect to the standard `/contents` endpoint instead
-- Authentication is handled automatically — the auth token is appended for mobile devices
+  - This endpoint only works **online** — the PDF is streamed from the server and cannot be used offline
+  - The viewer does not include download functionality, preventing users from saving the file
+  - If the file is not a PDF, the endpoint will redirect to the standard `/contents` endpoint instead
+  - Authentication is handled automatically — the auth token is appended for mobile devices
 
 **Controlling download behavior:**
 
 If you need some PDFs to be downloadable and others not:
 
-- Use this `/pdf` endpoint for PDFs that should **not** be downloadable
-- Use the standard `/contents` endpoint or the direct CDN URL for PDFs that **can** be downloaded
+  - Use this `/pdf` endpoint for PDFs that should **not** be downloadable
+  - Use the standard `/contents` endpoint or the direct CDN URL for PDFs that **can** be downloaded
 
 ---
 
