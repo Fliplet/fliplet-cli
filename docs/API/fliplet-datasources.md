@@ -238,6 +238,7 @@ The `$filters` operator provides optimized performance and additional conditions
 **When to use:** Checking availability, preventing duplicates, analytics
 
 #### Basic Usage
+
 ```js
 // Count all entries
 const connection = await Fliplet.DataSources.connectByName("Users");
@@ -264,10 +265,11 @@ if (existingCount > 0) {
 ```
 
 #### Security Notes
-- Requires `count` or `select` permission in security rules
-- `select` permission automatically grants `count` (backwards compatible)
-- Use `count`-only rules to allow checking availability without exposing data
-- Only database-compatible filters are supported (no complex Sift.js operators like `$regex`, `$elemMatch`)
+
+  - Requires `count` or `select` permission in security rules
+  - `select` permission automatically grants `count` (backwards compatible)
+  - Use `count`-only rules to allow checking availability without exposing data
+  - Only database-compatible filters are supported (no complex Sift.js operators like `$regex`, `$elemMatch`)
 
 ---
 
