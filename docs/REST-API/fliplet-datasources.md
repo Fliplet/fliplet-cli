@@ -82,7 +82,7 @@ curl -X GET \
 
 ## Data source access
 
-Data sources requires access to be accessed to. Roles can have multiple permissions: **read, write, update, delete, count**. Once you create a data source, permissions need to be assigned to it.
+Data sources require access to be used. Roles can have multiple permissions: **read, write, update, delete, count**. Once you create a data source, permissions need to be assigned to it.
 
 If an API token you're using doesn't have access to one of your organization data sources, you will need to grant permissions to it via Fliplet Studio:
 
