@@ -82,7 +82,7 @@ curl -X GET \
 
 ## Data source access
 
-Data sources requires access to be accessed to. Roles can have multiple permissions: **read, write, update, delete**. Once you create a data source, permissions need to be assigned to it.
+Data sources requires access to be accessed to. Roles can have multiple permissions: **read, write, update, delete, count**. Once you create a data source, permissions need to be assigned to it.
 
 If an API token you're using doesn't have access to one of your organization data sources, you will need to grant permissions to it via Fliplet Studio:
 
@@ -425,6 +425,7 @@ All operators of the [Data Source "find" JS API](https://developers.fliplet.com/
 - [limit](https://developers.fliplet.com/API/fliplet-datasources.html#fetch-records-with-pagination) - Limit number of results
 - [offset](https://developers.fliplet.com/API/fliplet-datasources.html#fetch-records-with-pagination) - Skip records for pagination
 - [includePagination](https://developers.fliplet.com/API/fliplet-datasources.html#pagination-and-performance) - Include pagination metadata
+- [countOnly](https://developers.fliplet.com/API/fliplet-datasources.html#count-records-only) - Return count without entry data
 
 #### Basic Query Example
 
@@ -501,6 +502,36 @@ Response (Status code: 200 OK):
   }
 }
 ```
+
+#### Count Only Query
+
+To retrieve just the count of matching entries without the actual data, use `countOnly: true`:
+
+Request body (JSON):
+
+```json
+{
+  "where": {
+    "SessionId": "123"
+  },
+  "countOnly": true
+}
+```
+
+Response (Status code: 200 OK):
+
+```json
+{
+  "count": 42,
+  "dataSourceId": 123
+}
+```
+
+**Notes:**
+- Only database-compatible filters are supported (equality, `$in`, `$gt`, `$lt`, etc.)
+- Complex Sift.js operators (like `$regex`, `$elemMatch`) return a 400 error
+- Requires `count` or `select` permission in security rules
+- The `select` permission automatically grants `count` permission
 
 #### Advanced Query with Complex Filters
 
