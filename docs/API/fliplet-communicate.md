@@ -14,6 +14,8 @@ The `fliplet-communicate` package contains the namespace `Fliplet.Communicate` a
 
 Use our APIs to send an email to one or more recipients. Note that this feature is rate limited and improper use will result in your account being flagged for suspension.
 
+**Custom Email Domains:** This API supports custom email domains. If you have configured a custom email domain for your organization, emails sent through this API will use your custom domain. To set up a custom email domain, see the [Custom email domain guide](https://help.fliplet.com/custom-email-domain/).
+
 Available options:
 
   - `to`: array of recipients for "to", "cc" or "bcc"
@@ -89,6 +91,8 @@ Fliplet.Communicate.sendEmail(_.extend({}, options));
 ## Send batch emails
 
 Use our APIs to send batch of emails to one or more recipients. Note that this feature is rate limited and improper use will result in your account being flagged for suspension.
+
+**Custom Email Domains:** This API supports custom email domains. If you have configured a custom email domain for your organization, emails sent through this API will use your custom domain. To set up a custom email domain, see the [Custom email domain guide](https://help.fliplet.com/custom-email-domain/).
 
 There will `emails` array of object with `{ options, data }` template compilation.
 

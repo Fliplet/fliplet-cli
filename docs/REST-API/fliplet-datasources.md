@@ -43,6 +43,8 @@ The Data Source REST APIs allows you to interact and make any sort of change to 
       - [`PUT v1/data-sources/<dataSourceId>/data`](#put-v1data-sourcesdatasourceiddata)
     - [Update an existing entry in a data source](#update-an-existing-entry-in-a-data-source)
       - [`PUT v1/data-sources/<dataSourceId>/data/<entryId>`](#put-v1data-sourcesdatasourceiddataentryid)
+    - [Delete an entry from a data source](#delete-an-entry-from-a-data-source)
+      - [`DELETE v1/data-sources/<dataSourceId>/data/<entryId>`](#delete-v1data-sourcesdatasourceiddataentryid)
     - [Insert a new entry with files into a data source](#insert-a-new-entry-with-files-into-a-data-source)
       - [`PUT v1/data-sources/<dataSourceId>/data`](#put-v1data-sourcesdatasourceiddata-1)
     - [Get unique values for data source columns](#get-unique-values-for-data-source-columns)
@@ -415,13 +417,16 @@ e.g. `v1/data-sources/123/data/query`
 
 All operators of the [Data Source "find" JS API](https://developers.fliplet.com/API/fliplet-datasources.html#fetch-records-from-a-data-source) are supported, including:
 
-- [where](https://developers.fliplet.com/API/fliplet-datasources.html#fetch-records-from-a-data-source)
-- [aggregate](https://developers.fliplet.com/API/fliplet-datasources.html#run-aggregation-queries)
-- [join](https://developers.fliplet.com/API/datasources/joins.html)
-- [attributes](https://developers.fliplet.com/API/fliplet-datasources.html#filter-the-columns-returned-when-finding-records)
-- [order](https://developers.fliplet.com/API/fliplet-datasources.html#sort--order-the-results)
-- [limit](https://developers.fliplet.com/API/fliplet-datasources.html#fetch-records-with-pagination)
-- [offset](https://developers.fliplet.com/API/fliplet-datasources.html#fetch-records-with-pagination)
+- [where](https://developers.fliplet.com/API/fliplet-datasources.html#fetch-records-from-a-data-source) - Filter records using query operators (see [Query Operators Reference](../API/datasources/query-operators.html))
+- [aggregate](https://developers.fliplet.com/API/fliplet-datasources.html#run-aggregation-queries) - Run aggregation queries
+- [join](https://developers.fliplet.com/API/datasources/joins.html) - Join data from multiple data sources
+- [attributes](https://developers.fliplet.com/API/fliplet-datasources.html#filter-the-columns-returned-when-finding-records) - Select specific columns
+- [order](https://developers.fliplet.com/API/fliplet-datasources.html#sort--order-the-results) - Sort results
+- [limit](https://developers.fliplet.com/API/fliplet-datasources.html#fetch-records-with-pagination) - Limit number of results
+- [offset](https://developers.fliplet.com/API/fliplet-datasources.html#fetch-records-with-pagination) - Skip records for pagination
+- [includePagination](https://developers.fliplet.com/API/fliplet-datasources.html#pagination-and-performance) - Include pagination metadata
+
+#### Basic Query Example
 
 Request body (JSON):
 
@@ -453,6 +458,153 @@ Response (Status code: 200 OK):
   ]
 }
 ```
+
+#### Query with Pagination Metadata
+
+To receive pagination information along with your results, include `"includePagination": true` in your request:
+
+Request body (JSON):
+
+```json
+{
+  "type": "select",
+  "where": {
+    "Status": "Active"
+  },
+  "limit": 10,
+  "offset": 0,
+  "order": [["createdAt", "DESC"]],
+  "includePagination": true
+}
+```
+
+Response (Status code: 200 OK):
+
+```json
+{
+  "entries": [
+    {
+      "id": 1,
+      "data": {
+        "email": "user1@example.org",
+        "Status": "Active"
+      },
+      "createdAt": "2024-01-15T12:47:56.700Z",
+      "updatedAt": "2024-01-15T12:47:58.840Z",
+      "dataSourceId": 5
+    }
+  ],
+  "pagination": {
+    "total": 156,
+    "limit": 10,
+    "offset": 0
+  }
+}
+```
+
+#### Advanced Query with Complex Filters
+
+For detailed information on all available query operators including MongoDB-style operators and Fliplet's custom `$filters` operator, see the [Query Operators Reference](../API/datasources/query-operators.html).
+
+Example using multiple operators:
+
+```json
+{
+  "type": "select",
+  "where": {
+    "$and": [
+      { "Status": "Active" },
+      { "Age": { "$gte": 18 } }
+    ],
+    "$filters": [
+      {
+        "column": "Email",
+        "condition": "contains",
+        "value": "@company.com"
+      },
+      {
+        "column": "Department",
+        "condition": "oneof",
+        "value": ["Engineering", "Design", "Product"]
+      }
+    ]
+  },
+  "attributes": ["id", "data.Name", "data.Email", "data.Department"],
+  "order": [["data.Name", "ASC"]],
+  "limit": 25,
+  "offset": 0
+}
+```
+
+#### Delete Query
+
+You can delete multiple entries matching specific criteria using the query endpoint with `type: "delete"`.
+
+Request body (JSON):
+
+```json
+{
+  "type": "delete",
+  "where": {
+    "Status": "Inactive"
+  }
+}
+```
+
+Response (Status code: 200 OK):
+
+```json
+{
+  "deletedCount": 5
+}
+```
+
+This will delete all entries matching the `where` condition and return the count of deleted entries.
+
+#### Aggregation Queries
+
+The query endpoint supports MongoDB-style aggregation pipelines for complex data analysis, reporting, and transformations.
+
+**Example - Group and Count:**
+
+Request body (JSON):
+
+```json
+{
+  "type": "select",
+  "aggregate": [
+    {
+      "$group": {
+        "_id": "$data.Department",
+        "count": { "$sum": 1 }
+      }
+    },
+    {
+      "$sort": { "count": -1 }
+    }
+  ]
+}
+```
+
+Response:
+
+```json
+{
+  "entries": [
+    { "_id": "Engineering", "count": 42 },
+    { "_id": "Design", "count": 28 },
+    { "_id": "Marketing", "count": 15 }
+  ]
+}
+```
+
+**Supported Aggregation Operators:**
+
+- **Pipeline Stages**: `$project`, `$group`, `$sort`
+- **Group Operators**: `$sum`, `$avg`, `$min`, `$max`
+- **Type Conversion**: `$convertToNumber` (Fliplet-specific - converts strings to numbers before aggregation)
+
+**Note**: Use the custom `$convertToNumber` operator to convert string values to numbers before performing numeric aggregations.
 
 ---
 
@@ -546,7 +698,31 @@ Response  (Status code: 201 Created):
 
 ---
 
+### Delete an entry from a data source
 
+#### `DELETE v1/data-sources/<dataSourceId>/data/<entryId>`
+
+e.g. `v1/data-sources/123/data/456`
+
+Use this endpoint to delete a specific entry by its ID.
+
+Sample cURL request:
+
+```
+curl -X DELETE \
+  "https://api.fliplet.com/v1/data-sources/123/data/456" \
+  -H "Auth-token: eu--abcdef123456"
+```
+
+Response (Status code: 200 OK):
+
+```json
+{}
+```
+
+Note: This is a permanent deletion. If you need to recover deleted entries, consider using a soft-delete pattern by updating a status field instead.
+
+---
 
 ### Insert a new entry with files into a data source
 
