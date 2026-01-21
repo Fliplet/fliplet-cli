@@ -269,7 +269,11 @@ if (existingCount > 0) {
   - Requires `count` or `select` permission in security rules
   - `select` permission automatically grants `count` (backwards compatible)
   - Use `count`-only rules to allow checking availability without exposing data
-  - Only database-compatible filters are supported (no complex Sift.js operators like `$regex`, `$elemMatch`)
+
+#### Performance Notes
+
+  - Simple filters (equality, `$eq`, `$gt`, `$lt`, `$and`, `$or`) use fast database `COUNT(*)`
+  - Complex filters (`$regex`, `$elemMatch`, etc.) fall back to fetching + filtering, same performance as a regular query but returns only the count
 
 ---
 

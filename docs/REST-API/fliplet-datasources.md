@@ -528,10 +528,9 @@ Response (Status code: 200 OK):
 ```
 
 **Notes:**
-- Only database-compatible filters are supported (equality, `$in`, `$gt`, `$lt`, etc.)
-- Complex Sift.js operators (like `$regex`, `$elemMatch`) return a 400 error
 - Requires `count` or `select` permission in security rules
 - The `select` permission automatically grants `count` permission
+- Simple filters use fast database `COUNT(*)`, complex filters use Sift.js fallback
 
 #### Advanced Query with Complex Filters
 
