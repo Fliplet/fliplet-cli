@@ -228,6 +228,55 @@ The `$filters` operator provides optimized performance and additional conditions
 
 **📖 Complete Operators Reference:** [View detailed query operators documentation](datasources/query-operators.md)
 
+---
+
+### Count Records Only
+
+**Purpose:** Efficiently count entries matching criteria without retrieving data
+**Syntax:** `connection.find({ countOnly: true, where?: object })`
+**Returns:** `Promise<number>` - The count of matching entries
+**When to use:** Checking availability, preventing duplicates, analytics
+
+#### Basic Usage
+
+```js
+// Count all entries
+const connection = await Fliplet.DataSources.connectByName("Users");
+const totalUsers = await connection.find({ countOnly: true });
+console.log(`Total users: ${totalUsers}`);
+
+// Count with filter
+const connection = await Fliplet.DataSources.connectByName("Bookings");
+const bookedSlots = await connection.find({
+  where: { SessionId: 123 },
+  countOnly: true
+});
+console.log(`Booked slots: ${bookedSlots}`);
+
+// Check if user already registered
+const connection = await Fliplet.DataSources.connectByName("Registrations");
+const existingCount = await connection.find({
+  where: { Email: 'user@example.com' },
+  countOnly: true
+});
+if (existingCount > 0) {
+  console.log('User already registered');
+}
+```
+
+#### Security Notes
+
+  - Requires `count` or `select` permission in security rules
+  - `select` permission automatically grants `count` (backwards compatible)
+  - Use `count`-only rules to allow checking availability without exposing data
+
+#### Performance Notes
+
+  - Simple filters (equality, `$eq`, `$gt`, `$lt`, `$and`, `$or`) use fast database `COUNT(*)`
+  - Complex filters (`$regex`, `$elemMatch`, etc.) fall back to fetching + filtering, same performance as a regular query but returns only the count
+
+---
+
 ### 2. Insert Records (Add Data)
 
 **Purpose:** Add new records to the data source  
