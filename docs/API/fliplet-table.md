@@ -49,6 +49,8 @@ Each column in the `columns` array can have the following properties:
 | `searchable` | Boolean | `false` | Include this column in global search |
 | `render` | Function | `undefined` | Custom render function for cell content |
 | `sortFn` | Function | `undefined` | Custom sort function for this column |
+| `width` | String | `undefined` | Fixed column width (e.g., `'100px'`, `'60px'`). Columns without a width use flex to fill available space |
+| `resizable` | Boolean | `true` | Enable column resizing by dragging the right edge of the header. Set to `false` to prevent resizing |
 | `isExpandTrigger` | Boolean | `false` | Make this column trigger row expansion when clicked |
 
 ### Row Data Properties
@@ -199,6 +201,7 @@ Fliplet.UI.Table emits various events that you can listen to:
 | `selection:change` | `{ selected: Array, deselected: Array, source: String }` | Fired when row selection changes. Source can be 'row-click', 'checkbox', or 'api' |
 | `row:click` | `{ data: Object }` | Fired when a row is clicked |
 | `sort:change` | `{ field: String, direction: String }` | Fired when sort column/direction changes |
+| `column:resize` | `{ column: Object, width: String }` | Fired when a column is resized by dragging |
 | `search` | `{ query: String, data: Array }` | Fired when search query changes |
 | `page:change` | `{ page: Number }` | Fired when current page changes |
 | `expand:start` | `{ row: Object, rowEl: Element }` | Fired when row expansion starts (before content is loaded) |
@@ -848,6 +851,36 @@ const fileManager = new Fliplet.UI.Table({
 // All selection states are automatically applied on initialization!
 ```
 
+## Column Resizing
+
+Columns are resizable by default. Users can drag the right edge of any column header to adjust its width. On the first resize interaction, all column widths are frozen to fixed pixel values to prevent other columns from collapsing.
+
+### Disabling Resize for Specific Columns
+
+```javascript
+{
+  name: 'ID',
+  field: 'id',
+  width: '60px',
+  resizable: false // This column cannot be resized
+}
+```
+
+### Listening for Resize Events
+
+```javascript
+table.on('column:resize', function(detail) {
+  console.log('Resized column:', detail.column.name);
+  console.log('New width:', detail.width); // e.g., '250px'
+});
+```
+
+### Visual Behavior
+
+- **Hover on header row**: Faint resize borders appear between all resizable columns
+- **Hover on a specific border**: The border highlights in blue
+- **During drag**: Only the active border stays highlighted
+
 ## CSS Customization
 
 Fliplet.UI.Table provides several CSS classes for styling:
@@ -871,6 +904,15 @@ Fliplet.UI.Table provides several CSS classes for styling:
 | `.fl-table-row-checkbox-partial` | Partial selection state styling for individual row checkboxes |
 | `.fl-table-expand-trigger` | Cell that triggers row expansion |
 | `.fl-table-row-expanded` | Container for expanded row content |
+| `.fl-table-scroll-container` | Scrollable container for header and body (enables horizontal scroll on resize) |
+| `.fl-table-cell-content` | Text content wrapper within sortable header cells |
+| `.fl-table-sort-icon` | Sort direction icon container (▲▼) in sortable headers |
+| `.fl-table-sort-arrow` | Individual sort arrow element |
+| `.fl-table-sort-active` | Active sort direction arrow (dark) |
+| `.fl-table-sort-inactive` | Inactive sort direction arrow (light gray) |
+| `.fl-table-resize-handle` | Draggable resize handle on the right edge of header cells |
+| `.fl-table-resize-active` | Applied to the resize handle currently being dragged |
+| `.fl-table-resizing` | Applied to the table container during a resize drag |
 
 ### Default Styling
 
@@ -881,7 +923,8 @@ The component comes with a default theme that includes:
 - Light blue background for selected rows
 - Subtle borders and spacing
 - Responsive layout with flexbox
-- Sort direction indicators
+- Sort direction indicators (▲▼ arrows in column headers)
+- Column resize handles with hover highlighting
 - Styled checkboxes for selection
 - Pagination controls
 
