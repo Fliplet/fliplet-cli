@@ -25,6 +25,11 @@ We regularly update our framework to support new features. If you have an older 
 
 ## Supported versions
 
+### Version 6.4.6 (February 09, 2026)
+
+- **iOS**: The target SDK has now been set to iOS 26.
+
+
 ### Version 6.4.5 (August 19, 2025)
 
 - **iOS**: Updated Fastlane to 2.228.0
