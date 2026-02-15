@@ -57,5 +57,58 @@ Fliplet.Verification.Email.get().then(function (verification) {
 
 ---
 
+## Hooks
+
+### Run code after email/SMS verification
+
+The `onUserVerified` hook is fired after a user successfully validates their verification code (email or SMS). Use this to run custom logic such as redirecting users, fetching additional data, or setting encryption keys.
+
+```js
+Fliplet.Hooks.on('onUserVerified', function (data) {
+  // data.entry - the verified user's data source entry
+  // data.entry.id - the entry ID
+  // data.entry.dataSourceId - the data source ID
+  // data.entry.data - all columns (e.g. Email, Name, etc.)
+
+  // Return a Promise to delay post-verification navigation
+});
+```
+
+#### Properties
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `data.entry` | Object | The data source entry for the verified user |
+| `data.entry.id` | Number | The entry ID |
+| `data.entry.dataSourceId` | Number | The ID of the data source |
+| `data.entry.data` | Object | All columns/fields from the user's row |
+
+#### Example: Redirect after verification
+
+```js
+Fliplet.Hooks.on('onUserVerified', function (data) {
+  return Fliplet.Navigate.screen(123);
+});
+```
+
+#### Example: Set an encryption key after verification
+
+```js
+Fliplet.Hooks.on('onUserVerified', function (data) {
+  return Fliplet.DataSources.connect(123).then(function (connection) {
+    return connection.find({
+      where: { ID: data.entry.data.OrganizationID }
+    });
+  }).then(function (organizations) {
+    var key = _.first(organizations).data.key;
+    return Fliplet.DataSources.Encryption().setKey(key);
+  });
+});
+```
+
+<p class="quote"><strong>Note:</strong> This hook is only fired by the <strong>Email Verification</strong> component (including SMS verification mode) and by the <strong>Data Source Login</strong> component during its password reset flow. For hooks that fire after a full username + password login, see the <a href="login.html">Login component hooks</a>.</p>
+
+---
+
 [Back to API documentation](../../API-Documentation.md)
 {: .buttons}
