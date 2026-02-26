@@ -37,10 +37,24 @@ Fliplet apps can have each of their screens and data sources secured so that the
 
 If you need more control on your security rules granting access to Data Sources, you can write your custom conditions using Javascript. When doing so, **these variables are available to the context of the script**:
 
-- `type` (String) the type of operation the user is attempting to run on the Data Source (`select`, `insert`, `update`, `delete`)
+- `type` (String) the type of operation the user is attempting to run on the Data Source (`select`, `insert`, `update`, `delete`, `count`)
 - `user` (Object) the user's session with its data, when the user is logged in
 - `query` (Object or Array) the input query (when reading data) or data to write (when inserting or updating an entry). When using the commit endpoint, this will be the array of entries being inserted or updated.
 - `entry` (Object) the existing entry being updated, if applicable
+
+### Operation Types
+
+The following operation types are available for security rules:
+
+| Type | Description |
+|------|-------------|
+| `select` | Read entries from the data source. Also implies `count` permission. |
+| `insert` | Create new entries in the data source. |
+| `update` | Modify existing entries in the data source. |
+| `delete` | Remove entries from the data source. |
+| `count` | Count entries matching a query without reading entry data. |
+
+**Note:** The `select` permission automatically grants `count` permission (backwards compatible). You can grant `count` without `select` to allow users to check entry counts without accessing the actual data.
 
 Given the possible values of the `query` object, you may need to write your code in a way that it can handle all situations. Here's a full example of a security rule handling all scenarios at once:
 
@@ -87,6 +101,12 @@ switch (type) {
 
     // Check the input data
     return { granted: query.foo === 'bar' };
+
+  case 'count':
+    // Check scenario when counting records.
+    // "query" here is the input query filter from the API request.
+    // Note: 'select' permission implies 'count' permission (backwards compatible).
+    return { granted: query.foo !== 'bar' };
 }
 ```
 
