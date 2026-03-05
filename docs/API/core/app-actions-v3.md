@@ -4,7 +4,7 @@ description: Write and run JavaScript code directly on the server or client to p
 
 # App Actions V3
 
-**App Actions V3** lets you write raw JavaScript code that executes on the server or client. Unlike V2 function pipelines, V3 actions provide a simpler developer experience — write a single `execute(context)` function instead of building visual pipelines.
+**App Actions V3** lets you write raw JavaScript code that executes on the server or client. Unlike the deprecated V2 function pipelines, V3 actions provide a simpler developer experience — write a single `execute(context)` function instead of building visual pipelines.
 
 #### What's new in V3
 

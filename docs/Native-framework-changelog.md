@@ -8,7 +8,7 @@ We regularly update our framework to support new features. If you have an older 
     <div>
       <h4>iOS</h4>
       <p>Current release: <u>6.4.6</u></p>
-      <p>Target SDK version: 26</p>
+      <p>Target SDK version: 17</p>
     </div>
   </div>
   <div class="bl two">
@@ -27,8 +27,7 @@ We regularly update our framework to support new features. If you have an older 
 
 ### Version 6.4.6 (February 09, 2026)
 
-- **iOS**: The target SDK has now been set to iOS 26.
-
+- **iOS**: iOS apps are now built using Xcode 26.
 
 ### Version 6.4.5 (August 19, 2025)
 

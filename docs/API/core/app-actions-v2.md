@@ -4,6 +4,8 @@ description: Configure your app screens to run scheduled or ad-hoc operation in 
 
 # App Actions V2
 
+<p class="warning"><strong>Deprecated:</strong> App Actions V2 is deprecated and will be removed in a future release. Please use <a href="/API/core/app-actions-v3.html">App Actions V3</a> for all new development. V3 provides a simpler, code-based approach — write a single <code>execute(context)</code> function instead of configuring function pipelines. Existing V2 actions will continue to work but should be migrated to V3.</p>
+
 The **App Actions V2** library allows you to configure a pipeline of functions to run either on-device or in the cloud, either ad-hoc or at a scheduled time.
 
 ![How it works](/assets/img/app-actions-v2.png)

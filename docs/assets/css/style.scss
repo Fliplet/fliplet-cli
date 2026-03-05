@@ -635,6 +635,11 @@ h6 {
                   color: #a47f00;
                   background: #ffd958;
                 }
+
+                &.label-deprecated {
+                  color: #856404;
+                  background: #e2e3e5;
+                }
               }
 
               &.current .label {
