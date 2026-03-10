@@ -61,7 +61,18 @@ The `allow` property supports four modes:
 }
 ```
 
-User filters support three operators: `equals`, `notequals`, and `contains`. Values can reference the user's session data using Handlebars syntax (e.g., `"{{ user.[Email] }}"`). Multiple conditions in the same `user` object are combined with AND logic.
+User filters support three operators: `equals`, `notequals`, and `contains`. Values can reference the user's session data using Handlebars syntax (e.g., `"{{ user.[Email] }}"`). Multiple conditions in the same `user` object are combined with AND logic. For OR logic, create separate rules instead.
+
+```json
+{
+  "allow": {
+    "user": {
+      "Department": { "contains": "{{user.[Department]}}" },
+      "Status": { "notequals": "Inactive" }
+    }
+  }
+}
+```
 
 **Specific API token:**
 
@@ -126,6 +137,46 @@ Use `include` to whitelist specific columns, or `exclude` to hide specific colum
 ]
 ```
 
+### Example: department-scoped access
+
+In this example, managers see records for their department while regular users only see their own records:
+
+```json
+[
+  {
+    "type": ["select"],
+    "allow": {
+      "user": {
+        "Role": { "equals": "Manager" },
+        "Department": { "contains": "{{user.[Department]}}" }
+      }
+    },
+    "exclude": ["Salary"],
+    "enabled": true
+  },
+  {
+    "type": ["select", "update"],
+    "allow": "loggedIn",
+    "require": [
+      { "Email": { "equals": "{{user.[Email]}}" } }
+    ],
+    "exclude": ["Salary", "ManagerNotes"],
+    "enabled": true
+  },
+  {
+    "type": ["insert"],
+    "allow": "loggedIn",
+    "require": [
+      "Name",
+      { "Department": { "contains": "{{user.[Department]}}" } },
+      { "CreatedBy": { "equals": "{{user.[Email]}}" } }
+    ],
+    "exclude": ["Role", "Admin"],
+    "enabled": true
+  }
+]
+```
+
 ## Data requirements and query validation
 
 The `require` property defines conditions that incoming queries must satisfy. This is not the same as querying data — it controls how queries are **assessed against the rule's data requirements**.
@@ -150,21 +201,30 @@ The behavior of `require` varies by operation type:
 
 <p class="quote">These requirement types (<code>equals</code>, <code>notequals</code>, <code>contains</code>) are <strong>not</strong> query operators — they define how the security rule validates incoming queries. For the full list of query operators you can use when reading and writing data, see the <a href="API/datasources/query-operators.html">query operators reference</a>.</p>
 
+### Handlebars templating
+
+Condition values can reference the logged-in user's session data using Handlebars syntax. This enables dynamic, per-user filtering:
+
+- `{{user.[Email]}}` — the user's email address
+- `{{user.[Department]}}` — the user's department
+- `{{user.[Role]}}` — the user's role
+- `{{user.[ID]}}` — the user's data source entry ID
+
 ### Require syntax
 
-**Required fields** (string):
+**Required fields** (string) — the query must include these columns:
 
 ```json
 "require": ["Email", "FirstName", "Department"]
 ```
 
-**Field conditions** (object with operator):
+**Field conditions** (object with operator) — the query must match these conditions:
 
 ```json
 "require": [
-  { "Email": { "equals": "{{ user.[Email] }}" } },
+  { "Email": { "equals": "{{user.[Email]}}" } },
   { "Status": { "notequals": "Archived" } },
-  { "Department": { "contains": "Engineering" } }
+  { "Department": { "contains": "{{user.[Department]}}" } }
 ]
 ```
 
@@ -174,7 +234,7 @@ You can mix both formats in the same array:
 "require": [
   "Title",
   "Description",
-  { "CreatedBy": { "equals": "{{ user.[Email] }}" } },
+  { "CreatedBy": { "equals": "{{user.[Email]}}" } },
   { "Status": { "equals": "Draft" } }
 ]
 ```
