@@ -267,11 +267,13 @@ For advanced logic beyond what the standard rule properties support, you can wri
 
 ![Custom security](assets/img/datasource-custom-security.png)
 
+<p class="warning"><strong>Important:</strong> When a rule has a <code>script</code>, the script is the <strong>sole determinant</strong> of access. Standard rule fields like <code>allow</code> and <code>type</code> are ignored — the script runs regardless of login status or operation type. Your script must perform its own identity and operation checks (e.g., <code>if (!user) return { granted: false };</code>).</p>
+
 When writing a custom rule, these variables are available in the script context:
 
 - `type` (String) — the operation the user is attempting: `select`, `insert`, `update`, or `delete`
-- `user` (Object) — the user's session data, when the user is logged in
-- `query` (Object or Array) — the input query (for reads) or data being written (for inserts and updates). When using the commit endpoint, this is the array of entries being inserted or updated.
+- `user` (Object) — the authenticated user's session data, or `undefined` if not logged in. For data-source passport sessions (e.g., Email Verification, Fliplet Login), this contains the flat column values from the user's row in the authentication data source (e.g., `user.Email`, `user.Role`). For SAML2 sessions, it contains the assertion attributes.
+- `query` (Object or Array) — for `select` operations, this is the unwrapped `where` object from the request (e.g., if the client sends `find({ where: { Email: "a@b.com" } })`, the rule receives `query = { Email: "a@b.com" }`). For `insert` and `update`, this is the data being written. For `commit` operations, this is the array of entries being inserted or updated.
 - `entry` (Object) — the existing entry being updated, if applicable
 
 The `query` parameter changes shape depending on the operation, so your code should handle all relevant scenarios. Here is an example covering all operation types:
@@ -324,7 +326,7 @@ switch (type) {
 
 ### Granting access
 
-Return an object with `granted: true` to grant access. You can also return an `exclude` array to restrict which columns the user can read, write, or update:
+Return an object with `granted: true` to grant access. You can also return an `exclude` or `include` array to restrict which columns the user can access:
 
 ```js
 if (type === 'select') {
@@ -339,6 +341,8 @@ if (type === 'select') {
 
 // No further access is granted by this rule to other type of operations
 ```
+
+<p class="warning"><strong>Important:</strong> You must return an object — bare boolean values (e.g., <code>return true</code>) are not supported and will be treated as a denial. Always use <code>return { granted: true }</code> or <code>return { granted: false }</code>.</p>
 
 ### Handling different operation types
 
@@ -389,7 +393,9 @@ if (type === 'insert') {
 
 ### Reading data from other Data Sources
 
-Custom rules can read data from other Data Sources using the `find` (multiple records) and `findOne` (single record) methods of the `DataSources` server-side library.
+Custom rules can read data from other Data Sources using the `find` (multiple records) and `findOne` (single record) methods of the `DataSources` server-side library. These reads run at **server level** and bypass all security rules on the target data source.
+
+<p class="quote">Cross-data-source lookups add a database round-trip per request and are not cached. Keep queries efficient and use <code>findOne</code> when you only need a single record. Synchronous script execution has a <strong>3-second timeout</strong>, but async operations (like <code>DataSources</code> queries) are not bounded by this limit.</p>
 
 Connect using the data source ID (number) or name (string):
 
