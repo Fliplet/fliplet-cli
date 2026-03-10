@@ -1,35 +1,80 @@
 ---
-description: Learn how to secure files and folders in your Fliplet apps with access rules.
+description: Secure files and folders in your Fliplet apps with access rules and custom JavaScript security rules.
 ---
 
 # Securing your files and folders
 
+## Contents
+
+- [Security rules](#security-rules)
+- [Access rule structure](#access-rule-structure)
+- [Custom security rules](#custom-security-rules)
+
 ## Security rules
 
-Access to files and folders can be secured via the **File Security** section in Fliplet Studio. Rules control who can read, upload, update, and delete files — enforced server-side for all app token requests.
+Access to files and folders is secured via the **File Security** section in Fliplet Studio. Rules control who can read, upload, update, and delete files — enforced server-side for all app token requests. Rules can be configured through the Studio UI wizard without writing any code.
 
-File security rules follow the same conventions as [Data Source security rules](/Data-source-security), using the same `allow` schema, condition types, and session handling. Rules can be configured through the Studio UI wizard without writing any code.
-
-Key behaviours:
+Key behaviors:
 
 - **Denied by default** — files and folders without rules (directly or inherited) are inaccessible
 - **Folder inheritance** — rules on a folder apply to all files and subfolders beneath it; a file or subfolder can override with its own rules
 - **Action-based** — rules specify which operations they permit: `read`, `create`, `update`, `delete`
 
----
+## Access rule structure
+
+File security rules follow the same conventions as [Data Source security rules](/Data-source-security#access-rule-structure), using the same `allow` schema, condition operators, and session handling. Each rule specifies who can access files and what operations they can perform.
+
+| Property | Type | Required | Description |
+|---|---|---|---|
+| `type` | Array of strings | Yes | Operations this rule applies to: `"read"`, `"create"`, `"update"`, `"delete"` |
+| `allow` | String or Object | Yes | Who can access: `"all"`, `"loggedIn"`, `{ "user": {...} }`, or `{ "tokens": [...] }` |
+| `enabled` | Boolean | No | Whether the rule is active (defaults to `true`) |
+
+### Defining who can access
+
+The `allow` property supports the same four modes as Data Source rules. User filters support three operators (`equals`, `notequals`, `contains`) and can reference session data using Handlebars syntax:
+
+{% raw %}
+```json
+[
+  {
+    "type": ["read", "create", "update", "delete"],
+    "allow": { "user": { "Role": { "equals": "Admin" } } },
+    "enabled": true
+  },
+  {
+    "type": ["read"],
+    "allow": {
+      "user": {
+        "Department": { "contains": "{{user.[Department]}}" },
+        "Status": { "notequals": "Inactive" }
+      }
+    },
+    "enabled": true
+  },
+  {
+    "type": ["read", "create"],
+    "allow": "loggedIn",
+    "enabled": true
+  }
+]
+```
+{% endraw %}
+
+For the full `allow` reference and Handlebars templating details, see [Data Source security rules](/Data-source-security#defining-who-can-access).
 
 ## Custom security rules
 
-If you need more control on your file security rules, you can write custom conditions using JavaScript. This follows the same model as [custom data source security rules](/Data-source-security#custom-security-rules) — a script is evaluated at runtime in a sandboxed environment.
+For advanced logic beyond what the standard rule properties support, you can write custom JavaScript security rules. This follows the same model as [custom Data Source security rules](/Data-source-security#custom-security-rules) — the script is evaluated at runtime in a sandboxed environment.
 
-When writing a custom rule, **these variables are available to the context of the script**:
+When writing a custom rule, these variables are available in the script context:
 
-- `type` (String) the type of operation: `read`, `create`, `update`, `delete`
-- `user` (Object) the user's session with its data, when the user is logged in
-- `file` (Object) the file being accessed, when the rule is evaluated for a file action (see below)
-- `folder` (Object) the folder being accessed, when the rule is evaluated for a folder action (see below)
+- `type` (String) — the operation the user is attempting: `read`, `create`, `update`, or `delete`
+- `user` (Object) — the user's session data, when the user is logged in
+- `file` (Object) — the file being accessed (see [The `file` object](#the-file-object))
+- `folder` (Object) — the folder being accessed (see [The `folder` object](#the-folder-object))
 
-Here's a full example of a custom rule handling multiple scenarios:
+Here is an example covering multiple scenarios:
 
 ```js
 switch (type) {
@@ -74,9 +119,9 @@ switch (type) {
 }
 ```
 
-### Granting access with a custom security rule
+### Granting access
 
-A rule must return an object with `granted: true` when access is granted. You can also return a custom `message` when denying access — this message is included in the 401 error response sent to the client:
+Return an object with `granted: true` to grant access. You can also return a custom `message` when denying access — this message is included in the error response sent to the client:
 
 ```js
 // Grant access
@@ -160,7 +205,7 @@ if (type === 'create') {
 
 Custom rules can read data from Data Sources using the `DataSources` server-side library, identical to [data source custom rules](/Data-source-security#reading-data-from-other-data-sources).
 
-When connecting to a Data Source, you can use the ID by passing a number or the name by passing a string. For example, `DataSources('Permissions')` connects by name.
+Connect using the data source ID (number) or name (string):
 
 ```js
 if (type === 'create') {
@@ -191,12 +236,10 @@ if (type === 'read') {
 }
 ```
 
-Both `find` and `findOne` support the following properties:
+Both `find` and `findOne` accept the following properties:
 
-- `where` (Object) query to run (supports `$like`, `$iLike`, `$lt`, `$gt`, `$lte`, `$gte`, `$eq`, `$in`)
+- `where` (Object) — query filter supporting [standard query operators](API/datasources/query-operators.html) such as `$eq`, `$ne`, `$like`, `$iLike`, `$gt`, `$gte`, `$lt`, `$lte`, `$in`
 - `limit` (Number, defaults to `100`)
 - `offset` (Number, defaults to `0`)
 
 <p class="warning"><strong>Tip:</strong> Use <code>DataSources('Name')</code> (data source name) instead of <code>DataSources(123)</code> (ID) in custom scripts. Data source names are preserved during app clone, so name-based lookups continue to work without manual remapping.</p>
-
----
