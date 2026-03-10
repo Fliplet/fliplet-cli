@@ -61,8 +61,9 @@ The `allow` property supports four modes:
 }
 ```
 
-User filters support three operators: `equals`, `notequals`, and `contains`. Values can reference the user's session data using Handlebars syntax (e.g., `"{{ user.[Email] }}"`). Multiple conditions in the same `user` object are combined with AND logic. For OR logic, create separate rules instead.
+User filters support three operators: `equals`, `notequals`, and `contains`. Values can reference the user's session data using Handlebars syntax (e.g., {% raw %}`"{{ user.[Email] }}"`{% endraw %}). Multiple conditions in the same `user` object are combined with AND logic. For OR logic, create separate rules instead.
 
+{% raw %}
 ```json
 {
   "allow": {
@@ -73,6 +74,7 @@ User filters support three operators: `equals`, `notequals`, and `contains`. Val
   }
 }
 ```
+{% endraw %}
 
 **Specific API token:**
 
@@ -100,6 +102,7 @@ Use `include` to whitelist specific columns, or `exclude` to hide specific colum
 
 ### Example: role-based access with protected fields
 
+{% raw %}
 ```json
 [
   {
@@ -136,11 +139,13 @@ Use `include` to whitelist specific columns, or `exclude` to hide specific colum
   }
 ]
 ```
+{% endraw %}
 
 ### Example: department-scoped access
 
 In this example, managers see records for their department while regular users only see their own records:
 
+{% raw %}
 ```json
 [
   {
@@ -176,6 +181,7 @@ In this example, managers see records for their department while regular users o
   }
 ]
 ```
+{% endraw %}
 
 ## Data requirements and query validation
 
@@ -205,10 +211,10 @@ The behavior of `require` varies by operation type:
 
 Condition values can reference the logged-in user's session data using Handlebars syntax. This enables dynamic, per-user filtering:
 
-- `{{user.[Email]}}` — the user's email address
-- `{{user.[Department]}}` — the user's department
-- `{{user.[Role]}}` — the user's role
-- `{{user.[ID]}}` — the user's data source entry ID
+- {% raw %}`{{user.[Email]}}`{% endraw %} — the user's email address
+- {% raw %}`{{user.[Department]}}`{% endraw %} — the user's department
+- {% raw %}`{{user.[Role]}}`{% endraw %} — the user's role
+- {% raw %}`{{user.[ID]}}`{% endraw %} — the user's data source entry ID
 
 ### Require syntax
 
@@ -220,6 +226,7 @@ Condition values can reference the logged-in user's session data using Handlebar
 
 **Field conditions** (object with operator) — the query must match these conditions:
 
+{% raw %}
 ```json
 "require": [
   { "Email": { "equals": "{{user.[Email]}}" } },
@@ -227,9 +234,11 @@ Condition values can reference the logged-in user's session data using Handlebar
   { "Department": { "contains": "{{user.[Department]}}" } }
 ]
 ```
+{% endraw %}
 
 You can mix both formats in the same array:
 
+{% raw %}
 ```json
 "require": [
   "Title",
@@ -238,6 +247,7 @@ You can mix both formats in the same array:
   { "Status": { "equals": "Draft" } }
 ]
 ```
+{% endraw %}
 
 ### Sample query satisfying a "contains" requirement
 
