@@ -67,10 +67,12 @@ For the full `allow` reference and Handlebars templating details, see [Data Sour
 
 For advanced logic beyond what the standard rule properties support, you can write custom JavaScript security rules. This follows the same model as [custom Data Source security rules](/Data-source-security#custom-security-rules) — the script is evaluated at runtime in a sandboxed environment.
 
+<p class="warning"><strong>Important:</strong> When a rule has a custom script, the script is the <strong>sole determinant</strong> of access. Standard rule fields like <code>allow</code> and <code>type</code> are ignored — the script runs regardless of login status or operation type. Your script must perform its own identity and operation checks (e.g., <code>if (!user) return { granted: false };</code>).</p>
+
 When writing a custom rule, these variables are available in the script context:
 
 - `type` (String) — the operation the user is attempting: `read`, `create`, `update`, or `delete`
-- `user` (Object) — the user's session data, when the user is logged in
+- `user` (Object) — the authenticated user's session data, or `undefined` if not logged in. For data-source passport sessions (e.g., Email Verification, Fliplet Login), this contains the flat column values from the user's row in the authentication data source (e.g., `user.Email`, `user.Role`). For SAML2 sessions, it contains the assertion attributes.
 - `file` (Object) — the file being accessed (see [The `file` object](#the-file-object))
 - `folder` (Object) — the folder being accessed (see [The `folder` object](#the-folder-object))
 
@@ -133,6 +135,8 @@ return { granted: false };
 // Deny with a custom error message
 return { granted: false, message: 'Only managers can access report files' };
 ```
+
+<p class="warning"><strong>Important:</strong> You must return an object — bare boolean values (e.g., <code>return true</code>) are not supported and will be treated as a denial. Always use <code>return { granted: true }</code> or <code>return { granted: false }</code>.</p>
 
 ### The `file` object
 
@@ -203,7 +207,9 @@ if (type === 'create') {
 
 ### Reading data from other Data Sources
 
-Custom rules can read data from Data Sources using the `DataSources` server-side library, identical to [data source custom rules](/Data-source-security#reading-data-from-other-data-sources).
+Custom rules can read data from Data Sources using the `DataSources` server-side library, identical to [data source custom rules](/Data-source-security#reading-data-from-other-data-sources). These reads run at **server level** and bypass all security rules on the target data source.
+
+<p class="quote">Cross-data-source lookups add a database round-trip per request and are not cached. Keep queries efficient and use <code>findOne</code> when you only need a single record. Synchronous script execution has a <strong>3-second timeout</strong>, but async operations (like <code>DataSources</code> queries) are not bounded by this limit.</p>
 
 Connect using the data source ID (number) or name (string):
 
