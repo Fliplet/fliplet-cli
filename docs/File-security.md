@@ -29,6 +29,9 @@ File security rules follow the same conventions as [Data Source security rules](
 | `type` | Array of strings | Yes | Operations this rule applies to: `"read"`, `"create"`, `"update"`, `"delete"` |
 | `allow` | String or Object | Yes | Who can access: `"all"`, `"loggedIn"`, `{ "user": {...} }`, or `{ "tokens": [...] }` |
 | `enabled` | Boolean | No | Whether the rule is active (defaults to `true`) |
+| `appId` | Array of numbers | No | Restrict this rule to specific app IDs (applies to all apps if omitted) |
+| `name` | String | No | Descriptive label for identifying the rule in Studio |
+| `script` | String | No | Custom JavaScript code for advanced security logic. When present, overrides `allow` and `type` — see [Custom security rules](#custom-security-rules) |
 
 ### Defining who can access
 
@@ -62,6 +65,72 @@ The `allow` property supports the same four modes as Data Source rules. User fil
 {% endraw %}
 
 For the full `allow` reference and Handlebars templating details, see [Data Source security rules](/Data-source-security#defining-who-can-access).
+
+### Full example: department document library
+
+This example shows a folder structure where public files are accessible to everyone, department folders are restricted to logged-in users in the matching department, and only admins can upload or delete.
+
+**Folder structure:**
+
+```
+/public/
+  welcome.pdf
+/engineering/
+  architecture.pdf
+  roadmap.xlsx
+/marketing/
+  brand-guide.pdf
+```
+
+**Rules on the `/public/` folder:**
+
+```json
+[
+  {
+    "type": ["read"],
+    "allow": "all",
+    "enabled": true
+  }
+]
+```
+
+**Rules on the `/engineering/` folder:**
+
+{% raw %}
+```json
+[
+  {
+    "type": ["read", "create", "update", "delete"],
+    "allow": { "user": { "Role": { "equals": "Admin" } } },
+    "enabled": true
+  },
+  {
+    "type": ["read"],
+    "allow": {
+      "user": {
+        "Department": { "equals": "{{user.[Department]}}" }
+      }
+    },
+    "enabled": true
+  }
+]
+```
+{% endraw %}
+
+**Access outcomes:**
+
+| User | Role | Department | `/public/welcome.pdf` read | `/engineering/roadmap.xlsx` read | `/engineering/` upload |
+|---|---|---|---|---|---|
+| Anonymous | — | — | Granted | Denied | Denied |
+| Bob | User | Engineering | Granted | Granted | Denied |
+| Carol | User | Marketing | Granted | Denied | Denied |
+| Alice | Admin | Engineering | Granted | Granted | Granted |
+
+Key behaviors to note:
+- `/public/` uses `"allow": "all"` — no login required for reads
+- `/engineering/` has two rules evaluated top to bottom: the admin rule matches first for Alice, the department rule matches for Bob
+- Carol is denied because her department does not match, and no other rule grants access
+- Files in `/engineering/` inherit the folder's rules — no per-file configuration needed
 
 ## Custom security rules
 
@@ -119,20 +188,22 @@ switch (type) {
 
     return { granted: false, message: 'You can only modify files you uploaded' };
 }
+
+// If none of the cases above returned, access is denied by default
 ```
 
 ### Granting access
 
-Return an object with `granted: true` to grant access. You can also return a custom `message` when denying access — this message is included in the error response sent to the client:
+Return an object with `granted: true` to grant access, or `granted: false` to deny. You can include a `message` property when denying access for debugging purposes:
 
 ```js
 // Grant access
 return { granted: true };
 
-// Deny with default error message
+// Deny access
 return { granted: false };
 
-// Deny with a custom error message
+// Deny with a descriptive message
 return { granted: false, message: 'Only managers can access report files' };
 ```
 
@@ -215,6 +286,10 @@ Connect using the data source ID (number) or name (string):
 
 ```js
 if (type === 'create') {
+  if (!user) {
+    return { granted: false, message: 'You must be logged in to upload files' };
+  }
+
   var permission = await DataSources('Permissions').findOne({
     where: { Email: user.Email, CanUpload: 'Yes' }
   });
@@ -227,6 +302,10 @@ if (type === 'create') {
 }
 
 if (type === 'read') {
+  if (!user) {
+    return { granted: false };
+  }
+
   var entries = await DataSources(123).find({
     where: {
       Department: user.Department,
@@ -248,4 +327,4 @@ Both `find` and `findOne` accept the following properties:
 - `limit` (Number, defaults to `100`)
 - `offset` (Number, defaults to `0`)
 
-<p class="warning"><strong>Tip:</strong> Use <code>DataSources('Name')</code> (data source name) instead of <code>DataSources(123)</code> (ID) in custom scripts. Data source names are preserved during app clone, so name-based lookups continue to work without manual remapping.</p>
+<p class="quote">Use <code>DataSources('Name')</code> (data source name) instead of <code>DataSources(123)</code> (ID) in custom scripts. Data source names are preserved during app clone, so name-based lookups continue to work without manual remapping.</p>
