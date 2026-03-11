@@ -410,56 +410,50 @@ When writing a custom rule, these variables are available in the script context:
 - `user` (Object) — the authenticated user's session data, or `undefined` if not logged in. For data-source passport sessions (e.g., Email Verification, Fliplet Login), this contains the flat column values from the user's row in the authentication data source (e.g., `user.Email`, `user.Role`). For SAML2 sessions, it contains the assertion attributes.
 - `query` (Object or Array) — the input data, whose shape varies by operation:
   - **`select`**: the unwrapped `where` object from the request (e.g., if the client sends `find({ where: { Email: "a@b.com" } })`, the rule receives `{ Email: "a@b.com" }`)
-  - **`insert`** / **`update`**: the data being written to the entry
+  - **`insert`** / **`update`**: the data being written to the entry. When called via the `commit` endpoint, `query` is an array of entries — see [Checking data when committing changes](#checking-data-when-committing-changes)
   - **`delete`**: the data of the entry being deleted
-  - **`commit`**: an array of entries — see [Checking data when committing changes](#checking-data-when-committing-changes)
-- `entry` (Object) — the existing entry being updated, if applicable
+- `entry` (Object) — the existing entry being updated (with `id` and `data` properties), or `undefined` for other operation types
 
 Your code should handle all relevant operation types. Here is an example:
 
 ```js
+// Always check for unauthenticated access first
+if (!user) {
+  return { granted: false };
+}
+
 switch (type) {
   case 'select':
-    // Check scenario when selecting records
-    // "query" here is the input query from the API request
-    return { granted: query.foo !== 'bar' };
+    // "query" is the unwrapped where object from the API request
+    return { granted: query.Department === user.Department };
 
   case 'insert':
-    // Check scenario when inserting records.
-    // "query" here is the input data being inserted.
+    // "query" is the data being inserted.
     // It can also be an array when committing multiple records at once.
     if (Array.isArray(query)) {
-      // Check each object in the input data
-      return { granted: query.every(data => data.foo === 'bar') };
+      return { granted: query.every(data => data.Department === user.Department) };
     }
 
-    // Check the input data
-    return { granted: query.foo === 'bar' };
+    return { granted: query.Department === user.Department };
 
   case 'update':
-    // Check scenario when updating records.
-    // "query" here is the input data being updated.
+    // "query" is the data being updated.
     // It can also be an array when committing multiple records at once.
-    // You will also receive the input "entry" object when applicable.
+    // "entry" is the existing record (with id and data properties) when applicable.
     if (Array.isArray(query)) {
-      // Check each object in the input data
-      return { granted: query.every(data => data.foo === 'bar') };
+      return { granted: query.every(data => data.Department === user.Department) };
     }
 
-    // Check the input data to update and the existing entry
-    return { granted: query.foo === 'bar' && entry.data.foobar === true };
+    return { granted: query.Department === user.Department && entry.data.Active === true };
 
   case 'delete':
-    // Check scenario when deleting records.
-    // "query" here is the input data being updated.
+    // "query" is the data of the entry being deleted.
     // It can also be an array when deleting multiple records at once.
     if (Array.isArray(query)) {
-      // Check each object in the input data
-      return { granted: query.every(data => data.foo === 'bar') };
+      return { granted: query.every(data => data.CreatedBy === user.Email) };
     }
 
-    // Check the input data
-    return { granted: query.foo === 'bar' };
+    return { granted: query.CreatedBy === user.Email };
 }
 ```
 
@@ -508,7 +502,7 @@ if (type === 'insert') {
 
 ### Checking data when committing changes
 
-When a data source is updated via the `commit` endpoint (or JS API), the `query` contains the array of entries being inserted or updated. The security rule runs **twice** — once for inserts and once for updates.
+When a data source is updated via the `commit` endpoint (or JS API), the `query` contains the array of entries being inserted or updated. The security rule runs **twice** — once for inserts and once for updates. If you delete entries by ID using the commit endpoint, the `query` parameter includes the `delete` key with the array of IDs.
 
 ```js
 if (type === 'insert') {
