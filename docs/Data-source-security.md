@@ -166,7 +166,7 @@ var allRecords = await connection.find();
 // Returns all 3 records with all columns including Salary and Password
 ```
 
-```
+```plaintext
 // REST API equivalent
 POST /v1/data-sources/123/data/query
 Auth-token: <Alice's token>
@@ -199,7 +199,7 @@ await connection.update(456, {
 // Succeeds — Email matches Bob's session, and Role/Admin/Permissions are excluded from writes
 ```
 
-```
+```plaintext
 // REST API equivalent
 PUT /v1/data-sources/123/data/456
 Auth-token: <Bob's token>
@@ -212,7 +212,7 @@ Content-Type: application/json
 
 **Queries that fail:**
 
-When a query is denied, the API responds with HTTP status **400** and a JSON error body:
+When a query is denied, the API responds with HTTP status **400** and a JSON error body (note: [file access denials](/File-security#api-calls-that-fail) return HTTP 401 instead):
 
 ```json
 {
@@ -321,7 +321,7 @@ var records = await connection.find({
 // e.g. { Email: "bob@acme.com", Name: "Bob", Role: "User", Department: "Engineering", ManagerNotes: "" }
 ```
 
-```
+```plaintext
 // REST API equivalent
 POST /v1/data-sources/123/data/query
 Auth-token: <Alice's token>
@@ -355,7 +355,7 @@ await connection.insert({
 // Succeeds — all require conditions are met, Role and Admin are excluded from writes
 ```
 
-```
+```plaintext
 // REST API equivalent
 PUT /v1/data-sources/123/data
 Auth-token: <Bob's token>
@@ -478,6 +478,8 @@ For advanced logic beyond what the standard rule properties support, you can wri
 
 ![Custom security](assets/img/datasource-custom-security.png)
 
+The custom security rule editor in Fliplet Studio displays a code editor where you write JavaScript that controls access. The rule name and enabled toggle appear above the code area.
+
 <p class="warning"><strong>Important:</strong> When a rule has a <code>script</code>, the script is the <strong>sole determinant</strong> of access. Standard rule fields like <code>allow</code> and <code>type</code> are ignored — the script runs regardless of login status or operation type. Your script must perform its own identity and operation checks (e.g., <code>if (!user) return { granted: false };</code>). If the script does not return a value (e.g., an unhandled operation type falls through without a <code>return</code>), access is <strong>denied by default</strong>.</p>
 
 When writing a custom rule, these variables are available in the script context:
@@ -488,7 +490,8 @@ When writing a custom rule, these variables are available in the script context:
   - **`select`**: the unwrapped `where` object from the request (e.g., if the client sends `find({ where: { Email: "a@b.com" } })`, the rule receives `{ Email: "a@b.com" }`)
   - **`insert`** / **`update`**: the data being written to the entry. When called via the `commit` endpoint, `query` is an array of entries — see [Checking data when committing changes](#checking-data-when-committing-changes)
   - **`delete`**: the data of the entry being deleted
-- `entry` (Object) — the existing entry being updated (with `id` and `data` properties), or `undefined` for other operation types
+- `entry` (Object) — the existing entry being updated, with `id` (Number) and `data` (Object containing the entry's current column values) properties. `undefined` for other operation types
+- `DataSources` (Function) — server-side library for reading data from other data sources. See [Reading data from other Data Sources](#reading-data-from-other-data-sources)
 
 Your code should handle all relevant operation types. Here is an example:
 
