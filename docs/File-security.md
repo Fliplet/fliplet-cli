@@ -21,7 +21,7 @@ Access to files and folders is secured via the **File Security** section in Flip
 Key behaviors:
 
 - **Denied by default** — files and folders without rules (directly or inherited) are inaccessible
-- **Folder inheritance** — rules on a folder apply to all files and subfolders beneath it; a file or subfolder can override with its own rules
+- **Folder inheritance** — rules on a folder apply to all files and subfolders beneath it. A file or subfolder with its own rules **completely replaces** the inherited rules (no merging). The system walks up from the resource to the first ancestor with rules and uses only those.
 - **Action-based** — rules specify which operations they permit: `read`, `create`, `update`, `delete`
 
 ## Access rule structure
@@ -99,7 +99,7 @@ File rules support an additional `allow` mode not available on Data Source rules
 | Property | Type | Required | Description |
 |---|---|---|---|
 | `id` | Number | Yes | The data source ID to query |
-| `fileColumn` | String | Yes | The column name that contains file references (checked for the file's ID) |
+| `fileColumn` | String | Yes | The column name that contains file references (checked for the file's ID via substring match) |
 | `where` | Object | No | Additional filter criteria applied to matching entries. Supports Handlebars templates for session data. If omitted, any entry referencing the file grants access |
 
 ### Full example: department document library
@@ -132,7 +132,6 @@ This example shows a folder structure where public files are accessible to every
 
 **Rules on the `/engineering/` folder:**
 
-{% raw %}
 ```json
 [
   {
@@ -144,14 +143,17 @@ This example shows a folder structure where public files are accessible to every
     "type": ["read"],
     "allow": {
       "user": {
-        "Department": { "equals": "{{user.[Department]}}" }
+        "Department": { "equals": "Engineering" }
       }
     },
     "enabled": true
   }
 ]
 ```
-{% endraw %}
+
+The second rule uses a **literal value** (`"Engineering"`) for the department check. Unlike Data Source rules which have `require` for query scoping, file security rules can only filter by the user's identity via `allow.user`. Using a Handlebars self-reference like {% raw %}`"equals": "{{user.[Department]}}"`{% endraw %} would compare the user's department against itself — always true, granting access to any logged-in user regardless of department.
+
+**Rules on the `/marketing/` folder** would follow the same pattern with `"Department": { "equals": "Marketing" }`.
 
 **Access outcomes:**
 
@@ -162,7 +164,7 @@ This example shows a folder structure where public files are accessible to every
 | Carol | User | Marketing | Granted | Denied | Denied |
 | Alice | Admin | Engineering | Granted | Granted | Granted |
 
-Rules are evaluated top to bottom — the admin rule matches first for Alice, the department rule matches for Bob. Carol is denied because no rule grants her access. Files in `/engineering/` inherit the folder's rules.
+Rules are evaluated top to bottom — the admin rule matches first for Alice, the department rule matches for Bob. Carol is denied because her department does not match the literal value "Engineering". Files in `/engineering/` inherit the folder's rules.
 
 #### API calls that succeed
 
@@ -212,7 +214,7 @@ POST /v1/media/files?folderId=2
 Auth-token: <Alice's app token>
 Content-Type: multipart/form-data
 
-// Response (200 OK):
+// Response (201 Created):
 {
   "files": [{ "id": 12, "name": "new-doc.pdf", ... }]
 }
@@ -303,7 +305,7 @@ GET /v1/media/files/10/contents/architecture.pdf
 
 For advanced logic beyond what the standard rule properties support, you can write custom JavaScript security rules. This follows the same model as [custom Data Source security rules](/Data-source-security#custom-security-rules) — the script is evaluated at runtime in a sandboxed environment.
 
-<p class="warning"><strong>Important:</strong> When a rule has a custom script, the script is the <strong>sole determinant</strong> of access. Standard rule fields like <code>allow</code> and <code>type</code> are ignored — the script runs regardless of login status or operation type. Your script must perform its own identity and operation checks (e.g., <code>if (!user) return { granted: false };</code>).</p>
+<p class="warning"><strong>Important:</strong> When a rule has a custom script, the script is the <strong>sole determinant</strong> of access. Standard rule fields like <code>allow</code> and <code>type</code> are ignored — the script runs regardless of login status or operation type. Your script must perform its own identity and operation checks (e.g., <code>if (!user) return { granted: false };</code>). If the script does not return a value (e.g., an unhandled operation type falls through without a <code>return</code>), access is <strong>denied by default</strong>.</p>
 
 When writing a custom rule, these variables are available in the script context:
 
