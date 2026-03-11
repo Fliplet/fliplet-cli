@@ -16,11 +16,12 @@ description: Secure files and folders in your Fliplet apps with access rules and
 
 ## Security rules
 
-Access to files and folders is secured via the **File Security** section in Fliplet Studio. Rules control who can read, upload, update, and delete files — enforced server-side for all app token requests. Rules can be configured through the Studio UI wizard without writing any code.
+Access to files and folders is secured via the **File Security** section in Fliplet Studio. Rules control who can read, create (upload), update, and delete files — enforced server-side for all app token requests. Rules can be configured through the Studio UI wizard without writing any code.
 
 Key behaviors:
 
 - **Denied by default** — files and folders without rules (directly or inherited) are inaccessible
+- **First-match wins** — rules are evaluated top to bottom; the first rule that grants access is used and evaluation stops. If no rules match, access is denied
 - **Folder inheritance** — rules on a folder apply to all files and subfolders beneath it. A file or subfolder with its own rules **completely replaces** the inherited rules (no merging). The system walks up from the resource to the first ancestor with rules and uses only those.
 - **Action-based** — rules specify which operations they permit: `read`, `create`, `update`, `delete`
 
@@ -178,7 +179,7 @@ Fliplet.Media.Folders.get({ folderId: 2 }).then(function (response) {
 });
 ```
 
-```
+```plaintext
 // REST API equivalent
 GET /v1/media?folderId=2
 Auth-token: <Bob's app token>
@@ -208,7 +209,7 @@ Fliplet.Media.Files.upload({
 });
 ```
 
-```
+```plaintext
 // REST API equivalent
 POST /v1/media/files?folderId=2
 Auth-token: <Alice's app token>
@@ -229,7 +230,7 @@ Fliplet.Media.Folders.get({ folderId: 1 }).then(function (response) {
 });
 ```
 
-```
+```plaintext
 // REST API — read file contents directly
 GET /v1/media/files/9/contents/welcome.pdf
 // No auth token needed — the rule grants public read access
@@ -239,7 +240,7 @@ GET /v1/media/files/9/contents/welcome.pdf
 
 #### API calls that fail
 
-When a request is denied, the API responds with HTTP status **401** and a JSON error body:
+When a request is denied, the API responds with HTTP status **401** and a JSON error body (note: [Data Source denials](/Data-source-security#queries-that-fail) return HTTP 400 instead):
 
 ```json
 {
@@ -259,7 +260,7 @@ Fliplet.Media.Folders.get({ folderId: 2 }).catch(function (error) {
 });
 ```
 
-```
+```plaintext
 // REST API equivalent
 GET /v1/media?folderId=2
 Auth-token: <Carol's app token>
@@ -280,7 +281,7 @@ Fliplet.Media.Files.upload({
 });
 ```
 
-```
+```plaintext
 // REST API equivalent
 POST /v1/media/files?folderId=2
 Auth-token: <Bob's app token>
@@ -292,7 +293,7 @@ Content-Type: multipart/form-data
 
 **Anonymous trying to read `/engineering/` files** — No login. Neither rule matches: the admin rule requires a user session, and the department rule requires a logged-in user with a matching department:
 
-```
+```plaintext
 // REST API
 GET /v1/media/files/10/contents/architecture.pdf
 // No auth token
@@ -340,7 +341,8 @@ if (type === 'create') {
 
 if (type === 'update' || type === 'delete') {
   // Only the original uploader can modify or delete.
-  // file.userId is the ID of the user who uploaded the file.
+  // file.userId is the Fliplet user ID of who uploaded the file.
+  // user.id is the authenticated user's Fliplet user ID (not a data source column).
   if (user && file && file.userId === user.id) {
     return { granted: true };
   }
@@ -413,7 +415,7 @@ if (type === 'create') {
   return { granted: true };
 }
 
-// No further access is granted by this rule to other type of operations
+// This rule does not grant access to other operation types
 ```
 
 ### Reading data from other Data Sources
