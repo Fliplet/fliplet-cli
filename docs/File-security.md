@@ -55,7 +55,7 @@ The `allow` property supports the same modes as Data Source rules. User filters 
     "type": ["read"],
     "allow": {
       "user": {
-        "Department": { "contains": "{{user.[Department]}}" },
+        "Department": { "equals": "Engineering" },
         "Status": { "notequals": "Inactive" }
       }
     },
