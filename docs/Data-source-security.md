@@ -61,14 +61,16 @@ The `allow` property supports four modes:
 }
 ```
 
-User filters support three operators: `equals`, `notequals`, and `contains`. Values can reference the user's session data using Handlebars syntax (e.g., {% raw %}`"{{ user.[Email] }}"`{% endraw %}). Multiple conditions in the same `user` object are combined with AND logic. For OR logic, create separate rules instead.
+User filters support three operators: `equals`, `notequals`, and `contains`. Values can reference the user's session data using Handlebars syntax (e.g., {% raw %}`"{{user.[Email]}}"`{% endraw %}). Multiple conditions in the same `user` object are combined with AND logic. For OR logic, create separate rules instead.
+
+<p class="warning"><strong>Important:</strong> <code>allow.user</code> conditions check the logged-in user's session data — not data source records. Referencing the user's own field in a Handlebars template (e.g., <code>{% raw %}{{ user.[Department] }}{% endraw %}</code>) compares the user's field against itself, which is always true and has no filtering effect. Use <code>allow.user</code> with <strong>literal values</strong> to filter by identity. To scope queries by the user's data (e.g., department-scoped reads), use <code>require</code> instead — see <a href="#data-requirements-and-query-validation">Data requirements</a>.</p>
 
 {% raw %}
 ```json
 {
   "allow": {
     "user": {
-      "Department": { "contains": "{{user.[Department]}}" },
+      "Role": { "equals": "Manager" },
       "Status": { "notequals": "Inactive" }
     }
   }
@@ -88,7 +90,7 @@ User filters support three operators: `equals`, `notequals`, and `contains`. Val
 
 ### Restricting columns
 
-Use `include` to whitelist specific columns, or `exclude` to hide specific columns. You cannot use both in the same rule. If neither is specified, all columns are accessible.
+Use `include` to whitelist specific columns, or `exclude` to hide specific columns. If both are specified in the same rule, `include` takes precedence — only the whitelisted columns are returned, and the `exclude` list has no effect. If neither is specified, all columns are accessible.
 
 ```json
 {
@@ -205,7 +207,7 @@ Content-Type: application/json
 
 { "Email": "bob@acme.com", "First Name": "Robert" }
 
-// Response (201 Created): updated entry
+// Response (200 OK): updated entry
 ```
 
 **Queries that fail:**
@@ -252,7 +254,7 @@ await connection.removeById(789);
 
 ### Example: department-scoped access
 
-In this example, managers see all records for their department, regular users only see their own record, and inserts are restricted to the user's department.
+In this example, managers see all records for their department, regular users only see their own record, and inserts are restricted to the user's department. Department scoping is enforced through `require` conditions on the query, not through `allow.user` (which checks the user's identity, not the data being accessed).
 
 **Data source columns:**
 
@@ -271,11 +273,11 @@ In this example, managers see all records for their department, regular users on
   {
     "type": ["select"],
     "allow": {
-      "user": {
-        "Role": { "equals": "Manager" },
-        "Department": { "contains": "{{user.[Department]}}" }
-      }
+      "user": { "Role": { "equals": "Manager" } }
     },
+    "require": [
+      { "Department": { "equals": "{{user.[Department]}}" } }
+    ],
     "exclude": ["Salary"],
     "enabled": true
   },
@@ -293,7 +295,7 @@ In this example, managers see all records for their department, regular users on
     "allow": "loggedIn",
     "require": [
       "Name",
-      { "Department": { "contains": "{{user.[Department]}}" } },
+      { "Department": { "equals": "{{user.[Department]}}" } },
       { "CreatedBy": { "equals": "{{user.[Email]}}" } }
     ],
     "exclude": ["Role", "Admin"],
@@ -303,9 +305,11 @@ In this example, managers see all records for their department, regular users on
 ```
 {% endraw %}
 
+The first rule uses `allow.user` to check the user's role (a literal match — "is this user a Manager?") and `require` to enforce department scoping on the query (the `where` clause must include the user's own department). This combination ensures only managers can use the rule *and* they can only query their own department's data.
+
 **Queries that succeed:**
 
-When Alice (Manager, Engineering) is logged in, the first rule matches for selects — she can read all Engineering records (but not Salary):
+When Alice (Manager, Engineering) is logged in, the first rule matches — she is a Manager, and her query includes `Department: 'Engineering'` which satisfies the `require` condition:
 
 ```js
 // JS API — Alice reads all Engineering records
@@ -328,7 +332,7 @@ Content-Type: application/json
 // Response (200 OK): Alice and Bob's entries, Salary excluded
 ```
 
-When Bob (User, Engineering) is logged in, only the second rule matches — he must filter by his own email:
+When Bob (User, Engineering) is logged in, the first rule does not match (wrong role). The second rule matches — he must filter by his own email:
 
 ```js
 // JS API — Bob reads his own record
@@ -359,15 +363,22 @@ Content-Type: application/json
 
 { "Name": "New Hire", "Department": "Engineering", "CreatedBy": "bob@acme.com" }
 
-// Response (201 Created): new entry
+// Response (200 OK): new entry
 ```
 
 **Queries that fail:**
 
 ```js
+// Alice (Manager) tries to read Marketing records — fails
+// (the require condition demands Department matching Alice's own department "Engineering";
+// "Marketing" does not match, so the first rule is skipped; no other rule grants broad access)
+await connection.find({
+  where: { Department: 'Marketing' }
+});
+
 // Bob tries to read all records without filtering by email — fails
 // (the second rule requires Email matching Bob's session; without a where clause,
-// the require condition is not met and the rule is skipped)
+// the require condition is not met, the rule is skipped, and no subsequent rule grants access)
 await connection.find();
 
 // Bob tries to read Alice's record — fails
@@ -377,7 +388,7 @@ await connection.find({
 });
 
 // Bob tries to insert a record in Marketing — fails
-// (Department does not contain Bob's department "Engineering")
+// (Department does not match Bob's department "Engineering")
 await connection.insert({
   Name: 'Spy',
   Department: 'Marketing',
@@ -391,13 +402,6 @@ await connection.insert({
   Department: 'Engineering',
   CreatedBy: 'alice@acme.com'
 });
-
-// Alice (Manager) tries to read Marketing records — fails
-// (the first rule requires both Role: Manager AND Department containing "Engineering";
-// Alice's department is Engineering, so "Marketing" does not match)
-await connection.find({
-  where: { Department: 'Marketing' }
-});
 ```
 
 ## Data requirements and query validation
@@ -408,7 +412,7 @@ The `require` property defines conditions that incoming queries must satisfy. Th
 
 The behavior of `require` varies by operation type:
 
-- **For `select` and `delete` operations:** The client's query must include a `where` clause that satisfies all requirements, or the rule does not match. For example, if a rule requires `{ "Email": { "equals": "{{user.[Email]}}" } }`, every `find()` call must include `where: { Email: user.Email }` (or the equivalent `$eq` operator) for that rule to grant access. If no `where` clause is provided, or the clause does not satisfy the requirements, the rule is skipped and evaluation continues to the next rule.
+- **For `select` and `delete` operations:** The client's query must include a `where` clause that satisfies all requirements, or the rule does not match. For example, if a rule requires `{ "Email": { "equals": "{{user.[Email]}}" } }`, every `find()` call must include `where: { Email: user.Email }` (or the equivalent `$eq` operator) for that rule to grant access. If the requirements are not met, the rule is **skipped** (not rejected) — evaluation falls through to the next rule. This means a more permissive rule below could still grant access. Design your rule order carefully: place restrictive rules first and ensure no later rule inadvertently grants broader access than intended.
 - **For `insert` and `update` operations:** Validates that the submitted data contains the required fields and values. If the data does not match, the write is rejected.
 
 ### Data requirement types
@@ -426,7 +430,7 @@ The behavior of `require` varies by operation type:
 
 ### Handlebars templating
 
-Condition values can reference the logged-in user's session data using Handlebars syntax. This enables dynamic, per-user filtering:
+Condition values can reference the logged-in user's session data using Handlebars syntax. This enables dynamic, per-user filtering. The bracket notation (e.g., `[Email]`) is required for field names — it handles spaces and special characters in column names (e.g., {% raw %}`{{user.[First Name]}}`{% endraw %}). Plain dot notation ({% raw %}`{{user.Email}}`{% endraw %}) also works for simple field names without spaces.
 
 - {% raw %}`{{user.[Email]}}`{% endraw %} — the user's email address
 - {% raw %}`{{user.[Department]}}`{% endraw %} — the user's department
@@ -474,7 +478,7 @@ For advanced logic beyond what the standard rule properties support, you can wri
 
 ![Custom security](assets/img/datasource-custom-security.png)
 
-<p class="warning"><strong>Important:</strong> When a rule has a <code>script</code>, the script is the <strong>sole determinant</strong> of access. Standard rule fields like <code>allow</code> and <code>type</code> are ignored — the script runs regardless of login status or operation type. Your script must perform its own identity and operation checks (e.g., <code>if (!user) return { granted: false };</code>).</p>
+<p class="warning"><strong>Important:</strong> When a rule has a <code>script</code>, the script is the <strong>sole determinant</strong> of access. Standard rule fields like <code>allow</code> and <code>type</code> are ignored — the script runs regardless of login status or operation type. Your script must perform its own identity and operation checks (e.g., <code>if (!user) return { granted: false };</code>). If the script does not return a value (e.g., an unhandled operation type falls through without a <code>return</code>), access is <strong>denied by default</strong>.</p>
 
 When writing a custom rule, these variables are available in the script context:
 
