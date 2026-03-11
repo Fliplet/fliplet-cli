@@ -9,6 +9,10 @@ description: Secure files and folders in your Fliplet apps with access rules and
 - [Security rules](#security-rules)
 - [Access rule structure](#access-rule-structure)
 - [Custom security rules](#custom-security-rules)
+  - [Granting access](#granting-access)
+  - [The `file` object](#the-file-object)
+  - [Restrict file types on upload](#restrict-file-types-on-upload)
+  - [Reading data from other Data Sources](#reading-data-from-other-data-sources)
 
 ## Security rules
 
@@ -26,16 +30,18 @@ File security rules follow the same conventions as [Data Source security rules](
 
 | Property | Type | Required | Description |
 |---|---|---|---|
-| `type` | Array of strings | Yes | Operations this rule applies to: `"read"`, `"create"`, `"update"`, `"delete"` |
-| `allow` | String or Object | Yes | Who can access: `"all"`, `"loggedIn"`, `{ "user": {...} }`, or `{ "tokens": [...] }` |
+| `type` | Array of strings | Yes | Operations this rule applies to: `"read"`, `"create"`, `"update"`, `"delete"`. Note: `"create"` is only valid on folder rules (not file rules) |
+| `allow` | String or Object | Yes | Who can access: `"all"`, `"loggedIn"`, `{ "user": {...} }`, `{ "tokens": [...] }`, or `{ "dataSource": {...} }` |
 | `enabled` | Boolean | No | Whether the rule is active (defaults to `true`) |
 | `appId` | Array of numbers | No | Restrict this rule to specific app IDs (applies to all apps if omitted) |
 | `name` | String | No | Descriptive label for identifying the rule in Studio |
 | `script` | String | No | Custom JavaScript code for advanced security logic. When present, overrides `allow` and `type` — see [Custom security rules](#custom-security-rules) |
 
+<p class="quote">A maximum of <strong>20 rules</strong> can be configured per file or folder.</p>
+
 ### Defining who can access
 
-The `allow` property supports the same four modes as Data Source rules. User filters support three operators (`equals`, `notequals`, `contains`) and can reference session data using Handlebars syntax:
+The `allow` property supports the same modes as Data Source rules. User filters support three operators (`equals`, `notequals`, `contains`) and can reference session data using Handlebars syntax:
 
 {% raw %}
 ```json
@@ -65,6 +71,36 @@ The `allow` property supports the same four modes as Data Source rules. User fil
 {% endraw %}
 
 For the full `allow` reference and Handlebars templating details, see [Data Source security rules](/Data-source-security#defining-who-can-access).
+
+### Data source ownership rules
+
+File rules support an additional `allow` mode not available on Data Source rules: `{ "dataSource": {...} }`. This grants access when a data source entry references the file and optionally matches user criteria. This mode is only available on **file rules** (not folder rules).
+
+{% raw %}
+```json
+[
+  {
+    "type": ["read"],
+    "allow": {
+      "dataSource": {
+        "id": 123,
+        "fileColumn": "Attachments",
+        "where": {
+          "Owner": "{{user.[Email]}}"
+        }
+      }
+    },
+    "enabled": true
+  }
+]
+```
+{% endraw %}
+
+| Property | Type | Required | Description |
+|---|---|---|---|
+| `id` | Number | Yes | The data source ID to query |
+| `fileColumn` | String | Yes | The column name that contains file references (checked for the file's ID) |
+| `where` | Object | No | Additional filter criteria applied to matching entries. Supports Handlebars templates for session data. If omitted, any entry referencing the file grants access |
 
 ### Full example: department document library
 
@@ -126,11 +162,142 @@ This example shows a folder structure where public files are accessible to every
 | Carol | User | Marketing | Granted | Denied | Denied |
 | Alice | Admin | Engineering | Granted | Granted | Granted |
 
-Key behaviors to note:
-- `/public/` uses `"allow": "all"` — no login required for reads
-- `/engineering/` has two rules evaluated top to bottom: the admin rule matches first for Alice, the department rule matches for Bob
-- Carol is denied because her department does not match, and no other rule grants access
-- Files in `/engineering/` inherit the folder's rules — no per-file configuration needed
+Rules are evaluated top to bottom — the admin rule matches first for Alice, the department rule matches for Bob. Carol is denied because no rule grants her access. Files in `/engineering/` inherit the folder's rules.
+
+#### API calls that succeed
+
+**Bob reading files from `/engineering/`** — Bob is logged in (Role: User, Department: Engineering). The second rule matches because his department equals "Engineering":
+
+```js
+// JS API — list files in the engineering folder
+Fliplet.Media.Folders.get({ folderId: 2 }).then(function (response) {
+  // response.files contains architecture.pdf and roadmap.xlsx
+  console.log('Engineering files:', response.files);
+});
+```
+
+```
+// REST API equivalent
+GET /v1/media?folderId=2
+Auth-token: <Bob's app token>
+
+// Response (200 OK):
+{
+  "files": [
+    { "id": 10, "name": "architecture.pdf", "contentType": "application/pdf", ... },
+    { "id": 11, "name": "roadmap.xlsx", "contentType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", ... }
+  ],
+  "folders": []
+}
+```
+
+**Alice uploading to `/engineering/`** — Alice is logged in (Role: Admin). The first rule matches because her role equals "Admin", granting `create` access:
+
+```js
+// JS API — upload a file to the engineering folder
+var formData = new FormData();
+formData.append('files[0]', fileInput.files[0]);
+
+Fliplet.Media.Files.upload({
+  data: formData,
+  folderId: 2 // engineering folder
+}).then(function (files) {
+  console.log('Uploaded:', files);
+});
+```
+
+```
+// REST API equivalent
+POST /v1/media/files?folderId=2
+Auth-token: <Alice's app token>
+Content-Type: multipart/form-data
+
+// Response (200 OK):
+{
+  "files": [{ "id": 12, "name": "new-doc.pdf", ... }]
+}
+```
+
+**Anonymous reading from `/public/`** — No login required. The rule uses `"allow": "all"`:
+
+```js
+// JS API — list files in the public folder
+Fliplet.Media.Folders.get({ folderId: 1 }).then(function (response) {
+  // response.files contains welcome.pdf
+});
+```
+
+```
+// REST API — read file contents directly
+GET /v1/media/files/9/contents/welcome.pdf
+// No auth token needed — the rule grants public read access
+
+// Response: file stream (200 OK)
+```
+
+#### API calls that fail
+
+When a request is denied, the API responds with HTTP status **401** and a JSON error body:
+
+```json
+{
+  "error": "file.access",
+  "message": "You do not have permission to access this file"
+}
+```
+
+In the JS API, the promise is rejected with this error.
+
+**Carol trying to read `/engineering/` files** — Carol is logged in (Role: User, Department: Marketing). The admin rule does not match (wrong role), and the department rule does not match (Marketing ≠ Engineering):
+
+```js
+// JS API — Carol tries to read a file from engineering
+Fliplet.Media.Folders.get({ folderId: 2 }).catch(function (error) {
+  // error: "You do not have permission to access this file"
+});
+```
+
+```
+// REST API equivalent
+GET /v1/media?folderId=2
+Auth-token: <Carol's app token>
+
+// Response (401 Unauthorized):
+{ "error": "file.access", "message": "You do not have permission to access this file" }
+```
+
+**Bob trying to upload to `/engineering/`** — Bob is logged in (Role: User, Department: Engineering). He can read files, but the only rule granting `create` access requires Role: Admin:
+
+```js
+// JS API — Bob tries to upload
+Fliplet.Media.Files.upload({
+  data: formData,
+  folderId: 2
+}).catch(function (error) {
+  // error: "You do not have permission to create files here"
+});
+```
+
+```
+// REST API equivalent
+POST /v1/media/files?folderId=2
+Auth-token: <Bob's app token>
+Content-Type: multipart/form-data
+
+// Response (401 Unauthorized):
+{ "error": "file.access", "message": "You do not have permission to create files here" }
+```
+
+**Anonymous trying to read `/engineering/` files** — No login. Neither rule matches: the admin rule requires a user session, and the department rule requires a logged-in user with a matching department:
+
+```
+// REST API
+GET /v1/media/files/10/contents/architecture.pdf
+// No auth token
+
+// Response (401 Unauthorized):
+{ "error": "file.access", "message": "You do not have permission to access this file" }
+```
 
 ## Custom security rules
 
@@ -140,125 +307,96 @@ For advanced logic beyond what the standard rule properties support, you can wri
 
 When writing a custom rule, these variables are available in the script context:
 
-- `type` (String) — the operation the user is attempting: `read`, `create`, `update`, or `delete`
+- `type` (String) — the operation being attempted: `read`, `create`, `update`, or `delete`
 - `user` (Object) — the authenticated user's session data, or `undefined` if not logged in. For data-source passport sessions (e.g., Email Verification, Fliplet Login), this contains the flat column values from the user's row in the authentication data source (e.g., `user.Email`, `user.Role`). For SAML2 sessions, it contains the assertion attributes.
-- `file` (Object) — the file being accessed (see [The `file` object](#the-file-object))
-- `folder` (Object) — the folder being accessed (see [The `folder` object](#the-folder-object))
+- `file` (Object) — the resource being accessed. This is the plain Sequelize model of either a file or a folder, depending on the operation. See [The `file` object](#the-file-object) for available properties.
+- `DataSources` (Function) — server-side library for reading data from other data sources. See [Reading data from other Data Sources](#reading-data-from-other-data-sources).
+
+<p class="quote">Script execution has a <strong>3-second timeout</strong>. Async operations (like <code>DataSources</code> queries) are supported via <code>await</code>.</p>
 
 Here is an example covering multiple scenarios:
 
 ```js
-switch (type) {
-  case 'read':
-    // Public files are accessible to everyone
-    if (file.fullPath.startsWith('/public/')) {
-      return { granted: true };
-    }
+// Check the operation type
+if (type === 'read') {
+  // Any logged-in user can read
+  if (user) {
+    return { granted: true };
+  }
 
-    // Reports restricted to managers
-    if (file.fullPath.startsWith('/reports/')) {
-      if (user && user.Role === 'Manager') {
-        return { granted: true };
-      }
-
-      return { granted: false, message: 'Reports are restricted to managers' };
-    }
-
-    // All other files require login
-    if (user) {
-      return { granted: true };
-    }
-
-    return { granted: false, message: 'You must be logged in to access this file' };
-
-  case 'create':
-    // Only editors can upload
-    if (user && user.Role === 'Editor') {
-      return { granted: true };
-    }
-
-    return { granted: false, message: 'Only editors can upload files' };
-
-  case 'update':
-  case 'delete':
-    // Only the original uploader can modify or delete
-    if (user && file.user && file.user.email === user.Email) {
-      return { granted: true };
-    }
-
-    return { granted: false, message: 'You can only modify files you uploaded' };
+  return { granted: false, message: 'You must be logged in to access this file' };
 }
 
-// If none of the cases above returned, access is denied by default
+if (type === 'create') {
+  // Only editors can upload
+  if (user && user.Role === 'Editor') {
+    return { granted: true };
+  }
+
+  return { granted: false, message: 'Only editors can upload files' };
+}
+
+if (type === 'update' || type === 'delete') {
+  // Only the original uploader can modify or delete.
+  // file.userId is the ID of the user who uploaded the file.
+  if (user && file && file.userId === user.id) {
+    return { granted: true };
+  }
+
+  return { granted: false, message: 'You can only modify files you uploaded' };
+}
+
+// Deny by default if none of the conditions above matched
+return { granted: false };
 ```
 
 ### Granting access
 
-Return an object with `granted: true` to grant access, or `granted: false` to deny. You can include a `message` property when denying access for debugging purposes:
-
-```js
-// Grant access
-return { granted: true };
-
-// Deny access
-return { granted: false };
-
-// Deny with a descriptive message
-return { granted: false, message: 'Only managers can access report files' };
-```
+Return `{ granted: true }` to allow access, or `{ granted: false }` to deny. You can include a `message` when denying for debugging purposes (e.g., `{ granted: false, message: 'Only managers can access report files' }`).
 
 <p class="warning"><strong>Important:</strong> You must return an object — bare boolean values (e.g., <code>return true</code>) are not supported and will be treated as a denial. Always use <code>return { granted: true }</code> or <code>return { granted: false }</code>.</p>
 
 ### The `file` object
 
-When the rule is evaluated for a file, the `file` variable contains metadata with enriched related objects:
+The `file` variable in custom scripts contains the plain Sequelize model of the resource being accessed — either a file or a folder. The available properties depend on the resource type.
+
+**For files:**
 
 ```js
 {
   id: 456,
-  name: "quarterly-report.pdf",
-  contentType: "application/pdf",
-  size: [1048576],
-  mediaFolderId: 12,
+  name: "team-photo.jpg",
+  contentType: "image/jpeg",
+  size: [640, 480],           // Image dimensions [width, height] — only populated for images
+  mediaFolderId: 12,         // ID of the parent folder
   appId: 789,
-  userId: 42,
+  userId: 42,                // ID of the user who uploaded the file
   isEncrypted: false,
   metadata: {},
+  accessRules: null,         // This file's own rules (if any)
   createdAt: "2025-06-15T10:30:00Z",
-  updatedAt: "2025-06-15T10:30:00Z",
-  fullPath: "/reports/2025/quarterly-report.pdf",
-
-  // Enriched related objects
-  folder: { id: 12, name: "2025" },
-  app: { id: 789, name: "Finance App" },
-  user: { id: 42, email: "john@example.com", firstName: "John", lastName: "Doe" }
+  updatedAt: "2025-06-15T10:30:00Z"
 }
 ```
 
-For `create` operations (file upload), `file` contains the metadata available from the upload request (e.g., `name`, `contentType`, `size`). Fields like `id` and `createdAt` are not yet available.
-
-### The `folder` object
-
-When the rule is evaluated for a folder, the `folder` variable contains:
+**For folders** (when the operation targets a folder, e.g., `create` for uploading into a folder):
 
 ```js
 {
   id: 12,
   name: "2025",
-  parentId: 5,
+  parentId: 5,               // ID of the parent folder
   appId: 789,
   metadata: {},
+  accessRules: null,
   createdAt: "2025-01-10T08:00:00Z",
-  updatedAt: "2025-01-10T08:00:00Z",
-  fullPath: "/reports/2025",
-
-  // Enriched related objects
-  parent: { id: 5, name: "reports" },
-  app: { id: 789, name: "Finance App" }
+  updatedAt: "2025-01-10T08:00:00Z"
 }
 ```
 
-For `create` operations (subfolder creation), `folder` contains the metadata from the request (e.g., `name`, `parentId`).
+<p class="warning"><strong>Important:</strong> The <code>file</code> object does not include related records (folder details, app name, uploader email). To look up related data, use the <code>DataSources</code> library or match on the available IDs (<code>userId</code>, <code>mediaFolderId</code>, <code>appId</code>).</p>
+
+For `create` operations (file upload), `file` contains the metadata available from the upload request (e.g., `name`, `contentType`). Fields like `id` and `createdAt` are not yet available.
 
 ### Restrict file types on upload
 
@@ -278,11 +416,9 @@ if (type === 'create') {
 
 ### Reading data from other Data Sources
 
-Custom rules can read data from Data Sources using the `DataSources` server-side library, identical to [data source custom rules](/Data-source-security#reading-data-from-other-data-sources). These reads run at **server level** and bypass all security rules on the target data source.
+Custom rules can query other data sources using the `DataSources` server-side library. The API is identical to [data source custom rules](/Data-source-security#reading-data-from-other-data-sources) — refer to that page for the full `find` and `findOne` reference, supported query operators, and usage examples.
 
-<p class="quote">Cross-data-source lookups add a database round-trip per request and are not cached. Keep queries efficient and use <code>findOne</code> when you only need a single record. Synchronous script execution has a <strong>3-second timeout</strong>, but async operations (like <code>DataSources</code> queries) are not bounded by this limit.</p>
-
-Connect using the data source ID (number) or name (string):
+These reads run at **server level** and bypass all security rules on the target data source. Connect using the data source ID (number) or name (string):
 
 ```js
 if (type === 'create') {
@@ -300,31 +436,6 @@ if (type === 'create') {
 
   return { granted: false, message: 'You do not have upload permissions' };
 }
-
-if (type === 'read') {
-  if (!user) {
-    return { granted: false };
-  }
-
-  var entries = await DataSources(123).find({
-    where: {
-      Department: user.Department,
-      AccessLevel: { $gte: 3 }
-    }
-  });
-
-  if (entries && entries.length) {
-    return { granted: true };
-  }
-
-  return { granted: false };
-}
 ```
-
-Both `find` and `findOne` accept the following properties:
-
-- `where` (Object) — query filter supporting [standard query operators](API/datasources/query-operators.html) such as `$eq`, `$ne`, `$like`, `$iLike`, `$gt`, `$gte`, `$lt`, `$lte`, `$in`
-- `limit` (Number, defaults to `100`)
-- `offset` (Number, defaults to `0`)
 
 <p class="quote">Use <code>DataSources('Name')</code> (data source name) instead of <code>DataSources(123)</code> (ID) in custom scripts. Data source names are preserved during app clone, so name-based lookups continue to work without manual remapping.</p>
