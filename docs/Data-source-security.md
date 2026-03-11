@@ -15,7 +15,7 @@ description: Secure your Data Sources with access rules, data requirements, and 
 
 Access to Data Sources is secured via the **Access Rules** tab of the **App Data** section in Fliplet Studio. Each rule controls who can access the data source, what operations they can perform, and what conditions must be met.
 
-Rules are evaluated from top to bottom, and the first matching rule is applied. If no rules match, access is denied by default.
+Rules are evaluated from top to bottom. If any rule grants access, the request is allowed and evaluation stops. If no rules match, access is denied by default.
 
 ## Access rule structure
 
@@ -30,7 +30,7 @@ Each access rule is a JSON object with the following properties:
 | `exclude` | Array of strings | No | Blacklist of hidden columns (mutually exclusive with `include`) |
 | `require` | Array | No | Data requirements that must be met (see [Data requirements](#data-requirements-and-query-validation)) |
 | `appId` | Array of numbers | No | Restrict this rule to specific app IDs (applies to all apps if omitted) |
-| `name` | String | No | Descriptive label shown in Studio for identifying the rule (only used with `script`) |
+| `name` | String | No | Descriptive label for identifying the rule in Studio |
 | `script` | String | No | Custom JavaScript code for advanced security logic. When present, overrides `allow` and `type` — see [Custom security rules](#custom-security-rules) |
 
 ### Defining who can access
@@ -102,6 +102,18 @@ Use `include` to whitelist specific columns, or `exclude` to hide specific colum
 
 ### Example: role-based access with protected fields
 
+This example shows an "Employees" data source where admins have full access, regular users can read records (without sensitive fields), and can only update their own record or insert records with a non-privileged role.
+
+**Data source columns:**
+
+| Email | First Name | Role | Department | Salary | Password | Admin | Permissions |
+|---|---|---|---|---|---|---|---|
+| alice@acme.com | Alice | Admin | Engineering | 150000 | ••••• | Yes | all |
+| bob@acme.com | Bob | User | Marketing | 85000 | ••••• | No | read |
+| carol@acme.com | Carol | User | Engineering | 95000 | ••••• | No | read |
+
+**Security rules:**
+
 {% raw %}
 ```json
 [
@@ -141,9 +153,117 @@ Use `include` to whitelist specific columns, or `exclude` to hide specific colum
 ```
 {% endraw %}
 
+**Queries that succeed:**
+
+When Alice (Admin) is logged in, the first rule matches — she has full access to all records and columns:
+
+```js
+// JS API — Alice reads all records including sensitive fields
+var connection = await Fliplet.DataSources.connectByName('Employees');
+var allRecords = await connection.find();
+// Returns all 3 records with all columns including Salary and Password
+```
+
+```
+// REST API equivalent
+POST /v1/data-sources/123/data/query
+Auth-token: <Alice's token>
+Content-Type: application/json
+
+{ "type": "select" }
+
+// Response (200 OK): all entries with all columns
+```
+
+When Bob (User) is logged in, the second rule matches for reads — he can see records but `Password` and `Salary` are excluded:
+
+```js
+// JS API — Bob reads records (sensitive columns automatically excluded)
+var connection = await Fliplet.DataSources.connectByName('Employees');
+var records = await connection.find();
+// Returns all 3 records, but each record is missing Password and Salary
+// e.g. { Email: "alice@acme.com", "First Name": "Alice", Role: "Admin", Department: "Engineering", Admin: "Yes", Permissions: "all" }
+```
+
+Bob can update his own record (the third rule requires his email in the data):
+
+```js
+// JS API — Bob updates his own name
+var connection = await Fliplet.DataSources.connectByName('Employees');
+await connection.update(456, {
+  Email: 'bob@acme.com',
+  'First Name': 'Robert'
+});
+// Succeeds — Email matches Bob's session, and Role/Admin/Permissions are excluded from writes
+```
+
+```
+// REST API equivalent
+PUT /v1/data-sources/123/data/456
+Auth-token: <Bob's token>
+Content-Type: application/json
+
+{ "Email": "bob@acme.com", "First Name": "Robert" }
+
+// Response (201 Created): updated entry
+```
+
+**Queries that fail:**
+
+When a query is denied, the API responds with HTTP status **400** and a JSON error body:
+
+```json
+{
+  "message": "The security rules for the Data Source \"Employees\" do not allow this app to read data.",
+  "type": "datasource.access",
+  "payload": { "dataSourceId": 123 }
+}
+```
+
+In the JS API, the promise is rejected with this error. The `message` includes the data source name and the operation that was denied (read, insert, update, or delete).
+
+```js
+// Bob tries to update another user's record — fails
+// (Email does not match Bob's session, so the require condition is not met)
+await connection.update(789, {
+  Email: 'carol@acme.com',
+  'First Name': 'Carolina'
+});
+
+// Bob tries to escalate his own role — fails
+// (Role is excluded from the update rule, so it cannot be written)
+await connection.update(456, {
+  Email: 'bob@acme.com',
+  Role: 'Admin'
+});
+
+// Bob tries to insert a record with an admin role — fails
+// (the insert rule requires Role: "User")
+await connection.insert({
+  Email: 'bob@acme.com',
+  'First Name': 'Bob Clone',
+  Role: 'Admin'
+});
+
+// Bob tries to delete a record — fails
+// (no delete rule matches for non-admin users)
+await connection.removeById(789);
+```
+
 ### Example: department-scoped access
 
-In this example, managers see records for their department while regular users only see their own records:
+In this example, managers see all records for their department, regular users only see their own record, and inserts are restricted to the user's department.
+
+**Data source columns:**
+
+| Email | Name | Role | Department | Salary | ManagerNotes |
+|---|---|---|---|---|---|
+| alice@acme.com | Alice | Manager | Engineering | 150000 | Top performer |
+| bob@acme.com | Bob | User | Engineering | 85000 | |
+| carol@acme.com | Carol | User | Marketing | 95000 | |
+| dave@acme.com | Dave | Manager | Marketing | 140000 | Needs training |
+
+**Security rules:**
 
 {% raw %}
 ```json
@@ -182,6 +302,103 @@ In this example, managers see records for their department while regular users o
 ]
 ```
 {% endraw %}
+
+**Queries that succeed:**
+
+When Alice (Manager, Engineering) is logged in, the first rule matches for selects — she can read all Engineering records (but not Salary):
+
+```js
+// JS API — Alice reads all Engineering records
+var connection = await Fliplet.DataSources.connectByName('Staff');
+var records = await connection.find({
+  where: { Department: 'Engineering' }
+});
+// Returns Alice and Bob's records, excluding Salary
+// e.g. { Email: "bob@acme.com", Name: "Bob", Role: "User", Department: "Engineering", ManagerNotes: "" }
+```
+
+```
+// REST API equivalent
+POST /v1/data-sources/123/data/query
+Auth-token: <Alice's token>
+Content-Type: application/json
+
+{ "type": "select", "where": { "Department": "Engineering" } }
+
+// Response (200 OK): Alice and Bob's entries, Salary excluded
+```
+
+When Bob (User, Engineering) is logged in, only the second rule matches — he must filter by his own email:
+
+```js
+// JS API — Bob reads his own record
+var connection = await Fliplet.DataSources.connectByName('Staff');
+var records = await connection.find({
+  where: { Email: 'bob@acme.com' }
+});
+// Returns Bob's record only, excluding Salary and ManagerNotes
+```
+
+Bob can insert a record in his own department:
+
+```js
+// JS API — Bob creates a record in Engineering
+await connection.insert({
+  Name: 'New Hire',
+  Department: 'Engineering',
+  CreatedBy: 'bob@acme.com'
+});
+// Succeeds — all require conditions are met, Role and Admin are excluded from writes
+```
+
+```
+// REST API equivalent
+PUT /v1/data-sources/123/data
+Auth-token: <Bob's token>
+Content-Type: application/json
+
+{ "Name": "New Hire", "Department": "Engineering", "CreatedBy": "bob@acme.com" }
+
+// Response (201 Created): new entry
+```
+
+**Queries that fail:**
+
+```js
+// Bob tries to read all records without filtering by email — fails
+// (the second rule requires Email matching Bob's session; without a where clause,
+// the require condition is not met and the rule is skipped)
+await connection.find();
+
+// Bob tries to read Alice's record — fails
+// (Email does not match Bob's session)
+await connection.find({
+  where: { Email: 'alice@acme.com' }
+});
+
+// Bob tries to insert a record in Marketing — fails
+// (Department does not contain Bob's department "Engineering")
+await connection.insert({
+  Name: 'Spy',
+  Department: 'Marketing',
+  CreatedBy: 'bob@acme.com'
+});
+
+// Bob tries to insert with a different CreatedBy — fails
+// (CreatedBy must equal Bob's email)
+await connection.insert({
+  Name: 'Fake',
+  Department: 'Engineering',
+  CreatedBy: 'alice@acme.com'
+});
+
+// Alice (Manager) tries to read Marketing records — fails
+// (the first rule requires both Role: Manager AND Department containing "Engineering";
+// Alice's department is Engineering, so "Marketing" does not match)
+await connection.find({
+  where: { Department: 'Marketing' }
+});
+```
 
 ## Data requirements and query validation
 
@@ -249,152 +466,7 @@ You can mix both formats in the same array:
 ```
 {% endraw %}
 
-### Full example: user profiles with self-service access
-
-This example shows a "Users" data source where admins have full access, but regular users can only read and update their own record — and cannot modify privilege fields.
-
-**Data source columns:**
-
-| Email | Name | Role | Department | Salary |
-|---|---|---|---|---|
-| alice@acme.com | Alice | Admin | Engineering | 120000 |
-| bob@acme.com | Bob | User | Marketing | 85000 |
-| carol@acme.com | Carol | User | Engineering | 95000 |
-
-**Security rules:**
-
-{% raw %}
-```json
-[
-  {
-    "type": ["select", "insert", "update", "delete"],
-    "allow": { "user": { "Role": { "equals": "Admin" } } },
-    "enabled": true
-  },
-  {
-    "type": ["select", "update"],
-    "allow": "loggedIn",
-    "require": [
-      { "Email": { "equals": "{{user.[Email]}}" } }
-    ],
-    "exclude": ["Salary", "Role"],
-    "enabled": true
-  }
-]
-```
-{% endraw %}
-
-**Queries that satisfy the rules:**
-
-When Bob (bob@acme.com) is logged in, his queries must include his email in the `where` clause to match the second rule:
-
-```js
-// Reading own profile — works
-connection.find({
-  where: { Email: 'bob@acme.com' }
-});
-
-// Updating own profile — works (Salary and Role are excluded from the response and cannot be written)
-connection.update(123, {
-  Email: 'bob@acme.com',
-  Name: 'Robert'
-});
-```
-
-**Queries that fail:**
-
-```js
-// Reading all records — fails (no where clause, so the require condition is not met
-// and the rule is skipped; no other rule grants Bob access)
-connection.find();
-
-// Reading another user's record — fails (Email does not match Bob's session)
-connection.find({
-  where: { Email: 'carol@acme.com' }
-});
-```
-
-When Alice (admin) is logged in, the first rule matches — she has full access to all records without needing a `where` clause.
-
-### Full example: department-scoped task tracker
-
-This example shows a "Tasks" data source where users can only see and create tasks within their own department.
-
-**Data source columns:**
-
-| Title | AssignedTo | Department | Status | CreatedBy |
-|---|---|---|---|---|
-| Fix login bug | bob@acme.com | Engineering | Open | carol@acme.com |
-| Update branding | dave@acme.com | Marketing | Open | dave@acme.com |
-| Deploy v2.1 | carol@acme.com | Engineering | Done | alice@acme.com |
-
-**Security rules:**
-
-{% raw %}
-```json
-[
-  {
-    "type": ["select"],
-    "allow": "loggedIn",
-    "require": [
-      { "Department": { "equals": "{{user.[Department]}}" } }
-    ],
-    "enabled": true
-  },
-  {
-    "type": ["insert"],
-    "allow": "loggedIn",
-    "require": [
-      "Title",
-      { "Department": { "equals": "{{user.[Department]}}" } },
-      { "CreatedBy": { "equals": "{{user.[Email]}}" } }
-    ],
-    "exclude": ["Status"],
-    "enabled": true
-  }
-]
-```
-{% endraw %}
-
-**Queries that satisfy the rules:**
-
-When Carol (Engineering department) is logged in:
-
-```js
-// Reading tasks in own department — works
-connection.find({
-  where: { Department: 'Engineering' }
-});
-
-// Creating a task in own department — works
-connection.insert({
-  Title: 'Write tests',
-  Department: 'Engineering',
-  AssignedTo: 'bob@acme.com',
-  CreatedBy: 'carol@acme.com'
-});
-```
-
-**Queries that fail:**
-
-```js
-// Reading all tasks without filtering by department — fails
-// (the require condition is not met, so the rule is skipped)
-connection.find();
-
-// Reading tasks from another department — fails
-// (Department does not match Carol's session department)
-connection.find({
-  where: { Department: 'Marketing' }
-});
-
-// Creating a task with a different CreatedBy — fails
-connection.insert({
-  Title: 'Sneak task',
-  Department: 'Engineering',
-  CreatedBy: 'alice@acme.com'
-});
-```
+For full examples of `require` in practice — including sample data, succeed queries, and fail queries — see [role-based access with protected fields](#example-role-based-access-with-protected-fields) and [department-scoped access](#example-department-scoped-access) above.
 
 ## Custom security rules
 
@@ -408,7 +480,7 @@ When writing a custom rule, these variables are available in the script context:
 
 - `type` (String) — the operation the user is attempting: `select`, `insert`, `update`, or `delete`
 - `user` (Object) — the authenticated user's session data, or `undefined` if not logged in. For data-source passport sessions (e.g., Email Verification, Fliplet Login), this contains the flat column values from the user's row in the authentication data source (e.g., `user.Email`, `user.Role`). For SAML2 sessions, it contains the assertion attributes.
-- `query` (Object or Array) — the input data, whose shape varies by operation:
+- `query` (Object or Array) — **important: the shape of this variable changes depending on the operation type:**
   - **`select`**: the unwrapped `where` object from the request (e.g., if the client sends `find({ where: { Email: "a@b.com" } })`, the rule receives `{ Email: "a@b.com" }`)
   - **`insert`** / **`update`**: the data being written to the entry. When called via the `commit` endpoint, `query` is an array of entries — see [Checking data when committing changes](#checking-data-when-committing-changes)
   - **`delete`**: the data of the entry being deleted
@@ -518,7 +590,7 @@ if (type === 'insert') {
 
 Custom rules can read data from other Data Sources using the `find` (multiple records) and `findOne` (single record) methods of the `DataSources` server-side library. These reads run at **server level** and bypass all security rules on the target data source.
 
-<p class="quote">Cross-data-source lookups add a database round-trip per request and are not cached. Keep queries efficient and use <code>findOne</code> when you only need a single record. Synchronous script execution has a <strong>3-second timeout</strong>, but async operations (like <code>DataSources</code> queries) are not bounded by this limit.</p>
+<p class="quote">Cross-data-source lookups add a database round-trip per request and are not cached. Keep queries efficient and use <code>findOne</code> when you only need a single record. Script execution has a <strong>3-second timeout</strong>. Async operations (like <code>DataSources</code> queries) are supported via <code>await</code>.</p>
 
 Connect using the data source ID (number) or name (string):
 
