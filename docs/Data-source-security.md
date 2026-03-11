@@ -30,8 +30,8 @@ Each access rule is a JSON object with the following properties:
 | `exclude` | Array of strings | No | Blacklist of hidden columns (mutually exclusive with `include`) |
 | `require` | Array | No | Data requirements that must be met (see [Data requirements](#data-requirements-and-query-validation)) |
 | `appId` | Array of numbers | No | Restrict this rule to specific app IDs (applies to all apps if omitted) |
-| `name` | String | No | Descriptive name (only used for custom rules with `script`) |
-| `script` | String | No | Custom JavaScript code for advanced security logic (see [Custom security rules](#custom-security-rules)) |
+| `name` | String | No | Descriptive label shown in Studio for identifying the rule (only used with `script`) |
+| `script` | String | No | Custom JavaScript code for advanced security logic. When present, overrides `allow` and `type` — see [Custom security rules](#custom-security-rules) |
 
 ### Defining who can access
 
@@ -191,8 +191,8 @@ The `require` property defines conditions that incoming queries must satisfy. Th
 
 The behavior of `require` varies by operation type:
 
-- **For `select` and `delete` operations:** Acts as an additional filter — users can only read or delete records matching these conditions.
-- **For `insert` and `update` operations:** Validates that the submitted data contains the required fields and values.
+- **For `select` and `delete` operations:** The client's query must include a `where` clause that satisfies all requirements, or the rule does not match. For example, if a rule requires `{ "Email": { "equals": "{{user.[Email]}}" } }`, every `find()` call must include `where: { Email: user.Email }` (or the equivalent `$eq` operator) for that rule to grant access. If no `where` clause is provided, or the clause does not satisfy the requirements, the rule is skipped and evaluation continues to the next rule.
+- **For `insert` and `update` operations:** Validates that the submitted data contains the required fields and values. If the data does not match, the write is rejected.
 
 ### Data requirement types
 
@@ -249,15 +249,150 @@ You can mix both formats in the same array:
 ```
 {% endraw %}
 
-### Sample query satisfying a "contains" requirement
+### Full example: user profiles with self-service access
 
-If a rule has `{ "Email": { "contains": "@fliplet.com" } }` as a requirement, the following query satisfies it:
+This example shows a "Users" data source where admins have full access, but regular users can only read and update their own record — and cannot modify privilege fields.
+
+**Data source columns:**
+
+| Email | Name | Role | Department | Salary |
+|---|---|---|---|---|
+| alice@acme.com | Alice | Admin | Engineering | 120000 |
+| bob@acme.com | Bob | User | Marketing | 85000 |
+| carol@acme.com | Carol | User | Engineering | 95000 |
+
+**Security rules:**
+
+{% raw %}
+```json
+[
+  {
+    "type": ["select", "insert", "update", "delete"],
+    "allow": { "user": { "Role": { "equals": "Admin" } } },
+    "enabled": true
+  },
+  {
+    "type": ["select", "update"],
+    "allow": "loggedIn",
+    "require": [
+      { "Email": { "equals": "{{user.[Email]}}" } }
+    ],
+    "exclude": ["Salary", "Role"],
+    "enabled": true
+  }
+]
+```
+{% endraw %}
+
+**Queries that satisfy the rules:**
+
+When Bob (bob@acme.com) is logged in, his queries must include his email in the `where` clause to match the second rule:
 
 ```js
-Fliplet.DataSources.connect(123).then(function (connection) {
-  return connection.find({
-    where: { Email: { $iLike: '@fliplet.com' } }
-  });
+// Reading own profile — works
+connection.find({
+  where: { Email: 'bob@acme.com' }
+});
+
+// Updating own profile — works (Salary and Role are excluded from the response and cannot be written)
+connection.update(123, {
+  Email: 'bob@acme.com',
+  Name: 'Robert'
+});
+```
+
+**Queries that fail:**
+
+```js
+// Reading all records — fails (no where clause, so the require condition is not met
+// and the rule is skipped; no other rule grants Bob access)
+connection.find();
+
+// Reading another user's record — fails (Email does not match Bob's session)
+connection.find({
+  where: { Email: 'carol@acme.com' }
+});
+```
+
+When Alice (admin) is logged in, the first rule matches — she has full access to all records without needing a `where` clause.
+
+### Full example: department-scoped task tracker
+
+This example shows a "Tasks" data source where users can only see and create tasks within their own department.
+
+**Data source columns:**
+
+| Title | AssignedTo | Department | Status | CreatedBy |
+|---|---|---|---|---|
+| Fix login bug | bob@acme.com | Engineering | Open | carol@acme.com |
+| Update branding | dave@acme.com | Marketing | Open | dave@acme.com |
+| Deploy v2.1 | carol@acme.com | Engineering | Done | alice@acme.com |
+
+**Security rules:**
+
+{% raw %}
+```json
+[
+  {
+    "type": ["select"],
+    "allow": "loggedIn",
+    "require": [
+      { "Department": { "equals": "{{user.[Department]}}" } }
+    ],
+    "enabled": true
+  },
+  {
+    "type": ["insert"],
+    "allow": "loggedIn",
+    "require": [
+      "Title",
+      { "Department": { "equals": "{{user.[Department]}}" } },
+      { "CreatedBy": { "equals": "{{user.[Email]}}" } }
+    ],
+    "exclude": ["Status"],
+    "enabled": true
+  }
+]
+```
+{% endraw %}
+
+**Queries that satisfy the rules:**
+
+When Carol (Engineering department) is logged in:
+
+```js
+// Reading tasks in own department — works
+connection.find({
+  where: { Department: 'Engineering' }
+});
+
+// Creating a task in own department — works
+connection.insert({
+  Title: 'Write tests',
+  Department: 'Engineering',
+  AssignedTo: 'bob@acme.com',
+  CreatedBy: 'carol@acme.com'
+});
+```
+
+**Queries that fail:**
+
+```js
+// Reading all tasks without filtering by department — fails
+// (the require condition is not met, so the rule is skipped)
+connection.find();
+
+// Reading tasks from another department — fails
+// (Department does not match Carol's session department)
+connection.find({
+  where: { Department: 'Marketing' }
+});
+
+// Creating a task with a different CreatedBy — fails
+connection.insert({
+  Title: 'Sneak task',
+  Department: 'Engineering',
+  CreatedBy: 'alice@acme.com'
 });
 ```
 
@@ -273,54 +408,52 @@ When writing a custom rule, these variables are available in the script context:
 
 - `type` (String) — the operation the user is attempting: `select`, `insert`, `update`, or `delete`
 - `user` (Object) — the authenticated user's session data, or `undefined` if not logged in. For data-source passport sessions (e.g., Email Verification, Fliplet Login), this contains the flat column values from the user's row in the authentication data source (e.g., `user.Email`, `user.Role`). For SAML2 sessions, it contains the assertion attributes.
-- `query` (Object or Array) — for `select` operations, this is the unwrapped `where` object from the request (e.g., if the client sends `find({ where: { Email: "a@b.com" } })`, the rule receives `query = { Email: "a@b.com" }`). For `insert` and `update`, this is the data being written. For `commit` operations, this is the array of entries being inserted or updated.
-- `entry` (Object) — the existing entry being updated, if applicable
+- `query` (Object or Array) — the input data, whose shape varies by operation:
+  - **`select`**: the unwrapped `where` object from the request (e.g., if the client sends `find({ where: { Email: "a@b.com" } })`, the rule receives `{ Email: "a@b.com" }`)
+  - **`insert`** / **`update`**: the data being written to the entry. When called via the `commit` endpoint, `query` is an array of entries — see [Checking data when committing changes](#checking-data-when-committing-changes)
+  - **`delete`**: the data of the entry being deleted
+- `entry` (Object) — the existing entry being updated (with `id` and `data` properties), or `undefined` for other operation types
 
-The `query` parameter changes shape depending on the operation, so your code should handle all relevant scenarios. Here is an example covering all operation types:
+Your code should handle all relevant operation types. Here is an example:
 
 ```js
+// Always check for unauthenticated access first
+if (!user) {
+  return { granted: false };
+}
+
 switch (type) {
   case 'select':
-    // Check scenario when selecting records
-    // "query" here is the input query from the API request
-    return { granted: query.foo !== 'bar' };
+    // "query" is the unwrapped where object from the API request
+    return { granted: query.Department === user.Department };
 
   case 'insert':
-    // Check scenario when inserting records.
-    // "query" here is the input data being inserted.
+    // "query" is the data being inserted.
     // It can also be an array when committing multiple records at once.
     if (Array.isArray(query)) {
-      // Check each object in the input data
-      return { granted: query.every(data => data.foo === 'bar') };
+      return { granted: query.every(data => data.Department === user.Department) };
     }
 
-    // Check the input data
-    return { granted: query.foo === 'bar' };
+    return { granted: query.Department === user.Department };
 
   case 'update':
-    // Check scenario when updating records.
-    // "query" here is the input data being updated.
+    // "query" is the data being updated.
     // It can also be an array when committing multiple records at once.
-    // You will also receive the input "entry" object when applicable.
+    // "entry" is the existing record (with id and data properties) when applicable.
     if (Array.isArray(query)) {
-      // Check each object in the input data
-      return { granted: query.every(data => data.foo === 'bar') };
+      return { granted: query.every(data => data.Department === user.Department) };
     }
 
-    // Check the input data to update and the existing entry
-    return { granted: query.foo === 'bar' && entry.data.foobar === true };
+    return { granted: query.Department === user.Department && entry.data.Active === true };
 
   case 'delete':
-    // Check scenario when deleting records.
-    // "query" here is the input data being updated.
+    // "query" is the data of the entry being deleted.
     // It can also be an array when deleting multiple records at once.
     if (Array.isArray(query)) {
-      // Check each object in the input data
-      return { granted: query.every(data => data.foo === 'bar') };
+      return { granted: query.every(data => data.CreatedBy === user.Email) };
     }
 
-    // Check the input data
-    return { granted: query.foo === 'bar' };
+    return { granted: query.CreatedBy === user.Email };
 }
 ```
 
@@ -331,7 +464,7 @@ Return an object with `granted: true` to grant access. You can also return an `e
 ```js
 if (type === 'select') {
   // Grant access to admin users
-  if (user.Admin === 'Yes') {
+  if (user && user.Admin === 'Yes') {
     return { granted: true };
   }
 
@@ -343,16 +476,6 @@ if (type === 'select') {
 ```
 
 <p class="warning"><strong>Important:</strong> You must return an object — bare boolean values (e.g., <code>return true</code>) are not supported and will be treated as a denial. Always use <code>return { granted: true }</code> or <code>return { granted: false }</code>.</p>
-
-### Handling different operation types
-
-The `query` parameter contains different data depending on the operation:
-
-- Reading data (selects): the input query to filter the data
-- Writing data (inserts and updates): the data being written to the entry
-- Deleting data (deletes): the data of the entry being deleted
-
-When using the "commit" JS API or REST API, the `query` contains the payload from the request body. For example, if you delete a list of entries by ID using the commit endpoint, the `query` parameter includes the `delete` key with the array of IDs.
 
 ### Modifying the input query
 
@@ -379,7 +502,7 @@ if (type === 'insert') {
 
 ### Checking data when committing changes
 
-When a data source is updated via the `commit` endpoint (or JS API), the `query` contains the array of entries being inserted or updated. The security rule runs **twice** — once for inserts and once for updates.
+When a data source is updated via the `commit` endpoint (or JS API), the `query` contains the array of entries being inserted or updated. The security rule runs **twice** — once for inserts and once for updates. If you delete entries by ID using the commit endpoint, the `query` parameter includes the `delete` key with the array of IDs.
 
 ```js
 if (type === 'insert') {
