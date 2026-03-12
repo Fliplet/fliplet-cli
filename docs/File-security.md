@@ -8,11 +8,15 @@ description: Secure files and folders in your Fliplet apps with access rules and
 
 - [Security rules](#security-rules)
 - [Access rule structure](#access-rule-structure)
+  - [Explicit deny with `stop`](#explicit-deny-with-stop)
+  - [Data source ownership rules](#data-source-ownership-rules)
+- [Private media files and app bundles](#private-media-files-and-app-bundles)
 - [Custom security rules](#custom-security-rules)
   - [Granting access](#granting-access)
   - [The `file` object](#the-file-object)
   - [Restrict file types on upload](#restrict-file-types-on-upload)
   - [Reading data from other Data Sources](#reading-data-from-other-data-sources)
+- [REST API endpoints](#rest-api-endpoints)
 
 ## Security rules
 
@@ -20,9 +24,15 @@ Access to files and folders is secured via the **File Security** section in Flip
 
 Key behaviors:
 
-- **Denied by default** — files and folders without rules (directly or inherited) are inaccessible
+- **Denied by default** — access is denied when no rules exist on a resource or any of its ancestors. Note that apps come with a preset rule granting public read and logged-in upload access, which can be changed in Studio
 - **First-match wins** — rules are evaluated top to bottom; the first rule that grants access is used and evaluation stops. If no rules match, access is denied
-- **Folder inheritance** — rules on a folder apply to all files and subfolders beneath it. A file or subfolder with its own rules **completely replaces** the inherited rules (no merging). The system walks up from the resource to the first ancestor with rules and uses only those.
+- **Inheritance chain** — rules are resolved by walking up the resource hierarchy until rules are found:
+  1. The file or folder's own rules
+  2. Parent folder → grandparent folder → … (up the folder tree)
+  3. The app's root media access rules (final fallback)
+  4. No rules found anywhere → access denied
+
+  A resource with its own rules **completely replaces** inherited rules (no merging). The system uses only the first set of rules it finds in this chain.
 - **Action-based** — rules specify which operations they permit: `read`, `create`, `update`, `delete`
 
 ## Access rule structure
@@ -37,6 +47,7 @@ File security rules follow the same conventions as [Data Source security rules](
 | `appId` | Array of numbers | No | Restrict this rule to specific app IDs (applies to all apps if omitted) |
 | `name` | String | No | Descriptive label for identifying the rule in Studio |
 | `script` | String | No | Custom JavaScript code for advanced security logic. When present, overrides `allow` and `type` — see [Custom security rules](#custom-security-rules) |
+| `stop` | Boolean | No | If `true` and the rule does not match the request, evaluation stops immediately (explicit deny). Defaults to `false`. See [Explicit deny with `stop`](#explicit-deny-with-stop) |
 
 <p class="quote">A maximum of <strong>20 rules</strong> can be configured per file or folder.</p>
 
@@ -71,7 +82,47 @@ The `allow` property supports the same modes as Data Source rules. User filters 
 ```
 {% endraw %}
 
+To grant access to specific API tokens, use the `tokens` mode with an array of Fliplet API token IDs:
+
+```json
+{
+  "type": ["read"],
+  "allow": { "tokens": [42857] },
+  "enabled": true
+}
+```
+
 For the full `allow` reference and Handlebars templating details, see [Data Source security rules](/Data-source-security#defining-who-can-access).
+
+### Explicit deny with `stop`
+
+Normally, when a rule does not match the current request it is skipped and evaluation continues with the next rule. Setting `stop: true` on a rule changes this behavior: if the rule **does not match**, evaluation halts immediately and access is denied.
+
+This lets you create an explicit deny — a rule that says "if you don't pass this check, stop here; don't even look at the remaining rules."
+
+**Example:** only non-suspended logged-in users should be able to read files, even though a broader `loggedIn` rule exists further down:
+
+```json
+[
+  {
+    "type": ["read"],
+    "allow": {
+      "user": { "Status": { "notequals": "Suspended" } }
+    },
+    "stop": true,
+    "enabled": true
+  },
+  {
+    "type": ["read"],
+    "allow": "loggedIn",
+    "enabled": true
+  }
+]
+```
+
+A non-suspended user matches the first rule and is granted access. A suspended user **fails** the first rule — because `stop` is `true`, evaluation halts and access is denied before the second `loggedIn` rule is reached.
+
+<p class="quote"><strong>Note:</strong> The <code>stop</code> property is specific to file security rules. It is not available on <a href="/Data-source-security">Data Source security rules</a>.</p>
 
 ### Data source ownership rules
 
@@ -302,6 +353,17 @@ GET /v1/media/files/10/contents/architecture.pdf
 { "error": "file.access", "message": "You do not have permission to access this file" }
 ```
 
+## Private media files and app bundles
+
+Files that do not have an unconditional public read rule (i.e., `"allow": "all"` for `"read"`) are treated as **private**. This affects how files are included in app bundles:
+
+- **Public files** are included in the app bundle as normal and are available offline
+- **Private files** are excluded from the bundle — only metadata (file ID, name, content type) is included
+- At runtime, the app must make **authenticated API requests** to access private file contents (e.g., via `Fliplet.Media.Files.get()` or the `/v1/media/files/:id/contents` endpoint)
+- Private files are **not available offline** unless your app explicitly fetches and caches them at runtime
+
+This partitioning ensures that secured files are never exposed in the publicly downloadable app bundle.
+
 ## Custom security rules
 
 For advanced logic beyond what the standard rule properties support, you can write custom JavaScript security rules. This follows the same model as [custom Data Source security rules](/Data-source-security#custom-security-rules) — the script is evaluated at runtime in a sandboxed environment.
@@ -443,3 +505,7 @@ if (type === 'create') {
 ```
 
 <p class="quote">Use <code>DataSources('Name')</code> (data source name) instead of <code>DataSources(123)</code> (ID) in custom scripts. Data source names are preserved during app clone, so name-based lookups continue to work without manual remapping.</p>
+
+## REST API endpoints
+
+To manage access rules programmatically, see the [Media access rules API](/REST-API/fliplet-media#access-rules) for endpoints to get and set rules on files, folders, and apps.
