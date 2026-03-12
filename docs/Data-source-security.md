@@ -8,14 +8,22 @@ description: Secure your Data Sources with access rules, data requirements, and 
 
 - [Security rules](#security-rules)
 - [Access rule structure](#access-rule-structure)
+  - [Defining who can access](#defining-who-can-access)
+  - [Restricting columns](#restricting-columns)
+  - [Example: role-based access with protected fields](#example-role-based-access-with-protected-fields)
+  - [Example: department-scoped access](#example-department-scoped-access)
 - [Data requirements and query validation](#data-requirements-and-query-validation)
 - [Custom security rules](#custom-security-rules)
+  - [Granting access](#granting-access)
+  - [Modifying the input query](#modifying-the-input-query)
+  - [Checking data when committing changes](#checking-data-when-committing-changes)
+  - [Reading data from other Data Sources](#reading-data-from-other-data-sources)
 
 ## Security rules
 
 Access to Data Sources is secured via the **Access Rules** tab of the **App Data** section in Fliplet Studio. Each rule controls who can access the data source, what operations they can perform, and what conditions must be met.
 
-Rules are evaluated from top to bottom. If any rule grants access, the request is allowed and evaluation stops. If no rules match, access is denied by default.
+Rules are evaluated from top to bottom. The first rule that grants access is used and evaluation stops — later rules are not checked. If no rules match, access is denied by default. Note that for read operations, a rule with unmet `require` conditions is **skipped**, not denied — evaluation continues to the next rule. For writes, unmet `require` is a hard rejection. See [Data requirements](#data-requirements-and-query-validation) for details.
 
 ## Access rule structure
 
@@ -26,8 +34,8 @@ Each access rule is a JSON object with the following properties:
 | `type` | Array of strings | Yes | Operations this rule applies to: `"select"`, `"insert"`, `"update"`, `"delete"` |
 | `allow` | String or Object | Yes | Who can access: `"all"`, `"loggedIn"`, `{ "user": {...} }`, or `{ "tokens": [...] }` |
 | `enabled` | Boolean | No | Whether the rule is active (defaults to `true`) |
-| `include` | Array of strings | No | Whitelist of accessible columns (mutually exclusive with `exclude`) |
-| `exclude` | Array of strings | No | Blacklist of hidden columns (mutually exclusive with `include`) |
+| `include` | Array of strings | No | Whitelist of accessible columns. If both `include` and `exclude` are present, `include` takes precedence |
+| `exclude` | Array of strings | No | Blacklist of hidden columns. Ignored if `include` is also present |
 | `require` | Array | No | Data requirements that must be met (see [Data requirements](#data-requirements-and-query-validation)) |
 | `appId` | Array of numbers | No | Restrict this rule to specific app IDs (applies to all apps if omitted) |
 | `name` | String | No | Descriptive label for identifying the rule in Studio |
@@ -49,7 +57,7 @@ The `allow` property supports four modes:
 { "allow": "loggedIn" }
 ```
 
-**Specific users** (filtered by session data):
+**Specific users** (filtered by session data). `allow.user` checks the logged-in user's **identity** — use it with literal values to control *who* can access. To control *which records* they can access, use `require` instead (see [Data requirements](#data-requirements-and-query-validation)):
 
 ```json
 {
@@ -61,9 +69,9 @@ The `allow` property supports four modes:
 }
 ```
 
-User filters support three operators: `equals`, `notequals`, and `contains`. Values can reference the user's session data using Handlebars syntax (e.g., {% raw %}`"{{user.[Email]}}"`{% endraw %}). Multiple conditions in the same `user` object are combined with AND logic. For OR logic, create separate rules instead.
+User filters support three operators: `equals`, `notequals`, and `contains`. Multiple conditions in the same `user` object are combined with AND logic. For OR logic, create separate rules instead.
 
-<p class="warning"><strong>Important:</strong> <code>allow.user</code> conditions check the logged-in user's session data — not data source records. Referencing the user's own field in a Handlebars template (e.g., <code>{% raw %}{{ user.[Department] }}{% endraw %}</code>) compares the user's field against itself, which is always true and has no filtering effect. Use <code>allow.user</code> with <strong>literal values</strong> to filter by identity. To scope queries by the user's data (e.g., department-scoped reads), use <code>require</code> instead — see <a href="#data-requirements-and-query-validation">Data requirements</a>.</p>
+<p class="warning"><strong>Important:</strong> <code>allow.user</code> conditions check the logged-in user's session data — not data source records. Always use <strong>literal values</strong> here (e.g., <code>"Admin"</code>, <code>"Manager"</code>). Although Handlebars syntax is supported, using it in <code>allow.user</code> (e.g., <code>{% raw %}{{ user.[Department] }}{% endraw %}</code>) compares the user's field against itself — always true, granting access to any logged-in user. Handlebars templates are useful in <code>require</code> conditions, where they scope queries by the user's data. See <a href="#data-requirements-and-query-validation">Data requirements</a>.</p>
 
 {% raw %}
 ```json
@@ -408,12 +416,14 @@ await connection.insert({
 
 The `require` property defines conditions that incoming queries must satisfy. This is not the same as querying data — it controls how queries are **assessed against the rule's data requirements**.
 
-<p class="info">If you add data requirements to your rules, querying your Data Sources through Fliplet core components may stop working unless you write custom queries that satisfy the requirements.</p>
+<p class="info">If you add data requirements to your rules, Fliplet core components that query the data source (e.g., <strong>List from Data Source</strong>, <strong>Chart</strong>, <strong>Form</strong>) may stop working because they issue broad queries without the <code>where</code> clauses that <code>require</code> demands. You will need to either add a permissive rule (without <code>require</code>) scoped to those components' app IDs, or replace the component queries with custom code that satisfies the requirements.</p>
 
 The behavior of `require` varies by operation type:
 
 - **For `select` and `delete` operations:** The client's query must include a `where` clause that satisfies all requirements, or the rule does not match. For example, if a rule requires `{ "Email": { "equals": "{{user.[Email]}}" } }`, every `find()` call must include `where: { Email: user.Email }` (or the equivalent `$eq` operator) for that rule to grant access. If the requirements are not met, the rule is **skipped** (not rejected) — evaluation falls through to the next rule. This means a more permissive rule below could still grant access. Design your rule order carefully: place restrictive rules first and ensure no later rule inadvertently grants broader access than intended.
-- **For `insert` and `update` operations:** Validates that the submitted data contains the required fields and values. If the data does not match, the write is rejected.
+- **For `insert` and `update` operations:** Validates that the submitted data contains the required fields and values. If the data does not match, the write is **rejected immediately** — unlike reads, unmet requirements on a write do not fall through to the next rule.
+
+<p class="quote"><strong>Key difference:</strong> Unmet <code>require</code> on a read = rule skipped, next rule evaluated. Unmet <code>require</code> on a write = request denied outright. This means a permissive read rule further down the list can still grant access, but a failed write requirement stops evaluation.</p>
 
 ### Data requirement types
 
@@ -430,7 +440,7 @@ The behavior of `require` varies by operation type:
 
 ### Handlebars templating
 
-Condition values can reference the logged-in user's session data using Handlebars syntax. This enables dynamic, per-user filtering. The bracket notation (e.g., `[Email]`) is required for field names — it handles spaces and special characters in column names (e.g., {% raw %}`{{user.[First Name]}}`{% endraw %}). Plain dot notation ({% raw %}`{{user.Email}}`{% endraw %}) also works for simple field names without spaces.
+Condition values can reference the logged-in user's session data using Handlebars syntax. This enables dynamic, per-user access scoping. Use bracket notation (e.g., `[Email]`) for field names — it is required for names with spaces or special characters (e.g., {% raw %}`{{user.[First Name]}}`{% endraw %}), and also works for simple names. Plain dot notation ({% raw %}`{{user.Email}}`{% endraw %}) works only for field names without spaces.
 
 - {% raw %}`{{user.[Email]}}`{% endraw %} — the user's email address
 - {% raw %}`{{user.[Department]}}`{% endraw %} — the user's department
@@ -489,7 +499,7 @@ When writing a custom rule, these variables are available in the script context:
 - `query` (Object or Array) — **important: the shape of this variable changes depending on the operation type:**
   - **`select`**: the unwrapped `where` object from the request (e.g., if the client sends `find({ where: { Email: "a@b.com" } })`, the rule receives `{ Email: "a@b.com" }`)
   - **`insert`** / **`update`**: the data being written to the entry. When called via the `commit` endpoint, `query` is an array of entries — see [Checking data when committing changes](#checking-data-when-committing-changes)
-  - **`delete`**: the data of the entry being deleted
+  - **`delete`**: the current data of the entry being deleted (populated by the server from the existing record, not sent by the client)
 - `entry` (Object) — the existing entry being updated, with `id` (Number) and `data` (Object containing the entry's current column values) properties. `undefined` for other operation types
 - `DataSources` (Function) — server-side library for reading data from other data sources. See [Reading data from other Data Sources](#reading-data-from-other-data-sources)
 
@@ -503,8 +513,9 @@ if (!user) {
 
 switch (type) {
   case 'select':
-    // "query" is the unwrapped where object from the API request
-    return { granted: query.Department === user.Department };
+    // "query" is the unwrapped where object from the API request.
+    // If the client sends find() with no where clause, query may be empty.
+    return { granted: query && query.Department === user.Department };
 
   case 'insert':
     // "query" is the data being inserted.
@@ -523,7 +534,7 @@ switch (type) {
       return { granted: query.every(data => data.Department === user.Department) };
     }
 
-    return { granted: query.Department === user.Department && entry.data.Active === true };
+    return { granted: query.Department === user.Department && entry && entry.data.Active === true };
 
   case 'delete':
     // "query" is the data of the entry being deleted.
@@ -542,16 +553,20 @@ Return an object with `granted: true` to grant access. You can also return an `e
 
 ```js
 if (type === 'select') {
-  // Grant access to admin users
-  if (user && user.Admin === 'Yes') {
+  if (!user) {
+    return { granted: false };
+  }
+
+  // Grant full access to admin users
+  if (user.Admin === 'Yes') {
     return { granted: true };
   }
 
-  // Grant access to any other user, but don't allow reading the "Phone" and "NextOfKin" columns
+  // Grant access to any other logged-in user, but hide sensitive columns
   return { granted: true, exclude: ['Phone', 'NextOfKin'] };
 }
 
-// No further access is granted by this rule to other type of operations
+// No further access is granted by this rule to other operation types
 ```
 
 <p class="warning"><strong>Important:</strong> You must return an object — bare boolean values (e.g., <code>return true</code>) are not supported and will be treated as a denial. Always use <code>return { granted: true }</code> or <code>return { granted: false }</code>.</p>
@@ -561,6 +576,10 @@ if (type === 'select') {
 Rules can modify the `query` object to enforce constraints:
 
 ```js
+if (!user) {
+  return { granted: false };
+}
+
 if (type === 'select') {
   // Only allow reading records for the same office as the user's
   query.Office = user.Office;
@@ -581,15 +600,20 @@ if (type === 'insert') {
 
 ### Checking data when committing changes
 
-When a data source is updated via the `commit` endpoint (or JS API), the `query` contains the array of entries being inserted or updated. The security rule runs **twice** — once for inserts and once for updates. If you delete entries by ID using the commit endpoint, the `query` parameter includes the `delete` key with the array of IDs.
+When a data source is updated via the `commit` endpoint (or JS API), `query` is always an **array** of flat data objects — not a single object. The security rule runs separately for each operation type in the commit (inserts, updates, and deletes).
+
+<p class="quote"><strong>Note:</strong> For all three operation types during a commit, <code>query</code> is an array of flat data objects (the entry's column values). For deletes, the server loads the existing entries and provides their data — you receive the same flat shape as inserts and updates, not an array of IDs.</p>
 
 ```js
 if (type === 'insert') {
-  // This code block runs when evaluating entries to be inserted
-  // "query" here is the array of entries to insert
+  // "query" is the array of entries to insert
+  // e.g. [{ Name: "Alice", Department: "Engineering" }, { Name: "Bob", Department: "Marketing" }]
 } else if (type === 'update') {
-  // This code block runs when evaluating entries to be updated
-  // "query" here is the array of entries to update
+  // "query" is the array of entry data being written
+  // e.g. [{ Name: "Alice Updated", Department: "Engineering" }, { Name: "Bob Updated", Department: "Marketing" }]
+} else if (type === 'delete') {
+  // "query" is the array of existing entry data for the entries being deleted
+  // e.g. [{ Name: "Alice", Department: "Engineering" }, { Name: "Dave", Department: "Marketing" }]
 }
 ```
 
@@ -602,6 +626,10 @@ Custom rules can read data from other Data Sources using the `find` (multiple re
 Connect using the data source ID (number) or name (string):
 
 ```js
+if (!user) {
+  return { granted: false };
+}
+
 if (type === 'select') {
   var entry = await DataSources(123).findOne({
     where: {
@@ -620,7 +648,7 @@ if (type === 'select') {
 if (type === 'insert') {
   var entries = await DataSources('Users').find();
 
-  // Only allow writes as long as there are less than 10 entries in the target Data Source
+  // Only allow writes as long as there are fewer than 10 entries in the target Data Source
   if (entries && entries.length < 10) {
     return { granted: true };
   }
@@ -632,3 +660,5 @@ Both `find` and `findOne` accept the following properties:
 - `where` (Object) — query filter supporting [standard query operators](API/datasources/query-operators.html) such as `$eq`, `$ne`, `$like`, `$iLike`, `$gt`, `$gte`, `$lt`, `$lte`, `$in`
 - `limit` (Number, defaults to `100`)
 - `offset` (Number, defaults to `0`)
+
+<p class="quote">Use <code>DataSources('Name')</code> (data source name) instead of <code>DataSources(123)</code> (ID) in custom scripts. Data source names are preserved during app clone, so name-based lookups continue to work without manual remapping.</p>
