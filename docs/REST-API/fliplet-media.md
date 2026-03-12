@@ -268,3 +268,150 @@ e.g. `v1/media/files/123`
 Deletes a media file given its ID.
 
 ---
+
+## Access rules
+
+These endpoints manage [file security access rules](/File-security) on files, folders, and app root media. All endpoints require a **Studio token** for authentication.
+
+For the rule format, evaluation logic, and examples, see [Securing your files and folders](/File-security).
+
+<p class="quote">A maximum of <strong>20 rules</strong> can be configured per resource.</p>
+
+---
+
+### Get file access rules
+
+#### `GET v1/media/files/<id>/accessRules`
+
+Returns the access rules for a file, including any inherited rules.
+
+Response (Status code: 200 OK):
+
+```json
+{
+  "accessRules": null,
+  "effectiveRules": [
+    {
+      "type": ["read"],
+      "allow": "all",
+      "enabled": true
+    }
+  ],
+  "inheritedFrom": {
+    "type": "folder",
+    "folderId": 123,
+    "folderName": "Public Documents"
+  }
+}
+```
+
+| Property | Description |
+|---|---|
+| `accessRules` | The file's own rules, or `null` if it inherits from a parent |
+| `effectiveRules` | The rules that actually apply to this file (own or inherited) |
+| `inheritedFrom` | Where the effective rules come from: `null` (own rules), `{ "type": "folder", "folderId", "folderName" }`, or `{ "type": "app", "appId" }` |
+
+---
+
+### Set file access rules
+
+#### `PUT v1/media/files/<id>/accessRules`
+
+Sets or clears the access rules for a file.
+
+Request body:
+
+```json
+{
+  "accessRules": [
+    {
+      "type": ["read"],
+      "allow": "loggedIn",
+      "enabled": true
+    }
+  ]
+}
+```
+
+To clear a file's own rules and revert to inheriting from its parent folder:
+
+```json
+{
+  "accessRules": null
+}
+```
+
+---
+
+### Get folder access rules
+
+#### `GET v1/media/folders/<id>/accessRules`
+
+Returns the access rules for a folder, including any inherited rules. The response shape is the same as the [file access rules endpoint](#get-file-access-rules).
+
+---
+
+### Set folder access rules
+
+#### `PUT v1/media/folders/<id>/accessRules`
+
+Sets or clears the access rules for a folder. The request body format is the same as the [file access rules endpoint](#set-file-access-rules).
+
+---
+
+### Get app root media access rules
+
+#### `GET v1/media/apps/<id>/accessRules`
+
+Returns the app-level root media access rules. These serve as the final fallback in the [inheritance chain](/File-security#security-rules) when no file or folder rules are found.
+
+Response (Status code: 200 OK):
+
+```json
+{
+  "accessRules": [
+    {
+      "type": ["read"],
+      "allow": "all",
+      "enabled": true
+    },
+    {
+      "type": ["create"],
+      "allow": "loggedIn",
+      "enabled": true
+    }
+  ]
+}
+```
+
+---
+
+### Set app root media access rules
+
+#### `PUT v1/media/apps/<id>/accessRules`
+
+Sets or clears the app-level root media access rules.
+
+Request body:
+
+```json
+{
+  "accessRules": [
+    {
+      "type": ["read"],
+      "allow": "all",
+      "enabled": true
+    }
+  ]
+}
+```
+
+To clear app-level rules:
+
+```json
+{
+  "accessRules": null
+}
+```
+
+---
