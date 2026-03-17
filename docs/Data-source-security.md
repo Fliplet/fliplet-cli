@@ -13,6 +13,9 @@ description: Secure your Data Sources with access rules, data requirements, and 
   - [Example: role-based access with protected fields](#example-role-based-access-with-protected-fields)
   - [Example: department-scoped access](#example-department-scoped-access)
 - [Data requirements and query validation](#data-requirements-and-query-validation)
+  - [Data requirement types](#data-requirement-types)
+  - [Handlebars templating](#handlebars-templating)
+  - [Require syntax](#require-syntax)
 - [Custom security rules](#custom-security-rules)
   - [Granting access](#granting-access)
   - [Modifying the input query](#modifying-the-input-query)
@@ -23,7 +26,9 @@ description: Secure your Data Sources with access rules, data requirements, and 
 
 Access to Data Sources is secured via the **Access Rules** tab of the **App Data** section in Fliplet Studio. Each rule controls who can access the data source, what operations they can perform, and what conditions must be met.
 
-Rules are evaluated from top to bottom. The first rule that grants access is used and evaluation stops — later rules are not checked. If no rules match, access is denied by default. Note that for read operations, a rule with unmet `require` conditions is **skipped**, not denied — evaluation continues to the next rule. For writes, unmet `require` is a hard rejection. See [Data requirements](#data-requirements-and-query-validation) for details.
+Rules are evaluated from top to bottom. The first rule that grants access is used and evaluation stops — later rules are not checked. If no rules match, access is denied by default. If no rules are defined at all, all access is denied — data sources are locked down until you explicitly add rules.
+
+Note that for read operations, a rule with unmet `require` conditions is **skipped**, not denied — evaluation continues to the next rule. For writes, unmet `require` is a hard rejection. See [Data requirements](#data-requirements-and-query-validation) for details.
 
 ## Access rule structure
 
@@ -33,13 +38,13 @@ Each access rule is a JSON object with the following properties:
 |---|---|---|---|
 | `type` | Array of strings | Yes | Operations this rule applies to: `"select"`, `"insert"`, `"update"`, `"delete"` |
 | `allow` | String or Object | Yes | Who can access: `"all"`, `"loggedIn"`, `{ "user": {...} }`, or `{ "tokens": [...] }` |
-| `enabled` | Boolean | No | Whether the rule is active (defaults to `true`) |
+| `enabled` | Boolean | No | Whether the rule is active (defaults to `true`). Set to `false` to disable the rule without deleting it — disabled rules are skipped during evaluation |
 | `include` | Array of strings | No | Whitelist of accessible columns. If both `include` and `exclude` are present, `include` takes precedence |
 | `exclude` | Array of strings | No | Blacklist of hidden columns. Ignored if `include` is also present |
 | `require` | Array | No | Data requirements that must be met (see [Data requirements](#data-requirements-and-query-validation)) |
 | `appId` | Array of numbers | No | Restrict this rule to specific app IDs (applies to all apps if omitted) |
 | `name` | String | No | Descriptive label for identifying the rule in Studio |
-| `script` | String | No | Custom JavaScript code for advanced security logic. When present, overrides `allow` and `type` — see [Custom security rules](#custom-security-rules) |
+| `script` | String | No | Custom JavaScript code for advanced security logic. When present, `allow` and `type` are ignored — see [Custom security rules](#custom-security-rules) |
 
 ### Defining who can access
 
@@ -169,8 +174,8 @@ When Alice (Admin) is logged in, the first rule matches — she has full access 
 
 ```js
 // JS API — Alice reads all records including sensitive fields
-var connection = await Fliplet.DataSources.connectByName('Employees');
-var allRecords = await connection.find();
+const connection = await Fliplet.DataSources.connectByName('Employees');
+const allRecords = await connection.find();
 // Returns all 3 records with all columns including Salary and Password
 ```
 
@@ -180,6 +185,7 @@ POST /v1/data-sources/123/data/query
 Auth-token: <Alice's token>
 Content-Type: application/json
 
+// "type" here is the REST API operation type, not a security rule field
 { "type": "select" }
 
 // Response (200 OK): all entries with all columns
@@ -189,8 +195,8 @@ When Bob (User) is logged in, the second rule matches for reads — he can see r
 
 ```js
 // JS API — Bob reads records (sensitive columns automatically excluded)
-var connection = await Fliplet.DataSources.connectByName('Employees');
-var records = await connection.find();
+const connection = await Fliplet.DataSources.connectByName('Employees');
+const records = await connection.find();
 // Returns all 3 records, but each record is missing Password and Salary
 // e.g. { Email: "alice@acme.com", "First Name": "Alice", Role: "Admin", Department: "Engineering", Admin: "Yes", Permissions: "all" }
 ```
@@ -199,7 +205,7 @@ Bob can update his own record (the third rule requires his email in the data):
 
 ```js
 // JS API — Bob updates his own name
-var connection = await Fliplet.DataSources.connectByName('Employees');
+const connection = await Fliplet.DataSources.connectByName('Employees');
 await connection.update(456, {
   Email: 'bob@acme.com',
   'First Name': 'Robert'
@@ -220,7 +226,7 @@ Content-Type: application/json
 
 **Queries that fail:**
 
-When a query is denied, the API responds with HTTP status **400** and a JSON error body (note: [file access denials](/File-security#api-calls-that-fail) return HTTP 401 instead):
+When a query is denied, the API responds with HTTP status **400** and a JSON error body. The `message` field changes based on the denied operation — for example, `"do not allow this app to read data"` for selects, or `"do not allow this app to insert data"` for inserts:
 
 ```json
 {
@@ -230,7 +236,7 @@ When a query is denied, the API responds with HTTP status **400** and a JSON err
 }
 ```
 
-In the JS API, the promise is rejected with this error. The `message` includes the data source name and the operation that was denied (read, insert, update, or delete).
+In the JS API, the promise is rejected with this error object. The `message` adapts to include the data source name and the specific operation that was denied (read, insert, update, or delete). The `type` is always `"datasource.access"` and `payload.dataSourceId` identifies the data source.
 
 ```js
 // Bob tries to update another user's record — fails
@@ -321,8 +327,8 @@ When Alice (Manager, Engineering) is logged in, the first rule matches — she i
 
 ```js
 // JS API — Alice reads all Engineering records
-var connection = await Fliplet.DataSources.connectByName('Staff');
-var records = await connection.find({
+const connection = await Fliplet.DataSources.connectByName('Staff');
+const records = await connection.find({
   where: { Department: 'Engineering' }
 });
 // Returns Alice and Bob's records, excluding Salary
@@ -344,8 +350,8 @@ When Bob (User, Engineering) is logged in, the first rule does not match (wrong 
 
 ```js
 // JS API — Bob reads his own record
-var connection = await Fliplet.DataSources.connectByName('Staff');
-var records = await connection.find({
+const connection = await Fliplet.DataSources.connectByName('Staff');
+const records = await connection.find({
   where: { Email: 'bob@acme.com' }
 });
 // Returns Bob's record only, excluding Salary and ManagerNotes
@@ -364,7 +370,7 @@ await connection.insert({
 ```
 
 ```plaintext
-// REST API equivalent
+// REST API equivalent (Fliplet uses PUT for both inserts and updates on this endpoint)
 PUT /v1/data-sources/123/data
 Auth-token: <Bob's token>
 Content-Type: application/json
@@ -418,9 +424,22 @@ The `require` property defines conditions that incoming queries must satisfy. Th
 
 <p class="info">If you add data requirements to your rules, Fliplet core components that query the data source (e.g., <strong>List from Data Source</strong>, <strong>Chart</strong>, <strong>Form</strong>) may stop working because they issue broad queries without the <code>where</code> clauses that <code>require</code> demands. You will need to either add a permissive rule (without <code>require</code>) scoped to those components' app IDs, or replace the component queries with custom code that satisfies the requirements.</p>
 
+For example, to allow a specific app's components to read without `require` constraints while keeping other apps locked down:
+
+```json
+{
+  "type": ["select"],
+  "allow": "loggedIn",
+  "appId": [456, 789],
+  "enabled": true
+}
+```
+
+This rule grants read access to logged-in users only when the request originates from app 456 or 789. Place it before stricter rules so that the matching apps get broad access while other apps fall through to rules with `require` conditions.
+
 The behavior of `require` varies by operation type:
 
-- **For `select` and `delete` operations:** The client's query must include a `where` clause that satisfies all requirements, or the rule does not match. For example, if a rule requires `{ "Email": { "equals": "{{user.[Email]}}" } }`, every `find()` call must include `where: { Email: user.Email }` (or the equivalent `$eq` operator) for that rule to grant access. If the requirements are not met, the rule is **skipped** (not rejected) — evaluation falls through to the next rule. This means a more permissive rule below could still grant access. Design your rule order carefully: place restrictive rules first and ensure no later rule inadvertently grants broader access than intended.
+- **For `select` and `delete` operations:** The client's query must include a `where` clause that satisfies all requirements, or the rule does not match. For example, if a rule requires `{ "Email": { "equals": "{{user.[Email]}}" } }`, every `find()` call must include `where: { Email: user.Email }` (or the equivalent `$eq` operator) for that rule to grant access. To obtain the user's session data client-side, use the [Session API](API/fliplet-session.html). If the requirements are not met, the rule is **skipped** (not rejected) — evaluation falls through to the next rule. This means a more permissive rule below could still grant access. Design your rule order carefully: place restrictive rules first and ensure no later rule inadvertently grants broader access than intended.
 - **For `insert` and `update` operations:** Validates that the submitted data contains the required fields and values. If the data does not match, the write is **rejected immediately** — unlike reads, unmet requirements on a write do not fall through to the next rule.
 
 <p class="quote"><strong>Key difference:</strong> Unmet <code>require</code> on a read = rule skipped, next rule evaluated. Unmet <code>require</code> on a write = request denied outright. This means a permissive read rule further down the list can still grant access, but a failed write requirement stops evaluation.</p>
@@ -621,7 +640,7 @@ if (type === 'insert') {
 
 Custom rules can read data from other Data Sources using the `find` (multiple records) and `findOne` (single record) methods of the `DataSources` server-side library. These reads run at **server level** and bypass all security rules on the target data source.
 
-<p class="quote">Cross-data-source lookups add a database round-trip per request and are not cached. Keep queries efficient and use <code>findOne</code> when you only need a single record. Script execution has a <strong>3-second timeout</strong>. Async operations (like <code>DataSources</code> queries) are supported via <code>await</code>.</p>
+<p class="quote">Cross-data-source lookups add a database round-trip per request and are not cached. Keep queries efficient and use <code>findOne</code> when you only need a single record. Script execution has a <strong>3-second timeout</strong> — if the script does not return within 3 seconds, access is denied. Async operations (like <code>DataSources</code> queries) are supported via <code>await</code>.</p>
 
 Connect using the data source ID (number) or name (string):
 
@@ -631,7 +650,7 @@ if (!user) {
 }
 
 if (type === 'select') {
-  var entry = await DataSources(123).findOne({
+  const entry = await DataSources(123).findOne({
     where: {
       Office: user.Office,
       Managers: { $in: user.Manager },
@@ -646,7 +665,7 @@ if (type === 'select') {
 }
 
 if (type === 'insert') {
-  var entries = await DataSources('Users').find();
+  const entries = await DataSources('Users').find();
 
   // Only allow writes as long as there are fewer than 10 entries in the target Data Source
   if (entries && entries.length < 10) {
@@ -655,7 +674,9 @@ if (type === 'insert') {
 }
 ```
 
-Both `find` and `findOne` accept the following properties:
+`find` returns an array of matching entries (empty array if none match). `findOne` returns a single entry object, or `null` if no match is found.
+
+Both methods accept the following properties:
 
 - `where` (Object) — query filter supporting [standard query operators](API/datasources/query-operators.html) such as `$eq`, `$ne`, `$like`, `$iLike`, `$gt`, `$gte`, `$lt`, `$lte`, `$in`
 - `limit` (Number, defaults to `100`)
