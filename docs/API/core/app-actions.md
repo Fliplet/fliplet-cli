@@ -4,7 +4,7 @@ description: Configure your app screens to run scheduled or ad-hoc operation in 
 
 # App Actions
 
-The **App Actions** library allows you to configure app screens to run automatically at a scheduled time or carry out an ad-hoc operations and automations in the cloud.
+**App Actions** library allows you to configure app screens to run automatically at a scheduled time or carry out an ad-hoc operations and automations in the cloud.
 
 ![How it works](/assets/img/app-actions.png)
 
