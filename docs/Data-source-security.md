@@ -424,6 +424,7 @@ The `require` property defines conditions that incoming queries must satisfy. Th
 
 <p class="info">If you add data requirements to your rules, Fliplet core components that query the data source (e.g., <strong>List from Data Source</strong>, <strong>Chart</strong>, <strong>Form</strong>) may stop working because they issue broad queries without the <code>where</code> clauses that <code>require</code> demands. You will need to either add a permissive rule (without <code>require</code>) scoped to those components' app IDs, or replace the component queries with custom code that satisfies the requirements.</p>
 
+
 For example, to allow a specific app's components to read without `require` constraints while keeping other apps locked down:
 
 ```json
