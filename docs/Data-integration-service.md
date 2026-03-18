@@ -25,25 +25,39 @@ description: Fliplet Agent (Data integration service) is a command line utility 
   </a>
 </section>
 
----
+## Contents
+
+- [How it works](#how-it-works)
+- [Before you start](#before-you-start)
+- [Minimum requirements](#minimum-requirements)
+- [Install](#install)
+- [Troubleshooting installation errors](#troubleshooting-installation-errors)
+- [Update the agent to the latest version](#update-the-agent-to-the-latest-version)
+- [Get started](#get-started)
+- [Install the agent as a service (Windows only)](#install-the-agent-as-a-service-windows-only)
+- [Advanced use](#advanced-use)
+- [Encryption](#encryption)
+- [Synchronization mode](#synchronization-mode)
+- [Synchronizing files](#synchronizing-files)
+- [Logging](#logging)
+- [Network requirements](#network-requirements)
+- [Releases changelog](#releases-changelog)
 
 ## How it works
 
-Our Data Integration Service is a piece of software you install on your premise, connect it to a database or any other source and synchronize such data to and from Fliplet servers to your Fliplet data source, which is then used by your Fliplet Apps to display data in components and screens.
+The Data Integration Service is a piece of software you install on your infrastructure. It connects to a database or other data source and synchronizes data to and from Fliplet servers into a Fliplet data source, which your Fliplet apps then use to display data in components and screens.
 
 ![How it works](/assets/img/dis-flow.png)
 
----
+The DIS agent runs on your infrastructure, connects to your local database or API, and pushes data to a Fliplet data source on Fliplet's cloud servers via the Fliplet REST API. Your Fliplet apps read from that cloud data source. For pull operations, the flow reverses: the agent fetches data from a Fliplet data source and writes it to your local database.
 
 ## Before you start
 
 To synchronize your data with Fliplet servers you will need an authorization token generated via Fliplet Studio from an organization admin account.
 
-To generate a token, please follow the docs [here](REST-API/authenticate.md).
+To generate a token, see the [authentication token documentation](REST-API/authenticate.md).
 
-<p class="warning">Please note that upon creating the API token you will also need to set up appropriate <a href="Data-source-security.html">Data Source security rules</a> on the specific <strong>API token</strong> for the Data Sources you will be reading or writing data to.</p>
-
----
+<p class="warning">After creating the API token, you also need to set up appropriate <a href="Data-source-security.html">Data Source security rules</a> on the specific <strong>API token</strong> for the Data Sources you are reading or writing data to.</p>
 
 ## Minimum requirements
 
@@ -53,17 +67,13 @@ To generate a token, please follow the docs [here](REST-API/authenticate.md).
 - 2GB of available RAM
 - 8GB of available storage
 
----
-
 ## Install
 
-Our software runs on **Node.js**, a popular open-source and cross-platform software.
+The agent runs on **Node.js**, a popular open-source and cross-platform runtime. Install [Node.js](http://nodejs.org/) (which also comes bundled with the package manager [npm](http://npmjs.com)) on your computer as a prerequisite.
 
-Please install [node.js](http://nodejs.org/) (which also comes bundled with the popular package manager [npm](http://npmjs.com)) on your computer as a pre-requisite to get started.
+The agent **requires at least version 8 of Node.js**. If your machine is running an older version, update Node.js before installing the Fliplet agent.
 
-Please note that our agent **requires at least version 8 of Node.js**. If your machine is running an older version, you will be required to update Node.js in order to use the Fliplet agent.
-
-Once you have installed Node.js, please open the shell to continue and install our agent:
+Once you have installed Node.js, open the shell to install the agent:
 
 - **Windows**: access the Node.js shell from **Start menu** > **Node.js command prompt**
 - **macOS**: access the shell of your computer from **Applications** > **Utilities** > **Terminal**
@@ -87,21 +97,19 @@ That's it! You can now jump to the [Get Started](#get-started) part of this docu
 
 Note: on `Unix` and `macOS` you may need the `--force` option to install the agent as a global package.
 
----
-
 ### Install the agent for all users
 
 Due to the nature of [npm](http://npmjs.com), `fliplet-agent` is by default only installed for the local user of the workstation as the packages folder is within the user's home folder.
 
 You can verify this by running `npm config get prefix` on the shell. On Windows, you should get an output such as `C:\Users\YourUser\AppData\Roaming\npm`.
 
-To install packages for all users of a workstation, simply create a shared folder accessible by all users and sets its path to be the npm default directory via the following command:
+To install packages for all users of a workstation, create a shared folder accessible by all users and set its path to be the npm default directory via the following command:
 
 ```
 npm config set prefix 'C:\MySharedFolder\'
 ```
 
-Once you have set up the global folder, simply install the agent to have it installed for all users:
+Once you have set up the global folder, install the agent to have it available for all users:
 
 ```
 npm install fliplet-agent -g --force
@@ -109,11 +117,9 @@ npm install fliplet-agent -g --force
 
 Note that each user must set its npm prefix to the shared folder before being able to use its packages.
 
----
-
 ### Verifying the agent is installed
 
-You can now use the command `fliplet-agent` from the command line. Just type `fliplet-agent` to ensure the software is installed and also see the available options and their example usage:
+You can use the command `fliplet-agent` from the command line. Type `fliplet-agent` to verify the software is installed and see the available options and their example usage:
 
 <div class="termynal2" data-termynal data-ty-typeDelay="40" data-ty-lineDelay="700">
   <span data-ty="input" data-ty-prompt="$ ~/User">fliplet-agent</span>
@@ -129,13 +135,11 @@ You can now use the command `fliplet-agent` from the command line. Just type `fl
   <span data-ty="input" data-ty-prompt="">&nbsp;&nbsp;uninstall [path/to/config.js]       Uninstall a background service.</span>
 </div>
 
----
-
 ## Troubleshooting installation errors
 
 #### SSL Error: SELF_SIGNED_CERT_IN_CHAIN
 
-If you get the `SSL Error: SELF_SIGNED_CERT_IN_CHAIN` error when installing the agent, please update your npm settings to allow self-signed certificates to be used. Just run the following command and then try again to install the agent:
+If you get the `SSL Error: SELF_SIGNED_CERT_IN_CHAIN` error when installing the agent, update your npm settings to allow self-signed certificates. Run the following command and then try again:
 
 ```
 npm config set strict-ssl false
@@ -143,7 +147,7 @@ npm config set strict-ssl false
 
 #### UNABLE_TO_GET_ISSUER_CERT_LOCALLY
 
-The error `SELF_SIGNED_CERT_IN_CHAIN` will appear if you're behind a proxy reading encrypted traffic (e.g. a company firewall decrypts certain traffic and re-encrypts it with their certificate). If that's expected, just run the following command and then try again to install the agent:
+The error `SELF_SIGNED_CERT_IN_CHAIN` appears if you're behind a proxy reading encrypted traffic (e.g. a company firewall decrypts certain traffic and re-encrypts it with their certificate). If that's expected, run the following command and then try again:
 
 ```
 npm config set strict-ssl false
@@ -155,9 +159,9 @@ Alternative, you can switch to use the HTTP version of the NPM registry:
 npm config set registry http://registry.npmjs.org/
 ```
 
-#### Installing on Mac
+#### Installing on macOS
 
-When installing DIS on Mac, you may get an error due to your user not having permissions to install npm modules as global binaries (the `-g` option). To fix this, follow these steps:
+When installing DIS on macOS, you may get an error due to your user not having permissions to install npm modules as global binaries (the `-g` option). To fix this, follow these steps:
 
 1. Type `npm config set prefix /usr/local` in your terminal
 2. Re-run the install command with the `sudo` prefix, e.g. `sudo npm install -g fliplet-agent --force`
@@ -170,8 +174,6 @@ Alternatively, you can install [Node Version Manager](https://github.com/nvm-sh/
 2. Install node 12: `nvm install 12`
 3. Re-run the DIS install command: `npm install -g fliplet-agent --force`
 
----
-
 ## Update the agent to the latest version
 
 If you need to update the agent to the latest version available on npm, run the following command from the **Node.js command prompt**:
@@ -181,8 +183,6 @@ npm update fliplet-agent -g
 ```
 
 <p class="warning">Please make sure all <strong>Windows Services installed for the Fliplet Agent</strong> are stopped before updating the agent.</p>
-
----
 
 ## Get started
 
@@ -315,13 +315,13 @@ files:
 log_verbosity: debug
 ```
 
-Once you have a configuration file like the one above saved on disk, starting the agent is as simple as running the `start` command from your shell. While you are setting up the configuration we also suggest using the `--test` option to perform a dry run and test out the integration without actually sending data to Fliplet servers:
+Once you have a configuration file like the one above saved on disk, start the agent by running the `start` command from your shell. While you are setting up the configuration we also suggest using the `--test` option to perform a dry run and test out the integration without actually sending data to Fliplet servers:
 
 ```
 fliplet-agent start .\path\to\configurationFile.yml --test
 ```
 
-e.g. if your file is in the current folder and it's named `sample.yml`, you would simply write:
+e.g. if your file is in the current folder and it's named `sample.yml`:
 
 ```
 fliplet-agent start .\sample.yml
@@ -337,15 +337,13 @@ Any error found in your configuration will be printed out for you to look at.
 
 ### Troubleshoot errors with permissions
 
-The API token you have created via Fliplet Studio (see [documentation](REST-API/authenticate.md)) requires specific access to the Data Source you want to access via DIS. To grant such access to the API token, please copy its ID from the "API tokens" UI in Fliplet Studio. You then will need to paste such ID in the "Studio users permissions" tab of the Data Source after clicking the "Add new user" button:
+The API token you created via Fliplet Studio (see [documentation](REST-API/authenticate.md)) requires specific access to the Data Source you want to access via DIS. To grant access, copy the token's ID from the "API tokens" UI in Fliplet Studio, then paste it in the "Studio users permissions" tab of the Data Source after clicking the "Add new user" button:
 
 ![img](assets/img/dis-permissions.png)
 
----
-
 ## Install the agent as a service (Windows only)
 
-On Windows you can install any number instances of the agent to run as a service on your machine. Behind the scene we use [node-windows](https://github.com/coreybutler/node-windows) to make this happen, however this comes bundled with the Fliplet Agent already hence installing the latter as a service is just about running this command:
+On Windows you can install any number of instances of the agent to run as a service on your machine. Behind the scenes, the agent uses [node-windows](https://github.com/coreybutler/node-windows), which comes bundled with the Fliplet Agent. Installing the agent as a service requires running this command:
 
 ```
 fliplet-agent install C:\path\to\sample.yml
@@ -370,8 +368,6 @@ To stop and remove the service from your system, simply run the `uninstall` comm
 ```
 fliplet-agent uninstall C:\path\to\sample.yml
 ```
-
----
 
 ## Advanced use
 
@@ -469,7 +465,7 @@ module.exports.setup = (agent) => {
     // Define which (optional) column should be used to compare whether
     // the record has been flagged as deleted on your database and should
     // be removed from the Fliplet Data Source
-    deleteColumnName: deletedAt,
+    deleteColumnName: 'deletedAt',
 
     // The ID of the Fliplet Data Source where data should be inserted to
     targetDataSourceId: 123,
@@ -520,9 +516,7 @@ If you need to use an **ODBC driver** for the database connection, make sure to 
 npm install sequelize-odbc-mssql -g
 ```
 
----
-
-### Define a PUSH operation
+### Define a push operation
 
 When using the Fliplet Agent in advanced mode via a Javascript file you can choose whether the input data to be sent to Fliplet needs to be manually pulled from a third party system rather than a database. As an example, you can read data from a file or an API. When doing so, keep these few points in mind:
 
@@ -608,13 +602,11 @@ module.exports.setup = (agent) => {
 };
 ```
 
----
+### Define a pull operation
 
-### Define a PULL operation
+When using the Fliplet Agent in advanced mode via a Javascript file you can define a `pull` operation to retrieve data from a Fliplet Data Source.
 
-When using the Fliplet Agent in advanced mode via a Javascript file you can define a `pull` operation if you simply want to grab the data from a Fliplet Data Source.
-
-<p class="warning"><strong>Version 1.4.0 required:</strong> Please note that this feature does require the version 1.4.0 or newer of Fliplet Agent to work.</p>
+<p class="warning"><strong>Version 1.4.0 required:</strong> This feature requires version 1.4.0 or newer of Fliplet Agent.</p>
 
 If you don't need to push the retrieved data to your database, you can skip to define the `database` key defined in the `module.exports.config`.
 
@@ -661,8 +653,8 @@ module.exports.setup = (agent, options) => {
       // which you can use to run queries to your database, including
       // INSERT queries. You can follow Sequelize documentation about using
       // db.query() to create your queries as necessary:
-      // https://sequelize.org/master/manual/raw-queries.html
-      await entries.map(async (entry) => {
+      // https://sequelize.org/docs/v6/core-concepts/raw-queries/
+      await Promise.all(entries.map(async (entry) => {
         await db.query(`
           INSERT INTO MyTable (FirstName, LastName, Company) VALUES (?, ?, ?);`, {
             replacements: [
@@ -673,7 +665,7 @@ module.exports.setup = (agent, options) => {
           }).catch((err) => {
             options.log.error(err);
           });
-      });
+      }));
 
       // You can also write data back to Fliplet APIs if necessary,
       // e.g. confirm you have sync these entries
@@ -692,9 +684,7 @@ module.exports.setup = (agent, options) => {
 };
 ```
 
----
-
-### Integrate with Sharepoint
+### Integrate with SharePoint
 
 Make sure to install the `sp-request` npm module via `npm i sp-request --save`.
 
@@ -726,17 +716,15 @@ module.exports.setup = (agent) => {
 };
 ```
 
----
-
 ## Encryption
 
 <p class="info">Feature available from <strong>version 1.10</strong> of Fliplet Agent.</p>
 
-If you're planning to send sensitive data to a Fliplet Data Source we do recommend enabling encryption for such data.
+If you're planning to send sensitive data to a Fliplet Data Source, we recommend enabling encryption for that data.
 
-Here's our standards and options for the encryption algorithm and private key:
+Here are the standards and options for the encryption algorithm and private key:
 
-- **Encryption algorithm**: [AES](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard) 256 or 512.
+- **Encryption algorithm**: [AES-256](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard).
 - **Encryption key**: you can decide whether the encryption key is provided by you or automatically generated and **managed by Fliplet into a secure keystore for your organization**. In the latter case, **the encryption key itself will be encrypted both at rest and during transit for extra added security**. On the other hand, when the key is provided by you it will never leave your machine so [you will be responsible for distributing this to your apps](/API/fliplet-encryption.html#set-the-encryptiondecryption-key) when the data must be decrypted.
 
 ### Keystore
@@ -755,7 +743,7 @@ For extra added security, the encryption key itself can be encrypted using a sal
 
 1. Fliplet Agent fetches the encryption key from the keystore.
 2. If the key does not exist, a random 512-bits key is generated, encrypted and safely uploaded to the keystore.
-3. Fliplet Agent decrypts the key and uses it to encrypt your data with AES (256 or 512) before it's sent.
+3. Fliplet Agent decrypts the key and uses it to encrypt your data with AES-256 before it's sent.
 4. Encrypted data is sent to Fliplet.
 
 **Your apps can then decrypt the data following this simple flow:**
@@ -825,9 +813,7 @@ Fliplet.DataSources.Encryption.KeyStore.getKey().then(function (key) {
 
 On the other hand, if you have provided your own encryption key you will just need to set it instead of fetching it from the keystore.
 
-Likewise, if you have set up a `salt` you will need to pass it as first argument of the `getKey` method shown above. More documentation can be found [here](/API/fliplet-encryption.html#get-the-encryption-key-from-the-keystore).
-
----
+Likewise, if you have set up a `salt` you will need to pass it as first argument of the `getKey` method shown above. More documentation can be found in the [Fliplet Encryption API reference](/API/fliplet-encryption.html#get-the-encryption-key-from-the-keystore).
 
 ## Synchronization mode
 
@@ -862,8 +848,6 @@ module.exports.setup = (agent) => {
 };
 ```
 
----
-
 ## Synchronizing files
 
 <p class="info">Available from <strong>version 1.7.3</strong> of Fliplet Agent.</p>
@@ -880,8 +864,6 @@ The following locations are currently supported for reading files:
 - **Sharepoint files**
 
 <p class="quote">Files will be uploaded to a folder named "<strong>Files uploaded from DIS</strong>" in your organization folder.</p>
-
----
 
 **Q: Does case sensitivity matter when synchronizing files?**
 
@@ -964,8 +946,6 @@ module.exports.setup = (agent) => {
 };
 ```
 
----
-
 ## Logging
 
 The agent logs all output messages (including debug messages and errors) to a `fliplet-agent.log` file in the home folder of the user running the commands.
@@ -1015,8 +995,6 @@ Here follows a list of all log messages produced by the agent. **Critical** mess
 | Debug    | Row (ID) already exists on Fliplet servers with ID (ID) and does not require updating.                                                                                                                    |
 | Debug    | Row (ID) has been marked for updating.                                                                                                                                                                    |
 
----
-
 ## Network requirements
 
 If your company is behind a corporate firewall and specific network access should be whitelisted, you must allow **outbound** traffic to the follow domain:
@@ -1028,8 +1006,6 @@ If your company is behind a corporate firewall and specific network access shoul
 In order to be able to update the agent via **npm**, [registry.npmjs.org](https://registry.npmjs.org) needs to be whitelisted on port *443* too. However, if your internet connection is running behind a corporate firewall it might require specific settings for the proxy ([more details](https://www.beyondjava.net/guiding-npm-firewall)).
 
 Finally, make sure that **TLS 1.2 or 1.3** is [enabled on the OS settings](https://www.andica.com/faq-enable-tls-in-different-windows-version.html).
-
----
 
 ## Releases changelog
 
@@ -1126,7 +1102,7 @@ Finally, make sure that **TLS 1.2 or 1.3** is [enabled on the OS settings](https
 
 - Allow API requests to self-signed certificates when reading data using custom functionality.
 
-#### 1.9.0 (November 22th, 2019)
+#### 1.9.0 (November 22nd, 2019)
 
 - Improvements when installing the agent as a [service on Windows](#install-the-agent-as-a-service-windows-only).
 
@@ -1139,7 +1115,7 @@ Finally, make sure that **TLS 1.2 or 1.3** is [enabled on the OS settings](https
 - Updates to throttle file download and upload to reduce load caused on target endpoints.
 - Fixes for files upload with [Sharepoint](#synchronizing-files) 2013 having an incorrect mimetype.
 
-#### 1.7.6 (October 31th, 2019)
+#### 1.7.6 (October 31st, 2019)
 
 - Further improvements for files upload with [Sharepoint](#synchronizing-files) 2013.
 
