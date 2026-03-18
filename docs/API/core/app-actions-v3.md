@@ -277,15 +277,79 @@ dependencies: [
 
 ### Common Fliplet packages
 
-| Package | Required when using | Description |
-|---------|---------------------|-------------|
-| `fliplet-datasources` | `Fliplet.DataSources` | Data Sources API — connect, find, insert, update, remove entries |
-| `fliplet-media` | `Fliplet.Media` | Media API — upload, retrieve, and manage media files |
-| `fliplet-communicate` | `Fliplet.Communicate` | Communication API — send emails, push notifications, SMS |
-| `fliplet-barcode` | `Fliplet.Barcode` | Barcode API — generate and scan barcodes |
-| `fliplet-audio` | `Fliplet.Audio` | Audio API — record and play audio |
-| `fliplet-csv` | `Fliplet.CSV` | CSV API — parse and generate CSV data |
-| `fliplet-encryption` | `Fliplet.Encryption` | Encryption API — encrypt and decrypt data |
+| Package | Required when using | Description | API Reference |
+|---------|---------------------|-------------|---------------|
+| `fliplet-datasources` | `Fliplet.DataSources` | Data Sources API — connect, find, insert, update, remove entries | [Data Sources JS API](https://developers.fliplet.com/API/fliplet-datasources.html) |
+| `fliplet-media` | `Fliplet.Media` | Media API — upload, retrieve, and manage media files | [Media JS API](https://developers.fliplet.com/API/fliplet-media.html) |
+| `fliplet-communicate` | `Fliplet.Communicate` | Communication API — send emails, push notifications, SMS | [Communicate JS API](https://developers.fliplet.com/API/fliplet-communicate.html) |
+| `fliplet-barcode` | `Fliplet.Barcode` | Barcode API — generate and scan barcodes | [Barcode JS API](https://developers.fliplet.com/API/fliplet-barcode.html) |
+| `fliplet-audio` | `Fliplet.Audio` | Audio API — record and play audio | [Audio JS API](https://developers.fliplet.com/API/fliplet-audio.html) |
+| `fliplet-csv` | `Fliplet.CSV` | CSV API — parse and generate CSV data | [CSV JS API](https://developers.fliplet.com/API/fliplet-csv.html) |
+| `fliplet-encryption` | `Fliplet.Encryption` | Encryption API — encrypt and decrypt data | [Encryption JS API](https://developers.fliplet.com/API/fliplet-encryption.html) |
+
+### Quick reference: key method signatures
+
+**`fliplet-datasources`** — [Full API reference](https://developers.fliplet.com/API/fliplet-datasources.html)
+
+```js
+var connection = await Fliplet.DataSources.connect(dataSourceId);
+var connection = await Fliplet.DataSources.connectByName("DataSourceName");
+var records = await connection.find({ where: { Column: 'value' } });
+var record = await connection.findById(entryId);
+var record = await connection.findOne({ where: { Column: 'value' } });
+await connection.insert({ Column: 'value', Column2: 'value2' });
+await connection.update(entryId, { Column: 'newValue' });
+await connection.removeById(entryId);
+await connection.commit({ entries: arrayOfObjects }); // bulk replace all entries
+```
+
+**`fliplet-communicate`** — [Full API reference](https://developers.fliplet.com/API/fliplet-communicate.html)
+
+```js
+// Send email
+await Fliplet.Communicate.sendEmail({
+  to: [{ email: 'user@example.com', name: 'User', type: 'to' }],
+  subject: 'Subject line',
+  from_name: 'Sender Name',
+  html: '<p>Email body HTML</p>'
+});
+
+// Send SMS
+await Fliplet.Communicate.sendSMS({
+  data: { to: '+123456789', body: 'Message text' }
+});
+
+// Send push notification (only app publishers/editors can send)
+await Fliplet.Communicate.sendPushNotification(appId, {
+  title: 'Notification title',
+  body: 'Notification message',
+  sandbox: false // true = only Fliplet Viewer users (testing)
+});
+```
+
+**`fliplet-media`** — [Full API reference](https://developers.fliplet.com/API/fliplet-media.html)
+
+```js
+var response = await Fliplet.Media.Folders.get({ folderId: folderId });
+// response.files, response.folders
+await Fliplet.Media.Files.upload({ folderId: folderId, file: fileBlob });
+```
+
+### Dependency auto-selection rule
+
+When writing action code, **match each `Fliplet.*` namespace used in the `execute` function to its corresponding package** and include it in the `dependencies` array:
+
+- Code uses `Fliplet.DataSources` → add `fliplet-datasources`
+- Code uses `Fliplet.Communicate` → add `fliplet-communicate`
+- Code uses `Fliplet.Media` → add `fliplet-media`
+- Code uses `Fliplet.Barcode` → add `fliplet-barcode`
+- Code uses `Fliplet.Audio` → add `fliplet-audio`
+- Code uses `Fliplet.CSV` → add `fliplet-csv`
+- Code uses `Fliplet.Encryption` → add `fliplet-encryption`
+
+If the code uses multiple Fliplet APIs, include all corresponding packages. For example, code that reads from a data source and sends an email needs both `fliplet-datasources` and `fliplet-communicate`.
+
+For external libraries, you can use any URL from the [Fliplet approved libraries](https://developers.fliplet.com/Fliplet-approved-libraries#fliplet-approved-libraries) list in the `dependencies` array.
 
 ## Action triggers
 
@@ -539,12 +603,14 @@ Example timezones:
 - `Europe/London`
 - `Europe/Rome`
 
+<p class="warning">The <code>active</code> parameter defaults to <code>false</code>. You <strong>must</strong> set <code>active: true</code> when creating an action, otherwise the action will not execute on any trigger (manual, schedule, log, or analytics).</p>
+
 ### Create a scheduled action
 
 A scheduled action requires: `frequency` (cron expression), `triggers: [{ trigger: 'schedule' }]`, and `environment` set to `"server"` or `"any"`. The action only runs in production after being published with `publish()`.
 
 ```js
-Fliplet.App.V3.Actions.create({
+var result = await Fliplet.App.V3.Actions.create({
   name: 'send-monday-weekly-reminder',
   code: `async function execute(context) {
     // context.payload is {} for scheduled actions — no data is passed
@@ -561,13 +627,13 @@ Fliplet.App.V3.Actions.create({
   timezone: 'Europe/Rome',
   triggers: [{ trigger: 'schedule' }],
   dependencies: ['fliplet-datasources']
-}).then(function (result) {
-  // result.action — the created action object
-  // result.action.id — use this ID to publish, update, or delete the action
-
-  // IMPORTANT: You must publish the action for the schedule to be active in production:
-  // Fliplet.App.V3.Actions.publish(result.action.id);
 });
+
+// result.action — the created action object
+// result.action.id — use this ID to publish, update, or delete the action
+
+// IMPORTANT: You must publish the action for the schedule to be active in production:
+// await Fliplet.App.V3.Actions.publish(result.action.id);
 ```
 
 ### Create an on-demand (manual) action
@@ -575,7 +641,7 @@ Fliplet.App.V3.Actions.create({
 <p class="warning">To run an action on-demand (e.g., triggered by a user), you <strong>must</strong> include the <code>manual</code> trigger. Without it, <code>run()</code> and <code>runWithResult()</code> cannot execute the action.</p>
 
 ```js
-Fliplet.App.V3.Actions.create({
+var result = await Fliplet.App.V3.Actions.create({
   name: 'confirm-booking',
   code: `async function execute(context) {
     // context.payload contains whatever was passed to run() or runWithResult()
@@ -592,10 +658,10 @@ Fliplet.App.V3.Actions.create({
   environment: 'server',
   triggers: [{ trigger: 'manual' }],
   dependencies: ['fliplet-datasources']
-}).then(function (result) {
-  // result.action — the created action object
-  // result.action.id — use this ID to run, publish, update, or delete
 });
+
+// result.action — the created action object
+// result.action.id — use this ID to run, publish, update, or delete
 ```
 
 ### Create an action with a log trigger
@@ -605,7 +671,7 @@ Fliplet.App.V3.Actions.create({
 A log-triggered action fires automatically when an app log event matches the `where` filter. The full log entry is available in `context.payload.log`.
 
 ```js
-Fliplet.App.V3.Actions.create({
+var result = await Fliplet.App.V3.Actions.create({
   name: 'notify-on-new-entry',
   code: `async function execute(context) {
     // context.payload.trigger is always "log"
@@ -638,11 +704,11 @@ Fliplet.App.V3.Actions.create({
     }
   ],
   dependencies: ['fliplet-datasources']
-}).then(function (result) {
-  // result.action — the created action object
-  // The action fires when a new entry is created in data source 177
-  // IMPORTANT: You must publish the action for the log trigger to be active in production
 });
+
+// result.action — the created action object
+// The action fires when a new entry is created in data source 177
+// IMPORTANT: You must publish the action for the log trigger to be active in production
 ```
 
 ### Create a client-side action with analytics trigger
@@ -652,7 +718,7 @@ Fliplet.App.V3.Actions.create({
 An analytics-triggered action fires automatically in the user's browser when an analytics event matches the `where` filter. The analytics event data is available directly in `context.payload` (not wrapped in a sub-object).
 
 ```js
-Fliplet.App.V3.Actions.create({
+var result = await Fliplet.App.V3.Actions.create({
   name: 'track-employee-directory-visit',
   code: `async function execute(context) {
     // context.payload contains the analytics event directly:
@@ -678,10 +744,10 @@ Fliplet.App.V3.Actions.create({
       }
     }
   ]
-}).then(function (result) {
-  // result.action — the created action object
-  // The action fires in the user's browser when screen 77 is visited
 });
+
+// result.action — the created action object
+// The action fires in the user's browser when screen 77 is visited
 ```
 
 ## Run an on-demand action
@@ -701,16 +767,15 @@ Queues the action for execution and returns immediately. You do **not** get the 
 
 ```js
 // Run without payload
-Fliplet.App.V3.Actions.run('confirm-booking');
+await Fliplet.App.V3.Actions.run('confirm-booking');
 
 // Run with payload
-Fliplet.App.V3.Actions.run('confirm-booking', {
+await Fliplet.App.V3.Actions.run('confirm-booking', {
   entryId: 123,
   name: 'Nick'
-}).then(function () {
-  // The action has been queued for processing
-  // No result is returned — use runWithResult() if you need the return value
 });
+// The action has been queued for processing
+// No result is returned — use runWithResult() if you need the return value
 ```
 
 ### `runWithResult(nameOrId, payload)` — wait for result
@@ -724,23 +789,21 @@ Executes the action and waits for it to complete. Returns the value from the `ex
 
 ```js
 // Run and get the result
-Fliplet.App.V3.Actions.runWithResult('confirm-booking', {
+var result = await Fliplet.App.V3.Actions.runWithResult('confirm-booking', {
   entryId: 123,
   name: 'Nick'
-}).then(function (result) {
-  // result is exactly what execute() returned
-  // e.g., { success: true }
-  if (result.success) {
-    // Booking confirmed
-  }
 });
+// result is exactly what execute() returned
+// e.g., { success: true }
+if (result.success) {
+  // Booking confirmed
+}
 
 // Run by action ID instead of name
-Fliplet.App.V3.Actions.runWithResult(12345, {
+var result = await Fliplet.App.V3.Actions.runWithResult(12345, {
   entryId: 123
-}).then(function (result) {
-  // result is the return value of execute()
 });
+// result is the return value of execute()
 ```
 
 <p class="quote">Rate limiting: the run action endpoint is limited to <strong>30 requests per minute</strong>. Contact the Fliplet team for more details.</p>
@@ -770,23 +833,21 @@ Returns a Promise resolving to:
 | `pagination.hasMore` | Boolean | Whether more actions exist beyond the current page |
 
 ```js
-Fliplet.App.V3.Actions.get().then(function (result) {
-  // result.actions — Array of action objects
-  // result.pagination — { total: Number, hasMore: Boolean }
+var result = await Fliplet.App.V3.Actions.get();
+// result.actions — Array of action objects
+// result.pagination — { total: Number, hasMore: Boolean }
 
-  result.actions.forEach(function (action) {
-    console.log(action.id, action.name, action.active);
-  });
+result.actions.forEach(function (action) {
+  console.log(action.id, action.name, action.active);
 });
 
 // With pagination
-Fliplet.App.V3.Actions.get({
+var result = await Fliplet.App.V3.Actions.get({
   limit: 10,
   offset: 0
-}).then(function (result) {
-  console.log('Total actions:', result.pagination.total);
-  console.log('Has more:', result.pagination.hasMore);
 });
+console.log('Total actions:', result.pagination.total);
+console.log('Has more:', result.pagination.hasMore);
 ```
 
 ### Action object structure
@@ -845,11 +906,10 @@ Use `Fliplet.App.V3.Actions.getById()` to retrieve a single V3 action by its ID.
 - **Returns:** Promise resolving to `{ action: <action object> }`
 
 ```js
-Fliplet.App.V3.Actions.getById(12345).then(function (result) {
-  // result.action — the action object (see Action object structure above)
-  console.log(result.action.name);   // 'confirm-booking'
-  console.log(result.action.active); // true
-});
+var result = await Fliplet.App.V3.Actions.getById(12345);
+// result.action — the action object (see Action object structure above)
+console.log(result.action.name);   // 'confirm-booking'
+console.log(result.action.active); // true
 ```
 
 ## Update an action
@@ -864,7 +924,7 @@ Use `Fliplet.App.V3.Actions.update()` to update any property of the **master** a
 <p class="warning">You can <strong>not</strong> update a published (production) action directly. Update the master action and call <code>publish()</code> again to push changes to production.</p>
 
 ```js
-Fliplet.App.V3.Actions.update(12345, {
+var result = await Fliplet.App.V3.Actions.update(12345, {
   name: 'confirm-booking-v2',
   code: `async function execute(context) {
     return { updated: true };
@@ -873,10 +933,9 @@ Fliplet.App.V3.Actions.update(12345, {
   environment: 'server',
   triggers: [{ trigger: 'manual' }],
   dependencies: []
-}).then(function (result) {
-  // result.action — the updated action object
-  // If this action is published, you must call publish() again to push the changes to production
 });
+// result.action — the updated action object
+// If this action is published, you must call publish() again to push the changes to production
 ```
 
 ## Temporarily deactivate an action
@@ -884,11 +943,10 @@ Fliplet.App.V3.Actions.update(12345, {
 Update an action with `active: false` to disable it. Inactive actions do **not** run on any trigger (manual, schedule, log, or analytics). To reactivate, set `active: true` and republish if needed.
 
 ```js
-Fliplet.App.V3.Actions.update(12345, {
+var result = await Fliplet.App.V3.Actions.update(12345, {
   active: false
-}).then(function (result) {
-  // Action is now inactive — it will not run until active is set back to true
 });
+// Action is now inactive — it will not run until active is set back to true
 ```
 
 ## Delete an action
@@ -901,9 +959,8 @@ Use `Fliplet.App.V3.Actions.remove()` to delete an action. This deletes the mast
 <p class="warning">You can <strong>not</strong> delete a production action directly. Delete the master action instead, which also removes the production version.</p>
 
 ```js
-Fliplet.App.V3.Actions.remove(12345).then(function () {
-  // Both master and production versions have been deleted
-});
+await Fliplet.App.V3.Actions.remove(12345);
+// Both master and production versions have been deleted
 ```
 
 ## Publish an action
@@ -914,9 +971,8 @@ Use `Fliplet.App.V3.Actions.publish()` to copy the master action to production. 
 - **Returns:** Promise resolving to `{ action: <published production action object> }`
 
 ```js
-Fliplet.App.V3.Actions.publish(12345).then(function (result) {
-  // result.action — the published production action object
-});
+var result = await Fliplet.App.V3.Actions.publish(12345);
+// result.action — the published production action object
 ```
 
 <p class="warning">If the app has not been published, <code>publish()</code> returns an <code>APP_NOT_PUBLISHED</code> error. Publish the app first, then publish the action.</p>
@@ -929,10 +985,9 @@ Use `Fliplet.App.V3.Actions.unpublish()` to remove an action from production. Th
 - **Returns:** Promise that resolves when the action has been unpublished
 
 ```js
-Fliplet.App.V3.Actions.unpublish(12345).then(function () {
-  // The action no longer runs in live apps
-  // The master version still exists and can be edited and republished
-});
+await Fliplet.App.V3.Actions.unpublish(12345);
+// The action no longer runs in live apps
+// The master version still exists and can be edited and republished
 ```
 
 ## Get the logs for an action
@@ -944,7 +999,9 @@ Each time an action runs, a log record is generated. Use `Fliplet.App.V3.Actions
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
 | `id` | Number | No | — | Filter logs to a specific action ID. If omitted, returns logs for all actions in the app. |
+| `where` | Object | No | — | Filter logs by conditions. Supports `type` (`"app.task.failed"` or `"app.task.completed"`), `data.actionVersion` (e.g., `"v3"`), and `data` object with `taskId` (Number) |
 | `limit` | Number | No | 50 | Maximum number of log entries to return |
+| `offset` | Number | No | 0 | Number of log entries to skip (for pagination) |
 
 ### Return value
 
@@ -1056,29 +1113,48 @@ The `data` object contains:
 
 ```js
 // Fetch the last 50 action logs for all actions in the app
-Fliplet.App.V3.Actions.getLogs().then(function (response) {
-  // response.count — number of log entries returned
-  // response.logs — array of log entry objects (most recent first)
+var response = await Fliplet.App.V3.Actions.getLogs();
+// response.count — number of log entries returned
+// response.logs — array of log entry objects (most recent first)
 
-  response.logs.forEach(function (log) {
-    console.log(log.type);          // "app.task.completed" or "app.task.failed"
-    console.log(log.data.mode);     // "scheduled" or "on-demand"
-    console.log(log.data.duration); // execution time in ms
+response.logs.forEach(function (log) {
+  console.log(log.type);          // "app.task.completed" or "app.task.failed"
+  console.log(log.data.mode);     // "scheduled" or "on-demand"
+  console.log(log.data.duration); // execution time in ms
 
-    if (log.type === 'app.task.failed') {
-      console.error('Action', log.data.taskId, 'failed:', log.data.error.message);
-    }
-  });
+  if (log.type === 'app.task.failed') {
+    console.error('Action', log.data.taskId, 'failed:', log.data.error.message);
+  }
 });
 
 // Fetch the last 10 logs for a specific action
-Fliplet.App.V3.Actions.getLogs({
+var response = await Fliplet.App.V3.Actions.getLogs({
   id: 12345,
   limit: 10
-}).then(function (response) {
-  console.log(response.count, 'logs returned');
-  console.log(response.logs);
 });
+console.log(response.count, 'logs returned');
+console.log(response.logs);
+
+// Fetch only failed logs for a specific action with pagination
+var response = await Fliplet.App.V3.Actions.getLogs({
+  id: 12345,
+  where: {
+    type: 'app.task.failed',
+    'data.actionVersion': 'v3',
+    data: { taskId: 12345 }
+  },
+  limit: 10,
+  offset: 0
+});
+console.log(response.logs); // only failed log entries
+
+// Fetch only successful logs
+var response = await Fliplet.App.V3.Actions.getLogs({
+  where: {
+    type: 'app.task.completed'
+  }
+});
+console.log(response.logs); // only successful log entries
 ```
 
 ## Error responses
@@ -1147,11 +1223,27 @@ All error responses follow this format:
 | `Fliplet.App.V3.Actions.create(data)` | See [Create parameters](#parameters) | `{ action }` | Create a new master action |
 | `Fliplet.App.V3.Actions.update(id, data)` | `id` (Number), `data` (Object) | `{ action }` | Update a master action |
 | `Fliplet.App.V3.Actions.remove(id)` | `id` (Number) | void | Delete an action (master + production) |
-| `Fliplet.App.V3.Actions.run(nameOrId, payload)` | `nameOrId` (String/Number), `payload` (Object) | void | Run action async, no return value |
+| `Fliplet.App.V3.Actions.run(nameOrId, payload)` | `nameOrId` (String/Number), `payload` (Object) | Promise<void> | Queue action for execution, no return value |
 | `Fliplet.App.V3.Actions.runWithResult(nameOrId, payload)` | `nameOrId` (String/Number), `payload` (Object) | Return value of `execute()` | Run action and wait for result |
 | `Fliplet.App.V3.Actions.publish(id)` | `id` (Number) | `{ action }` | Publish master to production |
 | `Fliplet.App.V3.Actions.unpublish(id)` | `id` (Number) | void | Remove from production |
-| `Fliplet.App.V3.Actions.getLogs(options)` | `{ id, limit }` | `{ count, logs }` | Get execution logs |
+| `Fliplet.App.V3.Actions.getLogs(options)` | `{ id, where, limit, offset }` | `{ count, logs }` | Get execution logs |
+
+## Debug an action
+
+You can debug an action in your browser. To debug the app actions open a browser tab on the tasks compile endpoint
+- `URL` <strong>GET</strong> /v1/apps/{appId}/tasks/{taskId}/compile?html
+
+Below are the URLs for different region
+- `EU` https://api.fliplet.com/v1/apps/22/tasks/25/compile?html
+- `US` https://us.api.fliplet.com/v1/apps/22/tasks/25/compile?html
+- `CA` https://ca.api.fliplet.com/v1/apps/22/tasks/25/compile?html
+
+#### Steps to debug an app action V3
+- Open the browser DevTools by pressing the `F12` key
+- Go to Source tab and from the pages find the relevant function JS file
+- Put the Debug point in the code you want to debug
+- Go to the console and type `Fliplet.App.V3.Actions.runWithResult('action-name', {})` to execute the action with an optional payload
 
 ## Troubleshooting
 
