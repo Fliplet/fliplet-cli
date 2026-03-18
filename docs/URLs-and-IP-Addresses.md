@@ -99,7 +99,7 @@ If your network policy requires IP-based rules, the following AWS S3 CIDR ranges
 
 Fliplet servers use the following static IP addresses when making **outbound** requests to external services. This includes OAuth2 token exchanges, App Actions webhook deliveries, and any server-to-server API calls initiated by Fliplet on behalf of your app.
 
-These IPs are static (Elastic IPs attached to NAT Gateways) and will not change without prior notice. If you need to whitelist inbound traffic from Fliplet to your infrastructure, use these addresses.
+These IPs are static and will not change without prior notice. If you need to whitelist inbound traffic from Fliplet to your infrastructure, use these addresses.
 
 ### European customers
 
