@@ -90,7 +90,7 @@ Fliplet.Hooks.on('sessionValidate', function (data) {
 |----------|------|
 | User logs in with username + password | `login` |
 | User logs in via SAML2 SSO | `login` |
-| User verifies via email or SMS code | `onUserVerified` (see [Email Verification](email-verification.html)) |
+| User verifies via email or SMS code | `onUserVerified` (see [Email Verification](email-verification.html) for the hook, session shape, and security-rule compatibility) |
 | Returning user's session is re-validated | `sessionValidate` |
 
 <p class="quote"><strong>Tip:</strong> If you need to run the same code regardless of how the user authenticated, register handlers for both <code>login</code> and <code>onUserVerified</code>.</p>
