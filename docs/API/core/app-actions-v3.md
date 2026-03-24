@@ -267,8 +267,8 @@ async function execute(context) {
 
 ```js
 async function execute(context) {
-  var recipientEmail = 'nick@company.com';
-  var recipientName = 'Nick';
+  var recipientEmail = 'nick@company.com'; // replace with your recipient email
+  var recipientName = 'Nick';              // replace with your recipient name
 
   await Fliplet.Communicate.sendEmail({
     to: [{ email: recipientEmail, name: recipientName, type: 'to' }],
@@ -291,7 +291,7 @@ async function execute(context) {
     data: {
       title: 'Daily Update',
       message: 'Your daily report is ready to view.',
-      navigate: { action: 'screen', page: 54321 }
+      navigate: { action: 'screen', page: 54321 } // replace 54321 with your screen ID
     },
     pushNotification: {
       payload: {
@@ -381,7 +381,7 @@ var notification = await Fliplet.Notifications.insert({
   data: {
     title: 'Booking Reminder',
     message: 'You have a booking scheduled for today.',
-    navigate: { action: 'screen', page: 54321 } // optional deep link to a screen
+    navigate: { action: 'screen', page: 54321 } // replace 54321 with your screen ID
   },
   pushNotification: {
     payload: {
