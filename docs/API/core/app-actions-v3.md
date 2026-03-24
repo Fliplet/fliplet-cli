@@ -267,9 +267,8 @@ async function execute(context) {
 
 ```js
 async function execute(context) {
-  // context.payload contains the recipient details passed by the caller
-  var recipientEmail = context.payload.email;
-  var recipientName = context.payload.name;
+  var recipientEmail = 'nick@company.com';
+  var recipientName = 'Nick';
 
   await Fliplet.Communicate.sendEmail({
     to: [{ email: recipientEmail, name: recipientName, type: 'to' }],
