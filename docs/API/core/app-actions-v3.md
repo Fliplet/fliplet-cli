@@ -87,6 +87,8 @@ async function execute(context) {
 
 <p class="warning">The function must be named <code>execute</code>. Any other name causes a <code>CODE_VALIDATION_FAILED</code> error. The function does <strong>not</strong> receive any parameters beyond <code>context</code> — all input data is inside <code>context.payload</code>.</p>
 
+<p class="warning">Do <strong>not</strong> use Handlebars <code>{% raw %}{{ }}{% endraw %}</code> syntax in action code. Handlebars expressions are not evaluated inside app actions and will cause unexpected behavior or errors. Use JavaScript template literals (<code>${}</code>) with backtick strings instead. For example: <code>{% raw %}`Hello ${context.payload.name}`{% endraw %}</code></p>
+
 ### Supported function formats
 
 ```js
@@ -261,6 +263,49 @@ async function execute(context) {
 }
 ```
 
+### Example: send an email
+
+```js
+async function execute(context) {
+  var recipientEmail = 'nick@company.com'; // replace with your recipient email
+  var recipientName = 'Nick';              // replace with your recipient name
+
+  await Fliplet.Communicate.sendEmail({
+    to: [{ email: recipientEmail, name: recipientName, type: 'to' }],
+    subject: 'Your booking is confirmed',
+    from_name: 'Booking System',
+    html: '<h1>Booking Confirmed</h1><p>Hi ' + recipientName + ', your booking has been confirmed.</p>'
+  });
+
+  return { success: true, sentTo: recipientEmail };
+}
+// Requires dependency: fliplet-communicate
+```
+
+### Example: send a push notification
+
+```js
+async function execute(context) {
+  // Send a push notification to all subscribed users
+  var notification = await Fliplet.Notifications.insert({
+    data: {
+      title: 'Daily Update',
+      message: 'Your daily report is ready to view.',
+      navigate: { action: 'screen', page: 54321 } // replace 54321 with your screen ID
+    },
+    pushNotification: {
+      payload: {
+        title: 'Daily Update',
+        body: 'Your daily report is ready to view.'
+      }
+    }
+  });
+
+  return { success: true, notificationId: notification.id };
+}
+// Requires dependency: fliplet-notifications
+```
+
 ## Dependencies
 
 If your action code uses Fliplet APIs, you must include the corresponding package in the `dependencies` array. Dependencies can be Fliplet package names or external URLs.
@@ -286,6 +331,7 @@ dependencies: [
 | `fliplet-audio` | `Fliplet.Audio` | Audio API — record and play audio | [Audio JS API](https://developers.fliplet.com/API/fliplet-audio.html) |
 | `fliplet-csv` | `Fliplet.CSV` | CSV API — parse and generate CSV data | [CSV JS API](https://developers.fliplet.com/API/fliplet-csv.html) |
 | `fliplet-encryption` | `Fliplet.Encryption` | Encryption API — encrypt and decrypt data | [Encryption JS API](https://developers.fliplet.com/API/fliplet-encryption.html) |
+| `fliplet-notifications` | `Fliplet.Notifications` | Notifications API — manage and send push notifications | [Notifications JS API](https://developers.fliplet.com/API/fliplet-notifications.html) |
 
 ### Quick reference: key method signatures
 
@@ -327,6 +373,26 @@ await Fliplet.Communicate.sendPushNotification(appId, {
 });
 ```
 
+**`fliplet-notifications`** — [Full API reference](https://developers.fliplet.com/API/fliplet-notifications.html)
+
+```js
+// Send a push notification to all users subscribed to the app
+var notification = await Fliplet.Notifications.insert({
+  data: {
+    title: 'Booking Reminder',
+    message: 'You have a booking scheduled for today.',
+    navigate: { action: 'screen', page: 54321 } // replace 54321 with your screen ID
+  },
+  pushNotification: {
+    payload: {
+      title: 'Booking Reminder',
+      body: 'You have a booking scheduled for today.'
+    }
+  }
+});
+// notification — the created notification object
+```
+
 **`fliplet-media`** — [Full API reference](https://developers.fliplet.com/API/fliplet-media.html)
 
 ```js
@@ -346,6 +412,7 @@ When writing action code, **match each `Fliplet.*` namespace used in the `execut
 - Code uses `Fliplet.Audio` → add `fliplet-audio`
 - Code uses `Fliplet.CSV` → add `fliplet-csv`
 - Code uses `Fliplet.Encryption` → add `fliplet-encryption`
+- Code uses `Fliplet.Notifications` → add `fliplet-notifications`
 
 If the code uses multiple Fliplet APIs, include all corresponding packages. For example, code that reads from a data source and sends an email needs both `fliplet-datasources` and `fliplet-communicate`.
 
@@ -410,6 +477,8 @@ triggers: [
   }
 ]
 ```
+
+<p class="warning">Log-triggered actions are scoped to the <code>appId</code> of the app that owns the action. The action only fires for log events that belong to the same app. It does <strong>not</strong> receive log events from other apps in the organization, even if the <code>where</code> filter matches.</p>
 
 #### Available log event types
 
