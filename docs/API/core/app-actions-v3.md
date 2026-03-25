@@ -1300,13 +1300,13 @@ All error responses follow this format:
 
 ## Debug an action
 
-You can debug an action in your browser. To debug the app actions open a browser tab on the tasks compile endpoint
-- `URL` <strong>GET</strong> /v1/apps/{appId}/tasks/{taskId}/compile?html
+You can debug an action in your browser. To debug app actions, open a browser tab on the action compile endpoint:
+- `URL` <strong>GET</strong> /v3/apps/:app/actions/:id/compile?html
 
 Below are the URLs for different region
-- `EU` https://api.fliplet.com/v1/apps/22/tasks/25/compile?html
-- `US` https://us.api.fliplet.com/v1/apps/22/tasks/25/compile?html
-- `CA` https://ca.api.fliplet.com/v1/apps/22/tasks/25/compile?html
+- `EU` https://api.fliplet.com/v3/apps/22/actions/25/compile?html
+- `US` https://us.api.fliplet.com/v3/apps/22/actions/25/compile?html
+- `CA` https://ca.api.fliplet.com/v3/apps/22/actions/25/compile?html
 
 #### Steps to debug an app action V3
 - Open the browser DevTools by pressing the `F12` key
