@@ -6,7 +6,7 @@ description: Configure your app screens to run scheduled or ad-hoc operation in 
 
 <p class="warning"><strong>Deprecated:</strong> App Actions V1 is deprecated and will be removed in a future release. Please use <a href="/API/core/app-actions-v3.html">App Actions V3</a> for all new development. Existing V1 actions will continue to work but should be migrated to V3.</p>
 
-The **App Actions** library allows you to configure app screens to run automatically at a scheduled time or carry out an ad-hoc operations and automations in the cloud.
+**App Actions** library allows you to configure app screens to run automatically at a scheduled time or carry out an ad-hoc operations and automations in the cloud.
 
 ![How it works](/assets/img/app-actions.png)
 

@@ -377,7 +377,36 @@ const userData = await getComplexUserData({
 });
 ```
 
----
+## Using operators in custom security rules
+
+When writing [custom security rules](/Data-source-security.html#custom-security-rules), you can query other Data Sources using the `DataSources` server-side library. The `find` and `findOne` methods support the same query operators listed above.
+
+```js
+// Custom security rule: grant access if user is a manager in the same office
+if (type === 'select') {
+  var entry = await DataSources(123).findOne({
+    where: {
+      Office: user.Office,
+      Managers: { $in: [user.Email] },
+      Status: { $ne: 'Inactive' }
+    }
+  });
+
+  if (entry) {
+    return { granted: true };
+  }
+}
+```
+
+Both `find` and `findOne` accept:
+
+| Property | Type | Default | Description |
+|---|---|---|---|
+| `where` | Object | — | Query filter using any operators from this page |
+| `limit` | Number | `100` | Maximum number of records to return |
+| `offset` | Number | `0` | Number of records to skip |
+
+<p class="quote">The operators on this page are for <strong>querying data</strong>. The <code>require</code> property in security rules uses a different set of requirement types (<code>equals</code>, <code>notequals</code>, <code>contains</code>) to validate incoming queries — see <a href="/Data-source-security.html#data-requirements-and-query-validation">data requirements and query validation</a>.</p>
 
 [Back to Data Sources Documentation](../fliplet-datasources.md)
 {: .buttons} 

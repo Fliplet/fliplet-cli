@@ -56,14 +56,13 @@ Fliplet Studio, Fliplet Web and Native apps as well as Fliplet Agent (Data Integ
 
 ## IP-based whitelisting
 
-Please note that the following list may change over time. We regularly update our IP ranges hence IP-based whitelisting is not recommended.
+<p class="warning"><strong>URL-based whitelisting is strongly recommended over IP-based whitelisting.</strong> Fliplet services are fronted by CloudFront (AWS CDN), which means the IP addresses that <code>api.fliplet.com</code>, <code>cdn.fliplet.com</code> and other domains resolve to will change over time. Static IP filtering for inbound access to Fliplet services is inherently unreliable.</p>
 
-### IPs for all Fliplet Services
+If your network policy requires IP-based rules, the following AWS S3 CIDR ranges cover access to Fliplet CDN assets. Note that these are shared AWS ranges, not exclusive to Fliplet:
+
+### S3/CDN ranges for European customers
 
 ```
-52.19.68.87/32
-63.32.114.158/32
-63.32.146.94/32
 52.218.0.0/17
 52.92.40.0/21
 54.231.128.0/19
@@ -71,14 +70,11 @@ Please note that the following list may change over time. We regularly update ou
 52.212.248.0/26
 3.249.28.0/23
 52.19.124.0/23
-52.212.7.119/32
 ```
 
-### Additional IPs for US customers
+### Additional S3/CDN ranges for US customers
 
 ```
-54.193.126.209/32
-54.67.74.6/32
 52.219.20.0/22
 52.219.24.0/21
 52.92.48.0/22
@@ -86,16 +82,11 @@ Please note that the following list may change over time. We regularly update ou
 52.219.120.0/22
 52.219.112.0/21
 52.52.191.128/26
-54.151.38.62/32
 ```
 
-
-### Additional IPs for Canadian customers
+### Additional S3/CDN ranges for Canadian customers
 
 ```
-3.98.17.196/32
-3.98.43.103/32
-3.98.9.146/32
 143.204.170.71/32
 143.204.170.36/32
 143.204.170.28/32
@@ -104,13 +95,32 @@ Please note that the following list may change over time. We regularly update ou
 
 ---
 
-### Additional IPs for Fliplet App Actions
+## Static outbound IPs
 
-If you need to whitelist inbound requests to your systems from App Actions, please add the following IP addresses:
+Fliplet servers use the following static IP addresses when making **outbound** requests to external services. This includes OAuth2 token exchanges, App Actions webhook deliveries, and any server-to-server API calls initiated by Fliplet on behalf of your app.
 
-- Canadian customers: `3.98.9.146`
-- European customers: `52.212.7.119`
-- US customers: `54.151.38.62`
+These IPs are static and will not change without prior notice. If you need to whitelist inbound traffic from Fliplet to your infrastructure, use these addresses.
+
+### European customers
+
+```
+34.253.89.200
+52.212.7.119
+```
+
+### US customers
+
+```
+54.215.18.140
+54.151.38.62
+```
+
+### Canadian customers
+
+```
+52.60.161.244
+3.98.9.146
+```
 
 ---
 
@@ -148,7 +158,7 @@ You can use the `dig` unix command to get an up to date list of our SPF records 
 $ dig TXT amazonses.com +short| grep 'v=spf1'
 ```
 
-Here’s the equivalent query (and result) using the Windows command prompt:
+Here's the equivalent query (and result) using the Windows command prompt:
 
 ```
 C:>nslookup -type=TXT amazonses.com | find "v=spf1"
