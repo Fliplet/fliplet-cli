@@ -261,6 +261,7 @@ async function execute(context) {
     result: result
   };
 }
+// Requires dependency: fliplet-datasources
 ```
 
 ### Example: send an email
@@ -288,6 +289,7 @@ async function execute(context) {
 async function execute(context) {
   // Send a push notification to all subscribed users
   var notification = await Fliplet.Notifications.insert({
+    status: 'published',
     data: {
       title: 'Daily Update',
       message: 'Your daily report is ready to view.',
@@ -378,6 +380,7 @@ await Fliplet.Communicate.sendPushNotification(appId, {
 ```js
 // Send a push notification to all users subscribed to the app
 var notification = await Fliplet.Notifications.insert({
+  status: 'published',
   data: {
     title: 'Booking Reminder',
     message: 'You have a booking scheduled for today.',
@@ -1303,12 +1306,12 @@ All error responses follow this format:
 You can debug an action in your browser. To debug app actions, open a browser tab on the action compile endpoint:
 - `URL` <strong>GET</strong> /v3/apps/:app/actions/:id/compile?html
 
-Below are the URLs for different region
-- `EU` https://api.fliplet.com/v3/apps/22/actions/25/compile?html
-- `US` https://us.api.fliplet.com/v3/apps/22/actions/25/compile?html
-- `CA` https://ca.api.fliplet.com/v3/apps/22/actions/25/compile?html
+Below are the URLs for different regions
+- `EU` https://api.fliplet.com/v3/apps/:appId/actions/:actionId/compile?html
+- `US` https://us.api.fliplet.com/v3/apps/:appId/actions/:actionId/compile?html
+- `CA` https://ca.api.fliplet.com/v3/apps/:appId/actions/:actionId/compile?html
 
-#### Steps to debug an app action V3
+### Steps to debug an app action V3
 - Open the browser DevTools by pressing the `F12` key
 - Go to Source tab and from the pages find the relevant function JS file
 - Put the Debug point in the code you want to debug
