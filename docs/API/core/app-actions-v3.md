@@ -31,7 +31,7 @@ description: Write and run JavaScript code directly on the server or client to p
 3. An app action runs on the server when `environment` is set to `server` or `any`.
 4. An app action runs on the client side when `environment` is set to `client` or `any`.
 5. App action execution time limits depend on environment: **120 seconds** for server-side (`server`) and **30 seconds** for client-side V3 (`client`). When the limit is exceeded, the action is killed and a timeout error is returned and saved in the logs.
-6. The payload for on-demand actions is **limited to 2048 characters** when serialized as JSON.
+6. On-demand actions accept a `payload` object that is serialized to JSON and sent to the execution backend. The effective maximum payload size is constrained by the transport layer used to invoke the action (in practice, this is typically limited by the maximum URL/query-string length when the payload is sent as a URL-encoded query parameter). Keep payloads small; for larger inputs, store data elsewhere (e.g., a data source or file) and pass a reference (IDs/keys) instead.
 7. The result sent from an on-demand app action is **limited to 6MB**.
 8. Scheduled app actions only run the **published (production)** version of an action. On-demand actions run the version from the same environment they are fired from (e.g., Fliplet Viewer runs the master version, live apps run the production version).
 9. An action must have `active` set to `true` to be executed. Inactive actions do **not** run regardless of whether they are on-demand, scheduled, or triggered by events.
@@ -881,7 +881,8 @@ var result = await Fliplet.App.V3.Actions.runWithResult(12345, {
 
 <p class="quote">Rate limiting: the run action endpoint is limited to <strong>30 requests per minute</strong>. Contact the Fliplet team for more details.</p>
 
-<p class="quote">Payload size limit: the input payload is limited to <strong>2048 characters</strong> when serialized as JSON. The result is limited to <strong>6MB</strong>.</p>
+<p class="quote">Payload size limit: the input payload is serialized to JSON and sent to the execution backend. The effective maximum size is constrained by the transport/infrastructure (commonly the maximum URL/query-string length if the payload is passed as a URL-encoded query parameter). Keep payloads small and pass references (IDs/keys) for large inputs.
+The result is limited to <strong>6MB</strong>.</p>
 
 ## Get the list of app actions
 
