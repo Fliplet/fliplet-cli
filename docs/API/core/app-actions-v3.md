@@ -30,7 +30,7 @@ description: Write and run JavaScript code directly on the server or client to p
 2. An app action can be created as **scheduled** (when using the `frequency` parameter) or to be run **on-demand**.
 3. An app action runs on the server when `environment` is set to `server` or `any`.
 4. An app action runs on the client side when `environment` is set to `client` or `any`.
-5. An app action is **limited to 120 seconds of execution time**. After 120 seconds, the action is killed and a timeout error is returned and saved in the logs.
+5. App action execution time limits depend on environment: **120 seconds** for server-side (`server`) and **30 seconds** for client-side V3 (`client`). When the limit is exceeded, the action is killed and a timeout error is returned and saved in the logs.
 6. The payload for on-demand actions is **limited to 2048 characters** when serialized as JSON.
 7. The result sent from an on-demand app action is **limited to 6MB**.
 8. Scheduled app actions only run the **published (production)** version of an action. On-demand actions run the version from the same environment they are fired from (e.g., Fliplet Viewer runs the master version, live apps run the production version).
@@ -585,6 +585,7 @@ triggers: [
 | Type | Description |
 |------|-------------|
 | `analytics.pageView` | A screen was viewed in the app |
+| `analytics.event` | A custom analytics event tracked via `Fliplet.App.Analytics.event()` |
 
 #### Analytics `data` fields for `analytics.pageView`
 
@@ -663,7 +664,7 @@ Returns a Promise that resolves to `{ action: <action object> }`. See [Action ob
 | `*/5 1 * * *`     | Run every 5th minute of every first hour (i.e., 01:00, 01:05, 01:10, up until 01:55)                   |
 | `0 0 1 1 *`       | Run once a year at midnight of 1 January                                                               |
 
-<p class="warning">The minimum allowed frequency is every 5 minutes (<code>*/5 * * * *</code>). Running every minute (<code>* * * * *</code>) returns a <code>FREQUENCY_TOO_FREQUENT</code> error.</p>
+<p class="warning">Running every minute (<code>* * * * *</code>) is not allowed and returns a <code>FREQUENCY_TOO_FREQUENT</code> error.</p>
 
 <p class="info">The timezone for the frequency is defined via the <code>timezone</code> parameter using the <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones" target="_blank">full IANA timezone name</a>, e.g., "Europe/Dublin". If no timezone is specified, the server default is used.</p>
 
@@ -834,7 +835,7 @@ Queues the action for execution and returns immediately. You do **not** get the 
 
 - **Parameters:**
   - `nameOrId` (String or Number) — The action name or numeric ID
-  - `payload` (Optional Object) — Data to pass as `context.payload`. Limited to 2048 characters when serialized as JSON.
+  - `payload` (Optional Object) — Data to pass as `context.payload`.
 - **Returns:** Promise that resolves when the action has been **queued** (not when it finishes executing).
 
 ```js
@@ -856,7 +857,7 @@ Executes the action and waits for it to complete. Returns the value from the `ex
 
 - **Parameters:**
   - `nameOrId` (String or Number) — The action name or numeric ID
-  - `payload` (Optional Object) — Data to pass as `context.payload`. Limited to 2048 characters when serialized as JSON.
+  - `payload` (Optional Object) — Data to pass as `context.payload`.
 - **Returns:** Promise that resolves with the return value of the `execute()` function. The result is limited to 6MB.
 
 ```js
@@ -1071,7 +1072,7 @@ Each time an action runs, a log record is generated. Use `Fliplet.App.V3.Actions
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
 | `id` | Number | No | — | Filter logs to a specific action ID. If omitted, returns logs for all actions in the app. |
-| `where` | Object | No | — | Filter logs by conditions. Supports `type` (`"app.task.failed"` or `"app.task.completed"`), `data.actionVersion` (e.g., `"v3"`), and `data` object with `taskId` (Number) |
+| `where` | Object | No | — | Filter logs by conditions. Supports `type` (`"app.task.failed"` or `"app.task.completed"`), and `data` object with `taskId` (Number) |
 | `limit` | Number | No | 50 | Maximum number of log entries to return |
 | `offset` | Number | No | 0 | Number of log entries to skip (for pagination) |
 
@@ -1212,7 +1213,6 @@ var response = await Fliplet.App.V3.Actions.getLogs({
   id: 12345,
   where: {
     type: 'app.task.failed',
-    'data.actionVersion': 'v3',
     data: { taskId: 12345 }
   },
   limit: 10,
@@ -1254,7 +1254,7 @@ All error responses follow this format:
 | `CODE_VALIDATION_FAILED` | Code failed validation — either the `execute` function is missing, the function is not `async`, or required dependencies are not listed |
 | `ENVIRONMENT_INVALID` | Invalid environment value (must be `"server"`, `"client"`, or `"any"`) |
 | `FREQUENCY_INVALID` | Invalid cron expression |
-| `FREQUENCY_TOO_FREQUENT` | Frequency is set to run every minute — minimum interval is every 5 minutes |
+| `FREQUENCY_TOO_FREQUENT` | Frequency is set to run every minute (`* * * * *`) |
 | `TIMEZONE_INVALID` | Invalid timezone name (must be a valid IANA timezone) |
 | `TRIGGERS_INVALID` | Triggers must be an array |
 | `TRIGGER_TYPE_INVALID` | Invalid trigger type (must be `"manual"`, `"schedule"`, `"log"`, or `"analytics"`) |
@@ -1304,7 +1304,7 @@ All error responses follow this format:
 ## Debug an action
 
 You can debug an action in your browser. To debug app actions, open a browser tab on the action compile endpoint:
-- `URL` <strong>GET</strong> /v3/apps/:app/actions/:id/compile?html
+- `URL` <strong>GET</strong> /v3/apps/:appId/actions/:actionId/compile?html
 
 Below are the URLs for different regions
 - `EU` https://api.fliplet.com/v3/apps/:appId/actions/:actionId/compile?html
