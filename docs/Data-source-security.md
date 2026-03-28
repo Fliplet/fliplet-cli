@@ -62,6 +62,10 @@ The `allow` property supports four modes:
 { "allow": "loggedIn" }
 ```
 
+`allow: "loggedIn"` checks whether the current request is authenticated. This includes users authenticated through the `dataSource` passport, such as Data Source Login, Email Verification, and SMS verification.
+
+<p class="quote"><strong>Important:</strong> <code>allow: "loggedIn"</code> only checks whether the user is authenticated. It does not limit which records they can access. Use <code>require</code> with {% raw %}<code>{{user[...]}}</code>{% endraw %} to scope access to the authenticated user's data.</p>
+
 **Specific users** (filtered by session data). `allow.user` checks the logged-in user's **identity** — use it with literal values to control *who* can access. To control *which records* they can access, use `require` instead (see [Data requirements](#data-requirements-and-query-validation)):
 
 ```json
@@ -466,6 +470,8 @@ Condition values can reference the logged-in user's session data using Handlebar
 - {% raw %}`{{user.[Role]}}`{% endraw %} — the user's role
 - {% raw %}`{{user.[ID]}}`{% endraw %} — the user's data source entry ID
 
+For Data Source Login, Email Verification, and SMS verification, these values come from the authenticated row in the authentication data source. For example, {% raw %}`{{user.[Email]}}`{% endraw %} resolves to the verified email address, and {% raw %}`{{user.[ID]}}`{% endraw %} resolves to the authenticated entry ID.
+
 ### Require syntax
 
 **Required fields** (string) — the query must include these columns:
@@ -500,6 +506,52 @@ You can mix both formats in the same array:
 {% endraw %}
 
 For full examples of `require` in practice — including sample data, succeed queries, and fail queries — see [role-based access with protected fields](#example-role-based-access-with-protected-fields) and [department-scoped access](#example-department-scoped-access) above.
+
+### Example: email verification with secured data access
+
+The following rule allows authenticated users to read only the records that match their verified email address:
+
+{% raw %}
+```json
+{
+  "type": ["select"],
+  "allow": "loggedIn",
+  "require": [
+    { "Email": { "equals": "{{user.[Email]}}" } }
+  ]
+}
+```
+{% endraw %}
+
+Client-side code must include a matching `where` clause:
+
+```js
+Fliplet.User.getCachedSession().then(function (session) {
+  var user = _.get(session, 'entries.dataSource.data');
+
+  if (!user) {
+    return;
+  }
+
+  return Fliplet.DataSources.connectByName('Orders').then(function (connection) {
+    return connection.find({
+      where: { Email: user.Email }
+    });
+  });
+});
+```
+
+This succeeds because the user is authenticated and the query satisfies the rule's `require`.
+
+The following query does not satisfy the rule:
+
+```js
+Fliplet.DataSources.connectByName('Orders').then(function (connection) {
+  return connection.find();
+});
+```
+
+For reads, an unmet `require` means the rule is skipped. Access is only granted if a later rule allows it.
 
 ## Custom security rules
 

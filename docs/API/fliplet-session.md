@@ -70,16 +70,17 @@ Fliplet.Session.logout().then(function onSessionDestroyed() {
 
 ## Read details about connected accounts
 
-If your app contains a login component (either DataSource, SAML2 or Fliplet) you can use the session to check whether the user is logged in and in and some of the connected account(s) details:
+If your app contains an authentication component (for example Data Source Login, Email Verification, SMS verification, SAML2, or Fliplet login) you can use the session to check whether the user is logged in and read the connected account details:
 
 ```js
 Fliplet.User.getCachedSession().then(function(session) {
   if (session && session.entries) {
     // the user is logged in;
 
-    // check if the user is connected to a dataSource login
+    // check if the user is connected to a dataSource passport
     if (session.entries.dataSource) {
-      // user is logged in against a Fliplet dataSource
+      // user is logged in through a dataSource-based flow
+      // such as Data Source Login, Email Verification, or SMS verification
     }
 
     // check if the user is connected to a SAML2 login
@@ -101,6 +102,8 @@ Data for the connected account(s) can also be read and used as necessary:
 
 ### Example for dataSource login
 
+This public session shape is used by any authentication flow that logs the user in with the `dataSource` passport, including Email Verification and SMS verification.
+
 ```js
 Fliplet.User.getCachedSession().then(function (session) {
   var user = _.get(session, 'entries.dataSource.data');
@@ -113,6 +116,8 @@ Fliplet.User.getCachedSession().then(function (session) {
   console.log(user);
 });
 ```
+
+<p class="quote"><strong>Note:</strong> For client-side app code, use <code>session.entries</code> as the public session interface. Do not rely on internal server/session structures.</p>
 
 ### Example for SAML2
 
