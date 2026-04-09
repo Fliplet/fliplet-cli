@@ -637,9 +637,9 @@ Generates an original image based on a text prompt using OpenAI's image generati
 | n              | Number | Yes      | 1           | The number of images to generate. Must be between 1 and 10.                                                |
 | size           | String | Yes      | '1024x1024' | The size of the generated images. Must be one of '256x256', '512x512', or '1024x1024'.                 |
 | response_format| String | Yes      | 'url'       | The format in which the generated images are returned. Must be one of 'url' or 'b64_json'.               |
-| model          | String | Yes      | dall-e-2    | The model to use for image generation (e.g. dall-e-2, dall-e-3). dall-e-3 currently only supports n=1. |
-| quality        | String | Yes      | standard    | For dall-e-3 model, the quality of the image. 'standard' or 'hd'.                                       |
-| style          | String | Yes      | vivid       | For dall-e-3 model, the style of the generated images. 'vivid' or 'natural'.                            |
+| model          | String | Yes      | gpt-image-1.5 | The model to use for image generation (e.g. gpt-image-1.5, dall-e-3). |
+| quality        | String | Yes      | standard    | The quality of the image. 'standard' or 'hd'.                                       |
+| style          | String | Yes      | vivid       | The style of the generated images. 'vivid' or 'natural'.                            |
 | user           | String | Yes      |               | A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.       |
 
 
@@ -657,9 +657,9 @@ A `Promise` that resolves to an `ImageResponseObject`. Refer to the OpenAI docum
  * @property {number} [n=1] - Number of images (1-10).
  * @property {'256x256'|'512x512'|'1024x1024'} [size='1024x1024'] - Image size.
  * @property {'url'|'b64_json'} [response_format='url'] - Response format.
- * @property {string} [model='dall-e-2'] - Model to use.
- * @property {'standard'|'hd'} [quality='standard'] - For dall-e-3, image quality.
- * @property {'vivid'|'natural'} [style='vivid'] - For dall-e-3, image style.
+ * @property {string} [model='gpt-image-1.5'] - Model to use.
+ * @property {'standard'|'hd'} [quality='standard'] - Image quality.
+ * @property {'vivid'|'natural'} [style='vivid'] - Image style.
  * @property {string} [user] - End-user identifier.
  */
 
@@ -682,7 +682,7 @@ async function generateAnImage() {
       n: 1,
       size: "1024x1024",
       response_format: "url", // or 'b64_json'
-      model: "dall-e-3" // Example using DALL-E 3
+      model: "gpt-image-1.5"
     };
     console.log('Input for generateImage:', params);
     const result = await Fliplet.AI.generateImage(params);
