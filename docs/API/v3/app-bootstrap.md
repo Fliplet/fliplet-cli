@@ -43,7 +43,9 @@ Fliplet().then(function() {
 
 ## 4. Routing
 
-V3 apps use the History API on every platform (web and native). `Fliplet.Router` is auto-loaded on V3 apps and exposes the routing contract:
+V3 uses the History API on every platform (web and native). **Hash routing is forbidden** — no `window.location.hash`, no `hashchange` listener, no `createWebHashHistory()`, no `HashRouter`, no `href="#/..."`. Hand-rolled routers that read `window.location.pathname` directly are also forbidden; strip the base path first.
+
+`Fliplet.Router` is auto-loaded on V3 apps and exposes the routing contract:
 
 ```js
 var base     = Fliplet.Router.getBasePath();        // '/', '/my-slug/', preview path, or native base

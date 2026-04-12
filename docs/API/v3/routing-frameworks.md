@@ -201,6 +201,7 @@ function navigate(path) {
 
 ## Common pitfalls
 
+- **Don't hand-roll a `SCREENS = { home: 1234, ... }` map or a pathname-if-chain.** That's the route manifest — put it in `update_route_manifest` and read it back via `Fliplet.Router.getRouteManifest().routes`. Every path → fileId mapping belongs on the server; none belong in boot HTML or `App.js`.
 - **Don't call `createWebHashHistory()` on any platform.** V3 uses History API everywhere — native included. The API server sets `<base href>` and the native shell computes `window.ENV.basePath` to make `history.pushState` URLs resolve on refresh.
 - **Don't read `window.location.pathname` directly to determine the current route.** Strip the base path first — `Fliplet.Router.getBasePath()` returns the prefix to remove.
 - **Don't fetch the screen's media URL yourself.** `Fliplet.Router.checkRouteAccess` already calls `Fliplet.Media.getContents(fileId)` under the hood and returns the content in `result.content`. Calling both produces a double fetch and may race.
