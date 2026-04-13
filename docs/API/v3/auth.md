@@ -261,7 +261,7 @@ async function logout() {
 
 ## Protected Routes with Vue Router Guards
 
-In V3 apps using Vue Router, protect routes by checking the session before navigation. This section assumes the router was built per the canonical V3 pattern (History API, base path from `Fliplet.Router.getBasePath()`, routes from `Fliplet.Router.getRouteManifest()`). See the [Canonical snippet (Vue Router 4)](routing.md#canonical-snippet-vue-router-4) in the V3 Routing doc before wiring the guard below.
+In V3 apps using Vue Router, protect routes by checking the session before navigation. This section assumes the router was built per the V3 routing contract (History API, base path from `Fliplet.Router.getBasePath()`, routes from `Fliplet.Router.getRouteManifest()`). See the [Vue Router 4 example](routing.md#vue-router-4-vue-3) in the V3 Routing doc — or the sibling examples for other frameworks — before wiring the guard below.
 
 ### In the App Shell (App.vue)
 

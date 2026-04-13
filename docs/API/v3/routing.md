@@ -1,10 +1,10 @@
 ---
-description: Canonical routing patterns for V3 SPA apps — base path, route manifest, access guard, per-framework translations, and the full list of forbidden patterns that break V3 apps.
+description: Canonical routing patterns for V3 SPA apps — base path, route manifest, access guard, per-framework examples, and the full list of forbidden patterns that break V3 apps.
 ---
 
 # V3 Routing
 
-This is the canonical routing reference for V3 apps. It covers the `Fliplet.Router` contract, the forbidden patterns that break V3 apps on one or more hosting contexts, a canonical snippet, per-framework translations, and the post-login redirect pattern.
+This is the canonical routing reference for V3 apps. It covers the `Fliplet.Router` contract, the forbidden patterns that break V3 apps on one or more hosting contexts, per-framework examples (Vue Router 4, Vue Router 3, React Router, Svelte, vanilla JS), and the post-login redirect pattern.
 
 Routing in V3 is non-obvious because the defaults in most frameworks are wrong for the platform — V3 apps run in three different hosting contexts (slug-hosted web, Studio preview iframe, native shell), each with a different base path. Read this doc before writing boot HTML for any multi-screen V3 app.
 
@@ -48,9 +48,25 @@ These five rules are the ones Fliplet can detect automatically from the boot HTM
 
 ---
 
-## Canonical snippet (Vue Router 4)
+## Framework examples
 
-The default V3 stack is Vue 3 + Vue Router 4. Translations for other frameworks are further down; the structure is identical.
+The same pattern applies to every framework: read the base path and manifest from `Fliplet.Router`, build the framework's router from that, and call `checkRouteAccess` in the component/loader/resolver. The examples below show the shape in five common stacks; pick whichever matches your app.
+
+Every example assumes this manifest shape (see [App Settings](app-settings.md) for how it's stored):
+
+```json
+{
+  "routes": [
+    { "name": "Home",      "path": "/home",       "fileId": 222, "public": true },
+    { "name": "Login",     "path": "/login",      "fileId": 444, "public": true },
+    { "name": "MyAccount", "path": "/my-account", "fileId": 333 }
+  ],
+  "defaultRoute": "/home",
+  "authRedirect": "/login"
+}
+```
+
+### Vue Router 4 (Vue 3)
 
 ```js
 Fliplet.require.lazy('vue-router').then(function() {
@@ -84,24 +100,6 @@ Fliplet.require.lazy('vue-router').then(function() {
   // mount and use the router as usual
 });
 ```
-
-Every snippet below assumes the same manifest shape:
-
-```json
-{
-  "routes": [
-    { "name": "Home",      "path": "/home",       "fileId": 222, "public": true },
-    { "name": "Login",     "path": "/login",      "fileId": 444, "public": true },
-    { "name": "MyAccount", "path": "/my-account", "fileId": 333 }
-  ],
-  "defaultRoute": "/home",
-  "authRedirect": "/login"
-}
-```
-
----
-
-## Per-framework translations
 
 ### Vue Router 3 (Vue 2)
 
