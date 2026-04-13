@@ -1,6 +1,12 @@
+---
+description: Three constraints every V3 boot HTML must satisfy — Fliplet.require.lazy for dependencies, Fliplet.Media.getContents for source files, and the Fliplet().then(...) init sequence. Framework-agnostic.
+---
+
 # V3 App Bootstrap Constraints
 
-A V3 app is a single HTML page passed to `update_screen_code`. The page can use any framework (Vue, React, Svelte, vanilla JS, etc.), but it **must** satisfy three constraints so the Fliplet runtime, dependency loader, and media authentication work correctly.
+A V3 app is a single HTML boot page that hosts the whole SPA. The page can use any framework (Vue, React, Svelte, vanilla JS, etc.), but it **must** satisfy three constraints so the Fliplet runtime, dependency loader, and media authentication work correctly.
+
+Each constraint maps to a concrete platform guarantee: (1) dependencies resolve through the Fliplet asset pipeline so versioning, caching, and per-environment injection work; (2) source files are fetched with signed media requests so private apps don't leak their screens; (3) the runtime registers its globals (`Fliplet.ENV`, `Fliplet.Router`, `Fliplet.Session`, etc.) before your framework mounts. Skip any of them and the app either fails at boot or works in dev and breaks in production.
 
 ---
 
@@ -26,7 +32,7 @@ Fliplet.Media.getContents(fileId).then(function(content) {
 });
 ```
 
-The `fileId` is the **numeric `id`** returned by `upload_media_file` — never a URL.
+The `fileId` is the **numeric `id`** of the file in the app's media library (returned by media upload APIs) — never a URL.
 
 ## 3. Init sequence
 
@@ -43,17 +49,12 @@ Fliplet().then(function() {
 
 ## 4. Routing
 
-V3 uses History API routing driven by the manifest at `app.settings.v3`, accessed via `Fliplet.Router`. Hash routing is forbidden on every platform.
-
-For any multi-screen app, call `get_fliplet_docs('v3-routing')` **before** writing boot HTML — that doc is the canonical routing reference and mirrors the `update_screen_code` lint rules.
+V3 uses History API routing driven by the manifest at `app.settings.v3`, accessed via `Fliplet.Router`. Hash routing is forbidden on every platform. For the full contract, the canonical snippets per framework, and the anti-patterns that break V3 apps, see [V3 Routing](routing.md).
 
 ---
 
-## When to fetch this doc
+## Related
 
-Call `get_fliplet_docs('v3-app-bootstrap')`:
-
-- Before your **first** `update_screen_code` of any new build.
-- Any time you're unsure how the boot HTML should fetch dependencies, load source files, or initialize the runtime.
-
-The result is cached per session — repeat calls in the same conversation are free.
+- [V3 Routing](routing.md) — History API contract, route manifest, and the forbidden-pattern reference.
+- [V3 App Settings Convention](app-settings.md) — where `window.ENV.appSettings` comes from and the public/private key convention.
+- [Media JS APIs](../fliplet-media.md) — full reference for `Fliplet.Media.getContents` and related media calls.

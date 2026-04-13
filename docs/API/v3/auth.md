@@ -234,14 +234,26 @@ async function getCurrentUser() {
 
 ## Logout
 
-Clear the session and redirect to the login screen.
+Clear the session and redirect to the login screen. V3 uses History API routing on every platform, so redirect via your router (or `history.pushState` + `Fliplet.Router.getBasePath()`) — never `window.location.hash`. See [V3 Routing](routing.md) for the full contract.
+
+```js
+// Called from a component that has a router instance in scope.
+async function logout(router) {
+  await Fliplet.Session.logout('dataSource');
+
+  router.push('/login');
+}
+```
+
+If you don't have a router handy (e.g., a framework-agnostic helper), use the History API directly:
 
 ```js
 async function logout() {
   await Fliplet.Session.logout('dataSource');
 
-  // Redirect to login screen after logout
-  window.location.hash = '#/login';
+  history.pushState({}, '', Fliplet.Router.getBasePath() + '/login');
+  // Trigger your router's re-render. In vanilla setups, dispatch a popstate.
+  window.dispatchEvent(new PopStateEvent('popstate'));
 }
 ```
 
@@ -249,7 +261,7 @@ async function logout() {
 
 ## Protected Routes with Vue Router Guards
 
-In V3 apps using Vue Router, protect routes by checking the session before navigation.
+In V3 apps using Vue Router, protect routes by checking the session before navigation. This section assumes the router was built per the canonical V3 pattern (History API, base path from `Fliplet.Router.getBasePath()`, routes from `Fliplet.Router.getRouteManifest()`). See the [Canonical snippet (Vue Router 4)](routing.md#canonical-snippet-vue-router-4) in the V3 Routing doc before wiring the guard below.
 
 ### In the App Shell (App.vue)
 
@@ -512,6 +524,8 @@ var session = await Fliplet.User.getCachedSession();
 
 ## Related
 
+- [V3 Routing](routing.md) — base path, route manifest, `checkRouteAccess`, and post-login redirect pattern.
+- [V3 App Bootstrap](app-bootstrap.md) — the three boot-HTML constraints every V3 app must satisfy.
 - [Session JS APIs](../fliplet-session.md) — full session API reference
 - [Login Component](../components/login.md) — V2 login component hooks
 - [Email Verification](../components/email-verification.md) — passwordless login flow

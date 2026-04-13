@@ -1,26 +1,20 @@
 ---
-description: Canonical routing patterns for V3 SPA apps — base path, route manifest, access guard, per-framework translations, and the full list of forbidden patterns enforced by the update_screen_code lint.
+description: Canonical routing patterns for V3 SPA apps — base path, route manifest, access guard, per-framework translations, and the full list of forbidden patterns that break V3 apps.
 ---
 
 # V3 Routing
 
-This is the canonical routing reference for V3 apps. It covers the `Fliplet.Router` contract, the forbidden patterns that the `update_screen_code` lint rejects, a canonical snippet, per-framework translations, and the post-login redirect pattern.
+This is the canonical routing reference for V3 apps. It covers the `Fliplet.Router` contract, the forbidden patterns that break V3 apps on one or more hosting contexts, a canonical snippet, per-framework translations, and the post-login redirect pattern.
 
-## When to fetch this doc
-
-Call `get_fliplet_docs('v3-routing')`:
-
-- **Before writing boot HTML for any multi-screen V3 app** — the routing contract is non-obvious and defaults in most frameworks are wrong for V3.
-- **Whenever `update_screen_code` returns a routing-lint violation** (response shape: `{ success: false, error: 'V3 routing lint failed …', violations: […], docs: 'v3-routing' }`). The `ruleId` on each violation maps to the "Forbidden patterns" section below.
-- **Any time you're unsure** how to wire routes, base paths, or access checks.
-
-The result is cached per session — repeat calls in the same conversation are free.
+Routing in V3 is non-obvious because the defaults in most frameworks are wrong for the platform — V3 apps run in three different hosting contexts (slug-hosted web, Studio preview iframe, native shell), each with a different base path. Read this doc before writing boot HTML for any multi-screen V3 app.
 
 ---
 
 ## The contract
 
-V3 uses the **History API on every platform** (web, preview iframe, and native). `Fliplet.Router` is auto-loaded on V3 apps and is the only sanctioned router API. You build your framework's router from the manifest; you do not hand-roll routes.
+V3 uses the **History API on every platform** (web, preview iframe, and native). Hash routing is forbidden because every hosting context (slug-hosted web apps, the Studio preview iframe, and native shells) mounts the SPA at a different base path — hashes hide that base from the server, break deep-link sharing, and make post-login redirects unreliable across the three contexts.
+
+`Fliplet.Router` is auto-loaded on V3 apps and is the only sanctioned router API. You build your framework's router from the manifest; you do not hand-roll routes.
 
 ```js
 var base     = Fliplet.Router.getBasePath();        // '/', '/my-slug/', '/v1/apps/42/pages/99/preview/', or native base
@@ -30,7 +24,7 @@ var manifest = Fliplet.Router.getRouteManifest();   // { routes, defaultRoute, a
 Four requirements:
 
 1. **Read the base path** with `Fliplet.Router.getBasePath()` and pass it to your router's history/basename option. Never hardcode `'/'` — slug-hosted apps, preview iframes, and native shells all have different bases.
-2. **Read the manifest** with `Fliplet.Router.getRouteManifest()`. Build your route table from `manifest.routes`. The manifest lives at `app.settings.v3`; update it via the `update_route_manifest` tool whenever you add or remove a user-visible route.
+2. **Read the manifest** with `Fliplet.Router.getRouteManifest()`. Build your route table from `manifest.routes`. The manifest lives at `app.settings.v3` (see [App Settings](app-settings.md)) — update it via the App Settings API (`PUT /v1/apps/:id` with `settings.v3`) or the Studio routing UI whenever you add or remove a user-visible route.
 3. **Guard each route with `Fliplet.Router.checkRouteAccess(path)`** in the component / loader / resolver. It returns `{ allowed: true, content, route }` on success or `{ allowed: false, redirectTo, reason }` on denial, and internally fetches the screen source via `Fliplet.Media.getContents(fileId)` — you don't call it yourself. It rejects on transient/infra errors (5xx, network) so you can show an error UI instead of redirecting silently.
 4. **Guard against stale navigations.** If the user has navigated away before an access check resolves, don't redirect. Compare the resolved route against the current route before calling `push`.
 
@@ -40,7 +34,7 @@ Four requirements:
 
 ## Forbidden patterns
 
-The `update_screen_code` lint rejects boot HTML containing any of these. Each `ruleId` returned in a violation maps to one of the rows below.
+These patterns break V3 apps on at least one hosting context (slug-hosted web, preview iframe, or native). Treat them as hard constraints. The Fliplet Studio AI builder enforces them with an automated lint on generated boot HTML (each violation carries a `ruleId` matching the rows below); hand-authored apps must follow the same rules.
 
 | `ruleId` | What's forbidden | What to do instead |
 |---|---|---|
@@ -50,7 +44,7 @@ The `update_screen_code` lint rejects boot HTML containing any of these. Each `r
 | `hash-router-react` | `HashRouter` (React Router) | `createBrowserRouter(routes, { basename: Fliplet.Router.getBasePath() })`. |
 | `hash-href` | `href="#/..."` or `href='#/...'` | Use real paths (`href="/home"`) and intercept clicks to call `history.pushState` via your router. |
 
-These are the only blocking rules today. Additional anti-patterns (hand-rolled `SCREENS` maps, pathname reads without base-stripping, double-fetching media) live in the "Common pitfalls" section below — they are not lint-blocked but are equally wrong.
+These five rules are the ones Fliplet can detect automatically from the boot HTML. Additional anti-patterns (hand-rolled `SCREENS` maps, pathname reads without base-stripping, double-fetching media) live in the "Common pitfalls" section below — they aren't detected statically but are equally wrong.
 
 ---
 
@@ -296,11 +290,11 @@ router.push(target || manifest.defaultRoute);
 
 ## Common pitfalls
 
-- **Don't hand-roll a `SCREENS = { home: 1234, … }` map or a pathname-if-chain.** That's the route manifest — put it in `update_route_manifest` and read it back via `Fliplet.Router.getRouteManifest().routes`. Every path → fileId mapping belongs on the server; none belong in boot HTML or `App.js`.
-- **Don't read `window.location.pathname` directly to determine the current route.** Strip the base path first — `Fliplet.Router.getBasePath()` returns the prefix to remove.
-- **Don't fetch the screen's media URL yourself.** `Fliplet.Router.checkRouteAccess` already calls `Fliplet.Media.getContents(fileId)` under the hood and returns the content in `result.content`. Calling both produces a double fetch and may race.
-- **Don't assume the server-side ACL matches the manifest's `public` flag.** The manifest is advisory; the server decides. Always handle `reason: 'media-denied'`.
-- **Don't skip `update_route_manifest` on multi-screen apps.** The manifest IS the app's routing definition — without it, `Fliplet.Router.getRouteManifest().routes` is empty and nothing resolves.
+- **Don't hand-roll a `SCREENS = { home: 1234, … }` map or a pathname-if-chain.** That's what the route manifest is for — store it in `app.settings.v3` and read it back via `Fliplet.Router.getRouteManifest().routes`. *(Hand-rolled maps drift when screens are renamed, duplicate the `public`/`fileId` metadata the server already authored, and bypass the manifest as the single source of truth for routing.)*
+- **Don't read `window.location.pathname` directly to determine the current route.** Strip the base path first — `Fliplet.Router.getBasePath()` returns the prefix to remove. *(Slug-hosted apps and preview iframes host the SPA under a non-root path; raw `pathname` reads will misidentify the current route in both contexts.)*
+- **Don't fetch the screen's media URL yourself.** `Fliplet.Router.checkRouteAccess` already calls `Fliplet.Media.getContents(fileId)` under the hood and returns the content in `result.content`. *(A second fetch duplicates the network round trip, can race with the access check, and will fail outright on private media where auth headers aren't applied.)*
+- **Don't assume the server-side ACL matches the manifest's `public` flag.** The manifest is advisory; the server decides. Always handle `reason: 'media-denied'`. *(Flipping `public: true` without updating the media file's access rule grants no access — you'll ship an app that works in dev and 401s in production.)*
+- **Don't skip the route manifest on multi-screen apps.** The manifest at `app.settings.v3` IS the app's routing definition — without it, `Fliplet.Router.getRouteManifest().routes` is empty and nothing resolves. *(The boot HTML has no fallback path list; an empty manifest silently renders a blank app.)*
 
 ---
 
