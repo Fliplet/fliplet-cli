@@ -43,71 +43,9 @@ Fliplet().then(function() {
 
 ## 4. Routing
 
-V3 uses the History API on every platform (web and native). **Hash routing is forbidden** — no `window.location.hash`, no `hashchange` listener, no `createWebHashHistory()`, no `HashRouter`, no `href="#/..."`. Hand-rolled routers that read `window.location.pathname` directly are also forbidden; strip the base path first.
+V3 uses History API routing driven by the manifest at `app.settings.v3`, accessed via `Fliplet.Router`. Hash routing is forbidden on every platform.
 
-`Fliplet.Router` is auto-loaded on V3 apps and exposes the routing contract:
-
-```js
-var base     = Fliplet.Router.getBasePath();        // '/', '/my-slug/', preview path, or native base
-var manifest = Fliplet.Router.getRouteManifest();   // { routes, defaultRoute, authRedirect }
-```
-
-- **Never hardcode the base path or history mode.** Always call `getBasePath()` and `createWebHistory(base)` (or your framework's equivalent). Slug-hosted apps (`apps.fliplet.com/my-slug/`), preview iframes, and native shells all have different base paths; the helper returns the right value.
-- **The manifest is the source of truth.** Build your framework's route table from `manifest.routes`. When you add or remove a route, call `update_route_manifest` so the manifest stays in sync.
-- **Protect every route with `checkRouteAccess`.** In each route's component resolver, call `Fliplet.Router.checkRouteAccess(path)`. It returns `{ allowed: true, content, route }` on success or `{ allowed: false, redirectTo, reason }` on denial, and rejects on transient/infra errors so you can show an error UI instead of redirecting silently.
-- **Server media ACL is the final gate.** The manifest's `public: true` flag is advisory — it just lets the client skip a known-401 round trip. Flipping `public: true` in the manifest without updating the media file's access rule grants no access.
-
-Canonical snippet (Vue Router 4; the same pattern works across React Router, Svelte, and vanilla — see `v3-routing-frameworks`):
-
-```js
-Fliplet.require.lazy('vue-router').then(function() {
-  var manifest = Fliplet.Router.getRouteManifest();
-  var history = VueRouter.createWebHistory(Fliplet.Router.getBasePath());
-
-  var routes = manifest.routes.map(function(r) {
-    return {
-      path: r.path,
-      name: r.name,
-      component: function() {
-        return Fliplet.Router.checkRouteAccess(r.path).then(function(result) {
-          if (!result.allowed) {
-            // Race guard: only redirect if the user is still on this route.
-            if (router.currentRoute.value.path === r.path) {
-              router.push(result.redirectTo);
-            }
-
-            return { template: '<div></div>' };
-          }
-
-          return parseScreen(result.content); // framework-specific
-        });
-      }
-    };
-  });
-
-  routes.unshift({ path: '/', redirect: manifest.defaultRoute });
-
-  var router = VueRouter.createRouter({ history: history, routes: routes });
-  // mount and use the router as usual
-});
-```
-
-**Post-login redirect.** When `checkRouteAccess` returns `reason: 'no-session'` or `reason: 'media-denied'`, stash the intended path before navigating to `authRedirect`:
-
-```js
-sessionStorage.setItem('fl:postLoginPath', router.currentRoute.value.fullPath);
-router.push(result.redirectTo);
-```
-
-After a successful login, consume it:
-
-```js
-var target = sessionStorage.getItem('fl:postLoginPath');
-sessionStorage.removeItem('fl:postLoginPath');
-router.push(target || manifest.defaultRoute);
-```
-
-**Don't read `window.location` manually.** The server handles deep-link URLs and sets `<base href>` on initial render. Your router picks up the initial path itself — hard refresh on `/my-slug/my-account` works out of the box.
+For any multi-screen app, call `get_fliplet_docs('v3-routing')` **before** writing boot HTML — that doc is the canonical routing reference and mirrors the `update_screen_code` lint rules.
 
 ---
 
