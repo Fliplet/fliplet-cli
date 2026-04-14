@@ -77,6 +77,7 @@ These JS APIs falls into the most common category and almost all apps, component
 
   - [Audio](API/fliplet-audio.md) (`fliplet-audio`)
   - [Audio Player](API/fliplet-audio-player.md) (`fliplet-audio-player`)
+  - [Auth](API/fliplet-auth.md) (`fliplet-auth`)
   - [Barcode](API/fliplet-barcode.md) (`fliplet-barcode`)
   - [Communicate](API/fliplet-communicate.md) (`fliplet-communicate`)
   - [Content](API/fliplet-content.md) (`fliplet-content`)
