@@ -12,5 +12,10 @@
   "communicate": { "path": "API/fliplet-communicate.md", "title": "Communicate", "description": "Email, SMS, push notifications" },
   "notifications": { "path": "API/fliplet-notifications.md", "title": "Notifications", "description": "Push notification management" },
   "user": { "path": "API/core/user.md", "title": "User", "description": "Current user data and profile" },
-  "barcode": { "path": "API/fliplet-barcode.md", "title": "Barcode", "description": "QR code scanning and generation" }
+  "barcode": { "path": "API/fliplet-barcode.md", "title": "Barcode", "description": "QR code scanning and generation" },
+  "v3-frameworks": { "path": "API/v3/frameworks/overview.md", "title": "V3 framework guide — picking and setup", "description": "Which frontend framework to pick for a V3 app and the runtime constraints every choice must cope with" },
+  "v3-framework-vanilla": { "path": "API/v3/frameworks/vanilla.md", "title": "V3 vanilla-JS apps", "description": "Constraints for building V3 apps in vanilla JavaScript" },
+  "v3-framework-vue": { "path": "API/v3/frameworks/vue.md", "title": "V3 Vue apps", "description": "Constraints for building V3 apps in Vue 3 (runtime-compiler build, SFC loader tradeoff, router wiring)" },
+  "v3-framework-react": { "path": "API/v3/frameworks/react.md", "title": "V3 React apps", "description": "Constraints for building V3 apps in React, including the JSX transpilation problem and alternatives" },
+  "v3-framework-alpine": { "path": "API/v3/frameworks/alpine.md", "title": "V3 Alpine.js apps", "description": "Constraints for building V3 apps in Alpine.js" }
 }
