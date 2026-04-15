@@ -36,18 +36,17 @@ The `fileId` is the **numeric `id`** of the file in the app's media library (ret
 
 ## 3. Init sequence
 
-The boot script must end with this exact two-line sequence:
+The boot script must end with this call:
 
 ```js
-Fliplet.require(window.ENV.dependencies.js);
 Fliplet().then(function() {
   // runtime is ready. Mount your framework or start your app here.
 });
 ```
 
-`Fliplet.require(window.ENV.dependencies.js)` registers every dependency declared in the app's manifest. `Fliplet().then(...)` waits for the Fliplet runtime to be fully ready before the app starts.
+`Fliplet().then(...)` waits for the Fliplet runtime to be fully ready before the app starts.
 
-<p class="warning">Skipping or reordering either line breaks the boot.</p>
+<p class="warning">Skipping this breaks the boot.</p>
 
 ## What's next: routing
 
