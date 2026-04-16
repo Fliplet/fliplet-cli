@@ -8,18 +8,22 @@ Vue 3 is the best-supported multi-screen framework in V3 because a runtime-compi
 
 ## Loading the framework
 
-Add `vue` via `add_dependencies`, then:
+Add `vue` via `add_dependencies` with `lazy: true`, then:
 
 ```js
-const Vue = await Fliplet.require.lazy('vue');
+await Fliplet.require.lazy('vue');
+const Vue = window.Vue;
 ```
+
+`Fliplet.require.lazy(name)` resolves once the UMD bundle has executed; the module itself lands on `window` (`window.Vue`, `window.VueRouter`). Read it off `window` after the `await` — assigning the awaited value directly gives you the URL string, not the module.
 
 **Pick the runtime-compiler build (usually `vue.global.js`), not the runtime-only build.** The runtime-only build (`vue.runtime.global.js`) does not include the template compiler — any component that uses `template: '...'` strings will fail to render. The runtime-only build only works if every component is authored as a pre-compiled render function, which is impractical without a bundler.
 
 For Vue Router, the separate dependency:
 
 ```js
-const VueRouter = await Fliplet.require.lazy('vue-router');
+await Fliplet.require.lazy('vue-router');
+const VueRouter = window.VueRouter;
 ```
 
 ## Features that need a build step

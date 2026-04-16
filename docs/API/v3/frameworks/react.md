@@ -8,14 +8,29 @@ React works in V3, but it needs more thought than Vue because **JSX cannot run w
 
 ## Loading the framework
 
-Add `react` and `react-dom` via `add_dependencies`, then:
+Add `react` and `react-dom` via `add_dependencies` with `lazy: true`, then:
 
 ```js
-const React = await Fliplet.require.lazy('react');
-const ReactDOM = await Fliplet.require.lazy('react-dom');
+await Fliplet.require.lazy('react');
+await Fliplet.require.lazy('react-dom');
+const React = window.React;
+const ReactDOM = window.ReactDOM;
 ```
 
-For routing, add `react-router-dom` the same way.
+`Fliplet.require.lazy(name)` resolves once the UMD bundle has executed; the module itself lands on `window` (`window.React`, `window.ReactDOM`, `window.htm`, `window.ReactRouterDOM`). Read it off `window` after the `await` — assigning the awaited value directly gives you the URL string, not the module.
+
+For routing, `react-router-dom`'s UMD bundle is not self-contained — it delegates its named exports (`Navigate`, `Outlet`, `useNavigate`, `useLocation`, `Link`, `createBrowserRouter`, …) to two peer packages that must be loaded first as globals:
+
+```js
+await Fliplet.require.lazy('@remix-run/router');  // sets window.RemixRouter
+await Fliplet.require.lazy('react-router');       // sets window.ReactRouter, needs RemixRouter
+await Fliplet.require.lazy('react-router-dom');   // sets window.ReactRouterDOM, needs the two above
+const ReactRouterDOM = window.ReactRouterDOM;
+```
+
+Add all three via `add_dependencies` with `lazy: true` and match the minor versions across them (e.g. `react-router-dom@6.26.x` + `react-router@6.26.x` + `@remix-run/router@1.19.x`). Skipping `react-router` or `@remix-run/router` leaves `ReactRouterDOM.Navigate` etc. as throwing getters that fail at first render.
+
+Adding them via `add_dependencies` is not enough — listing a package as a lazy dep only registers the URL. The boot script must also `await Fliplet.require.lazy(name)` on all three (in the order above) before accessing any `ReactRouterDOM.*` export, or you'll hit `ReactRouterDOM.createBrowserRouter is not a function`.
 
 ## Features that need a build step
 
@@ -75,6 +90,8 @@ Then `<img src={logoSrc} />`. Calling `Fliplet.Media.authenticate` at module sco
 | `Cannot use import statement outside a module` | Bare ESM `import` | Use `Fliplet.require.lazy` |
 | `ReferenceError: React is not defined` inside a component | Component file ran before `react` resolved | Load dependencies in the boot HTML and pass React into component factories, or use `Fliplet.require.lazy` inside the component |
 | `TypeError: useEffect is not a function` | React and react-dom versions mismatched | Pin matching versions in `add_dependencies` |
+| `TypeError: React.createElement is not a function` / `htm.bind is not a function` | Assigned the `await` result to `React`/`htm` directly — that value is the URL string | `await Fliplet.require.lazy('react'); const React = window.React;` (same for `htm`, `ReactDOM`, `ReactRouterDOM`) |
+| `Cannot read properties of undefined (reading 'Navigate'\|'Outlet'\|'useNavigate'\|…)` thrown from inside `react-router-dom.*.min.js` | `react-router-dom` UMD loaded without its peer UMDs — named exports are getters that forward to `window.ReactRouter` / `window.RemixRouter` | Also load `@remix-run/router` and `react-router` (matching minor version) before `react-router-dom`. See [Loading the framework](#loading-the-framework). |
 
 ## DO / DON'T
 
