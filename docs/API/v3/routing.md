@@ -32,7 +32,7 @@ Four requirements:
 
 1. **Read the base path** with `Fliplet.Router.getBasePath()` and pass it to your router's history/basename option. Never hardcode `'/'`. Slug-hosted apps, preview iframes, and native shells all have different bases.
 2. **Read the manifest** with `Fliplet.Router.getRouteManifest()`. Build your route table from `manifest.routes`. The manifest lives at `app.settings.v3` (see [App settings](app-settings.md)). Update it via the App Settings API (`PUT /v1/apps/:id` with `settings.v3`) or the Studio routing UI whenever you add or remove a user-visible route.
-3. **Guard each route with `Fliplet.Router.checkRouteAccess(path)`** in the component, loader, or resolver:
+3. **Guard each route with `Fliplet.Router.resolveRoute(path)`** in the component, loader, or resolver:
    - It returns `{ allowed: true, content, route }` on success.
    - It returns `{ allowed: false, redirectTo, reason }` on denial, where `reason` is `'no-session'` or `'media-denied'`.
    - It already fetches the screen source via `Fliplet.Media.getContents(fileId)` internally. Don't call it yourself.
@@ -58,7 +58,7 @@ These six rules are the ones Fliplet can detect automatically from the boot HTML
 
 ## Framework examples
 
-The same pattern applies to every framework: read the base path and manifest from `Fliplet.Router`, build the framework's router from that, and call `checkRouteAccess` in the component, loader, or resolver. The examples below show the shape in five common stacks; pick whichever matches your app.
+The same pattern applies to every framework: read the base path and manifest from `Fliplet.Router`, build the framework's router from that, and call `resolveRoute` in the component, loader, or resolver. The examples below show the shape in five common stacks; pick whichever matches your app.
 
 Every example assumes this manifest shape (see [App settings](app-settings.md) for how it's stored):
 
@@ -86,7 +86,7 @@ Fliplet.require.lazy('vue-router').then(function() {
       path: r.path,
       name: r.name,
       component: function() {
-        return Fliplet.Router.checkRouteAccess(r.path).then(function(result) {
+        return Fliplet.Router.resolveRoute(r.path).then(function(result) {
           if (!result.allowed) {
             // Race guard: only redirect if the user is still on this route.
             if (router.currentRoute.value.path === r.path) {
@@ -120,7 +120,7 @@ Fliplet.require.lazy('vue-router').then(function() {
       path: r.path,
       name: r.name,
       component: function(resolve) {
-        Fliplet.Router.checkRouteAccess(r.path).then(function(result) {
+        Fliplet.Router.resolveRoute(r.path).then(function(result) {
           if (!result.allowed) {
             if (router.currentRoute.path === r.path) {
               router.push(result.redirectTo);
@@ -149,7 +149,7 @@ Fliplet.require.lazy('vue-router').then(function() {
 
 ### React Router 6
 
-React Router doesn't infer the base path; you must pass it to `basename`. Use a loader to call `checkRouteAccess` before the component renders.
+React Router doesn't infer the base path; you must pass it to `basename`. Use a loader to call `resolveRoute` before the component renders.
 
 ```js
 Fliplet.require.lazy('react-router-dom').then(function() {
@@ -157,7 +157,7 @@ Fliplet.require.lazy('react-router-dom').then(function() {
 
   function routeLoader(path) {
     return function() {
-      return Fliplet.Router.checkRouteAccess(path).then(function(result) {
+      return Fliplet.Router.resolveRoute(path).then(function(result) {
         if (!result.allowed) {
           throw ReactRouterDOM.redirect(result.redirectTo);
         }
@@ -201,7 +201,7 @@ function navigate(path) {
 function render(path) {
   var target = path === '/' ? manifest.defaultRoute : path;
 
-  Fliplet.Router.checkRouteAccess(target).then(function(result) {
+  Fliplet.Router.resolveRoute(target).then(function(result) {
     if (location.pathname !== base.replace(/\/$/, '') + target) return; // stale
 
     if (!result.allowed) {
@@ -242,7 +242,7 @@ function render(path) {
   var navId = ++currentNavId;
   var target = (path && path !== '/') ? path : manifest.defaultRoute;
 
-  return Fliplet.Router.checkRouteAccess(target).then(function(result) {
+  return Fliplet.Router.resolveRoute(target).then(function(result) {
     if (navId !== currentNavId) return; // user navigated away, ignore
 
     if (!result.allowed) {
@@ -275,7 +275,7 @@ render(stripBase(location.pathname));
 
 ## Post-login redirect
 
-When `checkRouteAccess` returns `reason: 'no-session'` or `reason: 'media-denied'`, stash the intended path before navigating to `authRedirect`. After a successful login, consume it.
+When `resolveRoute` returns `reason: 'no-session'` or `reason: 'media-denied'`, stash the intended path before navigating to `authRedirect`. After a successful login, consume it.
 
 ### Vue Router 4 example
 
@@ -309,7 +309,8 @@ Replace `navigate(...)` with the same helper used in your router (Svelte, vanill
 
 - **Don't hand-roll a `SCREENS = { home: 1234, … }` map or a pathname-if-chain.** That's what the route manifest is for. Store it in `app.settings.v3` and read it back via `Fliplet.Router.getRouteManifest().routes`. Hand-rolled maps drift when screens are renamed, duplicate the `public` and `fileId` metadata the server already authored, and bypass the manifest as the single source of truth for routing.
 - **Don't read `window.location.pathname` directly to determine the current route.** Strip the base path first. `Fliplet.Router.getBasePath()` returns the prefix to remove. Slug-hosted apps and preview iframes host the SPA under a non-root path; raw `pathname` reads will misidentify the current route in both contexts.
-- **Don't fetch the screen's media URL yourself.** `Fliplet.Router.checkRouteAccess` already calls `Fliplet.Media.getContents(fileId)` under the hood and returns the content in `result.content`. A second fetch duplicates the network round trip, can race with the access check, and will fail outright on private media where auth headers aren't applied.
+- **Don't fetch the screen's media URL yourself.** `Fliplet.Router.resolveRoute` already calls `Fliplet.Media.getContents(fileId)` under the hood and returns the content in `result.content`. A second fetch duplicates the network round trip, can race with the access check, and will fail outright on private media where auth headers aren't applied.
+- **Don't discard `result.content` from `resolveRoute`.** The `content` field IS the screen's source — already fetched for you. Your route loader should return `{ content: result.content, route: result.route }` so the component can render `data.content` directly. If your loader returns only `{ path }` and your screens are defined inline in the component, you've duplicated every screen in two places — the manifest's `fileId` and the hardcoded inline copy — and you've paid for a fetch you then threw away. The `resolveRoute` name is the hint: the method resolves a route to its **full resolution** (access + content), not just an access decision.
 - **Don't assume the server-side ACL matches the manifest's `public` flag.** The manifest is advisory; the server decides. Always handle `reason: 'media-denied'`. Flipping `public: true` without updating the media file's access rule grants no access; you'll ship an app that works in dev and 401s in production.
 - **Don't skip the route manifest on multi-screen apps.** The manifest at `app.settings.v3` IS the app's routing definition. Without it, `Fliplet.Router.getRouteManifest().routes` is empty and nothing resolves. The boot HTML has no fallback path list; an empty manifest silently renders a blank app.
 - **Don't use raw `<a href="/path">` for in-app navigation.** It triggers a full page reload and tears down your SPA — the framework re-bootstraps from scratch on every click, state is lost, and the post-login redirect pattern breaks because your app never saw the original navigation. Intercept clicks via your framework's router: Vue Router's `<router-link>`, React Router's `<Link>` (or `useNavigate()`), or a vanilla click handler that calls `history.pushState`. External links (`http(s)://…`, `mailto:`, `tel:`) are fine as raw `<a>` — those are *supposed* to leave the SPA.

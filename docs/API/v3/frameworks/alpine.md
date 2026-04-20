@@ -36,7 +36,7 @@ function goTo(path) {
 }
 ```
 
-Use `Fliplet.Router.checkRouteAccess(path)` in your `popstate` handler. See [V3 routing](../routing.md).
+Use `Fliplet.Router.resolveRoute(path)` in your `popstate` handler. See [V3 routing](../routing.md).
 
 ## Binding Fliplet.Media.authenticate
 

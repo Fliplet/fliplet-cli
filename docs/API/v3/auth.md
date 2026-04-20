@@ -524,7 +524,7 @@ var session = await Fliplet.User.getCachedSession();
 
 ## Related
 
-- [V3 Routing](routing.md) — base path, route manifest, `checkRouteAccess`, and post-login redirect pattern.
+- [V3 Routing](routing.md) — base path, route manifest, `resolveRoute`, and post-login redirect pattern.
 - [V3 App Bootstrap](app-bootstrap.md) — the three boot-HTML constraints every V3 app must satisfy.
 - [Session JS APIs](../fliplet-session.md) — full session API reference
 - [Login Component](../components/login.md) — V2 login component hooks

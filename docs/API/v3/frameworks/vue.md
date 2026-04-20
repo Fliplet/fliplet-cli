@@ -49,7 +49,7 @@ const router = VueRouter.createRouter({
 
 `createWebHashHistory` is rejected by the boot-HTML lint (rule `create-web-hash-history`).
 
-Build routes from `Fliplet.Router.getRouteManifest()` — do not hardcode. In each route's resolver, call `Fliplet.Router.checkRouteAccess(path)`; it already fetches the screen source via `Fliplet.Media.getContents`, so don't fetch it yourself.
+Build routes from `Fliplet.Router.getRouteManifest()` — do not hardcode. In each route's resolver, call `Fliplet.Router.resolveRoute(path)`. The `content` field in its result IS the screen's source — already fetched for you via `Fliplet.Media.getContents`. Return it from your loader and render it in your component; don't fetch the file again.
 
 ## Binding Fliplet.Media.authenticate
 

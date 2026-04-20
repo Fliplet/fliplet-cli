@@ -1,5 +1,5 @@
 ---
-description: Fliplet.Router JS API reference for V3 apps. Covers getBasePath, getRouteManifest, getRouteConfig, and checkRouteAccess including return shapes, reason codes, and rejection behavior.
+description: Fliplet.Router JS API reference for V3 apps. Covers getBasePath, getRouteManifest, getRouteConfig, and resolveRoute including return shapes, reason codes, and rejection behavior.
 ---
 
 # Fliplet Router JS API
@@ -16,7 +16,7 @@ For the full routing contract, per-framework integration examples, and forbidden
   - [getBasePath()](#flipletroutergetbasepath)
   - [getRouteManifest()](#flipletroutergetroutemanifest)
   - [getRouteConfig(path)](#flipletroutergetrouteconfigpath)
-  - [checkRouteAccess(pathOrRoute)](#flipletroutercheckrouteaccesspathorroute)
+  - [resolveRoute(pathOrRoute)](#flipletrouterresolveroutepathorroute)
 - [Reason codes](#reason-codes)
 - [Manifest shape](#manifest-shape)
 - [Related](#related)
@@ -96,9 +96,9 @@ if (route) {
 }
 ```
 
-### `Fliplet.Router.checkRouteAccess(pathOrRoute)`
+### `Fliplet.Router.resolveRoute(pathOrRoute)`
 
-Checks whether the current user can access a route, and fetches the screen source if they can. The server's media ACL is the source of truth; this method either fast-fails when the outcome is known (no session, unknown route) or derives the decision from the server's 401/403 response.
+Resolves a route to its access decision **and** its screen source. On success, `result.content` is the screen's source already loaded via `Fliplet.Media.getContents` — render it directly rather than re-fetching. The server's media ACL is the source of truth; this method either fast-fails when the outcome is known (no session, unknown route) or derives the decision from the server's 401/403 response.
 
 **Parameters:**
 
@@ -132,12 +132,12 @@ Checks whether the current user can access a route, and fetches the screen sourc
 }
 ```
 
-<p class="warning">Don't call <code>Fliplet.Media.getContents(fileId)</code> yourself. <code>checkRouteAccess</code> already does this internally and returns the content in <code>result.content</code>. A second fetch duplicates the round trip, can race with the access check, and fails outright on private media where auth headers aren't applied.</p>
+<p class="warning">Don't call <code>Fliplet.Media.getContents(fileId)</code> yourself. <code>resolveRoute</code> already does this internally and returns the content in <code>result.content</code>. A second fetch duplicates the round trip, can race with the access check, and fails outright on private media where auth headers aren't applied.</p>
 
 **Example:**
 
 ```js
-Fliplet.Router.checkRouteAccess('/my-account').then(function(result) {
+Fliplet.Router.resolveRoute('/my-account').then(function(result) {
   if (!result.allowed) {
     // Redirect to the auth screen (or wherever the server says)
     navigate(result.redirectTo);
@@ -160,14 +160,14 @@ If you already have a route entry from the manifest, you can pass it directly to
 var manifest = Fliplet.Router.getRouteManifest();
 var route = manifest.routes[0];
 
-Fliplet.Router.checkRouteAccess(route).then(function(result) {
+Fliplet.Router.resolveRoute(route).then(function(result) {
   // ...
 });
 ```
 
 ## Reason codes
 
-When `checkRouteAccess` resolves with `allowed: false`, the `reason` property indicates why. Handle each case explicitly.
+When `resolveRoute` resolves with `allowed: false`, the `reason` property indicates why. Handle each case explicitly.
 
 | `reason` | Triggered when | `redirectTo` | `status` |
 |---|---|---|---|
@@ -175,7 +175,7 @@ When `checkRouteAccess` resolves with `allowed: false`, the `reason` property in
 | `no-session` | The route is non-public and `Fliplet.User.getCachedSession()` returned no session. | `manifest.authRedirect` | Not set |
 | `media-denied` | The server returned `401` or `403` when fetching the screen source. | `manifest.authRedirect` | `401` or `403` |
 
-<p class="warning">The manifest's <code>public: true</code> flag is advisory. It just lets the client skip a known-401 round trip. Flipping <code>public: true</code> in the manifest without updating the media file's access rule grants no access; the server still returns 401 and <code>checkRouteAccess</code> resolves with <code>reason: 'media-denied'</code>.</p>
+<p class="warning">The manifest's <code>public: true</code> flag is advisory. It just lets the client skip a known-401 round trip. Flipping <code>public: true</code> in the manifest without updating the media file's access rule grants no access; the server still returns 401 and <code>resolveRoute</code> resolves with <code>reason: 'media-denied'</code>.</p>
 
 Transient errors (network failures, 5xx responses) do not resolve with a reason. They **reject** the Promise with the underlying error so you can distinguish "user can't access this" from "infrastructure is broken".
 
@@ -201,7 +201,7 @@ Each route entry has the following properties:
 |---|---|---|---|
 | `name` | `String` | Yes | Display name for the route. Used in Studio UI and as a named route in framework routers. |
 | `path` | `String` | Yes | URL path the route is mounted at. Must begin with `/`. |
-| `fileId` | `Number` | Yes | Numeric `id` of the media file holding the screen source. `checkRouteAccess` fetches this via `Fliplet.Media.getContents`. |
+| `fileId` | `Number` | Yes | Numeric `id` of the media file holding the screen source. `resolveRoute` fetches this via `Fliplet.Media.getContents`. |
 | `public` | `Boolean` | No | If `true`, the client skips the session check before fetching media. Defaults to `false`. Advisory only; the server media ACL is still enforced. |
 
 Update the manifest via the App Settings API (`PUT /v1/apps/:id` with `settings.v3`) or the Studio routing UI whenever you add or remove a user-visible route.

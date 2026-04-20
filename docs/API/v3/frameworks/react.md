@@ -67,7 +67,7 @@ const router = createBrowserRouter(routes, {
 });
 ```
 
-`HashRouter` is rejected by the boot-HTML lint (rule `hash-router-react`). Build routes from `Fliplet.Router.getRouteManifest()`; route loaders should call `Fliplet.Router.checkRouteAccess(path)`.
+`HashRouter` is rejected by the boot-HTML lint (rule `hash-router-react`). Build routes from `Fliplet.Router.getRouteManifest()`; route loaders should call `Fliplet.Router.resolveRoute(path)`.
 
 ## Binding Fliplet.Media.authenticate
 
