@@ -102,6 +102,11 @@ Then `<img src={logoSrc} />`. Calling `Fliplet.Media.authenticate` at module sco
 - DON'T use `HashRouter` — rejected by lint.
 - DON'T use `.tsx` or TypeScript — no transpiler available.
 - DON'T use CSS Modules or `import './styles.css'` — no bundler.
+- DON'T render with `innerHTML`, `outerHTML`, `insertAdjacentHTML`, or `element.append(htmlString)` inside screen files. If you wrote `el.innerHTML = ...` in a component, you wrote a templating engine — not React — and you introduced an XSS surface on every future edit.
+- DON'T write a manual `escapeHtml()` helper. Needing one means you're using `innerHTML` somewhere — fix that instead. React and `htm` escape interpolated values by default.
+- DON'T `if`-chain or `switch` on `location.pathname` to decide what to render, even with `react-router-dom` installed. That's what the router you just installed is for. (The boot-HTML lint flags this via `ruleId: path-dispatcher`.)
+- DON'T use raw `<a href="/path">` for in-app navigation — it triggers a full page reload and defeats the SPA. Use `<Link>` or `useNavigate()` from `react-router-dom`.
+- DON'T reach into screens from the boot file via `document.getElementById` / `querySelector`. Each screen owns its own state, fetches, and handlers; the boot owns routing and framework bootstrap only. If you're wiring screens from the outside, you've inverted the component model.
 
 ## Related
 

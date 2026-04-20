@@ -52,8 +52,9 @@ These patterns break V3 apps on at least one hosting context (slug-hosted web, p
 | `create-web-hash-history` | `VueRouter.createWebHashHistory(…)` | `VueRouter.createWebHistory(Fliplet.Router.getBasePath())`. |
 | `hash-router-react` | `HashRouter` (React Router) | `createBrowserRouter(routes, { basename: Fliplet.Router.getBasePath() })`. |
 | `hash-href` | `href="#/..."` or `href='#/...'` | Use real paths (`href="/home"`) and intercept clicks to call `history.pushState` via your router. |
+| `path-dispatcher` | 3+ `if (location.pathname === '/…')` branches, or `switch (location.pathname) { case '/…': … }`, used as a hand-rolled router | Build your framework's router from `Fliplet.Router.getRouteManifest()`. Each framework's wiring is in [Framework examples](#framework-examples) below. Single-branch guards like `if (location.pathname === '/login') return;` are fine — the lint only fires on dispatcher-shaped chains. |
 
-These five rules are the ones Fliplet can detect automatically from the boot HTML. Additional anti-patterns (hand-rolled `SCREENS` maps, pathname reads without base-stripping, double-fetching media) live in the [Common pitfalls](#common-pitfalls) section below. They aren't detected statically but are equally wrong.
+These six rules are the ones Fliplet can detect automatically from the boot HTML. Additional anti-patterns (hand-rolled `SCREENS` maps, pathname reads without base-stripping, double-fetching media) live in the [Common pitfalls](#common-pitfalls) section below. They aren't detected statically but are equally wrong.
 
 ## Framework examples
 
@@ -311,6 +312,7 @@ Replace `navigate(...)` with the same helper used in your router (Svelte, vanill
 - **Don't fetch the screen's media URL yourself.** `Fliplet.Router.checkRouteAccess` already calls `Fliplet.Media.getContents(fileId)` under the hood and returns the content in `result.content`. A second fetch duplicates the network round trip, can race with the access check, and will fail outright on private media where auth headers aren't applied.
 - **Don't assume the server-side ACL matches the manifest's `public` flag.** The manifest is advisory; the server decides. Always handle `reason: 'media-denied'`. Flipping `public: true` without updating the media file's access rule grants no access; you'll ship an app that works in dev and 401s in production.
 - **Don't skip the route manifest on multi-screen apps.** The manifest at `app.settings.v3` IS the app's routing definition. Without it, `Fliplet.Router.getRouteManifest().routes` is empty and nothing resolves. The boot HTML has no fallback path list; an empty manifest silently renders a blank app.
+- **Don't use raw `<a href="/path">` for in-app navigation.** It triggers a full page reload and tears down your SPA — the framework re-bootstraps from scratch on every click, state is lost, and the post-login redirect pattern breaks because your app never saw the original navigation. Intercept clicks via your framework's router: Vue Router's `<router-link>`, React Router's `<Link>` (or `useNavigate()`), or a vanilla click handler that calls `history.pushState`. External links (`http(s)://…`, `mailto:`, `tel:`) are fine as raw `<a>` — those are *supposed* to leave the SPA.
 
 ## Related
 
