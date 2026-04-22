@@ -1,2 +1,10 @@
+url: https://developers.fliplet.com
+
+plugins:
+  - jekyll-sitemap
+
+exclude:
+  - docsearch
+
 algolia:
   application_id: '8GRBFEV21Y'
