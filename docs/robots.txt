@@ -1,2 +1,44 @@
+# Sitemap
+Sitemap: https://developers.fliplet.com/sitemap.xml
+
+# Content signals (public developer docs — allow all)
+Content-Signal: search=yes, ai-train=yes, ai-input=yes
+
+User-agent: GPTBot
+Allow: /
+Disallow: /Data-flow.html
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /Data-flow.html
+
+User-agent: Claude-Web
+Allow: /
+Disallow: /Data-flow.html
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /Data-flow.html
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /Data-flow.html
+
+User-agent: CCBot
+Allow: /
+Disallow: /Data-flow.html
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /Data-flow.html
+
+User-agent: Meta-ExternalAgent
+Allow: /
+Disallow: /Data-flow.html
+
+User-agent: cohere-ai
+Allow: /
+Disallow: /Data-flow.html
+
 User-agent: *
 Disallow: /Data-flow.html
