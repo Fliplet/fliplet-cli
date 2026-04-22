@@ -1,0 +1,5 @@
+/.well-known/api-catalog
+  Content-Type: application/linkset+json
+
+/.well-known/*
+  Cache-Control: public, max-age=3600
