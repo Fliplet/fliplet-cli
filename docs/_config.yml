@@ -3,8 +3,16 @@ url: https://developers.fliplet.com
 plugins:
   - jekyll-sitemap
 
+include:
+  - _headers
+  - .well-known
+
 exclude:
   - docsearch
+  - bin
+  - test
+  - Gemfile
+  - Gemfile.lock
 
 algolia:
   application_id: '8GRBFEV21Y'

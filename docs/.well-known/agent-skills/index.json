@@ -1,0 +1,103 @@
+{
+  "$schema": "https://agentskills.io/schema/v0.2.0/index.json",
+  "skills": [
+    {
+      "name": "datasources",
+      "type": "documentation",
+      "description": "Connect, query, insert, update, delete records",
+      "url": "https://developers.fliplet.com/API/fliplet-datasources.html",
+      "sha256": "97a80726746cf089dfdf9ebef568bbb6a64b919ce69b30d1d76f09f90389f3de"
+    },
+    {
+      "name": "session",
+      "type": "documentation",
+      "description": "Check auth status, get user data, logout",
+      "url": "https://developers.fliplet.com/API/fliplet-session.html",
+      "sha256": "3c766b79f66d46f1ad30c942c145083bc1b06630a85c024992163ff413446fd4"
+    },
+    {
+      "name": "login",
+      "type": "documentation",
+      "description": "User authentication with email/password",
+      "url": "https://developers.fliplet.com/API/components/login.html",
+      "sha256": "d9b4eb69f2d6ba2ef0e8984ca5d8afa6ca66186c5dc3b50136e7698c5fb171a3"
+    },
+    {
+      "name": "navigate",
+      "type": "documentation",
+      "description": "Navigate between screens, URLs, dialogs",
+      "url": "https://developers.fliplet.com/API/core/navigate.html",
+      "sha256": "f566f30a81f2a46046a677352a520ede0a65809fc87d47a9aecd6dfc66bd0f55"
+    },
+    {
+      "name": "media",
+      "type": "documentation",
+      "description": "File uploads, folders, authenticated URLs",
+      "url": "https://developers.fliplet.com/API/fliplet-media.html",
+      "sha256": "923d0b3ae1bfc89e1d51afb96dacb8cb39e0b6224ae33a003860977e2979309b"
+    },
+    {
+      "name": "app-actions",
+      "type": "documentation",
+      "description": "Scheduled and on-demand cloud automations",
+      "url": "https://developers.fliplet.com/API/core/app-actions.html",
+      "sha256": "0b27ad6889169ac9ed2ea33d61d0f651c90c236d49494cc52d466c204270227f"
+    },
+    {
+      "name": "datasource-security",
+      "type": "documentation",
+      "description": "Access rules, privilege control, user filtering",
+      "url": "https://developers.fliplet.com/Data-source-security.html",
+      "sha256": "418fb701560f5348ceedeaf143fbe063bf0f9641d43f13a8a87a514119321b21"
+    },
+    {
+      "name": "storage",
+      "type": "documentation",
+      "description": "Local key-value storage",
+      "url": "https://developers.fliplet.com/API/core/storage.html",
+      "sha256": "eadb995263c14faf0ea9ed7c200c4997c3ce3bfbcbdb0861057ec87aefaf2c93"
+    },
+    {
+      "name": "encryption",
+      "type": "documentation",
+      "description": "Data encryption APIs",
+      "url": "https://developers.fliplet.com/API/fliplet-encryption.html",
+      "sha256": "56088770670fab3162280e8bfa741ecb6b98043e518808f413722415648fc796"
+    },
+    {
+      "name": "query-operators",
+      "type": "documentation",
+      "description": "Advanced query filters and operators",
+      "url": "https://developers.fliplet.com/API/datasources/query-operators.html",
+      "sha256": "a86348b93eedf7d54a25a83473238f56efb8ddd88aa65c8bf47058f3e2b864ff"
+    },
+    {
+      "name": "communicate",
+      "type": "documentation",
+      "description": "Email, SMS, push notifications",
+      "url": "https://developers.fliplet.com/API/fliplet-communicate.html",
+      "sha256": "1ef2e1b7eb6d3e3bdbd840ed16f4374433dcb227c5f760fe9de73cb5c6abe73c"
+    },
+    {
+      "name": "notifications",
+      "type": "documentation",
+      "description": "Push notification management",
+      "url": "https://developers.fliplet.com/API/fliplet-notifications.html",
+      "sha256": "13eee3dcdb97651e04fc3a34183af066ea5025cc0d68d2a78df3b326079403e6"
+    },
+    {
+      "name": "user",
+      "type": "documentation",
+      "description": "Current user data and profile",
+      "url": "https://developers.fliplet.com/API/core/user.html",
+      "sha256": "37c9e0657bdc1b3e9fde588ae9df1bffd226e48085a5bfe2ce97df17b1557cc4"
+    },
+    {
+      "name": "barcode",
+      "type": "documentation",
+      "description": "QR code scanning and generation",
+      "url": "https://developers.fliplet.com/API/fliplet-barcode.html",
+      "sha256": "33fa764a25d12da9c2e81eab606117bc89da41c445e6df0b1dbd44caccdab16a"
+    }
+  ]
+}
