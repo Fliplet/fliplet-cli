@@ -118,13 +118,15 @@ export function parseFrontmatter(content) {
   const hasWin = content.startsWith('---\r\n');
   if (!hasUnix && !hasWin) return { fm: {}, body: content };
   const headerLen = hasUnix ? 4 : 5;
-  const endMarker = hasUnix ? '\n---\n' : '\n---\r\n';
+  // endMarker spans the full line-separator before the closing --- so fmRaw
+  // doesn't get a trailing \r on Windows.
+  const endMarker = hasUnix ? '\n---\n' : '\r\n---\r\n';
   const endIdx = content.indexOf(endMarker, headerLen);
   if (endIdx === -1) return { fm: {}, body: content };
   const fmRaw = content.slice(headerLen, endIdx);
   const body = content.slice(endIdx + endMarker.length);
   const fm = {};
-  for (const line of fmRaw.split(/\r?\n/)) {
+  for (const line of fmRaw.split(/\r\n|\r|\n/)) {
     const m = line.match(/^([a-zA-Z_][a-zA-Z0-9_-]*)\s*:\s*(.*)$/);
     if (!m) continue;
     let v = m[2].trim();
