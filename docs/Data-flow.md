@@ -1,3 +1,3 @@
 # Infrastructure Data flow
 
-![Data flow](assets/img/architecture.png?v=2)
+![Data flow](assets/img/architecture.png?v=3)
