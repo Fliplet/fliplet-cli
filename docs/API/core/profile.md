@@ -1,6 +1,6 @@
-# Profile
+# `Fliplet.Profile`
 
-A [namespaced storage](#namespaced) to access details saved for the user profile. Using this JS API you can get the user's email as well as the other properties documented below.
+Read and write namespaced user profile attributes (email, name, company, phone) and fetch the device UUID.
 
 Example usage:
 

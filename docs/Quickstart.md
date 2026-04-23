@@ -1,10 +1,6 @@
-# Quickstart
+# Fliplet CLI quickstart
 
-Our primary development tool is called [Fliplet CLI](https://github.com/Fliplet/fliplet-cli) (Command Line Interface), it's written in [Node.js](https://nodejs.org) and is available through [Npm](https://www.npmjs.com/package/fliplet-cli).
-
-This means in order to start the development you will need to install [Node.js](https://nodejs.org) on your machine.
-
-The **Fliplet CLI** will enable you to develop and test components and themes on your machine, without having to rely on our APIs or even be connected to the internet while coding.
+Install Node.js and the Fliplet CLI so you can develop and test components, themes, and menus on your machine.
 
 ## 1. Install Node.js
 

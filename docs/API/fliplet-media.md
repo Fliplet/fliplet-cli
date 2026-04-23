@@ -1,11 +1,6 @@
-# Media JS APIs
+# `Fliplet.Media`
 
-The `fliplet-media` package contains the following namespaces:
-
-- [Folders](#folders)
-- [Files](#files)
-- [Authentication](#authentication)
-- [Storage](#download-files-to-devices-beta)
+Browse folders, upload and manage files, and download media to devices via the Fliplet Media namespace.
 
 ---
 

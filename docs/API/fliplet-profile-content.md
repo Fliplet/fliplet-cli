@@ -2,7 +2,7 @@
 
 (Returns **`Promise`**)
 
-The `fliplet-content` package contains helpers to create and manage content specific to the user.
+Create, query, update, and delete user-attributed content records in a Data Source, so each user only sees their own entries.
 
 When **content** is created using `Fliplet.Profile.Content()`, a record is stored in the specified data source with the content **attributed to the user**. This means the following:
 

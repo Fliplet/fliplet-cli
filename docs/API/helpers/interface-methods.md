@@ -1,10 +1,6 @@
-# Helper Methods
+# Helper configuration interface: methods
 
-Both configuration interface and configuration fields have available the following methods to fetch details regarding children helpers nested into the current helper:
-
-- `find`
-- `findOne`
-- `children`
+Use `find`, `findOne`, and `children` inside a Helper's configuration interface to access nested child Helper instances.
 
 ## Interface
 

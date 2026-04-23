@@ -1,4 +1,6 @@
-# App
+# `Fliplet.App`
+
+Retrieve the current app's public slug, build shareable screen URLs, and access app-level settings from JavaScript.
 
 ## Public URLs
 

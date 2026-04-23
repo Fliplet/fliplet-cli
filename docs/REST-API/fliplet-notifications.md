@@ -1,6 +1,6 @@
-# Notifications REST APIs
+# Notifications REST API
 
-The Notifications REST APIs allows you to interact and make any sort of change to your app's notifications.
+The Notifications REST API lets external integrations create, schedule, and publish in-app and push notifications to Fliplet app users.
 
 <p class="warning"><strong>Note:</strong> This RESTful API is intended to be used by 3rd party software such as external integrations. <strong>If you're using this in a Fliplet App, please use the <a href="/API/fliplet-notifications.html">Notifications JS APIs</a> instead.</strong></p>
 

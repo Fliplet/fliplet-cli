@@ -1,4 +1,6 @@
-# Notifications
+# `Fliplet.Navigator.Notifications`
+
+Check notification support, request permission, and send local device notifications from JavaScript.
 
 ### Check if the device supports receiving notifications
 

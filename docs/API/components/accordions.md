@@ -1,4 +1,6 @@
-# Accordions
+# Accordion component
+
+The Accordion component supports query parameters to open specific accordions when linking to a screen.
 
 ## Query parameters
 

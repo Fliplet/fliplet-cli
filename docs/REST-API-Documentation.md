@@ -1,8 +1,8 @@
-# REST API Documentation
+# Fliplet REST API documentation
 
 <p class="warning"><strong>Note:</strong> Fliplet RESTful APIs are intended to be used by 3rd party software such as external integrations. <strong>If you want to interact with our APIs in a Fliplet App, please use the <a href="/API-Documentation.html">JS APIs</a> instead.</strong></p>
 
-Fliplet provides a content infrastructure that comprises REST APIs for working with your content. Each of these APIs serve a different purpose, so which one to use depends on what you want to do.
+Index of Fliplet REST endpoints for Data Sources, Media, Notifications, Apps, and more — intended for third-party integrations.
 
 ## Authentication
 

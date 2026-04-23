@@ -1,6 +1,6 @@
-# Common functions
+# Fliplet common functions
 
-The following functions do not belong to a specific namespace and are available under the `Fliplet` object.
+Utility helpers on the global `Fliplet` object: `Fliplet.compile()` for templating and `Fliplet.guid()` for unique IDs.
 
 ## Compile
 

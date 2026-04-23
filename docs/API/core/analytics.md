@@ -1,4 +1,6 @@
-# Analytics
+# `Fliplet.Analytics`
+
+Enable, disable, and check analytics tracking, and record custom app events and page views from JavaScript.
 
 ## System Analytics
 

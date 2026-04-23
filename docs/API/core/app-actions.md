@@ -1,12 +1,12 @@
 ---
-description: Configure your app screens to run scheduled or ad-hoc operation in the cloud and perform various automations.
+description: Deprecated App Actions V1 — run app screens automatically on a schedule or on demand in the cloud. Migrate to V3.
 ---
 
-# App Actions
+# App Actions V1 (deprecated)
 
 <p class="warning"><strong>Deprecated:</strong> App Actions V1 is deprecated and will be removed in a future release. Please use <a href="/API/core/app-actions-v3.html">App Actions V3</a> for all new development. Existing V1 actions will continue to work but should be migrated to V3.</p>
 
-**App Actions** library allows you to configure app screens to run automatically at a scheduled time or carry out an ad-hoc operations and automations in the cloud.
+Run app screens automatically on a schedule or on demand in the cloud. Deprecated — use [App Actions V3](/API/core/app-actions-v3.html).
 
 ![How it works](/assets/img/app-actions.png)
 

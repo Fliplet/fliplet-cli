@@ -1,11 +1,8 @@
-# Modal
+# `Fliplet.Modal`
 
-<p class="info">This JS API is only available in widget interfaces when developing for Fliplet Studio. If you're looking for adding modals and confirmation windows to your Fliplet Apps, please look for the following JS APIs instead:</p>
+Show confirmation, alert, and prompt dialogs from widget interfaces in Fliplet Studio, powered by [Bootbox](http://bootboxjs.com/) — see its documentation for the full set of options you can pass.
 
-- [Fliplet.UI.Actions](https://developers.fliplet.com/API/fliplet-ui-actions.html)
-- [Fliplet.UI.Toast](https://developers.fliplet.com/API/fliplet-ui-toast.html)
-
-When using Modal windows on widget interfaces, we use [Bootbox](http://bootboxjs.com/) under the hood hence make sure to check their documentation for the full set of options you can pass.
+<p class="info">This JS API is only available in widget interfaces. For adding modals and confirmation windows to Fliplet Apps themselves, use <a href="https://developers.fliplet.com/API/fliplet-ui-actions.html">Fliplet.UI.Actions</a> or <a href="https://developers.fliplet.com/API/fliplet-ui-toast.html">Fliplet.UI.Toast</a> instead.</p>
 
 ### Display a confirmation message
 

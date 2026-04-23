@@ -1,4 +1,6 @@
-# Encode
+# `Fliplet.Encode`
+
+Encode strings as base64 and double-encode URL query parameters safely for transport.
 
 ### Encode data to base64
 

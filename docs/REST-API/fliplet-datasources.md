@@ -1,6 +1,6 @@
-# Data Sources REST APIs
+# Data Sources REST API
 
-The Data Source REST APIs allows you to interact and make any sort of change to your app's Data Sources.
+The Data Sources REST API lets external integrations read and modify the data sources belonging to a Fliplet app or organization.
 
 <p class="warning"><strong>Note:</strong> This RESTful API is intended to be used by 3rd party software such as external integrations. <strong>If you're using this in a Fliplet App, please use the <a href="/API/fliplet-datasources.html">Data Sources JS APIs</a> instead.</strong></p>
 

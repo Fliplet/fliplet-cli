@@ -1,3 +1,7 @@
+# Fliplet-approved JavaScript libraries (coding-standards edition)
+
+The JavaScript libraries Fliplet pre-approves for app development, why you should prefer them over custom ones, and when to reach for each.
+
 ## Approved Libraries
 
 ### Purpose and Importance

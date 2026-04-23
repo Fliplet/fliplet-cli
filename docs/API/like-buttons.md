@@ -1,6 +1,6 @@
-# Like Buttons
+# `Fliplet.LikeButton`
 
-Let users engage with your content in a single tap.
+Embed a one-tap like button on any screen element, backed by a Data Source that records likes per content ID.
 
 ---
 

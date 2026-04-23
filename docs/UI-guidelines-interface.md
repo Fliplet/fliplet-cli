@@ -1,8 +1,6 @@
-# UI guidelines for component's interfaces
+# UI guidelines for component settings (interface)
 
-You are not required to use these style guidelines, but if you want your component to fit the overall style of Fliplet's components we recommend you use them.
-
-We always include Bootstrap, as the framework to build responsive interfaces, as part of the `fliplet-studio-ui` dependency. (Learn more about dependencies [here](Dependencies-and-assets.md))
+Recommended Bootstrap-based styles for buttons, forms, and typography in a Fliplet component's Studio settings interface.
 
 ## Basic styles
 

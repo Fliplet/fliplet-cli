@@ -1,4 +1,6 @@
-# Apps REST APIs
+# Apps REST API
+
+The Apps REST API lets external integrations list, read, create, update, and delete Fliplet apps that the auth token has access to.
 
 ## Authentication
 

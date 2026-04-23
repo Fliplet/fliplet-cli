@@ -1,4 +1,6 @@
-# Example Helper
+# Helper example: question and answer
+
+A worked example showing how to build a Helper that presents a multiple-choice question and reveals whether the selected answer is correct.
 
 ## Answer a question
 

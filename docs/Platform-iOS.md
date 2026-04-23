@@ -1,5 +1,7 @@
 # Advanced features for the iOS platform
 
+How to detect iOS at runtime and supply a manual P12 certificate when using Fliplet's Automated App Build with an Apple Enterprise account.
+
 ## Targeting iOS devices 
 
 Fliplet uses `Modernizr` to expose boolean flags which can help you targeting a specific platform when writing Javascript code for your apps:

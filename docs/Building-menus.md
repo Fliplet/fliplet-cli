@@ -1,6 +1,6 @@
-# Building menus
+# Building Fliplet menus
 
-Before building menus, we recommend reading the documentation about [creating components](Building-components.md) as it contains many principles about how widgets (components, themes and menus) work on Fliplet.
+How to scaffold a Fliplet menu widget, configure its position and settings via menu.json, and develop its template and assets.
 
 A menu consist in:
 - CSS and Javascript assets.

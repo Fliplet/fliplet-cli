@@ -1,4 +1,6 @@
-# File picker
+# File Picker provider
+
+The File Picker provider lets users select one or more files from Fliplet's File Manager, optionally scoped by file type or restricted to single-select.
 
 **Package**: `com.fliplet.file-picker`
 

@@ -1,4 +1,6 @@
-# Error
+# `Fliplet.parseError()`
+
+Turn any error response or object into a human-readable message by scanning common error properties.
 
 ### Parse error responses and objects
 

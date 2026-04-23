@@ -1,6 +1,6 @@
-# Authenticating with the APIs
+# Authenticating with the Fliplet REST APIs
 
-The entrypoint to use for all requests is ​**[https://api.fliplet.com​](https://api.fliplet.com​)**. Alternatively, US clients can use ​**[https://us.api.fliplet.com​](https://us.api.fliplet.com​)** to get faster execution and response when their data resides in the US region (same applied for Canadian customers wanting to use ​**[https://ca.api.fliplet.com​](https://ca.api.fliplet.com​)**). If you’re unsure about this, please get in touch with us.
+All Fliplet REST API requests are made over HTTPS to a regional endpoint (`api.fliplet.com`, `us.api.fliplet.com`, or `ca.api.fliplet.com`) and must include an auth token.
 
 All requests must be made via ​**SSL​** to the above HTTPS-only endpoint.
 

@@ -1,4 +1,6 @@
-# Session JS APIs
+# `Fliplet.Session`
+
+Read, write, and clear the current user session — including cached offline sessions — for authentication state in Fliplet apps.
 
 ## Get and set values
 

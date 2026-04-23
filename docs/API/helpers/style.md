@@ -1,6 +1,6 @@
-# Styling
+# Styling Helpers
 
-Helpers can be styles using any standard CSS property since they are rendered as HTML elements.
+Style a Helper using standard `class` and `style` HTML attributes — they are passed through to the rendered element rather than treated as Helper fields.
 
 ## Using class and style fields
 

@@ -1,4 +1,6 @@
-# Helper Hooks & Events
+# Helper configuration interface: hooks and events
+
+Run code when a Helper's configuration interface initializes, becomes ready, or is about to save.
 
 ## Interface
 

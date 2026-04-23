@@ -1,5 +1,7 @@
 # Email provider
 
+The Email provider lets users compose and configure an email template (subject, body, recipients, headers) that can then be sent via `Fliplet.Communicate.sendEmail()`.
+
 **Package**: `com.fliplet.email-provider`
 
 ## Overview

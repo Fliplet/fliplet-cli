@@ -1,10 +1,10 @@
 ---
-description: Upcoming features to be added in the Fliplet Developer documentation.
+description: Tracker of Fliplet features recently shipped or in beta, linking to their developer documentation.
 ---
 
 # Upcoming and recently launched features
 
-This page lists upcoming changes and features that have recently been documented in the developers website you're looking at.
+Tracker of Fliplet features recently shipped or in beta, linking to their developer documentation.
 
 <section class="blocks alt">
   <a class="bl two" href="/API/core/ai.html">

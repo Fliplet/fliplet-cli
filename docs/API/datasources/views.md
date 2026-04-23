@@ -1,6 +1,6 @@
-# Data Source Views
+# Data Source views
 
-Data Sources can optionally define a set of views for their data. These are essentially filtered data set (similar to SQL views) which allow you to define a dynamic filter on which data should be filtered for the current user.
+Define named, session-aware filters on a data source so each user or group sees only the rows that apply to them.
 
 Example use cases:
 

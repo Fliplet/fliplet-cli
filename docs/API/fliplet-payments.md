@@ -2,11 +2,11 @@
 description: Adds payments functionality in your Fliplet apps using Stripe and our easy-to-use JS API.
 ---
 
-# Payments JS API
+# `Fliplet.Payments`
 
 <section class="sides no-margin">
   <div>
-    <p>Use our <code>fliplet-payments</code> library to add payments functionality in your Fliplet apps using <strong>Stripe</strong> within minutes using a easy-to-use JS API.</p>
+    <p>Add Stripe-powered payments and checkout to a Fliplet app with a Data Source of products and a few JS API calls.</p>
     <p>Before you start, make sure you have signed up for a <a href="https://stripe.com/" target="_blank">Stripe account</a> on their website as it will be required in the very first steps of the integration.</p>
   </div>
   <div>

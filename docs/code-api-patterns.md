@@ -1,8 +1,6 @@
-# Fliplet API Patterns
+# Fliplet API patterns and categories
 
-### Purpose and Importance
-
-Fliplet provides multiple APIs for different aspects of app development. Understanding when and how to use each API is crucial for building effective apps. This section explains the purpose of each major API category and provides patterns for common operations.
+Overview of the main Fliplet JS API categories (Data Sources, Users, Media, Navigation) and when to pick each one.
 
 ### When to Use This Section
 

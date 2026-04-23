@@ -1,6 +1,6 @@
-# Building components
+# Building Fliplet components
 
-To start creating a component, use the CLI to generate a boilerplate including the basic things you'll need:
+How to scaffold, run, and develop a Fliplet component locally using the CLI, including the generated file layout and the local dev server.
 
 ```
 $ fliplet create-widget com.mycompany.mycomponent "my-awesome-component"

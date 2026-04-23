@@ -1,6 +1,6 @@
-# 1. Introduction to the platform
+# Introduction to the Fliplet developer platform
 
-The stack of Fliplet is mostly based on **Javascript** — even server-side — therefore being familiar with it will be a strong requirement in building components and themes on our platform.
+Overview of the Fliplet developer stack (JavaScript, SASS, Handlebars) and the kinds of apps, components, themes, and menus you can build on it.
 
 We also support some preprocessors like [SASS](http://sass-lang.com/) and templating engines like [Handlebars](http://handlebarsjs.com/). You're not required to use them, but they can boost your development quite a lot when building complex components.
 

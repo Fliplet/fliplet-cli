@@ -1,6 +1,6 @@
-# Theme and appearance for components
+# Theme and appearance settings for components
 
-Components can easily integrate with our theming and appearance settings UI seen in Fliplet Studio. Let's go through the process of setting up the basic structure in your component repository.
+Expose configurable colors, fonts, and other CSS properties in Fliplet Studio's theme settings UI via your component's widget.json.
 
 ## Setup
 

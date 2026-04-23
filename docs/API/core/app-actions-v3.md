@@ -4,7 +4,7 @@ description: Write and run JavaScript code directly on the server or client to p
 
 # App Actions V3
 
-**App Actions V3** lets you write raw JavaScript code that executes on the server or client to run automatically at a scheduled time or carry out ad-hoc operations and automations. Unlike the deprecated V1 screen-based actions, V3 provides a simpler developer experience — write a single `execute(context)` function with your action logic instead of configuring a target screen with `onRemoteExecution`.
+Run a single `execute(context)` JavaScript function on the server or client, either ad hoc or on a schedule.
 
 ![How it works](/assets/img/app-actions.png)
 

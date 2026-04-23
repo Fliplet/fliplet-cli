@@ -1,5 +1,7 @@
 # Advanced features for the Android platform
 
+How to detect Android at runtime and enable the hardware back button inside a Fliplet app.
+
 ## Targeting Android devices 
 
 Fliplet uses `Modernizr` to expose boolean flags which can help you targeting a specific platform when writing Javascript code for your apps:

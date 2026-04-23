@@ -1,4 +1,6 @@
-# Screens
+# `Fliplet.Pages` and `Fliplet.Page`
+
+List app screens, get the current screen's public URL, and build shareable URLs for any screen by ID.
 
 ### Get the list of screens in the current app
 

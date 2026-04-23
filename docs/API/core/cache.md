@@ -1,4 +1,6 @@
-# Cache
+# `Fliplet.Cache`
+
+Run async operations once and memoize their results, with optional expiry and background refresh.
 
 ### Fetch data and keep it cached for future calls
 

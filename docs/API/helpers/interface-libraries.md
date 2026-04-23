@@ -1,9 +1,6 @@
-# Helper External libraries
+# Helper configuration interface: external libraries
 
-Define a `dependencies` array to include libraries in your interfaces. These can include:
-
-- [Fliplet approved libraries](/Fliplet-approved-libraries.html)
-- Any 3rd party Javascript and CSS library
+Include [Fliplet-approved](/Fliplet-approved-libraries.html) or third-party JavaScript and CSS libraries in a Helper's configuration interface via the `dependencies` array.
 
 ## Include Fliplet approved libraries
 

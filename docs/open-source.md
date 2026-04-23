@@ -1,10 +1,10 @@
 ---
-description: Learn how Fliplet embraces open source with access to open-source code, pre-built app solutions, screen templates, community code examples, and developer documentation. Discover the power of customization and collaboration in app development with Fliplet.
+description: Where to find Fliplet's open-source code, pre-built app solutions, screen templates, community code examples, and developer documentation.
 ---
 
-# Embracing Open Source with Fliplet
+# Fliplet open source resources
 
-At Fliplet, we firmly believe in the power of open-source software and the collaborative development it promotes. We're thrilled to share that our software embodies this belief, offering developers like you multiple avenues to access and leverage our open-source code.
+Where to find Fliplet's open-source code, pre-built solutions, screen templates, community examples, and developer documentation.
 
 ## Access open source code at Fliplet's GitHub
 

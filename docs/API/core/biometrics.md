@@ -1,4 +1,6 @@
-# Biometrics
+# `Fliplet.User.Biometrics`
+
+Check biometric availability and verify users with Face ID, Touch ID, or fingerprint inside native Fliplet apps.
 
 _Biometrics are only available in native apps on supported devices._
 

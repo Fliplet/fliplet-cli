@@ -1,4 +1,6 @@
-# Reference
+# Fliplet.Helper.field() reference
+
+Reference for `Fliplet.Helper.field()`: call this from a Helper's configuration interface to read or write the value of another field.
 
 ## Field methods
 

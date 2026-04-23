@@ -1,4 +1,6 @@
-# App Execution flow
+# Fliplet app execution flow
+
+The rendering and hook lifecycle Fliplet apps go through before a screen is shown to the user, and where to safely run custom code within it.
 
 ## Execution flow explained
 

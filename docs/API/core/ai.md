@@ -1,8 +1,6 @@
-# AI (Artificial Intelligence)
+# `Fliplet.AI`
 
-<p class="warning">These features are still in beta and are subject to change before they are released to all apps and customers.</p>
-
-The Fliplet AI JS API is built on top of the [OpenAI API](https://openai.com/docs/api-reference/) to provide developers with an easy way to build AI-powered applications.
+Build AI features in Fliplet apps with chat, completions, streaming, and task helpers — backed by OpenAI (GPT, o-series) or Google Gemini models via direct proxy.
 
 These APIs empower your apps with OpenAI models such as `GPT 3.5` to do things like:
 

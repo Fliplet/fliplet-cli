@@ -1,4 +1,6 @@
-# Custom templates for components
+# Custom HTML templates for Fliplet components
+
+How to override a component's default template with custom HTML and Handlebars in the new container-based drag-and-drop system.
 
 ## For apps using the new drag and drop system
 

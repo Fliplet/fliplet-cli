@@ -1,4 +1,6 @@
-# Page JS APIs
+# `Fliplet.Page`
+
+Utilities for interacting with the current Fliplet screen — including smooth-scrolling to an element with configurable duration and offsets.
 
 ## Scroll the user to an element on the page
 

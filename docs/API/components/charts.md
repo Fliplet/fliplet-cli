@@ -1,4 +1,6 @@
-# Charts
+# Charts component
+
+Use the Charts JS API to retrieve chart instances on a screen and update their data, labels, and series at runtime.
 
 ## JS API
 

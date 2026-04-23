@@ -1,4 +1,6 @@
-# Data source provider
+# Data Source provider
+
+The Data Source provider lets users pick or create a data source for a component, including default columns, entries, and access rules.
 
 **Package**: `com.fliplet.data-source-provider`
 

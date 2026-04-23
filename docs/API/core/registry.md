@@ -1,6 +1,6 @@
-# Registry
+# `Fliplet.Registry`
 
-The `Registry` JS APIs allow you to save and read data and functions in the run time.
+Store and retrieve runtime values and functions by key so components can share state and helpers.
 
 ### Set data
 

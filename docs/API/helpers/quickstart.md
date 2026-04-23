@@ -1,6 +1,6 @@
-# Quickstart
+# Fliplet Helpers quickstart
 
-Helpers can be created by defining them via **screen or global JavaScript code** in your apps. A helper requires a **name** and its **configuration object** which defines its behaviour.
+Create your first Fliplet Helper by defining its name, template, and configuration object in screen or global JavaScript.
 
 <p class="quote">Before you get started, <strong>add the required <code>fliplet-helper</code> package</strong> to your screen or app's dependencies via Fliplet Studio.</p>
 

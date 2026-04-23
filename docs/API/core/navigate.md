@@ -2,7 +2,9 @@
 description: Navigate the app to a new page, screen, document or URL
 ---
 
-# Navigate
+# `Fliplet.Navigate`
+
+Navigate between app screens, open external URLs, pass query parameters, and handle back, home, and modal navigation.
 
 ## Query parameters
 

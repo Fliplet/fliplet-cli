@@ -1,4 +1,6 @@
-# User
+# `Fliplet.User`
+
+Get and set the current user's auth token, profile details, and preferences, and sign the user out.
 
 ### Get the user auth token
 

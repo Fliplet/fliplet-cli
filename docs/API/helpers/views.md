@@ -1,4 +1,6 @@
-# Views
+# Helper rich-content views
+
+Define named rich-content views inside a Helper so app builders can drop approved child Helpers into specific regions of its layout.
 
 ## Define a rich-content view
 

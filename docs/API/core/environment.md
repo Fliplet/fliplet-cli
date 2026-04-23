@@ -1,4 +1,6 @@
-# Env (Environment)
+# `Fliplet.Env`
+
+Read environment variables such as `appId`, `appName`, `mode`, and `apiUrl` from the current runtime.
 
 ### Get an environment variable
 

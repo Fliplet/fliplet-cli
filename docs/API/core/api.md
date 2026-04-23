@@ -1,6 +1,6 @@
-# API
+# `Fliplet.API.request()`
 
-The Fliplet API module provides methods for making HTTP requests to the Fliplet APIs with built-in authentication, caching, offline queue management, and error handling.
+Make authenticated HTTP requests to Fliplet APIs with automatic URL construction, caching, offline queueing, and error handling.
 
 ## Fliplet.API.request()
 

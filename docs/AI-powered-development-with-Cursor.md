@@ -1,8 +1,10 @@
+# AI-powered Fliplet development with Cursor
+
+How to install and use the Fliplet VS Code extension inside Cursor to generate, refactor, and debug Fliplet app code with AI assistance.
+
 ## Empowering Development with AI
 
 ### Using Cursor with Fliplet Extension
-
-Fliplet's VS Code extension is fully compatible with [Cursor](https://cursor.com), an AI-powered IDE that can accelerate your development workflow. Utilizing Cursor's AI capabilities along with Fliplet's platform, you can automate repetitive tasks, refactor code, and get AI-generated suggestions tailored to your specific Fliplet project.
 
 - **Code Generation**: Need a new component or function? Cursor's AI can generate boilerplate code based on your project's structure.
 - **Code Assistance**: Cursor helps with code review, debugging suggestions, and performance optimizations, ensuring you're building robust and scalable apps.

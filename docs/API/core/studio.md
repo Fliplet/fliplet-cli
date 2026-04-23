@@ -1,4 +1,6 @@
-# Studio
+# `Fliplet.Studio`
+
+Emit events to Fliplet Studio and listen for events from it when building widget interfaces.
 
 ## Send event to Fliplet Studio
 

@@ -1,6 +1,6 @@
 # Publishing components, themes and menus
 
-**Please note: by default, the CLI is using the production environment. You can change it using the `env` command, like `fliplet env staging` (dev, staging, production).**
+How to publish Fliplet components, themes, and menus to the Fliplet platform using the CLI's publish command.
 
 Publishing your work on the Fliplet platform is done via the CLI command `publish` as follows:
 

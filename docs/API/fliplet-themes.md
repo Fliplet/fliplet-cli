@@ -1,6 +1,6 @@
-# Theme JS APIs
+# `Fliplet.Themes`
 
-Add `fliplet-themes` library as a dependency to access your current theme settings.
+Read the list of available app themes and access the current theme's settings and widget-instance values at runtime.
 
 ## Get the list of available themes
 

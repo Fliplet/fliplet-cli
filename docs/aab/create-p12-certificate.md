@@ -1,6 +1,6 @@
 # Manually creating a P12 certificate
 
-If you're using Fliplet Automated App Build system with an Apple Enterprise account and want to manually provide your certificate, we will need its P12 key. Please follow this steps to generate one with your Apple account.
+Generate a P12 signing key from an Apple Enterprise account to supply to Fliplet's Automated App Build system.
 
 **NOTE: You need a Mac to complete the following steps and generate a certificate.**
 

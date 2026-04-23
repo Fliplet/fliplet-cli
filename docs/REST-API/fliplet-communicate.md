@@ -1,6 +1,6 @@
-# Communicate REST APIs
+# Communicate REST API
 
-The Communicate REST APIs allows you to interact and make any sort of change to your app's communicate.
+The Communicate REST API lets external integrations send emails and SMS from a Fliplet app, subject to per-account rate limits.
 
 <p class="warning"><strong>Note:</strong> This RESTful API is intended to be used by 3rd party software such as external integrations. <strong>If you're using this in a Fliplet App, please use the <a href="/API/fliplet-communicate.html">Communicate JS APIs</a> instead.</strong></p>
 

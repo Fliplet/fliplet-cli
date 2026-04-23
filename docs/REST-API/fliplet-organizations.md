@@ -1,4 +1,6 @@
-# Organizations REST APIs
+# Organizations REST API
+
+The Organizations REST API lets external integrations read audit logs and manage resources belonging to a Fliplet organization.
 
 ## Authentication
 

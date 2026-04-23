@@ -1,4 +1,6 @@
-# Media REST APIs
+# Media REST API
+
+The Media REST API lets external integrations upload, list, and manage media files and folders scoped to a Fliplet app or organization.
 
 ## Authentication
 

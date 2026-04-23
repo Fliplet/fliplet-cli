@@ -1,4 +1,6 @@
-# Widget
+# `Fliplet.Widget`
+
+Access widget instance IDs, settings, and data, and coordinate save and ready events between widget and interface.
 
 ## Core widget APIs
 

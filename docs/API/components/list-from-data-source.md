@@ -1,9 +1,6 @@
-# List (from data source)
+# List (from Data Source) component
 
-  - [Templates](#templates)
-  - [Hooks](#hooks)
-  - [Configurations](#configurations)
-  - [Query parameters](#query-parameters)
+Configure templates, hooks, and query parameters for the List (from Data Source) component, which renders summary and detail views backed by a data source.
 
 ## Templates
 

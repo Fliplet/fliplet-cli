@@ -1,6 +1,6 @@
-# Hooks
+# `Fliplet.Hooks`
 
-Hooks are used to execute custom code at specific points in the application flow, typically before or after certain actions occur.
+Register callbacks that run before or after key app events (e.g. form submit), with sync or async Promise handlers.
 
 ### Register a callback for a hook
 

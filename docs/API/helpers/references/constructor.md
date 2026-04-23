@@ -1,4 +1,6 @@
-# Reference
+# Fliplet.Helper() constructor reference
+
+Reference for `Fliplet.Helper()`: the constructor used to define a new Helper in a screen or globally across an app.
 
 ## Constructor (`Fliplet.Helper()`)
 

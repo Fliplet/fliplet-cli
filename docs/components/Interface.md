@@ -1,6 +1,6 @@
 # Components interfaces
 
-Components usually define interfaces to let ther instances **save settings**.
+Components usually define interfaces to let their instances **save settings**.
 
 A quick example is the interface of the [button component](https://github.com/Fliplet/fliplet-widget-primary-button) to let you specify the button label and the action to be fired or page to view once tapped:
 

@@ -1,8 +1,6 @@
-# Hooks & Events
+# Helper lifecycle hooks and events
 
-Lifecycle:
-1. `beforeReady`
-2. `ready`
+Run code at key points in a Helper's lifecycle using the `beforeReady` and `ready` render hooks.
 
 ## Run logic before a helper is rendered
 

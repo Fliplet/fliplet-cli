@@ -1,4 +1,6 @@
-# Link action provider
+# Link Action provider
+
+The Link Action provider offers a reusable UI for configuring an action (e.g. navigate to screen, open URL, send email) that another feature will trigger on a condition it defines.
 
 **Package**: `com.fliplet.link`
 

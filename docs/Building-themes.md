@@ -1,6 +1,6 @@
-# Building themes
+# Building Fliplet themes
 
-Before building themes, we recommend reading the documentation about [creating components](Building-components.md) as it contains many principles about how widgets (components, themes and menus) work on Fliplet.
+How to scaffold a Fliplet theme, configure its customizable settings from Studio, and preview sample HTML during local development.
 
 A theme consist in:
   - SCSS, CSS and Javascript assets.

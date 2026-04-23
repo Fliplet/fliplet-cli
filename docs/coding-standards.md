@@ -1,6 +1,6 @@
-# Fliplet Documentation and Coding Standards
+# Fliplet coding and documentation standards
 
-This document outlines the coding standards and documentation guidelines for Fliplet development, ensuring consistency across all APIs, components, and examples. These standards help developers write maintainable code and create documentation that both humans and AI systems can easily understand and implement.
+Coding and documentation standards used across Fliplet APIs, components, and examples, so both humans and AI tools produce consistent Fliplet code.
 
 ## Table of Contents
 

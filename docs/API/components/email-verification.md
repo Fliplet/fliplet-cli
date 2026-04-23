@@ -1,4 +1,6 @@
-# Email Verification
+# Email Verification component
+
+Use the Email Verification JS API to retrieve the component instance on a screen and trigger verification flows for a given email address.
 
 ## Retrieve an instance
 

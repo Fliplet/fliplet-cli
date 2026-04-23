@@ -1,5 +1,6 @@
-# Templates
-Helpers are required to define a HTML template which is used to render them in the app screen.
+# Helper templates
+
+Every Helper defines an HTML template that renders it on screen, with support for variable binding, conditional blocks, and loops.
 
 Templates support the following features:
 

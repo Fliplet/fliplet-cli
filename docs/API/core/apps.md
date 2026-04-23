@@ -1,4 +1,6 @@
-# Apps
+# `Fliplet.Apps`
+
+List the Fliplet apps the current user can access, and filter between legacy V1 and modern V2 apps.
 
 ### Get the list of apps the user has got access to
 
