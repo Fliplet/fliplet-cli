@@ -1,0 +1,84 @@
+name: Docs freshness check
+
+# Verifies that https://developers.fliplet.com/.well-known/llms.txt (and by
+# extension the Cloudflare Pages deploy) is no more than 24 hours behind the
+# latest commit that touched docs/ on the default branch. Catches silent
+# CF Pages deploy failures that would otherwise serve a stale llms.txt
+# indefinitely.
+#
+# Runs weekly via cron; can also be triggered manually.
+
+on:
+  schedule:
+    # Mondays at 09:00 UTC
+    - cron: '0 9 * * 1'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get latest docs/ commit timestamp on default branch
+        id: last-commit
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -euo pipefail
+          RESP=$(curl -fsSL \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer ${GH_TOKEN}" \
+            "https://api.github.com/repos/${{ github.repository }}/commits?path=docs&per_page=1&sha=${{ github.event.repository.default_branch }}")
+          TS=$(echo "$RESP" | jq -r '.[0].commit.committer.date')
+          if [ -z "$TS" ] || [ "$TS" = "null" ]; then
+            echo "::error::Could not read latest docs/ commit timestamp from GitHub API."
+            echo "$RESP" | head -20
+            exit 1
+          fi
+          echo "commit-ts=$TS" >> "$GITHUB_OUTPUT"
+          echo "Latest docs/ commit on default branch: $TS"
+
+      - name: Read Last-Modified header from deployed llms.txt
+        id: deployed
+        run: |
+          set -euo pipefail
+          HEADERS=$(curl -fsSI https://developers.fliplet.com/.well-known/llms.txt)
+          LAST_MOD=$(echo "$HEADERS" | awk 'BEGIN{IGNORECASE=1} /^last-modified:/ {sub(/^[^:]*:[[:space:]]*/, ""); print; exit}' | tr -d '\r')
+          if [ -z "$LAST_MOD" ]; then
+            echo "::error::No Last-Modified header on https://developers.fliplet.com/.well-known/llms.txt."
+            echo "Full response headers:"
+            echo "$HEADERS"
+            exit 1
+          fi
+          echo "deployed-ts=$LAST_MOD" >> "$GITHUB_OUTPUT"
+          echo "Deployed llms.txt Last-Modified: $LAST_MOD"
+
+      - name: Fail if deployed llms.txt is more than 24h behind latest docs commit
+        env:
+          COMMIT_TS: ${{ steps.last-commit.outputs.commit-ts }}
+          DEPLOYED_TS: ${{ steps.deployed.outputs.deployed-ts }}
+        run: |
+          set -euo pipefail
+          COMMIT_EPOCH=$(date -d "$COMMIT_TS" +%s)
+          DEPLOYED_EPOCH=$(date -d "$DEPLOYED_TS" +%s)
+          DRIFT=$((COMMIT_EPOCH - DEPLOYED_EPOCH))
+          HOURS=$(awk -v d="$DRIFT" 'BEGIN{printf "%.1f", d/3600}')
+          echo "Latest docs/ commit:  $COMMIT_TS ($COMMIT_EPOCH)"
+          echo "Deployed llms.txt:    $DEPLOYED_TS ($DEPLOYED_EPOCH)"
+          echo "Drift:                ${DRIFT}s (${HOURS}h)"
+          # Tolerate up to 24h of drift (CF Pages crawl + propagation).
+          if [ "$DRIFT" -gt 86400 ]; then
+            cat >&2 <<MSG
+          ::error::Deployed llms.txt is ${HOURS}h behind the latest docs/ commit.
+          ::error::Likely causes: Cloudflare Pages deploy is stuck, or build
+          ::error::failed silently, or CDN is serving a stale cache. Investigate:
+          ::error::https://developers.fliplet.com/.well-known/llms.txt
+          MSG
+            exit 1
+          fi
+          if [ "$DRIFT" -lt 0 ]; then
+            echo "Note: deployed llms.txt is newer than latest docs commit by ${HOURS}h — fine."
+          fi
+          echo "OK: deployed llms.txt is within 24h of latest docs commit."
