@@ -1,3 +1,11 @@
+---
+title: Advanced features for the iOS platform
+description: "How to detect iOS at runtime and supply a manual P12 certificate when using Fliplet's Automated App Build with an Apple Enterprise account."
+type: guide
+tags: [platform, ios]
+v3_relevant: true
+deprecated: false
+---
 # Advanced features for the iOS platform
 
 How to detect iOS at runtime and supply a manual P12 certificate when using Fliplet's Automated App Build with an Apple Enterprise account.

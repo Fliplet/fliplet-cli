@@ -1,3 +1,11 @@
+---
+title: Introduction to the Fliplet developer platform
+description: "Overview of the Fliplet developer stack (JavaScript, SASS, Handlebars) and the kinds of apps, components, themes, and menus you can build on it."
+type: tutorial
+tags: [introduction]
+v3_relevant: true
+deprecated: false
+---
 # Introduction to the Fliplet developer platform
 
 Overview of the Fliplet developer stack (JavaScript, SASS, Handlebars) and the kinds of apps, components, themes, and menus you can build on it.

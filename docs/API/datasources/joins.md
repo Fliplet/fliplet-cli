@@ -1,3 +1,11 @@
+---
+title: Data Source joins
+description: "Fetch related rows from multiple data sources in a single query using named joins, like SQL joins."
+type: api-reference
+tags: [js-api, datasources, joins]
+v3_relevant: true
+deprecated: false
+---
 # Data Source joins
 
 Fetch related rows from multiple data sources in a single query using named joins, like SQL joins.

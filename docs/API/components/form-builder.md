@@ -1,3 +1,11 @@
+---
+title: Form JS APIs
+description: "The following JS APIs are available in a screen once a **Form** component is dropped into the screen."
+type: api-reference
+tags: [js-api, components, form, builder]
+v3_relevant: true
+deprecated: false
+---
 # Form JS APIs
 
 The following JS APIs are available in a screen once a **Form** component is dropped into the screen.

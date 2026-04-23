@@ -1,3 +1,11 @@
+---
+title: Fliplet.OAuth2 (Beta)
+description: "The `fliplet-oauth2` package contains helpers for standardizing requests to OAuth2 web services with a client-side integration."
+type: api-reference
+tags: [js-api, oauth2]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.OAuth2` (Beta)
 
 The `fliplet-oauth2` package contains helpers for standardizing requests to OAuth2 web services with a client-side integration.

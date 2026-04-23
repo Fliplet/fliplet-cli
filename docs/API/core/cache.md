@@ -1,3 +1,11 @@
+---
+title: Fliplet.Cache
+description: "Run async operations once and memoize their results, with optional expiry and background refresh."
+type: api-reference
+tags: [js-api, core, cache]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.Cache`
 
 Run async operations once and memoize their results, with optional expiry and background refresh.

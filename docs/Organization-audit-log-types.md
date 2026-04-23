@@ -1,3 +1,11 @@
+---
+title: Organization audit log types
+description: "Reference table of every audit log type emitted for Fliplet organizations, queryable via the JS or REST API."
+type: reference
+tags: [organization, audit, log, types]
+v3_relevant: true
+deprecated: false
+---
 # Organization audit log types
 
 Reference table of every audit log type emitted for Fliplet organizations, queryable via the JS or REST API.

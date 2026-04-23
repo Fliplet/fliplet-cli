@@ -1,3 +1,11 @@
+---
+title: Fliplet.UI.TimePicker()
+description: "(Returns `Object`)"
+type: api-reference
+tags: [js-api, timepicker]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.UI.TimePicker()`
 
 (Returns `Object`)

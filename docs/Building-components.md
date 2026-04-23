@@ -1,3 +1,11 @@
+---
+title: Building Fliplet components
+description: "How to scaffold, run, and develop a Fliplet component locally using the CLI, including the generated file layout and the local dev server."
+type: how-to
+tags: [building, components]
+v3_relevant: true
+deprecated: false
+---
 # Building Fliplet components
 
 How to scaffold, run, and develop a Fliplet component locally using the CLI, including the generated file layout and the local dev server.

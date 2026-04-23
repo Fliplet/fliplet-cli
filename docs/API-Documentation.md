@@ -1,5 +1,10 @@
 ---
+title: JS API Documentation
 description: Javascript-based SDK to interact with core functions and components in your Fliplet Apps.
+type: reference
+tags: []
+v3_relevant: true
+deprecated: false
 ---
 
 # JS API Documentation

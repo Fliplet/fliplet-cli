@@ -1,3 +1,11 @@
+---
+title: Theme and appearance settings for components
+description: "Expose configurable colors, fonts, and other CSS properties in Fliplet Studio's theme settings UI via your component's widget.json."
+type: how-to
+tags: [theming, appearance]
+v3_relevant: true
+deprecated: false
+---
 # Theme and appearance settings for components
 
 Expose configurable colors, fonts, and other CSS properties in Fliplet Studio's theme settings UI via your component's widget.json.

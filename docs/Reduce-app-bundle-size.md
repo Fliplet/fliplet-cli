@@ -1,3 +1,11 @@
+---
+title: Reduce your app bundle size
+description: Blacklist assets from your Fliplet app bundle to shrink it for App Store and Google Play submission.
+type: how-to
+tags: [reduce, app, bundle, size]
+v3_relevant: true
+deprecated: false
+---
 # Reduce your app bundle size
 
 Blacklist assets from your Fliplet app bundle to shrink it for App Store and Google Play submission.

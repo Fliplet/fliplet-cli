@@ -1,5 +1,10 @@
 ---
-description: Deprecated App Actions V2 — configure a pipeline of functions that runs on-device or in the cloud, ad hoc or on a schedule. Migrate to V3.
+title: App Actions V2 (deprecated)
+description: "Deprecated App Actions V2 — configure a pipeline of functions that runs on-device or in the cloud, ad hoc or on a schedule. Migrate to V3."
+type: api-reference
+tags: [js-api, core, app, actions]
+v3_relevant: false
+deprecated: true
 ---
 
 # App Actions V2 (deprecated)

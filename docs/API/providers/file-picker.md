@@ -1,3 +1,11 @@
+---
+title: File Picker provider
+description: "The File Picker provider lets users select one or more files from Fliplet's File Manager, optionally scoped by file type or restricted to single-select."
+type: api-reference
+tags: [js-api, providers, file, picker]
+v3_relevant: true
+deprecated: false
+---
 # File Picker provider
 
 The File Picker provider lets users select one or more files from Fliplet's File Manager, optionally scoped by file type or restricted to single-select.

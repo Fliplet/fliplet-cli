@@ -32,6 +32,7 @@ const EXCLUDED_FILES = new Set([
   'API/fliplet-core.md',
   'API/fliplet-helper.md',
   'API/core/app-tasks.md',
+  'CLAUDE.md',
 ]);
 
 const EXCLUDED_DIRS = [
@@ -39,9 +40,9 @@ const EXCLUDED_DIRS = [
   '_includes',
   '_layouts',
   '_plugins',
+  '_templates',
   'node_modules',
   'docsearch',
-  'templates',
   'bin',
   'test',
   '.git',

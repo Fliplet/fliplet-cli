@@ -1,3 +1,11 @@
+---
+title: Best practice and advices when building components
+description: "Got stuck building components or found some nasty bugs? Here's a few tips that might help you dealing with basic issues during the development of components on…"
+type: how-to
+tags: [best, practises]
+v3_relevant: true
+deprecated: false
+---
 # Best practice and advices when building components
 
 Got stuck building components or found some nasty bugs? Here's a few tips that might help you dealing with basic issues during the development of components on our platform.

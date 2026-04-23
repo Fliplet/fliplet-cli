@@ -1,3 +1,11 @@
+---
+title: Fliplet.API.request()
+description: "Make authenticated HTTP requests to Fliplet APIs with automatic URL construction, caching, offline queueing, and error handling."
+type: api-reference
+tags: [js-api, core]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.API.request()`
 
 Make authenticated HTTP requests to Fliplet APIs with automatic URL construction, caching, offline queueing, and error handling.

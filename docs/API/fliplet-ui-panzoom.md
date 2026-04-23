@@ -1,3 +1,11 @@
+---
+title: Fliplet.UI.PanZoom
+description: "These public JS APIs will be automatically available in your screen once an Interactive graphics component is dropped into a screen. You can also add the depen…"
+type: api-reference
+tags: [js-api, panzoom]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.UI.PanZoom`
 
 These public JS APIs will be automatically available in your screen once an Interactive graphics component is dropped into a screen.

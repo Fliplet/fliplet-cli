@@ -1,5 +1,10 @@
 ---
-description: Call third-party REST APIs from a Fliplet app using jQuery AJAX helpers, including CORS considerations.
+title: Integrating Fliplet apps with external APIs
+description: "Call third-party REST APIs from a Fliplet app using jQuery AJAX helpers, including CORS considerations."
+type: how-to
+tags: [integrate, external]
+v3_relevant: true
+deprecated: false
 ---
 
 # Integrating Fliplet apps with external APIs

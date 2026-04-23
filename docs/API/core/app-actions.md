@@ -1,5 +1,10 @@
 ---
+title: App Actions V1 (deprecated)
 description: Deprecated App Actions V1 — run app screens automatically on a schedule or on demand in the cloud. Migrate to V3.
+type: api-reference
+tags: [js-api, core, app, actions]
+v3_relevant: false
+deprecated: true
 ---
 
 # App Actions V1 (deprecated)

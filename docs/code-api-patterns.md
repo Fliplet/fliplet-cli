@@ -1,3 +1,11 @@
+---
+title: Fliplet API patterns and categories
+description: "Overview of the main Fliplet JS API categories (Data Sources, Users, Media, Navigation) and when to pick each one."
+type: reference
+tags: [code, patterns]
+v3_relevant: true
+deprecated: false
+---
 # Fliplet API patterns and categories
 
 Overview of the main Fliplet JS API categories (Data Sources, Users, Media, Navigation) and when to pick each one.

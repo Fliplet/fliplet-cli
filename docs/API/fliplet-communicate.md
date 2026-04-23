@@ -1,3 +1,11 @@
+---
+title: Fliplet.Communicate
+description: "Send email, SMS, push notifications, and share URLs from a Fliplet app using a single Communicate namespace."
+type: api-reference
+tags: [js-api, communicate]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.Communicate`
 
 Send email, SMS, push notifications, and share URLs from a Fliplet app using a single Communicate namespace.

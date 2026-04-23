@@ -1,3 +1,11 @@
+---
+title: Data Directory JS APIs
+description: "These public JS APIs will be automatically available in your screens once a **Data Directory** component is dropped into such screens."
+type: api-reference
+tags: [js-api, components, data, directory]
+v3_relevant: true
+deprecated: false
+---
 # Data Directory JS APIs
 
 These public JS APIs will be automatically available in your screens once a **Data Directory** component is dropped into such screens.

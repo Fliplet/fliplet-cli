@@ -1,3 +1,11 @@
+---
+title: Fliplet.Hooks
+description: "Register callbacks that run before or after key app events (e.g. form submit), with sync or async Promise handlers."
+type: api-reference
+tags: [js-api, core, hooks]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.Hooks`
 
 Register callbacks that run before or after key app events (e.g. form submit), with sync or async Promise handlers.

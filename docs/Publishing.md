@@ -1,3 +1,11 @@
+---
+title: "Publishing components, themes and menus"
+description: "How to publish Fliplet components, themes, and menus to the Fliplet platform using the CLI's publish command."
+type: how-to
+tags: [publishing]
+v3_relevant: true
+deprecated: false
+---
 # Publishing components, themes and menus
 
 How to publish Fliplet components, themes, and menus to the Fliplet platform using the CLI's publish command.

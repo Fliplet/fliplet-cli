@@ -1,3 +1,11 @@
+---
+title: App Analytics REST API
+description: "The App Analytics REST API lets you read your app's analytics data."
+type: api-reference
+tags: [rest-api, app, analytics]
+v3_relevant: true
+deprecated: false
+---
 # App Analytics REST API
 
 The App Analytics REST API lets you read your app's analytics data.

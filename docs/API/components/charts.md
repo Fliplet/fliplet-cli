@@ -1,3 +1,11 @@
+---
+title: Charts component
+description: "Use the Charts JS API to retrieve chart instances on a screen and update their data, labels, and series at runtime."
+type: api-reference
+tags: [js-api, components, charts]
+v3_relevant: true
+deprecated: false
+---
 # Charts component
 
 Use the Charts JS API to retrieve chart instances on a screen and update their data, labels, and series at runtime.

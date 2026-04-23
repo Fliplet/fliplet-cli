@@ -1,5 +1,10 @@
 ---
-description: How Fliplet apps handle AJAX cross-domain requests, common CORS errors, and the studio and app domains allowed by default.
+title: AJAX cross-domain and cross-origin requests
+description: "How Fliplet apps handle AJAX cross-domain requests, common CORS errors, and the studio and app domains allowed by default."
+type: how-to
+tags: [ajax, cross, domain]
+v3_relevant: true
+deprecated: false
 ---
 
 # AJAX cross-domain and cross-origin requests

@@ -1,3 +1,11 @@
+---
+title: Fliplet.Env
+description: "Read environment variables such as `appId`, `appName`, `mode`, and `apiUrl` from the current runtime."
+type: api-reference
+tags: [js-api, core, environment]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.Env`
 
 Read environment variables such as `appId`, `appName`, `mode`, and `apiUrl` from the current runtime.

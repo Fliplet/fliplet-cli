@@ -1,3 +1,11 @@
+---
+title: Fliplet.Notifications
+description: "Read, send, and schedule in-app and push notifications in Fliplet apps, with support for scopes, read receipts, and badge counts."
+type: api-reference
+tags: [js-api, notifications]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.Notifications`
 
 Read, send, and schedule in-app and push notifications in Fliplet apps, with support for scopes, read receipts, and badge counts.

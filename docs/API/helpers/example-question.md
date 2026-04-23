@@ -1,3 +1,11 @@
+---
+title: "Helper example: question and answer"
+description: A worked example showing how to build a Helper that presents a multiple-choice question and reveals whether the selected answer is correct.
+type: api-reference
+tags: [js-api, helpers, example, question]
+v3_relevant: true
+deprecated: false
+---
 # Helper example: question and answer
 
 A worked example showing how to build a Helper that presents a multiple-choice question and reveals whether the selected answer is correct.

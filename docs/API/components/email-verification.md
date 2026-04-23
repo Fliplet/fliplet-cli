@@ -1,3 +1,11 @@
+---
+title: Email Verification component
+description: Use the Email Verification JS API to retrieve the component instance on a screen and trigger verification flows for a given email address.
+type: api-reference
+tags: [js-api, components, email, verification]
+v3_relevant: true
+deprecated: false
+---
 # Email Verification component
 
 Use the Email Verification JS API to retrieve the component instance on a screen and trigger verification flows for a given email address.

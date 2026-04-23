@@ -1,3 +1,11 @@
+---
+title: Use theme settings in your custom CSS
+description: "Our theme is built with reusability in mind, therefore we used SCSS variables for all the settings so that you can use them in your custom CSS."
+type: how-to
+tags: [theme, settings, css]
+v3_relevant: true
+deprecated: false
+---
 # Use theme settings in your custom CSS
 
 Our theme is built with reusability in mind, therefore we used SCSS variables for all the settings so that you can use them in your custom CSS.

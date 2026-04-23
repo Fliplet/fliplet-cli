@@ -1,3 +1,11 @@
+---
+title: Fliplet.Widget
+description: "Access widget instance IDs, settings, and data, and coordinate save and ready events between widget and interface."
+type: api-reference
+tags: [js-api, core, widget]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.Widget`
 
 Access widget instance IDs, settings, and data, and coordinate save and ready events between widget and interface.

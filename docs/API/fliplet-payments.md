@@ -1,5 +1,10 @@
 ---
+title: Fliplet.Payments
 description: Adds payments functionality in your Fliplet apps using Stripe and our easy-to-use JS API.
+type: api-reference
+tags: [js-api, payments]
+v3_relevant: true
+deprecated: false
 ---
 
 # `Fliplet.Payments`

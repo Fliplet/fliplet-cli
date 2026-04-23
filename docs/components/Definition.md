@@ -1,3 +1,11 @@
+---
+title: The component definition file
+description: "The `widget.json` file defines your component as well as the **dependencies** and **assets** it needs in order to run."
+type: guide
+tags: [components-framework, definition]
+v3_relevant: true
+deprecated: false
+---
 # The component definition file
 
 The `widget.json` file defines your component as well as the **dependencies** and **assets** it needs in order to run.

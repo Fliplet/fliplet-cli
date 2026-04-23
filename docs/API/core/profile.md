@@ -1,3 +1,11 @@
+---
+title: Fliplet.Profile
+description: "Read and write namespaced user profile attributes (email, name, company, phone) and fetch the device UUID."
+type: api-reference
+tags: [js-api, core, profile]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.Profile`
 
 Read and write namespaced user profile attributes (email, name, company, phone) and fetch the device UUID.

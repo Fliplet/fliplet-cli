@@ -1,3 +1,11 @@
+---
+title: Fliplet.Modal
+description: "Show confirmation, alert, and prompt dialogs from widget interfaces in Fliplet Studio, powered by [Bootbox](http://bootboxjs.com/) — see its documentation for…"
+type: api-reference
+tags: [js-api, core, modal]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.Modal`
 
 Show confirmation, alert, and prompt dialogs from widget interfaces in Fliplet Studio, powered by [Bootbox](http://bootboxjs.com/) — see its documentation for the full set of options you can pass.

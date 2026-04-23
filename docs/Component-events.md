@@ -1,3 +1,11 @@
+---
+title: Component events
+description: "When components are moved around the page in *Edit* mode, Fliplet provides a set of events to manage the user interaction."
+type: how-to
+tags: [component, events]
+v3_relevant: true
+deprecated: false
+---
 # Component events
 
 When components are moved around the page in *Edit* mode, Fliplet provides a set of events to manage the user interaction.

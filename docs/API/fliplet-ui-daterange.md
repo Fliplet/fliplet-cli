@@ -1,3 +1,11 @@
+---
+title: Fliplet.UI.DateRange()
+description: "(Returns `Object`)"
+type: api-reference
+tags: [js-api, daterange]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.UI.DateRange()`
 
 (Returns `Object`)

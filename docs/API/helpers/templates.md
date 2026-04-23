@@ -1,3 +1,11 @@
+---
+title: Helper templates
+description: "Every Helper defines an HTML template that renders it on screen, with support for variable binding, conditional blocks, and loops."
+type: api-reference
+tags: [js-api, helpers, templates]
+v3_relevant: true
+deprecated: false
+---
 # Helper templates
 
 Every Helper defines an HTML template that renders it on screen, with support for variable binding, conditional blocks, and loops.

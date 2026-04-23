@@ -1,3 +1,11 @@
+---
+title: Styling Helpers
+description: "Style a Helper using standard `class` and `style` HTML attributes — they are passed through to the rendered element rather than treated as Helper fields."
+type: api-reference
+tags: [js-api, helpers, style]
+v3_relevant: true
+deprecated: false
+---
 # Styling Helpers
 
 Style a Helper using standard `class` and `style` HTML attributes — they are passed through to the rendered element rather than treated as Helper fields.

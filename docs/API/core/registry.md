@@ -1,3 +1,11 @@
+---
+title: Fliplet.Registry
+description: Store and retrieve runtime values and functions by key so components can share state and helpers.
+type: api-reference
+tags: [js-api, core, registry]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.Registry`
 
 Store and retrieve runtime values and functions by key so components can share state and helpers.

@@ -1,3 +1,11 @@
+---
+title: Data Source views
+description: "Define named, session-aware filters on a data source so each user or group sees only the rows that apply to them."
+type: api-reference
+tags: [js-api, datasources, views]
+v3_relevant: true
+deprecated: false
+---
 # Data Source views
 
 Define named, session-aware filters on a data source so each user or group sees only the rows that apply to them.

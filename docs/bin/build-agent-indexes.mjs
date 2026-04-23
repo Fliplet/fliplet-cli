@@ -30,13 +30,15 @@ const SITE_TITLE = 'Fliplet Developers';
 const SITE_DESCRIPTION =
   'Developer documentation for the Fliplet platform — JavaScript APIs, REST APIs, component and helper frameworks, and developer guides for building apps, components, themes, and integrations on Fliplet.';
 
-// Redirect stubs and opt-out pages that should never appear in the index.
+// Redirect stubs, opt-out pages, and repo-authoring meta-docs that should
+// never appear in the product index.
 const EXCLUDED_FILES = new Set([
   'disable-analytics.md',
   'API/fliplet-encryption.deprecated.md',
   'API/fliplet-core.md',
   'API/fliplet-helper.md',
   'API/core/app-tasks.md',
+  'CLAUDE.md',
 ]);
 
 // Directory prefixes whose contents are never indexed.
@@ -45,9 +47,9 @@ const EXCLUDED_DIRS = [
   '_includes',
   '_layouts',
   '_plugins',
+  '_templates',
   'node_modules',
   'docsearch',
-  'templates',
   'bin',
   'test',
   '.git',

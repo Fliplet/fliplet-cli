@@ -1,3 +1,11 @@
+---
+title: JavaScript coding standards for Fliplet apps
+description: "Recommended ES6+ patterns for new Fliplet code and ES5 patterns for legacy apps, covering promises, async/await, and API integration."
+type: reference
+tags: [javascript, coding, standards]
+v3_relevant: true
+deprecated: false
+---
 # JavaScript coding standards for Fliplet apps
 
 Recommended ES6+ patterns for new Fliplet code and ES5 patterns for legacy apps, covering promises, async/await, and API integration.

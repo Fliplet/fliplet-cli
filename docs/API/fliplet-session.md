@@ -1,3 +1,11 @@
+---
+title: Fliplet.Session
+description: "Read, write, and clear the current user session — including cached offline sessions — for authentication state in Fliplet apps."
+type: api-reference
+tags: [js-api, session]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.Session`
 
 Read, write, and clear the current user session — including cached offline sessions — for authentication state in Fliplet apps.

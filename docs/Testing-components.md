@@ -1,3 +1,11 @@
+---
+title: Testing Fliplet components
+description: "Run and write tests for a Fliplet component using the CLI's test command, backed by Mocha, Chai, and Puppeteer."
+type: how-to
+tags: [testing, components]
+v3_relevant: true
+deprecated: false
+---
 # Testing Fliplet components
 
 Run and write tests for a Fliplet component using the CLI's test command, backed by Mocha, Chai, and Puppeteer.

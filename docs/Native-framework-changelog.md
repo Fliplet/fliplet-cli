@@ -1,3 +1,11 @@
+---
+title: Native framework changelog
+description: Release notes for the Fliplet iOS and Android native frameworks — rebuild your app against a newer version to unlock new features.
+type: reference
+tags: [native, framework, changelog]
+v3_relevant: true
+deprecated: false
+---
 # Native framework changelog
 
 Release notes for the Fliplet iOS and Android native frameworks — rebuild your app against a newer version to unlock new features.

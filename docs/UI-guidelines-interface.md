@@ -1,3 +1,11 @@
+---
+title: UI guidelines for component settings (interface)
+description: "Recommended Bootstrap-based styles for buttons, forms, and typography in a Fliplet component's Studio settings interface."
+type: reference
+tags: [guidelines, interface]
+v3_relevant: true
+deprecated: false
+---
 # UI guidelines for component settings (interface)
 
 Recommended Bootstrap-based styles for buttons, forms, and typography in a Fliplet component's Studio settings interface.

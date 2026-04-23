@@ -1,3 +1,11 @@
+---
+title: Using Handlebars in your apps
+description: "All screens of your Fliplet app already include [Handlebars `2.15.2`](https://handlebarsjs.com/) hence you can start using it straight away. Here's a quick exa…"
+type: api-reference
+tags: [js-api, libraries, handlebars]
+v3_relevant: true
+deprecated: false
+---
 # Using Handlebars in your apps
 
 All screens of your Fliplet app already include [Handlebars `2.15.2`](https://handlebarsjs.com/) hence you can start using it straight away. Here's a quick example following the official Handlebars docs:

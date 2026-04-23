@@ -1,3 +1,11 @@
+---
+title: Data Sources REST API
+description: The Data Sources REST API lets external integrations read and modify the data sources belonging to a Fliplet app or organization.
+type: api-reference
+tags: [rest-api, datasources]
+v3_relevant: true
+deprecated: false
+---
 # Data Sources REST API
 
 The Data Sources REST API lets external integrations read and modify the data sources belonging to a Fliplet app or organization.

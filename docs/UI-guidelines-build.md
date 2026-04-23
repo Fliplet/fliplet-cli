@@ -1,3 +1,11 @@
+---
+title: UI guidelines for component output (build)
+description: "Recommended Bootstrap-based styles for buttons, forms, and typography in a Fliplet component's user-facing output."
+type: reference
+tags: [guidelines, build]
+v3_relevant: true
+deprecated: false
+---
 # UI guidelines for component output (build)
 
 Recommended Bootstrap-based styles for buttons, forms, and typography in a Fliplet component's user-facing output.

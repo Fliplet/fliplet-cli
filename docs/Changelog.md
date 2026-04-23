@@ -1,5 +1,10 @@
 ---
+title: Changelog
 description: Changelog notes giving a summary of recent significant changes to the documentation.
+type: reference
+tags: [changelog]
+v3_relevant: true
+deprecated: false
 ---
 
 # Changelog

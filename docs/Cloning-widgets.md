@@ -1,3 +1,11 @@
+---
+title: "Cloning widgets, components, and themes from the CLI"
+description: "How to use the fliplet clone and fliplet list CLI commands to download the source of a published component, menu, or theme to your machine."
+type: how-to
+tags: [cloning, widgets]
+v3_relevant: true
+deprecated: false
+---
 # Cloning widgets, components, and themes from the CLI
 
 How to use the fliplet clone and fliplet list CLI commands to download the source of a published component, menu, or theme to your machine.

@@ -1,5 +1,10 @@
 ---
-description: Tracker of Fliplet features recently shipped or in beta, linking to their developer documentation.
+title: Upcoming and recently launched features
+description: "Tracker of Fliplet features recently shipped or in beta, linking to their developer documentation."
+type: how-to
+tags: [upcoming]
+v3_relevant: true
+deprecated: false
 ---
 
 # Upcoming and recently launched features

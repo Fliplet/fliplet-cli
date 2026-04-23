@@ -1,3 +1,11 @@
+---
+title: Fliplet.Media
+description: "Browse folders, upload and manage files, and download media to devices via the Fliplet Media namespace."
+type: api-reference
+tags: [js-api, media]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.Media`
 
 Browse folders, upload and manage files, and download media to devices via the Fliplet Media namespace.

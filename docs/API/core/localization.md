@@ -1,5 +1,10 @@
 ---
+title: Fliplet.Locale
 description: Customize your component to localize to different languages and regions.
+type: api-reference
+tags: [js-api, core, localization]
+v3_relevant: true
+deprecated: false
 ---
 
 # `Fliplet.Locale`

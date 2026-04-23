@@ -1,3 +1,11 @@
+---
+title: Helper fields (attributes)
+description: "Pass attributes to a Helper via the HTML `field` element and read them inside the Helper via `this.fields.<name>`."
+type: api-reference
+tags: [js-api, helpers, fields]
+v3_relevant: true
+deprecated: false
+---
 # Helper fields (attributes)
 
 Pass attributes to a Helper via the HTML `field` element and read them inside the Helper via `this.fields.<name>`.

@@ -1,3 +1,11 @@
+---
+title: Helper instance and class methods
+description: "Define instance methods on a Helper and call Helper class methods such as `find` and `findOne` anywhere in the app lifecycle."
+type: api-reference
+tags: [js-api, helpers, methods]
+v3_relevant: true
+deprecated: false
+---
 # Helper instance and class methods
 
 Define instance methods on a Helper and call Helper class methods such as `find` and `findOne` anywhere in the app lifecycle.

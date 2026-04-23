@@ -1,3 +1,11 @@
+---
+title: Writing more readable code when using the JS APIs
+description: "As you might know most of Fliplet JS APIs use **Promises** when the result of such operation cannot be read synchronously. For example when reading data from t…"
+type: how-to
+tags: [async, await]
+v3_relevant: true
+deprecated: false
+---
 # Writing more readable code when using the JS APIs
 
 As you might know most of Fliplet JS APIs use **Promises** when the result of such operation cannot be read synchronously. For example when reading data from the server or the device storage.

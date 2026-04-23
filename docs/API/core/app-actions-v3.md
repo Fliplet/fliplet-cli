@@ -1,5 +1,10 @@
 ---
-description: Write and run JavaScript code directly on the server or client to perform automations, scheduled tasks and on-demand operations.
+title: App Actions V3
+description: "Write and run JavaScript code directly on the server or client to perform automations, scheduled tasks and on-demand operations."
+type: api-reference
+tags: [js-api, core, app, actions]
+v3_relevant: true
+deprecated: false
 ---
 
 # App Actions V3

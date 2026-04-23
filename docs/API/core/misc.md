@@ -1,3 +1,11 @@
+---
+title: Fliplet common functions
+description: "Utility helpers on the global `Fliplet` object: `Fliplet.compile()` for templating and `Fliplet.guid()` for unique IDs."
+type: api-reference
+tags: [js-api, core, misc]
+v3_relevant: true
+deprecated: false
+---
 # Fliplet common functions
 
 Utility helpers on the global `Fliplet` object: `Fliplet.compile()` for templating and `Fliplet.guid()` for unique IDs.

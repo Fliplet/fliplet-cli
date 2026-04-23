@@ -1,3 +1,11 @@
+---
+title: AI-powered Fliplet development with Cursor
+description: "How to install and use the Fliplet VS Code extension inside Cursor to generate, refactor, and debug Fliplet app code with AI assistance."
+type: how-to
+tags: [powered, development, cursor]
+v3_relevant: true
+deprecated: false
+---
 # AI-powered Fliplet development with Cursor
 
 How to install and use the Fliplet VS Code extension inside Cursor to generate, refactor, and debug Fliplet app code with AI assistance.

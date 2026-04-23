@@ -1,3 +1,11 @@
+---
+title: Fliplet.Apps
+description: "List the Fliplet apps the current user can access, and filter between legacy V1 and modern V2 apps."
+type: api-reference
+tags: [js-api, core, apps]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.Apps`
 
 List the Fliplet apps the current user can access, and filter between legacy V1 and modern V2 apps.

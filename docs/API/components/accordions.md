@@ -1,3 +1,11 @@
+---
+title: Accordion component
+description: The Accordion component supports query parameters to open specific accordions when linking to a screen.
+type: api-reference
+tags: [js-api, components, accordions]
+v3_relevant: true
+deprecated: false
+---
 # Accordion component
 
 The Accordion component supports query parameters to open specific accordions when linking to a screen.

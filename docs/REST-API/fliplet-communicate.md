@@ -1,3 +1,11 @@
+---
+title: Communicate REST API
+description: "The Communicate REST API lets external integrations send emails and SMS from a Fliplet app, subject to per-account rate limits."
+type: api-reference
+tags: [rest-api, communicate]
+v3_relevant: true
+deprecated: false
+---
 # Communicate REST API
 
 The Communicate REST API lets external integrations send emails and SMS from a Fliplet app, subject to per-account rate limits.

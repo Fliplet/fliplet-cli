@@ -1,3 +1,11 @@
+---
+title: Output of components
+description: "Components generally output HTML code when dropped into the page. Their output is compiled with [Handlebars](http://handlebarsjs.com/) using the `build.html` f…"
+type: guide
+tags: [components-framework, build, output]
+v3_relevant: true
+deprecated: false
+---
 # Output of components
 
 Components generally output HTML code when dropped into the page. Their output is compiled with [Handlebars](http://handlebarsjs.com/) using the `build.html` file from your component.

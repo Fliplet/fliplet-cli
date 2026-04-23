@@ -1,3 +1,11 @@
+---
+title: Fliplet.parseError()
+description: Turn any error response or object into a human-readable message by scanning common error properties.
+type: api-reference
+tags: [js-api, core, error]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.parseError()`
 
 Turn any error response or object into a human-readable message by scanning common error properties.

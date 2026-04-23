@@ -1,3 +1,11 @@
+---
+title: Fliplet.Helper() constructor reference
+description: "Reference for `Fliplet.Helper()`: the constructor used to define a new Helper in a screen or globally across an app."
+type: api-reference
+tags: [js-api, helpers, constructor]
+v3_relevant: true
+deprecated: false
+---
 # Fliplet.Helper() constructor reference
 
 Reference for `Fliplet.Helper()`: the constructor used to define a new Helper in a screen or globally across an app.

@@ -1,3 +1,11 @@
+---
+title: Building Fliplet themes
+description: "How to scaffold a Fliplet theme, configure its customizable settings from Studio, and preview sample HTML during local development."
+type: how-to
+tags: [building, themes]
+v3_relevant: true
+deprecated: false
+---
 # Building Fliplet themes
 
 How to scaffold a Fliplet theme, configure its customizable settings from Studio, and preview sample HTML during local development.

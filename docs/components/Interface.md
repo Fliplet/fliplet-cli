@@ -1,3 +1,11 @@
+---
+title: Components interfaces
+description: "Components usually define interfaces to let their instances **save settings**."
+type: guide
+tags: [components-framework, interface]
+v3_relevant: true
+deprecated: false
+---
 # Components interfaces
 
 Components usually define interfaces to let their instances **save settings**.

@@ -1,3 +1,11 @@
+---
+title: Fliplet.Studio
+description: Emit events to Fliplet Studio and listen for events from it when building widget interfaces.
+type: api-reference
+tags: [js-api, core, studio]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.Studio`
 
 Emit events to Fliplet Studio and listen for events from it when building widget interfaces.

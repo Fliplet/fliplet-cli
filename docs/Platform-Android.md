@@ -1,3 +1,11 @@
+---
+title: Advanced features for the Android platform
+description: How to detect Android at runtime and enable the hardware back button inside a Fliplet app.
+type: guide
+tags: [platform, android]
+v3_relevant: true
+deprecated: false
+---
 # Advanced features for the Android platform
 
 How to detect Android at runtime and enable the hardware back button inside a Fliplet app.

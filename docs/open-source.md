@@ -1,5 +1,10 @@
 ---
-description: Where to find Fliplet's open-source code, pre-built app solutions, screen templates, community code examples, and developer documentation.
+title: Fliplet open source resources
+description: "Where to find Fliplet's open-source code, pre-built app solutions, screen templates, community code examples, and developer documentation."
+type: how-to
+tags: [open, source]
+v3_relevant: true
+deprecated: false
 ---
 
 # Fliplet open source resources

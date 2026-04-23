@@ -1,3 +1,11 @@
+---
+title: Fliplet.Themes
+description: "Read the list of available app themes and access the current theme's settings and widget-instance values at runtime."
+type: api-reference
+tags: [js-api, themes]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.Themes`
 
 Read the list of available app themes and access the current theme's settings and widget-instance values at runtime.

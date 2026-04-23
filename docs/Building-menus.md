@@ -1,3 +1,11 @@
+---
+title: Building Fliplet menus
+description: "How to scaffold a Fliplet menu widget, configure its position and settings via menu.json, and develop its template and assets."
+type: how-to
+tags: [building, menus]
+v3_relevant: true
+deprecated: false
+---
 # Building Fliplet menus
 
 How to scaffold a Fliplet menu widget, configure its position and settings via menu.json, and develop its template and assets.

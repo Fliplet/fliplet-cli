@@ -1,3 +1,11 @@
+---
+title: Fliplet Helpers quickstart
+description: "Create your first Fliplet Helper by defining its name, template, and configuration object in screen or global JavaScript."
+type: api-reference
+tags: [js-api, helpers, quickstart]
+v3_relevant: true
+deprecated: false
+---
 # Fliplet Helpers quickstart
 
 Create your first Fliplet Helper by defining its name, template, and configuration object in screen or global JavaScript.

@@ -1,3 +1,11 @@
+---
+title: Fliplet.DataSources.Encryption
+description: Automatically encrypt and decrypt selected Data Source columns on-device by registering a private key and column list.
+type: api-reference
+tags: [js-api, encryption]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.DataSources.Encryption`
 
 Automatically encrypt and decrypt selected Data Source columns on-device by registering a private key and column list.

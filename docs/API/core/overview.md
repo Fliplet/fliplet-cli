@@ -1,5 +1,10 @@
 ---
-description: Fliplet Core is the JS library bundled into every app screen — storage, navigation, user, API, and dozens of device helpers.
+title: Fliplet Core overview
+description: "Fliplet Core is the JS library bundled into every app screen — storage, navigation, user, API, and dozens of device helpers."
+type: api-reference
+tags: [js-api, core, overview]
+v3_relevant: true
+deprecated: false
 ---
 
 # Fliplet Core overview

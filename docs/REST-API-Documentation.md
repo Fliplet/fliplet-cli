@@ -1,3 +1,11 @@
+---
+title: Fliplet REST API documentation
+description: "Index of Fliplet REST endpoints for Data Sources, Media, Notifications, Apps, and more — intended for third-party integrations."
+type: reference
+tags: [rest]
+v3_relevant: true
+deprecated: false
+---
 # Fliplet REST API documentation
 
 <p class="warning"><strong>Note:</strong> Fliplet RESTful APIs are intended to be used by 3rd party software such as external integrations. <strong>If you want to interact with our APIs in a Fliplet App, please use the <a href="/API-Documentation.html">JS APIs</a> instead.</strong></p>

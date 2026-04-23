@@ -1,3 +1,11 @@
+---
+title: Fliplet.UI.DatePicker()
+description: "(Returns `Object`)"
+type: api-reference
+tags: [js-api, datepicker]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.UI.DatePicker()`
 
 (Returns `Object`)

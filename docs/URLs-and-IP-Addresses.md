@@ -1,3 +1,11 @@
+---
+title: Fliplet URLs and IP addresses
+description: "Domains and ports that Fliplet Studio, web apps, native apps, and the Data Integration Service need reachable through a corporate firewall."
+type: reference
+tags: [urls, addresses]
+v3_relevant: true
+deprecated: false
+---
 # Fliplet URLs and IP addresses
 
 Domains and ports that Fliplet Studio, web apps, native apps, and the Data Integration Service need reachable through a corporate firewall.

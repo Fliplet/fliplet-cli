@@ -1,3 +1,11 @@
+---
+title: Fliplet CLI quickstart
+description: "Install Node.js and the Fliplet CLI so you can develop and test components, themes, and menus on your machine."
+type: tutorial
+tags: [quickstart]
+v3_relevant: true
+deprecated: false
+---
 # Fliplet CLI quickstart
 
 Install Node.js and the Fliplet CLI so you can develop and test components, themes, and menus on your machine.

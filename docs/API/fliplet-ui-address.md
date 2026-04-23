@@ -1,3 +1,11 @@
+---
+title: Fliplet.UI.AddressField()
+description: "The Address field is a customizable component that integrates with Google Maps to enable address lookup. It allows users to search and select addresses using G…"
+type: api-reference
+tags: [js-api, address]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.UI.AddressField()`
 
 The Address field is a customizable component that integrates with Google Maps to enable address lookup. It allows users to search and select addresses using Google's autocomplete and retrieve location details.

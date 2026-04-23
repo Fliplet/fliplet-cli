@@ -1,3 +1,11 @@
+---
+title: Distributing Helpers as components
+description: Package a Fliplet Helper as a reusable widget-framework component so it can be installed and dropped into apps like any first-party component.
+type: api-reference
+tags: [js-api, helpers, components]
+v3_relevant: true
+deprecated: false
+---
 # Distributing Helpers as components
 
 Package a Fliplet Helper as a reusable widget-framework component so it can be installed and dropped into apps like any first-party component.

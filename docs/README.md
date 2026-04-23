@@ -1,3 +1,11 @@
+---
+title: Fliplet Developers documentation
+description: "Reference and guides for extending Fliplet apps with the JS API, REST API, and custom components, themes, and menus."
+type: tutorial
+tags: [readme]
+v3_relevant: true
+deprecated: false
+---
 # Fliplet Developers documentation
 
 Reference and guides for extending Fliplet apps with the JS API, REST API, and custom components, themes, and menus.

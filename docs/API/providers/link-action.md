@@ -1,3 +1,11 @@
+---
+title: Link Action provider
+description: "The Link Action provider offers a reusable UI for configuring an action (e.g. navigate to screen, open URL, send email) that another feature will trigger on a…"
+type: api-reference
+tags: [js-api, providers, link, action]
+v3_relevant: true
+deprecated: false
+---
 # Link Action provider
 
 The Link Action provider offers a reusable UI for configuring an action (e.g. navigate to screen, open URL, send email) that another feature will trigger on a condition it defines.

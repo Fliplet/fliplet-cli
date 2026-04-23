@@ -1,3 +1,11 @@
+---
+title: Interactive Graphics JS APIs
+description: "These public JS APIs are available in screens where an **Interactive Graphics** component is present."
+type: api-reference
+tags: [js-api, components, interactive, graphics]
+v3_relevant: true
+deprecated: false
+---
 # Interactive Graphics JS APIs
 
 These public JS APIs are available in screens where an **Interactive Graphics** component is present.

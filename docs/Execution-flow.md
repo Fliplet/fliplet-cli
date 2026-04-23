@@ -1,3 +1,11 @@
+---
+title: Fliplet app execution flow
+description: "The rendering and hook lifecycle Fliplet apps go through before a screen is shown to the user, and where to safely run custom code within it."
+type: how-to
+tags: [execution, flow]
+v3_relevant: true
+deprecated: false
+---
 # Fliplet app execution flow
 
 The rendering and hook lifecycle Fliplet apps go through before a screen is shown to the user, and where to safely run custom code within it.

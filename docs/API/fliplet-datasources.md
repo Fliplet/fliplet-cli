@@ -1,3 +1,11 @@
+---
+title: Fliplet.DataSources
+description: "Connect to, query, insert, update, and delete records in Fliplet Data Sources from inside an app. All methods are promise-based."
+type: api-reference
+tags: [js-api, datasources]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.DataSources`
 
 Connect to, query, insert, update, and delete records in Fliplet Data Sources from inside an app. All methods are promise-based.

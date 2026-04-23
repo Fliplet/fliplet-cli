@@ -1,5 +1,10 @@
 ---
-description: Helpers are a UI framework for building custom components in Fliplet apps using JavaScript, with a configuration interface in Fliplet Studio.
+title: Fliplet Helpers overview
+description: "Helpers are a UI framework for building custom components in Fliplet apps using JavaScript, with a configuration interface in Fliplet Studio."
+type: api-reference
+tags: [js-api, helpers, overview]
+v3_relevant: true
+deprecated: false
 ---
 
 # Fliplet Helpers overview

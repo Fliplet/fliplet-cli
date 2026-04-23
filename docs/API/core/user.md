@@ -1,3 +1,11 @@
+---
+title: Fliplet.User
+description: "Get and set the current user's auth token, profile details, and preferences, and sign the user out."
+type: api-reference
+tags: [js-api, core, user]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.User`
 
 Get and set the current user's auth token, profile details, and preferences, and sign the user out.

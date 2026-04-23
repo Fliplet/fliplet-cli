@@ -1,3 +1,11 @@
+---
+title: Data Source Hooks
+description: "Data Source hooks allow your app's backend to perform certain operations such as **sending emails** or **push notifications** when certain conditions occur, e.…"
+type: how-to
+tags: [data, source, hooks]
+v3_relevant: true
+deprecated: false
+---
 # Data Source Hooks
 
 Data Source hooks allow your app's backend to perform certain operations such as **sending emails** or **push notifications** when certain conditions occur, e.g. inserting or updating a Data Source Entry.

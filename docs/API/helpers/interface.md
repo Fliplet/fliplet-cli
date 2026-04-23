@@ -1,3 +1,11 @@
+---
+title: Helper configuration interface
+description: Define a configuration UI for your Helper so users can set field values for each instance from within Fliplet Studio.
+type: api-reference
+tags: [js-api, helpers, interface]
+v3_relevant: true
+deprecated: false
+---
 # Helper configuration interface
 
 Define a configuration UI for your Helper so users can set field values for each instance from within Fliplet Studio.

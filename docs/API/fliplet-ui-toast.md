@@ -1,3 +1,11 @@
+---
+title: Fliplet.UI.Toast()
+description: "(Returns **`Promise`**)"
+type: api-reference
+tags: [js-api, toast]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.UI.Toast()`
 
 (Returns **`Promise`**)

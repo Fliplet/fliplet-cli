@@ -1,3 +1,11 @@
+---
+title: "Helper configuration interface: methods"
+description: "Use `find`, `findOne`, and `children` inside a Helper's configuration interface to access nested child Helper instances."
+type: api-reference
+tags: [js-api, helpers, interface, methods]
+v3_relevant: true
+deprecated: false
+---
 # Helper configuration interface: methods
 
 Use `find`, `findOne`, and `children` inside a Helper's configuration interface to access nested child Helper instances.

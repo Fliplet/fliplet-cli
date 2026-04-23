@@ -1,3 +1,11 @@
+---
+title: Fliplet.Database
+description: "Low-level helper for reading and querying JSON data from a local file as a database; used internally by Fliplet.DataSources."
+type: api-reference
+tags: [js-api, database]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.Database`
 
 Low-level helper for reading and querying JSON data from a local file as a database; used internally by Fliplet.DataSources.

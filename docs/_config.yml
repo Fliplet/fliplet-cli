@@ -11,8 +11,8 @@ exclude:
   - docsearch
   - bin
   - test
-  - templates
   - Gemfile
   - Gemfile.lock
   - package.json
   - node_modules
+  - CLAUDE.md

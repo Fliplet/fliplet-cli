@@ -1,3 +1,11 @@
+---
+title: Fliplet-approved JavaScript libraries (reference list)
+description: "Reference list of every JavaScript library Fliplet pre-approves in apps, including versions and optional add-on libraries."
+type: reference
+tags: [approved, libraries]
+v3_relevant: true
+deprecated: false
+---
 # Fliplet-approved JavaScript libraries (reference list)
 
 Reference list of every JavaScript library Fliplet pre-approves in apps, including versions and optional add-on libraries.

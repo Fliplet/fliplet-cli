@@ -1,3 +1,11 @@
+---
+title: App Subscriptions REST API
+description: "The App Subscriptions REST API lets you read and manage your app's users subscribed via push notifications."
+type: api-reference
+tags: [rest-api, app, subscriptions]
+v3_relevant: true
+deprecated: false
+---
 # App Subscriptions REST API
 
 The App Subscriptions REST API lets you read and manage your app's users subscribed via push notifications.

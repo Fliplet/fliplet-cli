@@ -1,3 +1,11 @@
+---
+title: Fliplet.UI.Actions()
+description: "(Returns **`Promise`**)"
+type: api-reference
+tags: [js-api, actions]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.UI.Actions()`
 
 (Returns **`Promise`**)

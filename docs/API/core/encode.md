@@ -1,3 +1,11 @@
+---
+title: Fliplet.Encode
+description: Encode strings as base64 and double-encode URL query parameters safely for transport.
+type: api-reference
+tags: [js-api, core, encode]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.Encode`
 
 Encode strings as base64 and double-encode URL query parameters safely for transport.

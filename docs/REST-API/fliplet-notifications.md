@@ -1,3 +1,11 @@
+---
+title: Notifications REST API
+description: "The Notifications REST API lets external integrations create, schedule, and publish in-app and push notifications to Fliplet app users."
+type: api-reference
+tags: [rest-api, notifications]
+v3_relevant: true
+deprecated: false
+---
 # Notifications REST API
 
 The Notifications REST API lets external integrations create, schedule, and publish in-app and push notifications to Fliplet app users.

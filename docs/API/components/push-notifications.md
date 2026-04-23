@@ -1,3 +1,11 @@
+---
+title: Push Notifications JS APIs
+description: "These public JS APIs will be automatically available in your screens once **Push Notifications** have been enabled for your app."
+type: api-reference
+tags: [js-api, components, push, notifications]
+v3_relevant: true
+deprecated: false
+---
 # Push Notifications JS APIs
 
 These public JS APIs will be automatically available in your screens once **Push Notifications** have been enabled for your app.

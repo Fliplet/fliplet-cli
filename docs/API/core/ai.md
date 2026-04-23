@@ -1,3 +1,11 @@
+---
+title: Fliplet.AI
+description: "Build AI features in Fliplet apps with chat, completions, streaming, and task helpers — backed by OpenAI (GPT, o-series) or Google Gemini models via direct pro…"
+type: api-reference
+tags: [js-api, core]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.AI`
 
 Build AI features in Fliplet apps with chat, completions, streaming, and task helpers — backed by OpenAI (GPT, o-series) or Google Gemini models via direct proxy.

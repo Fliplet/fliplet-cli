@@ -1,3 +1,11 @@
+---
+title: Fliplet coding and documentation standards
+description: "Coding and documentation standards used across Fliplet APIs, components, and examples, so both humans and AI tools produce consistent Fliplet code."
+type: reference
+tags: [coding, standards]
+v3_relevant: true
+deprecated: false
+---
 # Fliplet coding and documentation standards
 
 Coding and documentation standards used across Fliplet APIs, components, and examples, so both humans and AI tools produce consistent Fliplet code.

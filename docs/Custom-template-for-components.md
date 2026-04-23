@@ -1,3 +1,11 @@
+---
+title: Custom HTML templates for Fliplet components
+description: "How to override a component's default template with custom HTML and Handlebars in the new container-based drag-and-drop system."
+type: how-to
+tags: [custom, template, components]
+v3_relevant: true
+deprecated: false
+---
 # Custom HTML templates for Fliplet components
 
 How to override a component's default template with custom HTML and Handlebars in the new container-based drag-and-drop system.

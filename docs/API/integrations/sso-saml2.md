@@ -1,3 +1,11 @@
+---
+title: SAML2 Single Sign-On integration
+description: "Add enterprise SSO to a Fliplet app with the SAML2 component, using an identity provider metadata XML exchange."
+type: integration
+tags: [js-api, integrations, sso, saml2]
+v3_relevant: true
+deprecated: false
+---
 # SAML2 Single Sign-On integration
 
 Add enterprise SSO to a Fliplet app with the SAML2 component, using an identity provider metadata XML exchange.

@@ -1,3 +1,11 @@
+---
+title: List (from Data Source) component
+description: "Configure templates, hooks, and query parameters for the List (from Data Source) component, which renders summary and detail views backed by a data source."
+type: api-reference
+tags: [js-api, components, list, data, source]
+v3_relevant: true
+deprecated: false
+---
 # List (from Data Source) component
 
 Configure templates, hooks, and query parameters for the List (from Data Source) component, which renders summary and detail views backed by a data source.
