@@ -17,5 +17,6 @@
   "v3-framework-vanilla": { "path": "API/v3/frameworks/vanilla.md", "title": "V3 vanilla-JS apps", "description": "Constraints for building V3 apps in vanilla JavaScript" },
   "v3-framework-vue": { "path": "API/v3/frameworks/vue.md", "title": "V3 Vue apps", "description": "Constraints for building V3 apps in Vue 3 (runtime-compiler build, SFC loader tradeoff, router wiring)" },
   "v3-framework-react": { "path": "API/v3/frameworks/react.md", "title": "V3 React apps", "description": "Constraints for building V3 apps in React, including the JSX transpilation problem and alternatives" },
-  "v3-framework-alpine": { "path": "API/v3/frameworks/alpine.md", "title": "V3 Alpine.js apps", "description": "Constraints for building V3 apps in Alpine.js" }
+  "v3-framework-alpine": { "path": "API/v3/frameworks/alpine.md", "title": "V3 Alpine.js apps", "description": "Constraints for building V3 apps in Alpine.js" },
+  "v3-analytics": { "path": "API/v3/analytics.md", "title": "V3 app analytics & event tracking", "description": "What's tracked automatically on V3 apps (page views, sessions, devices) and when to add custom Fliplet.App.Analytics.event() calls" }
 }
