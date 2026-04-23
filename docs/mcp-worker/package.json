@@ -1,0 +1,27 @@
+{
+  "name": "fliplet-docs-mcp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "MCP (Model Context Protocol) server for the Fliplet developer docs. Deployed as a Cloudflare Worker at developers.fliplet.com/mcp. Exposes search_fliplet_docs and fetch_fliplet_doc tools to any MCP client.",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "1.20.2",
+    "agents": "0.2.21",
+    "fuse.js": "^7.0.0",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250101.0",
+    "typescript": "^5.3.0",
+    "vitest": "^1.6.0",
+    "wrangler": "^3.90.0"
+  }
+}
