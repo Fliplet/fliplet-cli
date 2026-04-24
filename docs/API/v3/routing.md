@@ -108,6 +108,12 @@ Fliplet.require.lazy('vue-router').then(function() {
 });
 ```
 
+> **Force re-mount on route change.** Vue Router 4 reuses the same renderer instance across navigations to the same component. If two route entries share a component (e.g. `Login` rendered for both `/login` and `/sign-in`), Vue keeps the existing instance and the route data won't update. Set `:key="$route.fullPath"` on the `<router-view>` to force a fresh mount per route:
+>
+> ```html
+> <router-view :key="$route.fullPath" />
+> ```
+
 ### Vue Router 3 (Vue 2)
 
 ```js
