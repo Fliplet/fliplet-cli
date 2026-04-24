@@ -1,5 +1,5 @@
 ---
-description: V3 app analytics and event tracking. Page views are tracked automatically by the fliplet-analytics-v3 runtime; this doc covers what you get for free and when to add event() calls for intent-bearing user actions.
+description: V3 app analytics and event tracking. Page views are tracked automatically by the fliplet-analytics-spa runtime; this doc covers what you get for free and when to add event() calls for intent-bearing user actions.
 ---
 
 # V3 app analytics and event tracking
@@ -19,7 +19,7 @@ This doc tells you what's automatic, what to add, and how to keep event taxonomy
 
 ## What you get for free
 
-The `fliplet-analytics-v3` runtime library is preloaded on every V3 app and fires a `pageView` on every client-side route change. No code from the app is required.
+The `fliplet-analytics-spa` runtime library is preloaded on every V3 app and fires a `pageView` on every client-side route change. No code from the app is required.
 
 What it covers:
 
