@@ -1,4 +1,14 @@
-# Reference
+---
+title: Fliplet.Helper.field() reference
+description: "Reference for `Fliplet.Helper.field()`: call this from a Helper's configuration interface to read or write the value of another field."
+type: api-reference
+tags: [js-api, helpers, fields]
+v3_relevant: true
+deprecated: false
+---
+# Fliplet.Helper.field() reference
+
+Reference for `Fliplet.Helper.field()`: call this from a Helper's configuration interface to read or write the value of another field.
 
 ## Field methods
 

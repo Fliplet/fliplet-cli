@@ -1,6 +1,14 @@
-# Fliplet VS Code Extension
+---
+title: Fliplet VS Code extension
+description: "Install, authenticate, and use the Fliplet VS Code extension to develop Fliplet apps directly from your editor."
+type: how-to
+tags: [code, extension, setup, usage]
+v3_relevant: true
+deprecated: false
+---
+# Fliplet VS Code extension
 
-The Fliplet VS Code Extension is designed to streamline the development workflow for Fliplet apps. With this extension, you can easily integrate your development environment with Fliplet's platform, enabling faster and more efficient app building.
+Install, authenticate, and use the Fliplet VS Code extension to develop Fliplet apps directly from your editor.
 
 ## Setup
 

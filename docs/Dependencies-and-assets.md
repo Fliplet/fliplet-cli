@@ -1,3 +1,11 @@
+---
+title: Dependencies and assets
+description: "Both **components** and **themes** can specify a list of dependencies and local assets which should be used when rendering it."
+type: how-to
+tags: [dependencies, assets]
+v3_relevant: true
+deprecated: false
+---
 # Dependencies and assets
 
 Both **components** and **themes** can specify a list of dependencies and local assets which should be used when rendering it.

@@ -1,6 +1,14 @@
-# Fliplet URLs and IP Addresses
+---
+title: Fliplet URLs and IP addresses
+description: "Domains and ports that Fliplet Studio, web apps, native apps, and the Data Integration Service need reachable through a corporate firewall."
+type: reference
+tags: [urls, addresses]
+v3_relevant: true
+deprecated: false
+---
+# Fliplet URLs and IP addresses
 
-**Fliplet Studio**, **Fliplet Web Apps** and **Fliplet Agent (Data Integration Service)** requires connectivity to the Internet. **Fliplet Apps** also require connectivity in order to get app updates and communicate with our systems. The endpoints below should be reachable for customers using our services behind a company firewall.
+Domains and ports that Fliplet Studio, web apps, native apps, and the Data Integration Service need reachable through a corporate firewall.
 
 <p class="quote">Fliplet does not suggest whitelisting a set of static IP addresses to allow traffic for an app.</p>
 

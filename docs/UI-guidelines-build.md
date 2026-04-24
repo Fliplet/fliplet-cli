@@ -1,8 +1,14 @@
-# UI guidelines for component's output
+---
+title: UI guidelines for component output (build)
+description: "Recommended Bootstrap-based styles for buttons, forms, and typography in a Fliplet component's user-facing output."
+type: reference
+tags: [guidelines, build]
+v3_relevant: true
+deprecated: false
+---
+# UI guidelines for component output (build)
 
-You are not required to use these style guidelines, but if you want your component to fit the overall style of Fliplet's components we recommend you use them.
-
-We always include Bootstrap, as the framework to build responsive interfaces, as a dependency in our component's, but you are not required to do the same, it's optional. (Learn more about dependencies [here](Dependencies-and-assets.md))
+Recommended Bootstrap-based styles for buttons, forms, and typography in a Fliplet component's user-facing output.
 
 ## Basic styles
 

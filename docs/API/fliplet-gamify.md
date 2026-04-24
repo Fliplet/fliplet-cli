@@ -1,3 +1,11 @@
+---
+title: Fliplet.Gamify
+description: Configure gamification logic for your apps.
+type: api-reference
+tags: [js-api, gamify]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.Gamify`
 
 Configure gamification logic for your apps.

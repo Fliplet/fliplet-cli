@@ -1,3 +1,11 @@
+---
+title: Dynamic Container JS APIs
+description: "The dynamic container allows you to dynamically load data from a data source in a screen. It is useful when you want to display a list of records in a screen u…"
+type: api-reference
+tags: [js-api, components, dynamic, container]
+v3_relevant: true
+deprecated: false
+---
 # Dynamic Container JS APIs
 
 The dynamic container allows you to dynamically load data from a data source in a screen. It is useful when you want to display a list of records in a screen using the [list repeater](/API/components/list-repeater.html) component.

@@ -1,4 +1,14 @@
-# Helper Hooks & Events
+---
+title: "Helper configuration interface: hooks and events"
+description: "Run code when a Helper's configuration interface initializes, becomes ready, or is about to save."
+type: api-reference
+tags: [js-api, helpers, interface, hooks]
+v3_relevant: true
+deprecated: false
+---
+# Helper configuration interface: hooks and events
+
+Run code when a Helper's configuration interface initializes, becomes ready, or is about to save.
 
 ## Interface
 

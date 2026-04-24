@@ -1,3 +1,11 @@
+---
+title: Fliplet.UI.Toast.error()
+description: "(Returns **`undefined`**)"
+type: api-reference
+tags: [js-api, toast, error]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.UI.Toast.error()`
 
 (Returns **`undefined`**)

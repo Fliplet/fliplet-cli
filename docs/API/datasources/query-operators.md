@@ -1,6 +1,14 @@
-# Data Sources Query Operators Reference
+---
+title: Data Sources query operators
+description: "Reference for MongoDB/Sift-style operators (`$eq`, `$gt`, `$in`, `$regex`, …) usable in `connection.find()` `where` clauses."
+type: api-reference
+tags: [js-api, datasources, query, operators]
+v3_relevant: true
+deprecated: false
+---
+# Data Sources query operators
 
-This document provides a comprehensive reference for all query operators available in Fliplet Data Sources. These operators are used in the `where` clause of `connection.find()` and related methods.
+Reference for MongoDB/Sift-style operators (`$eq`, `$gt`, `$in`, `$regex`, …) usable in `connection.find()` `where` clauses.
 
 ## MongoDB-style Operators (Sift.js)
 

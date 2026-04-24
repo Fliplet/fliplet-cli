@@ -1,4 +1,14 @@
-# Audio Player JS APIs
+---
+title: Fliplet.Media.Audio.Player
+description: "Embed an audio player UI in a screen by tagging HTML elements with audio URLs; the framework auto-initializes players on screen load."
+type: api-reference
+tags: [js-api, audio, player]
+v3_relevant: true
+deprecated: false
+---
+# `Fliplet.Media.Audio.Player`
+
+Embed an audio player UI in a screen by tagging HTML elements with audio URLs; the framework auto-initializes players on screen load.
 
 ## Install
 

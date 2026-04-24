@@ -1,4 +1,14 @@
-# Organizations
+---
+title: Fliplet.Organizations
+description: "List the current user's organizations and fetch audit logs with filters for type, date range, app, and session."
+type: api-reference
+tags: [js-api, core, organizations]
+v3_relevant: true
+deprecated: false
+---
+# `Fliplet.Organizations`
+
+List the current user's organizations and fetch audit logs with filters for type, date range, app, and session.
 
 ### Get the current user's organizations list
 

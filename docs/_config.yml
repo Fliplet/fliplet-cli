@@ -13,6 +13,6 @@ exclude:
   - test
   - Gemfile
   - Gemfile.lock
-
-algolia:
-  application_id: '8GRBFEV21Y'
+  - package.json
+  - node_modules
+  - CLAUDE.md

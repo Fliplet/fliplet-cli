@@ -1,4 +1,14 @@
-# Screens
+---
+title: "`Fliplet.Pages` and `Fliplet.Page`"
+description: "List app screens, get the current screen's public URL, and build shareable URLs for any screen by ID."
+type: api-reference
+tags: [js-api, core, screens]
+v3_relevant: true
+deprecated: false
+---
+# `Fliplet.Pages` and `Fliplet.Page`
+
+List app screens, get the current screen's public URL, and build shareable URLs for any screen by ID.
 
 ### Get the list of screens in the current app
 

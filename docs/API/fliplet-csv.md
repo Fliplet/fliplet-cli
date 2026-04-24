@@ -1,3 +1,11 @@
+---
+title: Fliplet.CSV
+description: Encode and decode CSV in Fliplet apps via the fliplet-csv package.
+type: api-reference
+tags: [js-api, csv]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.CSV`
 
 ## Install

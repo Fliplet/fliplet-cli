@@ -2,102 +2,1215 @@
   "$schema": "https://agentskills.io/schema/v0.2.0/index.json",
   "skills": [
     {
-      "name": "datasources",
+      "name": "readme",
       "type": "documentation",
-      "description": "Connect, query, insert, update, delete records",
-      "url": "https://developers.fliplet.com/API/fliplet-datasources.html",
-      "sha256": "97a80726746cf089dfdf9ebef568bbb6a64b919ce69b30d1d76f09f90389f3de"
+      "description": "Reference and guides for extending Fliplet apps with the JS API, REST API, and custom components, themes, and menus.",
+      "url": "https://developers.fliplet.com/",
+      "sha256": "998f473baa51f0976d1c562fbb6e272cd817668e7c046098b78cca8a9fe84a48"
     },
     {
-      "name": "session",
+      "name": "aab-create-p12-certificate",
       "type": "documentation",
-      "description": "Check auth status, get user data, logout",
-      "url": "https://developers.fliplet.com/API/fliplet-session.html",
-      "sha256": "3c766b79f66d46f1ad30c942c145083bc1b06630a85c024992163ff413446fd4"
+      "description": "Generate a P12 signing key from an Apple Enterprise account to supply to Fliplet's Automated App Build system.",
+      "url": "https://developers.fliplet.com/aab/create-p12-certificate.html",
+      "sha256": "2cc74ef43201b85c097c950fea3a52f6f987d08e736e217a1d7a5e349b5bbdd0"
     },
     {
-      "name": "login",
+      "name": "ai-powered-development-with-cursor",
       "type": "documentation",
-      "description": "User authentication with email/password",
+      "description": "How to install and use the Fliplet VS Code extension inside Cursor to generate, refactor, and debug Fliplet app code with AI assistance.",
+      "url": "https://developers.fliplet.com/AI-powered-development-with-Cursor.html",
+      "sha256": "ab2298095c0583b5a79404f1f1236cc80f1ecfdfc29e4c260f1fef4af1be4990"
+    },
+    {
+      "name": "ajax-cross-domain",
+      "type": "documentation",
+      "description": "How Fliplet apps handle AJAX cross-domain requests, common CORS errors, and the studio and app domains allowed by default.",
+      "url": "https://developers.fliplet.com/AJAX-cross-domain.html",
+      "sha256": "0e07b3aea6f3b759e168bc1681b4a4b5269d54937fecfae500f3d5b09899511e"
+    },
+    {
+      "name": "analytics-documentation",
+      "type": "documentation",
+      "description": "Reference list of analytics event types Fliplet emits for page views, navigation, app management, sharing, and component interactions.",
+      "url": "https://developers.fliplet.com/Analytics-documentation.html",
+      "sha256": "09b8606ad0db222fbcdd73178d72c6091a101ff5ab3bf14225aa51a388767e53"
+    },
+    {
+      "name": "api-documentation",
+      "type": "documentation",
+      "description": "Javascript-based SDK to interact with core functions and components in your Fliplet Apps.",
+      "url": "https://developers.fliplet.com/API-Documentation.html",
+      "sha256": "6a7bde7b12eb4885538467e67591574f49b34fa0761c4508071f40882311be62"
+    },
+    {
+      "name": "api-components-accordions",
+      "type": "documentation",
+      "description": "The Accordion component supports query parameters to open specific accordions when linking to a screen.",
+      "url": "https://developers.fliplet.com/API/components/accordions.html",
+      "sha256": "735712803089b1ea8e004ac4dad7957754b810d680360bfff7511eb6653aea6c"
+    },
+    {
+      "name": "api-components-charts",
+      "type": "documentation",
+      "description": "Use the Charts JS API to retrieve chart instances on a screen and update their data, labels, and series at runtime.",
+      "url": "https://developers.fliplet.com/API/components/charts.html",
+      "sha256": "070425c119d9a562cf5e3d4b296ad86188f1182086771639a35ddc4454c66509"
+    },
+    {
+      "name": "api-components-chat",
+      "type": "documentation",
+      "description": "These public JS APIs will be automatically available in your screens once a **Chat layout** component is used. You can also include these by manually adding th…",
+      "url": "https://developers.fliplet.com/API/components/chat.html",
+      "sha256": "7d40e62f124a33123403dba76ce1c7d2404c641e5f4b8953ee4c348efb4c2dad"
+    },
+    {
+      "name": "api-components-data-directory",
+      "type": "documentation",
+      "description": "These public JS APIs will be automatically available in your screens once a **Data Directory** component is dropped into such screens.",
+      "url": "https://developers.fliplet.com/API/components/data-directory.html",
+      "sha256": "7a58254654475c9b0c33625626c58d3f79221937b9879add932571edc73e217c"
+    },
+    {
+      "name": "api-components-dynamic-container",
+      "type": "documentation",
+      "description": "The dynamic container allows you to dynamically load data from a data source in a screen. It is useful when you want to display a list of records in a screen u…",
+      "url": "https://developers.fliplet.com/API/components/dynamic-container.html",
+      "sha256": "c1c52f8c35d393a5df13a68f33aa76369673be80192f5825852dcca932228974"
+    },
+    {
+      "name": "api-components-email-verification",
+      "type": "documentation",
+      "description": "Use the Email Verification JS API to retrieve the component instance on a screen and trigger verification flows for a given email address.",
+      "url": "https://developers.fliplet.com/API/components/email-verification.html",
+      "sha256": "5176d351dc482ba09ed40e44f87be90a13acb6cc17b4b1074142f841bcd1dde2"
+    },
+    {
+      "name": "api-components-form-builder",
+      "type": "documentation",
+      "description": "The following JS APIs are available in a screen once a **Form** component is dropped into the screen.",
+      "url": "https://developers.fliplet.com/API/components/form-builder.html",
+      "sha256": "8c45db30756bcd25b44a121ccd9265b4f84729c9781034d54b0096c1be3b7c76"
+    },
+    {
+      "name": "api-components-interactive-graphics",
+      "type": "documentation",
+      "description": "These public JS APIs are available in screens where an **Interactive Graphics** component is present.",
+      "url": "https://developers.fliplet.com/API/components/interactive-graphics.html",
+      "sha256": "1cc5c249aa863393b2be3419d7dc1bfb1ecf3629a6faa2b8439741acc4fb8a46"
+    },
+    {
+      "name": "api-components-list-from-data-source",
+      "type": "documentation",
+      "description": "Configure templates, hooks, and query parameters for the List (from Data Source) component, which renders summary and detail views backed by a data source.",
+      "url": "https://developers.fliplet.com/API/components/list-from-data-source.html",
+      "sha256": "3bfe2491a543592909afad9bf4109ce10180a0e5e7aa97da402ca41dde09b1d1"
+    },
+    {
+      "name": "api-components-list-repeater",
+      "type": "documentation",
+      "description": "The list repeater component is a container for a list of records. It is used to display a list of records from a data source.",
+      "url": "https://developers.fliplet.com/API/components/list-repeater.html",
+      "sha256": "74dcc2e1e0127499cb05c7fff21daed18b3fc684587b2e4df84a20d879724720"
+    },
+    {
+      "name": "api-components-login",
+      "type": "documentation",
+      "description": "The login component fires hooks at key points in the authentication lifecycle. These allow you to run custom code after a user successfully logs in or when a r…",
       "url": "https://developers.fliplet.com/API/components/login.html",
-      "sha256": "d9b4eb69f2d6ba2ef0e8984ca5d8afa6ca66186c5dc3b50136e7698c5fb171a3"
+      "sha256": "359ee218ff45702d24b2fff355bbdf4a250087493516dc0ea4a1bf608500c89f"
     },
     {
-      "name": "navigate",
+      "name": "api-components-menu-bottom-icon-bar",
       "type": "documentation",
-      "description": "Navigate between screens, URLs, dialogs",
-      "url": "https://developers.fliplet.com/API/core/navigate.html",
-      "sha256": "f566f30a81f2a46046a677352a520ede0a65809fc87d47a9aecd6dfc66bd0f55"
+      "description": "Use a query parameter to highlight the active item when linking into a screen that uses the Bottom Icon Bar menu component.",
+      "url": "https://developers.fliplet.com/API/components/menu-bottom-icon-bar.html",
+      "sha256": "581b73e7272dec5ae116d6fbe6d8378a21222c1d68433b80b580ddcbf5ec230d"
     },
     {
-      "name": "media",
+      "name": "api-components-push-notifications",
       "type": "documentation",
-      "description": "File uploads, folders, authenticated URLs",
-      "url": "https://developers.fliplet.com/API/fliplet-media.html",
-      "sha256": "923d0b3ae1bfc89e1d51afb96dacb8cb39e0b6224ae33a003860977e2979309b"
+      "description": "These public JS APIs will be automatically available in your screens once **Push Notifications** have been enabled for your app.",
+      "url": "https://developers.fliplet.com/API/components/push-notifications.html",
+      "sha256": "61693dbd69c3ba3c2b13213baa855a5a197d9eaebaaafb23792f85a3f09cc701"
     },
     {
-      "name": "app-actions",
+      "name": "api-components-record-container",
       "type": "documentation",
-      "description": "Scheduled and on-demand cloud automations",
+      "description": "The record container allows you to display one record from a data source in a screen. It is useful when you want to display a single record in a screen, for ex…",
+      "url": "https://developers.fliplet.com/API/components/record-container.html",
+      "sha256": "9958fa15e2d695f42ef7ea3f92c3332015e041173c262afdb1efd3a0190a2ddf"
+    },
+    {
+      "name": "api-core-ai",
+      "type": "documentation",
+      "description": "Build AI features in Fliplet apps with chat, completions, streaming, and task helpers — backed by OpenAI (GPT, o-series) or Google Gemini models via direct pro…",
+      "url": "https://developers.fliplet.com/API/core/ai.html",
+      "sha256": "496edbaad277788269b345027715a94d58f4c7cbf8c9bc9310611420a587f6b8"
+    },
+    {
+      "name": "api-core-analytics",
+      "type": "documentation",
+      "description": "Enable, disable, and check analytics tracking, and record custom app events and page views from JavaScript.",
+      "url": "https://developers.fliplet.com/API/core/analytics.html",
+      "sha256": "2bcbad69f35711aad4718ed69d1730acc5e673b20d5db3246ef4a61146a5ba59"
+    },
+    {
+      "name": "api-core-api",
+      "type": "documentation",
+      "description": "Make authenticated HTTP requests to Fliplet APIs with automatic URL construction, caching, offline queueing, and error handling.",
+      "url": "https://developers.fliplet.com/API/core/api.html",
+      "sha256": "bf7206fc85358b755c8b509885c1198a6a412b0794455115f82de7258b818655"
+    },
+    {
+      "name": "api-core-app-actions-v2",
+      "type": "documentation",
+      "description": "Deprecated App Actions V2 — configure a pipeline of functions that runs on-device or in the cloud, ad hoc or on a schedule. Migrate to V3.",
+      "url": "https://developers.fliplet.com/API/core/app-actions-v2.html",
+      "sha256": "69924b3469cbc56a41c6b0bb25b40d5b09843a9660bee0dfff7f9bbecbf1512e"
+    },
+    {
+      "name": "api-core-app-actions-v3",
+      "type": "documentation",
+      "description": "Write and run JavaScript code directly on the server or client to perform automations, scheduled tasks and on-demand operations.",
+      "url": "https://developers.fliplet.com/API/core/app-actions-v3.html",
+      "sha256": "988b5028036a9a78de13e48a229111d9c0fdd48b04df6746ce677f64cdb64faa"
+    },
+    {
+      "name": "api-core-app-actions",
+      "type": "documentation",
+      "description": "Deprecated App Actions V1 — run app screens automatically on a schedule or on demand in the cloud. Migrate to V3.",
       "url": "https://developers.fliplet.com/API/core/app-actions.html",
-      "sha256": "0b27ad6889169ac9ed2ea33d61d0f651c90c236d49494cc52d466c204270227f"
+      "sha256": "c5f1842d476ba981eb5b97968a0ffa18661aaaa29084c8c5a9f553a840240b87"
     },
     {
-      "name": "datasource-security",
+      "name": "api-core-app",
       "type": "documentation",
-      "description": "Access rules, privilege control, user filtering",
-      "url": "https://developers.fliplet.com/Data-source-security.html",
-      "sha256": "418fb701560f5348ceedeaf143fbe063bf0f9641d43f13a8a87a514119321b21"
+      "description": "Retrieve the current app's public slug, build shareable screen URLs, and access app-level settings from JavaScript.",
+      "url": "https://developers.fliplet.com/API/core/app.html",
+      "sha256": "db98daf4b8aee7234954ff741d8bc636a27be2892e39c7b5364bdfa4dff922a0"
     },
     {
-      "name": "storage",
+      "name": "api-core-apps",
       "type": "documentation",
-      "description": "Local key-value storage",
+      "description": "List the Fliplet apps the current user can access, and filter between legacy V1 and modern V2 apps.",
+      "url": "https://developers.fliplet.com/API/core/apps.html",
+      "sha256": "e69c35f7e0ac282c8ca3d4c423c049297fb9d00eca183137c1a60480a786f56b"
+    },
+    {
+      "name": "api-core-biometrics",
+      "type": "documentation",
+      "description": "Check biometric availability and verify users with Face ID, Touch ID, or fingerprint inside native Fliplet apps.",
+      "url": "https://developers.fliplet.com/API/core/biometrics.html",
+      "sha256": "9042c1ba6cef74b02025520c4baca7f274e09ec547c78e29d9da65af50fa5071"
+    },
+    {
+      "name": "api-core-cache",
+      "type": "documentation",
+      "description": "Run async operations once and memoize their results, with optional expiry and background refresh.",
+      "url": "https://developers.fliplet.com/API/core/cache.html",
+      "sha256": "306ede564c35aa5bdd3925fc612e473a04b06315439122918adc117b1b65292f"
+    },
+    {
+      "name": "api-core-encode",
+      "type": "documentation",
+      "description": "Encode strings as base64 and double-encode URL query parameters safely for transport.",
+      "url": "https://developers.fliplet.com/API/core/encode.html",
+      "sha256": "97288f1434e2a5384f498a5d835ace78da6fa3ce5b23ed9942bd4860e60e8cd0"
+    },
+    {
+      "name": "api-core-environment",
+      "type": "documentation",
+      "description": "Read environment variables such as `appId`, `appName`, `mode`, and `apiUrl` from the current runtime.",
+      "url": "https://developers.fliplet.com/API/core/environment.html",
+      "sha256": "52cf6707d682343e765f1b43c4e7e02c57c076c5d85857d622f20d2837c5d989"
+    },
+    {
+      "name": "api-core-error",
+      "type": "documentation",
+      "description": "Turn any error response or object into a human-readable message by scanning common error properties.",
+      "url": "https://developers.fliplet.com/API/core/error.html",
+      "sha256": "a18d4fd22d93c2b97a3dc333dc04169e29ab3761f9c32949483882263481691a"
+    },
+    {
+      "name": "api-core-hooks",
+      "type": "documentation",
+      "description": "Register callbacks that run before or after key app events (e.g. form submit), with sync or async Promise handlers.",
+      "url": "https://developers.fliplet.com/API/core/hooks.html",
+      "sha256": "567ce744e004ae59ed807fb2531c85f5395427d85a6412a00fe89a19fd42d625"
+    },
+    {
+      "name": "api-core-localization",
+      "type": "documentation",
+      "description": "Customize your component to localize to different languages and regions.",
+      "url": "https://developers.fliplet.com/API/core/localization.html",
+      "sha256": "16b1b650afd2491341c403379617c8609d691261eebb1d0e4db55f5fe903b15b"
+    },
+    {
+      "name": "api-core-misc",
+      "type": "documentation",
+      "description": "Utility helpers on the global `Fliplet` object: `Fliplet.compile()` for templating and `Fliplet.guid()` for unique IDs.",
+      "url": "https://developers.fliplet.com/API/core/misc.html",
+      "sha256": "7ffdb683a8826c811337e762c1851828833d65ee21207283eb56fc0c19c8dfc8"
+    },
+    {
+      "name": "api-core-modal",
+      "type": "documentation",
+      "description": "Show confirmation, alert, and prompt dialogs from widget interfaces in Fliplet Studio, powered by [Bootbox](http://bootboxjs.com/) — see its documentation for…",
+      "url": "https://developers.fliplet.com/API/core/modal.html",
+      "sha256": "2f18e8ba653f51fd60b80425afb3edaf656a35d966eb38281c828b6d4a98fcf2"
+    },
+    {
+      "name": "api-core-navigate",
+      "type": "documentation",
+      "description": "Navigate the app to a new page, screen, document or URL",
+      "url": "https://developers.fliplet.com/API/core/navigate.html",
+      "sha256": "e52e2eef13244591c501f670fea87c8be76bfa109538a71db8c64641eae829fa"
+    },
+    {
+      "name": "api-core-navigator",
+      "type": "documentation",
+      "description": "Detect online/offline state, listen for connectivity changes, and wait for the device to be ready.",
+      "url": "https://developers.fliplet.com/API/core/navigator.html",
+      "sha256": "8ec6af19eb6be7e4f3d4687defd50253e1baa2bd14da47c406c08273f7b95016"
+    },
+    {
+      "name": "api-core-notifications",
+      "type": "documentation",
+      "description": "Check notification support, request permission, and send local device notifications from JavaScript.",
+      "url": "https://developers.fliplet.com/API/core/notifications.html",
+      "sha256": "72d027b225386ada41267ee8e22025cf5d6bed8cdc6b5b72eb943ab5b1a1fb45"
+    },
+    {
+      "name": "api-core-organizations",
+      "type": "documentation",
+      "description": "List the current user's organizations and fetch audit logs with filters for type, date range, app, and session.",
+      "url": "https://developers.fliplet.com/API/core/organizations.html",
+      "sha256": "a2b62d404ebcee324dcd0dc07c2c747c88c7cde5334875ef72637f255b72efab"
+    },
+    {
+      "name": "api-core-overview",
+      "type": "documentation",
+      "description": "Fliplet Core is the JS library bundled into every app screen — storage, navigation, user, API, and dozens of device helpers.",
+      "url": "https://developers.fliplet.com/API/core/overview.html",
+      "sha256": "b06afa88a7ec6c81c64d068012c023a54c9df3b557248deb92214d257db49216"
+    },
+    {
+      "name": "api-core-profile",
+      "type": "documentation",
+      "description": "Read and write namespaced user profile attributes (email, name, company, phone) and fetch the device UUID.",
+      "url": "https://developers.fliplet.com/API/core/profile.html",
+      "sha256": "91325ddd367732bca1390a702b372588bc87fd721fa48cf10dfc8b5efdb36018"
+    },
+    {
+      "name": "api-core-registry",
+      "type": "documentation",
+      "description": "Store and retrieve runtime values and functions by key so components can share state and helpers.",
+      "url": "https://developers.fliplet.com/API/core/registry.html",
+      "sha256": "3481632fcf42f893a4a378d8b200b7b6e1c2361773754e673ff9a2dbddb23343"
+    },
+    {
+      "name": "api-core-screens",
+      "type": "documentation",
+      "description": "List app screens, get the current screen's public URL, and build shareable URLs for any screen by ID.",
+      "url": "https://developers.fliplet.com/API/core/screens.html",
+      "sha256": "5f7955da4d031527df5e67282cf0cce1f9bbcc944c57d937b79529ad932ce064"
+    },
+    {
+      "name": "api-core-storage",
+      "type": "documentation",
+      "description": "Persist JSON-serializable values to device or browser storage, scoped globally or to the current app.",
       "url": "https://developers.fliplet.com/API/core/storage.html",
-      "sha256": "eadb995263c14faf0ea9ed7c200c4997c3ce3bfbcbdb0861057ec87aefaf2c93"
+      "sha256": "42addbdc04a8af8eb355edaa92642c162a847f4def295b5f57ded5f1f086f06a"
     },
     {
-      "name": "encryption",
+      "name": "api-core-studio",
       "type": "documentation",
-      "description": "Data encryption APIs",
-      "url": "https://developers.fliplet.com/API/fliplet-encryption.html",
-      "sha256": "56088770670fab3162280e8bfa741ecb6b98043e518808f413722415648fc796"
+      "description": "Emit events to Fliplet Studio and listen for events from it when building widget interfaces.",
+      "url": "https://developers.fliplet.com/API/core/studio.html",
+      "sha256": "42ab290840fc0b6c719873dcdf4e4f346e9532b522ed2555af8e274cfe837cf2"
     },
     {
-      "name": "query-operators",
+      "name": "api-core-user",
       "type": "documentation",
-      "description": "Advanced query filters and operators",
-      "url": "https://developers.fliplet.com/API/datasources/query-operators.html",
-      "sha256": "a86348b93eedf7d54a25a83473238f56efb8ddd88aa65c8bf47058f3e2b864ff"
-    },
-    {
-      "name": "communicate",
-      "type": "documentation",
-      "description": "Email, SMS, push notifications",
-      "url": "https://developers.fliplet.com/API/fliplet-communicate.html",
-      "sha256": "1ef2e1b7eb6d3e3bdbd840ed16f4374433dcb227c5f760fe9de73cb5c6abe73c"
-    },
-    {
-      "name": "notifications",
-      "type": "documentation",
-      "description": "Push notification management",
-      "url": "https://developers.fliplet.com/API/fliplet-notifications.html",
-      "sha256": "13eee3dcdb97651e04fc3a34183af066ea5025cc0d68d2a78df3b326079403e6"
-    },
-    {
-      "name": "user",
-      "type": "documentation",
-      "description": "Current user data and profile",
+      "description": "Get and set the current user's auth token, profile details, and preferences, and sign the user out.",
       "url": "https://developers.fliplet.com/API/core/user.html",
-      "sha256": "37c9e0657bdc1b3e9fde588ae9df1bffd226e48085a5bfe2ce97df17b1557cc4"
+      "sha256": "3de4a372adf27544c52c6ebc3884e1599ebbcde54fb74aa66284c0a36fbc9aad"
     },
     {
-      "name": "barcode",
+      "name": "api-core-widget",
       "type": "documentation",
-      "description": "QR code scanning and generation",
+      "description": "Access widget instance IDs, settings, and data, and coordinate save and ready events between widget and interface.",
+      "url": "https://developers.fliplet.com/API/core/widget.html",
+      "sha256": "621498ba1085012895fdae0103ab7fb733885ea7ed877669967bd15f1f9941d8"
+    },
+    {
+      "name": "api-datasources-joins",
+      "type": "documentation",
+      "description": "Fetch related rows from multiple data sources in a single query using named joins, like SQL joins.",
+      "url": "https://developers.fliplet.com/API/datasources/joins.html",
+      "sha256": "233961faff440779e03defd971fde4e8bab772b34af62b3a1965be9ea380c3c2"
+    },
+    {
+      "name": "api-datasources-query-operators",
+      "type": "documentation",
+      "description": "Reference for MongoDB/Sift-style operators (`$eq`, `$gt`, `$in`, `$regex`, …) usable in `connection.find()` `where` clauses.",
+      "url": "https://developers.fliplet.com/API/datasources/query-operators.html",
+      "sha256": "722f77550a592f7b4d5fdc83b862ab31c0f4633ca5654d062fccdf988ea3e129"
+    },
+    {
+      "name": "api-datasources-views",
+      "type": "documentation",
+      "description": "Define named, session-aware filters on a data source so each user or group sees only the rows that apply to them.",
+      "url": "https://developers.fliplet.com/API/datasources/views.html",
+      "sha256": "d722ea2842b3ea42aa859921e97adf103b6c11adcc74dce1aa4e4bc87d99f36a"
+    },
+    {
+      "name": "api-fliplet-audio-player",
+      "type": "documentation",
+      "description": "Embed an audio player UI in a screen by tagging HTML elements with audio URLs; the framework auto-initializes players on screen load.",
+      "url": "https://developers.fliplet.com/API/fliplet-audio-player.html",
+      "sha256": "1a26439e422ae0ac22480d9c48a463571f9cb740cc097d4d4c3041df725b6d2d"
+    },
+    {
+      "name": "api-fliplet-audio",
+      "type": "documentation",
+      "description": "Play, pause, stop, and seek audio files on device or from a URL in Fliplet apps via the Audio namespace.",
+      "url": "https://developers.fliplet.com/API/fliplet-audio.html",
+      "sha256": "aee61adc098949b209661de5d4675a83a40094eaaf77c3b6c4b80be0619c2174"
+    },
+    {
+      "name": "api-fliplet-barcode",
+      "type": "documentation",
+      "description": "Scan QR codes and other 1D/2D barcodes from the device camera via the fliplet-barcode package.",
       "url": "https://developers.fliplet.com/API/fliplet-barcode.html",
-      "sha256": "33fa764a25d12da9c2e81eab606117bc89da41c445e6df0b1dbd44caccdab16a"
+      "sha256": "aac6c183eb58ff724fb89a68f9cbb56e788885387e63a914626ba47547cccd20"
+    },
+    {
+      "name": "api-fliplet-communicate",
+      "type": "documentation",
+      "description": "Send email, SMS, push notifications, and share URLs from a Fliplet app using a single Communicate namespace.",
+      "url": "https://developers.fliplet.com/API/fliplet-communicate.html",
+      "sha256": "e47da0072cf9b654c9de39d889a6d250374fa761581e30dc587cbca106b83ea0"
+    },
+    {
+      "name": "api-fliplet-content",
+      "type": "documentation",
+      "description": "(Returns **`Promise`**)",
+      "url": "https://developers.fliplet.com/API/fliplet-content.html",
+      "sha256": "beecf3b18f31691f64816a3bb035e618c0e007bb7946cd51a8d320ad8b62da81"
+    },
+    {
+      "name": "api-fliplet-csv",
+      "type": "documentation",
+      "description": "Encode and decode CSV in Fliplet apps via the fliplet-csv package.",
+      "url": "https://developers.fliplet.com/API/fliplet-csv.html",
+      "sha256": "8d882bca18362eac2eff00634ed6ee270dc7675804714d6e2d4d99fb84e974af"
+    },
+    {
+      "name": "api-fliplet-database",
+      "type": "documentation",
+      "description": "Low-level helper for reading and querying JSON data from a local file as a database; used internally by Fliplet.DataSources.",
+      "url": "https://developers.fliplet.com/API/fliplet-database.html",
+      "sha256": "d7409e81b90667b3631fc59331a3e8edbd169ec4203138eddb2a592b7d6a0b67"
+    },
+    {
+      "name": "api-fliplet-datasources",
+      "type": "documentation",
+      "description": "Connect to, query, insert, update, and delete records in Fliplet Data Sources from inside an app. All methods are promise-based.",
+      "url": "https://developers.fliplet.com/API/fliplet-datasources.html",
+      "sha256": "1902741a06d4503640d548eeb5abd9a6862897e69ae7a8d056d1d6fbba3d2a2e"
+    },
+    {
+      "name": "api-fliplet-encryption",
+      "type": "documentation",
+      "description": "Automatically encrypt and decrypt selected Data Source columns on-device by registering a private key and column list.",
+      "url": "https://developers.fliplet.com/API/fliplet-encryption.html",
+      "sha256": "2dc059b6f0a25a3b428bc97800bd360d3a19a77708ffeb6ede9840b861900eae"
+    },
+    {
+      "name": "api-fliplet-gamify",
+      "type": "documentation",
+      "description": "Configure gamification logic for your apps.",
+      "url": "https://developers.fliplet.com/API/fliplet-gamify.html",
+      "sha256": "575c4d7e8cf7887c44d705c5e078931fa26164c62097f8687c85f749a7cfe402"
+    },
+    {
+      "name": "api-fliplet-media",
+      "type": "documentation",
+      "description": "Browse folders, upload and manage files, and download media to devices via the Fliplet Media namespace.",
+      "url": "https://developers.fliplet.com/API/fliplet-media.html",
+      "sha256": "29d4ec604f39a0f81cfbedbe13dda9adbd10cc7d9ffe8fb456c53a0848717ada"
+    },
+    {
+      "name": "api-fliplet-notifications",
+      "type": "documentation",
+      "description": "Read, send, and schedule in-app and push notifications in Fliplet apps, with support for scopes, read receipts, and badge counts.",
+      "url": "https://developers.fliplet.com/API/fliplet-notifications.html",
+      "sha256": "d33f42ca3558fa590a9429d422adb85e9e0de39908e224f3a4f2023d1c51798c"
+    },
+    {
+      "name": "api-fliplet-oauth2",
+      "type": "documentation",
+      "description": "The `fliplet-oauth2` package contains helpers for standardizing requests to OAuth2 web services with a client-side integration.",
+      "url": "https://developers.fliplet.com/API/fliplet-oauth2.html",
+      "sha256": "3726db605a39a157443ba2a9c771c8565cfe3e54be1c4f82ebf29deb02ae2632"
+    },
+    {
+      "name": "api-fliplet-page",
+      "type": "documentation",
+      "description": "Utilities for interacting with the current Fliplet screen — including smooth-scrolling to an element with configurable duration and offsets.",
+      "url": "https://developers.fliplet.com/API/fliplet-page.html",
+      "sha256": "0926fd83ba2b2f7366e9bedc926175f3a722e171aa2455513a9b0c1575e1d6f8"
+    },
+    {
+      "name": "api-fliplet-payments",
+      "type": "documentation",
+      "description": "Adds payments functionality in your Fliplet apps using Stripe and our easy-to-use JS API.",
+      "url": "https://developers.fliplet.com/API/fliplet-payments.html",
+      "sha256": "0756f969f95a98717ec450caa2e1357c1afbd4bb4aa5fd77f3568d7a3f15dc0b"
+    },
+    {
+      "name": "api-fliplet-profile-content",
+      "type": "documentation",
+      "description": "(Returns **`Promise`**)",
+      "url": "https://developers.fliplet.com/API/fliplet-profile-content.html",
+      "sha256": "ed39b7bc0cbe8be92bd3fb8d408ee0f990c793c88120df5588d36122d6c22265"
+    },
+    {
+      "name": "api-fliplet-session",
+      "type": "documentation",
+      "description": "Read, write, and clear the current user session — including cached offline sessions — for authentication state in Fliplet apps.",
+      "url": "https://developers.fliplet.com/API/fliplet-session.html",
+      "sha256": "93f710fd24a5351dc79c70eccdfa1a1103ea2654eba3fd875bc798cb1bb55c4a"
+    },
+    {
+      "name": "api-fliplet-table",
+      "type": "documentation",
+      "description": "Fliplet.UI.Table is a powerful and flexible table component that provides features like sorting, searching, pagination, row selection, expandable rows, and cus…",
+      "url": "https://developers.fliplet.com/API/fliplet-table.html",
+      "sha256": "fab2d654fffb9ee9b13d647132e8cdf56898d07d4c1545a33f39c7e2a8b28784"
+    },
+    {
+      "name": "api-fliplet-themes",
+      "type": "documentation",
+      "description": "Read the list of available app themes and access the current theme's settings and widget-instance values at runtime.",
+      "url": "https://developers.fliplet.com/API/fliplet-themes.html",
+      "sha256": "c4440b08013359dc2f7148562f546698195560a2f310f8baab33e4216ee933b4"
+    },
+    {
+      "name": "api-fliplet-ui-actions",
+      "type": "documentation",
+      "description": "(Returns **`Promise`**)",
+      "url": "https://developers.fliplet.com/API/fliplet-ui-actions.html",
+      "sha256": "94e1812e01b252b893d38a3e9719ec9e7b48fd25b1eac21f702c9c4ab836bd9c"
+    },
+    {
+      "name": "api-fliplet-ui-address",
+      "type": "documentation",
+      "description": "The Address field is a customizable component that integrates with Google Maps to enable address lookup. It allows users to search and select addresses using G…",
+      "url": "https://developers.fliplet.com/API/fliplet-ui-address.html",
+      "sha256": "10841a3b17d8bff04b410c38bcf9ad9569f6fc70f0e9178ca9c6c1865a4e7241"
+    },
+    {
+      "name": "api-fliplet-ui-datepicker",
+      "type": "documentation",
+      "description": "(Returns `Object`)",
+      "url": "https://developers.fliplet.com/API/fliplet-ui-datepicker.html",
+      "sha256": "45fd463add082bbb394948be733391c997cf31eba910673c45f1b7f94b0852c9"
+    },
+    {
+      "name": "api-fliplet-ui-daterange",
+      "type": "documentation",
+      "description": "(Returns `Object`)",
+      "url": "https://developers.fliplet.com/API/fliplet-ui-daterange.html",
+      "sha256": "85ff7cc7a3c3ed612e41c49bfc91d667a8f5bb884f1fd60b140dc4fa0df11fd3"
+    },
+    {
+      "name": "api-fliplet-ui-number",
+      "type": "documentation",
+      "description": "(Returns `Object`)",
+      "url": "https://developers.fliplet.com/API/fliplet-ui-number.html",
+      "sha256": "9d20767373bb88161d116d623c12d3feed105b253c8b92327064a3375901ad6b"
+    },
+    {
+      "name": "api-fliplet-ui-panzoom",
+      "type": "documentation",
+      "description": "These public JS APIs will be automatically available in your screen once an Interactive graphics component is dropped into a screen. You can also add the depen…",
+      "url": "https://developers.fliplet.com/API/fliplet-ui-panzoom.html",
+      "sha256": "c5583d707c80b063bbfc8c15c69aa9943f184ff7af495c681f94efd604ad8d2e"
+    },
+    {
+      "name": "api-fliplet-ui-rangeslider",
+      "type": "documentation",
+      "description": "(Returns `Object`)",
+      "url": "https://developers.fliplet.com/API/fliplet-ui-rangeslider.html",
+      "sha256": "4d4f4814d9a01dd9f0c597818e649a99b540fe64299ccf6ac7d6a6c9c4ac9cf2"
+    },
+    {
+      "name": "api-fliplet-ui-timepicker",
+      "type": "documentation",
+      "description": "(Returns `Object`)",
+      "url": "https://developers.fliplet.com/API/fliplet-ui-timepicker.html",
+      "sha256": "8c6a87e575a7da516c181ef9ccf08781080ed9b4c6c6e02fa7dd914232b0d674"
+    },
+    {
+      "name": "api-fliplet-ui-timerange",
+      "type": "documentation",
+      "description": "(Returns `Object`)",
+      "url": "https://developers.fliplet.com/API/fliplet-ui-timerange.html",
+      "sha256": "9b280f9c89970a7b4dffff9a1a297084bc8483fbb82cb696dafa5b0cfe283296"
+    },
+    {
+      "name": "api-fliplet-ui-toast-error",
+      "type": "documentation",
+      "description": "(Returns **`undefined`**)",
+      "url": "https://developers.fliplet.com/API/fliplet-ui-toast-error.html",
+      "sha256": "4d9eedba7245be26f3fc0d2ef246b520049396e5769665ce094c4ba84111c978"
+    },
+    {
+      "name": "api-fliplet-ui-toast",
+      "type": "documentation",
+      "description": "(Returns **`Promise`**)",
+      "url": "https://developers.fliplet.com/API/fliplet-ui-toast.html",
+      "sha256": "c48eb7f1fc721e75a3aa5fc74d1faf2b543cc646e375851752105d8d9d8ebe0f"
+    },
+    {
+      "name": "api-fliplet-ui-typeahead",
+      "type": "documentation",
+      "description": "(Returns `Object`)",
+      "url": "https://developers.fliplet.com/API/fliplet-ui-typeahead.html",
+      "sha256": "84e0c530855c2b05a80a176667dd18c6bfc902e3a2e8c64dd9ec49516c10739d"
+    },
+    {
+      "name": "api-fliplet-ui",
+      "type": "documentation",
+      "description": "The `Fliplet.UI` namespace contains several classes for creating UI managed by Fliplet. Where appropriate, the UI would come with the following benefits:",
+      "url": "https://developers.fliplet.com/API/fliplet-ui.html",
+      "sha256": "52d01c496ba3518ebf24d9130a34392c37b64945f35a5836eab0441c7c9eed8a"
+    },
+    {
+      "name": "api-helpers-components",
+      "type": "documentation",
+      "description": "Package a Fliplet Helper as a reusable widget-framework component so it can be installed and dropped into apps like any first-party component.",
+      "url": "https://developers.fliplet.com/API/helpers/components.html",
+      "sha256": "51d1cacb51fa79dec9d001094fb78d1d4cb31e93ebf24bc10c45bdd3b2c79566"
+    },
+    {
+      "name": "api-helpers-dynamic-components",
+      "type": "documentation",
+      "description": "Helpers can be dropped into what we refer as \\\"dynamic components\\\". These include the **Dynamic container** and **List Repeater** components. Such components su…",
+      "url": "https://developers.fliplet.com/API/helpers/dynamic-components.html",
+      "sha256": "9524731a497792bbabc68abfa902820cd7ef8795b4a75fd2c96f97d083a798da"
+    },
+    {
+      "name": "api-helpers-example-decision-tree",
+      "type": "documentation",
+      "description": "Build a decision tree using the Fliplet Helper library.",
+      "url": "https://developers.fliplet.com/API/helpers/example-decision-tree.html",
+      "sha256": "3a4ab46b2e2a9a73d71d95e2ff219d23b021f5b3b3d161b7701922760be54321"
+    },
+    {
+      "name": "api-helpers-example-question",
+      "type": "documentation",
+      "description": "A worked example showing how to build a Helper that presents a multiple-choice question and reveals whether the selected answer is correct.",
+      "url": "https://developers.fliplet.com/API/helpers/example-question.html",
+      "sha256": "d99fbd6ad478f9cd5be87f757a99c1be3eddb827f43c6b6445123388b90cfb5c"
+    },
+    {
+      "name": "api-helpers-fields",
+      "type": "documentation",
+      "description": "Pass attributes to a Helper via the HTML `field` element and read them inside the Helper via `this.fields.<name>`.",
+      "url": "https://developers.fliplet.com/API/helpers/fields.html",
+      "sha256": "5fd6907b5272d2191eaf45a85f24cd455c13ca4917e5bee72cebab30107c7423"
+    },
+    {
+      "name": "api-helpers-hooks",
+      "type": "documentation",
+      "description": "Run code at key points in a Helper's lifecycle using the `beforeReady` and `ready` render hooks.",
+      "url": "https://developers.fliplet.com/API/helpers/hooks.html",
+      "sha256": "913fdfd9f2225886f5c913bc372aba2fc570fb71b2b4d94f1e884e5950259952"
+    },
+    {
+      "name": "api-helpers-interface-fields",
+      "type": "documentation",
+      "description": "Define the fields shown in a Helper's Fliplet Studio configuration interface, including their type, label, validation, and default value.",
+      "url": "https://developers.fliplet.com/API/helpers/interface-fields.html",
+      "sha256": "41d4e971cdbb975f8455d12e2ea995df408065363c08727d0d2f330122b776ec"
+    },
+    {
+      "name": "api-helpers-interface-hooks",
+      "type": "documentation",
+      "description": "Run code when a Helper's configuration interface initializes, becomes ready, or is about to save.",
+      "url": "https://developers.fliplet.com/API/helpers/interface-hooks.html",
+      "sha256": "230a3becc92f8459660be22c8f96ab9b89fd4ef4eb641049c7c5677b2cd0b614"
+    },
+    {
+      "name": "api-helpers-interface-libraries",
+      "type": "documentation",
+      "description": "Include [Fliplet-approved](/Fliplet-approved-libraries.html) or third-party JavaScript and CSS libraries in a Helper's configuration interface via the `depende…",
+      "url": "https://developers.fliplet.com/API/helpers/interface-libraries.html",
+      "sha256": "698d4841328394b27be5e7880d6287766eefc23219a88991dca25af5071683a4"
+    },
+    {
+      "name": "api-helpers-interface-methods",
+      "type": "documentation",
+      "description": "Use `find`, `findOne`, and `children` inside a Helper's configuration interface to access nested child Helper instances.",
+      "url": "https://developers.fliplet.com/API/helpers/interface-methods.html",
+      "sha256": "c562f36ab9389e7f94aff26157421a70ea6cddb752aa4e8eaa4dd4554fda322b"
+    },
+    {
+      "name": "api-helpers-interface",
+      "type": "documentation",
+      "description": "Define a configuration UI for your Helper so users can set field values for each instance from within Fliplet Studio.",
+      "url": "https://developers.fliplet.com/API/helpers/interface.html",
+      "sha256": "4a7f95391901616b4bed8814fe7090a88a47cb7113ef4b76b3ef51f6533bb481"
+    },
+    {
+      "name": "api-helpers-libraries",
+      "type": "documentation",
+      "description": "Declare a Helper's runtime dependencies by listing [Fliplet-approved](/Fliplet-approved-libraries.html) or third-party JS/CSS libraries in its `render.dependen…",
+      "url": "https://developers.fliplet.com/API/helpers/libraries.html",
+      "sha256": "a9cadbaf3a1cbd5badf5a032d828bf018e6666f4b21273b32b8430e483d1c7a6"
+    },
+    {
+      "name": "api-helpers-methods",
+      "type": "documentation",
+      "description": "Define instance methods on a Helper and call Helper class methods such as `find` and `findOne` anywhere in the app lifecycle.",
+      "url": "https://developers.fliplet.com/API/helpers/methods.html",
+      "sha256": "ea21d9f2c39675a3275f6d1e87adf991ed62b2b1b396ddfc1de12884eef5c352"
+    },
+    {
+      "name": "api-helpers-overview",
+      "type": "documentation",
+      "description": "Helpers are a UI framework for building custom components in Fliplet apps using JavaScript, with a configuration interface in Fliplet Studio.",
+      "url": "https://developers.fliplet.com/API/helpers/overview.html",
+      "sha256": "2649783e632531697cfaebfdc74fd065e563335b76376ac4f6d87331489f2b00"
+    },
+    {
+      "name": "api-helpers-quickstart",
+      "type": "documentation",
+      "description": "Create your first Fliplet Helper by defining its name, template, and configuration object in screen or global JavaScript.",
+      "url": "https://developers.fliplet.com/API/helpers/quickstart.html",
+      "sha256": "e56e5313485fbb70209877350722c7f03fe95afa56494dd66243cafad6897265"
+    },
+    {
+      "name": "api-helpers-references-constructor",
+      "type": "documentation",
+      "description": "Reference for `Fliplet.Helper()`: the constructor used to define a new Helper in a screen or globally across an app.",
+      "url": "https://developers.fliplet.com/API/helpers/references/constructor.html",
+      "sha256": "b232d12f5bfab75fc557c6551770afdbef34247ac59c486476dad49e00b3bf68"
+    },
+    {
+      "name": "api-helpers-references-fields",
+      "type": "documentation",
+      "description": "Reference for `Fliplet.Helper.field()`: call this from a Helper's configuration interface to read or write the value of another field.",
+      "url": "https://developers.fliplet.com/API/helpers/references/fields.html",
+      "sha256": "0d446f01d1e1a3216f5ca1e0eb34a6bd5fb2f635bd94fe32e3ccd53dcb9db4db"
+    },
+    {
+      "name": "api-helpers-references-query",
+      "type": "documentation",
+      "description": "Reference for `Fliplet.Helper` query methods used to find Helper instances on the current screen from app code or from a configuration interface.",
+      "url": "https://developers.fliplet.com/API/helpers/references/query.html",
+      "sha256": "4eeb98f2c90cd14674ba35aa80b8f67d01417b84eb7c5f2221c8230f8e103046"
+    },
+    {
+      "name": "api-helpers-style",
+      "type": "documentation",
+      "description": "Style a Helper using standard `class` and `style` HTML attributes — they are passed through to the rendered element rather than treated as Helper fields.",
+      "url": "https://developers.fliplet.com/API/helpers/style.html",
+      "sha256": "9b3685f3e2fab73e6c12fb3ed43a710c105829f5e9545df875120dadddf16c1f"
+    },
+    {
+      "name": "api-helpers-templates",
+      "type": "documentation",
+      "description": "Every Helper defines an HTML template that renders it on screen, with support for variable binding, conditional blocks, and loops.",
+      "url": "https://developers.fliplet.com/API/helpers/templates.html",
+      "sha256": "ac63092cc0be477b6e6be79346b04043b9263ea437b8ca53fd35906445915729"
+    },
+    {
+      "name": "api-helpers-views",
+      "type": "documentation",
+      "description": "Define named rich-content views inside a Helper so app builders can drop approved child Helpers into specific regions of its layout.",
+      "url": "https://developers.fliplet.com/API/helpers/views.html",
+      "sha256": "bb3c2388f1e052790f6335091b2cb8e838f500aeece3d0950617c5903fc89f47"
+    },
+    {
+      "name": "api-integrations-sso-saml2",
+      "type": "documentation",
+      "description": "Add enterprise SSO to a Fliplet app with the SAML2 component, using an identity provider metadata XML exchange.",
+      "url": "https://developers.fliplet.com/API/integrations/sso-saml2.html",
+      "sha256": "24e3eb01e5ee32cecb666291dbc1c74fc0248932754b5ff1d5b3602a3de1b166"
+    },
+    {
+      "name": "api-libraries-handlebars",
+      "type": "documentation",
+      "description": "All screens of your Fliplet app already include [Handlebars `2.15.2`](https://handlebarsjs.com/) hence you can start using it straight away. Here's a quick exa…",
+      "url": "https://developers.fliplet.com/API/libraries/handlebars.html",
+      "sha256": "b34a3a4f89446ca5c826921816a75e2d93e4250c38fb3c4626183daa60855c7f"
+    },
+    {
+      "name": "api-like-buttons",
+      "type": "documentation",
+      "description": "Embed a one-tap like button on any screen element, backed by a Data Source that records likes per content ID.",
+      "url": "https://developers.fliplet.com/API/like-buttons.html",
+      "sha256": "5ce1432d890707db0e5fcd0880e7b24905e7058a0f3f40c6db6ff9e2d2269244"
+    },
+    {
+      "name": "api-providers-data-source",
+      "type": "documentation",
+      "description": "The Data Source provider lets users pick or create a data source for a component, including default columns, entries, and access rules.",
+      "url": "https://developers.fliplet.com/API/providers/data-source.html",
+      "sha256": "000ed7bc5d921e46d46966c5570d74ca8160b749093cc8d4f9506a2e18aab68e"
+    },
+    {
+      "name": "api-providers-email",
+      "type": "documentation",
+      "description": "The Email provider lets users compose and configure an email template (subject, body, recipients, headers) that can then be sent via `Fliplet.Communicate.sendE…",
+      "url": "https://developers.fliplet.com/API/providers/email.html",
+      "sha256": "ada2aea6a165793ee5c80f328e09370ba3637f89e8c5b851845013c02f91b082"
+    },
+    {
+      "name": "api-providers-file-picker",
+      "type": "documentation",
+      "description": "The File Picker provider lets users select one or more files from Fliplet's File Manager, optionally scoped by file type or restricted to single-select.",
+      "url": "https://developers.fliplet.com/API/providers/file-picker.html",
+      "sha256": "30027aa1a051d49406f76c46b8e7e7fa87ec34d3aa9e31b2b052274471002ba8"
+    },
+    {
+      "name": "api-providers-link-action",
+      "type": "documentation",
+      "description": "The Link Action provider offers a reusable UI for configuring an action (e.g. navigate to screen, open URL, send email) that another feature will trigger on a…",
+      "url": "https://developers.fliplet.com/API/providers/link-action.html",
+      "sha256": "cb7c454c12e3604ac868940d280954686c063390f9eb8db9021a44322a470c01"
+    },
+    {
+      "name": "app-security",
+      "type": "documentation",
+      "description": "Fliplet apps can have each of their screens and data sources secured so that they can only be accessed when certain conditions are met. Take the following exam…",
+      "url": "https://developers.fliplet.com/App-security.html",
+      "sha256": "0e00fcfefde07d71c8523be09ad90c3b2c6bba188585c996820026de3fafaabe"
+    },
+    {
+      "name": "approved-libraries",
+      "type": "documentation",
+      "description": "The JavaScript libraries Fliplet pre-approves for app development, why you should prefer them over custom ones, and when to reach for each.",
+      "url": "https://developers.fliplet.com/approved-libraries.html",
+      "sha256": "e4fb736cff4fc3187fcb0dbcdda769d1a4061d5868b3485098d09a0d102813bb"
+    },
+    {
+      "name": "async-await",
+      "type": "documentation",
+      "description": "As you might know most of Fliplet JS APIs use **Promises** when the result of such operation cannot be read synchronously. For example when reading data from t…",
+      "url": "https://developers.fliplet.com/Async-await.html",
+      "sha256": "6a0977cd383d98b37528f61aede87008a001f7eefd27bfcf10f9960266dbd1fd"
+    },
+    {
+      "name": "best-practises",
+      "type": "documentation",
+      "description": "Got stuck building components or found some nasty bugs? Here's a few tips that might help you dealing with basic issues during the development of components on…",
+      "url": "https://developers.fliplet.com/Best-practises.html",
+      "sha256": "63e9c7eb3952dae008acfcbc2f0c09dfc2e93524e27a57955b008b2cce601f89"
+    },
+    {
+      "name": "building-components",
+      "type": "documentation",
+      "description": "How to scaffold, run, and develop a Fliplet component locally using the CLI, including the generated file layout and the local dev server.",
+      "url": "https://developers.fliplet.com/Building-components.html",
+      "sha256": "2b29e28ebc5c3f77dcc416728e078def5b650628f2f27abc83580c383d355930"
+    },
+    {
+      "name": "building-functions",
+      "type": "documentation",
+      "description": "How to scaffold and develop an app action function with the CLI, declare its dependencies, and configure it via widget.json.",
+      "url": "https://developers.fliplet.com/Building-functions.html",
+      "sha256": "0c70393f8f20f3750914b9d2570568d60244e3e65115240dd73fe1a326a338b1"
+    },
+    {
+      "name": "building-menus",
+      "type": "documentation",
+      "description": "How to scaffold a Fliplet menu widget, configure its position and settings via menu.json, and develop its template and assets.",
+      "url": "https://developers.fliplet.com/Building-menus.html",
+      "sha256": "0a6103246209d06095494d1bce00fc39c6876896bf1673720207efc45c78a2c1"
+    },
+    {
+      "name": "building-themes",
+      "type": "documentation",
+      "description": "How to scaffold a Fliplet theme, configure its customizable settings from Studio, and preview sample HTML during local development.",
+      "url": "https://developers.fliplet.com/Building-themes.html",
+      "sha256": "b3edced09ed3cf17a15444baa4ef2b14222bc328c275f66cf5a4de321bc4d636"
+    },
+    {
+      "name": "changelog",
+      "type": "documentation",
+      "description": "Changelog notes giving a summary of recent significant changes to the documentation.",
+      "url": "https://developers.fliplet.com/Changelog.html",
+      "sha256": "1a84b6ab79eb794136744dbe251f430f5dd5dcb0b773cd790e3b43cf2eb31c66"
+    },
+    {
+      "name": "cloning-widgets",
+      "type": "documentation",
+      "description": "How to use the fliplet clone and fliplet list CLI commands to download the source of a published component, menu, or theme to your machine.",
+      "url": "https://developers.fliplet.com/Cloning-widgets.html",
+      "sha256": "ea45d0a61509956a4f0e464fce4a67af12fddebee9ae894114dc7a6d2cbaf9f1"
+    },
+    {
+      "name": "code-api-patterns",
+      "type": "documentation",
+      "description": "Overview of the main Fliplet JS API categories (Data Sources, Users, Media, Navigation) and when to pick each one.",
+      "url": "https://developers.fliplet.com/code-api-patterns.html",
+      "sha256": "9986bdeb120972e8f0cbeb0a6a5d572ba2778505fbb7a1234944f6cdf3ac5e28"
+    },
+    {
+      "name": "coding-standards",
+      "type": "documentation",
+      "description": "Coding and documentation standards used across Fliplet APIs, components, and examples, so both humans and AI tools produce consistent Fliplet code.",
+      "url": "https://developers.fliplet.com/coding-standards.html",
+      "sha256": "6cfa7e4471b09c15e21df1da0a075b03d4cbadd7c08cf1c79083741b4af9e46c"
+    },
+    {
+      "name": "component-events",
+      "type": "documentation",
+      "description": "When components are moved around the page in *Edit* mode, Fliplet provides a set of events to manage the user interaction.",
+      "url": "https://developers.fliplet.com/Component-events.html",
+      "sha256": "30457b5e8cf6cf90b5407d9cbb48180d8a8c51ceb642500aeb9816ddc7563efa"
+    },
+    {
+      "name": "components-build-output",
+      "type": "documentation",
+      "description": "Components generally output HTML code when dropped into the page. Their output is compiled with [Handlebars](http://handlebarsjs.com/) using the `build.html` f…",
+      "url": "https://developers.fliplet.com/components/Build-output.html",
+      "sha256": "aa2535ee2a458dc04004951e18b70b244138dcbb0013ae0c2a5ba27d610b7e41"
+    },
+    {
+      "name": "components-definition",
+      "type": "documentation",
+      "description": "The `widget.json` file defines your component as well as the **dependencies** and **assets** it needs in order to run.",
+      "url": "https://developers.fliplet.com/components/Definition.html",
+      "sha256": "49ba33ac3dcc865760ba395268d0f7f54a05e7b016524fbc0deaf119384b21e5"
+    },
+    {
+      "name": "components-interface",
+      "type": "documentation",
+      "description": "Components usually define interfaces to let their instances **save settings**.",
+      "url": "https://developers.fliplet.com/components/Interface.html",
+      "sha256": "32f75d4871146792867009bb9167a7824a601e15f10f0ddf951e165f4d1a984f"
+    },
+    {
+      "name": "components-using-providers",
+      "type": "documentation",
+      "description": "Components can display providers to get specific data from the system or need a particular piece of functionality to be added.",
+      "url": "https://developers.fliplet.com/components/Using-Providers.html",
+      "sha256": "69e736634e99022fc810dc9e53c1856330dd72def0d54a55a8af7cc3baf437f6"
+    },
+    {
+      "name": "context-targeting",
+      "type": "documentation",
+      "description": "Fliplet uses [Modernizr](https://modernizr.com/) (`v3.5.0`) to help developers target users with specific device capabilities and contexts. This lets you targe…",
+      "url": "https://developers.fliplet.com/Context-targeting.html",
+      "sha256": "9cc824712e1f37365e541ca321f226463c83682ce190bb9d4d04e9f875b856b6"
+    },
+    {
+      "name": "custom-headers",
+      "type": "documentation",
+      "description": "Fliplet allows you to set custom headers for your apps. This feature is useful for enhancing security, controlling resource loading, and adding custom HTTP hea…",
+      "url": "https://developers.fliplet.com/Custom-Headers.html",
+      "sha256": "9ddd9b5df20ba7734d68e457cce717d0eac7bd1c740789142e42433b082fcfee"
+    },
+    {
+      "name": "custom-template-for-components",
+      "type": "documentation",
+      "description": "How to override a component's default template with custom HTML and Handlebars in the new container-based drag-and-drop system.",
+      "url": "https://developers.fliplet.com/Custom-template-for-components.html",
+      "sha256": "fb8ef3f1f48a10db209c34d57ef5cc5586ee32b698677985f63562a65ee98417"
+    },
+    {
+      "name": "data-flow",
+      "type": "documentation",
+      "description": "Architecture diagram showing how data flows between Fliplet Studio, Fliplet servers, app clients, and connected data sources.",
+      "url": "https://developers.fliplet.com/Data-flow.html",
+      "sha256": "8b13a7e0552b31138db1b584786c6d608ced17977716be0b5a092da522c28f05"
+    },
+    {
+      "name": "data-integration-service",
+      "type": "documentation",
+      "description": "Fliplet Agent (Data integration service) is a command line utility to synchronize data to and from Fliplet Servers.",
+      "url": "https://developers.fliplet.com/Data-integration-service.html",
+      "sha256": "1f6b5332c4221bcfb25331280780a8622760af6ee00b1e7ecccfaa4fe7825cf0"
+    },
+    {
+      "name": "data-source-hooks",
+      "type": "documentation",
+      "description": "Data Source hooks allow your app's backend to perform certain operations such as **sending emails** or **push notifications** when certain conditions occur, e.…",
+      "url": "https://developers.fliplet.com/Data-Source-Hooks.html",
+      "sha256": "4d4457a08ffeece8d45bd254fc4bc6ee03f71cfa4f1b18310e8597488fb99249"
+    },
+    {
+      "name": "data-source-security",
+      "type": "documentation",
+      "description": "Secure your Data Sources with access rules, data requirements, and custom JavaScript security rules.",
+      "url": "https://developers.fliplet.com/Data-source-security.html",
+      "sha256": "261042acb3afe2c29ada2ae773ff581cab00cdd283678e4625bf616cd66bdf7e"
+    },
+    {
+      "name": "dependencies-and-assets",
+      "type": "documentation",
+      "description": "Both **components** and **themes** can specify a list of dependencies and local assets which should be used when rendering it.",
+      "url": "https://developers.fliplet.com/Dependencies-and-assets.html",
+      "sha256": "56af7be6350037eceab05bf2c7ccbdc9b51f92b4538b485d4b4436e9c920ddcc"
+    },
+    {
+      "name": "event-emitter",
+      "type": "documentation",
+      "description": "Components interfaces can send events to Fliplet Studio using a event emitter bus provided with the `fliplet-core` dependency.",
+      "url": "https://developers.fliplet.com/Event-emitter.html",
+      "sha256": "fa28bc9d4b75446c9b25e5f79bc5e53385386b4a577a309a245974d250b64b20"
+    },
+    {
+      "name": "execution-flow",
+      "type": "documentation",
+      "description": "The rendering and hook lifecycle Fliplet apps go through before a screen is shown to the user, and where to safely run custom code within it.",
+      "url": "https://developers.fliplet.com/Execution-flow.html",
+      "sha256": "f5ed125086e3e89fa8ebc4beef063ecb7578e82f6d95e438accceccbc3cd31fc"
+    },
+    {
+      "name": "file-security",
+      "type": "documentation",
+      "description": "Secure files and folders in your Fliplet apps with access rules and custom JavaScript security rules.",
+      "url": "https://developers.fliplet.com/File-security.html",
+      "sha256": "1249e5fa1b8b0733b538056716d6188b103ad605dd037cc1e4d0baee27d50255"
+    },
+    {
+      "name": "fliplet-approved-libraries",
+      "type": "documentation",
+      "description": "Reference list of every JavaScript library Fliplet pre-approves in apps, including versions and optional add-on libraries.",
+      "url": "https://developers.fliplet.com/Fliplet-approved-libraries.html",
+      "sha256": "19e14c8ecbd5b6743cf1d4f63381c3b589d537f2c15ffedcc035ceb535eecb8e"
+    },
+    {
+      "name": "fliplet-sdk",
+      "type": "documentation",
+      "description": "The Fliplet SDK enables you to use all the JS APIs outside of our environment. This means you can use them on any client-side code which is not sitting on Flip…",
+      "url": "https://developers.fliplet.com/Fliplet-SDK.html",
+      "sha256": "cc91bf5a791145950f1ac5282c37689e9b7b32b9c3822163feef8f1e7de44937"
+    },
+    {
+      "name": "integrate-with-external-api",
+      "type": "documentation",
+      "description": "Call third-party REST APIs from a Fliplet app using jQuery AJAX helpers, including CORS considerations.",
+      "url": "https://developers.fliplet.com/Integrate-with-external-API.html",
+      "sha256": "ef5e9728ac17fd122aabc11b23f9c286fc13af7100a704fe4fc4c575688129f1"
+    },
+    {
+      "name": "introduction",
+      "type": "documentation",
+      "description": "Overview of the Fliplet developer stack (JavaScript, SASS, Handlebars) and the kinds of apps, components, themes, and menus you can build on it.",
+      "url": "https://developers.fliplet.com/Introduction.html",
+      "sha256": "4090751558e81bdc5987c4a7ab5e6db515d66fb129934c8152c00bc30ffc8c2b"
+    },
+    {
+      "name": "javascript-coding-standards",
+      "type": "documentation",
+      "description": "Recommended ES6+ patterns for new Fliplet code and ES5 patterns for legacy apps, covering promises, async/await, and API integration.",
+      "url": "https://developers.fliplet.com/javascript-coding-standards.html",
+      "sha256": "5cb9fc07f88a912d099bd6ca409fb458200e9c73b36567cd87a25d653223cf56"
+    },
+    {
+      "name": "js-apis",
+      "type": "documentation",
+      "description": "How the Fliplet JS APIs (SDK, not a framework) let you interact with data, screens, users, and components from Studio custom code, themes, and widgets.",
+      "url": "https://developers.fliplet.com/JS-APIs.html",
+      "sha256": "407035bc2b0123b1a7352cd8bf6f35b92951c921410a2d4b8402e1d62aefe1fc"
+    },
+    {
+      "name": "native-framework-changelog",
+      "type": "documentation",
+      "description": "Release notes for the Fliplet iOS and Android native frameworks — rebuild your app against a newer version to unlock new features.",
+      "url": "https://developers.fliplet.com/Native-framework-changelog.html",
+      "sha256": "babc4285071bb14aeb09346ed70809dd6ae1027575783217115faa141bbfb8d1"
+    },
+    {
+      "name": "open-source",
+      "type": "documentation",
+      "description": "Where to find Fliplet's open-source code, pre-built app solutions, screen templates, community code examples, and developer documentation.",
+      "url": "https://developers.fliplet.com/open-source.html",
+      "sha256": "626d0021d84d06753f8e6662cb5b7fff5b4a011969e6487485b5c80dd3f12bd7"
+    },
+    {
+      "name": "organization-audit-log-types",
+      "type": "documentation",
+      "description": "Reference table of every audit log type emitted for Fliplet organizations, queryable via the JS or REST API.",
+      "url": "https://developers.fliplet.com/Organization-audit-log-types.html",
+      "sha256": "f40a6ca3de3efaecf6e12465318e11acf4e94e91e9b1b26f51493c3cc918845c"
+    },
+    {
+      "name": "platform-android",
+      "type": "documentation",
+      "description": "How to detect Android at runtime and enable the hardware back button inside a Fliplet app.",
+      "url": "https://developers.fliplet.com/Platform-Android.html",
+      "sha256": "5f29041a4de75531fdb8f9e03f6cffb041f5d867d16033d356daba86f8626640"
+    },
+    {
+      "name": "platform-ios",
+      "type": "documentation",
+      "description": "How to detect iOS at runtime and supply a manual P12 certificate when using Fliplet's Automated App Build with an Apple Enterprise account.",
+      "url": "https://developers.fliplet.com/Platform-iOS.html",
+      "sha256": "f9cecfcaeea9f1ed4c5002b11bfa97ffd3f13db7927acab5dba1b251e887689c"
+    },
+    {
+      "name": "publishing",
+      "type": "documentation",
+      "description": "How to publish Fliplet components, themes, and menus to the Fliplet platform using the CLI's publish command.",
+      "url": "https://developers.fliplet.com/Publishing.html",
+      "sha256": "892b82f708e632a72aa5febbb4205a49af2b9142ef4c8a5a36f3d7e7042fd378"
+    },
+    {
+      "name": "quickstart",
+      "type": "documentation",
+      "description": "Install Node.js and the Fliplet CLI so you can develop and test components, themes, and menus on your machine.",
+      "url": "https://developers.fliplet.com/Quickstart.html",
+      "sha256": "7daa11ac2a8d24a7a026dcd455b4d24feb9baaaf8166dca1ea4c0cbb3c1dc0c2"
+    },
+    {
+      "name": "rate-limiting-for-api",
+      "type": "documentation",
+      "description": "If you’re integrating your app or service with Fliplet APIs, you should be mindful in relation to how frequent your requests are hitting our APIs. Our infrastructure is set up to automatically thrott…",
+      "url": "https://developers.fliplet.com/Rate-limiting-for-API.html",
+      "sha256": "e77416bda33830709b7a194ea488ed7ef46d14fc451419598f3313b9376c39f0"
+    },
+    {
+      "name": "reduce-app-bundle-size",
+      "type": "documentation",
+      "description": "Blacklist assets from your Fliplet app bundle to shrink it for App Store and Google Play submission.",
+      "url": "https://developers.fliplet.com/Reduce-app-bundle-size.html",
+      "sha256": "15dc86e33ff3230e6e5677730f994807c51e2981fe4c746e4efdb164f5c45f12"
+    },
+    {
+      "name": "rest-api-documentation",
+      "type": "documentation",
+      "description": "Index of Fliplet REST endpoints for Data Sources, Media, Notifications, Apps, and more — intended for third-party integrations.",
+      "url": "https://developers.fliplet.com/REST-API-Documentation.html",
+      "sha256": "15b20c8f4eff69bead3da9827809c1f333b49b2ae267084ffc53ad924ef0d30a"
+    },
+    {
+      "name": "rest-api-authenticate",
+      "type": "documentation",
+      "description": "All Fliplet REST API requests are made over HTTPS to a regional endpoint (`api.fliplet.com`, `us.api.fliplet.com`, or `ca.api.fliplet.com`) and must include an…",
+      "url": "https://developers.fliplet.com/REST-API/authenticate.html",
+      "sha256": "075a3fda652a2cd1fce5214b776db9eb7dfe0fb486ceb157f9bc30229aa86fd2"
+    },
+    {
+      "name": "rest-api-fliplet-app-analytics",
+      "type": "documentation",
+      "description": "The App Analytics REST API lets you read your app's analytics data.",
+      "url": "https://developers.fliplet.com/REST-API/fliplet-app-analytics.html",
+      "sha256": "18e7bb2120f8353017756d92b37ae3f90e79f64a08a4f9bc04c4594bec9ec51f"
+    },
+    {
+      "name": "rest-api-fliplet-app-subscriptions",
+      "type": "documentation",
+      "description": "The App Subscriptions REST API lets you read and manage your app's users subscribed via push notifications.",
+      "url": "https://developers.fliplet.com/REST-API/fliplet-app-subscriptions.html",
+      "sha256": "afb39e26d7e5f610a85ee14feaeb600b481f844dc32fc8e8a64b69f2e8fc645a"
+    },
+    {
+      "name": "rest-api-fliplet-apps",
+      "type": "documentation",
+      "description": "The Apps REST API lets external integrations list, read, create, update, and delete Fliplet apps that the auth token has access to.",
+      "url": "https://developers.fliplet.com/REST-API/fliplet-apps.html",
+      "sha256": "b2e9a514e980c59becff909a107e45604bd6696912dd70c8655d45c69f57dad5"
+    },
+    {
+      "name": "rest-api-fliplet-communicate",
+      "type": "documentation",
+      "description": "The Communicate REST API lets external integrations send emails and SMS from a Fliplet app, subject to per-account rate limits.",
+      "url": "https://developers.fliplet.com/REST-API/fliplet-communicate.html",
+      "sha256": "e50ee396f4ce865a2f794f4b568c346a9da3ce7b3a4c2fa8858c6fc57576d41d"
+    },
+    {
+      "name": "rest-api-fliplet-datasources",
+      "type": "documentation",
+      "description": "The Data Sources REST API lets external integrations read and modify the data sources belonging to a Fliplet app or organization.",
+      "url": "https://developers.fliplet.com/REST-API/fliplet-datasources.html",
+      "sha256": "c103f024bd91a2c5bf2f7ee8d9a34354bb6e640509255d72601a84764b508905"
+    },
+    {
+      "name": "rest-api-fliplet-media",
+      "type": "documentation",
+      "description": "The Media REST API lets external integrations upload, list, and manage media files and folders scoped to a Fliplet app or organization.",
+      "url": "https://developers.fliplet.com/REST-API/fliplet-media.html",
+      "sha256": "d18985d25bdf016867417ed753f5992dcfc7d4c5019a5e78104e499719268f9c"
+    },
+    {
+      "name": "rest-api-fliplet-notifications",
+      "type": "documentation",
+      "description": "The Notifications REST API lets external integrations create, schedule, and publish in-app and push notifications to Fliplet app users.",
+      "url": "https://developers.fliplet.com/REST-API/fliplet-notifications.html",
+      "sha256": "0ed4c4f9afdaeda81e6c1e77a73a5b56c768ba7ffb27a7e76af6f35cfb719670"
+    },
+    {
+      "name": "rest-api-fliplet-organizations",
+      "type": "documentation",
+      "description": "The Organizations REST API lets external integrations read audit logs and manage resources belonging to a Fliplet organization.",
+      "url": "https://developers.fliplet.com/REST-API/fliplet-organizations.html",
+      "sha256": "a33118653818b979596200a9f573b4c58fa707532eb23a59f06b4065b61cf335"
+    },
+    {
+      "name": "testing-components",
+      "type": "documentation",
+      "description": "Run and write tests for a Fliplet component using the CLI's test command, backed by Mocha, Chai, and Puppeteer.",
+      "url": "https://developers.fliplet.com/Testing-components.html",
+      "sha256": "fff7f468bfa0a9eb113ca0fef8e14cd73addde308244bb4f916d97e803711861"
+    },
+    {
+      "name": "theme-settings-in-css",
+      "type": "documentation",
+      "description": "Our theme is built with reusability in mind, therefore we used SCSS variables for all the settings so that you can use them in your custom CSS.",
+      "url": "https://developers.fliplet.com/Theme-Settings-In-CSS.html",
+      "sha256": "54fc442d6839bb5b746bb0902ea3bcd2aea4a82a5899fc7a858770ff4e33f206"
+    },
+    {
+      "name": "theming-appearance",
+      "type": "documentation",
+      "description": "Expose configurable colors, fonts, and other CSS properties in Fliplet Studio's theme settings UI via your component's widget.json.",
+      "url": "https://developers.fliplet.com/Theming-appearance.html",
+      "sha256": "37120376670b7b3b343b31d4d09c3ea2d0da53e6493d446df154ee562052cd04"
+    },
+    {
+      "name": "ui-guidelines-build",
+      "type": "documentation",
+      "description": "Recommended Bootstrap-based styles for buttons, forms, and typography in a Fliplet component's user-facing output.",
+      "url": "https://developers.fliplet.com/UI-guidelines-build.html",
+      "sha256": "5fd5c84cd36a31a591b6137d6e0273c3ff9a74881d22dd7c0abb1dc9a5b751fe"
+    },
+    {
+      "name": "ui-guidelines-interface",
+      "type": "documentation",
+      "description": "Recommended Bootstrap-based styles for buttons, forms, and typography in a Fliplet component's Studio settings interface.",
+      "url": "https://developers.fliplet.com/UI-guidelines-interface.html",
+      "sha256": "a00b334d47629966a1ee539688f6cb925f7b6afeab9f01e86b29529cab661105"
+    },
+    {
+      "name": "upcoming",
+      "type": "documentation",
+      "description": "Tracker of Fliplet features recently shipped or in beta, linking to their developer documentation.",
+      "url": "https://developers.fliplet.com/Upcoming.html",
+      "sha256": "c09628469d7663f2b16ee0ec70067dd4b0006c1537026e95c853fc8833025ead"
+    },
+    {
+      "name": "urls-and-ip-addresses",
+      "type": "documentation",
+      "description": "Domains and ports that Fliplet Studio, web apps, native apps, and the Data Integration Service need reachable through a corporate firewall.",
+      "url": "https://developers.fliplet.com/URLs-and-IP-Addresses.html",
+      "sha256": "a00fd01e12904d314439ce789070f5ee654f1d005dac2c3d0a8c77401903c9a9"
+    },
+    {
+      "name": "vs-code-extension-setup-usage",
+      "type": "documentation",
+      "description": "Install, authenticate, and use the Fliplet VS Code extension to develop Fliplet apps directly from your editor.",
+      "url": "https://developers.fliplet.com/VS-Code-Extension-Setup-Usage.html",
+      "sha256": "401947611f2aa07a6f372651c6bf9c47dd9056f3afc2840bbfe937501a88b597"
     }
   ]
 }

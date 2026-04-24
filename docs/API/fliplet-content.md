@@ -1,3 +1,11 @@
+---
+title: Fliplet.Content()
+description: "(Returns **`Promise`**)"
+type: api-reference
+tags: [js-api, content]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.Content()`
 
 (Returns **`Promise`**)

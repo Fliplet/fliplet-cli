@@ -1,4 +1,14 @@
-# Notifications
+---
+title: Fliplet.Navigator.Notifications
+description: "Check notification support, request permission, and send local device notifications from JavaScript."
+type: api-reference
+tags: [js-api, core, notifications]
+v3_relevant: true
+deprecated: false
+---
+# `Fliplet.Navigator.Notifications`
+
+Check notification support, request permission, and send local device notifications from JavaScript.
 
 ### Check if the device supports receiving notifications
 

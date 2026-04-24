@@ -1,8 +1,16 @@
+---
+title: Fliplet.UI.Toast()
+description: "(Returns **`Promise`**)"
+type: api-reference
+tags: [js-api, toast]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.UI.Toast()`
 
 (Returns **`Promise`**)
 
-Create a non-obtrusive dialog that disappears after a few seconds (unless configured otherwise). This provides a simple mechanism to provide feedback about an operation while allowing users to continue using the app.
+Create a non-obtrusive toast notification that auto-dismisses, in minimal or regular styling, without blocking the user.
 
 There are 2 different types of Toast notifications, **minimal** and **regular**.
 

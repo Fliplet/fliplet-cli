@@ -1,6 +1,14 @@
-# Data Sources JS APIs
+---
+title: Fliplet.DataSources
+description: "Connect to, query, insert, update, and delete records in Fliplet Data Sources from inside an app. All methods are promise-based."
+type: api-reference
+tags: [js-api, datasources]
+v3_relevant: true
+deprecated: false
+---
+# `Fliplet.DataSources`
 
-The Data Source JS APIs allows you to interact and make any sort of change to your app's Data Sources from the app itself.
+Connect to, query, insert, update, and delete records in Fliplet Data Sources from inside an app. All methods are promise-based.
 
 ## ⚠️ Important: All API Calls Are Asynchronous
 

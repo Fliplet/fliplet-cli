@@ -1,4 +1,14 @@
-# Apps REST APIs
+---
+title: Apps REST API
+description: "The Apps REST API lets external integrations list, read, create, update, and delete Fliplet apps that the auth token has access to."
+type: api-reference
+tags: [rest-api, apps]
+v3_relevant: true
+deprecated: false
+---
+# Apps REST API
+
+The Apps REST API lets external integrations list, read, create, update, and delete Fliplet apps that the auth token has access to.
 
 ## Authentication
 

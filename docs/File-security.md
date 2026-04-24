@@ -1,8 +1,15 @@
 ---
+title: Securing Fliplet files and folders
 description: Secure files and folders in your Fliplet apps with access rules and custom JavaScript security rules.
+type: how-to
+tags: [file, security]
+v3_relevant: true
+deprecated: false
 ---
 
-# Securing your files and folders
+# Securing Fliplet files and folders
+
+How to control read, upload, update, and delete access to media files and folders in Fliplet apps using access rules and custom security rules.
 
 ## Contents
 

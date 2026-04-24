@@ -1,8 +1,14 @@
-# Hooks & Events
+---
+title: Helper lifecycle hooks and events
+description: "Run code at key points in a Helper's lifecycle using the `beforeReady` and `ready` render hooks."
+type: api-reference
+tags: [js-api, helpers, hooks]
+v3_relevant: true
+deprecated: false
+---
+# Helper lifecycle hooks and events
 
-Lifecycle:
-1. `beforeReady`
-2. `ready`
+Run code at key points in a Helper's lifecycle using the `beforeReady` and `ready` render hooks.
 
 ## Run logic before a helper is rendered
 

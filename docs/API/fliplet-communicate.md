@@ -1,14 +1,14 @@
-# Communicate JS APIs
+---
+title: Fliplet.Communicate
+description: "Send email, SMS, push notifications, and share URLs from a Fliplet app using a single Communicate namespace."
+type: api-reference
+tags: [js-api, communicate]
+v3_relevant: true
+deprecated: false
+---
+# `Fliplet.Communicate`
 
-The `fliplet-communicate` package contains the namespace `Fliplet.Communicate` and a set of helper methods for sending communications from the app.
-
-  - [`.sendEmail()`](#send-an-email) - Sends an HTML formatted email
-  - [`.batchSendEmail()`](#send-batch-emails) - Sends batch of HTML formatted emails
-  - [`.composeEmail()`](#compose-an-email) - Composes an email on the device
-  - [`.sendSMS()`](#send-an-sms) - Sends an SMS message
-  - [`.batchSendSMS()`](#send-batch-sms) - Sends batch of SMS messages
-  - [`.shareURL()`](#share-a-url) - Share a URL
-  - [`.sendPushNotification()`](#send-push-notifications) - Send push notifications
+Send email, SMS, push notifications, and share URLs from a Fliplet app using a single Communicate namespace.
 
 ## Send an email
 

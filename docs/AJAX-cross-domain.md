@@ -1,10 +1,15 @@
 ---
-description: How to make AJAX Cross Domain requests on Fliplet Apps
+title: AJAX cross-domain and cross-origin requests
+description: "How Fliplet apps handle AJAX cross-domain requests, common CORS errors, and the studio and app domains allowed by default."
+type: how-to
+tags: [ajax, cross, domain]
+v3_relevant: true
+deprecated: false
 ---
 
-# AJAX cross domain and cross-origin requests
+# AJAX cross-domain and cross-origin requests
 
-A common problem for developers is a browser to refuse access to a remote resource. Usually, this happens when you execute **AJAX cross domain request** using jQuery Ajax interface, Fetch API, or plain XMLHttpRequest. As result is that the AJAX request is not performed and data are not retrieved.
+How Fliplet apps handle AJAX requests to external domains, the CORS errors you may hit, and the studio/app domains allowed by default.
 
 This can usually be spotted with an error message from the browser such as below:
 

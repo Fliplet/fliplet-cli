@@ -1,6 +1,14 @@
-# Fields
+---
+title: "Helper configuration interface: fields"
+description: "Define the fields shown in a Helper's Fliplet Studio configuration interface, including their type, label, validation, and default value."
+type: api-reference
+tags: [js-api, helpers, interface, fields]
+v3_relevant: true
+deprecated: false
+---
+# Helper configuration interface: fields
 
-Specify a list of fields to be displayed to the user in Fliplet Studio. The fields are displayed in the order as defined.
+Define the fields shown in a Helper's Fliplet Studio configuration interface, including their type, label, validation, and default value.
 ## Properties for all fields
 
 The following property can be defined for all field types (except when specified otherwise):

@@ -1,6 +1,14 @@
-# Database JS APIs
+---
+title: Fliplet.Database
+description: "Low-level helper for reading and querying JSON data from a local file as a database; used internally by Fliplet.DataSources."
+type: api-reference
+tags: [js-api, database]
+v3_relevant: true
+deprecated: false
+---
+# `Fliplet.Database`
 
-The following JS API is primarily used by `Fliplet.DataSources` and it's meant to be used as a very low-level library to read and query JSON data from a file.
+Low-level helper for reading and querying JSON data from a local file as a database; used internally by Fliplet.DataSources.
 
 ## Opening a local JSON file as a database
 

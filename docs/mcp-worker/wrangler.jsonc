@@ -1,0 +1,33 @@
+// Cloudflare Worker config for the Fliplet docs MCP server.
+// Deploys to https://developers.fliplet.com/mcp*.
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "fliplet-docs-mcp",
+  "main": "src/index.ts",
+
+  // nodejs_compat is required by @modelcontextprotocol/sdk@1.20.2 (some
+  // modules reach for http/stream internals). Pin compatibility_date to
+  // 2025-12-02 or newer so the Workers runtime exposes the polyfills.
+  "compatibility_date": "2025-12-02",
+  "compatibility_flags": ["nodejs_compat"],
+
+  // Route the Worker under the docs-site zone so it shares the origin with
+  // the published llms.txt and .md siblings. The /mcp* glob catches both
+  // the canonical /mcp endpoint and anything that might be added later
+  // (e.g. /mcp/healthz).
+  "routes": [
+    {
+      "pattern": "developers.fliplet.com/mcp*",
+      "zone_name": "fliplet.com"
+    }
+  ],
+
+  "observability": {
+    "enabled": true
+  }
+
+  // Rate limiting: configure via a Cloudflare Ruleset rate-limit rule on the
+  // developers.fliplet.com zone rather than in-code. Start with 100 req/min
+  // per IP, returning HTTP 429 with a Retry-After header. See:
+  // https://developers.cloudflare.com/waf/rate-limiting-rules/
+}

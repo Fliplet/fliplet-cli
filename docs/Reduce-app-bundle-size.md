@@ -1,6 +1,14 @@
-# Reduce your app's size
+---
+title: Reduce your app bundle size
+description: Blacklist assets from your Fliplet app bundle to shrink it for App Store and Google Play submission.
+type: how-to
+tags: [reduce, app, bundle, size]
+v3_relevant: true
+deprecated: false
+---
+# Reduce your app bundle size
 
-If you're app's bundle is too big, most likely you're including too many assets in its package and actions must be taken to reduce its size and allow the app to be submitted to the App Store or Google Play.
+Blacklist assets from your Fliplet app bundle to shrink it for App Store and Google Play submission.
 
 Navigate to the **App settings** >> **Launch assets** section in Fliplet Studio and you'll find a section for **blacklisting assets**.
 

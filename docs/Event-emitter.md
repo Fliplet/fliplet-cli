@@ -1,3 +1,11 @@
+---
+title: Sending events between components
+description: "Components interfaces can send events to Fliplet Studio using a event emitter bus provided with the `fliplet-core` dependency."
+type: how-to
+tags: [event, emitter]
+v3_relevant: true
+deprecated: false
+---
 # Sending events between components
 
 Components interfaces can send events to Fliplet Studio using a event emitter bus provided with the `fliplet-core` dependency.

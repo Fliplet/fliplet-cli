@@ -1,22 +1,162 @@
 {
   "linkset": [
     {
-      "anchor": "https://developers.fliplet.com/API/fliplet-datasources.html",
+      "anchor": "https://developers.fliplet.com/",
       "service-doc": [
         {
-          "href": "https://developers.fliplet.com/API/fliplet-datasources.html",
+          "href": "https://developers.fliplet.com/",
           "type": "text/html",
-          "title": "Data Sources JS APIs"
+          "title": "Fliplet Developers documentation"
         }
       ]
     },
     {
-      "anchor": "https://developers.fliplet.com/API/fliplet-session.html",
+      "anchor": "https://developers.fliplet.com/aab/create-p12-certificate.html",
       "service-doc": [
         {
-          "href": "https://developers.fliplet.com/API/fliplet-session.html",
+          "href": "https://developers.fliplet.com/aab/create-p12-certificate.html",
           "type": "text/html",
-          "title": "Session JS APIs"
+          "title": "Manually creating a P12 certificate"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/AI-powered-development-with-Cursor.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/AI-powered-development-with-Cursor.html",
+          "type": "text/html",
+          "title": "AI-powered Fliplet development with Cursor"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/AJAX-cross-domain.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/AJAX-cross-domain.html",
+          "type": "text/html",
+          "title": "AJAX cross-domain and cross-origin requests"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Analytics-documentation.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Analytics-documentation.html",
+          "type": "text/html",
+          "title": "Fliplet analytics event reference"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API-Documentation.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API-Documentation.html",
+          "type": "text/html",
+          "title": "JS API Documentation"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/components/accordions.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/components/accordions.html",
+          "type": "text/html",
+          "title": "Accordion component"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/components/charts.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/components/charts.html",
+          "type": "text/html",
+          "title": "Charts component"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/components/chat.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/components/chat.html",
+          "type": "text/html",
+          "title": "Chat JS APIs"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/components/data-directory.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/components/data-directory.html",
+          "type": "text/html",
+          "title": "Data Directory JS APIs"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/components/dynamic-container.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/components/dynamic-container.html",
+          "type": "text/html",
+          "title": "Dynamic Container JS APIs"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/components/email-verification.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/components/email-verification.html",
+          "type": "text/html",
+          "title": "Email Verification component"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/components/form-builder.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/components/form-builder.html",
+          "type": "text/html",
+          "title": "Form JS APIs"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/components/interactive-graphics.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/components/interactive-graphics.html",
+          "type": "text/html",
+          "title": "Interactive Graphics JS APIs"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/components/list-from-data-source.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/components/list-from-data-source.html",
+          "type": "text/html",
+          "title": "List (from Data Source) component"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/components/list-repeater.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/components/list-repeater.html",
+          "type": "text/html",
+          "title": "List Repeater JS APIs"
         }
       ]
     },
@@ -26,27 +166,87 @@
         {
           "href": "https://developers.fliplet.com/API/components/login.html",
           "type": "text/html",
-          "title": "Login Component"
+          "title": "Login"
         }
       ]
     },
     {
-      "anchor": "https://developers.fliplet.com/API/core/navigate.html",
+      "anchor": "https://developers.fliplet.com/API/components/menu-bottom-icon-bar.html",
       "service-doc": [
         {
-          "href": "https://developers.fliplet.com/API/core/navigate.html",
+          "href": "https://developers.fliplet.com/API/components/menu-bottom-icon-bar.html",
           "type": "text/html",
-          "title": "Navigate"
+          "title": "Bottom Icon Bar menu component"
         }
       ]
     },
     {
-      "anchor": "https://developers.fliplet.com/API/fliplet-media.html",
+      "anchor": "https://developers.fliplet.com/API/components/push-notifications.html",
       "service-doc": [
         {
-          "href": "https://developers.fliplet.com/API/fliplet-media.html",
+          "href": "https://developers.fliplet.com/API/components/push-notifications.html",
           "type": "text/html",
-          "title": "Media JS APIs"
+          "title": "Push Notifications JS APIs"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/components/record-container.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/components/record-container.html",
+          "type": "text/html",
+          "title": "Record container JS APIs"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/core/ai.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/core/ai.html",
+          "type": "text/html",
+          "title": "Fliplet.AI"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/core/analytics.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/core/analytics.html",
+          "type": "text/html",
+          "title": "Fliplet.Analytics"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/core/api.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/core/api.html",
+          "type": "text/html",
+          "title": "Fliplet.API.request()"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/core/app-actions-v2.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/core/app-actions-v2.html",
+          "type": "text/html",
+          "title": "App Actions V2 (deprecated)"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/core/app-actions-v3.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/core/app-actions-v3.html",
+          "type": "text/html",
+          "title": "App Actions V3"
         }
       ]
     },
@@ -56,17 +256,197 @@
         {
           "href": "https://developers.fliplet.com/API/core/app-actions.html",
           "type": "text/html",
-          "title": "App Actions"
+          "title": "App Actions V1 (deprecated)"
         }
       ]
     },
     {
-      "anchor": "https://developers.fliplet.com/Data-source-security.html",
+      "anchor": "https://developers.fliplet.com/API/core/app.html",
       "service-doc": [
         {
-          "href": "https://developers.fliplet.com/Data-source-security.html",
+          "href": "https://developers.fliplet.com/API/core/app.html",
           "type": "text/html",
-          "title": "Data Source Security"
+          "title": "Fliplet.App"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/core/apps.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/core/apps.html",
+          "type": "text/html",
+          "title": "Fliplet.Apps"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/core/biometrics.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/core/biometrics.html",
+          "type": "text/html",
+          "title": "Fliplet.User.Biometrics"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/core/cache.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/core/cache.html",
+          "type": "text/html",
+          "title": "Fliplet.Cache"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/core/encode.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/core/encode.html",
+          "type": "text/html",
+          "title": "Fliplet.Encode"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/core/environment.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/core/environment.html",
+          "type": "text/html",
+          "title": "Fliplet.Env"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/core/error.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/core/error.html",
+          "type": "text/html",
+          "title": "Fliplet.parseError()"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/core/hooks.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/core/hooks.html",
+          "type": "text/html",
+          "title": "Fliplet.Hooks"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/core/localization.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/core/localization.html",
+          "type": "text/html",
+          "title": "Fliplet.Locale"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/core/misc.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/core/misc.html",
+          "type": "text/html",
+          "title": "Fliplet common functions"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/core/modal.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/core/modal.html",
+          "type": "text/html",
+          "title": "Fliplet.Modal"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/core/navigate.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/core/navigate.html",
+          "type": "text/html",
+          "title": "Fliplet.Navigate"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/core/navigator.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/core/navigator.html",
+          "type": "text/html",
+          "title": "Fliplet.Navigator"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/core/notifications.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/core/notifications.html",
+          "type": "text/html",
+          "title": "Fliplet.Navigator.Notifications"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/core/organizations.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/core/organizations.html",
+          "type": "text/html",
+          "title": "Fliplet.Organizations"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/core/overview.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/core/overview.html",
+          "type": "text/html",
+          "title": "Fliplet Core overview"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/core/profile.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/core/profile.html",
+          "type": "text/html",
+          "title": "Fliplet.Profile"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/core/registry.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/core/registry.html",
+          "type": "text/html",
+          "title": "Fliplet.Registry"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/core/screens.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/core/screens.html",
+          "type": "text/html",
+          "title": "`Fliplet.Pages` and `Fliplet.Page`"
         }
       ]
     },
@@ -76,47 +456,17 @@
         {
           "href": "https://developers.fliplet.com/API/core/storage.html",
           "type": "text/html",
-          "title": "Storage"
+          "title": "`Fliplet.Storage` and `Fliplet.App.Storage`"
         }
       ]
     },
     {
-      "anchor": "https://developers.fliplet.com/API/fliplet-encryption.html",
+      "anchor": "https://developers.fliplet.com/API/core/studio.html",
       "service-doc": [
         {
-          "href": "https://developers.fliplet.com/API/fliplet-encryption.html",
+          "href": "https://developers.fliplet.com/API/core/studio.html",
           "type": "text/html",
-          "title": "Encryption"
-        }
-      ]
-    },
-    {
-      "anchor": "https://developers.fliplet.com/API/datasources/query-operators.html",
-      "service-doc": [
-        {
-          "href": "https://developers.fliplet.com/API/datasources/query-operators.html",
-          "type": "text/html",
-          "title": "Query Operators"
-        }
-      ]
-    },
-    {
-      "anchor": "https://developers.fliplet.com/API/fliplet-communicate.html",
-      "service-doc": [
-        {
-          "href": "https://developers.fliplet.com/API/fliplet-communicate.html",
-          "type": "text/html",
-          "title": "Communicate"
-        }
-      ]
-    },
-    {
-      "anchor": "https://developers.fliplet.com/API/fliplet-notifications.html",
-      "service-doc": [
-        {
-          "href": "https://developers.fliplet.com/API/fliplet-notifications.html",
-          "type": "text/html",
-          "title": "Notifications"
+          "title": "Fliplet.Studio"
         }
       ]
     },
@@ -126,7 +476,67 @@
         {
           "href": "https://developers.fliplet.com/API/core/user.html",
           "type": "text/html",
-          "title": "User"
+          "title": "Fliplet.User"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/core/widget.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/core/widget.html",
+          "type": "text/html",
+          "title": "Fliplet.Widget"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/datasources/joins.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/datasources/joins.html",
+          "type": "text/html",
+          "title": "Data Source joins"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/datasources/query-operators.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/datasources/query-operators.html",
+          "type": "text/html",
+          "title": "Data Sources query operators"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/datasources/views.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/datasources/views.html",
+          "type": "text/html",
+          "title": "Data Source views"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/fliplet-audio-player.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/fliplet-audio-player.html",
+          "type": "text/html",
+          "title": "Fliplet.Media.Audio.Player"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/fliplet-audio.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/fliplet-audio.html",
+          "type": "text/html",
+          "title": "Fliplet.Media.Audio"
         }
       ]
     },
@@ -136,7 +546,1187 @@
         {
           "href": "https://developers.fliplet.com/API/fliplet-barcode.html",
           "type": "text/html",
-          "title": "Barcode"
+          "title": "Fliplet.Barcode"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/fliplet-communicate.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/fliplet-communicate.html",
+          "type": "text/html",
+          "title": "Fliplet.Communicate"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/fliplet-content.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/fliplet-content.html",
+          "type": "text/html",
+          "title": "Fliplet.Content()"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/fliplet-csv.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/fliplet-csv.html",
+          "type": "text/html",
+          "title": "Fliplet.CSV"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/fliplet-database.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/fliplet-database.html",
+          "type": "text/html",
+          "title": "Fliplet.Database"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/fliplet-datasources.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/fliplet-datasources.html",
+          "type": "text/html",
+          "title": "Fliplet.DataSources"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/fliplet-encryption.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/fliplet-encryption.html",
+          "type": "text/html",
+          "title": "Fliplet.DataSources.Encryption"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/fliplet-gamify.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/fliplet-gamify.html",
+          "type": "text/html",
+          "title": "Fliplet.Gamify"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/fliplet-media.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/fliplet-media.html",
+          "type": "text/html",
+          "title": "Fliplet.Media"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/fliplet-notifications.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/fliplet-notifications.html",
+          "type": "text/html",
+          "title": "Fliplet.Notifications"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/fliplet-oauth2.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/fliplet-oauth2.html",
+          "type": "text/html",
+          "title": "Fliplet.OAuth2 (Beta)"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/fliplet-page.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/fliplet-page.html",
+          "type": "text/html",
+          "title": "Fliplet.Page"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/fliplet-payments.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/fliplet-payments.html",
+          "type": "text/html",
+          "title": "Fliplet.Payments"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/fliplet-profile-content.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/fliplet-profile-content.html",
+          "type": "text/html",
+          "title": "Fliplet.Profile.Content()"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/fliplet-session.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/fliplet-session.html",
+          "type": "text/html",
+          "title": "Fliplet.Session"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/fliplet-table.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/fliplet-table.html",
+          "type": "text/html",
+          "title": "Fliplet.UI.Table"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/fliplet-themes.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/fliplet-themes.html",
+          "type": "text/html",
+          "title": "Fliplet.Themes"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/fliplet-ui-actions.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/fliplet-ui-actions.html",
+          "type": "text/html",
+          "title": "Fliplet.UI.Actions()"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/fliplet-ui-address.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/fliplet-ui-address.html",
+          "type": "text/html",
+          "title": "Fliplet.UI.AddressField()"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/fliplet-ui-datepicker.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/fliplet-ui-datepicker.html",
+          "type": "text/html",
+          "title": "Fliplet.UI.DatePicker()"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/fliplet-ui-daterange.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/fliplet-ui-daterange.html",
+          "type": "text/html",
+          "title": "Fliplet.UI.DateRange()"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/fliplet-ui-number.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/fliplet-ui-number.html",
+          "type": "text/html",
+          "title": "Fliplet.UI.NumberInput()"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/fliplet-ui-panzoom.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/fliplet-ui-panzoom.html",
+          "type": "text/html",
+          "title": "Fliplet.UI.PanZoom"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/fliplet-ui-rangeslider.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/fliplet-ui-rangeslider.html",
+          "type": "text/html",
+          "title": "Fliplet.UI.RangeSlider()"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/fliplet-ui-timepicker.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/fliplet-ui-timepicker.html",
+          "type": "text/html",
+          "title": "Fliplet.UI.TimePicker()"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/fliplet-ui-timerange.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/fliplet-ui-timerange.html",
+          "type": "text/html",
+          "title": "Fliplet.UI.TimeRange()"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/fliplet-ui-toast-error.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/fliplet-ui-toast-error.html",
+          "type": "text/html",
+          "title": "Fliplet.UI.Toast.error()"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/fliplet-ui-toast.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/fliplet-ui-toast.html",
+          "type": "text/html",
+          "title": "Fliplet.UI.Toast()"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/fliplet-ui-typeahead.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/fliplet-ui-typeahead.html",
+          "type": "text/html",
+          "title": "Fliplet.UI.Typeahead()"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/fliplet-ui.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/fliplet-ui.html",
+          "type": "text/html",
+          "title": "Fliplet.UI"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/helpers/components.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/helpers/components.html",
+          "type": "text/html",
+          "title": "Distributing Helpers as components"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/helpers/dynamic-components.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/helpers/dynamic-components.html",
+          "type": "text/html",
+          "title": "Dynamic components"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/helpers/example-decision-tree.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/helpers/example-decision-tree.html",
+          "type": "text/html",
+          "title": "Helper example: decision tree"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/helpers/example-question.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/helpers/example-question.html",
+          "type": "text/html",
+          "title": "Helper example: question and answer"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/helpers/fields.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/helpers/fields.html",
+          "type": "text/html",
+          "title": "Helper fields (attributes)"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/helpers/hooks.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/helpers/hooks.html",
+          "type": "text/html",
+          "title": "Helper lifecycle hooks and events"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/helpers/interface-fields.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/helpers/interface-fields.html",
+          "type": "text/html",
+          "title": "Helper configuration interface: fields"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/helpers/interface-hooks.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/helpers/interface-hooks.html",
+          "type": "text/html",
+          "title": "Helper configuration interface: hooks and events"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/helpers/interface-libraries.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/helpers/interface-libraries.html",
+          "type": "text/html",
+          "title": "Helper configuration interface: external libraries"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/helpers/interface-methods.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/helpers/interface-methods.html",
+          "type": "text/html",
+          "title": "Helper configuration interface: methods"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/helpers/interface.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/helpers/interface.html",
+          "type": "text/html",
+          "title": "Helper configuration interface"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/helpers/libraries.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/helpers/libraries.html",
+          "type": "text/html",
+          "title": "Helper external libraries"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/helpers/methods.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/helpers/methods.html",
+          "type": "text/html",
+          "title": "Helper instance and class methods"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/helpers/overview.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/helpers/overview.html",
+          "type": "text/html",
+          "title": "Fliplet Helpers overview"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/helpers/quickstart.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/helpers/quickstart.html",
+          "type": "text/html",
+          "title": "Fliplet Helpers quickstart"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/helpers/references/constructor.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/helpers/references/constructor.html",
+          "type": "text/html",
+          "title": "Fliplet.Helper() constructor reference"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/helpers/references/fields.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/helpers/references/fields.html",
+          "type": "text/html",
+          "title": "Fliplet.Helper.field() reference"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/helpers/references/query.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/helpers/references/query.html",
+          "type": "text/html",
+          "title": "Fliplet.Helper query methods reference"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/helpers/style.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/helpers/style.html",
+          "type": "text/html",
+          "title": "Styling Helpers"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/helpers/templates.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/helpers/templates.html",
+          "type": "text/html",
+          "title": "Helper templates"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/helpers/views.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/helpers/views.html",
+          "type": "text/html",
+          "title": "Helper rich-content views"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/integrations/sso-saml2.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/integrations/sso-saml2.html",
+          "type": "text/html",
+          "title": "SAML2 Single Sign-On integration"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/libraries/handlebars.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/libraries/handlebars.html",
+          "type": "text/html",
+          "title": "Using Handlebars in your apps"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/like-buttons.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/like-buttons.html",
+          "type": "text/html",
+          "title": "Fliplet.LikeButton"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/providers/data-source.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/providers/data-source.html",
+          "type": "text/html",
+          "title": "Data Source provider"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/providers/email.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/providers/email.html",
+          "type": "text/html",
+          "title": "Email provider"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/providers/file-picker.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/providers/file-picker.html",
+          "type": "text/html",
+          "title": "File Picker provider"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/API/providers/link-action.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/API/providers/link-action.html",
+          "type": "text/html",
+          "title": "Link Action provider"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/App-security.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/App-security.html",
+          "type": "text/html",
+          "title": "Securing your apps"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/approved-libraries.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/approved-libraries.html",
+          "type": "text/html",
+          "title": "Fliplet-approved JavaScript libraries (coding-standards edition)"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Async-await.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Async-await.html",
+          "type": "text/html",
+          "title": "Writing more readable code when using the JS APIs"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Best-practises.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Best-practises.html",
+          "type": "text/html",
+          "title": "Best practice and advices when building components"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Building-components.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Building-components.html",
+          "type": "text/html",
+          "title": "Building Fliplet components"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Building-functions.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Building-functions.html",
+          "type": "text/html",
+          "title": "Building Fliplet app action functions"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Building-menus.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Building-menus.html",
+          "type": "text/html",
+          "title": "Building Fliplet menus"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Building-themes.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Building-themes.html",
+          "type": "text/html",
+          "title": "Building Fliplet themes"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Changelog.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Changelog.html",
+          "type": "text/html",
+          "title": "Changelog"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Cloning-widgets.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Cloning-widgets.html",
+          "type": "text/html",
+          "title": "Cloning widgets, components, and themes from the CLI"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/code-api-patterns.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/code-api-patterns.html",
+          "type": "text/html",
+          "title": "Fliplet API patterns and categories"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/coding-standards.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/coding-standards.html",
+          "type": "text/html",
+          "title": "Fliplet coding and documentation standards"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Component-events.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Component-events.html",
+          "type": "text/html",
+          "title": "Component events"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/components/Build-output.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/components/Build-output.html",
+          "type": "text/html",
+          "title": "Output of components"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/components/Definition.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/components/Definition.html",
+          "type": "text/html",
+          "title": "The component definition file"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/components/Interface.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/components/Interface.html",
+          "type": "text/html",
+          "title": "Components interfaces"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/components/Using-Providers.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/components/Using-Providers.html",
+          "type": "text/html",
+          "title": "Using providers"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Context-targeting.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Context-targeting.html",
+          "type": "text/html",
+          "title": "Context targeting"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Custom-Headers.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Custom-Headers.html",
+          "type": "text/html",
+          "title": "Custom Headers"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Custom-template-for-components.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Custom-template-for-components.html",
+          "type": "text/html",
+          "title": "Custom HTML templates for Fliplet components"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Data-flow.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Data-flow.html",
+          "type": "text/html",
+          "title": "Fliplet infrastructure data flow"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Data-integration-service.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Data-integration-service.html",
+          "type": "text/html",
+          "title": "Data integration service"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Data-Source-Hooks.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Data-Source-Hooks.html",
+          "type": "text/html",
+          "title": "Data Source Hooks"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Data-source-security.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Data-source-security.html",
+          "type": "text/html",
+          "title": "Securing Fliplet data sources"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Dependencies-and-assets.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Dependencies-and-assets.html",
+          "type": "text/html",
+          "title": "Dependencies and assets"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Event-emitter.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Event-emitter.html",
+          "type": "text/html",
+          "title": "Sending events between components"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Execution-flow.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Execution-flow.html",
+          "type": "text/html",
+          "title": "Fliplet app execution flow"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/File-security.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/File-security.html",
+          "type": "text/html",
+          "title": "Securing Fliplet files and folders"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Fliplet-approved-libraries.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Fliplet-approved-libraries.html",
+          "type": "text/html",
+          "title": "Fliplet-approved JavaScript libraries (reference list)"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Fliplet-SDK.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Fliplet-SDK.html",
+          "type": "text/html",
+          "title": "Fliplet SDK"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Integrate-with-external-API.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Integrate-with-external-API.html",
+          "type": "text/html",
+          "title": "Integrating Fliplet apps with external APIs"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Introduction.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Introduction.html",
+          "type": "text/html",
+          "title": "Introduction to the Fliplet developer platform"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/javascript-coding-standards.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/javascript-coding-standards.html",
+          "type": "text/html",
+          "title": "JavaScript coding standards for Fliplet apps"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/JS-APIs.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/JS-APIs.html",
+          "type": "text/html",
+          "title": "The Fliplet JavaScript APIs"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Native-framework-changelog.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Native-framework-changelog.html",
+          "type": "text/html",
+          "title": "Native framework changelog"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/open-source.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/open-source.html",
+          "type": "text/html",
+          "title": "Fliplet open source resources"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Organization-audit-log-types.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Organization-audit-log-types.html",
+          "type": "text/html",
+          "title": "Organization audit log types"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Platform-Android.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Platform-Android.html",
+          "type": "text/html",
+          "title": "Advanced features for the Android platform"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Platform-iOS.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Platform-iOS.html",
+          "type": "text/html",
+          "title": "Advanced features for the iOS platform"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Publishing.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Publishing.html",
+          "type": "text/html",
+          "title": "Publishing components, themes and menus"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Quickstart.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Quickstart.html",
+          "type": "text/html",
+          "title": "Fliplet CLI quickstart"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Rate-limiting-for-API.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Rate-limiting-for-API.html",
+          "type": "text/html",
+          "title": "Rate limiting for APIs"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Reduce-app-bundle-size.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Reduce-app-bundle-size.html",
+          "type": "text/html",
+          "title": "Reduce your app bundle size"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/REST-API-Documentation.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/REST-API-Documentation.html",
+          "type": "text/html",
+          "title": "Fliplet REST API documentation"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/REST-API/authenticate.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/REST-API/authenticate.html",
+          "type": "text/html",
+          "title": "Authenticating with the Fliplet REST APIs"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/REST-API/fliplet-app-analytics.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/REST-API/fliplet-app-analytics.html",
+          "type": "text/html",
+          "title": "App Analytics REST API"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/REST-API/fliplet-app-subscriptions.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/REST-API/fliplet-app-subscriptions.html",
+          "type": "text/html",
+          "title": "App Subscriptions REST API"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/REST-API/fliplet-apps.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/REST-API/fliplet-apps.html",
+          "type": "text/html",
+          "title": "Apps REST API"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/REST-API/fliplet-communicate.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/REST-API/fliplet-communicate.html",
+          "type": "text/html",
+          "title": "Communicate REST API"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/REST-API/fliplet-datasources.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/REST-API/fliplet-datasources.html",
+          "type": "text/html",
+          "title": "Data Sources REST API"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/REST-API/fliplet-media.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/REST-API/fliplet-media.html",
+          "type": "text/html",
+          "title": "Media REST API"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/REST-API/fliplet-notifications.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/REST-API/fliplet-notifications.html",
+          "type": "text/html",
+          "title": "Notifications REST API"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/REST-API/fliplet-organizations.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/REST-API/fliplet-organizations.html",
+          "type": "text/html",
+          "title": "Organizations REST API"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Testing-components.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Testing-components.html",
+          "type": "text/html",
+          "title": "Testing Fliplet components"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Theme-Settings-In-CSS.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Theme-Settings-In-CSS.html",
+          "type": "text/html",
+          "title": "Use theme settings in your custom CSS"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Theming-appearance.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Theming-appearance.html",
+          "type": "text/html",
+          "title": "Theme and appearance settings for components"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/UI-guidelines-build.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/UI-guidelines-build.html",
+          "type": "text/html",
+          "title": "UI guidelines for component output (build)"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/UI-guidelines-interface.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/UI-guidelines-interface.html",
+          "type": "text/html",
+          "title": "UI guidelines for component settings (interface)"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/Upcoming.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/Upcoming.html",
+          "type": "text/html",
+          "title": "Upcoming and recently launched features"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/URLs-and-IP-Addresses.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/URLs-and-IP-Addresses.html",
+          "type": "text/html",
+          "title": "Fliplet URLs and IP addresses"
+        }
+      ]
+    },
+    {
+      "anchor": "https://developers.fliplet.com/VS-Code-Extension-Setup-Usage.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/VS-Code-Extension-Setup-Usage.html",
+          "type": "text/html",
+          "title": "Fliplet VS Code extension"
         }
       ]
     }

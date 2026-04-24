@@ -1,6 +1,16 @@
-# Encryption JS APIs
+---
+title: Fliplet.DataSources.Encryption
+description: Automatically encrypt and decrypt selected Data Source columns on-device by registering a private key and column list.
+type: api-reference
+tags: [js-api, encryption]
+v3_relevant: true
+deprecated: false
+---
+# `Fliplet.DataSources.Encryption`
 
-Adding automatic encryption and decryption on Data Sources when being used in your apps requires just a few lines of code. Here's how it works:
+Automatically encrypt and decrypt selected Data Source columns on-device by registering a private key and column list.
+
+Here's how it works:
 
 1. Add the `fliplet-encryption` Fliplet package to your app's **global resources** (*Developer options > Global > Settings > Resources*) to enable encryption and decryption functionalities in your Fliplet app
 2. [Set up the encryption/decryption](#set-the-encryptiondecryption-key) private key in one of your **Screen Javascript** code (most likely when the user logs in)

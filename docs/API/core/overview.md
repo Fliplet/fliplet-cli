@@ -1,8 +1,15 @@
 ---
-description: Fliplet Core is included on all screens of your apps. This package enables you to read and write data in the device storage, navigate to different screens as long as dozens of other different interactions and features.
+title: Fliplet Core overview
+description: "Fliplet Core is the JS library bundled into every app screen — storage, navigation, user, API, and dozens of device helpers."
+type: api-reference
+tags: [js-api, core, overview]
+v3_relevant: true
+deprecated: false
 ---
 
-# Our core framework
+# Fliplet Core overview
+
+Fliplet Core is the JS library bundled into every app screen — storage, navigation, user, API, and dozens of device helpers.
 
 ## What is Fliplet Core?
 

@@ -1,3 +1,11 @@
+---
+title: Record container JS APIs
+description: "The record container allows you to display one record from a data source in a screen. It is useful when you want to display a single record in a screen, for ex…"
+type: api-reference
+tags: [js-api, components, record, container]
+v3_relevant: true
+deprecated: false
+---
 # Record container JS APIs
 
 The record container allows you to display one record from a data source in a screen. It is useful when you want to display a single record in a screen, for example a contact card.

@@ -1,4 +1,14 @@
-# Analytics
+---
+title: Fliplet.Analytics
+description: "Enable, disable, and check analytics tracking, and record custom app events and page views from JavaScript."
+type: api-reference
+tags: [js-api, core, analytics]
+v3_relevant: true
+deprecated: false
+---
+# `Fliplet.Analytics`
+
+Enable, disable, and check analytics tracking, and record custom app events and page views from JavaScript.
 
 ## System Analytics
 

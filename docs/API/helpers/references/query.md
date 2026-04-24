@@ -1,4 +1,14 @@
-# Reference
+---
+title: Fliplet.Helper query methods reference
+description: "Reference for `Fliplet.Helper` query methods used to find Helper instances on the current screen from app code or from a configuration interface."
+type: api-reference
+tags: [js-api, helpers, query]
+v3_relevant: true
+deprecated: false
+---
+# Fliplet.Helper query methods reference
+
+Reference for `Fliplet.Helper` query methods used to find Helper instances on the current screen from app code or from a configuration interface.
 
 ## Query methods
 

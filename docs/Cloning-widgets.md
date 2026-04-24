@@ -1,6 +1,14 @@
-# Working with your components
+---
+title: "Cloning widgets, components, and themes from the CLI"
+description: "How to use the fliplet clone and fliplet list CLI commands to download the source of a published component, menu, or theme to your machine."
+type: how-to
+tags: [cloning, widgets]
+v3_relevant: true
+deprecated: false
+---
+# Cloning widgets, components, and themes from the CLI
 
-Once you have published a component on Fliplet, its source can be retrieved at any time from any machine as long as you're logged in on the CLI with an account that has got access to it.
+How to use the fliplet clone and fliplet list CLI commands to download the source of a published component, menu, or theme to your machine.
 
 Simply use the `clone` command to download a copy of the source code, given a component package name:
 

@@ -1,8 +1,14 @@
-# Audio JS APIs
+---
+title: Fliplet.Media.Audio
+description: "Play, pause, stop, and seek audio files on device or from a URL in Fliplet apps via the Audio namespace."
+type: api-reference
+tags: [js-api, audio]
+v3_relevant: true
+deprecated: false
+---
+# `Fliplet.Media.Audio`
 
-The `fliplet-audio` package contains the following namespaces:
-
-- [Audio](#audio)
+Play, pause, stop, and seek audio files on device or from a URL in Fliplet apps via the Audio namespace.
 
 ---
 

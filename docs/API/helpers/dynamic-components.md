@@ -1,3 +1,11 @@
+---
+title: Dynamic components
+description: "Helpers can be dropped into what we refer as \"dynamic components\". These include the **Dynamic container** and **List Repeater** components. Such components su…"
+type: api-reference
+tags: [js-api, helpers, dynamic, components]
+v3_relevant: true
+deprecated: false
+---
 # Dynamic components
 
 <p class="warning">This feature is currently available to beta users only.</p>

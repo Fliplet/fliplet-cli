@@ -1,3 +1,11 @@
+---
+title: Fliplet.UI.RangeSlider()
+description: "(Returns `Object`)"
+type: api-reference
+tags: [js-api, rangeslider]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.UI.RangeSlider()`
 
 (Returns `Object`)

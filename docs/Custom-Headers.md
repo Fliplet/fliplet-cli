@@ -1,3 +1,11 @@
+---
+title: Custom Headers
+description: "Fliplet allows you to set custom headers for your apps. This feature is useful for enhancing security, controlling resource loading, and adding custom HTTP hea…"
+type: how-to
+tags: [custom, headers]
+v3_relevant: true
+deprecated: false
+---
 # Custom Headers
 
 Fliplet allows you to set custom headers for your apps. This feature is useful for enhancing security, controlling resource loading, and adding custom HTTP headers to your applications.

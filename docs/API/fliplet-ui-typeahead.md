@@ -1,8 +1,16 @@
+---
+title: Fliplet.UI.Typeahead()
+description: "(Returns `Object`)"
+type: api-reference
+tags: [js-api, typeahead]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.UI.Typeahead()`
 
 (Returns `Object`)
 
-Create a typeahead input field. This provides a simple mechanism to allow the selection of options from a predefined list as users begin typing, enhancing the user experience by offering real-time suggestions that match or closely match the input, ultimately streamlining the selection process.
+Create a typeahead input that offers real-time suggestions from a predefined list as the user types.
 
 ## Install
 

@@ -1,4 +1,14 @@
-# Data source provider
+---
+title: Data Source provider
+description: "The Data Source provider lets users pick or create a data source for a component, including default columns, entries, and access rules."
+type: api-reference
+tags: [js-api, providers, data, source]
+v3_relevant: true
+deprecated: false
+---
+# Data Source provider
+
+The Data Source provider lets users pick or create a data source for a component, including default columns, entries, and access rules.
 
 **Package**: `com.fliplet.data-source-provider`
 

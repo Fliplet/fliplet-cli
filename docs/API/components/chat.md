@@ -1,3 +1,11 @@
+---
+title: Chat JS APIs
+description: "These public JS APIs will be automatically available in your screens once a **Chat layout** component is used. You can also include these by manually adding th…"
+type: api-reference
+tags: [js-api, components, chat]
+v3_relevant: true
+deprecated: false
+---
 # Chat JS APIs
 
 These public JS APIs will be automatically available in your screens once a **Chat layout** component is used. You can also include these by manually adding the `fliplet-chat` dependency to your app.

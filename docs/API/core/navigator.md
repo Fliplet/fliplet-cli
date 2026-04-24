@@ -1,4 +1,14 @@
-# Navigator
+---
+title: Fliplet.Navigator
+description: "Detect online/offline state, listen for connectivity changes, and wait for the device to be ready."
+type: api-reference
+tags: [js-api, core, navigator]
+v3_relevant: true
+deprecated: false
+---
+# `Fliplet.Navigator`
+
+Detect online/offline state, listen for connectivity changes, and wait for the device to be ready.
 
 ### Check whether the device is online
 

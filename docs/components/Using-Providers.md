@@ -1,3 +1,11 @@
+---
+title: Using providers
+description: Components can display providers to get specific data from the system or need a particular piece of functionality to be added.
+type: guide
+tags: [components-framework, using, providers]
+v3_relevant: true
+deprecated: false
+---
 # Using providers
 
 Components can display providers to get specific data from the system or need a particular piece of functionality to be added.

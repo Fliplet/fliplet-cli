@@ -1,6 +1,14 @@
-# Like Buttons
+---
+title: Fliplet.LikeButton
+description: "Embed a one-tap like button on any screen element, backed by a Data Source that records likes per content ID."
+type: api-reference
+tags: [js-api, like, buttons]
+v3_relevant: true
+deprecated: false
+---
+# `Fliplet.LikeButton`
 
-Let users engage with your content in a single tap.
+Embed a one-tap like button on any screen element, backed by a Data Source that records likes per content ID.
 
 ---
 

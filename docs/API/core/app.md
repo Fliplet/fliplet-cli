@@ -1,4 +1,14 @@
-# App
+---
+title: Fliplet.App
+description: "Retrieve the current app's public slug, build shareable screen URLs, and access app-level settings from JavaScript."
+type: api-reference
+tags: [js-api, core, app]
+v3_relevant: true
+deprecated: false
+---
+# `Fliplet.App`
+
+Retrieve the current app's public slug, build shareable screen URLs, and access app-level settings from JavaScript.
 
 ## Public URLs
 

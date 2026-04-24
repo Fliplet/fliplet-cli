@@ -1,3 +1,11 @@
+---
+title: Securing your apps
+description: "Fliplet apps can have each of their screens and data sources secured so that they can only be accessed when certain conditions are met. Take the following exam…"
+type: how-to
+tags: [app, security]
+v3_relevant: true
+deprecated: false
+---
 # Securing your apps
 
 Fliplet apps can have each of their screens and data sources secured so that they can only be accessed when certain conditions are met. Take the following example:

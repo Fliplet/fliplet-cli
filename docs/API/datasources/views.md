@@ -1,6 +1,14 @@
-# Data Source Views
+---
+title: Data Source views
+description: "Define named, session-aware filters on a data source so each user or group sees only the rows that apply to them."
+type: api-reference
+tags: [js-api, datasources, views]
+v3_relevant: true
+deprecated: false
+---
+# Data Source views
 
-Data Sources can optionally define a set of views for their data. These are essentially filtered data set (similar to SQL views) which allow you to define a dynamic filter on which data should be filtered for the current user.
+Define named, session-aware filters on a data source so each user or group sees only the rows that apply to them.
 
 Example use cases:
 

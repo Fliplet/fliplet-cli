@@ -1,10 +1,15 @@
 ---
-description: Learn how to write custom code in your apps to read and write data from/to third-party APIs.
+title: Integrating Fliplet apps with external APIs
+description: "Call third-party REST APIs from a Fliplet app using jQuery AJAX helpers, including CORS considerations."
+type: how-to
+tags: [integrate, external]
+v3_relevant: true
+deprecated: false
 ---
 
-# Integrate with external APIs
+# Integrating Fliplet apps with external APIs
 
-Fliplet Apps generally rely on our internal APIs to integrate with data you have set in your Data Sources via Fliplet Studio. However, you can easily **write custom code in your apps to integrate with an external API and display its data or feed it to first-party components such as lists and forms**.
+How to call third-party REST APIs from a Fliplet app using jQuery AJAX helpers, including CORS considerations.
 
 This page shows you a few examples and libraries to get started integrating with third party API endpoints.
 

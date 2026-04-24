@@ -1,3 +1,11 @@
+---
+title: List Repeater JS APIs
+description: The list repeater component is a container for a list of records. It is used to display a list of records from a data source.
+type: api-reference
+tags: [js-api, components, list, repeater]
+v3_relevant: true
+deprecated: false
+---
 # List Repeater JS APIs
 
 The list repeater component is a container for a list of records. It is used to display a list of records from a data source.

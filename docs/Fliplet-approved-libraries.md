@@ -1,7 +1,14 @@
-Fliplet approved libraries
-==========================
+---
+title: Fliplet-approved JavaScript libraries (reference list)
+description: "Reference list of every JavaScript library Fliplet pre-approves in apps, including versions and optional add-on libraries."
+type: reference
+tags: [approved, libraries]
+v3_relevant: true
+deprecated: false
+---
+# Fliplet-approved JavaScript libraries (reference list)
 
-The following libraries can be found in all apps:
+Reference list of every JavaScript library Fliplet pre-approves in apps, including versions and optional add-on libraries.
 
 *   **animate-css** `3.5.2` Easily add CSS animations to your app. ([Documentation](https://daneden.github.io/animate.css/))
 *   **bootstrap-css** `3.3.7` Include the CSS styles from the most popular framework in your app. ([Documentation](https://getbootstrap.com/docs/3.3/components/))

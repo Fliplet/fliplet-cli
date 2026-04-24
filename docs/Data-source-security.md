@@ -1,8 +1,15 @@
 ---
-description: Secure your Data Sources with access rules, data requirements, and custom JavaScript security rules.
+title: Securing Fliplet data sources
+description: "Secure your Data Sources with access rules, data requirements, and custom JavaScript security rules."
+type: how-to
+tags: [data, source, security]
+v3_relevant: true
+deprecated: false
 ---
 
-# Securing your Data Sources
+# Securing Fliplet data sources
+
+How to protect data sources with access rules, required-data validation, column-level restrictions, and custom JavaScript security rules.
 
 ## Contents
 

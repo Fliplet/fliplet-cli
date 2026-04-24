@@ -1,6 +1,14 @@
-# Building app action functions
+---
+title: Building Fliplet app action functions
+description: "How to scaffold and develop an app action function with the CLI, declare its dependencies, and configure it via widget.json."
+type: how-to
+tags: [building, functions]
+v3_relevant: true
+deprecated: false
+---
+# Building Fliplet app action functions
 
-To start creating a function to be used in an App Action, use the CLI to generate a boilerplate including the basic things you'll need:
+How to scaffold and develop an app action function with the CLI, declare its dependencies, and configure it via widget.json.
 
 ```
 $ fliplet create-function com.example.function.say-hello "Say hello"

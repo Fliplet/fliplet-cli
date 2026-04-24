@@ -1,3 +1,11 @@
+---
+title: Fliplet.UI
+description: "The `Fliplet.UI` namespace contains several classes for creating UI managed by Fliplet. Where appropriate, the UI would come with the following benefits:"
+type: api-reference
+tags: [js-api]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.UI`
 
 The `Fliplet.UI` namespace contains several classes for creating UI managed by Fliplet. Where appropriate, the UI would come with the following benefits:

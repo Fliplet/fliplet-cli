@@ -1,4 +1,14 @@
-# Analytics Events
+---
+title: Fliplet analytics event reference
+description: "Reference list of analytics event types Fliplet emits for page views, navigation, app management, sharing, and component interactions."
+type: how-to
+tags: [analytics]
+v3_relevant: true
+deprecated: false
+---
+# Fliplet analytics event reference
+
+Reference list of analytics event types Fliplet emits for page views, navigation, app management, sharing, and component interactions.
 
 ## Page Analytics
 

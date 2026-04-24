@@ -1,0 +1,15 @@
+{
+  "name": "fliplet-developers-docs",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Internal scripts and tests for the Fliplet developer docs site. Jekyll does the rendering.",
+  "type": "module",
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build:agent-indexes": "node bin/build-agent-indexes.mjs",
+    "build:md-siblings": "node bin/copy-md-siblings.mjs",
+    "test:unit": "node --test 'bin/__tests__/*.test.mjs'"
+  }
+}

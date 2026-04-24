@@ -1,11 +1,14 @@
-# Media JS APIs
+---
+title: Fliplet.Media
+description: "Browse folders, upload and manage files, and download media to devices via the Fliplet Media namespace."
+type: api-reference
+tags: [js-api, media]
+v3_relevant: true
+deprecated: false
+---
+# `Fliplet.Media`
 
-The `fliplet-media` package contains the following namespaces:
-
-- [Folders](#folders)
-- [Files](#files)
-- [Authentication](#authentication)
-- [Storage](#download-files-to-devices-beta)
+Browse folders, upload and manage files, and download media to devices via the Fliplet Media namespace.
 
 ---
 

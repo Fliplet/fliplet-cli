@@ -1,3 +1,11 @@
+---
+title: Fliplet.UI.Table
+description: "Fliplet.UI.Table is a powerful and flexible table component that provides features like sorting, searching, pagination, row selection, expandable rows, and cus…"
+type: api-reference
+tags: [js-api, table]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.UI.Table`
 
 Fliplet.UI.Table is a powerful and flexible table component that provides features like sorting, searching, pagination, row selection, expandable rows, and custom rendering capabilities.

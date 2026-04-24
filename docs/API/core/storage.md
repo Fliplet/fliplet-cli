@@ -1,6 +1,14 @@
-# Storage
+---
+title: "`Fliplet.Storage` and `Fliplet.App.Storage`"
+description: "Persist JSON-serializable values to device or browser storage, scoped globally or to the current app."
+type: api-reference
+tags: [js-api, core, storage]
+v3_relevant: true
+deprecated: false
+---
+# `Fliplet.Storage` and `Fliplet.App.Storage`
 
-The `Storage` JS APIs allow you to save and read data to and from the device or browser. You can save values such as **numbers**, **booleans**, **strings** and also **objects** (as long as they can be serialized via **JSON**).
+Persist JSON-serializable values to device or browser storage, scoped globally or to the current app.
 
 Please note that all these methods (`set`, `get` and `remove`) are asynchronous and the result is returned via promises. You don't need to wait for the promise when you use `set` and `remove` but you surely will need it when you use the `get` method to read a variable.
 

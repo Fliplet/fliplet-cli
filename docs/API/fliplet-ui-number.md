@@ -1,3 +1,11 @@
+---
+title: Fliplet.UI.NumberInput()
+description: "(Returns `Object`)"
+type: api-reference
+tags: [js-api, number]
+v3_relevant: true
+deprecated: false
+---
 # `Fliplet.UI.NumberInput()`
 
 (Returns `Object`)
