@@ -81,6 +81,32 @@ LikeButton(options)
     * `count` Number of likes
   * `likeWrapper` (String) HTML to use when wrapping the like button. **Default**: `<a class="btn btn-like" href="#"></a>`
   * `likedWrapper` (String) HTML to use when wrapping the liked button. **Default**: `<a class="btn btn-like" href="#"></a>`
+  * `offline` (Boolean) When `true`, taps are accepted even when the device is offline. The underlying data source connector queues the write to its outbox and replays it once the device is back online; the optimistic UI state is preserved across the reconnect. When `false`, the user is shown a "Please connect to the internet" popup instead and the toggle is rejected. Set to `true` for use cases such as bookmarking, where users expect the action to work offline; leave as `false` for like/unlike interactions that are only meaningful while online. **Default**: `false`
+
+## Offline behaviour
+
+By default, `LikeButton` only works while the device is online — tapping the button while offline shows a "Please connect to the internet" popup and the toggle is dropped. This is the right behaviour for likes (where the like count itself is a shared, online concept) but not for per-user toggles such as bookmarks, which users expect to keep working offline.
+
+Pass `offline: true` to opt the button into offline-aware behaviour:
+
+```js
+LikeButton({
+  target: '#bookmark-target',
+  dataSourceId: 12345,
+  view: 'userBookmarks',
+  content: { entryId: '42-bookmark' },
+  likeLabel: '<i class="fa fa-bookmark-o"></i>',
+  likedLabel: '<i class="fa fa-bookmark"></i>',
+  offline: true
+});
+```
+
+When `offline: true`:
+
+* Taps are not blocked while offline. The optimistic state of the button updates immediately.
+* The write goes through the data source connector, which queues the operation in `Fliplet.Storage` if the network call fails.
+* The queue is automatically drained when `Fliplet.Navigator.onOnline()` fires, and on app startup. No additional caller code is required.
+* Read state survives offline relaunches when the data source is bundled for offline use (native mobile only). On platforms without an offline database (e.g. web), reads still require a connection — only writes are queued.
 
 ## Methods
 
