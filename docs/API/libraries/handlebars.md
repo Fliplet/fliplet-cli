@@ -1,6 +1,6 @@
 ---
 title: Using Handlebars in your apps
-description: "All screens of your Fliplet app already include [Handlebars `2.15.2`](https://handlebarsjs.com/) hence you can start using it straight away. Here's a quick exa…"
+description: "Use Handlebars 2.15.2 in Fliplet app screens for templating, with built-in helpers for images, dates, auth URLs, JSON, and conditional comparisons."
 type: api-reference
 tags: [js-api, libraries, handlebars]
 v3_relevant: true
@@ -8,7 +8,7 @@ deprecated: false
 ---
 # Using Handlebars in your apps
 
-All screens of your Fliplet app already include [Handlebars `2.15.2`](https://handlebarsjs.com/) hence you can start using it straight away. Here's a quick example following the official Handlebars docs:
+Use [Handlebars `2.15.2`](https://handlebarsjs.com/) in Fliplet app screens for templating, with built-in helpers for images, dates, auth URLs, JSON, and conditional comparisons. Handlebars is included on every screen, so you can start using it straight away — here's a quick example following the official Handlebars docs:
 
 {% raw %}
 ```js

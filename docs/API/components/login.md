@@ -1,6 +1,6 @@
 ---
 title: Login
-description: "The login component fires hooks at key points in the authentication lifecycle. These allow you to run custom code after a user successfully logs in or when a r…"
+description: "Run custom code after a user authenticates or when a returning user's session is re-validated via the Login component's `login` and `sessionValidate` hooks."
 type: api-reference
 tags: [js-api, components, login]
 v3_relevant: true
@@ -8,7 +8,7 @@ deprecated: false
 ---
 # Login
 
-The login component fires hooks at key points in the authentication lifecycle. These allow you to run custom code after a user successfully logs in or when a returning user's session is re-validated.
+Run custom code after a user authenticates or when a returning user's session is re-validated via the Login component's `login` and `sessionValidate` hooks.
 
 ## Hooks
 

@@ -1,6 +1,6 @@
 ---
 title: Dynamic components
-description: "Helpers can be dropped into what we refer as \"dynamic components\". These include the **Dynamic container** and **List Repeater** components. Such components su…"
+description: "Render Helper instances inside Dynamic Container and List Repeater components, with reactive per-record data binding via `supportsDynamicContext`."
 type: api-reference
 tags: [js-api, helpers, dynamic, components]
 v3_relevant: true
@@ -10,7 +10,7 @@ deprecated: false
 
 <p class="warning">This feature is currently available to beta users only.</p>
 
-Helpers can be dropped into what we refer as "dynamic components". These include the **Dynamic container** and **List Repeater** components. Such components supports reactive data binding between the source of the data and the helpers you build.
+Render Helper instances inside Dynamic Container and List Repeater components, with reactive per-record data binding via `supportsDynamicContext`. The two components support reactive data binding between the source of the data and the helpers you build.
 
 To support reactive data communication between the two, you must add the `supportsDynamicContext: true` property to your helper configuration:
 

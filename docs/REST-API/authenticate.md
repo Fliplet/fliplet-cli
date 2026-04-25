@@ -1,6 +1,6 @@
 ---
 title: Authenticating with the Fliplet REST APIs
-description: "All Fliplet REST API requests are made over HTTPS to a regional endpoint (`api.fliplet.com`, `us.api.fliplet.com`, or `ca.api.fliplet.com`) and must include an…"
+description: "Authenticate Fliplet REST API requests via Auth-token header, Authorization Bearer (base64), query string, or cookie against EU, US, or CA endpoints."
 type: api-reference
 tags: [rest-api, authenticate]
 v3_relevant: true
@@ -8,7 +8,7 @@ deprecated: false
 ---
 # Authenticating with the Fliplet REST APIs
 
-All Fliplet REST API requests are made over HTTPS to a regional endpoint (`api.fliplet.com`, `us.api.fliplet.com`, or `ca.api.fliplet.com`) and must include an auth token.
+Authenticate Fliplet REST API requests via the `Auth-token` header, an `Authorization: Bearer` header (base64), a `?auth_token=` query string, or a cookie, against the EU (`api.fliplet.com`), US (`us.api.fliplet.com`), or CA (`ca.api.fliplet.com`) endpoints over HTTPS.
 
 All requests must be made via ​**SSL​** to the above HTTPS-only endpoint.
 

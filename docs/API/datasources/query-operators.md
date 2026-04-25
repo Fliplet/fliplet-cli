@@ -1,6 +1,6 @@
 ---
 title: Data Sources query operators
-description: "Reference for MongoDB/Sift-style operators (`$eq`, `$gt`, `$in`, `$regex`, …) usable in `connection.find()` `where` clauses."
+description: "Filter Data Source queries with MongoDB/Sift operators ($eq, $gt, $in, $regex, $and, $or) inside connection.find() where clauses."
 type: api-reference
 tags: [js-api, datasources, query, operators]
 v3_relevant: true
@@ -8,7 +8,7 @@ deprecated: false
 ---
 # Data Sources query operators
 
-Reference for MongoDB/Sift-style operators (`$eq`, `$gt`, `$in`, `$regex`, …) usable in `connection.find()` `where` clauses.
+Filter Data Source queries with MongoDB/Sift operators (`$eq`, `$gt`, `$in`, `$regex`, `$and`, `$or`, and others) inside `connection.find()` `where` clauses.
 
 ## MongoDB-style Operators (Sift.js)
 

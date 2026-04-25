@@ -1,6 +1,6 @@
 ---
 title: Push Notifications JS APIs
-description: "These public JS APIs will be automatically available in your screens once **Push Notifications** have been enabled for your app."
+description: "Prompt users to subscribe, read device push settings, fetch the subscription ID and token, and unsubscribe via Fliplet's push notifications JS API."
 type: api-reference
 tags: [js-api, components, push, notifications]
 v3_relevant: true
@@ -8,7 +8,7 @@ deprecated: false
 ---
 # Push Notifications JS APIs
 
-These public JS APIs will be automatically available in your screens once **Push Notifications** have been enabled for your app.
+Prompt users to subscribe to push notifications, read device push settings, fetch the subscription ID and token, and unsubscribe on apps with Push Notifications enabled.
 
 ## Ask the user to subscribe for push notifications
 

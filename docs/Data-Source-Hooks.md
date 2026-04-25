@@ -1,6 +1,6 @@
 ---
 title: Data Source Hooks
-description: "Data Source hooks allow your app's backend to perform certain operations such as **sending emails** or **push notifications** when certain conditions occur, e.…"
+description: "Trigger emails, SMS, push notifications, web requests, or column operations on Data Source insert/update/beforeSave/beforeQuery using Sift.js match conditions."
 type: how-to
 tags: [data, source, hooks]
 v3_relevant: true
@@ -8,7 +8,7 @@ deprecated: false
 ---
 # Data Source Hooks
 
-Data Source hooks allow your app's backend to perform certain operations such as **sending emails** or **push notifications** when certain conditions occur, e.g. inserting or updating a Data Source Entry.
+Trigger emails, SMS, push notifications, web requests, or column operations on Data Source `insert`, `update`, `beforeSave`, or `beforeQuery` events using [Sift.js](https://github.com/Fliplet/sift.js) match conditions.
 
 **Please note**: hooks do not run when data is inserted or saved via the "App data" section in **Fliplet Studio**.
 

@@ -1,6 +1,6 @@
 ---
 title: Component events
-description: "When components are moved around the page in *Edit* mode, Fliplet provides a set of events to manage the user interaction."
+description: "Listen for component lifecycle events (adding, added, removed, moved, render) emitted while users edit a Fliplet screen, via Fliplet.Hooks.on('componentEvent')."
 type: how-to
 tags: [component, events]
 v3_relevant: true
@@ -8,7 +8,7 @@ deprecated: false
 ---
 # Component events
 
-When components are moved around the page in *Edit* mode, Fliplet provides a set of events to manage the user interaction.
+Listen for component lifecycle events emitted while users edit a Fliplet screen — such as adding, added, removed, moved, and render — via `Fliplet.Hooks.on('componentEvent')`.
 
 ## Usage
 

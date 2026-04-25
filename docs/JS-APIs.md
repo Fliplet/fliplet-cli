@@ -2,7 +2,7 @@
 title: The Fliplet JavaScript APIs
 description: "How the Fliplet JS APIs (SDK, not a framework) let you interact with data, screens, users, and components from Studio custom code, themes, and widgets."
 type: reference
-tags: []
+tags: [js-api, overview]
 v3_relevant: true
 deprecated: false
 ---

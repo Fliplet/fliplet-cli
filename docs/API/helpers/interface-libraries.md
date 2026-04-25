@@ -1,6 +1,6 @@
 ---
 title: "Helper configuration interface: external libraries"
-description: "Include [Fliplet-approved](/Fliplet-approved-libraries.html) or third-party JavaScript and CSS libraries in a Helper's configuration interface via the `depende…"
+description: "Include Fliplet-approved or third-party JavaScript and CSS libraries in a Helper's configuration interface via the `dependencies` array."
 type: api-reference
 tags: [js-api, helpers, interface, libraries]
 v3_relevant: true

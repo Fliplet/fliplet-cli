@@ -1,6 +1,6 @@
 ---
 title: Data Directory JS APIs
-description: "These public JS APIs will be automatically available in your screens once a **Data Directory** component is dropped into such screens."
+description: "Hook into the Data Directory component to override its data source, transform entries, and run code before render or initialization on directory screens."
 type: api-reference
 tags: [js-api, components, data, directory]
 v3_relevant: true
@@ -8,7 +8,7 @@ deprecated: false
 ---
 # Data Directory JS APIs
 
-These public JS APIs will be automatically available in your screens once a **Data Directory** component is dropped into such screens.
+Hook into the Data Directory component to override its data source, transform entries before render, and run code at key points in the directory lifecycle on screens that include the component.
 
 ## Run a hook before the directory is rendered
 

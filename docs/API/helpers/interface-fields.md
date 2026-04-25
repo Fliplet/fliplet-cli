@@ -9,6 +9,7 @@ deprecated: false
 # Helper configuration interface: fields
 
 Define the fields shown in a Helper's Fliplet Studio configuration interface, including their type, label, validation, and default value.
+
 ## Properties for all fields
 
 The following property can be defined for all field types (except when specified otherwise):

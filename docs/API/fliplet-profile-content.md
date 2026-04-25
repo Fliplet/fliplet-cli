@@ -1,6 +1,6 @@
 ---
 title: Fliplet.Profile.Content()
-description: "(Returns **`Promise`**)"
+description: "Create, query, update, and delete user-attributed content records in a data source so each user only sees their own entries via Fliplet.Profile.Content."
 type: api-reference
 tags: [js-api, profile, content]
 v3_relevant: true
@@ -8,9 +8,7 @@ deprecated: false
 ---
 # `Fliplet.Profile.Content()`
 
-(Returns **`Promise`**)
-
-Create, query, update, and delete user-attributed content records in a Data Source, so each user only sees their own entries.
+Create, query, update, and delete user-attributed content records in a data source via `Fliplet.Profile.Content()` so each user only sees, edits, or deletes their own entries. A unique user identifier is automatically attached to every record, with no app login required.
 
 When **content** is created using `Fliplet.Profile.Content()`, a record is stored in the specified data source with the content **attributed to the user**. This means the following:
 

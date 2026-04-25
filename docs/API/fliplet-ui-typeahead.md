@@ -1,6 +1,6 @@
 ---
 title: Fliplet.UI.Typeahead()
-description: "(Returns `Object`)"
+description: "Render a typeahead input with real-time suggestions, free-input toggle, max items, and get/set/change methods via Fliplet.UI.Typeahead."
 type: api-reference
 tags: [js-api, typeahead]
 v3_relevant: true
@@ -8,9 +8,7 @@ deprecated: false
 ---
 # `Fliplet.UI.Typeahead()`
 
-(Returns `Object`)
-
-Create a typeahead input that offers real-time suggestions from a predefined list as the user types.
+Render a typeahead input that surfaces real-time suggestions from a predefined `options` list as the user types, with optional `freeInput`, `maxItems`, and `placeholder` settings via `Fliplet.UI.Typeahead()`. The constructor returns a controller instance with `get`, `set`, and `change` methods for reading or updating the selected values.
 
 ## Install
 

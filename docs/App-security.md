@@ -1,6 +1,6 @@
 ---
 title: Securing your apps
-description: "Fliplet apps can have each of their screens and data sources secured so that they can only be accessed when certain conditions are met. Take the following exam…"
+description: "Restrict screen and data-source access in Fliplet apps via login conditions, IP allow/deny lists, and custom JS rules using session and page context."
 type: how-to
 tags: [app, security]
 v3_relevant: true
@@ -8,7 +8,7 @@ deprecated: false
 ---
 # Securing your apps
 
-Fliplet apps can have each of their screens and data sources secured so that they can only be accessed when certain conditions are met. Take the following example:
+Restrict screen and data-source access in Fliplet apps using login conditions, IP allow/deny lists, and custom JavaScript rules that read session and page context. For example:
 
 > My app has 5 screens, one being a login screen with email validation based on a Fliplet data source. I want to secure the other 4 screens of the app so that they can only be accessed by logged-in users.
 

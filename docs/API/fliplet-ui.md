@@ -1,6 +1,6 @@
 ---
 title: Fliplet.UI
-description: "The `Fliplet.UI` namespace contains several classes for creating UI managed by Fliplet. Where appropriate, the UI would come with the following benefits:"
+description: "Fliplet-managed UI primitives — toasts, action sheets, modals, date/time pickers, typeahead, tables, panzoom — under the Fliplet.UI namespace."
 type: api-reference
 tags: [js-api]
 v3_relevant: true
@@ -8,7 +8,7 @@ deprecated: false
 ---
 # `Fliplet.UI`
 
-The `Fliplet.UI` namespace contains several classes for creating UI managed by Fliplet. Where appropriate, the UI would come with the following benefits:
+The `Fliplet.UI` namespace contains classes for Fliplet-managed UI primitives such as toasts, action sheets, modals, date and time pickers, typeahead, tables, and panzoom. Where appropriate, these UI elements come with the following benefits:
 
   - Optimized usability across all devices/platforms
   - Support for localization incl. RTL language

@@ -1,6 +1,6 @@
 ---
 title: Rate limiting for APIs
-description: "If you’re integrating your app or service with Fliplet APIs, you should be mindful in relation to how frequent your requests are hitting our APIs. Our infrastructure is set up to automatically throttle down and rate limit requests depending on how frequently they are made."
+description: "Fliplet rate-limits Data Source, Communicate, audit-log, AI, and App Action APIs per user; back off on 429 responses and batch writes via the commit endpoint."
 type: reference
 tags: [rate, limiting]
 v3_relevant: true
@@ -9,7 +9,7 @@ deprecated: false
 
 # Rate limiting for APIs
 
-If you're integrating your app or service with Fliplet APIs, you should be mindful in relation to how frequent your requests are hitting our APIs.
+Fliplet rate-limits Data Source, Communicate, audit-log, AI, and App Action APIs on a per-user basis. Back off on `429` responses and batch writes via the commit endpoint to stay within limits.
 
 Our infrastructure is set up to automatically throttle down and rate limit requests depending on how frequently they are made.
 

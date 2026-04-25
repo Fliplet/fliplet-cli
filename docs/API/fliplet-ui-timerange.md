@@ -1,6 +1,6 @@
 ---
 title: Fliplet.UI.TimeRange()
-description: "(Returns `Object`)"
+description: "Render a paired start/end time range input in HH:mm format with required flag, default value, and get/set/change methods via Fliplet.UI.TimeRange."
 type: api-reference
 tags: [js-api, timerange]
 v3_relevant: true
@@ -8,9 +8,7 @@ deprecated: false
 ---
 # `Fliplet.UI.TimeRange()`
 
-(Returns `Object`)
-
-Create a time range input field. This provides a simple mechanism to allow the selection of a time range.
+Render a paired start/end time range input in `HH:mm` format with an optional default `{ start, end }` value and a `required` flag via `Fliplet.UI.TimeRange()`. The constructor returns a controller instance with `get`, `set`, and `change` methods for reading or updating the selected range.
 
 ## Install
 

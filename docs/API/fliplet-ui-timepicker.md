@@ -1,6 +1,6 @@
 ---
 title: Fliplet.UI.TimePicker()
-description: "(Returns `Object`)"
+description: "Render a time picker input in 24-hour HH:mm format with required flag and get/set/change methods via Fliplet.UI.TimePicker."
 type: api-reference
 tags: [js-api, timepicker]
 v3_relevant: true
@@ -8,9 +8,7 @@ deprecated: false
 ---
 # `Fliplet.UI.TimePicker()`
 
-(Returns `Object`)
-
-Create a time picker input field. This provides a simple mechanism to allow the selection of a time.
+Render a time picker input that captures values in 24-hour `HH:mm` format with an optional preset value and a `required` flag via `Fliplet.UI.TimePicker()`. The constructor returns a controller instance with `get`, `set`, and `change` methods for reading or updating the selected time.
 
 ## Install
 

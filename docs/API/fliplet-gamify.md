@@ -1,6 +1,6 @@
 ---
 title: Fliplet.Gamify
-description: Configure gamification logic for your apps.
+description: "Configure gamification with logs, variables, and achievements via Fliplet.Gamify; track points, milestones, and badges backed by a data source per user."
 type: api-reference
 tags: [js-api, gamify]
 v3_relevant: true
@@ -8,7 +8,7 @@ deprecated: false
 ---
 # `Fliplet.Gamify`
 
-Configure gamification logic for your apps.
+Configure gamification with logs, variables, and achievements via `Fliplet.Gamify`; track points, milestones, and badges backed by a data source per user.
 
 ---
 

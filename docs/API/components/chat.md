@@ -1,6 +1,6 @@
 ---
 title: Chat JS APIs
-description: "These public JS APIs will be automatically available in your screens once a **Chat layout** component is used. You can also include these by manually adding th…"
+description: "Start conversations, list contacts, count unread messages, and modify chat rendering via Fliplet.Chat on screens that use the Chat layout component."
 type: api-reference
 tags: [js-api, components, chat]
 v3_relevant: true
@@ -8,7 +8,7 @@ deprecated: false
 ---
 # Chat JS APIs
 
-These public JS APIs will be automatically available in your screens once a **Chat layout** component is used. You can also include these by manually adding the `fliplet-chat` dependency to your app.
+Start conversations, list contacts, count unread messages, and customize chat rendering via `Fliplet.Chat` on screens that use the Chat layout component. You can also include these by manually adding the `fliplet-chat` dependency to your app.
 
 ## Access the chat JS API
 

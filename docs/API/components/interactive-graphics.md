@@ -1,6 +1,6 @@
 ---
 title: Interactive Graphics JS APIs
-description: "These public JS APIs are available in screens where an **Interactive Graphics** component is present."
+description: "Override marker data, preselect a marker or map, and respond to label clicks via Interactive Graphics component hooks on screens that use it."
 type: api-reference
 tags: [js-api, components, interactive, graphics]
 v3_relevant: true
@@ -8,7 +8,7 @@ deprecated: false
 ---
 # Interactive Graphics JS APIs
 
-These public JS APIs are available in screens where an **Interactive Graphics** component is present.
+Override marker data, preselect a marker or map on render, and respond to label clicks via Interactive Graphics component hooks on screens that use it.
 
 ## Hooks
 

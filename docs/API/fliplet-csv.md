@@ -8,6 +8,8 @@ deprecated: false
 ---
 # `Fliplet.CSV`
 
+Encode and decode CSV in Fliplet apps via the `fliplet-csv` package. The library wraps [Papa Parse](https://www.papaparse.com/) so it accepts JSON, arrays, or explicit fields/data shapes and supports Base64 and `data:` URL output.
+
 ## Install
 
 Add the `fliplet-csv` dependency to your screen or app resources.

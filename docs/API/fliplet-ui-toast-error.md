@@ -1,6 +1,6 @@
 ---
 title: Fliplet.UI.Toast.error()
-description: "(Returns **`undefined`**)"
+description: "Parse an error object and show a toast with a friendly initial message plus a button to reveal the detailed technical error via Fliplet.UI.Toast.error."
 type: api-reference
 tags: [js-api, toast, error]
 v3_relevant: true
@@ -8,10 +8,7 @@ deprecated: false
 ---
 # `Fliplet.UI.Toast.error()`
 
-(Returns **`undefined`**)
-
-Parses an error object and shows an optional initial message and a button
-to view the detailed error message that is typically more technical.
+Parse an error object and show a toast with a friendly initial message plus a button that reveals the detailed, more technical error text via `Fliplet.UI.Toast.error()`. Useful for surfacing data source, network, and API failures to end users without exposing raw stack traces by default.
 
 ## Usage
 

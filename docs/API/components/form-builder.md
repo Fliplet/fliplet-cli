@@ -1,6 +1,6 @@
 ---
 title: Form JS APIs
-description: "The following JS APIs are available in a screen once a **Form** component is dropped into the screen."
+description: "Populate fields, read values, react to validation, and submit programmatically via Fliplet.FormBuilder on screens that contain a Form component."
 type: api-reference
 tags: [js-api, components, form, builder]
 v3_relevant: true
@@ -8,7 +8,7 @@ deprecated: false
 ---
 # Form JS APIs
 
-The following JS APIs are available in a screen once a **Form** component is dropped into the screen.
+Populate fields, read submitted values, react to validation events, and trigger submit programmatically on screens that contain a Form component, via `Fliplet.FormBuilder`.
 
 ## Edit a data source entry
 

@@ -8,6 +8,8 @@ deprecated: false
 ---
 # `Fliplet.Barcode`
 
+Scan QR codes and other 1D/2D barcodes from the device camera, and generate barcode images on screen, via the `fliplet-barcode` package. Barcode scanning is only supported in native apps.
+
 ## Install
 
 Add the `fliplet-barcode` dependency to your screen or app resources.

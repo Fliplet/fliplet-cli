@@ -1,6 +1,6 @@
 ---
 title: "Helper example: decision tree"
-description: Build a decision tree using the Fliplet Helper library.
+description: "Worked example: build a decision-tree Helper that presents a question, waits for the user's answer, then advances to the next question."
 type: api-reference
 tags: [js-api, helpers, example, decision, tree]
 v3_relevant: true

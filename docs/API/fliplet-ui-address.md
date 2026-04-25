@@ -1,6 +1,6 @@
 ---
 title: Fliplet.UI.AddressField()
-description: "The Address field is a customizable component that integrates with Google Maps to enable address lookup. It allows users to search and select addresses using G…"
+description: "Add a Google Maps autocomplete address field to a screen via `Fliplet.UI.AddressField()` to search, select, and retrieve location details."
 type: api-reference
 tags: [js-api, address]
 v3_relevant: true
@@ -8,7 +8,7 @@ deprecated: false
 ---
 # `Fliplet.UI.AddressField()`
 
-The Address field is a customizable component that integrates with Google Maps to enable address lookup. It allows users to search and select addresses using Google's autocomplete and retrieve location details.
+Add a Google Maps autocomplete address field to a screen via `Fliplet.UI.AddressField()` so users can search, select, and retrieve location details.
 
 ## Install
 

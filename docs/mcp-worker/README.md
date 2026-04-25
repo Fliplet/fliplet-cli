@@ -1,7 +1,14 @@
+---
+title: "fliplet-docs-mcp"
+description: "Cloudflare Worker exposing an MCP server at developers.fliplet.com/mcp with search_fliplet_docs and fetch_fliplet_doc tools backed by llms.txt."
+type: reference
+tags: [mcp, internal]
+v3_relevant: false
+deprecated: false
+---
 # fliplet-docs-mcp
 
-Cloudflare Worker hosting an MCP (Model Context Protocol) server for the
-Fliplet developer docs. Deployed at **https://developers.fliplet.com/mcp**.
+Cloudflare Worker exposing an MCP (Model Context Protocol) server at **https://developers.fliplet.com/mcp** with `search_fliplet_docs` and `fetch_fliplet_doc` tools backed by `.well-known/llms.txt`.
 
 Any MCP-aware AI client (Claude Code, Cursor, custom OpenAI tools) can add
 this URL as an MCP server and immediately get two tools:

@@ -1,6 +1,6 @@
 ---
 title: Fliplet.UI.NumberInput()
-description: "(Returns `Object`)"
+description: "Render a numeric input with required flag, preset value, and get/set/change methods for reading user-entered numbers via Fliplet.UI.NumberInput."
 type: api-reference
 tags: [js-api, number]
 v3_relevant: true
@@ -8,9 +8,7 @@ deprecated: false
 ---
 # `Fliplet.UI.NumberInput()`
 
-(Returns `Object`)
-
-Create a number input field. This provides a simple mechanism to allow the input of a number.
+Render a numeric input field that accepts an optional preset value and a `required` flag via `Fliplet.UI.NumberInput()`. The constructor returns a controller instance with `get`, `set`, and `change` methods for reading and updating the user-entered number.
 
 ## Install
 

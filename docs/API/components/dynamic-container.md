@@ -1,6 +1,6 @@
 ---
 title: Dynamic Container JS APIs
-description: "The dynamic container allows you to dynamically load data from a data source in a screen. It is useful when you want to display a list of records in a screen u…"
+description: "Bind a screen region to a data source query via Fliplet.DynamicContainer so the component renders a list of entries with bound expressions."
 type: api-reference
 tags: [js-api, components, dynamic, container]
 v3_relevant: true
@@ -8,7 +8,7 @@ deprecated: false
 ---
 # Dynamic Container JS APIs
 
-The dynamic container allows you to dynamically load data from a data source in a screen. It is useful when you want to display a list of records in a screen using the [list repeater](/API/components/list-repeater.html) component.
+Bind a screen region to a data source query via `Fliplet.DynamicContainer` so the component renders a list of entries with bound expressions, typically paired with the [list repeater](/API/components/list-repeater.html) component.
 
 Here's a HTML sample of a dynamic container with a list repeater component rendering a dynamic value from the loaded data source entries:
 

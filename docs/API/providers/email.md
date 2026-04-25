@@ -1,6 +1,6 @@
 ---
 title: Email provider
-description: "The Email provider lets users compose and configure an email template (subject, body, recipients, headers) that can then be sent via `Fliplet.Communicate.sendE…"
+description: "Compose email templates (subject, body, recipients, headers) in a reusable provider UI for sending via `Fliplet.Communicate.sendEmail()`."
 type: api-reference
 tags: [js-api, providers, email]
 v3_relevant: true
@@ -8,7 +8,7 @@ deprecated: false
 ---
 # Email provider
 
-The Email provider lets users compose and configure an email template (subject, body, recipients, headers) that can then be sent via `Fliplet.Communicate.sendEmail()`.
+Compose email templates (subject, body, recipients, headers) in a reusable provider UI for sending via `Fliplet.Communicate.sendEmail()`.
 
 **Package**: `com.fliplet.email-provider`
 

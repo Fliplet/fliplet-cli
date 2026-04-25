@@ -1,6 +1,6 @@
 ---
 title: Helper external libraries
-description: "Declare a Helper's runtime dependencies by listing [Fliplet-approved](/Fliplet-approved-libraries.html) or third-party JS/CSS libraries in its `render.dependen…"
+description: "Declare a Helper's runtime dependencies by listing Fliplet-approved or third-party JS/CSS libraries in its `render.dependencies` array."
 type: api-reference
 tags: [js-api, helpers, libraries]
 v3_relevant: true

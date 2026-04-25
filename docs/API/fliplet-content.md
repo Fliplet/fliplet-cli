@@ -1,6 +1,6 @@
 ---
 title: Fliplet.Content()
-description: "(Returns **`Promise`**)"
+description: "Create, query, update, and delete shared content records (bookmarks, likes, saved searches) backed by a data source via Fliplet.Content."
 type: api-reference
 tags: [js-api, content]
 v3_relevant: true
@@ -8,9 +8,7 @@ deprecated: false
 ---
 # `Fliplet.Content()`
 
-(Returns **`Promise`**)
-
-The `fliplet-content` package contains helpers to create and manage content using data sources.
+Create, query, update, and delete shared content records — bookmarks, likes, saved searches, and similar features — backed by a Fliplet data source via `Fliplet.Content()`. The constructor resolves with an instance whose methods aggregate content created across users, screens, and apps.
 
 When **content** is created using `Fliplet.Content()`, a record is stored in the specified data source. This can be used to aggregate all the content being created via different users, screens and apps.
 

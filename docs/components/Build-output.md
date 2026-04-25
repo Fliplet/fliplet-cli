@@ -1,6 +1,6 @@
 ---
 title: Output of components
-description: "Components generally output HTML code when dropped into the page. Their output is compiled with [Handlebars](http://handlebarsjs.com/) using the `build.html` f…"
+description: "Render Fliplet component output from build.html via Handlebars; read per-instance settings with Fliplet.Widget.instance and support dynamic-container context."
 type: guide
 tags: [components-framework, build, output]
 v3_relevant: true
@@ -8,7 +8,7 @@ deprecated: false
 ---
 # Output of components
 
-Components generally output HTML code when dropped into the page. Their output is compiled with [Handlebars](http://handlebarsjs.com/) using the `build.html` file from your component.
+Render Fliplet component output from `build.html` via [Handlebars](http://handlebarsjs.com/), then read per-instance settings with `Fliplet.Widget.instance` and opt into dynamic-container context. Components generally output HTML code when dropped into the page; their output is compiled using the `build.html` file from your component.
 
 App components are not required to output any HTML, though when they do you can decide whether their output will be appended at the beginning or the end of the page (e.g. once the body tag is opened or closed).
 

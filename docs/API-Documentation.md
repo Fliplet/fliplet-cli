@@ -1,15 +1,15 @@
 ---
 title: JS API Documentation
-description: Javascript-based SDK to interact with core functions and components in your Fliplet Apps.
+description: "Index of Fliplet's JavaScript APIs (Core, Data Sources, Media, UI, Communicate) for working with apps, screens, users, and components from custom code."
 type: reference
-tags: []
+tags: [js-api, overview]
 v3_relevant: true
 deprecated: false
 ---
 
 # JS API Documentation
 
-Feeling lost? Head to the [JS APIs](JS-APIs.md) section of the docs to read more about using these packages in your Fliplet apps, components and themes.
+Index of Fliplet's JavaScript APIs (Core, Data Sources, Media, UI, Communicate) for working with apps, screens, users, and components from custom code. See the [JS APIs](JS-APIs.md) section for guidance on using these packages in your Fliplet apps, components, and themes.
 
 <p class="quote">Are you rather looking for our <strong>RESTful APIs</strong> for complex backend integrations? Jump to our <a href="/REST-API-Documentation.html">documentation</a> to read more.</p>
 

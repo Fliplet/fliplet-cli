@@ -9,7 +9,7 @@ deprecated: false
 
 # App Actions V3
 
-Run a single `execute(context)` JavaScript function on the server or client, either ad hoc or on a schedule.
+Write and run JavaScript code directly on the server or client to perform automations, scheduled tasks, and on-demand operations. Each V3 app action is a single `execute(context)` function that runs ad hoc or on a cron schedule.
 
 ![How it works](/assets/img/app-actions.png)
 

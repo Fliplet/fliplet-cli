@@ -1,6 +1,6 @@
 ---
 title: Fliplet.UI.PanZoom
-description: "These public JS APIs will be automatically available in your screen once an Interactive graphics component is dropped into a screen. You can also add the depen…"
+description: "Pan, zoom, and place markers on images or interactive graphics via `Fliplet.UI.PanZoom`, with pinch, mouse wheel, and double-tap support."
 type: api-reference
 tags: [js-api, panzoom]
 v3_relevant: true
@@ -8,8 +8,7 @@ deprecated: false
 ---
 # `Fliplet.UI.PanZoom`
 
-These public JS APIs will be automatically available in your screen once an Interactive graphics component is dropped into a screen.
-You can also add the dependency `fliplet-ui-panzoom` in Developer options -> Resources
+Pan, zoom, and place markers on images or interactive graphics via `Fliplet.UI.PanZoom`, with pinch, mouse wheel, and double-tap support. You can also add the dependency `fliplet-ui-panzoom` in Developer options -> Resources to use it outside of an Interactive Graphics component.
 
 ## Create an instance
 `Fliplet.UI.PanZoom.create(selector, options)`

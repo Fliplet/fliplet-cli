@@ -1,6 +1,6 @@
 ---
 title: Fliplet.UI.Actions()
-description: "(Returns **`Promise`**)"
+description: "Show a native-style action sheet with a title, labeled options, and a cancel button, resolving with the chosen index via Fliplet.UI.Actions."
 type: api-reference
 tags: [js-api, actions]
 v3_relevant: true
@@ -8,11 +8,7 @@ deprecated: false
 ---
 # `Fliplet.UI.Actions()`
 
-(Returns **`Promise`**)
-
-Show a sheet of options the user can choose from.
-
-If an action is chosen, the Promise is resolved when the specified action is completed or resolved with the 0-based index provided as the first parameter. The Promise is also resolved when user chooses to cancel and dismiss the action sheet. In this case, the index provided in the resolving function will be `undefined`.
+Show a native-style action sheet with a title, a list of labeled options, and an optional cancel button via `Fliplet.UI.Actions()`. The returned Promise resolves with the 0-based index of the chosen label once its action runs, or with `undefined` if the user cancels.
 
 ## Screenshots
 

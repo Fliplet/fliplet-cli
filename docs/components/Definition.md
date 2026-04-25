@@ -1,6 +1,6 @@
 ---
 title: The component definition file
-description: "The `widget.json` file defines your component as well as the **dependencies** and **assets** it needs in order to run."
+description: "Define a Fliplet component in widget.json: name, package, version, icon, tags, html_tag, plus interface and build entries for dependencies and assets."
 type: guide
 tags: [components-framework, definition]
 v3_relevant: true
@@ -8,7 +8,7 @@ deprecated: false
 ---
 # The component definition file
 
-The `widget.json` file defines your component as well as the **dependencies** and **assets** it needs in order to run.
+Define a Fliplet component in `widget.json`: `name`, `package`, `version`, `icon`, `tags`, `html_tag`, plus `interface` and `build` entries for dependencies and assets. The file declares everything Fliplet needs to load and run your component.
 
 Please note: if you make changes to the `widget.json` file, restart the development server (`fliplet run`) to apply the changes you made.
 

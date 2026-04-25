@@ -1,6 +1,6 @@
 ---
 title: Context targeting
-description: "Fliplet uses [Modernizr](https://modernizr.com/) (`v3.5.0`) to help developers target users with specific device capabilities and contexts. This lets you targe…"
+description: "Target devices in Fliplet apps via Modernizr classes and JS flags for iOS, Android, Windows, web, native, mobile/tablet/desktop, notch, and Studio edit mode."
 type: how-to
 tags: [context, targeting]
 v3_relevant: true

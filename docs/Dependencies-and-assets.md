@@ -1,6 +1,6 @@
 ---
 title: Dependencies and assets
-description: "Both **components** and **themes** can specify a list of dependencies and local assets which should be used when rendering it."
+description: "Declare package dependencies and bundled JS/CSS/font assets for Fliplet components and themes, with separate interface and build entries plus appAssets."
 type: how-to
 tags: [dependencies, assets]
 v3_relevant: true
@@ -8,7 +8,7 @@ deprecated: false
 ---
 # Dependencies and assets
 
-Both **components** and **themes** can specify a list of dependencies and local assets which should be used when rendering it.
+Declare package dependencies and bundled JS, CSS, and font assets for Fliplet components and themes, with separate interface and build entries plus `appAssets`.
 
 ---
 

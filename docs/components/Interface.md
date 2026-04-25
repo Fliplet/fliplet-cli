@@ -1,6 +1,6 @@
 ---
 title: Components interfaces
-description: "Components usually define interfaces to let their instances **save settings**."
+description: "Build a Fliplet component's settings UI in interface.html with Handlebars; persist values via Fliplet.Widget.save and rehydrate with Fliplet.Widget.getData."
 type: guide
 tags: [components-framework, interface]
 v3_relevant: true
@@ -8,7 +8,7 @@ deprecated: false
 ---
 # Components interfaces
 
-Components usually define interfaces to let their instances **save settings**.
+Build a Fliplet component's settings UI in `interface.html` with [Handlebars](http://handlebarsjs.com/), persist values via `Fliplet.Widget.save`, and rehydrate them with `Fliplet.Widget.getData` when the interface is reopened.
 
 A quick example is the interface of the [button component](https://github.com/Fliplet/fliplet-widget-primary-button) to let you specify the button label and the action to be fired or page to view once tapped:
 

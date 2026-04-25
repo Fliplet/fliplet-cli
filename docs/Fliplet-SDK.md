@@ -1,6 +1,6 @@
 ---
 title: Fliplet SDK
-description: "The Fliplet SDK enables you to use all the JS APIs outside of our environment. This means you can use them on any client-side code which is not sitting on Flip…"
+description: "Load Fliplet JS APIs on any external website via sdk.js with an auth token and optional comma-separated package list (e.g. fliplet-media, fliplet-datasources)."
 type: reference
 tags: [sdk]
 v3_relevant: true
@@ -8,7 +8,7 @@ deprecated: false
 ---
 # Fliplet SDK
 
-The Fliplet SDK enables you to use all the JS APIs outside of our environment. This means you can use them on any client-side code which is not sitting on Fliplet's domains.
+Load Fliplet JS APIs on any external website by including `sdk.js` with an auth token and an optional comma-separated package list (e.g. `fliplet-media`, `fliplet-datasources`). This lets you call the same JS APIs from client-side code that isn't hosted on Fliplet's domains.
 
 ---
 

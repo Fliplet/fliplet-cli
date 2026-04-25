@@ -1,6 +1,6 @@
 ---
 title: Fliplet.Locale
-description: Customize your component to localize to different languages and regions.
+description: "Translate strings and format dates and numbers in Fliplet components via Fliplet.Locale, the T() shorthand, and translation.json files using i18next."
 type: api-reference
 tags: [js-api, core, localization]
 v3_relevant: true
@@ -9,7 +9,7 @@ deprecated: false
 
 # `Fliplet.Locale`
 
-Localize strings, dates, and numbers in your components to the device or browser language and region.
+Translate strings and format dates and numbers in Fliplet components via `Fliplet.Locale`, the `T()` shorthand, and `translation.json` files using [i18next](https://www.i18next.com/).
 
 There are 3 key aspects of a component that can be localized to the device or browser language/region settings.
 

@@ -1,6 +1,6 @@
 ---
 title: Fliplet.UI.RangeSlider()
-description: "(Returns `Object`)"
+description: "Render a range slider input with min, max, step, and default value, plus get/set/change methods via Fliplet.UI.RangeSlider."
 type: api-reference
 tags: [js-api, rangeslider]
 v3_relevant: true
@@ -8,9 +8,7 @@ deprecated: false
 ---
 # `Fliplet.UI.RangeSlider()`
 
-(Returns `Object`)
-
-Create a range slider input field. This provides a simple mechanism to allow the selection of a number within the given range.
+Render a range slider input bounded by `min`, `max`, and `step` attributes with an optional default value via `Fliplet.UI.RangeSlider()`. The constructor returns a controller instance with `get`, `set`, and `change` methods to read or update the selected number programmatically.
 
 ## Install
 

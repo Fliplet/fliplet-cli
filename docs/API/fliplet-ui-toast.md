@@ -1,6 +1,6 @@
 ---
 title: Fliplet.UI.Toast()
-description: "(Returns **`Promise`**)"
+description: "Show minimal or regular auto-dismissing toast notifications with title, message, position, duration, progress bar, and action buttons via Fliplet.UI.Toast."
 type: api-reference
 tags: [js-api, toast]
 v3_relevant: true
@@ -8,9 +8,7 @@ deprecated: false
 ---
 # `Fliplet.UI.Toast()`
 
-(Returns **`Promise`**)
-
-Create a non-obtrusive toast notification that auto-dismisses, in minimal or regular styling, without blocking the user.
+Show a non-blocking toast notification via `Fliplet.UI.Toast()` — in compact `minimal` or attention-grabbing `regular` styling — with configurable title, message, position, duration, optional progress bar, and call-to-action buttons. The constructor returns a Promise resolving to a toast instance with `dismiss` and `setProgress` controls.
 
 There are 2 different types of Toast notifications, **minimal** and **regular**.
 

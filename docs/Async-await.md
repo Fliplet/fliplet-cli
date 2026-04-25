@@ -1,6 +1,6 @@
 ---
 title: Writing more readable code when using the JS APIs
-description: "As you might know most of Fliplet JS APIs use **Promises** when the result of such operation cannot be read synchronously. For example when reading data from t…"
+description: "Use async/await with Fliplet's Promise-based JS APIs for cleaner data-source reads, navigation, hooks, and user-session code, with try/catch error handling."
 type: how-to
 tags: [async, await]
 v3_relevant: true
@@ -8,7 +8,7 @@ deprecated: false
 ---
 # Writing more readable code when using the JS APIs
 
-As you might know most of Fliplet JS APIs use **Promises** when the result of such operation cannot be read synchronously. For example when reading data from the server or the device storage.
+Use `async`/`await` with Fliplet's Promise-based JS APIs for cleaner data-source reads, navigation, hooks, and user-session code, with `try`/`catch` error handling. Most Fliplet JS APIs return **Promises** when the result of an operation cannot be read synchronously, for example when reading data from the server or device storage.
 
 Take the following example:
 

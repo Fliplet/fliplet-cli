@@ -1,6 +1,6 @@
 ---
 title: List Repeater JS APIs
-description: The list repeater component is a container for a list of records. It is used to display a list of records from a data source.
+description: "Render a list of data source entries inside a Dynamic Container via `Fliplet.ListRepeater`, with hooks to modify rows before and after render."
 type: api-reference
 tags: [js-api, components, list, repeater]
 v3_relevant: true
@@ -8,7 +8,7 @@ deprecated: false
 ---
 # List Repeater JS APIs
 
-The list repeater component is a container for a list of records. It is used to display a list of records from a data source.
+Render a list of data source entries inside a Dynamic Container via `Fliplet.ListRepeater`, with hooks to modify rows before and after render.
 
 Here's a HTML sample of a list repeater component in a dynamic container rendering a dynamic value from the loaded data source entries:
 

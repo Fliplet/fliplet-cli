@@ -1,6 +1,6 @@
 ---
 title: Fliplet.UI.DatePicker()
-description: "(Returns `Object`)"
+description: "Render a date picker input with optional preset value, required flag, and get/set/change methods via Fliplet.UI.DatePicker."
 type: api-reference
 tags: [js-api, datepicker]
 v3_relevant: true
@@ -8,9 +8,7 @@ deprecated: false
 ---
 # `Fliplet.UI.DatePicker()`
 
-(Returns `Object`)
-
-Create a date picker input field. This provides a simple mechanism to allow the selection of a date.
+Render a date picker input field with an optional preset value and a `required` flag via `Fliplet.UI.DatePicker()`. The constructor returns a controller instance with `get`, `set`, and `change` methods to read or update the selected date programmatically.
 
 ## Install
 

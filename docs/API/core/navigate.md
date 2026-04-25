@@ -1,6 +1,6 @@
 ---
 title: Fliplet.Navigate
-description: "Navigate the app to a new page, screen, document or URL"
+description: "Navigate between app screens, open external URLs, pass query parameters, and handle back, home, and modal navigation via Fliplet.Navigate."
 type: api-reference
 tags: [js-api, core, navigate]
 v3_relevant: true
@@ -9,7 +9,7 @@ deprecated: false
 
 # `Fliplet.Navigate`
 
-Navigate between app screens, open external URLs, pass query parameters, and handle back, home, and modal navigation.
+Navigate between app screens, open external URLs, pass query parameters, and handle back, home, and modal navigation via `Fliplet.Navigate`.
 
 ## Query parameters
 

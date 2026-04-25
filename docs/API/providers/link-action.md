@@ -1,6 +1,6 @@
 ---
 title: Link Action provider
-description: "The Link Action provider offers a reusable UI for configuring an action (e.g. navigate to screen, open URL, send email) that another feature will trigger on a…"
+description: "Configure link actions (navigate to screen, open URL, document, video, or run JS) in a reusable provider UI executable via `Fliplet.Navigate.to()`."
 type: api-reference
 tags: [js-api, providers, link, action]
 v3_relevant: true
@@ -8,7 +8,7 @@ deprecated: false
 ---
 # Link Action provider
 
-The Link Action provider offers a reusable UI for configuring an action (e.g. navigate to screen, open URL, send email) that another feature will trigger on a condition it defines.
+Configure link actions (navigate to screen, open URL, document, video, or run JS) in a reusable provider UI executable via `Fliplet.Navigate.to()`.
 
 **Package**: `com.fliplet.link`
 

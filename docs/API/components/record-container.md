@@ -1,6 +1,6 @@
 ---
 title: Record container JS APIs
-description: "The record container allows you to display one record from a data source in a screen. It is useful when you want to display a single record in a screen, for ex…"
+description: "Render a single data source entry in a screen via Fliplet.RecordContainer, with hooks to modify the query and react when data is retrieved."
 type: api-reference
 tags: [js-api, components, record, container]
 v3_relevant: true
@@ -8,7 +8,7 @@ deprecated: false
 ---
 # Record container JS APIs
 
-The record container allows you to display one record from a data source in a screen. It is useful when you want to display a single record in a screen, for example a contact card.
+Render a single data source entry in a screen via `Fliplet.RecordContainer`, with hooks to modify the query and react when data is retrieved — useful for layouts like a contact card.
 
 Here's a HTML sample of a record container with a text component rendering a dynamic value from the loaded data source entry:
 

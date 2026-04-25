@@ -1,6 +1,6 @@
 ---
 title: Fliplet.UI.DateRange()
-description: "(Returns `Object`)"
+description: "Render a paired start/end date range input with required flag, default value, and get/set/change methods via Fliplet.UI.DateRange."
 type: api-reference
 tags: [js-api, daterange]
 v3_relevant: true
@@ -8,9 +8,7 @@ deprecated: false
 ---
 # `Fliplet.UI.DateRange()`
 
-(Returns `Object`)
-
-Create a date range input field. This provides a simple mechanism to allow the selection of a date range.
+Render a paired start/end date range input with an optional default `{ start, end }` value in `YYYY-MM-DD` format and a `required` flag via `Fliplet.UI.DateRange()`. The constructor returns a controller instance with `get`, `set`, and `change` methods for reading or updating the selected range.
 
 ## Install
 
