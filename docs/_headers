@@ -1,40 +1,49 @@
-# CF Pages applies all matching rule blocks (specific path AND wildcard
-# combine). When multiple matching blocks set the SAME header, CF Pages
-# concatenates the values — it does not deduplicate or override. So we
-# avoid having two blocks set the same header on the same path.
+# CF Pages applies matching rule blocks together. Two empirically-verified
+# behaviors shape this file:
 #
-# In particular: SKILL.md files under .well-known/agent-skills/ are .md
-# files, so they would match both /*.md AND any /.well-known/* wildcard.
-# The wildcard for .well-known/ is therefore split by extension below so
-# .md paths only match /*.md (single CORS+Cache).
+# 1. When multiple matching blocks set the SAME header, CF Pages
+#    concatenates the values. We saw this with `Access-Control-Allow-
+#    Origin: *, *` on SKILL.md when /*.md and /.well-known/* both matched.
+#    Browsers reject `*, *` per the CORS spec, so we must not double up.
+#
+# 2. When TWO blocks share the SAME exact path, CF Pages keeps only the
+#    last block — earlier blocks for that path are discarded entirely.
+#    We saw this with /.well-known/api-catalog: a Content-Type-only block
+#    followed by a CORS+Cache block lost the Content-Type override and
+#    fell back to application/octet-stream.
+#
+# So: per-path blocks must be SINGLE and CARRY ALL HEADERS, and wildcard
+# overlap with /*.md must be avoided.
 
-# Content-Type overrides for paths CF Pages can't auto-detect:
+# Per-path blocks for paths where CF Pages can't auto-detect Content-Type
+# or where the file has no extension. Each block carries every header that
+# applies to that path, in one shot.
 /.well-known/api-catalog
   Content-Type: application/linkset+json
-
-/.well-known/llms.txt
-  Content-Type: text/plain; charset=utf-8
-
-/.well-known/llms-full.txt
-  Content-Type: text/plain; charset=utf-8
-
-# CORS + Cache for non-.md files under /.well-known/. Split by extension
-# so .md paths fall through to /*.md below and don't get doubled headers.
-/.well-known/*.txt
   Access-Control-Allow-Origin: *
   Cache-Control: public, max-age=3600
 
+/.well-known/llms.txt
+  Content-Type: text/plain; charset=utf-8
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=3600
+
+/.well-known/llms-full.txt
+  Content-Type: text/plain; charset=utf-8
+  Access-Control-Allow-Origin: *
+  Cache-Control: public, max-age=3600
+
+# .json under /.well-known/ — CF Pages auto-detects Content-Type for the
+# .json extension; we just add CORS + Cache. Matches index.json (agent
+# skills) and mcp/server-card.json.
 /.well-known/*.json
   Access-Control-Allow-Origin: *
   Cache-Control: public, max-age=3600
 
-/.well-known/api-catalog
-  Access-Control-Allow-Origin: *
-  Cache-Control: public, max-age=3600
-
-# Markdown sibling files (both /API/foo.md AND /.well-known/agent-skills/
-# <cluster>/SKILL.md) served with text/markdown + CORS so AI clients can
-# fetch raw source from the same URL paths as the generated HTML.
+# Markdown sibling files. Matches both /API/foo.md (Jekyll output sibling)
+# and /.well-known/agent-skills/<cluster>/SKILL.md. The .well-known
+# wildcards above are extension-scoped so they don't ALSO match here and
+# double the CORS+Cache values.
 /*.md
   Content-Type: text/markdown; charset=utf-8
   Access-Control-Allow-Origin: *
