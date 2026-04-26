@@ -16,6 +16,8 @@ import {
   emitSkillMd,
   emitMcpServerCard,
   assignToCluster,
+  validateFrontmatter,
+  ALLOWED_TYPES,
   CLUSTERS,
   collectDocs,
 } from '../build-agent-indexes.mjs';
@@ -281,6 +283,78 @@ describe('emitSkillMd', () => {
       assert.ok(md.includes('`' + c.name + '`'), `fallback names ${c.name}`);
     }
     assert.ok(md.includes('/.well-known/llms.txt'));
+  });
+});
+
+describe('validateFrontmatter', () => {
+  const fullyValid = {
+    relPath: 'API/x.md',
+    fm: { title: 'X', description: 'desc', type: 'api-reference', tags: '[js-api]' },
+  };
+
+  it('returns no errors for a doc with all required fields and a valid type', () => {
+    const errs = validateFrontmatter([fullyValid]);
+    assert.equal(errs.length, 0);
+  });
+
+  it('flags missing or empty title', () => {
+    const errs = validateFrontmatter([
+      { relPath: 'a.md', fm: { ...fullyValid.fm, title: '' } },
+      { relPath: 'b.md', fm: { description: 'd', type: 'guide', tags: '[x]' } },
+    ]);
+    assert.equal(errs.length, 2);
+    assert.ok(errs.every((e) => e.field === 'title'));
+  });
+
+  it('flags missing description', () => {
+    const errs = validateFrontmatter([
+      { relPath: 'a.md', fm: { title: 'T', type: 'guide', tags: '[x]' } },
+    ]);
+    assert.equal(errs.length, 1);
+    assert.equal(errs[0].field, 'description');
+  });
+
+  it('flags missing type and type values not in ALLOWED_TYPES', () => {
+    const errs = validateFrontmatter([
+      { relPath: 'a.md', fm: { title: 'T', description: 'd', tags: '[x]' } },
+      { relPath: 'b.md', fm: { title: 'T', description: 'd', type: 'made-up', tags: '[x]' } },
+    ]);
+    assert.equal(errs.length, 2);
+    assert.ok(errs.every((e) => e.field === 'type'));
+    assert.ok(errs[1].message.includes('made-up'));
+  });
+
+  it('flags missing or empty tags', () => {
+    const errs = validateFrontmatter([
+      { relPath: 'a.md', fm: { title: 'T', description: 'd', type: 'guide' } },
+      { relPath: 'b.md', fm: { title: 'T', description: 'd', type: 'guide', tags: '' } },
+      { relPath: 'c.md', fm: { title: 'T', description: 'd', type: 'guide', tags: '[]' } },
+    ]);
+    assert.equal(errs.length, 3);
+    assert.ok(errs.every((e) => e.field === 'tags'));
+  });
+
+  it('accepts every value in ALLOWED_TYPES', () => {
+    for (const t of ALLOWED_TYPES) {
+      const errs = validateFrontmatter([
+        { relPath: `${t}.md`, fm: { title: 'T', description: 'd', type: t, tags: '[x]' } },
+      ]);
+      const typeErrs = errs.filter((e) => e.field === 'type');
+      assert.equal(typeErrs.length, 0, `type '${t}' should be allowed`);
+    }
+  });
+
+  it('reports errors per-doc rather than aggregating', () => {
+    const errs = validateFrontmatter([
+      { relPath: 'a.md', fm: {} }, // missing all 4 required fields
+      fullyValid,
+    ]);
+    const aErrs = errs.filter((e) => e.relPath === 'a.md');
+    assert.equal(aErrs.length, 4);
+    assert.deepEqual(
+      aErrs.map((e) => e.field).sort(),
+      ['description', 'tags', 'title', 'type'],
+    );
   });
 });
 

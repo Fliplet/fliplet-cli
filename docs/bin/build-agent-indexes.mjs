@@ -512,15 +512,101 @@ export function collectDocs(rootDir) {
       sha256,
       skillName: skillNameForPath(relPath),
       body,
+      // Preserve raw frontmatter on the doc record so strict-mode
+      // validation (validateFrontmatter) can check type, tags, etc.
+      // without re-parsing the file.
+      fm,
     });
   }
   docs.sort((a, b) => a.url.localeCompare(b.url));
   return docs;
 }
 
+// Allowed values for the `type:` frontmatter field. Documented in
+// docs/CLAUDE.md as the canonical schema; any addition here must also
+// land there.
+export const ALLOWED_TYPES = new Set([
+  'api-reference',
+  'guide',
+  'how-to',
+  'concept',
+  'tutorial',
+  'reference',
+  'integration',
+]);
+
+// Strict-mode frontmatter validator. Returns an array of error objects
+// (`{ relPath, field, message }`) — empty array means clean. We only
+// validate fields the build is load-bearing on (title, description) plus
+// the schema fields explicitly documented in CLAUDE.md as required
+// (type, tags). Aspirational fields (v3_relevant, deprecated) are not
+// enforced here so the spec can evolve without bricking the build.
+export function validateFrontmatter(docs) {
+  const errors = [];
+  for (const doc of docs) {
+    const fm = doc.fm || {};
+    if (!fm.title || fm.title.trim() === '') {
+      errors.push({
+        relPath: doc.relPath,
+        field: 'title',
+        message: 'missing or empty `title:` in frontmatter',
+      });
+    }
+    if (!fm.description || fm.description.trim() === '') {
+      errors.push({
+        relPath: doc.relPath,
+        field: 'description',
+        message: 'missing or empty `description:` in frontmatter',
+      });
+    }
+    if (!fm.type || fm.type.trim() === '') {
+      errors.push({
+        relPath: doc.relPath,
+        field: 'type',
+        message: 'missing or empty `type:` in frontmatter',
+      });
+    } else if (!ALLOWED_TYPES.has(fm.type.trim())) {
+      errors.push({
+        relPath: doc.relPath,
+        field: 'type',
+        message: `\`type: ${fm.type}\` is not in allowed set [${[...ALLOWED_TYPES].join(', ')}]`,
+      });
+    }
+    // tags is parsed as a literal string by our minimal YAML parser
+    // (e.g. "[js-api, datasources]"). We just check it's non-empty.
+    if (!fm.tags || fm.tags.trim() === '' || fm.tags.trim() === '[]') {
+      errors.push({
+        relPath: doc.relPath,
+        field: 'tags',
+        message: 'missing or empty `tags:` in frontmatter (need at least one)',
+      });
+    }
+  }
+  return errors;
+}
+
 function main() {
+  const strict = process.argv.includes('--strict');
   const docs = collectDocs(docsRoot);
   console.log(`Discovered ${docs.length} docs for indexing`);
+
+  // Strict mode: validate frontmatter before emitting anything. CI runs
+  // this on every PR that touches docs/**/*.md (see .github/workflows/
+  // docs-validate.yml) so authoring violations get caught at review time
+  // rather than degrading the published artifacts silently.
+  const fmErrors = validateFrontmatter(docs);
+  if (fmErrors.length > 0) {
+    const tag = strict ? '[error]' : '[warn]';
+    for (const e of fmErrors) {
+      console.error(`${tag} ${e.relPath}: ${e.message}`);
+    }
+    if (strict) {
+      console.error(
+        `\n${fmErrors.length} frontmatter error${fmErrors.length === 1 ? '' : 's'} — failing build (--strict).`,
+      );
+      process.exit(1);
+    }
+  }
 
   mkdirSync(agentSkillsDir, { recursive: true });
   mkdirSync(mcpDir, { recursive: true });
