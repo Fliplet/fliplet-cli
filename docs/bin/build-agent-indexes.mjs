@@ -422,6 +422,9 @@ export function emitSkillMd(cluster, docsInCluster) {
   const fm = `---\nname: ${cluster.name}\ndescription: ${cluster.description}\n---\n`;
 
   if (cluster.name === 'fliplet-docs-index') {
+    const fallbackDocs = docsInCluster
+      .map((d) => `- [${d.title}](${d.url})${d.description ? `: ${d.description}` : ''}`)
+      .join('\n');
     return (
       fm +
       `\n# Fliplet developer documentation index\n\n` +
@@ -431,8 +434,11 @@ export function emitSkillMd(cluster, docsInCluster) {
       CLUSTERS.filter((c) => c.name !== 'fliplet-docs-index')
         .map((c) => `- \`${c.name}\` — ${c.description}`)
         .join('\n') +
+      `\n\n## General docs in this bucket\n\n` +
+      `These docs don't belong to a single capability cluster — they are general onboarding, conventions, or cross-cutting references. Listed here so they remain reachable via agent-skills discovery even when no specific cluster is loaded:\n\n` +
+      fallbackDocs +
       `\n\n## Full site index\n\n` +
-      `If no specific skill matches, fetch [${BASE_URL}/.well-known/llms.txt](${BASE_URL}/.well-known/llms.txt) for the complete list of every Fliplet developer doc, grouped by area. Each entry is a one-line summary; replace \`.html\` with \`.md\` on any doc URL to fetch the raw Markdown.\n\n` +
+      `If you need the complete list across every cluster, fetch [${BASE_URL}/.well-known/llms.txt](${BASE_URL}/.well-known/llms.txt). Each entry is a one-line summary; replace \`.html\` with \`.md\` on any doc URL to fetch the raw Markdown.\n\n` +
       `## MCP server\n\n` +
       `For tool-driven discovery, point an MCP-aware client at [${MCP_ENDPOINT}](${MCP_ENDPOINT}). The server exposes \`search_fliplet_docs\` and \`fetch_fliplet_doc\`.\n`
     );
