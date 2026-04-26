@@ -26,6 +26,7 @@ import { readFileSync, writeFileSync, mkdirSync, readdirSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, relative, resolve, sep } from 'node:path';
+import { shouldExclude } from './exclusions.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const docsRoot = resolve(here, '..');
@@ -38,34 +39,6 @@ const MCP_ENDPOINT = `${BASE_URL}/mcp`;
 const SITE_TITLE = 'Fliplet Developers';
 const SITE_DESCRIPTION =
   'Developer documentation for the Fliplet platform — JavaScript APIs, REST APIs, component and helper frameworks, and developer guides for building apps, components, themes, and integrations on Fliplet.';
-
-// Redirect stubs, opt-out pages, and repo-authoring meta-docs that should
-// never appear in the product index.
-const EXCLUDED_FILES = new Set([
-  'disable-analytics.md',
-  'API/fliplet-encryption.deprecated.md',
-  'API/fliplet-core.md',
-  'API/fliplet-helper.md',
-  'API/core/app-tasks.md',
-  'CLAUDE.md',
-]);
-
-// Directory prefixes whose contents are never indexed.
-const EXCLUDED_DIRS = [
-  '_site',
-  '_includes',
-  '_layouts',
-  '_plugins',
-  '_templates',
-  'node_modules',
-  'docsearch',
-  'bin',
-  'test',
-  '.git',
-  '.github',
-  '.well-known',
-  'assets',
-];
 
 // Ordered group labels for llms.txt. First-matching-prefix wins, so put
 // narrower prefixes (API/core/) before broader ones (API/).
@@ -264,20 +237,6 @@ export function assignToCluster(relPath) {
     if (c.match(relPath)) return c;
   }
   return CLUSTERS[CLUSTERS.length - 1]; // unreachable; fallback always matches
-}
-
-function shouldExclude(relPath) {
-  if (EXCLUDED_FILES.has(relPath)) return true;
-  if (relPath.endsWith('.deprecated.md')) return true;
-  for (const d of EXCLUDED_DIRS) {
-    // Match the dir at the root OR nested at any depth (e.g. mcp-worker/node_modules/...).
-    // The nested check is what stops mcp-worker/node_modules/**/README.md from leaking
-    // into the index when someone runs the script after `npm install` in mcp-worker/.
-    if (relPath === d || relPath.startsWith(d + '/') || relPath.includes('/' + d + '/')) {
-      return true;
-    }
-  }
-  return false;
 }
 
 function* walkMarkdown(dir, rootDir = dir) {
