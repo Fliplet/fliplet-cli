@@ -5,6 +5,7 @@ type: tutorial
 tags: [readme]
 v3_relevant: true
 deprecated: false
+permalink: /
 ---
 # Fliplet Developers documentation
 
