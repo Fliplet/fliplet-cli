@@ -13,6 +13,10 @@ import {
   truncate,
   emitLlmsTxt,
   emitAgentSkills,
+  emitSkillMd,
+  emitMcpServerCard,
+  assignToCluster,
+  CLUSTERS,
   collectDocs,
 } from '../build-agent-indexes.mjs';
 
@@ -182,23 +186,112 @@ describe('emitLlmsTxt', () => {
   });
 });
 
+describe('assignToCluster', () => {
+  it('routes data-source docs to fliplet-data-sources', () => {
+    assert.equal(assignToCluster('API/fliplet-datasources.md').name, 'fliplet-data-sources');
+    assert.equal(assignToCluster('API/datasources/joins.md').name, 'fliplet-data-sources');
+    assert.equal(assignToCluster('Data-source-security.md').name, 'fliplet-data-sources');
+    assert.equal(assignToCluster('File-security.md').name, 'fliplet-data-sources');
+  });
+
+  it('routes app-actions docs (all versions) to fliplet-app-actions', () => {
+    assert.equal(assignToCluster('API/core/app-actions.md').name, 'fliplet-app-actions');
+    assert.equal(assignToCluster('API/core/app-actions-v2.md').name, 'fliplet-app-actions');
+    assert.equal(assignToCluster('API/core/app-actions-v3.md').name, 'fliplet-app-actions');
+  });
+
+  it('routes REST API docs to fliplet-rest-api', () => {
+    assert.equal(assignToCluster('REST-API/Apps.md').name, 'fliplet-rest-api');
+    assert.equal(assignToCluster('REST-API-Documentation.md').name, 'fliplet-rest-api');
+  });
+
+  it('routes themes docs (incl. API/fliplet-themes.md) to fliplet-themes-framework', () => {
+    assert.equal(assignToCluster('Building-themes.md').name, 'fliplet-themes-framework');
+    assert.equal(assignToCluster('API/fliplet-themes.md').name, 'fliplet-themes-framework');
+  });
+
+  it('routes oauth2 to fliplet-integrations (specific match wins over API/ catch-all)', () => {
+    assert.equal(assignToCluster('API/fliplet-oauth2.md').name, 'fliplet-integrations');
+  });
+
+  it('routes generic API/* docs to fliplet-js-api', () => {
+    assert.equal(assignToCluster('API/fliplet-storage.md').name, 'fliplet-js-api');
+    assert.equal(assignToCluster('API/core/storage.md').name, 'fliplet-js-api');
+    assert.equal(assignToCluster('API/components/charts.md').name, 'fliplet-js-api');
+  });
+
+  it('routes unmatched general/onboarding docs to the fallback', () => {
+    assert.equal(assignToCluster('Introduction.md').name, 'fliplet-docs-index');
+    assert.equal(assignToCluster('Quickstart.md').name, 'fliplet-docs-index');
+    assert.equal(assignToCluster('README.md').name, 'fliplet-docs-index');
+    assert.equal(assignToCluster('Async-await.md').name, 'fliplet-docs-index');
+  });
+
+  it('lists the fallback cluster last so it is least preferred by ordering-aware rankers', () => {
+    assert.equal(CLUSTERS[CLUSTERS.length - 1].name, 'fliplet-docs-index');
+  });
+});
+
 describe('emitAgentSkills', () => {
-  it('produces v0.2.0 schema with one skill per doc', () => {
+  it('produces a cluster-shaped index (one entry per cluster, no $schema, no per-doc type)', () => {
+    const summaries = new Map();
+    for (const c of CLUSTERS) summaries.set(c.name, { skillMdSha256: 'a'.repeat(64), count: 0 });
+    const out = emitAgentSkills(summaries);
+    assert.equal(out.$schema, undefined, 'no broken $schema URL');
+    assert.equal(out.skills.length, CLUSTERS.length);
+    for (const skill of out.skills) {
+      assert.ok(skill.name.startsWith('fliplet-'), 'every cluster name uses fliplet- prefix');
+      assert.ok(skill.url.endsWith('/SKILL.md'), 'url points at SKILL.md, not landing page');
+      assert.equal(skill.type, undefined, 'no spec-foreign type field');
+      assert.match(skill.sha256, /^[a-f0-9]{64}$/);
+      assert.ok(Array.isArray(skill.tags));
+    }
+  });
+
+  it('places fliplet-docs-index last in the index', () => {
+    const summaries = new Map();
+    for (const c of CLUSTERS) summaries.set(c.name, { skillMdSha256: '0'.repeat(64), count: 0 });
+    const out = emitAgentSkills(summaries);
+    assert.equal(out.skills[out.skills.length - 1].name, 'fliplet-docs-index');
+  });
+});
+
+describe('emitSkillMd', () => {
+  it('renders frontmatter + doc list for a capability cluster', () => {
+    const cluster = CLUSTERS.find((c) => c.name === 'fliplet-data-sources');
     const docs = [
-      {
-        title: 'Doc One',
-        url: 'https://ex.com/a',
-        description: 'Summary one',
-        skillName: 'doc-one',
-        sha256: 'abc123',
-      },
+      { title: 'Fliplet.DataSources', url: 'https://x/a.html', description: 'JS API.' },
+      { title: 'Joins', url: 'https://x/b.html', description: 'Joins.' },
     ];
-    const out = emitAgentSkills(docs);
-    assert.equal(out.$schema, 'https://agentskills.io/schema/v0.2.0/index.json');
-    assert.equal(out.skills.length, 1);
-    assert.equal(out.skills[0].name, 'doc-one');
-    assert.equal(out.skills[0].type, 'documentation');
-    assert.equal(out.skills[0].sha256, 'abc123');
+    const md = emitSkillMd(cluster, docs);
+    assert.ok(md.startsWith('---\nname: fliplet-data-sources\n'));
+    assert.ok(md.includes('# Fliplet data sources'));
+    assert.ok(md.includes('- [Fliplet.DataSources](https://x/a.html): JS API.'));
+    assert.ok(md.includes('- [Joins](https://x/b.html): Joins.'));
+    assert.ok(md.includes('## How to load full content'));
+    assert.ok(md.includes('https://developers.fliplet.com/mcp'));
+  });
+
+  it('renders fallback body that names every other cluster', () => {
+    const cluster = CLUSTERS.find((c) => c.name === 'fliplet-docs-index');
+    const md = emitSkillMd(cluster, []);
+    assert.ok(md.includes('Prefer a specific Fliplet skill'));
+    for (const c of CLUSTERS) {
+      if (c.name === 'fliplet-docs-index') continue;
+      assert.ok(md.includes('`' + c.name + '`'), `fallback names ${c.name}`);
+    }
+    assert.ok(md.includes('/.well-known/llms.txt'));
+  });
+});
+
+describe('emitMcpServerCard', () => {
+  it('emits a SEP-1649-shaped card for the streamable-HTTP MCP endpoint', () => {
+    const card = emitMcpServerCard();
+    assert.equal(card.serverInfo.name, 'fliplet-docs-mcp');
+    assert.equal(card.transport.type, 'streamable_http');
+    assert.equal(card.transport.url, 'https://developers.fliplet.com/mcp');
+    const toolNames = card.capabilities.tools.map((t) => t.name);
+    assert.deepEqual(toolNames.sort(), ['fetch_fliplet_doc', 'search_fliplet_docs']);
   });
 });
 

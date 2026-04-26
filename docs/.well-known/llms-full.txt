@@ -535,7 +535,7 @@ URL: https://developers.fliplet.com/API-Documentation.html
 
 # JS API Documentation
 
-Feeling lost? Head to the [JS APIs](JS-APIs.md) section of the docs to read more about using these packages in your Fliplet apps, components and themes.
+Index of Fliplet's JavaScript APIs (Core, Data Sources, Media, UI, Communicate) for working with apps, screens, users, and components from custom code. See the [JS APIs](JS-APIs.md) section for guidance on using these packages in your Fliplet apps, components, and themes.
 
 <p class="quote">Are you rather looking for our <strong>RESTful APIs</strong> for complex backend integrations? Jump to our <a href="/REST-API-Documentation.html">documentation</a> to read more.</p>
 
@@ -1008,7 +1008,7 @@ URL: https://developers.fliplet.com/API/components/chat.html
 
 # Chat JS APIs
 
-These public JS APIs will be automatically available in your screens once a **Chat layout** component is used. You can also include these by manually adding the `fliplet-chat` dependency to your app.
+Start conversations, list contacts, count unread messages, and customize chat rendering via `Fliplet.Chat` on screens that use the Chat layout component. You can also include these by manually adding the `fliplet-chat` dependency to your app.
 
 ## Access the chat JS API
 
@@ -1455,7 +1455,7 @@ URL: https://developers.fliplet.com/API/components/data-directory.html
 
 # Data Directory JS APIs
 
-These public JS APIs will be automatically available in your screens once a **Data Directory** component is dropped into such screens.
+Hook into the Data Directory component to override its data source, transform entries before render, and run code at key points in the directory lifecycle on screens that include the component.
 
 ## Run a hook before the directory is rendered
 
@@ -1570,7 +1570,7 @@ URL: https://developers.fliplet.com/API/components/dynamic-container.html
 
 # Dynamic Container JS APIs
 
-The dynamic container allows you to dynamically load data from a data source in a screen. It is useful when you want to display a list of records in a screen using the [list repeater](/API/components/list-repeater.html) component.
+Bind a screen region to a data source query via `Fliplet.DynamicContainer` so the component renders a list of entries with bound expressions, typically paired with the [list repeater](/API/components/list-repeater.html) component.
 
 Here's a HTML sample of a dynamic container with a list repeater component rendering a dynamic value from the loaded data source entries:
 
@@ -1806,7 +1806,7 @@ URL: https://developers.fliplet.com/API/components/form-builder.html
 
 # Form JS APIs
 
-The following JS APIs are available in a screen once a **Form** component is dropped into the screen.
+Populate fields, read submitted values, react to validation events, and trigger submit programmatically on screens that contain a Form component, via `Fliplet.FormBuilder`.
 
 ## Edit a data source entry
 
@@ -2382,7 +2382,7 @@ URL: https://developers.fliplet.com/API/components/interactive-graphics.html
 
 # Interactive Graphics JS APIs
 
-These public JS APIs are available in screens where an **Interactive Graphics** component is present.
+Override marker data, preselect a marker or map on render, and respond to label clicks via Interactive Graphics component hooks on screens that use it.
 
 ## Hooks
 
@@ -3476,7 +3476,7 @@ URL: https://developers.fliplet.com/API/components/list-repeater.html
 
 # List Repeater JS APIs
 
-The list repeater component is a container for a list of records. It is used to display a list of records from a data source.
+Render a list of data source entries inside a Dynamic Container via `Fliplet.ListRepeater`, with hooks to modify rows before and after render.
 
 Here's a HTML sample of a list repeater component in a dynamic container rendering a dynamic value from the loaded data source entries:
 
@@ -3596,7 +3596,7 @@ URL: https://developers.fliplet.com/API/components/login.html
 
 # Login
 
-The login component fires hooks at key points in the authentication lifecycle. These allow you to run custom code after a user successfully logs in or when a returning user's session is re-validated.
+Run custom code after a user authenticates or when a returning user's session is re-validated via the Login component's `login` and `sessionValidate` hooks.
 
 ## Hooks
 
@@ -3725,7 +3725,7 @@ URL: https://developers.fliplet.com/API/components/push-notifications.html
 
 # Push Notifications JS APIs
 
-These public JS APIs will be automatically available in your screens once **Push Notifications** have been enabled for your app.
+Prompt users to subscribe to push notifications, read device push settings, fetch the subscription ID and token, and unsubscribe on apps with Push Notifications enabled.
 
 ## Ask the user to subscribe for push notifications
 
@@ -3842,7 +3842,7 @@ URL: https://developers.fliplet.com/API/components/record-container.html
 
 # Record container JS APIs
 
-The record container allows you to display one record from a data source in a screen. It is useful when you want to display a single record in a screen, for example a contact card.
+Render a single data source entry in a screen via `Fliplet.RecordContainer`, with hooks to modify the query and react when data is retrieved — useful for layouts like a contact card.
 
 Here's a HTML sample of a record container with a text component rendering a dynamic value from the loaded data source entry:
 
@@ -3956,7 +3956,7 @@ URL: https://developers.fliplet.com/API/core/ai.html
 
 # `Fliplet.AI`
 
-Build AI features in Fliplet apps with chat, completions, streaming, and task helpers — backed by OpenAI (GPT, o-series) or Google Gemini models via direct proxy.
+Build AI features with `Fliplet.AI` — chat, completions, streaming, image generation, transcription, and embeddings via OpenAI (GPT, o-series) or Google Gemini proxies.
 
 These APIs empower your apps with OpenAI models such as `GPT 3.5` to do things like:
 
@@ -6208,7 +6208,7 @@ URL: https://developers.fliplet.com/API/core/app-actions-v3.html
 
 # App Actions V3
 
-Run a single `execute(context)` JavaScript function on the server or client, either ad hoc or on a schedule.
+Write and run JavaScript code directly on the server or client to perform automations, scheduled tasks, and on-demand operations. Each V3 app action is a single `execute(context)` function that runs ad hoc or on a cron schedule.
 
 ![How it works](/assets/img/app-actions.png)
 
@@ -8556,7 +8556,7 @@ URL: https://developers.fliplet.com/API/core/localization.html
 
 # `Fliplet.Locale`
 
-Localize strings, dates, and numbers in your components to the device or browser language and region.
+Translate strings and format dates and numbers in Fliplet components via `Fliplet.Locale`, the `T()` shorthand, and `translation.json` files using [i18next](https://www.i18next.com/).
 
 There are 3 key aspects of a component that can be localized to the device or browser language/region settings.
 
@@ -8879,7 +8879,7 @@ URL: https://developers.fliplet.com/API/core/modal.html
 
 # `Fliplet.Modal`
 
-Show confirmation, alert, and prompt dialogs from widget interfaces in Fliplet Studio, powered by [Bootbox](http://bootboxjs.com/) — see its documentation for the full set of options you can pass.
+Show confirmation, alert, and prompt dialogs from widget interfaces in Fliplet Studio via `Fliplet.Modal`, powered by [Bootbox](http://bootboxjs.com/) — see its documentation for the full set of options you can pass.
 
 <p class="info">This JS API is only available in widget interfaces. For adding modals and confirmation windows to Fliplet Apps themselves, use <a href="https://developers.fliplet.com/API/fliplet-ui-actions.html">Fliplet.UI.Actions</a> or <a href="https://developers.fliplet.com/API/fliplet-ui-toast.html">Fliplet.UI.Toast</a> instead.</p>
 
@@ -8912,7 +8912,7 @@ URL: https://developers.fliplet.com/API/core/navigate.html
 
 # `Fliplet.Navigate`
 
-Navigate between app screens, open external URLs, pass query parameters, and handle back, home, and modal navigation.
+Navigate between app screens, open external URLs, pass query parameters, and handle back, home, and modal navigation via `Fliplet.Navigate`.
 
 ## Query parameters
 
@@ -11264,7 +11264,7 @@ URL: https://developers.fliplet.com/API/datasources/query-operators.html
 
 # Data Sources query operators
 
-Reference for MongoDB/Sift-style operators (`$eq`, `$gt`, `$in`, `$regex`, …) usable in `connection.find()` `where` clauses.
+Filter Data Source queries with MongoDB/Sift operators (`$eq`, `$gt`, `$in`, `$regex`, `$and`, `$or`, and others) inside `connection.find()` `where` clauses.
 
 ## MongoDB-style Operators (Sift.js)
 
@@ -11809,6 +11809,8 @@ URL: https://developers.fliplet.com/API/fliplet-barcode.html
 
 # `Fliplet.Barcode`
 
+Scan QR codes and other 1D/2D barcodes from the device camera, and generate barcode images on screen, via the `fliplet-barcode` package. Barcode scanning is only supported in native apps.
+
 ## Install
 
 Add the `fliplet-barcode` dependency to your screen or app resources.
@@ -12337,9 +12339,7 @@ URL: https://developers.fliplet.com/API/fliplet-content.html
 
 # `Fliplet.Content()`
 
-(Returns **`Promise`**)
-
-The `fliplet-content` package contains helpers to create and manage content using data sources.
+Create, query, update, and delete shared content records — bookmarks, likes, saved searches, and similar features — backed by a Fliplet data source via `Fliplet.Content()`. The constructor resolves with an instance whose methods aggregate content created across users, screens, and apps.
 
 When **content** is created using `Fliplet.Content()`, a record is stored in the specified data source. This can be used to aggregate all the content being created via different users, screens and apps.
 
@@ -12499,6 +12499,8 @@ Delete existing entries.
 URL: https://developers.fliplet.com/API/fliplet-csv.html
 
 # `Fliplet.CSV`
+
+Encode and decode CSV in Fliplet apps via the `fliplet-csv` package. The library wraps [Papa Parse](https://www.papaparse.com/) so it accepts JSON, arrays, or explicit fields/data shapes and supports Base64 and `data:` URL output.
 
 ## Install
 
@@ -14449,7 +14451,7 @@ URL: https://developers.fliplet.com/API/fliplet-gamify.html
 
 # `Fliplet.Gamify`
 
-Configure gamification logic for your apps.
+Configure gamification with logs, variables, and achievements via `Fliplet.Gamify`; track points, milestones, and badges backed by a data source per user.
 
 ---
 
@@ -15770,7 +15772,7 @@ URL: https://developers.fliplet.com/API/fliplet-payments.html
 
 <section class="sides no-margin">
   <div>
-    <p>Add Stripe-powered payments and checkout to a Fliplet app with a Data Source of products and a few JS API calls.</p>
+    <p>Accept Stripe payments and checkout in Fliplet apps via <code>Fliplet.Payments</code>, with a products data source and webhook-driven order tracking.</p>
     <p>Before you start, make sure you have signed up for a <a href="https://stripe.com/" target="_blank">Stripe account</a> on their website as it will be required in the very first steps of the integration.</p>
   </div>
   <div>
@@ -16044,9 +16046,7 @@ URL: https://developers.fliplet.com/API/fliplet-profile-content.html
 
 # `Fliplet.Profile.Content()`
 
-(Returns **`Promise`**)
-
-Create, query, update, and delete user-attributed content records in a Data Source, so each user only sees their own entries.
+Create, query, update, and delete user-attributed content records in a data source via `Fliplet.Profile.Content()` so each user only sees, edits, or deletes their own entries. A unique user identifier is automatically attached to every record, with no app login required.
 
 When **content** is created using `Fliplet.Profile.Content()`, a record is stored in the specified data source with the content **attributed to the user**. This means the following:
 
@@ -16371,7 +16371,7 @@ URL: https://developers.fliplet.com/API/fliplet-table.html
 
 # `Fliplet.UI.Table`
 
-Fliplet.UI.Table is a powerful and flexible table component that provides features like sorting, searching, pagination, row selection, expandable rows, and custom rendering capabilities.
+Render searchable, sortable tables with pagination, row selection, expandable rows, and custom cell rendering via `Fliplet.UI.Table`.
 
 ## Install
 
@@ -17347,11 +17347,7 @@ URL: https://developers.fliplet.com/API/fliplet-ui-actions.html
 
 # `Fliplet.UI.Actions()`
 
-(Returns **`Promise`**)
-
-Show a sheet of options the user can choose from.
-
-If an action is chosen, the Promise is resolved when the specified action is completed or resolved with the 0-based index provided as the first parameter. The Promise is also resolved when user chooses to cancel and dismiss the action sheet. In this case, the index provided in the resolving function will be `undefined`.
+Show a native-style action sheet with a title, a list of labeled options, and an optional cancel button via `Fliplet.UI.Actions()`. The returned Promise resolves with the 0-based index of the chosen label once its action runs, or with `undefined` if the user cancels.
 
 ## Screenshots
 
@@ -17449,7 +17445,7 @@ URL: https://developers.fliplet.com/API/fliplet-ui-address.html
 
 # `Fliplet.UI.AddressField()`
 
-The Address field is a customizable component that integrates with Google Maps to enable address lookup. It allows users to search and select addresses using Google's autocomplete and retrieve location details.
+Add a Google Maps autocomplete address field to a screen via `Fliplet.UI.AddressField()` so users can search, select, and retrieve location details.
 
 ## Install
 
@@ -18065,9 +18061,7 @@ URL: https://developers.fliplet.com/API/fliplet-ui-datepicker.html
 
 # `Fliplet.UI.DatePicker()`
 
-(Returns `Object`)
-
-Create a date picker input field. This provides a simple mechanism to allow the selection of a date.
+Render a date picker input field with an optional preset value and a `required` flag via `Fliplet.UI.DatePicker()`. The constructor returns a controller instance with `get`, `set`, and `change` methods to read or update the selected date programmatically.
 
 ## Install
 
@@ -18177,9 +18171,7 @@ URL: https://developers.fliplet.com/API/fliplet-ui-daterange.html
 
 # `Fliplet.UI.DateRange()`
 
-(Returns `Object`)
-
-Create a date range input field. This provides a simple mechanism to allow the selection of a date range.
+Render a paired start/end date range input with an optional default `{ start, end }` value in `YYYY-MM-DD` format and a `required` flag via `Fliplet.UI.DateRange()`. The constructor returns a controller instance with `get`, `set`, and `change` methods for reading or updating the selected range.
 
 ## Install
 
@@ -18299,9 +18291,7 @@ URL: https://developers.fliplet.com/API/fliplet-ui-number.html
 
 # `Fliplet.UI.NumberInput()`
 
-(Returns `Object`)
-
-Create a number input field. This provides a simple mechanism to allow the input of a number.
+Render a numeric input field that accepts an optional preset value and a `required` flag via `Fliplet.UI.NumberInput()`. The constructor returns a controller instance with `get`, `set`, and `change` methods for reading and updating the user-entered number.
 
 ## Install
 
@@ -18406,8 +18396,7 @@ URL: https://developers.fliplet.com/API/fliplet-ui-panzoom.html
 
 # `Fliplet.UI.PanZoom`
 
-These public JS APIs will be automatically available in your screen once an Interactive graphics component is dropped into a screen.
-You can also add the dependency `fliplet-ui-panzoom` in Developer options -> Resources
+Pan, zoom, and place markers on images or interactive graphics via `Fliplet.UI.PanZoom`, with pinch, mouse wheel, and double-tap support. You can also add the dependency `fliplet-ui-panzoom` in Developer options -> Resources to use it outside of an Interactive Graphics component.
 
 ## Create an instance
 `Fliplet.UI.PanZoom.create(selector, options)`
@@ -18569,9 +18558,7 @@ URL: https://developers.fliplet.com/API/fliplet-ui-rangeslider.html
 
 # `Fliplet.UI.RangeSlider()`
 
-(Returns `Object`)
-
-Create a range slider input field. This provides a simple mechanism to allow the selection of a number within the given range.
+Render a range slider input bounded by `min`, `max`, and `step` attributes with an optional default value via `Fliplet.UI.RangeSlider()`. The constructor returns a controller instance with `get`, `set`, and `change` methods to read or update the selected number programmatically.
 
 ## Install
 
@@ -18681,9 +18668,7 @@ URL: https://developers.fliplet.com/API/fliplet-ui-timepicker.html
 
 # `Fliplet.UI.TimePicker()`
 
-(Returns `Object`)
-
-Create a time picker input field. This provides a simple mechanism to allow the selection of a time.
+Render a time picker input that captures values in 24-hour `HH:mm` format with an optional preset value and a `required` flag via `Fliplet.UI.TimePicker()`. The constructor returns a controller instance with `get`, `set`, and `change` methods for reading or updating the selected time.
 
 ## Install
 
@@ -18792,9 +18777,7 @@ URL: https://developers.fliplet.com/API/fliplet-ui-timerange.html
 
 # `Fliplet.UI.TimeRange()`
 
-(Returns `Object`)
-
-Create a time range input field. This provides a simple mechanism to allow the selection of a time range.
+Render a paired start/end time range input in `HH:mm` format with an optional default `{ start, end }` value and a `required` flag via `Fliplet.UI.TimeRange()`. The constructor returns a controller instance with `get`, `set`, and `change` methods for reading or updating the selected range.
 
 ## Install
 
@@ -18914,10 +18897,7 @@ URL: https://developers.fliplet.com/API/fliplet-ui-toast-error.html
 
 # `Fliplet.UI.Toast.error()`
 
-(Returns **`undefined`**)
-
-Parses an error object and shows an optional initial message and a button
-to view the detailed error message that is typically more technical.
+Parse an error object and show a toast with a friendly initial message plus a button that reveals the detailed, more technical error text via `Fliplet.UI.Toast.error()`. Useful for surfacing data source, network, and API failures to end users without exposing raw stack traces by default.
 
 ## Usage
 
@@ -18966,9 +18946,7 @@ URL: https://developers.fliplet.com/API/fliplet-ui-toast.html
 
 # `Fliplet.UI.Toast()`
 
-(Returns **`Promise`**)
-
-Create a non-obtrusive toast notification that auto-dismisses, in minimal or regular styling, without blocking the user.
+Show a non-blocking toast notification via `Fliplet.UI.Toast()` — in compact `minimal` or attention-grabbing `regular` styling — with configurable title, message, position, duration, optional progress bar, and call-to-action buttons. The constructor returns a Promise resolving to a toast instance with `dismiss` and `setProgress` controls.
 
 There are 2 different types of Toast notifications, **minimal** and **regular**.
 
@@ -19146,9 +19124,7 @@ URL: https://developers.fliplet.com/API/fliplet-ui-typeahead.html
 
 # `Fliplet.UI.Typeahead()`
 
-(Returns `Object`)
-
-Create a typeahead input that offers real-time suggestions from a predefined list as the user types.
+Render a typeahead input that surfaces real-time suggestions from a predefined `options` list as the user types, with optional `freeInput`, `maxItems`, and `placeholder` settings via `Fliplet.UI.Typeahead()`. The constructor returns a controller instance with `get`, `set`, and `change` methods for reading or updating the selected values.
 
 ## Install
 
@@ -19251,7 +19227,7 @@ URL: https://developers.fliplet.com/API/fliplet-ui.html
 
 # `Fliplet.UI`
 
-The `Fliplet.UI` namespace contains several classes for creating UI managed by Fliplet. Where appropriate, the UI would come with the following benefits:
+The `Fliplet.UI` namespace contains classes for Fliplet-managed UI primitives such as toasts, action sheets, modals, date and time pickers, typeahead, tables, and panzoom. Where appropriate, these UI elements come with the following benefits:
 
   - Optimized usability across all devices/platforms
   - Support for localization incl. RTL language
@@ -19461,7 +19437,7 @@ URL: https://developers.fliplet.com/API/helpers/dynamic-components.html
 
 <p class="warning">This feature is currently available to beta users only.</p>
 
-Helpers can be dropped into what we refer as "dynamic components". These include the **Dynamic container** and **List Repeater** components. Such components supports reactive data binding between the source of the data and the helpers you build.
+Render Helper instances inside Dynamic Container and List Repeater components, with reactive per-record data binding via `supportsDynamicContext`. The two components support reactive data binding between the source of the data and the helpers you build.
 
 To support reactive data communication between the two, you must add the `supportsDynamicContext: true` property to your helper configuration:
 
@@ -20077,6 +20053,7 @@ URL: https://developers.fliplet.com/API/helpers/interface-fields.html
 # Helper configuration interface: fields
 
 Define the fields shown in a Helper's Fliplet Studio configuration interface, including their type, label, validation, and default value.
+
 ## Properties for all fields
 
 The following property can be defined for all field types (except when specified otherwise):
@@ -22198,7 +22175,7 @@ URL: https://developers.fliplet.com/API/libraries/handlebars.html
 
 # Using Handlebars in your apps
 
-All screens of your Fliplet app already include [Handlebars `2.15.2`](https://handlebarsjs.com/) hence you can start using it straight away. Here's a quick example following the official Handlebars docs:
+Use [Handlebars `2.15.2`](https://handlebarsjs.com/) in Fliplet app screens for templating, with built-in helpers for images, dates, auth URLs, JSON, and conditional comparisons. Handlebars is included on every screen, so you can start using it straight away — here's a quick example following the official Handlebars docs:
 
 {% raw %}
 ```js
@@ -22376,6 +22353,32 @@ LikeButton(options)
     * `count` Number of likes
   * `likeWrapper` (String) HTML to use when wrapping the like button. **Default**: `<a class="btn btn-like" href="#"></a>`
   * `likedWrapper` (String) HTML to use when wrapping the liked button. **Default**: `<a class="btn btn-like" href="#"></a>`
+  * `offline` (Boolean) When `true`, taps are accepted even when the device is offline. The underlying data source connector queues the write to its outbox and replays it once the device is back online; the optimistic UI state is preserved across the reconnect. When `false`, the user is shown a "Please connect to the internet" popup instead and the toggle is rejected. Set to `true` for use cases such as bookmarking, where users expect the action to work offline; leave as `false` for like/unlike interactions that are only meaningful while online. **Default**: `false`
+
+## Offline behaviour
+
+By default, `LikeButton` only works while the device is online — tapping the button while offline shows a "Please connect to the internet" popup and the toggle is dropped. This is the right behaviour for likes (where the like count itself is a shared, online concept) but not for per-user toggles such as bookmarks, which users expect to keep working offline.
+
+Pass `offline: true` to opt the button into offline-aware behaviour:
+
+```js
+LikeButton({
+  target: '#bookmark-target',
+  dataSourceId: 12345,
+  view: 'userBookmarks',
+  content: { entryId: '42-bookmark' },
+  likeLabel: '<i class="fa fa-bookmark-o"></i>',
+  likedLabel: '<i class="fa fa-bookmark"></i>',
+  offline: true
+});
+```
+
+When `offline: true`:
+
+* Taps are not blocked while offline. The optimistic state of the button updates immediately.
+* The write goes through the data source connector, which queues the operation in `Fliplet.Storage` if the network call fails.
+* The queue is automatically drained when `Fliplet.Navigator.onOnline()` fires, and on app startup. No additional caller code is required.
+* Read state survives offline relaunches when the data source is bundled for offline use (native mobile only). On platforms without an offline database (e.g. web), reads still require a connection — only writes are queued.
 
 ## Methods
 
@@ -22532,7 +22535,7 @@ URL: https://developers.fliplet.com/API/providers/email.html
 
 # Email provider
 
-The Email provider lets users compose and configure an email template (subject, body, recipients, headers) that can then be sent via `Fliplet.Communicate.sendEmail()`.
+Compose email templates (subject, body, recipients, headers) in a reusable provider UI for sending via `Fliplet.Communicate.sendEmail()`.
 
 **Package**: `com.fliplet.email-provider`
 
@@ -22675,7 +22678,7 @@ URL: https://developers.fliplet.com/API/providers/link-action.html
 
 # Link Action provider
 
-The Link Action provider offers a reusable UI for configuring an action (e.g. navigate to screen, open URL, send email) that another feature will trigger on a condition it defines.
+Configure link actions (navigate to screen, open URL, document, video, or run JS) in a reusable provider UI executable via `Fliplet.Navigate.to()`.
 
 **Package**: `com.fliplet.link`
 
@@ -22751,7 +22754,7 @@ URL: https://developers.fliplet.com/App-security.html
 
 # Securing your apps
 
-Fliplet apps can have each of their screens and data sources secured so that they can only be accessed when certain conditions are met. Take the following example:
+Restrict screen and data-source access in Fliplet apps using login conditions, IP allow/deny lists, and custom JavaScript rules that read session and page context. For example:
 
 > My app has 5 screens, one being a login screen with email validation based on a Fliplet data source. I want to secure the other 4 screens of the app so that they can only be accessed by logged-in users.
 
@@ -23105,7 +23108,7 @@ URL: https://developers.fliplet.com/Async-await.html
 
 # Writing more readable code when using the JS APIs
 
-As you might know most of Fliplet JS APIs use **Promises** when the result of such operation cannot be read synchronously. For example when reading data from the server or the device storage.
+Use `async`/`await` with Fliplet's Promise-based JS APIs for cleaner data-source reads, navigation, hooks, and user-session code, with `try`/`catch` error handling. Most Fliplet JS APIs return **Promises** when the result of an operation cannot be read synchronously, for example when reading data from the server or device storage.
 
 Take the following example:
 
@@ -23169,7 +23172,7 @@ URL: https://developers.fliplet.com/Best-practises.html
 
 # Best practice and advices when building components
 
-Got stuck building components or found some nasty bugs? Here's a few tips that might help you dealing with basic issues during the development of components on our platform.
+Common gotchas when building Fliplet components: instance data, multi-drop handling, Handlebars escaping for Vue/Angular curly braces, and required dependencies.
 
 ## Instance data
 
@@ -25003,7 +25006,7 @@ URL: https://developers.fliplet.com/Component-events.html
 
 # Component events
 
-When components are moved around the page in *Edit* mode, Fliplet provides a set of events to manage the user interaction.
+Listen for component lifecycle events emitted while users edit a Fliplet screen — such as adding, added, removed, moved, and render — via `Fliplet.Hooks.on('componentEvent')`.
 
 ## Usage
 
@@ -25064,7 +25067,7 @@ URL: https://developers.fliplet.com/components/Build-output.html
 
 # Output of components
 
-Components generally output HTML code when dropped into the page. Their output is compiled with [Handlebars](http://handlebarsjs.com/) using the `build.html` file from your component.
+Render Fliplet component output from `build.html` via [Handlebars](http://handlebarsjs.com/), then read per-instance settings with `Fliplet.Widget.instance` and opt into dynamic-container context. Components generally output HTML code when dropped into the page; their output is compiled using the `build.html` file from your component.
 
 App components are not required to output any HTML, though when they do you can decide whether their output will be appended at the beginning or the end of the page (e.g. once the body tag is opened or closed).
 
@@ -25197,7 +25200,7 @@ URL: https://developers.fliplet.com/components/Definition.html
 
 # The component definition file
 
-The `widget.json` file defines your component as well as the **dependencies** and **assets** it needs in order to run.
+Define a Fliplet component in `widget.json`: `name`, `package`, `version`, `icon`, `tags`, `html_tag`, plus `interface` and `build` entries for dependencies and assets. The file declares everything Fliplet needs to load and run your component.
 
 Please note: if you make changes to the `widget.json` file, restart the development server (`fliplet run`) to apply the changes you made.
 
@@ -25349,7 +25352,7 @@ URL: https://developers.fliplet.com/components/Interface.html
 
 # Components interfaces
 
-Components usually define interfaces to let their instances **save settings**.
+Build a Fliplet component's settings UI in `interface.html` with [Handlebars](http://handlebarsjs.com/), persist values via `Fliplet.Widget.save`, and rehydrate them with `Fliplet.Widget.getData` when the interface is reopened.
 
 A quick example is the interface of the [button component](https://github.com/Fliplet/fliplet-widget-primary-button) to let you specify the button label and the action to be fired or page to view once tapped:
 
@@ -25768,7 +25771,7 @@ URL: https://developers.fliplet.com/Custom-Headers.html
 
 # Custom Headers
 
-Fliplet allows you to set custom headers for your apps. This feature is useful for enhancing security, controlling resource loading, and adding custom HTTP headers to your applications.
+Configure custom HTTP response headers (CSP, HSTS, CORS, custom security headers) for a Fliplet app via `Fliplet.App.Settings` and the Developer Options panel. This is useful for enhancing security, controlling resource loading, and adding custom HTTP headers to your applications.
 
 ## Setting up Custom Headers
 
@@ -27248,7 +27251,7 @@ URL: https://developers.fliplet.com/Data-Source-Hooks.html
 
 # Data Source Hooks
 
-Data Source hooks allow your app's backend to perform certain operations such as **sending emails** or **push notifications** when certain conditions occur, e.g. inserting or updating a Data Source Entry.
+Trigger emails, SMS, push notifications, web requests, or column operations on Data Source `insert`, `update`, `beforeSave`, or `beforeQuery` events using [Sift.js](https://github.com/Fliplet/sift.js) match conditions.
 
 **Please note**: hooks do not run when data is inserted or saved via the "App data" section in **Fliplet Studio**.
 
@@ -28193,7 +28196,7 @@ URL: https://developers.fliplet.com/Dependencies-and-assets.html
 
 # Dependencies and assets
 
-Both **components** and **themes** can specify a list of dependencies and local assets which should be used when rendering it.
+Declare package dependencies and bundled JS, CSS, and font assets for Fliplet components and themes, with separate interface and build entries plus `appAssets`.
 
 ---
 
@@ -28367,7 +28370,7 @@ URL: https://developers.fliplet.com/File-security.html
 
 # Securing Fliplet files and folders
 
-How to control read, upload, update, and delete access to media files and folders in Fliplet apps using access rules and custom security rules.
+Secure files and folders in your Fliplet apps with access rules and custom JavaScript security rules that control read, upload, update, and delete access — enforced server-side for all app token requests.
 
 ## Contents
 
@@ -28955,7 +28958,7 @@ URL: https://developers.fliplet.com/Fliplet-SDK.html
 
 # Fliplet SDK
 
-The Fliplet SDK enables you to use all the JS APIs outside of our environment. This means you can use them on any client-side code which is not sitting on Fliplet's domains.
+Load Fliplet JS APIs on any external website by including `sdk.js` with an auth token and an optional comma-separated package list (e.g. `fliplet-media`, `fliplet-datasources`). This lets you call the same JS APIs from client-side code that isn't hosted on Fliplet's domains.
 
 ---
 
@@ -29463,6 +29466,103 @@ When you're ready, move to the next section of the documentation to start buildi
 
 [Build a component →](Building-components.md)
 {: .buttons}
+
+---
+
+# fliplet-docs-mcp
+URL: https://developers.fliplet.com/mcp-worker/README.html
+
+# fliplet-docs-mcp
+
+Cloudflare Worker exposing an MCP (Model Context Protocol) server at **https://developers.fliplet.com/mcp** with `search_fliplet_docs` and `fetch_fliplet_doc` tools backed by `.well-known/llms.txt`.
+
+Any MCP-aware AI client (Claude Code, Cursor, custom OpenAI tools) can add
+this URL as an MCP server and immediately get two tools:
+
+- **`search_fliplet_docs({ query, limit?, tags?, type? })`** — fuzzy search
+  the docs index at `.well-known/llms.txt`, returns ranked matches with
+  title, URL, description, group, and relevance score.
+- **`fetch_fliplet_doc({ url })`** — fetch the raw Markdown of a docs page.
+  Strict URL validation: must be under `developers.fliplet.com` and end in
+  `.md`. No query strings, no fragments. SSRF-safe.
+
+## Architecture
+
+- **Stateless.** Fresh `McpServer` instance per request; no Durable Objects.
+- **Index source.** `search_fliplet_docs` reads `.well-known/llms.txt` from
+  the same origin; caches 60 s in module scope per isolate.
+- **CORS.** `Access-Control-Allow-Origin: *` on all responses and a bare
+  204 for preflight `OPTIONS`. Read-only surface on public docs.
+- **Rate limiting.** Configured via a Cloudflare Ruleset rate-limit rule on
+  the `developers.fliplet.com` zone (not in code). Start with 100 req/min
+  per IP, 429 with `Retry-After`.
+
+## Local development
+
+```bash
+cd docs/mcp-worker
+npm install
+npm run dev          # wrangler dev, local MCP server at http://localhost:8787
+npm test             # vitest — parser, search, SSRF guard
+npm run typecheck    # tsc --noEmit
+```
+
+Smoke test the local server:
+
+```bash
+curl -sX POST http://localhost:8787 \
+  -H 'Content-Type: application/json' \
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}' | jq
+
+curl -sX POST http://localhost:8787 \
+  -H 'Content-Type: application/json' \
+  -d '{"jsonrpc":"2.0","id":2,"method":"tools/call","params":{"name":"search_fliplet_docs","arguments":{"query":"data sources"}}}' | jq
+```
+
+## Pinned dependencies
+
+`@modelcontextprotocol/sdk@1.20.2` + `agents@0.2.21` are pinned **exactly**
+— versions `1.21.0+` of the SDK bundle `ajv@8.17.1`, which relies on
+`new Function()` / `eval()` and cannot run in the Cloudflare Workers
+runtime. See the Phase 0.13 SDK spike notes in the plan file at
+`~/.claude/plans/sites-fliplet-studio-currently-has-a-crystalline-lemon.md`
+for the full write-up.
+
+## Deployment
+
+Via `wrangler deploy` from this directory. Requires the `fliplet.com` zone
+in the Cloudflare account and the route binding in `wrangler.jsonc`.
+
+CI/CD: wire `wrangler deploy` into a GitHub Actions workflow when ready —
+not included in this PR. Must be triggered only on `mcp-worker/**` changes
+on `master`.
+
+## MCP client configuration
+
+Claude Code:
+
+```json
+{
+  "mcpServers": {
+    "fliplet-docs": {
+      "type": "http",
+      "url": "https://developers.fliplet.com/mcp"
+    }
+  }
+}
+```
+
+Cursor, Codex, and other Streamable-HTTP MCP clients take the same
+endpoint URL.
+
+## Naming note
+
+`fliplet-kb` (the Fliplet-internal code-and-docs knowledge base MCP server)
+also historically exposed a tool named `search_fliplet_docs`. To avoid a
+collision when an AI client is configured with both servers, fliplet-kb
+renames its dev-docs-scoped tool to `search_fliplet_dev_docs` (broader
+scope: includes internal docs + source code) while this server keeps the
+short name for the public docs surface.
 
 ---
 
@@ -30196,7 +30296,7 @@ URL: https://developers.fliplet.com/Rate-limiting-for-API.html
 
 # Rate limiting for APIs
 
-If you're integrating your app or service with Fliplet APIs, you should be mindful in relation to how frequent your requests are hitting our APIs.
+Fliplet rate-limits Data Source, Communicate, audit-log, AI, and App Action APIs on a per-user basis. Back off on `429` responses and batch writes via the commit endpoint to stay within limits.
 
 Our infrastructure is set up to automatically throttle down and rate limit requests depending on how frequently they are made.
 
@@ -30233,9 +30333,9 @@ URL: https://developers.fliplet.com/Reduce-app-bundle-size.html
 
 # Reduce your app bundle size
 
-Blacklist assets from your Fliplet app bundle to shrink it for App Store and Google Play submission.
+Exclude assets from your Fliplet app bundle by content type, file extension, or media file ID to shrink it for App Store and Google Play submission.
 
-Navigate to the **App settings** >> **Launch assets** section in Fliplet Studio and you'll find a section for **blacklisting assets**.
+Navigate to the **App settings** >> **Launch assets** section in Fliplet Studio and you'll find a section for excluding assets.
 
 Rules are defined as a JSON array of objects like `[ { rule1 }, { rule2 }, { rule3 } ]`. Each rule requires a `type` as described below in the examples.
 
@@ -30291,9 +30391,9 @@ URL: https://developers.fliplet.com/REST-API-Documentation.html
 
 # Fliplet REST API documentation
 
-<p class="warning"><strong>Note:</strong> Fliplet RESTful APIs are intended to be used by 3rd party software such as external integrations. <strong>If you want to interact with our APIs in a Fliplet App, please use the <a href="/API-Documentation.html">JS APIs</a> instead.</strong></p>
-
 Index of Fliplet REST endpoints for Data Sources, Media, Notifications, Apps, and more — intended for third-party integrations.
+
+<p class="warning"><strong>Note:</strong> Fliplet RESTful APIs are intended to be used by 3rd party software such as external integrations. <strong>If you want to interact with our APIs in a Fliplet App, please use the <a href="/API-Documentation.html">JS APIs</a> instead.</strong></p>
 
 ## Authentication
 
@@ -30359,7 +30459,7 @@ URL: https://developers.fliplet.com/REST-API/authenticate.html
 
 # Authenticating with the Fliplet REST APIs
 
-All Fliplet REST API requests are made over HTTPS to a regional endpoint (`api.fliplet.com`, `us.api.fliplet.com`, or `ca.api.fliplet.com`) and must include an auth token.
+Authenticate Fliplet REST API requests via the `Auth-token` header, an `Authorization: Bearer` header (base64), a `?auth_token=` query string, or a cookie, against the EU (`api.fliplet.com`), US (`us.api.fliplet.com`), or CA (`ca.api.fliplet.com`) endpoints over HTTPS.
 
 All requests must be made via ​**SSL​** to the above HTTPS-only endpoint.
 
@@ -32782,7 +32882,7 @@ URL: https://developers.fliplet.com/Theme-Settings-In-CSS.html
 
 # Use theme settings in your custom CSS
 
-Our theme is built with reusability in mind, therefore we used SCSS variables for all the settings so that you can use them in your custom CSS.
+Reference Fliplet theme SCSS variables (colors, typography, spacing) inside your custom CSS so your overrides inherit the theme's settings on a specific screen.
 
 Here is an example, let's say you want to override the background color of your `<body>` with the color of a button, on a specific screen:
 ```scss

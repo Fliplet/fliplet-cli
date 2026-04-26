@@ -1,5 +1,6 @@
 #!/usr/bin/env node
-// Copy source .md files into _site/ as siblings of their generated .html.
+// Copy source .md files into _site/ as siblings of their generated .html,
+// AND copy docs/.well-known/ into _site/.well-known/ verbatim.
 // Run AFTER `bundle exec jekyll build`.
 //
 // Jekyll converts foo/bar.md → _site/foo/bar.html. This script additionally
@@ -7,6 +8,10 @@
 // Markdown at the same URL path with a .md suffix. Combined with _headers'
 // `Content-Type: text/markdown` rule, this is a stopgap until Cloudflare's
 // native Markdown-for-Agents feature ships.
+//
+// .well-known/ is excluded from Jekyll (see _config.yml) so its SKILL.md
+// frontmatter doesn't trigger Jekyll's Markdown converter. We copy the
+// directory verbatim here instead.
 //
 // Stdlib only.
 
@@ -103,9 +108,53 @@ export function copySiblings(rootDir, outDir) {
   return count;
 }
 
+// Walk every file under a directory, yielding { fullPath, relPath }.
+// Used for the .well-known/ copy (we don't filter by extension since
+// .well-known holds .json, .txt, extensionless files, and SKILL.md).
+function* walkAll(dir, rootDir = dir) {
+  let entries;
+  try {
+    entries = readdirSync(dir, { withFileTypes: true });
+  } catch {
+    return;
+  }
+  for (const entry of entries) {
+    const full = join(dir, entry.name);
+    const rel = relative(rootDir, full).split(sep).join('/');
+    if (entry.isDirectory()) {
+      yield* walkAll(full, rootDir);
+    } else if (entry.isFile()) {
+      yield { fullPath: full, relPath: rel };
+    }
+  }
+}
+
+// Copy docs/.well-known/ → _site/.well-known/ byte-for-byte. Jekyll is
+// configured to skip .well-known entirely (see _config.yml), so without
+// this step _site/.well-known/ would not exist.
+export function copyWellKnown(rootDir, outDir) {
+  const sourceDir = join(rootDir, '.well-known');
+  const targetDir = join(outDir, '.well-known');
+  if (!existsSync(sourceDir)) {
+    throw new Error(
+      `.well-known directory not found: ${sourceDir}. Run \`node bin/build-agent-indexes.mjs\` first.`,
+    );
+  }
+  let count = 0;
+  for (const { fullPath, relPath } of walkAll(sourceDir)) {
+    const target = join(targetDir, relPath);
+    mkdirSync(dirname(target), { recursive: true });
+    copyFileSync(fullPath, target);
+    count++;
+  }
+  return count;
+}
+
 function main() {
-  const count = copySiblings(docsRoot, siteDir);
-  console.log(`Copied ${count} .md siblings into _site/`);
+  const siblingCount = copySiblings(docsRoot, siteDir);
+  console.log(`Copied ${siblingCount} .md siblings into _site/`);
+  const wellKnownCount = copyWellKnown(docsRoot, siteDir);
+  console.log(`Copied ${wellKnownCount} files from .well-known/ into _site/.well-known/`);
 }
 
 if (import.meta.url === `file://${process.argv[1]}`) {

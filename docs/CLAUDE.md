@@ -75,15 +75,25 @@ docs/**/*.md
    │
    ├── node bin/build-agent-indexes.mjs
    │     ↓
-   │     docs/.well-known/{llms.txt, llms-full.txt, agent-skills/index.json, api-catalog}
+   │     docs/.well-known/{
+   │       llms.txt, llms-full.txt,
+   │       agent-skills/index.json,
+   │       agent-skills/<cluster>/SKILL.md   (12 capability clusters),
+   │       mcp/server-card.json,
+   │       api-catalog
+   │     }
    │
    ├── bundle exec jekyll build
    │     ↓
-   │     docs/_site/**/*.html  (plus any files under docs/.well-known/ get copied in)
+   │     docs/_site/**/*.html
+   │     (Jekyll is configured to SKIP .well-known/ — see _config.yml.
+   │      Its SKILL.md frontmatter would otherwise trigger Jekyll's
+   │      Markdown→HTML conversion and break the URLs we publish.)
    │
    └── node bin/copy-md-siblings.mjs
          ↓
-         docs/_site/<path>.md   (source markdown, sibling of each HTML)
+         docs/_site/<path>.md       (source .md sibling of each .html)
+         docs/_site/.well-known/**  (verbatim copy, post-Jekyll)
 ```
 
 Run locally:
@@ -108,9 +118,11 @@ These are the AI-consumption surfaces. Publish URLs on `developers.fliplet.com`:
 
 | Path | Format | Purpose |
 |---|---|---|
-| `/.well-known/llms.txt` | llmstxt.org text | Grouped one-line index of all docs |
+| `/.well-known/llms.txt` | llmstxt.org text | Grouped one-line index of all docs (per-page) |
 | `/.well-known/llms-full.txt` | Concatenated markdown | Full content of all docs for clients that want to ingest in bulk |
-| `/.well-known/agent-skills/index.json` | Agent Skills v0.2.0 | Schema-compliant skill registry with SHA256 per doc |
+| `/.well-known/agent-skills/index.json` | Agent Skills v0.2.0 | Capability-clustered skill registry (12 entries, SHA256 per cluster's SKILL.md) |
+| `/.well-known/agent-skills/<cluster>/SKILL.md` | Markdown w/ frontmatter | Per-cluster entry point listing the cluster's docs |
+| `/.well-known/mcp/server-card.json` | SEP-1649 server card | Discovery for the MCP Worker at `/mcp` |
 | `/.well-known/api-catalog` | RFC 9727 linkset+json | Linkset discovery |
 
 `_headers` sets CORS (`Access-Control-Allow-Origin: *`) and `Cache-Control:
@@ -128,18 +140,24 @@ homepage HTML) and `/index.md` (the raw markdown).
 This is a stopgap for Cloudflare Pages' future native Markdown-for-Agents
 feature; when that ships we can drop the copy step.
 
-## MCP server (Phase 3, not yet deployed)
+## MCP server
 
-The repo plans a Cloudflare Worker at `developers.fliplet.com/mcp` exposing
-an MCP server over Streamable HTTP with `search_fliplet_docs` and
-`fetch_fliplet_doc` tools. Until that ships, AI clients should:
+A Cloudflare Worker at `developers.fliplet.com/mcp` exposes an MCP server
+over Streamable HTTP with two tools:
 
-- Fetch `/.well-known/llms.txt` for discovery
-- Fetch `<path>.md` for full content
-- Use `fliplet-kb` (the Fliplet-internal MCP server) for broader search
-  across code + internal docs; it will expose its dev-docs tool as
-  `search_fliplet_dev_docs` to avoid collision with the new MCP server
-  when both are configured.
+- `search_fliplet_docs({ query, limit?, tags?, type? })` — fuzzy-search
+  the index built from `.well-known/llms.txt`.
+- `fetch_fliplet_doc({ url })` — fetch the raw Markdown of a single doc
+  page; SSRF-safe (URL must be under `developers.fliplet.com` and end in
+  `.md`).
+
+Source lives at `mcp-worker/`. Deploy with `cd mcp-worker && npx wrangler
+deploy` from a machine with Cloudflare credentials. Discovery is published
+at `/.well-known/mcp/server-card.json` per SEP-1649.
+
+`fliplet-kb` (the Fliplet-internal code-and-docs MCP server) renames its
+dev-docs-scoped tool to `search_fliplet_dev_docs` to avoid collision with
+this server when an AI client is configured with both.
 
 ## Skill routing
 

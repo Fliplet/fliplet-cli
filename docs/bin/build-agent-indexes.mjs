@@ -5,10 +5,18 @@
 //
 // Inputs:  docs/**/*.md (walks filesystem directly)
 // Outputs: docs/.well-known/
-//   llms.txt                  — llmstxt.org format, grouped by area
-//   llms-full.txt             — concatenated markdown of all docs
-//   agent-skills/index.json   — Agent Skills Discovery v0.2.0
-//   api-catalog               — RFC 9727 linkset+json
+//   llms.txt                              — llmstxt.org format, grouped by area
+//   llms-full.txt                         — concatenated markdown of all docs
+//   agent-skills/index.json               — Agent Skills Discovery v0.2.0,
+//                                           cluster-shaped (one skill per
+//                                           Fliplet capability area, not per
+//                                           doc page)
+//   agent-skills/<cluster>/SKILL.md       — auto-generated entry point for
+//                                           each cluster, listing its docs
+//   mcp/server-card.json                  — MCP Server Card (SEP-1649) for
+//                                           the Worker at developers.fliplet
+//                                           .com/mcp
+//   api-catalog                           — RFC 9727 linkset+json
 //
 // Title comes from frontmatter `title:` if present, else the H1 (stripped of
 // enclosing backticks). Description comes from frontmatter `description:` if
@@ -24,8 +32,10 @@ const here = dirname(fileURLToPath(import.meta.url));
 const docsRoot = resolve(here, '..');
 const wellKnownDir = join(docsRoot, '.well-known');
 const agentSkillsDir = join(wellKnownDir, 'agent-skills');
+const mcpDir = join(wellKnownDir, 'mcp');
 
 const BASE_URL = 'https://developers.fliplet.com';
+const MCP_ENDPOINT = `${BASE_URL}/mcp`;
 const SITE_TITLE = 'Fliplet Developers';
 const SITE_DESCRIPTION =
   'Developer documentation for the Fliplet platform — JavaScript APIs, REST APIs, component and helper frameworks, and developer guides for building apps, components, themes, and integrations on Fliplet.';
@@ -80,6 +90,181 @@ function pickGroup(relPath) {
     if (relPath.startsWith(g.prefix)) return g.label;
   }
   return 'Guides';
+}
+
+// Cluster definitions for agent-skills/index.json. Each cluster represents a
+// Fliplet capability area (the right shape for Agent Skills v0.2.0, which is
+// designed for capability-level discovery — not per-doc indexing; that's what
+// llms.txt is for).
+//
+// Order matters: assignToCluster() returns the FIRST matching cluster, so
+// narrower predicates must come before broader ones. The catch-all fallback
+// (`fliplet-docs-index`) lives last and intentionally describes itself as a
+// fallback so embedding rankers score it low on capability queries.
+export const CLUSTERS = [
+  {
+    name: 'fliplet-data-sources',
+    title: 'Fliplet data sources',
+    description:
+      'Data sources JavaScript API and security model: query, insert, update, delete records; row-level security; file storage; data-source hooks.',
+    landingUrl: `${BASE_URL}/API/fliplet-datasources.html`,
+    tags: ['data-sources', 'js-api', 'security'],
+    match: (p) =>
+      p.startsWith('API/datasources/') ||
+      p === 'API/fliplet-datasources.md' ||
+      p === 'Data-source-security.md' ||
+      p === 'Data-Source-Hooks.md' ||
+      p === 'Data-flow.md' ||
+      p === 'File-security.md',
+  },
+  {
+    name: 'fliplet-app-actions',
+    title: 'Fliplet App Actions (server-side automations)',
+    description:
+      'Build server-side automations that run on a schedule or in response to events. Covers App Actions v1, v2, and v3 APIs.',
+    landingUrl: `${BASE_URL}/API/core/app-actions.html`,
+    tags: ['app-actions', 'js-api', 'server-side'],
+    match: (p) => /^API\/core\/app-actions(-v[23])?\.md$/.test(p),
+  },
+  {
+    name: 'fliplet-helpers-framework',
+    title: 'Fliplet helpers framework',
+    description:
+      'Build helpers — reusable Vue-based interface components with editable interface fields, hooks, methods, libraries, and templates.',
+    landingUrl: `${BASE_URL}/API/helpers/overview.html`,
+    tags: ['helpers-framework', 'components-framework'],
+    match: (p) => p.startsWith('API/helpers/'),
+  },
+  {
+    name: 'fliplet-rest-api',
+    title: 'Fliplet REST API',
+    description:
+      'Server-side REST API for managing organizations, apps, users, data sources, files, and screens from your own backend.',
+    landingUrl: `${BASE_URL}/REST-API-Documentation.html`,
+    tags: ['rest-api', 'server-side'],
+    match: (p) =>
+      p.startsWith('REST-API/') ||
+      p === 'REST-API-Documentation.md' ||
+      p === 'Rate-limiting-for-API.md',
+  },
+  {
+    name: 'fliplet-components-framework',
+    title: 'Fliplet components framework',
+    description:
+      'Build custom components (widgets) that ship inside Fliplet apps: component definitions, lifecycle, events, dependencies, providers, custom templates, testing.',
+    landingUrl: `${BASE_URL}/Building-components.html`,
+    tags: ['components-framework', 'widgets'],
+    match: (p) =>
+      p.startsWith('components/') ||
+      p === 'Building-components.md' ||
+      p === 'Building-functions.md' ||
+      p === 'Component-events.md' ||
+      p === 'Cloning-widgets.md' ||
+      p === 'Context-targeting.md' ||
+      p === 'Custom-Headers.md' ||
+      p === 'Custom-template-for-components.md' ||
+      p === 'Dependencies-and-assets.md' ||
+      p === 'Testing-components.md' ||
+      p === 'UI-guidelines-build.md' ||
+      p === 'UI-guidelines-interface.md',
+  },
+  {
+    name: 'fliplet-themes-framework',
+    title: 'Fliplet themes framework',
+    description:
+      'Build custom themes that control app appearance: color palettes, typography, theme settings exposed in the editor, CSS overrides.',
+    landingUrl: `${BASE_URL}/Building-themes.html`,
+    tags: ['themes-framework'],
+    match: (p) =>
+      p === 'Building-themes.md' ||
+      p === 'Theme-Settings-In-CSS.md' ||
+      p === 'Theming-appearance.md' ||
+      p === 'API/fliplet-themes.md',
+  },
+  {
+    name: 'fliplet-menus-framework',
+    title: 'Fliplet menus framework',
+    description:
+      'Build custom menus that ship inside Fliplet apps to navigate between screens.',
+    landingUrl: `${BASE_URL}/Building-menus.html`,
+    tags: ['menus-framework'],
+    match: (p) => p === 'Building-menus.md',
+  },
+  {
+    name: 'fliplet-app-build-and-publish',
+    title: 'Fliplet app build and publish',
+    description:
+      'Publish Fliplet apps to iOS, Android, and the web: bundle size, certificates, automated app builds, platform-specific gotchas.',
+    landingUrl: `${BASE_URL}/Publishing.html`,
+    tags: ['publish', 'platform'],
+    match: (p) =>
+      p === 'Publishing.md' ||
+      p === 'Platform-iOS.md' ||
+      p === 'Platform-Android.md' ||
+      p.startsWith('aab/') ||
+      p === 'Reduce-app-bundle-size.md',
+  },
+  {
+    name: 'fliplet-security-and-compliance',
+    title: 'Fliplet security and compliance',
+    description:
+      'App-level security, IP allowlisting, organization audit logs, privacy controls. (Data-source-level security lives in fliplet-data-sources.)',
+    landingUrl: `${BASE_URL}/App-security.html`,
+    tags: ['security', 'compliance'],
+    match: (p) =>
+      p === 'App-security.md' ||
+      p === 'URLs-and-IP-Addresses.md' ||
+      p === 'Organization-audit-log-types.md',
+  },
+  {
+    name: 'fliplet-integrations',
+    title: 'Fliplet integrations',
+    description:
+      'Integrate with external systems: SSO/SAML2, the Data Integration Service, external REST APIs, OAuth2, AJAX cross-domain.',
+    landingUrl: `${BASE_URL}/Data-integration-service.html`,
+    tags: ['integrations', 'sso', 'oauth'],
+    match: (p) =>
+      p.startsWith('API/integrations/') ||
+      p === 'Data-integration-service.md' ||
+      p === 'Integrate-with-external-API.md' ||
+      p === 'AJAX-cross-domain.md' ||
+      p === 'API/fliplet-oauth2.md',
+  },
+  {
+    name: 'fliplet-js-api',
+    title: 'Fliplet JavaScript API (Fliplet.*)',
+    description:
+      'The Fliplet client-side JavaScript API: every Fliplet.X namespace (Storage, User, Navigate, Profile, Communicate, Media, Notifications, UI, ...).',
+    landingUrl: `${BASE_URL}/API-Documentation.html`,
+    tags: ['js-api'],
+    match: (p) =>
+      p.startsWith('API/') ||
+      p === 'API-Documentation.md' ||
+      p === 'JS-APIs.md' ||
+      p === 'Fliplet-SDK.md' ||
+      p === 'Fliplet-approved-libraries.md' ||
+      p === 'approved-libraries.md' ||
+      p === 'code-api-patterns.md',
+  },
+  // Fallback last. Description is intentionally meta-heavy and capability-
+  // light so embedding rankers score it low on domain queries. Tagged
+  // `fallback` so tag filters can deprioritize.
+  {
+    name: 'fliplet-docs-index',
+    title: 'Fliplet developer documentation (fallback index)',
+    description:
+      'Site-wide index of the Fliplet developer documentation. Use only as a fallback when no other Fliplet skill (js-api, rest-api, data-sources, app-actions, components-framework, helpers-framework, themes-framework, menus-framework, app-build-and-publish, security-and-compliance, integrations) matches your query. Points at /.well-known/llms.txt for full-site discovery.',
+    landingUrl: `${BASE_URL}/`,
+    tags: ['meta', 'index', 'fallback'],
+    match: () => true,
+  },
+];
+
+export function assignToCluster(relPath) {
+  for (const c of CLUSTERS) {
+    if (c.match(relPath)) return c;
+  }
+  return CLUSTERS[CLUSTERS.length - 1]; // unreachable; fallback always matches
 }
 
 function shouldExclude(relPath) {
@@ -250,16 +435,98 @@ export function emitLlmsFullTxt(docs) {
     .join('\n---\n\n');
 }
 
-export function emitAgentSkills(docs) {
+// Build the cluster-shaped agent-skills index. Each entry points at a
+// SKILL.md emitted under .well-known/agent-skills/<cluster>/SKILL.md.
+// `sha256` is the digest of the rendered SKILL.md so consumers can detect
+// drift the same way they could with per-doc entries.
+export function emitAgentSkills(docsByCluster) {
   return {
-    $schema: 'https://agentskills.io/schema/v0.2.0/index.json',
-    skills: docs.map((doc) => ({
-      name: doc.skillName,
-      type: 'documentation',
-      description: doc.description,
-      url: doc.url,
-      sha256: doc.sha256,
-    })),
+    skills: CLUSTERS.map((c) => {
+      const entry = docsByCluster.get(c.name) || { skillMdSha256: '', count: 0 };
+      return {
+        name: c.name,
+        title: c.title,
+        description: c.description,
+        url: `${BASE_URL}/.well-known/agent-skills/${c.name}/SKILL.md`,
+        landingUrl: c.landingUrl,
+        tags: c.tags,
+        sha256: entry.skillMdSha256,
+      };
+    }),
+  };
+}
+
+// Render the SKILL.md body for a cluster. Body lists every doc the cluster
+// owns (auto-generated; new docs added under a matching path appear without
+// edits). The fallback cluster gets a different body that explicitly tells
+// the agent to prefer specific clusters first.
+export function emitSkillMd(cluster, docsInCluster) {
+  const fm = `---\nname: ${cluster.name}\ndescription: ${cluster.description}\n---\n`;
+
+  if (cluster.name === 'fliplet-docs-index') {
+    return (
+      fm +
+      `\n# Fliplet developer documentation index\n\n` +
+      `${cluster.description}\n\n` +
+      `## Prefer a specific Fliplet skill\n\n` +
+      `Before loading this fallback skill, check whether one of the following matches your query:\n\n` +
+      CLUSTERS.filter((c) => c.name !== 'fliplet-docs-index')
+        .map((c) => `- \`${c.name}\` — ${c.description}`)
+        .join('\n') +
+      `\n\n## Full site index\n\n` +
+      `If no specific skill matches, fetch [${BASE_URL}/.well-known/llms.txt](${BASE_URL}/.well-known/llms.txt) for the complete list of every Fliplet developer doc, grouped by area. Each entry is a one-line summary; replace \`.html\` with \`.md\` on any doc URL to fetch the raw Markdown.\n\n` +
+      `## MCP server\n\n` +
+      `For tool-driven discovery, point an MCP-aware client at [${MCP_ENDPOINT}](${MCP_ENDPOINT}). The server exposes \`search_fliplet_docs\` and \`fetch_fliplet_doc\`.\n`
+    );
+  }
+
+  const docList = docsInCluster
+    .map((d) => `- [${d.title}](${d.url})${d.description ? `: ${d.description}` : ''}`)
+    .join('\n');
+
+  return (
+    fm +
+    `\n# ${cluster.title}\n\n` +
+    `${cluster.description}\n\n` +
+    `## Documentation\n\n` +
+    docList +
+    `\n\n## How to load full content\n\n` +
+    `Replace \`.html\` with \`.md\` on any URL above to fetch the raw Markdown source. To search across all Fliplet developer docs, use the MCP server at [${MCP_ENDPOINT}](${MCP_ENDPOINT}) (tools: \`search_fliplet_docs\`, \`fetch_fliplet_doc\`), or fetch [${BASE_URL}/.well-known/llms-full.txt](${BASE_URL}/.well-known/llms-full.txt) for the entire site as a single stream.\n`
+  );
+}
+
+// MCP Server Card per SEP-1649
+// (https://github.com/modelcontextprotocol/modelcontextprotocol/pull/2127).
+// The schema is still being standardized; consumers that pre-date the SEP
+// can still consume `serverInfo`, `transport`, and `capabilities.tools` —
+// those are the load-bearing fields validators check today.
+export function emitMcpServerCard() {
+  return {
+    schemaVersion: '2025-06-18',
+    serverInfo: {
+      name: 'fliplet-docs-mcp',
+      title: 'Fliplet developer docs MCP server',
+      version: '0.1.0',
+    },
+    transport: {
+      type: 'streamable_http',
+      url: MCP_ENDPOINT,
+    },
+    capabilities: {
+      tools: [
+        {
+          name: 'search_fliplet_docs',
+          description:
+            'Fuzzy-search the Fliplet developer documentation index (llms.txt). Returns ranked matches with title, URL, description, group, and relevance score.',
+        },
+        {
+          name: 'fetch_fliplet_doc',
+          description:
+            'Fetch the raw Markdown source of a single Fliplet developer documentation page. URL must be under developers.fliplet.com and end in .md.',
+        },
+      ],
+    },
+    documentation: `${BASE_URL}/`,
   };
 }
 
@@ -285,12 +552,14 @@ export function collectDocs(rootDir) {
     const title = fm.title || h1;
     const description = fm.description || intro || '';
     const sha256 = createHash('sha256').update(raw).digest('hex');
+    const cluster = assignToCluster(relPath);
     docs.push({
       relPath,
       url: urlForPath(relPath),
       title,
       description: truncate(description, 200),
       group: pickGroup(relPath),
+      cluster: cluster.name,
       sha256,
       skillName: skillNameForPath(relPath),
       body,
@@ -305,6 +574,7 @@ function main() {
   console.log(`Discovered ${docs.length} docs for indexing`);
 
   mkdirSync(agentSkillsDir, { recursive: true });
+  mkdirSync(mcpDir, { recursive: true });
 
   const llmsTxt = emitLlmsTxt(docs);
   writeFileSync(join(wellKnownDir, 'llms.txt'), llmsTxt);
@@ -312,10 +582,34 @@ function main() {
   const llmsFull = emitLlmsFullTxt(docs);
   writeFileSync(join(wellKnownDir, 'llms-full.txt'), llmsFull);
 
-  const agentSkills = emitAgentSkills(docs);
+  // Group docs by cluster, render SKILL.md per cluster, hash each rendered
+  // SKILL.md for the index entry's sha256, then emit the cluster-shaped
+  // index.json.
+  const docsByClusterName = new Map();
+  for (const c of CLUSTERS) docsByClusterName.set(c.name, []);
+  for (const d of docs) docsByClusterName.get(d.cluster).push(d);
+
+  const skillSummaries = new Map();
+  for (const c of CLUSTERS) {
+    const clusterDocs = docsByClusterName.get(c.name);
+    const skillMd = emitSkillMd(c, clusterDocs);
+    const skillMdSha256 = createHash('sha256').update(skillMd).digest('hex');
+    const clusterDir = join(agentSkillsDir, c.name);
+    mkdirSync(clusterDir, { recursive: true });
+    writeFileSync(join(clusterDir, 'SKILL.md'), skillMd);
+    skillSummaries.set(c.name, { skillMdSha256, count: clusterDocs.length });
+  }
+
+  const agentSkills = emitAgentSkills(skillSummaries);
   writeFileSync(
     join(agentSkillsDir, 'index.json'),
     JSON.stringify(agentSkills, null, 2) + '\n',
+  );
+
+  const mcpCard = emitMcpServerCard();
+  writeFileSync(
+    join(mcpDir, 'server-card.json'),
+    JSON.stringify(mcpCard, null, 2) + '\n',
   );
 
   const apiCatalog = emitApiCatalog(docs);
@@ -327,7 +621,12 @@ function main() {
   console.log('Generated:');
   console.log(`  .well-known/llms.txt                 (${llmsTxt.length} bytes, ${docs.length} entries)`);
   console.log(`  .well-known/llms-full.txt            (${llmsFull.length} bytes)`);
-  console.log(`  .well-known/agent-skills/index.json  (${docs.length} skills)`);
+  console.log(`  .well-known/agent-skills/index.json  (${CLUSTERS.length} clusters, ${docs.length} docs)`);
+  for (const c of CLUSTERS) {
+    const n = skillSummaries.get(c.name).count;
+    console.log(`    └─ ${c.name.padEnd(34)} (${n} doc${n === 1 ? '' : 's'})`);
+  }
+  console.log(`  .well-known/mcp/server-card.json     (${MCP_ENDPOINT})`);
   console.log(`  .well-known/api-catalog              (${docs.length} entries)`);
 }
 
