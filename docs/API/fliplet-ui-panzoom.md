@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, panzoom]
 v3_relevant: true
 deprecated: false
+exclude_from_v3_catalog: true
 ---
 # `Fliplet.UI.PanZoom`
 

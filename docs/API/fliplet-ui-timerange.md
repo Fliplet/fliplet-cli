@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, timerange]
 v3_relevant: true
 deprecated: false
+exclude_from_v3_catalog: true
 ---
 # `Fliplet.UI.TimeRange()`
 
