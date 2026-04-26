@@ -6,7 +6,7 @@ import { strict as assert } from 'node:assert';
 import { mkdirSync, writeFileSync, readFileSync, rmSync, existsSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
-import { siblingTargetForRelPath, copySiblings } from '../copy-md-siblings.mjs';
+import { siblingTargetForRelPath, copySiblings, copyWellKnown } from '../copy-md-siblings.mjs';
 
 describe('siblingTargetForRelPath', () => {
   it('maps README.md to index.md for homepage serving', () => {
@@ -74,6 +74,65 @@ describe('copySiblings', () => {
       /_site directory not found/,
     );
     rmSync(missingRoot, { recursive: true, force: true });
+  });
+
+  // Cleanup
+  it('(teardown)', () => {
+    rmSync(root, { recursive: true, force: true });
+  });
+});
+
+describe('copyWellKnown', () => {
+  const root = join(tmpdir(), `copy-well-known-test-${Date.now()}`);
+  const site = join(root, '_site');
+  const wk = join(root, '.well-known');
+
+  mkdirSync(wk, { recursive: true });
+  mkdirSync(join(wk, 'agent-skills', 'fliplet-data-sources'), { recursive: true });
+  mkdirSync(join(wk, 'mcp'), { recursive: true });
+  mkdirSync(site, { recursive: true });
+
+  writeFileSync(join(wk, 'llms.txt'), 'index\n');
+  writeFileSync(join(wk, 'api-catalog'), '{}\n');
+  writeFileSync(join(wk, 'agent-skills', 'index.json'), '{"skills":[]}\n');
+  writeFileSync(
+    join(wk, 'agent-skills', 'fliplet-data-sources', 'SKILL.md'),
+    '---\nname: fliplet-data-sources\n---\n# DS\n',
+  );
+  writeFileSync(join(wk, 'mcp', 'server-card.json'), '{"x":1}\n');
+
+  it('copies every file under .well-known/ verbatim', () => {
+    const count = copyWellKnown(root, site);
+    assert.equal(count, 5);
+    assert.ok(existsSync(join(site, '.well-known', 'llms.txt')));
+    assert.ok(existsSync(join(site, '.well-known', 'api-catalog')));
+    assert.ok(existsSync(join(site, '.well-known', 'agent-skills', 'index.json')));
+    assert.ok(
+      existsSync(join(site, '.well-known', 'agent-skills', 'fliplet-data-sources', 'SKILL.md')),
+    );
+    assert.ok(existsSync(join(site, '.well-known', 'mcp', 'server-card.json')));
+  });
+
+  it('preserves SKILL.md byte-for-byte (no Jekyll conversion)', () => {
+    const original = readFileSync(
+      join(wk, 'agent-skills', 'fliplet-data-sources', 'SKILL.md'),
+      'utf8',
+    );
+    const copied = readFileSync(
+      join(site, '.well-known', 'agent-skills', 'fliplet-data-sources', 'SKILL.md'),
+      'utf8',
+    );
+    assert.equal(copied, original);
+  });
+
+  it('throws a clear error when .well-known/ does not exist', () => {
+    const empty = join(tmpdir(), `copy-wk-missing-${Date.now()}`);
+    mkdirSync(join(empty, '_site'), { recursive: true });
+    assert.throws(
+      () => copyWellKnown(empty, join(empty, '_site')),
+      /\.well-known directory not found/,
+    );
+    rmSync(empty, { recursive: true, force: true });
   });
 
   // Cleanup

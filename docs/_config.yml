@@ -5,8 +5,12 @@ plugins:
 
 include:
   - _headers
-  - .well-known
 
+# .well-known is intentionally NOT in `include:` — its contents are copied
+# verbatim by bin/copy-md-siblings.mjs after Jekyll runs. Letting Jekyll
+# touch it converts SKILL.md → SKILL.html (because they carry YAML
+# frontmatter), which would break the URLs we publish in agent-skills
+# index.json.
 exclude:
   - docsearch
   - bin
@@ -16,3 +20,4 @@ exclude:
   - package.json
   - node_modules
   - CLAUDE.md
+  - .well-known

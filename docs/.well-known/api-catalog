@@ -1461,6 +1461,16 @@
       ]
     },
     {
+      "anchor": "https://developers.fliplet.com/mcp-worker/README.html",
+      "service-doc": [
+        {
+          "href": "https://developers.fliplet.com/mcp-worker/README.html",
+          "type": "text/html",
+          "title": "fliplet-docs-mcp"
+        }
+      ]
+    },
+    {
       "anchor": "https://developers.fliplet.com/Native-framework-changelog.html",
       "service-doc": [
         {

@@ -4,7 +4,7 @@
 
 ## Fliplet Core JavaScript APIs
 
-- [Fliplet.AI](https://developers.fliplet.com/API/core/ai.html): Build AI features in Fliplet apps with chat, completions, streaming, and task helpers — backed by OpenAI (GPT, o-series) or Google Gemini models via direct pro…
+- [Fliplet.AI](https://developers.fliplet.com/API/core/ai.html): Build AI features with `Fliplet.AI` — chat, completions, streaming, image generation, transcription, and embeddings via OpenAI or Google Gemini proxies.
 - [Fliplet.Analytics](https://developers.fliplet.com/API/core/analytics.html): Enable, disable, and check analytics tracking, and record custom app events and page views from JavaScript.
 - [Fliplet.API.request()](https://developers.fliplet.com/API/core/api.html): Make authenticated HTTP requests to Fliplet APIs with automatic URL construction, caching, offline queueing, and error handling.
 - [App Actions V2 (deprecated)](https://developers.fliplet.com/API/core/app-actions-v2.html): Deprecated App Actions V2 — configure a pipeline of functions that runs on-device or in the cloud, ad hoc or on a schedule. Migrate to V3.
@@ -18,10 +18,10 @@
 - [Fliplet.Env](https://developers.fliplet.com/API/core/environment.html): Read environment variables such as `appId`, `appName`, `mode`, and `apiUrl` from the current runtime.
 - [Fliplet.parseError()](https://developers.fliplet.com/API/core/error.html): Turn any error response or object into a human-readable message by scanning common error properties.
 - [Fliplet.Hooks](https://developers.fliplet.com/API/core/hooks.html): Register callbacks that run before or after key app events (e.g. form submit), with sync or async Promise handlers.
-- [Fliplet.Locale](https://developers.fliplet.com/API/core/localization.html): Customize your component to localize to different languages and regions.
+- [Fliplet.Locale](https://developers.fliplet.com/API/core/localization.html): Translate strings and format dates and numbers in Fliplet components via Fliplet.Locale, the T() shorthand, and translation.json files using i18next.
 - [Fliplet common functions](https://developers.fliplet.com/API/core/misc.html): Utility helpers on the global `Fliplet` object: `Fliplet.compile()` for templating and `Fliplet.guid()` for unique IDs.
-- [Fliplet.Modal](https://developers.fliplet.com/API/core/modal.html): Show confirmation, alert, and prompt dialogs from widget interfaces in Fliplet Studio, powered by [Bootbox](http://bootboxjs.com/) — see its documentation for…
-- [Fliplet.Navigate](https://developers.fliplet.com/API/core/navigate.html): Navigate the app to a new page, screen, document or URL
+- [Fliplet.Modal](https://developers.fliplet.com/API/core/modal.html): Show confirmation, alert, and prompt dialogs from widget interfaces in Fliplet Studio via `Fliplet.Modal`, powered by Bootbox.
+- [Fliplet.Navigate](https://developers.fliplet.com/API/core/navigate.html): Navigate between app screens, open external URLs, pass query parameters, and handle back, home, and modal navigation via Fliplet.Navigate.
 - [Fliplet.Navigator](https://developers.fliplet.com/API/core/navigator.html): Detect online/offline state, listen for connectivity changes, and wait for the device to be ready.
 - [Fliplet.Navigator.Notifications](https://developers.fliplet.com/API/core/notifications.html): Check notification support, request permission, and send local device notifications from JavaScript.
 - [Fliplet.Organizations](https://developers.fliplet.com/API/core/organizations.html): List the current user's organizations and fetch audit logs with filters for type, date range, app, and session.
@@ -38,33 +38,33 @@
 
 - [Accordion component](https://developers.fliplet.com/API/components/accordions.html): The Accordion component supports query parameters to open specific accordions when linking to a screen.
 - [Charts component](https://developers.fliplet.com/API/components/charts.html): Use the Charts JS API to retrieve chart instances on a screen and update their data, labels, and series at runtime.
-- [Chat JS APIs](https://developers.fliplet.com/API/components/chat.html): These public JS APIs will be automatically available in your screens once a **Chat layout** component is used. You can also include these by manually adding th…
-- [Data Directory JS APIs](https://developers.fliplet.com/API/components/data-directory.html): These public JS APIs will be automatically available in your screens once a **Data Directory** component is dropped into such screens.
-- [Dynamic Container JS APIs](https://developers.fliplet.com/API/components/dynamic-container.html): The dynamic container allows you to dynamically load data from a data source in a screen. It is useful when you want to display a list of records in a screen u…
+- [Chat JS APIs](https://developers.fliplet.com/API/components/chat.html): Start conversations, list contacts, count unread messages, and modify chat rendering via Fliplet.Chat on screens that use the Chat layout component.
+- [Data Directory JS APIs](https://developers.fliplet.com/API/components/data-directory.html): Hook into the Data Directory component to override its data source, transform entries, and run code before render or initialization on directory screens.
+- [Dynamic Container JS APIs](https://developers.fliplet.com/API/components/dynamic-container.html): Bind a screen region to a data source query via Fliplet.DynamicContainer so the component renders a list of entries with bound expressions.
 - [Email Verification component](https://developers.fliplet.com/API/components/email-verification.html): Use the Email Verification JS API to retrieve the component instance on a screen and trigger verification flows for a given email address.
-- [Form JS APIs](https://developers.fliplet.com/API/components/form-builder.html): The following JS APIs are available in a screen once a **Form** component is dropped into the screen.
-- [Interactive Graphics JS APIs](https://developers.fliplet.com/API/components/interactive-graphics.html): These public JS APIs are available in screens where an **Interactive Graphics** component is present.
+- [Form JS APIs](https://developers.fliplet.com/API/components/form-builder.html): Populate fields, read values, react to validation, and submit programmatically via Fliplet.FormBuilder on screens that contain a Form component.
+- [Interactive Graphics JS APIs](https://developers.fliplet.com/API/components/interactive-graphics.html): Override marker data, preselect a marker or map, and respond to label clicks via Interactive Graphics component hooks on screens that use it.
 - [List (from Data Source) component](https://developers.fliplet.com/API/components/list-from-data-source.html): Configure templates, hooks, and query parameters for the List (from Data Source) component, which renders summary and detail views backed by a data source.
-- [List Repeater JS APIs](https://developers.fliplet.com/API/components/list-repeater.html): The list repeater component is a container for a list of records. It is used to display a list of records from a data source.
-- [Login](https://developers.fliplet.com/API/components/login.html): The login component fires hooks at key points in the authentication lifecycle. These allow you to run custom code after a user successfully logs in or when a r…
+- [List Repeater JS APIs](https://developers.fliplet.com/API/components/list-repeater.html): Render a list of data source entries inside a Dynamic Container via `Fliplet.ListRepeater`, with hooks to modify rows before and after render.
+- [Login](https://developers.fliplet.com/API/components/login.html): Run custom code after a user authenticates or when a returning user's session is re-validated via the Login component's `login` and `sessionValidate` hooks.
 - [Bottom Icon Bar menu component](https://developers.fliplet.com/API/components/menu-bottom-icon-bar.html): Use a query parameter to highlight the active item when linking into a screen that uses the Bottom Icon Bar menu component.
-- [Push Notifications JS APIs](https://developers.fliplet.com/API/components/push-notifications.html): These public JS APIs will be automatically available in your screens once **Push Notifications** have been enabled for your app.
-- [Record container JS APIs](https://developers.fliplet.com/API/components/record-container.html): The record container allows you to display one record from a data source in a screen. It is useful when you want to display a single record in a screen, for ex…
+- [Push Notifications JS APIs](https://developers.fliplet.com/API/components/push-notifications.html): Prompt users to subscribe, read device push settings, fetch the subscription ID and token, and unsubscribe via Fliplet's push notifications JS API.
+- [Record container JS APIs](https://developers.fliplet.com/API/components/record-container.html): Render a single data source entry in a screen via Fliplet.RecordContainer, with hooks to modify the query and react when data is retrieved.
 
 ## Helpers framework
 
 - [Distributing Helpers as components](https://developers.fliplet.com/API/helpers/components.html): Package a Fliplet Helper as a reusable widget-framework component so it can be installed and dropped into apps like any first-party component.
-- [Dynamic components](https://developers.fliplet.com/API/helpers/dynamic-components.html): Helpers can be dropped into what we refer as \"dynamic components\". These include the **Dynamic container** and **List Repeater** components. Such components su…
-- [Helper example: decision tree](https://developers.fliplet.com/API/helpers/example-decision-tree.html): Build a decision tree using the Fliplet Helper library.
+- [Dynamic components](https://developers.fliplet.com/API/helpers/dynamic-components.html): Render Helper instances inside Dynamic Container and List Repeater components, with reactive per-record data binding via `supportsDynamicContext`.
+- [Helper example: decision tree](https://developers.fliplet.com/API/helpers/example-decision-tree.html): Worked example: build a decision-tree Helper that presents a question, waits for the user's answer, then advances to the next question.
 - [Helper example: question and answer](https://developers.fliplet.com/API/helpers/example-question.html): A worked example showing how to build a Helper that presents a multiple-choice question and reveals whether the selected answer is correct.
 - [Helper fields (attributes)](https://developers.fliplet.com/API/helpers/fields.html): Pass attributes to a Helper via the HTML `field` element and read them inside the Helper via `this.fields.<name>`.
 - [Helper lifecycle hooks and events](https://developers.fliplet.com/API/helpers/hooks.html): Run code at key points in a Helper's lifecycle using the `beforeReady` and `ready` render hooks.
 - [Helper configuration interface: fields](https://developers.fliplet.com/API/helpers/interface-fields.html): Define the fields shown in a Helper's Fliplet Studio configuration interface, including their type, label, validation, and default value.
 - [Helper configuration interface: hooks and events](https://developers.fliplet.com/API/helpers/interface-hooks.html): Run code when a Helper's configuration interface initializes, becomes ready, or is about to save.
-- [Helper configuration interface: external libraries](https://developers.fliplet.com/API/helpers/interface-libraries.html): Include [Fliplet-approved](/Fliplet-approved-libraries.html) or third-party JavaScript and CSS libraries in a Helper's configuration interface via the `depende…
+- [Helper configuration interface: external libraries](https://developers.fliplet.com/API/helpers/interface-libraries.html): Include Fliplet-approved or third-party JavaScript and CSS libraries in a Helper's configuration interface via the `dependencies` array.
 - [Helper configuration interface: methods](https://developers.fliplet.com/API/helpers/interface-methods.html): Use `find`, `findOne`, and `children` inside a Helper's configuration interface to access nested child Helper instances.
 - [Helper configuration interface](https://developers.fliplet.com/API/helpers/interface.html): Define a configuration UI for your Helper so users can set field values for each instance from within Fliplet Studio.
-- [Helper external libraries](https://developers.fliplet.com/API/helpers/libraries.html): Declare a Helper's runtime dependencies by listing [Fliplet-approved](/Fliplet-approved-libraries.html) or third-party JS/CSS libraries in its `render.dependen…
+- [Helper external libraries](https://developers.fliplet.com/API/helpers/libraries.html): Declare a Helper's runtime dependencies by listing Fliplet-approved or third-party JS/CSS libraries in its `render.dependencies` array.
 - [Helper instance and class methods](https://developers.fliplet.com/API/helpers/methods.html): Define instance methods on a Helper and call Helper class methods such as `find` and `findOne` anywhere in the app lifecycle.
 - [Fliplet Helpers overview](https://developers.fliplet.com/API/helpers/overview.html): Helpers are a UI framework for building custom components in Fliplet apps using JavaScript, with a configuration interface in Fliplet Studio.
 - [Fliplet Helpers quickstart](https://developers.fliplet.com/API/helpers/quickstart.html): Create your first Fliplet Helper by defining its name, template, and configuration object in screen or global JavaScript.
@@ -78,7 +78,7 @@
 ## Data Sources
 
 - [Data Source joins](https://developers.fliplet.com/API/datasources/joins.html): Fetch related rows from multiple data sources in a single query using named joins, like SQL joins.
-- [Data Sources query operators](https://developers.fliplet.com/API/datasources/query-operators.html): Reference for MongoDB/Sift-style operators (`$eq`, `$gt`, `$in`, `$regex`, …) usable in `connection.find()` `where` clauses.
+- [Data Sources query operators](https://developers.fliplet.com/API/datasources/query-operators.html): Filter Data Source queries with MongoDB/Sift operators ($eq, $gt, $in, $regex, $and, $or) inside connection.find() where clauses.
 - [Data Source views](https://developers.fliplet.com/API/datasources/views.html): Define named, session-aware filters on a data source so each user or group sees only the rows that apply to them.
 
 ## Integrations
@@ -87,14 +87,14 @@
 
 ## Libraries
 
-- [Using Handlebars in your apps](https://developers.fliplet.com/API/libraries/handlebars.html): All screens of your Fliplet app already include [Handlebars `2.15.2`](https://handlebarsjs.com/) hence you can start using it straight away. Here's a quick exa…
+- [Using Handlebars in your apps](https://developers.fliplet.com/API/libraries/handlebars.html): Use Handlebars 2.15.2 in Fliplet app screens for templating, with built-in helpers for images, dates, auth URLs, JSON, and conditional comparisons.
 
 ## Providers
 
 - [Data Source provider](https://developers.fliplet.com/API/providers/data-source.html): The Data Source provider lets users pick or create a data source for a component, including default columns, entries, and access rules.
-- [Email provider](https://developers.fliplet.com/API/providers/email.html): The Email provider lets users compose and configure an email template (subject, body, recipients, headers) that can then be sent via `Fliplet.Communicate.sendE…
+- [Email provider](https://developers.fliplet.com/API/providers/email.html): Compose email templates (subject, body, recipients, headers) in a reusable provider UI for sending via `Fliplet.Communicate.sendEmail()`.
 - [File Picker provider](https://developers.fliplet.com/API/providers/file-picker.html): The File Picker provider lets users select one or more files from Fliplet's File Manager, optionally scoped by file type or restricted to single-select.
-- [Link Action provider](https://developers.fliplet.com/API/providers/link-action.html): The Link Action provider offers a reusable UI for configuring an action (e.g. navigate to screen, open URL, send email) that another feature will trigger on a…
+- [Link Action provider](https://developers.fliplet.com/API/providers/link-action.html): Configure link actions (navigate to screen, open URL, document, video, or run JS) in a reusable provider UI executable via `Fliplet.Navigate.to()`.
 
 ## Fliplet JavaScript APIs
 
@@ -102,39 +102,39 @@
 - [Fliplet.Media.Audio](https://developers.fliplet.com/API/fliplet-audio.html): Play, pause, stop, and seek audio files on device or from a URL in Fliplet apps via the Audio namespace.
 - [Fliplet.Barcode](https://developers.fliplet.com/API/fliplet-barcode.html): Scan QR codes and other 1D/2D barcodes from the device camera via the fliplet-barcode package.
 - [Fliplet.Communicate](https://developers.fliplet.com/API/fliplet-communicate.html): Send email, SMS, push notifications, and share URLs from a Fliplet app using a single Communicate namespace.
-- [Fliplet.Content()](https://developers.fliplet.com/API/fliplet-content.html): (Returns **`Promise`**)
+- [Fliplet.Content()](https://developers.fliplet.com/API/fliplet-content.html): Create, query, update, and delete shared content records (bookmarks, likes, saved searches) backed by a data source via Fliplet.Content.
 - [Fliplet.CSV](https://developers.fliplet.com/API/fliplet-csv.html): Encode and decode CSV in Fliplet apps via the fliplet-csv package.
 - [Fliplet.Database](https://developers.fliplet.com/API/fliplet-database.html): Low-level helper for reading and querying JSON data from a local file as a database; used internally by Fliplet.DataSources.
 - [Fliplet.DataSources](https://developers.fliplet.com/API/fliplet-datasources.html): Connect to, query, insert, update, and delete records in Fliplet Data Sources from inside an app. All methods are promise-based.
 - [Fliplet.DataSources.Encryption](https://developers.fliplet.com/API/fliplet-encryption.html): Automatically encrypt and decrypt selected Data Source columns on-device by registering a private key and column list.
-- [Fliplet.Gamify](https://developers.fliplet.com/API/fliplet-gamify.html): Configure gamification logic for your apps.
+- [Fliplet.Gamify](https://developers.fliplet.com/API/fliplet-gamify.html): Configure gamification with logs, variables, and achievements via Fliplet.Gamify; track points, milestones, and badges backed by a data source per user.
 - [Fliplet.Media](https://developers.fliplet.com/API/fliplet-media.html): Browse folders, upload and manage files, and download media to devices via the Fliplet Media namespace.
 - [Fliplet.Notifications](https://developers.fliplet.com/API/fliplet-notifications.html): Read, send, and schedule in-app and push notifications in Fliplet apps, with support for scopes, read receipts, and badge counts.
 - [Fliplet.OAuth2 (Beta)](https://developers.fliplet.com/API/fliplet-oauth2.html): The `fliplet-oauth2` package contains helpers for standardizing requests to OAuth2 web services with a client-side integration.
 - [Fliplet.Page](https://developers.fliplet.com/API/fliplet-page.html): Utilities for interacting with the current Fliplet screen — including smooth-scrolling to an element with configurable duration and offsets.
-- [Fliplet.Payments](https://developers.fliplet.com/API/fliplet-payments.html): Adds payments functionality in your Fliplet apps using Stripe and our easy-to-use JS API.
-- [Fliplet.Profile.Content()](https://developers.fliplet.com/API/fliplet-profile-content.html): (Returns **`Promise`**)
+- [Fliplet.Payments](https://developers.fliplet.com/API/fliplet-payments.html): Accept Stripe payments and checkout in Fliplet apps via Fliplet.Payments, with a products data source and webhook-driven order tracking.
+- [Fliplet.Profile.Content()](https://developers.fliplet.com/API/fliplet-profile-content.html): Create, query, update, and delete user-attributed content records in a data source so each user only sees their own entries via Fliplet.Profile.Content.
 - [Fliplet.Session](https://developers.fliplet.com/API/fliplet-session.html): Read, write, and clear the current user session — including cached offline sessions — for authentication state in Fliplet apps.
-- [Fliplet.UI.Table](https://developers.fliplet.com/API/fliplet-table.html): Fliplet.UI.Table is a powerful and flexible table component that provides features like sorting, searching, pagination, row selection, expandable rows, and cus…
+- [Fliplet.UI.Table](https://developers.fliplet.com/API/fliplet-table.html): Render searchable, sortable tables with pagination, row selection, expandable rows, and custom cell rendering via `Fliplet.UI.Table`.
 - [Fliplet.Themes](https://developers.fliplet.com/API/fliplet-themes.html): Read the list of available app themes and access the current theme's settings and widget-instance values at runtime.
-- [Fliplet.UI.Actions()](https://developers.fliplet.com/API/fliplet-ui-actions.html): (Returns **`Promise`**)
-- [Fliplet.UI.AddressField()](https://developers.fliplet.com/API/fliplet-ui-address.html): The Address field is a customizable component that integrates with Google Maps to enable address lookup. It allows users to search and select addresses using G…
-- [Fliplet.UI.DatePicker()](https://developers.fliplet.com/API/fliplet-ui-datepicker.html): (Returns `Object`)
-- [Fliplet.UI.DateRange()](https://developers.fliplet.com/API/fliplet-ui-daterange.html): (Returns `Object`)
-- [Fliplet.UI.NumberInput()](https://developers.fliplet.com/API/fliplet-ui-number.html): (Returns `Object`)
-- [Fliplet.UI.PanZoom](https://developers.fliplet.com/API/fliplet-ui-panzoom.html): These public JS APIs will be automatically available in your screen once an Interactive graphics component is dropped into a screen. You can also add the depen…
-- [Fliplet.UI.RangeSlider()](https://developers.fliplet.com/API/fliplet-ui-rangeslider.html): (Returns `Object`)
-- [Fliplet.UI.TimePicker()](https://developers.fliplet.com/API/fliplet-ui-timepicker.html): (Returns `Object`)
-- [Fliplet.UI.TimeRange()](https://developers.fliplet.com/API/fliplet-ui-timerange.html): (Returns `Object`)
-- [Fliplet.UI.Toast.error()](https://developers.fliplet.com/API/fliplet-ui-toast-error.html): (Returns **`undefined`**)
-- [Fliplet.UI.Toast()](https://developers.fliplet.com/API/fliplet-ui-toast.html): (Returns **`Promise`**)
-- [Fliplet.UI.Typeahead()](https://developers.fliplet.com/API/fliplet-ui-typeahead.html): (Returns `Object`)
-- [Fliplet.UI](https://developers.fliplet.com/API/fliplet-ui.html): The `Fliplet.UI` namespace contains several classes for creating UI managed by Fliplet. Where appropriate, the UI would come with the following benefits:
+- [Fliplet.UI.Actions()](https://developers.fliplet.com/API/fliplet-ui-actions.html): Show a native-style action sheet with a title, labeled options, and a cancel button, resolving with the chosen index via Fliplet.UI.Actions.
+- [Fliplet.UI.AddressField()](https://developers.fliplet.com/API/fliplet-ui-address.html): Add a Google Maps autocomplete address field to a screen via `Fliplet.UI.AddressField()` to search, select, and retrieve location details.
+- [Fliplet.UI.DatePicker()](https://developers.fliplet.com/API/fliplet-ui-datepicker.html): Render a date picker input with optional preset value, required flag, and get/set/change methods via Fliplet.UI.DatePicker.
+- [Fliplet.UI.DateRange()](https://developers.fliplet.com/API/fliplet-ui-daterange.html): Render a paired start/end date range input with required flag, default value, and get/set/change methods via Fliplet.UI.DateRange.
+- [Fliplet.UI.NumberInput()](https://developers.fliplet.com/API/fliplet-ui-number.html): Render a numeric input with required flag, preset value, and get/set/change methods for reading user-entered numbers via Fliplet.UI.NumberInput.
+- [Fliplet.UI.PanZoom](https://developers.fliplet.com/API/fliplet-ui-panzoom.html): Pan, zoom, and place markers on images or interactive graphics via `Fliplet.UI.PanZoom`, with pinch, mouse wheel, and double-tap support.
+- [Fliplet.UI.RangeSlider()](https://developers.fliplet.com/API/fliplet-ui-rangeslider.html): Render a range slider input with min, max, step, and default value, plus get/set/change methods via Fliplet.UI.RangeSlider.
+- [Fliplet.UI.TimePicker()](https://developers.fliplet.com/API/fliplet-ui-timepicker.html): Render a time picker input in 24-hour HH:mm format with required flag and get/set/change methods via Fliplet.UI.TimePicker.
+- [Fliplet.UI.TimeRange()](https://developers.fliplet.com/API/fliplet-ui-timerange.html): Render a paired start/end time range input in HH:mm format with required flag, default value, and get/set/change methods via Fliplet.UI.TimeRange.
+- [Fliplet.UI.Toast.error()](https://developers.fliplet.com/API/fliplet-ui-toast-error.html): Parse an error object and show a toast with a friendly initial message plus a button to reveal the detailed technical error via Fliplet.UI.Toast.error.
+- [Fliplet.UI.Toast()](https://developers.fliplet.com/API/fliplet-ui-toast.html): Show minimal or regular auto-dismissing toast notifications with title, message, position, duration, progress bar, and action buttons via Fliplet.UI.Toast.
+- [Fliplet.UI.Typeahead()](https://developers.fliplet.com/API/fliplet-ui-typeahead.html): Render a typeahead input with real-time suggestions, free-input toggle, max items, and get/set/change methods via Fliplet.UI.Typeahead.
+- [Fliplet.UI](https://developers.fliplet.com/API/fliplet-ui.html): Fliplet-managed UI primitives — toasts, action sheets, modals, date/time pickers, typeahead, tables, panzoom — under the Fliplet.UI namespace.
 - [Fliplet.LikeButton](https://developers.fliplet.com/API/like-buttons.html): Embed a one-tap like button on any screen element, backed by a Data Source that records likes per content ID.
 
 ## REST APIs
 
-- [Authenticating with the Fliplet REST APIs](https://developers.fliplet.com/REST-API/authenticate.html): All Fliplet REST API requests are made over HTTPS to a regional endpoint (`api.fliplet.com`, `us.api.fliplet.com`, or `ca.api.fliplet.com`) and must include an…
+- [Authenticating with the Fliplet REST APIs](https://developers.fliplet.com/REST-API/authenticate.html): Authenticate Fliplet REST API requests via Auth-token header, Authorization Bearer (base64), query string, or cookie against EU, US, or CA endpoints.
 - [App Analytics REST API](https://developers.fliplet.com/REST-API/fliplet-app-analytics.html): The App Analytics REST API lets you read your app's analytics data.
 - [App Subscriptions REST API](https://developers.fliplet.com/REST-API/fliplet-app-subscriptions.html): The App Subscriptions REST API lets you read and manage your app's users subscribed via push notifications.
 - [Apps REST API](https://developers.fliplet.com/REST-API/fliplet-apps.html): The Apps REST API lets external integrations list, read, create, update, and delete Fliplet apps that the auth token has access to.
@@ -146,9 +146,9 @@
 
 ## Component framework
 
-- [Output of components](https://developers.fliplet.com/components/Build-output.html): Components generally output HTML code when dropped into the page. Their output is compiled with [Handlebars](http://handlebarsjs.com/) using the `build.html` f…
-- [The component definition file](https://developers.fliplet.com/components/Definition.html): The `widget.json` file defines your component as well as the **dependencies** and **assets** it needs in order to run.
-- [Components interfaces](https://developers.fliplet.com/components/Interface.html): Components usually define interfaces to let their instances **save settings**.
+- [Output of components](https://developers.fliplet.com/components/Build-output.html): Render Fliplet component output from build.html via Handlebars; read per-instance settings with Fliplet.Widget.instance and support dynamic-container context.
+- [The component definition file](https://developers.fliplet.com/components/Definition.html): Define a Fliplet component in widget.json: name, package, version, icon, tags, html_tag, plus interface and build entries for dependencies and assets.
+- [Components interfaces](https://developers.fliplet.com/components/Interface.html): Build a Fliplet component's settings UI in interface.html with Handlebars; persist values via Fliplet.Widget.save and rehydrate with Fliplet.Widget.getData.
 - [Using providers](https://developers.fliplet.com/components/Using-Providers.html): Components can display providers to get specific data from the system or need a particular piece of functionality to be added.
 
 ## Automated App Builds
@@ -160,12 +160,12 @@
 - [Fliplet Developers documentation](https://developers.fliplet.com/): Reference and guides for extending Fliplet apps with the JS API, REST API, and custom components, themes, and menus.
 - [AI-powered Fliplet development with Cursor](https://developers.fliplet.com/AI-powered-development-with-Cursor.html): How to install and use the Fliplet VS Code extension inside Cursor to generate, refactor, and debug Fliplet app code with AI assistance.
 - [AJAX cross-domain and cross-origin requests](https://developers.fliplet.com/AJAX-cross-domain.html): How Fliplet apps handle AJAX cross-domain requests, common CORS errors, and the studio and app domains allowed by default.
-- [Fliplet analytics event reference](https://developers.fliplet.com/Analytics-documentation.html): Reference list of analytics event types Fliplet emits for page views, navigation, app management, sharing, and component interactions.
-- [JS API Documentation](https://developers.fliplet.com/API-Documentation.html): Javascript-based SDK to interact with core functions and components in your Fliplet Apps.
-- [Securing your apps](https://developers.fliplet.com/App-security.html): Fliplet apps can have each of their screens and data sources secured so that they can only be accessed when certain conditions are met. Take the following exam…
+- [Fliplet analytics event reference](https://developers.fliplet.com/Analytics-documentation.html): List the analytics event types Fliplet emits for page views, navigation, app management, sharing, and component interactions.
+- [JS API Documentation](https://developers.fliplet.com/API-Documentation.html): Index of Fliplet's JavaScript APIs (Core, Data Sources, Media, UI, Communicate) for working with apps, screens, users, and components from custom code.
+- [Securing your apps](https://developers.fliplet.com/App-security.html): Restrict screen and data-source access in Fliplet apps via login conditions, IP allow/deny lists, and custom JS rules using session and page context.
 - [Fliplet-approved JavaScript libraries (coding-standards edition)](https://developers.fliplet.com/approved-libraries.html): The JavaScript libraries Fliplet pre-approves for app development, why you should prefer them over custom ones, and when to reach for each.
-- [Writing more readable code when using the JS APIs](https://developers.fliplet.com/Async-await.html): As you might know most of Fliplet JS APIs use **Promises** when the result of such operation cannot be read synchronously. For example when reading data from t…
-- [Best practice and advices when building components](https://developers.fliplet.com/Best-practises.html): Got stuck building components or found some nasty bugs? Here's a few tips that might help you dealing with basic issues during the development of components on…
+- [Writing more readable code when using the JS APIs](https://developers.fliplet.com/Async-await.html): Use async/await with Fliplet's Promise-based JS APIs for cleaner data-source reads, navigation, hooks, and user-session code, with try/catch error handling.
+- [Best practice and advices when building components](https://developers.fliplet.com/Best-practises.html): Gotchas for Fliplet components: instance data, multi-drop handling, Handlebars escaping for Vue/Angular curly braces, and required dependencies.
 - [Building Fliplet components](https://developers.fliplet.com/Building-components.html): How to scaffold, run, and develop a Fliplet component locally using the CLI, including the generated file layout and the local dev server.
 - [Building Fliplet app action functions](https://developers.fliplet.com/Building-functions.html): How to scaffold and develop an app action function with the CLI, declare its dependencies, and configure it via widget.json.
 - [Building Fliplet menus](https://developers.fliplet.com/Building-menus.html): How to scaffold a Fliplet menu widget, configure its position and settings via menu.json, and develop its template and assets.
@@ -174,24 +174,25 @@
 - [Cloning widgets, components, and themes from the CLI](https://developers.fliplet.com/Cloning-widgets.html): How to use the fliplet clone and fliplet list CLI commands to download the source of a published component, menu, or theme to your machine.
 - [Fliplet API patterns and categories](https://developers.fliplet.com/code-api-patterns.html): Overview of the main Fliplet JS API categories (Data Sources, Users, Media, Navigation) and when to pick each one.
 - [Fliplet coding and documentation standards](https://developers.fliplet.com/coding-standards.html): Coding and documentation standards used across Fliplet APIs, components, and examples, so both humans and AI tools produce consistent Fliplet code.
-- [Component events](https://developers.fliplet.com/Component-events.html): When components are moved around the page in *Edit* mode, Fliplet provides a set of events to manage the user interaction.
-- [Context targeting](https://developers.fliplet.com/Context-targeting.html): Fliplet uses [Modernizr](https://modernizr.com/) (`v3.5.0`) to help developers target users with specific device capabilities and contexts. This lets you targe…
-- [Custom Headers](https://developers.fliplet.com/Custom-Headers.html): Fliplet allows you to set custom headers for your apps. This feature is useful for enhancing security, controlling resource loading, and adding custom HTTP hea…
+- [Component events](https://developers.fliplet.com/Component-events.html): Listen for component lifecycle events (adding, added, removed, moved, render) emitted while users edit a Fliplet screen, via Fliplet.Hooks.on('componentEvent').
+- [Context targeting](https://developers.fliplet.com/Context-targeting.html): Target devices in Fliplet apps via Modernizr classes and JS flags for iOS, Android, Windows, web, native, mobile/tablet/desktop, notch, and Studio edit mode.
+- [Custom Headers](https://developers.fliplet.com/Custom-Headers.html): Configure custom HTTP response headers (CSP, HSTS, CORS, custom security headers) for a Fliplet app via Fliplet.App.Settings and the Developer Options panel.
 - [Custom HTML templates for Fliplet components](https://developers.fliplet.com/Custom-template-for-components.html): How to override a component's default template with custom HTML and Handlebars in the new container-based drag-and-drop system.
 - [Fliplet infrastructure data flow](https://developers.fliplet.com/Data-flow.html): Architecture diagram showing how data flows between Fliplet Studio, Fliplet servers, app clients, and connected data sources.
 - [Data integration service](https://developers.fliplet.com/Data-integration-service.html): Fliplet Agent (Data integration service) is a command line utility to synchronize data to and from Fliplet Servers.
-- [Data Source Hooks](https://developers.fliplet.com/Data-Source-Hooks.html): Data Source hooks allow your app's backend to perform certain operations such as **sending emails** or **push notifications** when certain conditions occur, e.…
+- [Data Source Hooks](https://developers.fliplet.com/Data-Source-Hooks.html): Trigger emails, SMS, push notifications, web requests, or column operations on Data Source insert/update/beforeSave/beforeQuery using Sift.js match conditions.
 - [Securing Fliplet data sources](https://developers.fliplet.com/Data-source-security.html): Secure your Data Sources with access rules, data requirements, and custom JavaScript security rules.
-- [Dependencies and assets](https://developers.fliplet.com/Dependencies-and-assets.html): Both **components** and **themes** can specify a list of dependencies and local assets which should be used when rendering it.
+- [Dependencies and assets](https://developers.fliplet.com/Dependencies-and-assets.html): Declare package dependencies and bundled JS/CSS/font assets for Fliplet components and themes, with separate interface and build entries plus appAssets.
 - [Sending events between components](https://developers.fliplet.com/Event-emitter.html): Components interfaces can send events to Fliplet Studio using a event emitter bus provided with the `fliplet-core` dependency.
 - [Fliplet app execution flow](https://developers.fliplet.com/Execution-flow.html): The rendering and hook lifecycle Fliplet apps go through before a screen is shown to the user, and where to safely run custom code within it.
 - [Securing Fliplet files and folders](https://developers.fliplet.com/File-security.html): Secure files and folders in your Fliplet apps with access rules and custom JavaScript security rules.
 - [Fliplet-approved JavaScript libraries (reference list)](https://developers.fliplet.com/Fliplet-approved-libraries.html): Reference list of every JavaScript library Fliplet pre-approves in apps, including versions and optional add-on libraries.
-- [Fliplet SDK](https://developers.fliplet.com/Fliplet-SDK.html): The Fliplet SDK enables you to use all the JS APIs outside of our environment. This means you can use them on any client-side code which is not sitting on Flip…
+- [Fliplet SDK](https://developers.fliplet.com/Fliplet-SDK.html): Load Fliplet JS APIs on any external website via sdk.js with an auth token and optional comma-separated package list (e.g. fliplet-media, fliplet-datasources).
 - [Integrating Fliplet apps with external APIs](https://developers.fliplet.com/Integrate-with-external-API.html): Call third-party REST APIs from a Fliplet app using jQuery AJAX helpers, including CORS considerations.
 - [Introduction to the Fliplet developer platform](https://developers.fliplet.com/Introduction.html): Overview of the Fliplet developer stack (JavaScript, SASS, Handlebars) and the kinds of apps, components, themes, and menus you can build on it.
 - [JavaScript coding standards for Fliplet apps](https://developers.fliplet.com/javascript-coding-standards.html): Recommended ES6+ patterns for new Fliplet code and ES5 patterns for legacy apps, covering promises, async/await, and API integration.
 - [The Fliplet JavaScript APIs](https://developers.fliplet.com/JS-APIs.html): How the Fliplet JS APIs (SDK, not a framework) let you interact with data, screens, users, and components from Studio custom code, themes, and widgets.
+- [fliplet-docs-mcp](https://developers.fliplet.com/mcp-worker/README.html): Cloudflare Worker exposing an MCP server at developers.fliplet.com/mcp with search_fliplet_docs and fetch_fliplet_doc tools backed by llms.txt.
 - [Native framework changelog](https://developers.fliplet.com/Native-framework-changelog.html): Release notes for the Fliplet iOS and Android native frameworks — rebuild your app against a newer version to unlock new features.
 - [Fliplet open source resources](https://developers.fliplet.com/open-source.html): Where to find Fliplet's open-source code, pre-built app solutions, screen templates, community code examples, and developer documentation.
 - [Organization audit log types](https://developers.fliplet.com/Organization-audit-log-types.html): Reference table of every audit log type emitted for Fliplet organizations, queryable via the JS or REST API.
@@ -199,11 +200,11 @@
 - [Advanced features for the iOS platform](https://developers.fliplet.com/Platform-iOS.html): How to detect iOS at runtime and supply a manual P12 certificate when using Fliplet's Automated App Build with an Apple Enterprise account.
 - [Publishing components, themes and menus](https://developers.fliplet.com/Publishing.html): How to publish Fliplet components, themes, and menus to the Fliplet platform using the CLI's publish command.
 - [Fliplet CLI quickstart](https://developers.fliplet.com/Quickstart.html): Install Node.js and the Fliplet CLI so you can develop and test components, themes, and menus on your machine.
-- [Rate limiting for APIs](https://developers.fliplet.com/Rate-limiting-for-API.html): If you’re integrating your app or service with Fliplet APIs, you should be mindful in relation to how frequent your requests are hitting our APIs. Our infrastructure is set up to automatically thrott…
-- [Reduce your app bundle size](https://developers.fliplet.com/Reduce-app-bundle-size.html): Blacklist assets from your Fliplet app bundle to shrink it for App Store and Google Play submission.
+- [Rate limiting for APIs](https://developers.fliplet.com/Rate-limiting-for-API.html): Fliplet rate-limits Data Source, Communicate, audit-log, AI, and App Action APIs per user; back off on 429 responses and batch writes via the commit endpoint.
+- [Reduce your app bundle size](https://developers.fliplet.com/Reduce-app-bundle-size.html): Exclude assets from your Fliplet app bundle by content type, file extension, or media file ID to shrink it for App Store and Google Play submission.
 - [Fliplet REST API documentation](https://developers.fliplet.com/REST-API-Documentation.html): Index of Fliplet REST endpoints for Data Sources, Media, Notifications, Apps, and more — intended for third-party integrations.
 - [Testing Fliplet components](https://developers.fliplet.com/Testing-components.html): Run and write tests for a Fliplet component using the CLI's test command, backed by Mocha, Chai, and Puppeteer.
-- [Use theme settings in your custom CSS](https://developers.fliplet.com/Theme-Settings-In-CSS.html): Our theme is built with reusability in mind, therefore we used SCSS variables for all the settings so that you can use them in your custom CSS.
+- [Use theme settings in your custom CSS](https://developers.fliplet.com/Theme-Settings-In-CSS.html): Reference Fliplet theme SCSS variables (colors, typography, spacing) inside your custom CSS to inherit the theme's settings on a specific screen.
 - [Theme and appearance settings for components](https://developers.fliplet.com/Theming-appearance.html): Expose configurable colors, fonts, and other CSS properties in Fliplet Studio's theme settings UI via your component's widget.json.
 - [UI guidelines for component output (build)](https://developers.fliplet.com/UI-guidelines-build.html): Recommended Bootstrap-based styles for buttons, forms, and typography in a Fliplet component's user-facing output.
 - [UI guidelines for component settings (interface)](https://developers.fliplet.com/UI-guidelines-interface.html): Recommended Bootstrap-based styles for buttons, forms, and typography in a Fliplet component's Studio settings interface.

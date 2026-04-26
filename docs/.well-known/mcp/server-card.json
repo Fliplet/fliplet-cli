@@ -1,0 +1,25 @@
+{
+  "schemaVersion": "2025-06-18",
+  "serverInfo": {
+    "name": "fliplet-docs-mcp",
+    "title": "Fliplet developer docs MCP server",
+    "version": "0.1.0"
+  },
+  "transport": {
+    "type": "streamable_http",
+    "url": "https://developers.fliplet.com/mcp"
+  },
+  "capabilities": {
+    "tools": [
+      {
+        "name": "search_fliplet_docs",
+        "description": "Fuzzy-search the Fliplet developer documentation index (llms.txt). Returns ranked matches with title, URL, description, group, and relevance score."
+      },
+      {
+        "name": "fetch_fliplet_doc",
+        "description": "Fetch the raw Markdown source of a single Fliplet developer documentation page. URL must be under developers.fliplet.com and end in .md."
+      }
+    ]
+  },
+  "documentation": "https://developers.fliplet.com/"
+}
