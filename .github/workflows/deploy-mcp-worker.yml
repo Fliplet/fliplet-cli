@@ -1,0 +1,88 @@
+name: Deploy MCP Worker
+
+# Auto-deploys the Cloudflare Worker at developers.fliplet.com/mcp whenever
+# anything under docs/mcp-worker/ changes on the default branch. Cloudflare
+# Pages auto-deploys the docs site itself on every push, but Workers are a
+# separate deployment unit and require an explicit `wrangler deploy` — this
+# workflow makes that automatic so we never have to remember to run it.
+#
+# Required repo secrets (set under Settings → Secrets and variables → Actions):
+#   CLOUDFLARE_API_TOKEN   — token with permission "Account → Cloudflare
+#                            Workers Scripts:Edit" and zone access on
+#                            fliplet.com (because the Worker route is bound
+#                            to a developers.fliplet.com path).
+#   CLOUDFLARE_ACCOUNT_ID  — the Fliplet Cloudflare account ID (visible in
+#                            the dashboard sidebar on any account-scoped
+#                            page).
+
+on:
+  push:
+    branches: [master]
+    paths:
+      # NOTE: deliberately not triggering on changes to this workflow file
+      # itself, so merging the PR that introduces or edits the workflow
+      # doesn't immediately attempt a deploy (which would fail before the
+      # required secrets are added the first time). Use workflow_dispatch
+      # below to verify a workflow edit on demand.
+      - 'docs/mcp-worker/**'
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    name: Test, typecheck, deploy
+    defaults:
+      run:
+        working-directory: docs/mcp-worker
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: 'docs/mcp-worker/package-lock.json'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run unit tests
+        run: npm test
+
+      - name: Type check
+        run: npm run typecheck
+
+      - name: Deploy to Cloudflare Workers
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: docs/mcp-worker
+          command: deploy
+
+      - name: Smoke-test the live Worker
+        # Verify the deployed Worker actually responds with the expected
+        # tools list. CF Workers usually propagate within a few seconds, but
+        # we give it 15s of grace to avoid flaky failures right after deploy.
+        run: |
+          set -euo pipefail
+          sleep 15
+          RESP=$(curl -fsX POST https://developers.fliplet.com/mcp \
+            -H 'Content-Type: application/json' \
+            -H 'Accept: application/json, text/event-stream' \
+            -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}')
+          echo "$RESP" | head -c 500
+          echo
+          if ! echo "$RESP" | grep -q 'search_fliplet_docs'; then
+            echo "::error::Smoke test failed — search_fliplet_docs tool not in response."
+            exit 1
+          fi
+          if ! echo "$RESP" | grep -q 'fetch_fliplet_doc'; then
+            echo "::error::Smoke test failed — fetch_fliplet_doc tool not in response."
+            exit 1
+          fi
+          echo "OK: deployed Worker advertises both expected tools."
