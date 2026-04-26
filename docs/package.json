@@ -11,6 +11,6 @@
     "build:agent-indexes": "node bin/build-agent-indexes.mjs",
     "build:md-siblings": "node bin/copy-md-siblings.mjs",
     "check:docs": "node bin/build-agent-indexes.mjs --strict",
-    "test:unit": "node --test 'bin/__tests__/*.test.mjs'"
+    "test:unit": "node --test bin/__tests__/*.test.mjs"
   }
 }
