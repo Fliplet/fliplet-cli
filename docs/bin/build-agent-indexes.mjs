@@ -86,7 +86,12 @@ function shouldExclude(relPath) {
   if (EXCLUDED_FILES.has(relPath)) return true;
   if (relPath.endsWith('.deprecated.md')) return true;
   for (const d of EXCLUDED_DIRS) {
-    if (relPath === d || relPath.startsWith(d + '/')) return true;
+    // Match the dir at the root OR nested at any depth (e.g. mcp-worker/node_modules/...).
+    // The nested check is what stops mcp-worker/node_modules/**/README.md from leaking
+    // into the index when someone runs the script after `npm install` in mcp-worker/.
+    if (relPath === d || relPath.startsWith(d + '/') || relPath.includes('/' + d + '/')) {
+      return true;
+    }
   }
   return false;
 }
