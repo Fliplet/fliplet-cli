@@ -1,11 +1,10 @@
 // Shared exclusion list for every bin/ script that walks docs/**/*.md.
 //
-// Three scripts (build-agent-indexes.mjs, copy-md-siblings.mjs,
-// migrate-frontmatter.mjs) walk the same source tree and skip the same
-// files. Keeping the list in one place avoids the drift bug that bit us
-// before (a new exclusion added to one script but missed in the other
-// two; in particular nested node_modules under mcp-worker/ leaking into
-// the index).
+// Both pipeline scripts (build-agent-indexes.mjs and copy-md-siblings.mjs)
+// walk the same source tree and skip the same files. Keeping the list in
+// one place avoids the drift bug that bit us before (a new exclusion
+// added to one script but missed in the other; in particular nested
+// node_modules under mcp-worker/ leaking into the index).
 
 // Specific files that must never be indexed, served as .md siblings, or
 // migrated. Reasons:
