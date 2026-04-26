@@ -6,6 +6,9 @@ import { strict as assert } from 'node:assert';
 import { mkdirSync, writeFileSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
+import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { dirname, resolve } from 'node:path';
 import {
   parseFrontmatter,
   extractH1AndIntro,
@@ -16,6 +19,8 @@ import {
   emitSkillMd,
   emitMcpServerCard,
   assignToCluster,
+  validateFrontmatter,
+  ALLOWED_TYPES,
   CLUSTERS,
   collectDocs,
 } from '../build-agent-indexes.mjs';
@@ -282,6 +287,89 @@ describe('emitSkillMd', () => {
     }
     assert.ok(md.includes('/.well-known/llms.txt'));
   });
+
+  it('fallback body lists its own docs so they remain agent-discoverable', () => {
+    const cluster = CLUSTERS.find((c) => c.name === 'fliplet-docs-index');
+    const md = emitSkillMd(cluster, [
+      { title: 'Quickstart', url: 'https://x/q.html', description: 'Quick.' },
+      { title: 'Welcome', url: 'https://x/w.html', description: 'Home.' },
+    ]);
+    assert.ok(md.includes('## General docs in this bucket'));
+    assert.ok(md.includes('- [Quickstart](https://x/q.html): Quick.'));
+    assert.ok(md.includes('- [Welcome](https://x/w.html): Home.'));
+  });
+});
+
+describe('validateFrontmatter', () => {
+  const fullyValid = {
+    relPath: 'API/x.md',
+    fm: { title: 'X', description: 'desc', type: 'api-reference', tags: '[js-api]' },
+  };
+
+  it('returns no errors for a doc with all required fields and a valid type', () => {
+    const errs = validateFrontmatter([fullyValid]);
+    assert.equal(errs.length, 0);
+  });
+
+  it('flags missing or empty title', () => {
+    const errs = validateFrontmatter([
+      { relPath: 'a.md', fm: { ...fullyValid.fm, title: '' } },
+      { relPath: 'b.md', fm: { description: 'd', type: 'guide', tags: '[x]' } },
+    ]);
+    assert.equal(errs.length, 2);
+    assert.ok(errs.every((e) => e.field === 'title'));
+  });
+
+  it('flags missing description', () => {
+    const errs = validateFrontmatter([
+      { relPath: 'a.md', fm: { title: 'T', type: 'guide', tags: '[x]' } },
+    ]);
+    assert.equal(errs.length, 1);
+    assert.equal(errs[0].field, 'description');
+  });
+
+  it('flags missing type and type values not in ALLOWED_TYPES', () => {
+    const errs = validateFrontmatter([
+      { relPath: 'a.md', fm: { title: 'T', description: 'd', tags: '[x]' } },
+      { relPath: 'b.md', fm: { title: 'T', description: 'd', type: 'made-up', tags: '[x]' } },
+    ]);
+    assert.equal(errs.length, 2);
+    assert.ok(errs.every((e) => e.field === 'type'));
+    assert.ok(errs[1].message.includes('made-up'));
+  });
+
+  it('flags missing or empty tags', () => {
+    const errs = validateFrontmatter([
+      { relPath: 'a.md', fm: { title: 'T', description: 'd', type: 'guide' } },
+      { relPath: 'b.md', fm: { title: 'T', description: 'd', type: 'guide', tags: '' } },
+      { relPath: 'c.md', fm: { title: 'T', description: 'd', type: 'guide', tags: '[]' } },
+    ]);
+    assert.equal(errs.length, 3);
+    assert.ok(errs.every((e) => e.field === 'tags'));
+  });
+
+  it('accepts every value in ALLOWED_TYPES', () => {
+    for (const t of ALLOWED_TYPES) {
+      const errs = validateFrontmatter([
+        { relPath: `${t}.md`, fm: { title: 'T', description: 'd', type: t, tags: '[x]' } },
+      ]);
+      const typeErrs = errs.filter((e) => e.field === 'type');
+      assert.equal(typeErrs.length, 0, `type '${t}' should be allowed`);
+    }
+  });
+
+  it('reports errors per-doc rather than aggregating', () => {
+    const errs = validateFrontmatter([
+      { relPath: 'a.md', fm: {} }, // missing all 4 required fields
+      fullyValid,
+    ]);
+    const aErrs = errs.filter((e) => e.relPath === 'a.md');
+    assert.equal(aErrs.length, 4);
+    assert.deepEqual(
+      aErrs.map((e) => e.field).sort(),
+      ['description', 'tags', 'title', 'type'],
+    );
+  });
 });
 
 describe('emitMcpServerCard', () => {
@@ -346,5 +434,180 @@ describe('collectDocs (end-to-end on a tmp fixture)', () => {
   // Cleanup
   it('(teardown)', () => {
     rmSync(fixtureDir, { recursive: true, force: true });
+  });
+});
+
+// Cross-artifact consistency: every URL that lands in a cluster's
+// SKILL.md MUST also be in llms.txt, and vice versa. If these diverge
+// it means cluster assignment dropped a doc or the emitters disagree
+// about what counts as indexed.
+//
+// This invariant is checked end-to-end against a fixture tree that
+// stresses both specific clusters (data-sources via API/datasources/,
+// js-api via API/) AND the fallback cluster (a Quickstart at the root).
+describe('cross-artifact consistency (llms.txt ↔ cluster SKILL.md)', () => {
+  const fixtureDir = join(tmpdir(), `cross-artifact-test-${Date.now()}`);
+  mkdirSync(fixtureDir, { recursive: true });
+  mkdirSync(join(fixtureDir, 'API'), { recursive: true });
+  mkdirSync(join(fixtureDir, 'API', 'datasources'), { recursive: true });
+  mkdirSync(join(fixtureDir, 'REST-API'), { recursive: true });
+  writeFileSync(
+    join(fixtureDir, 'README.md'),
+    '---\ntitle: Welcome\ndescription: Home\ntype: tutorial\ntags: [readme]\n---\n# Welcome\n\nHome.\n',
+  );
+  writeFileSync(
+    join(fixtureDir, 'Quickstart.md'),
+    '---\ntitle: Quick\ndescription: Quickstart\ntype: tutorial\ntags: [quickstart]\n---\n# Quick\n\nQuickstart.\n',
+  );
+  writeFileSync(
+    join(fixtureDir, 'API', 'fliplet-datasources.md'),
+    '---\ntitle: DS\ndescription: Data sources\ntype: api-reference\ntags: [js-api]\n---\n# DS\n\nIntro.\n',
+  );
+  writeFileSync(
+    join(fixtureDir, 'API', 'datasources', 'joins.md'),
+    '---\ntitle: Joins\ndescription: Joins\ntype: how-to\ntags: [datasources]\n---\n# Joins\n\nIntro.\n',
+  );
+  writeFileSync(
+    join(fixtureDir, 'API', 'fliplet-storage.md'),
+    '---\ntitle: Storage\ndescription: Storage\ntype: api-reference\ntags: [js-api]\n---\n# Storage\n\nIntro.\n',
+  );
+  writeFileSync(
+    join(fixtureDir, 'REST-API', 'apps.md'),
+    '---\ntitle: Apps\ndescription: Apps\ntype: api-reference\ntags: [rest-api]\n---\n# Apps\n\nIntro.\n',
+  );
+
+  // Extract URLs from llms.txt: format is "- [Title](URL): description"
+  function urlsFromLlmsTxt(text) {
+    const urls = new Set();
+    for (const line of text.split('\n')) {
+      const m = line.match(/^- \[[^\]]+\]\(([^)]+)\)/);
+      if (m) urls.add(m[1]);
+    }
+    return urls;
+  }
+
+  // Extract URLs from a SKILL.md body: same format under "## Documentation".
+  function urlsFromSkillMd(text) {
+    const urls = new Set();
+    for (const line of text.split('\n')) {
+      const m = line.match(/^- \[[^\]]+\]\(([^)]+)\)/);
+      if (m) urls.add(m[1]);
+    }
+    return urls;
+  }
+
+  it('every URL emitted in llms.txt also appears in exactly one cluster SKILL.md', () => {
+    const docs = collectDocs(fixtureDir);
+    const llmsTxt = emitLlmsTxt(docs);
+    const llmsUrls = urlsFromLlmsTxt(llmsTxt);
+
+    const docsByCluster = new Map();
+    for (const c of CLUSTERS) docsByCluster.set(c.name, []);
+    for (const d of docs) docsByCluster.get(d.cluster).push(d);
+
+    // Build a map: URL → set of clusters whose SKILL.md lists it.
+    const urlToClusters = new Map();
+    for (const c of CLUSTERS) {
+      const skillMd = emitSkillMd(c, docsByCluster.get(c.name));
+      for (const url of urlsFromSkillMd(skillMd)) {
+        if (!urlToClusters.has(url)) urlToClusters.set(url, new Set());
+        urlToClusters.get(url).add(c.name);
+      }
+    }
+
+    // Forward: every llms.txt URL must be in some cluster.
+    for (const url of llmsUrls) {
+      assert.ok(
+        urlToClusters.has(url),
+        `llms.txt URL ${url} is not in any cluster SKILL.md`,
+      );
+      assert.equal(
+        urlToClusters.get(url).size,
+        1,
+        `llms.txt URL ${url} is in multiple clusters: ${[...urlToClusters.get(url)].join(', ')}`,
+      );
+    }
+
+    // Reverse: every URL in any (non-fallback) SKILL.md must be in
+    // llms.txt. (The fallback cluster's SKILL.md doesn't list per-doc
+    // URLs — it just points at /llms.txt — so we skip it.)
+    for (const [url, clusters] of urlToClusters) {
+      // Skip the meta-pointers in the fallback's body that link to
+      // /.well-known/llms.txt, /.well-known/llms-full.txt, the MCP
+      // endpoint itself, or in-narrative cross-references like
+      // "https://developers.fliplet.com/" pointing at the homepage.
+      if (url.includes('.well-known/') || url.endsWith('/mcp') || url === 'https://developers.fliplet.com/' || url === 'https://modelcontextprotocol.io') {
+        continue;
+      }
+      assert.ok(
+        llmsUrls.has(url),
+        `cluster SKILL.md URL ${url} (in ${[...clusters].join(', ')}) is not in llms.txt`,
+      );
+    }
+  });
+
+  it('the doc count in llms.txt equals the sum of cluster doc counts', () => {
+    const docs = collectDocs(fixtureDir);
+    const docsByCluster = new Map();
+    for (const c of CLUSTERS) docsByCluster.set(c.name, []);
+    for (const d of docs) docsByCluster.get(d.cluster).push(d);
+
+    const sum = [...docsByCluster.values()].reduce((acc, arr) => acc + arr.length, 0);
+    assert.equal(sum, docs.length);
+  });
+
+  // Cleanup
+  it('(teardown)', () => {
+    rmSync(fixtureDir, { recursive: true, force: true });
+  });
+});
+
+// Smoke check against the real docs/ tree: regenerate llms.txt and
+// per-cluster SKILL.md from the live source and assert the same
+// invariants. Catches drift in production state — e.g. a SKILL.md
+// committed by hand instead of regenerated, or a doc added to the
+// repo that didn't make it through cluster assignment.
+describe('cross-artifact consistency (against real docs/)', () => {
+  const here = dirname(fileURLToPath(import.meta.url));
+  const docsRoot = resolve(here, '..', '..');
+
+  it('every URL in the live llms.txt index appears in exactly one cluster', () => {
+    const docs = collectDocs(docsRoot);
+    if (docs.length === 0) return; // belt-and-braces; should never hit
+
+    const llmsTxt = emitLlmsTxt(docs);
+    const llmsUrls = new Set();
+    for (const line of llmsTxt.split('\n')) {
+      const m = line.match(/^- \[[^\]]+\]\(([^)]+)\)/);
+      if (m) llmsUrls.add(m[1]);
+    }
+
+    const docsByCluster = new Map();
+    for (const c of CLUSTERS) docsByCluster.set(c.name, []);
+    for (const d of docs) docsByCluster.get(d.cluster).push(d);
+
+    const urlToClusters = new Map();
+    for (const c of CLUSTERS) {
+      const skillMd = emitSkillMd(c, docsByCluster.get(c.name));
+      for (const line of skillMd.split('\n')) {
+        const m = line.match(/^- \[[^\]]+\]\(([^)]+)\)/);
+        if (!m) continue;
+        const url = m[1];
+        if (!urlToClusters.has(url)) urlToClusters.set(url, new Set());
+        urlToClusters.get(url).add(c.name);
+      }
+    }
+
+    const orphans = [];
+    const duplicates = [];
+    for (const url of llmsUrls) {
+      if (!urlToClusters.has(url)) {
+        orphans.push(url);
+      } else if (urlToClusters.get(url).size > 1) {
+        duplicates.push(`${url} (in ${[...urlToClusters.get(url)].join(', ')})`);
+      }
+    }
+    assert.deepEqual(orphans, [], 'docs in llms.txt missing from every cluster');
+    assert.deepEqual(duplicates, [], 'docs assigned to multiple clusters');
   });
 });

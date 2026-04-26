@@ -17,56 +17,17 @@
 
 import {
   readdirSync,
-  statSync,
   copyFileSync,
   mkdirSync,
   existsSync,
 } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, relative, resolve, sep } from 'node:path';
+import { shouldExclude } from './exclusions.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const docsRoot = resolve(here, '..');
 const siteDir = join(docsRoot, '_site');
-
-// Mirror build-agent-indexes.mjs's exclusion list so we don't publish .md
-// siblings for files that aren't indexed.
-const EXCLUDED_FILES = new Set([
-  'disable-analytics.md',
-  'API/fliplet-encryption.deprecated.md',
-  'API/fliplet-core.md',
-  'API/fliplet-helper.md',
-  'API/core/app-tasks.md',
-  'CLAUDE.md',
-]);
-
-const EXCLUDED_DIRS = [
-  '_site',
-  '_includes',
-  '_layouts',
-  '_plugins',
-  '_templates',
-  'node_modules',
-  'docsearch',
-  'bin',
-  'test',
-  '.git',
-  '.github',
-  '.well-known',
-  'assets',
-];
-
-function shouldExclude(relPath) {
-  if (EXCLUDED_FILES.has(relPath)) return true;
-  if (relPath.endsWith('.deprecated.md')) return true;
-  for (const d of EXCLUDED_DIRS) {
-    // Match the dir at the root OR nested at any depth (e.g. mcp-worker/node_modules/...).
-    if (relPath === d || relPath.startsWith(d + '/') || relPath.includes('/' + d + '/')) {
-      return true;
-    }
-  }
-  return false;
-}
 
 function* walkMarkdown(dir, rootDir = dir) {
   let entries;

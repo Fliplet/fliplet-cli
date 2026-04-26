@@ -1,0 +1,49 @@
+name: Validate docs
+
+# Runs on every PR that touches docs/**/*.md (and on master pushes that
+# do, as a sanity check) to enforce the frontmatter schema documented in
+# docs/CLAUDE.md. The strict-mode build script exits non-zero if any
+# indexed doc is missing required frontmatter fields (title, description,
+# type, tags) or carries a `type:` value outside the allowed set.
+#
+# Why this exists: the build script normally only warns on missing
+# frontmatter and emits whatever it can. Without a CI gate, a doc author
+# could land a PR that degrades llms.txt / agent-skills entries silently.
+# This workflow surfaces the violation at PR-review time.
+
+on:
+  pull_request:
+    paths:
+      - 'docs/**/*.md'
+      - 'docs/bin/**'
+      - 'docs/package.json'
+      - '.github/workflows/docs-validate.yml'
+  push:
+    branches: [master]
+    paths:
+      - 'docs/**/*.md'
+      - 'docs/bin/**'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    name: Frontmatter + unit tests
+    defaults:
+      run:
+        working-directory: docs
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run bin/ unit tests
+        run: npm run test:unit
+
+      - name: Validate doc frontmatter (strict)
+        run: npm run check:docs

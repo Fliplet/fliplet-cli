@@ -16,7 +16,6 @@
 //   mcp/server-card.json                  — MCP Server Card (SEP-1649) for
 //                                           the Worker at developers.fliplet
 //                                           .com/mcp
-//   api-catalog                           — RFC 9727 linkset+json
 //
 // Title comes from frontmatter `title:` if present, else the H1 (stripped of
 // enclosing backticks). Description comes from frontmatter `description:` if
@@ -27,6 +26,7 @@ import { readFileSync, writeFileSync, mkdirSync, readdirSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, relative, resolve, sep } from 'node:path';
+import { shouldExclude } from './exclusions.mjs';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const docsRoot = resolve(here, '..');
@@ -39,34 +39,6 @@ const MCP_ENDPOINT = `${BASE_URL}/mcp`;
 const SITE_TITLE = 'Fliplet Developers';
 const SITE_DESCRIPTION =
   'Developer documentation for the Fliplet platform — JavaScript APIs, REST APIs, component and helper frameworks, and developer guides for building apps, components, themes, and integrations on Fliplet.';
-
-// Redirect stubs, opt-out pages, and repo-authoring meta-docs that should
-// never appear in the product index.
-const EXCLUDED_FILES = new Set([
-  'disable-analytics.md',
-  'API/fliplet-encryption.deprecated.md',
-  'API/fliplet-core.md',
-  'API/fliplet-helper.md',
-  'API/core/app-tasks.md',
-  'CLAUDE.md',
-]);
-
-// Directory prefixes whose contents are never indexed.
-const EXCLUDED_DIRS = [
-  '_site',
-  '_includes',
-  '_layouts',
-  '_plugins',
-  '_templates',
-  'node_modules',
-  'docsearch',
-  'bin',
-  'test',
-  '.git',
-  '.github',
-  '.well-known',
-  'assets',
-];
 
 // Ordered group labels for llms.txt. First-matching-prefix wins, so put
 // narrower prefixes (API/core/) before broader ones (API/).
@@ -267,20 +239,6 @@ export function assignToCluster(relPath) {
   return CLUSTERS[CLUSTERS.length - 1]; // unreachable; fallback always matches
 }
 
-function shouldExclude(relPath) {
-  if (EXCLUDED_FILES.has(relPath)) return true;
-  if (relPath.endsWith('.deprecated.md')) return true;
-  for (const d of EXCLUDED_DIRS) {
-    // Match the dir at the root OR nested at any depth (e.g. mcp-worker/node_modules/...).
-    // The nested check is what stops mcp-worker/node_modules/**/README.md from leaking
-    // into the index when someone runs the script after `npm install` in mcp-worker/.
-    if (relPath === d || relPath.startsWith(d + '/') || relPath.includes('/' + d + '/')) {
-      return true;
-    }
-  }
-  return false;
-}
-
 function* walkMarkdown(dir, rootDir = dir) {
   let entries;
   try {
@@ -464,6 +422,9 @@ export function emitSkillMd(cluster, docsInCluster) {
   const fm = `---\nname: ${cluster.name}\ndescription: ${cluster.description}\n---\n`;
 
   if (cluster.name === 'fliplet-docs-index') {
+    const fallbackDocs = docsInCluster
+      .map((d) => `- [${d.title}](${d.url})${d.description ? `: ${d.description}` : ''}`)
+      .join('\n');
     return (
       fm +
       `\n# Fliplet developer documentation index\n\n` +
@@ -473,8 +434,11 @@ export function emitSkillMd(cluster, docsInCluster) {
       CLUSTERS.filter((c) => c.name !== 'fliplet-docs-index')
         .map((c) => `- \`${c.name}\` — ${c.description}`)
         .join('\n') +
+      `\n\n## General docs in this bucket\n\n` +
+      `These docs don't belong to a single capability cluster — they are general onboarding, conventions, or cross-cutting references. Listed here so they remain reachable via agent-skills discovery even when no specific cluster is loaded:\n\n` +
+      fallbackDocs +
       `\n\n## Full site index\n\n` +
-      `If no specific skill matches, fetch [${BASE_URL}/.well-known/llms.txt](${BASE_URL}/.well-known/llms.txt) for the complete list of every Fliplet developer doc, grouped by area. Each entry is a one-line summary; replace \`.html\` with \`.md\` on any doc URL to fetch the raw Markdown.\n\n` +
+      `If you need the complete list across every cluster, fetch [${BASE_URL}/.well-known/llms.txt](${BASE_URL}/.well-known/llms.txt). Each entry is a one-line summary; replace \`.html\` with \`.md\` on any doc URL to fetch the raw Markdown.\n\n` +
       `## MCP server\n\n` +
       `For tool-driven discovery, point an MCP-aware client at [${MCP_ENDPOINT}](${MCP_ENDPOINT}). The server exposes \`search_fliplet_docs\` and \`fetch_fliplet_doc\`.\n`
     );
@@ -530,15 +494,6 @@ export function emitMcpServerCard() {
   };
 }
 
-export function emitApiCatalog(docs) {
-  return {
-    linkset: docs.map((doc) => ({
-      anchor: doc.url,
-      'service-doc': [{ href: doc.url, type: 'text/html', title: doc.title }],
-    })),
-  };
-}
-
 export function collectDocs(rootDir) {
   const docs = [];
   for (const { fullPath, relPath } of walkMarkdown(rootDir)) {
@@ -563,15 +518,101 @@ export function collectDocs(rootDir) {
       sha256,
       skillName: skillNameForPath(relPath),
       body,
+      // Preserve raw frontmatter on the doc record so strict-mode
+      // validation (validateFrontmatter) can check type, tags, etc.
+      // without re-parsing the file.
+      fm,
     });
   }
   docs.sort((a, b) => a.url.localeCompare(b.url));
   return docs;
 }
 
+// Allowed values for the `type:` frontmatter field. Documented in
+// docs/CLAUDE.md as the canonical schema; any addition here must also
+// land there.
+export const ALLOWED_TYPES = new Set([
+  'api-reference',
+  'guide',
+  'how-to',
+  'concept',
+  'tutorial',
+  'reference',
+  'integration',
+]);
+
+// Strict-mode frontmatter validator. Returns an array of error objects
+// (`{ relPath, field, message }`) — empty array means clean. We only
+// validate fields the build is load-bearing on (title, description) plus
+// the schema fields explicitly documented in CLAUDE.md as required
+// (type, tags). Aspirational fields (v3_relevant, deprecated) are not
+// enforced here so the spec can evolve without bricking the build.
+export function validateFrontmatter(docs) {
+  const errors = [];
+  for (const doc of docs) {
+    const fm = doc.fm || {};
+    if (!fm.title || fm.title.trim() === '') {
+      errors.push({
+        relPath: doc.relPath,
+        field: 'title',
+        message: 'missing or empty `title:` in frontmatter',
+      });
+    }
+    if (!fm.description || fm.description.trim() === '') {
+      errors.push({
+        relPath: doc.relPath,
+        field: 'description',
+        message: 'missing or empty `description:` in frontmatter',
+      });
+    }
+    if (!fm.type || fm.type.trim() === '') {
+      errors.push({
+        relPath: doc.relPath,
+        field: 'type',
+        message: 'missing or empty `type:` in frontmatter',
+      });
+    } else if (!ALLOWED_TYPES.has(fm.type.trim())) {
+      errors.push({
+        relPath: doc.relPath,
+        field: 'type',
+        message: `\`type: ${fm.type}\` is not in allowed set [${[...ALLOWED_TYPES].join(', ')}]`,
+      });
+    }
+    // tags is parsed as a literal string by our minimal YAML parser
+    // (e.g. "[js-api, datasources]"). We just check it's non-empty.
+    if (!fm.tags || fm.tags.trim() === '' || fm.tags.trim() === '[]') {
+      errors.push({
+        relPath: doc.relPath,
+        field: 'tags',
+        message: 'missing or empty `tags:` in frontmatter (need at least one)',
+      });
+    }
+  }
+  return errors;
+}
+
 function main() {
+  const strict = process.argv.includes('--strict');
   const docs = collectDocs(docsRoot);
   console.log(`Discovered ${docs.length} docs for indexing`);
+
+  // Strict mode: validate frontmatter before emitting anything. CI runs
+  // this on every PR that touches docs/**/*.md (see .github/workflows/
+  // docs-validate.yml) so authoring violations get caught at review time
+  // rather than degrading the published artifacts silently.
+  const fmErrors = validateFrontmatter(docs);
+  if (fmErrors.length > 0) {
+    const tag = strict ? '[error]' : '[warn]';
+    for (const e of fmErrors) {
+      console.error(`${tag} ${e.relPath}: ${e.message}`);
+    }
+    if (strict) {
+      console.error(
+        `\n${fmErrors.length} frontmatter error${fmErrors.length === 1 ? '' : 's'} — failing build (--strict).`,
+      );
+      process.exit(1);
+    }
+  }
 
   mkdirSync(agentSkillsDir, { recursive: true });
   mkdirSync(mcpDir, { recursive: true });
@@ -612,12 +653,6 @@ function main() {
     JSON.stringify(mcpCard, null, 2) + '\n',
   );
 
-  const apiCatalog = emitApiCatalog(docs);
-  writeFileSync(
-    join(wellKnownDir, 'api-catalog'),
-    JSON.stringify(apiCatalog, null, 2) + '\n',
-  );
-
   console.log('Generated:');
   console.log(`  .well-known/llms.txt                 (${llmsTxt.length} bytes, ${docs.length} entries)`);
   console.log(`  .well-known/llms-full.txt            (${llmsFull.length} bytes)`);
@@ -627,7 +662,6 @@ function main() {
     console.log(`    └─ ${c.name.padEnd(34)} (${n} doc${n === 1 ? '' : 's'})`);
   }
   console.log(`  .well-known/mcp/server-card.json     (${MCP_ENDPOINT})`);
-  console.log(`  .well-known/api-catalog              (${docs.length} entries)`);
 }
 
 // Run main() only when invoked as a script, not when imported by tests.
