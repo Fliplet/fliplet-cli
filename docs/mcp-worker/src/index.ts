@@ -21,6 +21,7 @@ import { z } from "zod";
 import { parseLlmsTxt, type DocEntry } from "./llms.ts";
 import { searchDocs } from "./search.ts";
 import { validateDocUrl } from "./ssrf.ts";
+import { isBrowserGet, renderLandingPage } from "./landing.ts";
 
 // === Config ===
 const DOCS_ORIGIN = "https://developers.fliplet.com";
@@ -199,6 +200,13 @@ export default {
   async fetch(request: Request, env: unknown, ctx: ExecutionContext): Promise<Response> {
     if (request.method === "OPTIONS") {
       return new Response(null, { status: 204, headers: CORS_HEADERS });
+    }
+    // Friendly explanatory page for plain browser visits. MCP-aware
+    // clients send Accept: text/event-stream (or .../json) — only
+    // browsers send text/html, so this branch never fires for legitimate
+    // protocol clients.
+    if (isBrowserGet(request)) {
+      return withCors(renderLandingPage());
     }
     try {
       const resp = await createMcpHandler(createServer())(request, env, ctx);
