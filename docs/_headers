@@ -1,22 +1,25 @@
+# CF Pages applies all matching rule blocks (specific path AND wildcard
+# combine). To avoid duplicating Access-Control-Allow-Origin and
+# Cache-Control on every response, common headers live in the wildcard
+# block; specific blocks below it carry only Content-Type overrides.
+
+# Content-Type overrides for specific paths
 /.well-known/api-catalog
   Content-Type: application/linkset+json
-  Access-Control-Allow-Origin: *
-  Cache-Control: public, max-age=3600
 
 /.well-known/llms.txt
   Content-Type: text/plain; charset=utf-8
-  Access-Control-Allow-Origin: *
-  Cache-Control: public, max-age=3600
 
 /.well-known/llms-full.txt
   Content-Type: text/plain; charset=utf-8
-  Access-Control-Allow-Origin: *
-  Cache-Control: public, max-age=3600
 
+# Common headers for everything under /.well-known/
 /.well-known/*
   Access-Control-Allow-Origin: *
   Cache-Control: public, max-age=3600
 
+# Markdown sibling files served with text/markdown + CORS so AI clients
+# can fetch raw source from the same URL paths as the generated HTML.
 /*.md
   Content-Type: text/markdown; charset=utf-8
   Access-Control-Allow-Origin: *
