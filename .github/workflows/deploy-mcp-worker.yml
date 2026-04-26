@@ -65,12 +65,17 @@ jobs:
           command: deploy
 
       - name: Smoke-test the live Worker
-        # Verify the deployed Worker actually responds with the expected
-        # tools list. CF Workers usually propagate within a few seconds, but
-        # we give it 15s of grace to avoid flaky failures right after deploy.
+        # Verify the deployed Worker on two code paths:
+        #   1. JSON-RPC tools/list — the protocol surface MCP clients use.
+        #   2. Browser GET (Accept: text/html) — the human-friendly landing
+        #      page; should return HTML with the server-card link.
+        # CF Workers usually propagate within a few seconds, but we give 15s
+        # of grace to avoid flaky failures right after deploy.
         run: |
           set -euo pipefail
           sleep 15
+
+          echo "=== Test 1: JSON-RPC tools/list ==="
           RESP=$(curl -fsX POST https://developers.fliplet.com/mcp \
             -H 'Content-Type: application/json' \
             -H 'Accept: application/json, text/event-stream' \
@@ -86,3 +91,21 @@ jobs:
             exit 1
           fi
           echo "OK: deployed Worker advertises both expected tools."
+
+          echo
+          echo "=== Test 2: Browser landing page ==="
+          # -D headers.txt captures response headers for Content-Type assertion.
+          BODY=$(curl -fs -D /tmp/headers.txt \
+            -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9' \
+            https://developers.fliplet.com/mcp)
+          CT=$(grep -i '^content-type:' /tmp/headers.txt | head -1 | tr -d '\r')
+          echo "Content-Type header: $CT"
+          if ! echo "$CT" | grep -qi 'text/html'; then
+            echo "::error::Smoke test failed — browser landing did not return text/html."
+            exit 1
+          fi
+          if ! echo "$BODY" | grep -q '/.well-known/mcp/server-card.json'; then
+            echo "::error::Smoke test failed — landing page missing server-card link."
+            exit 1
+          fi
+          echo "OK: browser landing page served as text/html with server-card link."
