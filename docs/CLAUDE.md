@@ -167,6 +167,42 @@ this server when an AI client is configured with both.
 - Update docs after shipping a feature → `/fl-update-docs`
 - Shipping the skill pack itself → `/fl-ship`
 
+## Sunset register
+
+Speculative or workaround artifacts that should be reviewed (and most
+likely deleted) by the listed date. Re-evaluate each at the start of the
+quarter the date falls in. Keeping this list short forces the pruning
+loop — if an entry survives its sunset date, document why; otherwise
+delete it.
+
+| Item | Sunset date | Trigger to delete |
+|---|---|---|
+| `agent-skills/` cluster files (12 SKILL.md) + emitter in `bin/build-agent-indexes.mjs` | 2027-04-01 | No documented agent runtime consuming them |
+| `MCP SDK 1.20.2` pin in `mcp-worker/wrangler.jsonc` | When upstream fixes ajv `eval`/`new Function` on Workers (track `@modelcontextprotocol/sdk` releases > 1.20.2) | Unpin once `npm test` and the deploy smoke test still pass on a newer version |
+| `.md` sibling copy step (`bin/copy-md-siblings.mjs`) | When Cloudflare Pages ships native Markdown-for-Agents | CF announces and we can drop the post-build copy |
+
+When adding a new external-facing artifact (a new `.well-known/` surface,
+a new build-pipeline output, a new MCP tool) that isn't anchored to ≥1
+documented consumer, add a row here with a sunset date.
+
+## What NOT to add
+
+Counters drift toward more layers when fewer would do:
+
+- **No new `.well-known/` surface** without a documented external
+  consumer. Five surfaces today, each tied to a real spec; a sixth needs
+  the same justification.
+- **No per-doc metadata files.** Frontmatter in the `.md` file is the
+  single source of truth — every downstream artifact derives from it.
+- **No new `bin/` script** that isn't part of the 3-stage build pipeline.
+  One-shot migrations belong in a PR commit, not as carried code.
+- **No client-side script in `_layouts/default.html`** that runs on every
+  page without a feature-detect guard. The layout is shared by every
+  doc; cost is paid 174× per visitor.
+- **No second taxonomy for the same docs.** We already publish per-page
+  (`llms.txt`) and clustered (`agent-skills/`) views; a third
+  classification needs a distinct audience that neither serves.
+
 ## Repository conventions
 
 - **American English in all docs.** "color" not "colour", "customize" not "customise".
