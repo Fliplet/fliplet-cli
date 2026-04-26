@@ -16,7 +16,6 @@
 //   mcp/server-card.json                  — MCP Server Card (SEP-1649) for
 //                                           the Worker at developers.fliplet
 //                                           .com/mcp
-//   api-catalog                           — RFC 9727 linkset+json
 //
 // Title comes from frontmatter `title:` if present, else the H1 (stripped of
 // enclosing backticks). Description comes from frontmatter `description:` if
@@ -530,15 +529,6 @@ export function emitMcpServerCard() {
   };
 }
 
-export function emitApiCatalog(docs) {
-  return {
-    linkset: docs.map((doc) => ({
-      anchor: doc.url,
-      'service-doc': [{ href: doc.url, type: 'text/html', title: doc.title }],
-    })),
-  };
-}
-
 export function collectDocs(rootDir) {
   const docs = [];
   for (const { fullPath, relPath } of walkMarkdown(rootDir)) {
@@ -612,12 +602,6 @@ function main() {
     JSON.stringify(mcpCard, null, 2) + '\n',
   );
 
-  const apiCatalog = emitApiCatalog(docs);
-  writeFileSync(
-    join(wellKnownDir, 'api-catalog'),
-    JSON.stringify(apiCatalog, null, 2) + '\n',
-  );
-
   console.log('Generated:');
   console.log(`  .well-known/llms.txt                 (${llmsTxt.length} bytes, ${docs.length} entries)`);
   console.log(`  .well-known/llms-full.txt            (${llmsFull.length} bytes)`);
@@ -627,7 +611,6 @@ function main() {
     console.log(`    └─ ${c.name.padEnd(34)} (${n} doc${n === 1 ? '' : 's'})`);
   }
   console.log(`  .well-known/mcp/server-card.json     (${MCP_ENDPOINT})`);
-  console.log(`  .well-known/api-catalog              (${docs.length} entries)`);
 }
 
 // Run main() only when invoked as a script, not when imported by tests.

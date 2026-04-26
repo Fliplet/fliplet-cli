@@ -15,14 +15,8 @@
 # So: per-path blocks must be SINGLE and CARRY ALL HEADERS, and wildcard
 # overlap with /*.md must be avoided.
 
-# Per-path blocks for paths where CF Pages can't auto-detect Content-Type
-# or where the file has no extension. Each block carries every header that
-# applies to that path, in one shot.
-/.well-known/api-catalog
-  Content-Type: application/linkset+json
-  Access-Control-Allow-Origin: *
-  Cache-Control: public, max-age=3600
-
+# Per-path blocks for paths where CF Pages can't auto-detect Content-Type.
+# Each block carries every header that applies to that path, in one shot.
 /.well-known/llms.txt
   Content-Type: text/plain; charset=utf-8
   Access-Control-Allow-Origin: *

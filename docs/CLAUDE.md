@@ -79,8 +79,7 @@ docs/**/*.md
    │       llms.txt, llms-full.txt,
    │       agent-skills/index.json,
    │       agent-skills/<cluster>/SKILL.md   (12 capability clusters),
-   │       mcp/server-card.json,
-   │       api-catalog
+   │       mcp/server-card.json
    │     }
    │
    ├── bundle exec jekyll build
@@ -123,7 +122,6 @@ These are the AI-consumption surfaces. Publish URLs on `developers.fliplet.com`:
 | `/.well-known/agent-skills/index.json` | Agent Skills v0.2.0 | Capability-clustered skill registry (12 entries, SHA256 per cluster's SKILL.md) |
 | `/.well-known/agent-skills/<cluster>/SKILL.md` | Markdown w/ frontmatter | Per-cluster entry point listing the cluster's docs |
 | `/.well-known/mcp/server-card.json` | SEP-1649 server card | Discovery for the MCP Worker at `/mcp` |
-| `/.well-known/api-catalog` | RFC 9727 linkset+json | Linkset discovery |
 
 `_headers` sets CORS (`Access-Control-Allow-Origin: *`) and `Cache-Control:
 max-age=3600` for all of these. `/*.md` paths also get
