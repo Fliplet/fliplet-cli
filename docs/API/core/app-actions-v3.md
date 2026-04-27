@@ -33,7 +33,7 @@ Write and run JavaScript code directly on the server or client to perform automa
 
 ## Data models and key concepts
 
-1. A V3 app action consists of a unique `name`, JavaScript `code` defining an `execute(context)` function, and optional `frequency`, `timezone`, `environment`, `triggers` and `dependencies`.
+1. A V3 app action consists of a unique `name`, JavaScript `code` defining an `execute(context)` function, and optional `description`, `frequency`, `timezone`, `environment`, `triggers` and `dependencies`.
 2. An app action can be created as **scheduled** (when using the `frequency` parameter) or to be run **on-demand**.
 3. An app action runs on the server when `environment` is set to `server` or `any`.
 4. An app action runs on the client side when `environment` is set to `client` or `any`.
@@ -636,6 +636,7 @@ Use `Fliplet.App.V3.Actions.create()` to create a V3 action. This always creates
 |-----------|------|----------|---------|-------------|
 | `name` | String | Yes | — | Unique name for the action. Only letters, numbers, dashes and underscores. Max 255 characters. Example: `send-weekly-report` |
 | `code` | String | Yes | — | JavaScript code defining an `async function execute(context)` function |
+| `description` | String | No | `null` | Free-text description of the action's purpose. Max 1000 characters. Use this for clarity and management of actions in the UI and API responses. |
 | `active` | Boolean | No | `false` | Whether the action is enabled. Must be `true` for the action to execute |
 | `environment` | String | No | `"server"` | Execution environment: `"server"`, `"client"`, or `"any"` |
 | `triggers` | Array | No | `[]` | Array of trigger configuration objects |
@@ -723,6 +724,7 @@ var result = await Fliplet.App.V3.Actions.create({
 ```js
 var result = await Fliplet.App.V3.Actions.create({
   name: 'confirm-booking',
+  description: 'Marks a booking as confirmed and notifies the customer',
   code: `async function execute(context) {
     // context.payload contains whatever was passed to run() or runWithResult()
     // e.g., { entryId: 123, name: 'Nick' }
@@ -743,6 +745,8 @@ var result = await Fliplet.App.V3.Actions.create({
 // result.action — the created action object
 // result.action.id — use this ID to run, publish, update, or delete
 ```
+
+The `description` parameter is optional — actions can be created without it, in which case `description` is `null` on the returned action object.
 
 ### Create an action with a log trigger
 
@@ -940,6 +944,7 @@ Every API method that returns an action (`get`, `getById`, `create`, `update`, `
   "id": 12345,
   "appId": 67890,
   "name": "confirm-booking",
+  "description": "Marks a booking as confirmed and notifies the customer",
   "code": "async function execute(context) { return { success: true }; }",
   "active": true,
   "environment": "server",
@@ -966,6 +971,7 @@ Every API method that returns an action (`get`, `getById`, `create`, `update`, `
 | `id` | Number | Unique action ID. Use this for `update()`, `remove()`, `publish()`, `unpublish()`, `run()`, `runWithResult()` |
 | `appId` | Number | ID of the app this action belongs to |
 | `name` | String | Unique action name within the app |
+| `description` | String or null | Free-text description set on the action, or `null` if not set |
 | `code` | String | The JavaScript source code |
 | `active` | Boolean | Whether the action is enabled |
 | `environment` | String | `"server"`, `"client"`, or `"any"` |
@@ -995,7 +1001,7 @@ console.log(result.action.active); // true
 
 ## Update an action
 
-Use `Fliplet.App.V3.Actions.update()` to update any property of the **master** action. You can update `name`, `code`, `active`, `environment`, `triggers`, `dependencies`, `frequency`, and `timezone`. Include only the properties you want to change — omitted properties remain unchanged.
+Use `Fliplet.App.V3.Actions.update()` to update any property of the **master** action. You can update `name`, `code`, `description`, `active`, `environment`, `triggers`, `dependencies`, `frequency`, and `timezone`. Include only the properties you want to change — omitted properties remain unchanged. Pass `description: null` (or an empty string) to clear an existing description.
 
 - **Parameters:**
   - `id` (Number) — The action ID (must be the master action, not the production version)
@@ -1257,6 +1263,8 @@ All error responses follow this format:
 | `NAME_TOO_LONG` | Name exceeds 255 characters |
 | `NAME_INVALID_CHARS` | Name contains invalid characters (only letters, numbers, dashes and underscores allowed) |
 | `NAME_ALREADY_EXISTS` | Name already used by another action in this app |
+| `DESCRIPTION_INVALID` | Description must be a string |
+| `DESCRIPTION_TOO_LONG` | Description exceeds 1000 characters |
 | `CODE_REQUIRED` | Code is required for V3 actions |
 | `CODE_EMPTY` | Code cannot be empty |
 | `CODE_VALIDATION_FAILED` | Code failed validation — either the `execute` function is missing, the function is not `async`, or required dependencies are not listed |
