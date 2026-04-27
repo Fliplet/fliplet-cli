@@ -3,8 +3,9 @@ title: Fliplet.Page
 description: Utilities for interacting with the current Fliplet screen — including smooth-scrolling to an element with configurable duration and offsets.
 type: api-reference
 tags: [js-api]
-v3_relevant: true
+v3_relevant: false
 deprecated: false
+exclude_from_v3_catalog: true
 ---
 # `Fliplet.Page`
 

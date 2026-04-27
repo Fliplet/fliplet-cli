@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "generatedAt": "2026-04-26T21:58:36.425Z",
+  "libraries": [
+    {
+      "package": "fliplet-app-submissions",
+      "title": "Fliplet.App.Submissions",
+      "description": "Read App Store and Google Play submission metadata for the current Fliplet app — version, status, build numbers — via the fliplet-app-submissions package.",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-app-submissions.html"
+    },
+    {
+      "package": "fliplet-audio",
+      "title": "Fliplet.Media.Audio",
+      "description": "Play, pause, stop, and seek audio files on device or from a URL in Fliplet apps via the Audio namespace.",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-audio.html"
+    },
+    {
+      "package": "fliplet-barcode",
+      "title": "Fliplet.Barcode",
+      "description": "Scan QR codes and other 1D/2D barcodes from the device camera via the fliplet-barcode package.",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-barcode.html"
+    },
+    {
+      "package": "fliplet-chat",
+      "title": "Fliplet.Chat",
+      "description": "Build chat, group conversations, and public channels in a Fliplet app via the fliplet-chat package, which exposes Fliplet.Chat, Fliplet.Chat.connect, and Fliplet.Chat.init.",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-chat.html"
+    },
+    {
+      "package": "fliplet-communicate",
+      "title": "Fliplet.Communicate",
+      "description": "Send email, SMS, push notifications, and share URLs from a Fliplet app using a single Communicate namespace.",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-communicate.html"
+    },
+    {
+      "package": "fliplet-datasources",
+      "title": "Fliplet.DataSources",
+      "description": "Connect to, query, insert, update, and delete records in Fliplet Data Sources from inside an app. All methods are promise-based.",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-datasources.html"
+    },
+    {
+      "package": "fliplet-encryption",
+      "title": "Fliplet.DataSources.Encryption",
+      "description": "Automatically encrypt and decrypt selected Data Source columns on-device by registering a private key and column list.",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-encryption.html"
+    },
+    {
+      "package": "fliplet-media",
+      "title": "Fliplet.Media",
+      "description": "Browse folders, upload and manage files, and download media to devices via the Fliplet Media namespace.",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-media.html"
+    },
+    {
+      "package": "fliplet-notifications",
+      "title": "Fliplet.Notifications",
+      "description": "Read, send, and schedule in-app and push notifications in Fliplet apps, with support for scopes, read receipts, and badge counts.",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-notifications.html"
+    },
+    {
+      "package": "fliplet-payments",
+      "title": "Fliplet.Payments",
+      "description": "Accept Stripe payments and checkout in Fliplet apps via Fliplet.Payments, with a products data source and webhook-driven order tracking.",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-payments.html"
+    },
+    {
+      "package": "fliplet-security",
+      "title": "Fliplet.Security",
+      "description": "Persist a per-app structured object to encrypted device storage via the fliplet-security package — for app-local secrets, device tokens, and per-user preferences. Distinct from fliplet-encryption (Da…",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-security.html"
+    },
+    {
+      "package": "fliplet-session",
+      "title": "Fliplet.Session",
+      "description": "Read, write, and clear the current user session — including cached offline sessions — for authentication state in Fliplet apps.",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-session.html"
+    },
+    {
+      "package": "fliplet-socket",
+      "title": "Fliplet.Socket",
+      "description": "Real-time WebSocket connection to the Fliplet API with auto-authentication, server URL discovery, and dev/prod transport fallback via the fliplet-socket package.",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-socket.html"
+    },
+    {
+      "package": "fliplet-tokens",
+      "title": "Fliplet.App.Tokens",
+      "description": "Read the list of API tokens that authorise external services and backend integrations to call Fliplet APIs on behalf of an app.",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-tokens.html"
+    }
+  ]
+}

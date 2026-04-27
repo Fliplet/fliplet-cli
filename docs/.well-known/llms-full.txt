@@ -11729,6 +11729,229 @@ Fliplet.DataSources.connect(123).then(function (connection) {
 
 ---
 
+# Fliplet.App.Submissions
+URL: https://developers.fliplet.com/API/fliplet-app-submissions.html
+
+# `Fliplet.App.Submissions`
+
+Read App Store and Google Play submission metadata for the current Fliplet app via the `fliplet-app-submissions` package. The package is a thin wrapper around the `v1/apps/{appId}/submissions` REST API and exposes the same submission records that Fliplet Studio's "Launch" section uses to track native build state — platform, status, version number, build artifacts, and result payloads.
+
+Common use cases include showing a "Current version" badge on an About screen, displaying an "Update available" banner when a newer submission has been published, or surfacing submission state in a custom admin dashboard inside an app.
+
+## Install
+
+Add the `fliplet-app-submissions` dependency to your screen or app resources. The package depends on `fliplet-core` and exposes the `Fliplet.App.Submissions` global.
+
+## `Fliplet.App.Submissions.get()`
+
+(Returns **`Promise`**)
+
+Fetch the list of submissions for the current app, ordered by most recently updated first. Wraps `GET v1/apps/{appId}/submissions`.
+
+### Usage
+
+```js
+Fliplet.App.Submissions.get().then(function (submissions) {
+  // submissions (Array) List of submission records
+});
+```
+
+* **options** (Object, optional) Query filters passed through as query string parameters (for example `{ platform: 'ios' }` or `{ status: 'completed' }`).
+
+Each submission in the resolved array includes:
+
+* **id** (Number) Submission ID
+* **platform** (String) `ios`, `android`, or `windows`
+* **status** (String) One of `started`, `submitted`, `queued`, `processing`, `ready-for-testing`, `tested`, `completed`, `failed`, `cancelled`
+* **data** (Object) Submission input fields. Notable keys include `submissionType` (`appStore`, `enterprise`, `unsigned`), `fl-store-versionNumber`, `fl-store-bundleId`
+* **result** (Object) Build artifacts and metadata returned by the build pipeline once the submission completes
+* **submittedAt** (String, ISO date) When the submission was sent to the build pipeline
+* **createdAt** / **updatedAt** (String, ISO date)
+
+### Example: filter by platform
+
+```js
+Fliplet.App.Submissions.get({ platform: 'ios' }).then(function (submissions) {
+  console.log('iOS submissions:', submissions);
+});
+```
+
+### Example (Vue 3): show the current published version
+
+```vue
+<template>
+  <p v-if="latest">Current version: {{ latest.data['fl-store-versionNumber'] }}</p>
+  <p v-else>No completed submissions yet.</p>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue';
+
+const latest = ref(null);
+
+onMounted(async () => {
+  const submissions = await Fliplet.App.Submissions.get({ platform: 'ios' });
+  latest.value = submissions.find(s => s.status === 'completed') || null;
+});
+</script>
+```
+
+## `Fliplet.App.Submissions.getById()`
+
+(Returns **`Promise`**)
+
+Fetch a single submission by its ID. Wraps `GET v1/apps/{appId}/submissions/{id}`.
+
+### Usage
+
+```js
+Fliplet.App.Submissions.getById(123).then(function (submission) {
+  // submission (Object) The submission record
+});
+```
+
+* **id** (Number) The submission ID.
+
+## `Fliplet.App.Submissions.create()`
+
+(Returns **`Promise`**)
+
+Create a new submission record. Wraps `POST v1/apps/{appId}/submissions`. The submission is created with `status: 'started'` and is not yet sent to the build pipeline — call `build()` to queue it for building.
+
+### Usage
+
+```js
+Fliplet.App.Submissions.create({
+  platform: 'ios',
+  data: {
+    submissionType: 'appStore',
+    'fl-store-versionNumber': '1.2.0',
+    'fl-store-bundleId': 'com.example.myapp'
+  }
+}).then(function (submission) {
+  // submission (Object) Newly created submission record
+});
+```
+
+* **data** (Object) Submission input.
+  * **platform** (String) `ios`, `android`, or `windows`.
+  * **data** (Object) Submission fields. Keys prefixed with `_` are encrypted automatically by the API before being stored (for credentials).
+
+**Note:** Submissions can only be created from the master app, not from a production app clone.
+
+## `Fliplet.App.Submissions.update()`
+
+(Returns **`Promise`**)
+
+Replace the `data` object of an existing submission. Wraps `POST v1/apps/{appId}/submissions/{id}/data`. Only submissions in `started` or `failed` status can be updated.
+
+### Usage
+
+```js
+Fliplet.App.Submissions.update(123, {
+  submissionType: 'appStore',
+  'fl-store-versionNumber': '1.2.1'
+}).then(function (response) {
+  // response.submission (Object) The updated submission record
+});
+```
+
+* **id** (Number) The submission ID.
+* **data** (Object) The new `data` payload. Replaces the existing `data` object.
+
+## `Fliplet.App.Submissions.put()`
+
+(Returns **`Promise`**)
+
+Merge the provided fields into the existing `data` object of a submission, leaving other keys untouched. Wraps `PUT v1/apps/{appId}/submissions/{id}/data`. Only submissions in `started` or `failed` status can be updated.
+
+### Usage
+
+```js
+Fliplet.App.Submissions.put(123, {
+  'fl-store-versionNumber': '1.2.1'
+}).then(function (response) {
+  // response.submission (Object) The updated submission record
+});
+```
+
+* **id** (Number) The submission ID.
+* **data** (Object) Fields to merge into the submission's `data` object.
+
+## `Fliplet.App.Submissions.build()`
+
+(Returns **`Promise`**)
+
+Queue a submission for building. Wraps `POST v1/apps/{appId}/submissions/{id}/build`. The submission must be in `started` status, and the app must already have a published production app. Building requires the calling user to have `publishAndUpdateApp` permission, and on metered V3 organizations the appropriate platform credit is deducted.
+
+### Usage
+
+```js
+Fliplet.App.Submissions.build(123).then(function (response) {
+  // response.submission (Object) The submission record, now status: 'submitted'
+}).catch(function (error) {
+  // Build could not be queued (validation failed, no production app, etc.)
+});
+```
+
+* **id** (Number) The submission ID to build.
+
+## Common use cases
+
+### Show the current published version on an About screen
+
+```vue
+<template>
+  <div v-if="version">Version {{ version }}</div>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue';
+
+const version = ref('');
+
+onMounted(async () => {
+  const submissions = await Fliplet.App.Submissions.get();
+  const latestCompleted = submissions.find(s => s.status === 'completed');
+  version.value = latestCompleted?.data['fl-store-versionNumber'] || '';
+});
+</script>
+```
+
+### Detect that a newer build is available
+
+Compare the latest completed submission's version against a version constant baked into the running app build:
+
+```js
+const APP_VERSION = '1.1.0';
+
+Fliplet.App.Submissions.get({ status: 'completed' }).then(function (submissions) {
+  const latest = submissions[0]; // Already ordered by updatedAt DESC
+  const latestVersion = latest && latest.data['fl-store-versionNumber'];
+
+  if (latestVersion && latestVersion !== APP_VERSION) {
+    // Show an "Update available" banner
+  }
+});
+```
+
+### List recent submission attempts in a custom admin screen
+
+```js
+Fliplet.App.Submissions.get().then(function (submissions) {
+  submissions.slice(0, 5).forEach(function (s) {
+    console.log(`${s.platform} · ${s.status} · v${s.data['fl-store-versionNumber'] || '?'} (${s.updatedAt})`);
+  });
+});
+```
+
+---
+
+[Back to API documentation](../API-Documentation.md)
+{: .buttons}
+
+---
+
 # Fliplet.Media.Audio.Player
 URL: https://developers.fliplet.com/API/fliplet-audio-player.html
 
@@ -11937,6 +12160,510 @@ Fliplet.Barcode.encode(text, options).then(function (data) {
 ---
 
 [Back to Fliplet.UI](./fliplet-ui.md)
+{: .buttons}
+
+---
+
+# Fliplet.Chat
+URL: https://developers.fliplet.com/API/fliplet-chat.html
+
+# `Fliplet.Chat`
+
+Build chat features (one-to-one conversations, group chats, and public channels) on top of Fliplet Data Sources via the `fliplet-chat` package. The package exposes `Fliplet.Chat`, `Fliplet.Chat.connect()`, `Fliplet.Chat.init()`, `Fliplet.Chat.get()`, and `Fliplet.Chat.subscribe()`.
+
+The chat is a thin wrapper over the Fliplet Data Sources APIs: each conversation is backed by a data source, messages are entries in that data source, and the contacts list is a data source you nominate when you connect. All methods return Promises.
+
+## Install
+
+Add the `fliplet-chat` dependency to your screen or app resources. In V3 apps, add it via Studio's library picker — required dependencies (`fliplet-datasources`, `fliplet-utils`) are pulled in automatically.
+
+When using the chat instance from screens that aren't the chat screen itself, prefer `Fliplet.Chat.init()` (reads settings from the chat widget on the page) or `Fliplet.Chat.get()` (resolves once another screen has called `connect()`).
+
+---
+
+## Fliplet.Chat.connect()
+
+(Returns **`Promise<Chat>`**)
+
+Connects to a chat backend and returns the chat instance you use for everything else. This is the entry point for the rest of the public API.
+
+### Usage
+
+```js
+const chat = await Fliplet.Chat.connect({
+  dataSourceId: 123,             // required — the Contacts data source ID
+  primaryKey: 'email',           // optional — column to identify users
+  encryptMessages: true,         // optional — AES-encrypt message bodies at rest
+  pushNotifications: true,       // optional — subscribe device for push
+  crossLogin: false,             // optional — share session across screens
+  crossLoginDataSourceId: 456,   // optional — separate cross-login DS
+  crossLoginEmailKey: 'fl-chat-auth-email',
+  crossLoginContactsKey: 'fl-chat-source-id'
+});
+```
+
+* **connectionOptions** (Object)
+  * **dataSourceId** (Number, required) The ID of the contacts data source. Each row is a user; messages reference users by their ID in this data source.
+  * **primaryKey** (String) Optional column name used to identify users (e.g. `'email'`). When set, the chat uses the encrypted `flUserId`/`flUserToken` flow instead of the legacy random-token flow.
+  * **encryptMessages** (Boolean) When `true`, message bodies sent via `chat.message()` and `chat.updateMessage()` are AES-encrypted before being stored. Default `false`.
+  * **pushNotifications** (Boolean) When `true`, the device is subscribed for push notifications and new conversations are wired with a `push-message` hook. Default `false`.
+  * **crossLogin** / **crossLoginDataSourceId** / **crossLoginEmailKey** / **crossLoginContactsKey** Cross-login options used in conjunction with `Fliplet.Chat.subscribe()` for screens that need push without rendering the chat UI.
+
+The promise resolves with the chat instance; subsequent calls to `Fliplet.Chat.get()` will resolve with the same instance.
+
+---
+
+## Fliplet.Chat.init()
+
+(Returns **`Promise<Chat>`**)
+
+Bootstraps the chat from the chat widget's exported settings on the current screen, then logs the current Fliplet user in automatically using the configured `primaryKey`. Use this when you want the chat to follow the user across screens without re-passing the data source ID.
+
+```js
+const chat = await Fliplet.Chat.init();
+// chat is connected, encryption + push are enabled by default,
+// and the current Fliplet user is already logged in.
+```
+
+* **options** (Object) Optional overrides merged on top of the widget's exported settings. Defaults applied when the widget is found: `encryptMessages: true`, `pushNotifications: true`.
+
+The promise rejects if no chat widget is exported on the screen, or if the chat widget hasn't been upgraded to use a `primaryKey`.
+
+---
+
+## Fliplet.Chat.get()
+
+(Returns **`Promise<Chat>`**)
+
+Returns a promise that resolves with the chat instance once any screen has called `Fliplet.Chat.connect()` or `Fliplet.Chat.init()`. Useful for screens that depend on the chat instance but don't own its setup.
+
+```js
+const chat = await Fliplet.Chat.get();
+const conversations = await chat.conversations();
+```
+
+---
+
+## Fliplet.Chat.subscribe()
+
+(Returns **`Promise<Chat>`**)
+
+Connects to the chat in push-only mode using cross-login keys stored in app storage (`fl-chat-auth-email` and `fl-chat-source-id`). Use this on screens that should subscribe a user for push notifications without rendering the chat UI.
+
+```js
+// In your screen's custom code:
+Fliplet.Chat.subscribe()
+  .then((chat) => {
+    // user is logged in and subscribed for push
+  })
+  .catch((err) => {
+    // missing widget, missing storage keys, or push disabled
+  });
+```
+
+The promise rejects if the screen has no Push Notifications widget, or if the cross-login keys aren't set in `Fliplet.App.Storage`.
+
+---
+
+## chat.login()
+
+(Returns **`Promise<DataSourceEntry>`**)
+
+Logs a user into the chat by matching against the contacts data source. After login, the user's `flUserId` and `flUserToken` are generated (or read) and cached.
+
+```js
+// Log in by primary key (when configured)
+await chat.login({ email: 'jane@example.org' });
+
+// Offline-first login: try cache, fall back to network
+await chat.login({ email: 'jane@example.org' }, { offline: true });
+```
+
+* **query** (Object) `where`-style query against the contacts data source.
+* **options** (Object)
+  * **offline** (Boolean) When `true`, attempts a cache-only login first; falls back to online login when the device is online.
+
+The promise rejects with `{ code: 404 }` if no contact matches, or `{ code: 400 }` if the device is offline and no cached user exists.
+
+---
+
+## chat.logout()
+
+(Returns **`Promise`**)
+
+Clears the user's token in the contacts data source and stops polling.
+
+```js
+await chat.logout();
+```
+
+---
+
+## chat.conversations()
+
+(Returns **`Promise<Conversation[]>`**)
+
+Fetches the conversations the logged-in user participates in, ordered by `updatedAt` descending. Each returned conversation is decorated with instance helpers (`participants`, `notifications`, `messages`, `getInviteCode`, `getEncryptionKey`).
+
+```js
+const conversations = await chat.conversations();
+
+conversations.forEach((c) => {
+  console.log(c.id, c.name, c.definition.participants);
+});
+```
+
+* **options** (Object)
+  * **offline** (Boolean) When `true`, returns the cached conversations list instead of hitting the network.
+
+### chat.conversations.join()
+
+(Returns **`Promise<Conversation>`**)
+
+Joins a private conversation using an invite code shared by an existing participant.
+
+```js
+const conversation = await chat.conversations.join('abc123');
+```
+
+---
+
+## chat.create()
+
+(Returns **`Promise<Conversation>`**)
+
+Creates a new conversation, or returns the existing conversation if one already exists with the same set of participants. The returned object is decorated with the same instance helpers as conversations returned by `chat.conversations()`.
+
+```js
+const conversation = await chat.create({
+  participants: [42, 57],          // contact IDs in the contacts data source
+  name: 'Project Phoenix',         // optional
+  group: { public: false },        // optional — pass to mark as group
+  metadata: { topic: 'launch' },   // optional — arbitrary object
+  allowInvite: true                // optional — enables invite codes
+});
+
+// `isNew` tells you whether a conversation was created or matched an existing one.
+console.log(conversation.isNew);
+```
+
+* **options** (Object)
+  * **participants** (Array, required) IDs of the participants in the contacts data source. The current user is added automatically.
+  * **name** (String) Optional conversation name; defaults to a generated GUID.
+  * **group** (Object) Pass any object (typically `{ public: false }`) to mark the conversation as a group chat.
+  * **metadata** (Object) Arbitrary metadata stored on the conversation definition.
+  * **allowInvite** (Boolean) When `true`, an invite code is generated and retrievable via `conversation.getInviteCode()`.
+
+---
+
+## chat.contacts()
+
+(Returns **`Promise<Contact[]>`**)
+
+Fetches users from the contacts data source.
+
+```js
+const contacts = await chat.contacts();
+const offlineContacts = await chat.contacts({ offline: true });
+```
+
+* **options** (Object)
+  * **offline** (Boolean) When `true`, returns the cached contacts list.
+  * Any other option supported by `connection.find()` (e.g. `where`, `limit`).
+
+---
+
+## chat.message()
+
+(Returns **`Promise`**)
+
+Posts a new message to a conversation. The current user is set as `fromUserId` automatically, and the message is added to their `readBy` list. After the message is inserted, `chat.poll()` runs to publish the message to all `chat.stream()` listeners.
+
+```js
+await chat.message(conversation.id, {
+  body: 'Hello team!',
+  conversationId: conversation.id
+});
+
+// Send a message with a file attachment
+await chat.message(conversation.id, {
+  body: 'See attached',
+  file: ['https://example.org/uploads/spec.pdf']
+});
+```
+
+* **conversationId** (Number) The conversation's data source ID.
+* **message** (Object) The message payload. `body` is the most common field; `file` is an array of file URLs for attachments. Custom fields are stored as-is on the message entry.
+
+If `encryptMessages` was set on `connect()`, the `body` is AES-encrypted before being inserted.
+
+---
+
+## chat.updateMessage()
+
+(Returns **`Promise<DataSourceEntry>`**)
+
+Updates an existing message — typically used for edits.
+
+```js
+await chat.updateMessage(conversation.id, message.id, {
+  body: 'Updated message body',
+  isEdited: true
+});
+```
+
+* **conversationId** (Number) The conversation ID.
+* **messageId** (Number) The message entry ID.
+* **data** (Object) Fields to update. If `encryptMessages` was set on `connect()`, the `body` is encrypted before saving.
+
+---
+
+## chat.messages()
+
+(Returns **`Promise<Message[]>`**)
+
+Manually fetches messages, sorted oldest-to-newest. Use this for "load older messages" interactions; for live updates, use `chat.stream()` instead.
+
+```js
+// Latest 50 messages across all conversations
+const recent = await chat.messages({ limit: 50 });
+
+// Messages for a specific conversation
+const messages = await chat.messages({
+  conversations: [conversation.id],
+  limit: 100
+});
+
+// Messages matching a custom where clause
+const fromUser = await chat.messages({
+  where: { data: { $contains: { fromUserId: 'id-abc-123' } } }
+});
+```
+
+* **options** (Object)
+  * **where** (Object) Optional MongoDB-style filter applied to message entries.
+  * **limit** (Number) Page size. Defaults to the batch size returned by `chat.getBatchSize()` (`200`).
+  * **conversations** (Array) Optional list of conversation (data source) IDs to scope the fetch to.
+
+---
+
+## chat.markMessagesAsRead()
+
+(Returns **`Promise`**)
+
+Marks an array of messages as read by the current user. Already-read messages are filtered out automatically; if nothing needs marking, the promise resolves immediately.
+
+```js
+await chat.markMessagesAsRead(visibleMessages);
+```
+
+* **messages** (Array) Messages from `chat.stream()` or `chat.messages()`. Each must include `id` and `data.readBy`.
+
+---
+
+## chat.unread
+
+Helpers for the unread badge.
+
+```js
+// Full list of unread messages for the current user
+const { entries } = await chat.unread.get();
+
+// Just the count (cheaper than .get().length)
+const count = await chat.unread.count();
+```
+
+---
+
+## chat.stream()
+
+(Returns **`Promise`**)
+
+Subscribes a callback to new messages. The callback fires once per message as messages arrive. Internally `stream()` triggers polling on a 20-second cadence (with exponential backoff when the conversation is quiet).
+
+```vue
+<script setup>
+import { onMounted, onUnmounted, ref } from 'vue';
+
+const messages = ref([]);
+let chat;
+
+onMounted(async () => {
+  chat = await Fliplet.Chat.connect({
+    dataSourceId: Fliplet.Env.get('appSettings').contactsDataSourceId,
+    primaryKey: 'email',
+    encryptMessages: true
+  });
+
+  await chat.login({ email: Fliplet.Env.get('user').email });
+
+  await chat.stream((message) => {
+    if (message.isDeleted) {
+      messages.value = messages.value.filter((m) => m.id !== message.id);
+      return;
+    }
+
+    if (message.isUpdate) {
+      const idx = messages.value.findIndex((m) => m.id === message.id);
+      if (idx !== -1) messages.value.splice(idx, 1, message);
+      return;
+    }
+
+    messages.value.push(message);
+  });
+});
+
+onUnmounted(() => {
+  if (chat) chat.logout();
+});
+</script>
+```
+
+* **fn** (Function) Listener invoked once per message. The message is annotated with `isReadByCurrentUser`, `isUpdate` (edited), and `isDeleted` flags.
+* **options** (Object)
+  * **offline** (Boolean) When `true`, the listener is first invoked with cached messages from the previous session.
+
+---
+
+## chat.poll()
+
+(Returns **`Promise`**)
+
+Manually triggers a poll for new messages. Most apps don't need to call this — `chat.stream()` and `chat.message()` already poll. Use it after operations that bypass `chat.message()` (e.g. server-side inserts) or to reset the poll cursor.
+
+```js
+// Force a fresh poll from the start
+await chat.poll({ reset: true });
+```
+
+* **options** (Object)
+  * **reset** (Boolean) When `true`, clears the internal "newest message timestamp" cursor so the next poll re-fetches from the beginning.
+
+---
+
+## chat.getBatchSize()
+
+(Returns **`Number`**)
+
+Returns the page size used when polling for messages. Useful when implementing "has more" logic against `chat.messages()`.
+
+```js
+const batchSize = chat.getBatchSize(); // 200
+```
+
+---
+
+## Channels
+
+Public channels are conversations marked with `definition.group.public = true`. They live on the master app's data sources so multiple app instances can share them.
+
+### chat.channels.create()
+
+(Returns **`Promise<DataSource>`**)
+
+Creates a public channel.
+
+```js
+const channel = await chat.channels.create('General');
+```
+
+### chat.channels.get()
+
+(Returns **`Promise<DataSource[]>`**)
+
+Lists all public channels for the master app.
+
+```js
+const channels = await chat.channels.get();
+```
+
+### chat.channels.join()
+
+(Returns **`Promise<Conversation>`**)
+
+Joins a public channel. The returned object is decorated with the same instance helpers as a conversation, plus `isChannel: true` and `nParticipants`.
+
+```js
+const channel = await chat.channels.join(channelId);
+console.log(`Joined — ${channel.nParticipants} members`);
+```
+
+### chat.channels.delete()
+
+(Returns **`Promise`**)
+
+Deletes a public channel.
+
+```js
+await chat.channels.delete(channelId);
+```
+
+---
+
+## Conversation instance methods
+
+Conversations returned by `chat.conversations()`, `chat.create()`, `chat.conversations.join()`, and `chat.channels.join()` come decorated with the helpers below.
+
+### conversation.participants
+
+```js
+// Get participant IDs (flUserIds) stored on the conversation definition
+const ids = conversation.participants.get();
+
+// Resolve participant IDs to full contact entries
+const people = await conversation.participants.fetch();
+
+// Add or remove participants by their contact-data-source ID
+await conversation.participants.add([contactId1, contactId2]);
+await conversation.participants.remove([contactId1]);
+```
+
+### conversation.notifications
+
+Mute or unmute push notifications for the current user on this conversation.
+
+```js
+await conversation.notifications.mute();
+await conversation.notifications.unmute();
+
+// Computed flag
+console.log(conversation.isMuted);
+```
+
+### conversation.messages.fetch()
+
+(Returns **`Promise<Message[]>`**)
+
+Fetches messages directly from the conversation's data source. The same options as `Fliplet.DataSources` `connection.find()` are accepted (e.g. `where`, `limit`, `order`).
+
+```js
+const messages = await conversation.messages.fetch({
+  limit: 50,
+  order: [['createdAt', 'DESC']]
+});
+```
+
+### conversation.getInviteCode()
+
+(Returns **`Promise<String>`**)
+
+Resolves with the conversation's invite code if one exists (i.e. `allowInvite: true` was set at creation).
+
+```js
+const code = await conversation.getInviteCode();
+```
+
+The promise rejects if no invite code is set on the conversation.
+
+### conversation.getEncryptionKey()
+
+(Returns **`String`**)
+
+Returns the per-conversation encryption key used when downloading attachments tagged with `hasMediaFileWithPrivateEncryptionKey`. Most apps don't need this directly; it's appended automatically by the chat when parsing messages.
+
+---
+
+[Back to API documentation](../API-Documentation.md)
 {: .buttons}
 
 ---
@@ -16167,6 +16894,243 @@ Delete existing entries.
 
 ---
 
+# Fliplet.Security
+URL: https://developers.fliplet.com/API/fliplet-security.html
+
+# `Fliplet.Security`
+
+Persist a structured, per-app object to **encrypted device-local storage** via the `fliplet-security` package. The package exposes two globals:
+
+- `Fliplet.Security` — top-level namespace (currently a container for `Storage`).
+- `Fliplet.Security.Storage` — the storage API for reading, writing, resetting, and removing the encrypted bag.
+
+Each app gets its own bag, keyed internally by `appId`, so values written from one app never leak to another running on the same device.
+
+> **Not the same as `fliplet-encryption`.** `fliplet-security` stores values **on the device** (a single encrypted bag per app, useful for tokens, flags, secrets). `fliplet-encryption` (`Fliplet.DataSources.Encryption`) transparently encrypts and decrypts **selected columns of a Data Source** as it goes to and from the server. If you need to protect data inside a Data Source row, use `fliplet-encryption`. If you need to keep something private on the device, use `fliplet-security`. See the [When to use this](#when-to-use-this) section for a side-by-side.
+
+## When to use this
+
+| You need to… | Use |
+|---|---|
+| Keep an OAuth token, refresh token, or API key private on the device | `fliplet-security` (`Fliplet.Security.Storage`) |
+| Persist a small structured object across app launches with a default shape | `fliplet-security` |
+| Protect specific Data Source columns (e.g. `firstName`, `bio`) end-to-end | `fliplet-encryption` (`Fliplet.DataSources.Encryption`) |
+| Encrypt rows on the server so the API never sees plaintext | `fliplet-encryption` |
+| Read/write the current login session | [`Fliplet.Session`](./fliplet-session.md) |
+| Persist arbitrary unencrypted device data | `Fliplet.Storage` (in `fliplet-core`) |
+
+The two packages are complementary, not interchangeable. They're often used together: `fliplet-encryption` to protect what's stored remotely, `fliplet-security` to protect the encryption key itself on the device.
+
+## Install
+
+Add the `fliplet-security` dependency to your screen or app resources. The package depends on `fliplet-core` and exposes `Fliplet.Security` and `Fliplet.Security.Storage` globally on load.
+
+## How it works
+
+`Fliplet.Security.Storage` maintains a single in-memory object (the "secure bag") for the current app. The bag is namespaced per app and persisted to encrypted device storage under the hood.
+
+Each entry in the bag is created with a `key` and a `dataStructure` — the default shape used when the entry is first created and when it's reset. Reading an entry returns its `data`; writing values means mutating that `data` object and calling `update()` to persist.
+
+A typical lifecycle:
+
+1. Call `Fliplet.Security.Storage.init()` once on screen load to hydrate the bag.
+2. Call `create(key, dataStructure)` for each entry your screen owns — idempotent; returns the existing `data` if already present.
+3. Mutate the returned `data` object as the user interacts.
+4. Call `update()` to persist.
+5. Call `reset(key)` to revert one entry to its default shape, or `resetAll()` to wipe the whole bag (e.g. on logout).
+
+## `Fliplet.Security.Storage.init()`
+
+(Returns **`Promise<Object>`**)
+
+Hydrates the secure bag for the current app from device storage into memory. Must be called once before any other method on `Fliplet.Security.Storage`. Subsequent calls are no-ops and resolve with the cached bag.
+
+### Usage
+
+```js
+Fliplet.Security.Storage.init().then(function (bag) {
+  // bag is the full secure object for this app
+  // typically you don't need to use it directly — call create() / get() instead
+});
+```
+
+### Vue 3 example
+
+```vue
+<script setup>
+import { onMounted } from 'vue';
+
+onMounted(async () => {
+  await Fliplet.Security.Storage.init();
+  // safe to call create / get / update from here on
+});
+</script>
+```
+
+## `Fliplet.Security.Storage.create(key, dataStructure)`
+
+(Returns **`Promise<Object>`**)
+
+Creates a new named entry in the secure bag, or returns the existing `data` if one already exists for that `key`. The `dataStructure` argument is shallow-cloned and stored as both the entry's initial `data` and its default shape (used later by `reset(key)`).
+
+* **key** (String) — Unique key for this entry inside the bag.
+* **dataStructure** (Object) — Default shape and initial values for the entry.
+
+### Usage
+
+```js
+await Fliplet.Security.Storage.init();
+
+const credentials = await Fliplet.Security.Storage.create('credentials', {
+  accessToken: '',
+  refreshToken: '',
+  expiresAt: null
+});
+
+// credentials is the live data object — mutate it directly, then call update()
+credentials.accessToken = 'eyJhbGciOi...';
+credentials.expiresAt = Date.now() + 3600 * 1000;
+
+await Fliplet.Security.Storage.update();
+```
+
+> `create()` is idempotent. Calling it again with the same `key` returns the existing entry's `data` rather than overwriting it. To wipe an entry back to its `dataStructure`, use `reset(key)`.
+
+## `Fliplet.Security.Storage.get(key)`
+
+(Returns **`Object | undefined`** — synchronous)
+
+Reads the `data` for an existing entry. Returns `undefined` if no entry has been created for that `key`. **Synchronous** — `init()` must have already resolved.
+
+* **key** (String) — Key the entry was created under.
+
+### Usage
+
+```js
+await Fliplet.Security.Storage.init();
+await Fliplet.Security.Storage.create('credentials', {
+  accessToken: '',
+  refreshToken: ''
+});
+
+const credentials = Fliplet.Security.Storage.get('credentials');
+
+if (credentials && credentials.accessToken) {
+  // user has a stored token
+}
+```
+
+## `Fliplet.Security.Storage.update()`
+
+(Returns **`Promise<Object>`**)
+
+Persists the current in-memory state of the bag to device storage. Call this after mutating any entry's `data` object.
+
+### Usage
+
+```js
+const prefs = Fliplet.Security.Storage.get('preferences');
+
+prefs.theme = 'dark';
+prefs.notificationsEnabled = false;
+
+await Fliplet.Security.Storage.update();
+```
+
+> Mutations to `data` are **not** persisted automatically — `update()` is required.
+
+## `Fliplet.Security.Storage.reset(key)`
+
+(Returns **`Promise<Object>`**)
+
+Resets a single entry's `data` back to the `dataStructure` that was passed when it was first created, then persists the bag. Other entries are untouched.
+
+* **key** (String) — Key of the entry to reset.
+
+### Usage
+
+```js
+// User signs out — clear their credentials but keep their UI preferences
+await Fliplet.Security.Storage.reset('credentials');
+```
+
+## `Fliplet.Security.Storage.resetAll()`
+
+(Returns **`Promise`**)
+
+Removes the entire secure bag for the current app from device storage. Use this on full logout or "wipe app data" flows.
+
+### Usage
+
+```js
+async function logoutAndWipe() {
+  await Fliplet.Session.logout();
+  await Fliplet.Security.Storage.resetAll();
+  Fliplet.Navigate.screen('login');
+}
+```
+
+> After `resetAll()`, the in-memory bag in the current page session may still hold previously-created entries. To use the storage again, call `init()` followed by `create()` for each entry you need.
+
+## Full example
+
+A screen that stores an OAuth token securely and reuses it across launches:
+
+```vue
+<template>
+  <div>
+    <button v-if="!isAuthenticated" @click="signIn">Sign in</button>
+    <button v-else @click="signOut">Sign out</button>
+  </div>
+</template>
+
+<script setup>
+import { ref, onMounted } from 'vue';
+
+const isAuthenticated = ref(false);
+let credentials = null;
+
+onMounted(async () => {
+  await Fliplet.Security.Storage.init();
+
+  credentials = await Fliplet.Security.Storage.create('oauthCredentials', {
+    accessToken: '',
+    expiresAt: null
+  });
+
+  isAuthenticated.value = !!credentials.accessToken
+    && credentials.expiresAt > Date.now();
+});
+
+async function signIn() {
+  // ...obtain a token from your OAuth flow
+  credentials.accessToken = 'eyJhbGciOi...';
+  credentials.expiresAt = Date.now() + 3600 * 1000;
+
+  await Fliplet.Security.Storage.update();
+  isAuthenticated.value = true;
+}
+
+async function signOut() {
+  await Fliplet.Security.Storage.reset('oauthCredentials');
+  isAuthenticated.value = false;
+}
+</script>
+```
+
+## Related
+
+- [`Fliplet.DataSources.Encryption`](./fliplet-encryption.md) — column-level encryption for Data Sources.
+- [`Fliplet.Session`](./fliplet-session.md) — current user session, login/logout, passport details.
+- `Fliplet.Storage` (part of `fliplet-core`) — general-purpose unencrypted device storage.
+
+---
+
+[Back to API documentation](../API-Documentation.md)
+{: .buttons}
+
+---
+
 # Fliplet.Session
 URL: https://developers.fliplet.com/API/fliplet-session.html
 
@@ -16362,6 +17326,255 @@ var locales = Fliplet.App.Locales.get();
 ---
 
 [Back to API documentation](../API-Documentation.md)
+{: .buttons}
+
+---
+
+# Fliplet.Socket
+URL: https://developers.fliplet.com/API/fliplet-socket.html
+
+# `Fliplet.Socket`
+
+Open a real-time, bidirectional connection to the Fliplet API via the `fliplet-socket` package. The package exposes a single global, `Fliplet.Socket`, which returns a [Socket.IO v2](https://socket.io/) client wired up to the correct API server, with the user's auth token already plumbed through and the right transport selected for the current environment.
+
+Use `Fliplet.Socket` whenever an app needs real-time updates: live dashboards, presence, chat, push-style notifications, or any cross-client event broadcast.
+
+## Install
+
+Add the `fliplet-socket` dependency to your screen or app resources. The package provides the `Fliplet.Socket` global and bundles its own `socket.io-client` (no extra dependencies needed).
+
+## Why use `Fliplet.Socket` vs. raw WebSocket
+
+It's tempting to reach for `new WebSocket(...)` or import a fresh `socket.io-client` build. Don't — `Fliplet.Socket` solves three problems you'd otherwise have to solve yourself, and it solves them correctly for every Fliplet environment (dev, staging, EU, US, on-prem):
+
+1. **Server URL discovery.** The Fliplet API host changes per region and per environment. `Fliplet.Socket` reads `Fliplet.Env.get('apiUrl')` so the same code runs unmodified against `api.fliplet.test`, `api.fliplet.com`, and any regional API. A hand-rolled `new WebSocket('wss://api.fliplet.com/...')` will break the moment the app is shipped to a different region.
+2. **Auto-authentication.** Pass `{ login: true }` and the socket calls `Fliplet.User.getAuthToken()` and emits the `login` handshake on every connect. The user is automatically joined to a private `user-${id}` room on the server, so server-side code can target a single user with `io.to('user-' + userId).emit(...)` without any client-side wiring.
+3. **Dev/prod transport selection.** In development Fliplet sits behind a Classic Load Balancer that does not support WebSocket frames. `Fliplet.Socket` detects this via `Fliplet.Env.get('environment')` and falls back to long-polling automatically; in production it uses `websocket`. A raw WebSocket would silently fail to connect on local dev environments.
+
+A single shared connection is also reused across the page — calling `Fliplet.Socket()` multiple times returns the same socket, so two widgets on the same screen don't open two physical connections.
+
+## `Fliplet.Socket(options)`
+
+(Returns a [Socket.IO Socket](https://socket.io/docs/v2/client-api/#Socket))
+
+Get (and lazily create) the shared socket connection.
+
+### Usage
+
+```js
+// Anonymous connection — no login handshake
+var socket = Fliplet.Socket();
+
+// Authenticated connection — joins user-${id} room on the server
+var socket = Fliplet.Socket({ login: true });
+```
+
+* **options** (Object) Optional configuration map.
+  * **login** (Boolean) When `true`, emits the `login` event with the current user's auth token after every `connect`. The server responds with `loginSuccess` (and `socket.loggedIn` becomes `true`) or `loginError`. **Default** `false`.
+  * **transports** (Array&lt;String&gt;) Override the transports list. Provide `['websocket']` to force WebSocket, `['polling']` to force long-polling, or `['polling', 'websocket']` to allow upgrade. **Default** `['polling']` in development, `['websocket']` in all other environments.
+
+The socket is a singleton: the first call creates it, subsequent calls return the same instance regardless of the options passed.
+
+## `Fliplet.Socket.disconnect()`
+
+Disconnect the shared socket and clear the cached instance. The next call to `Fliplet.Socket()` will open a new connection.
+
+```js
+Fliplet.Socket.disconnect();
+```
+
+`Fliplet.Socket` automatically calls `disconnect()` on the window's `unload` event, so most apps never need to call this directly. Call it manually when you want to forcibly drop a connection — for example, after the user logs out of an embedded app.
+
+## `socket.to(room).emit(event, data)`
+
+Send an event to every client in a named room via the server. This is a thin wrapper that emits a `forward` event the server then re-broadcasts.
+
+```js
+var socket = Fliplet.Socket({ login: true });
+
+socket.to('project-42').emit('comment-added', {
+  text: 'Looks good!',
+  author: 'Alice'
+});
+```
+
+* **room** (String, required) The room to broadcast to. Throws if missing.
+* **event** (String) The event name remote clients will listen for.
+* **data** (any) JSON-serialisable payload.
+
+To put a client into a room so it receives forwarded events, emit the built-in `join` event:
+
+```js
+socket.emit('join', 'project-42');
+socket.on('comment-added', function(payload) {
+  // Triggered when any client in the room calls socket.to('project-42').emit('comment-added', ...)
+});
+```
+
+## Built-in events
+
+The Fliplet API socket server understands the following events.
+
+### Outbound (client → server)
+
+| Event | Payload | Description |
+|---|---|---|
+| `login` | `authToken` (String) | Authenticate the connection. Emitted automatically when the socket is created with `{ login: true }`. |
+| `logout` | — | Leave the authenticated user's rooms. Connection stays open. |
+| `join` | `room` (String) | Add this socket to a named room. |
+| `forward` | `{ room, event, data }` | Broadcast an event to every socket in `room`. Use `socket.to(room).emit(event, data)` instead — it's the supported shape. |
+
+### Inbound (server → client)
+
+| Event | Payload | Description |
+|---|---|---|
+| `connect` | — | The socket has connected. If `{ login: true }` was passed, the auth handshake is sent immediately after this event. |
+| `loginSuccess` | — | Auth handshake succeeded. The server has joined this socket to `user-${userId}` and to a room named after the auth token. `socket.loggedIn` is now `true`. |
+| `loginError` | `{ status, message }` | Auth handshake failed (missing token, unknown region, or no matching session). |
+| `forwardError` | `{ status, message }` | A `forward` was emitted without a `room`. |
+| `disconnect` | reason (String) | The socket has disconnected. Socket.IO will attempt to reconnect automatically. |
+
+Beyond these, you can listen for any custom event your server-side or app-action code emits.
+
+## Vue 3 example: live presence indicator
+
+Subscribe in `onMounted`, unsubscribe in `onUnmounted` so the screen doesn't accumulate handlers across navigations.
+
+```vue
+<script setup>
+import { ref, onMounted, onUnmounted } from 'vue';
+
+const onlineUsers = ref([]);
+let socket;
+
+function handlePresence(payload) {
+  onlineUsers.value = payload.users;
+}
+
+onMounted(() => {
+  socket = Fliplet.Socket({ login: true });
+
+  socket.emit('join', 'office-floor-3');
+  socket.on('presence:update', handlePresence);
+});
+
+onUnmounted(() => {
+  if (!socket) return;
+
+  socket.off('presence:update', handlePresence);
+  // Don't call socket.disconnect() — other widgets on the screen may share the connection.
+});
+</script>
+
+<template>
+  <ul>
+    <li v-for="user in onlineUsers" :key="user.id">{{ user.name }}</li>
+  </ul>
+</template>
+```
+
+A few rules worth highlighting:
+
+* **Always remove your listener in `onUnmounted`** with `socket.off(event, handler)`. Forgetting this is the #1 cause of "the same toast fires three times after I navigate back".
+* **Don't call `Fliplet.Socket.disconnect()` on screen unmount.** The socket is shared. Disconnect only when the user is really leaving the app or logging out.
+* **Check `socket.connected` before emitting** if your code can run before the first `connect` resolves. Socket.IO buffers emits while disconnected, so this is rarely needed — but it's the safe option for high-rate emits.
+
+## Vue 3 example: send and receive chat messages
+
+```vue
+<script setup>
+import { ref, onMounted, onUnmounted } from 'vue';
+
+const messages = ref([]);
+const draft = ref('');
+const room = 'chat-room-7';
+let socket;
+
+function onMessage(msg) {
+  messages.value.push(msg);
+}
+
+function send() {
+  if (!draft.value.trim()) return;
+
+  socket.to(room).emit('chat:message', {
+    text: draft.value,
+    sentAt: Date.now()
+  });
+  draft.value = '';
+}
+
+onMounted(() => {
+  socket = Fliplet.Socket({ login: true });
+  socket.emit('join', room);
+  socket.on('chat:message', onMessage);
+});
+
+onUnmounted(() => {
+  socket.off('chat:message', onMessage);
+});
+</script>
+
+<template>
+  <div>
+    <ul><li v-for="(m, i) in messages" :key="i">{{ m.text }}</li></ul>
+    <input v-model="draft" @keyup.enter="send" />
+  </div>
+</template>
+```
+
+## Vue 3 example: connection state
+
+`Fliplet.Socket` is a Socket.IO socket, so the standard `connect` / `disconnect` / `reconnect` events are available for surfacing online/offline state to the user.
+
+```vue
+<script setup>
+import { ref, onMounted, onUnmounted } from 'vue';
+
+const status = ref('connecting');
+let socket;
+
+const onConnect = () => { status.value = 'online'; };
+const onDisconnect = () => { status.value = 'offline'; };
+const onReconnect = () => { status.value = 'online'; };
+
+onMounted(() => {
+  socket = Fliplet.Socket({ login: true });
+  socket.on('connect', onConnect);
+  socket.on('disconnect', onDisconnect);
+  socket.on('reconnect', onReconnect);
+
+  if (socket.connected) status.value = 'online';
+});
+
+onUnmounted(() => {
+  socket.off('connect', onConnect);
+  socket.off('disconnect', onDisconnect);
+  socket.off('reconnect', onReconnect);
+});
+</script>
+
+<template>
+  <span :class="`status status--${status}`">{{ status }}</span>
+</template>
+```
+
+## Common patterns
+
+* **Targeting one user from a server-side App Action.** When a client connects with `{ login: true }`, the server places it in a room named `user-${userId}`. Server-side code can push to that user with `io.to('user-' + userId).emit('notification', payload)` — no client-side `join` required.
+* **Targeting one device/session.** The server also joins the socket to a room named after the auth token, so a server emit to `io.to(authToken).emit(...)` reaches that single device even if the user is logged in elsewhere.
+* **Broadcasting between two clients.** Have both clients `socket.emit('join', 'shared-room')`, then either side can `socket.to('shared-room').emit('event', data)` to reach the other.
+* **Cleaning up after logout.** Emit `socket.emit('logout')` to leave the user's rooms without dropping the socket. Follow with `Fliplet.Socket.disconnect()` if you also want to close the underlying connection.
+
+## Notes
+
+* Built on Socket.IO v2.1.1. The full client API is documented at [socket.io/docs/v2/client-api](https://socket.io/docs/v2/client-api/) — anything that works on a standard Socket.IO socket works here.
+* The connection is lazy: importing `fliplet-socket` does **not** open a connection. The first call to `Fliplet.Socket()` does.
+* `socket.upgrade` is disabled, so the socket will not silently switch transport mid-session. Choose your transport at construction.
+
+---
+
+[Back to Fliplet.Core](./fliplet-core.md)
 {: .buttons}
 
 ---
@@ -17334,6 +18547,133 @@ var themeInstance = Fliplet.Themes.Current.getInstance();
 ```js
 var value = Fliplet.Themes.Current.get('keyName');
 ```
+
+---
+
+[Back to API documentation](../API-Documentation.md)
+{: .buttons}
+
+---
+
+# Fliplet.App.Tokens
+URL: https://developers.fliplet.com/API/fliplet-tokens.html
+
+# `Fliplet.App.Tokens`
+
+Read the list of **API tokens** an app has issued to external services and backend integrations. Each token represents a non-human "app user" account with scoped access (viewer role, by default) that lets a trusted backend system, webhook, or third-party integration authenticate against the Fliplet API on behalf of the app.
+
+This package is a thin client over the `v1/apps/{appId}/tokens` REST endpoint and exposes a single global, `Fliplet.App.Tokens`. Use it when an app or admin screen needs to display, audit, or correlate the tokens that have been provisioned for backend integrations.
+
+> **Note:** Creating and deleting tokens is performed in **Fliplet Studio** (App Settings → Security → API tokens) or directly via the REST API. The client library is intentionally read-only.
+
+## Install
+
+Add the `fliplet-tokens` dependency to your screen or app resources. The package depends on `fliplet-core` and registers itself under `Fliplet.App.Tokens`.
+
+## `Fliplet.App.Tokens.get()`
+
+(Returns `Promise<Array>`)
+
+Fetch the list of tokens issued for an app. Wraps `GET v1/apps/{appId}/tokens` and resolves with the `appTokens` array from the response body.
+
+### Usage
+
+```js
+const tokens = await Fliplet.App.Tokens.get();
+
+// tokens is an array of objects:
+// [
+//   {
+//     id: 12345,
+//     firstName: 'Zapier integration', // the token's display name
+//     lastName: null,
+//     email: 'token-1234-zapier-integration-42@fliplet.com',
+//     auth_token: 'eyJhbGciOi...',     // the bearer token value
+//     type: 'appToken'
+//   },
+//   ...
+// ]
+```
+
+* **options** (Object, optional) Configuration for the request.
+  * **appId** (Number) The app id to read tokens for. Defaults to `Fliplet.Env.get('appId')`. Throws `Error: appId is required` when neither is set.
+  * **query** (Object) Query string parameters forwarded to the REST endpoint. The endpoint accepts:
+    * **type** (String) Filter by token type. Defaults to `appToken`. Pass `integrationToken` to read integration-only tokens.
+    * **order** (String) Field to order results by. Defaults to `firstName`.
+    * **direction** (String) `ASC` or `DESC`. Defaults to `ASC`.
+
+### Examples
+
+**Read all tokens for the current app**
+
+```js
+const tokens = await Fliplet.App.Tokens.get();
+
+tokens.forEach((token) => {
+  console.log(token.firstName, token.id);
+});
+```
+
+**Read tokens for a specific app**
+
+```js
+const tokens = await Fliplet.App.Tokens.get({ appId: 1234 });
+```
+
+**Filter to integration tokens, newest first**
+
+```js
+const tokens = await Fliplet.App.Tokens.get({
+  query: {
+    type: 'integrationToken',
+    order: 'id',
+    direction: 'DESC'
+  }
+});
+```
+
+### Response shape
+
+Each item in the resolved array is an "app user" record representing a token:
+
+| Field | Type | Description |
+| -- | -- | -- |
+| `id` | Number | Internal user id of the token holder. Use this id when calling the delete REST endpoint. |
+| `firstName` | String | The token's display name as set when it was created. |
+| `lastName` | String &#124; null | Always `null` for tokens. |
+| `email` | String | Synthetic email of the form `token-{appId}-{slug}-{n}@fliplet.com`, generated by the API when the token is created. |
+| `auth_token` | String | The bearer token value. Send it as `Auth-token: <value>` (or `Authorization: Bearer <value>`) when calling Fliplet APIs. |
+| `type` | String | `appToken` (default) or `integrationToken`. |
+
+### Token types
+
+* **`appToken`** — General-purpose API token scoped to the app. Granted the `viewer` app role.
+* **`integrationToken`** — Token reserved for first-class integrations (e.g. Zapier, webhook receivers, server-to-server jobs). Subject to the `appSecurity.tokenManagement` plan feature; creation and deletion fail with a billing error if the organisation's plan does not include it.
+
+## Using a token to call the Fliplet API
+
+Once you have an `auth_token`, a backend service can call any Fliplet API endpoint that the app role permits by sending the token as a header. Tokens carry the **viewer** app role, so they can read app data sources, app submissions, and similar read-scoped resources.
+
+```js
+// From a backend (Node, Python, curl, etc.) — never expose tokens in the browser.
+fetch('https://api.fliplet.com/v1/data-sources/1234/data', {
+  headers: {
+    'Auth-token': process.env.FLIPLET_APP_TOKEN
+  }
+}).then((r) => r.json());
+```
+
+```bash
+curl https://api.fliplet.com/v1/apps/$APP_ID/tokens \
+  -H "Auth-token: $FLIPLET_APP_TOKEN"
+```
+
+## Access and security
+
+* **Authentication required.** The underlying `v1/apps/{appId}/tokens` endpoint requires an authenticated request — typically a Studio user session or a token that already has access to the app. Calling `Fliplet.App.Tokens.get()` from a public, unauthenticated screen will fail.
+* **Rate limited.** The endpoint is brute-force rate-limited under the `appTokens` rate-limit bucket. Avoid polling it from end-user screens.
+* **Treat `auth_token` as a secret.** The value functions as a long-lived password for the app. Surface it only in trusted admin contexts (e.g. a Studio settings screen visible to logged-in admins) and never log, embed, or persist it in client storage that other users can read.
+* **Token creation and deletion are not exposed in this client library.** Use Fliplet Studio or `POST` / `DELETE v1/apps/{appId}/tokens` directly. Both write endpoints additionally enforce the `appSecurity.tokenManagement` plan feature when working with `integrationToken` records.
 
 ---
 

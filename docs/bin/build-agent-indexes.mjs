@@ -459,6 +459,52 @@ export function emitSkillMd(cluster, docsInCluster) {
   );
 }
 
+// V3 library catalog manifest. Emitted at /.well-known/llms-v3-libraries.json
+// and consumed by Studio's `searchLibraries.js` tool to drive V3 builder
+// library discovery, replacing the legacy /v1/widgets/assets fetch.
+//
+// Inclusion rule: docs whose `relPath` matches `API/fliplet-*.md` AND that
+// do NOT have `exclude_from_v3_catalog: true` in frontmatter. Package name
+// defaults to the URL slug (`API/fliplet-barcode.md` → `fliplet-barcode`)
+// and can be overridden via `package:` frontmatter for the rare slug-vs-pkg
+// mismatch case (none in the initial catalog, but the override exists).
+//
+// Schema is intentionally minimal: 4 fields per entry. Title and description
+// are reused from the existing build pipeline (frontmatter or H1+intro
+// extraction). No `provides`, `tags`, or `preloaded` — those either live in
+// `assets.json` (provides, consumed by dependencyDetector) or are
+// derivable / decorative for the agent (tags, preloaded). See
+// docs/plans/v3-library-catalog.md in the studio repo for the full design.
+const V3_LIBRARY_PATH_RE = /^API\/fliplet-[^/]+\.md$/;
+
+export function deriveV3Package(relPath) {
+  const match = relPath.match(/^API\/(fliplet-[^/]+)\.md$/);
+  return match ? match[1] : null;
+}
+
+export function emitV3LibraryCatalog(docs) {
+  const libraries = [];
+  for (const doc of docs) {
+    if (!V3_LIBRARY_PATH_RE.test(doc.relPath)) continue;
+    const fm = doc.fm || {};
+    if (fm.exclude_from_v3_catalog === 'true') continue;
+    const pkg = (fm.package && fm.package.trim()) || deriveV3Package(doc.relPath);
+    if (!pkg) continue;
+    libraries.push({
+      package: pkg,
+      title: doc.title,
+      description: doc.description || '',
+      docUrl: doc.url,
+    });
+  }
+  libraries.sort((a, b) => a.package.localeCompare(b.package));
+  return {
+    version: 1,
+    generatedAt: new Date().toISOString(),
+    libraries,
+  };
+}
+
 // MCP Server Card per SEP-1649
 // (https://github.com/modelcontextprotocol/modelcontextprotocol/pull/2127).
 // The schema is still being standardized; consumers that pre-date the SEP
@@ -653,6 +699,12 @@ function main() {
     JSON.stringify(mcpCard, null, 2) + '\n',
   );
 
+  const v3Catalog = emitV3LibraryCatalog(docs);
+  writeFileSync(
+    join(wellKnownDir, 'llms-v3-libraries.json'),
+    JSON.stringify(v3Catalog, null, 2) + '\n',
+  );
+
   console.log('Generated:');
   console.log(`  .well-known/llms.txt                 (${llmsTxt.length} bytes, ${docs.length} entries)`);
   console.log(`  .well-known/llms-full.txt            (${llmsFull.length} bytes)`);
@@ -662,6 +714,7 @@ function main() {
     console.log(`    └─ ${c.name.padEnd(34)} (${n} doc${n === 1 ? '' : 's'})`);
   }
   console.log(`  .well-known/mcp/server-card.json     (${MCP_ENDPOINT})`);
+  console.log(`  .well-known/llms-v3-libraries.json   (${v3Catalog.libraries.length} V3 librar${v3Catalog.libraries.length === 1 ? 'y' : 'ies'})`);
 }
 
 // Run main() only when invoked as a script, not when imported by tests.
