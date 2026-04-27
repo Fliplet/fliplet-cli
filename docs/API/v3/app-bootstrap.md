@@ -52,6 +52,34 @@ const App = await Fliplet.Media.getContentsAsModule(123);
 // App is the exported value — typically a component definition object
 ```
 
+#### Wrong vs right: do NOT call `.default` on the result
+
+`getContentsAsModule` is **CJS-shaped**: it returns the export *value* directly. It is NOT an ESM namespace object. There is no `.default` property to unwrap — the variable you get back IS what the file exported. Reaching for `.default` is a frequent mistake when muscle memory from `import()` (which DOES return a namespace with a `.default` key) leaks into V3 code.
+
+```js
+// WRONG — App is already the exported value, not an ESM namespace
+const App = await Fliplet.Media.getContentsAsModule(123);
+Vue.createApp(App.default).mount('#app');     // TypeError: undefined is not a function (for class exports)
+await App.default();                          // same — .default does not exist
+new App.default();                            // same
+```
+
+```js
+// RIGHT — use the result directly, per the export shape
+const App = await Fliplet.Media.getContentsAsModule(123);
+
+// Object export: `export default { template: '...', data() {} }`
+Vue.createApp(App).mount('#app');
+
+// Function export: `export default function App() { ... }` or async function
+await App();
+
+// Class export: `export default class App { ... }`
+new App();
+```
+
+As of 2026-04-27 the runtime adds a non-enumerable `.default` self-reference for function and plain-object exports as a compatibility shim, so `App.default()` no longer throws on those shapes. The `.default` form is still discouraged: it doesn't work for class exports (a class doesn't carry its own `.default`), and it obscures the contract — the result IS the export, not a wrapper around it.
+
 This pairs `getContents` with `evalModule` (see below). It also sets `//# sourceURL=fliplet-media://file/123` on the evaluated source, so DevTools shows the file by id when stepping through.
 
 `getContentsAsModule` is the **only supported way** to load a JS module from the media library. Do not hand-roll `new Function(content)`, `eval(content)`, or `<script>` tag injection of `getContents` results — those patterns:
