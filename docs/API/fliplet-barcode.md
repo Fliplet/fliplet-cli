@@ -1,6 +1,6 @@
 ---
 title: Fliplet.Barcode
-description: Scan QR codes and other 1D/2D barcodes from the device camera via the fliplet-barcode package.
+description: Generate QR codes and 1D/2D barcodes on screen, and scan them from the device camera, via the fliplet-barcode package.
 type: api-reference
 tags: [js-api, barcode]
 v3_relevant: true

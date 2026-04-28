@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-04-26T21:58:36.425Z",
+  "generatedAt": "2026-04-28T06:59:54.912Z",
   "libraries": [
     {
       "package": "fliplet-app-submissions",
@@ -17,7 +17,7 @@
     {
       "package": "fliplet-barcode",
       "title": "Fliplet.Barcode",
-      "description": "Scan QR codes and other 1D/2D barcodes from the device camera via the fliplet-barcode package.",
+      "description": "Generate QR codes and 1D/2D barcodes on screen, and scan them from the device camera, via the fliplet-barcode package.",
       "docUrl": "https://developers.fliplet.com/API/fliplet-barcode.html"
     },
     {
