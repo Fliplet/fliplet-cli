@@ -138,7 +138,7 @@ demonstrateMethod().catch(console.error);
 
 **See also:** [Error Handling Patterns](#error-handling-patterns)
 
-# Documentation Principles
+## Documentation Principles
 
 1. **Complete & Testable** - Every example must work immediately when copied
 2. **Asset Provision** - Provide all required files, data, and setup instructions
