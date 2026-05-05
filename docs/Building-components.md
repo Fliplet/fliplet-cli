@@ -69,7 +69,7 @@ The `widget.json` file defines your component as well as the **dependencies** an
 
 Please note: if you make changes to the `widget.json` file, restart the development server (`fliplet run`) to apply the changes you made.
 
-[Read more about the widget.json](components/Definition.md)
+[Read more about the widget.json](components/Definition)
 {: .buttons}
 
 ---
@@ -118,7 +118,7 @@ Therefore, to recap:
 ```
 {% endraw %}
 
-[Jump to the interface documentation](components/Interface.md)
+[Jump to the interface documentation](components/Interface)
 {: .buttons}
 
 ---
@@ -133,7 +133,7 @@ Therefore, to recap:
 ```
 {% endraw %}
 
-[Jump to the build (output) documentation](components/Build-output.md)
+[Jump to the build (output) documentation](components/Build-output)
 {: .buttons}
 
 ---

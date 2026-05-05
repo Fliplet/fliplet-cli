@@ -105,5 +105,5 @@ Fliplet.Hooks.on('sessionValidate', function (data) {
 
 ---
 
-[Back to API documentation](../../API-Documentation.md)
+[Back to API documentation](../../API-Documentation)
 {: .buttons}

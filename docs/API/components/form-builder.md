@@ -574,5 +574,5 @@ Fliplet.DataSources.connect(dataSourceId).then(function (connection) {
 });
 ```
 
-[Back to API documentation](../../API-Documentation.md)
+[Back to API documentation](../../API-Documentation)
 {: .buttons}

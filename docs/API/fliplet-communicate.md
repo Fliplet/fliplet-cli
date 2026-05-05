@@ -363,7 +363,7 @@ Fliplet.Communicate.shareURL({
 
 ### Share a page in a Fliplet app
 
-See [documentation for `Fliplet.Content`](fliplet-content.md#share-a-page-with-a-url).
+See [documentation for `Fliplet.Content`](fliplet-content#share-a-page-with-a-url).
 
 ---
 
@@ -391,5 +391,5 @@ Fliplet.Communicate.sendPushNotification(appId, {
 
 ---
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}

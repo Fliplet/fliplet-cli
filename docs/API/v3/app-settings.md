@@ -143,6 +143,6 @@ Examples:
 
 ## Related
 
-- [Session JS APIs](../fliplet-session.md) — session management
-- [V3 Authentication Patterns](auth.md) — auth flows for V3 apps
-- [App Security](../../App-security.md) — app-level access control
+- [Session JS APIs](../fliplet-session) — session management
+- [V3 Authentication Patterns](auth) — auth flows for V3 apps
+- [App Security](../../App-security) — app-level access control

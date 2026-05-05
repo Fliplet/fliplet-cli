@@ -28,7 +28,7 @@ history.pushState({}, '', Fliplet.Router.getBasePath() + path);
 window.dispatchEvent(new PopStateEvent('popstate'));
 ```
 
-Read the current route by stripping `Fliplet.Router.getBasePath()` from `location.pathname`. Route resolution (access check + screen-source fetch) goes through `Fliplet.Router.resolveRoute(path)` — see [V3 routing](../routing.md).
+Read the current route by stripping `Fliplet.Router.getBasePath()` from `location.pathname`. Route resolution (access check + screen-source fetch) goes through `Fliplet.Router.resolveRoute(path)` — see [V3 routing](../routing).
 
 ## Binding Fliplet.Media.authenticate
 
@@ -59,6 +59,6 @@ Don't compute the URL at module load and hope it's ready — the element will ha
 
 ## Related
 
-- [V3 app bootstrap](../app-bootstrap.md)
-- [V3 routing](../routing.md)
-- [V3 framework overview](overview.md)
+- [V3 app bootstrap](../app-bootstrap)
+- [V3 routing](../routing)
+- [V3 framework overview](overview)

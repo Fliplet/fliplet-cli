@@ -65,7 +65,7 @@ Here's an example to give you a quick idea of how it works:
 
 *2. I can then use the JS APIs provided by the package, like `Fliplet.Media.Files.upload()` to upload a file.*
 
-Our [API Documentation](API-Documentation.md) and open-source components will give you plenty of examples about the available methods to use.
+Our [API Documentation](API-Documentation) and open-source components will give you plenty of examples about the available methods to use.
 
 Note: dependencies can include other dependencies (e.g. `fliplet-core` also includes `jquery`).
 
@@ -142,5 +142,5 @@ Make sure you're familiar with promises before diving into building components.
 
 When you're ready, move to the next section of the documentation to start building your first component.
 
-[Build a component →](Building-components.md)
+[Build a component →](Building-components)
 {: .buttons}

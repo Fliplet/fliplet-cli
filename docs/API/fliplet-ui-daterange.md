@@ -113,11 +113,11 @@ Fliplet.UI.DateRange.get(el)
 
 ## Related
 
-  - [Time Range](fliplet-ui-timerange.md)
-  - [Date Picker](fliplet-ui-datepicker.md)
-  - [Time Picker](fliplet-ui-timepicker.md)
+  - [Time Range](fliplet-ui-timerange)
+  - [Date Picker](fliplet-ui-datepicker)
+  - [Time Picker](fliplet-ui-timepicker)
 
 ---
 
-[Back to Fliplet.UI](./fliplet-ui.md)
+[Back to Fliplet.UI](./fliplet-ui)
 {: .buttons}

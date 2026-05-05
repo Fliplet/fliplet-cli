@@ -135,5 +135,5 @@ Fliplet.Barcode.encode(text, options).then(function (data) {
 
 ---
 
-[Back to Fliplet.UI](./fliplet-ui.md)
+[Back to Fliplet.UI](./fliplet-ui)
 {: .buttons}

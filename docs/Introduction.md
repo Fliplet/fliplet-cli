@@ -69,11 +69,11 @@ This means in order to start the development you will need to install [Node.js](
 
 The **Fliplet CLI** will enable you to develop and test components and themes on your machine, without having to rely on our APIs or even be connected to the internet while coding.
 
-Check the [Quickstart](Quickstart.md) section for more details about getting started with the development.
+Check the [Quickstart](Quickstart) section for more details about getting started with the development.
 
 ---
 
 In the next section we'll help you installing the development tools.
 
-[Quickstart →](Quickstart.md)
+[Quickstart →](Quickstart)
 {: .buttons}

@@ -8,7 +8,7 @@ deprecated: false
 ---
 # Dynamic Container JS APIs
 
-Bind a screen region to a data source query via `Fliplet.DynamicContainer` so the component renders a list of entries with bound expressions, typically paired with the [list repeater](/API/components/list-repeater.html) component.
+Bind a screen region to a data source query via `Fliplet.DynamicContainer` so the component renders a list of entries with bound expressions, typically paired with the [list repeater](/API/components/list-repeater) component.
 
 Here's a HTML sample of a dynamic container with a list repeater component rendering a dynamic value from the loaded data source entries:
 
@@ -24,7 +24,7 @@ Here's a HTML sample of a dynamic container with a list repeater component rende
 </fl-dynamic-container>
 ```
 
-If you want to display a single record in a screen, for example a contact card, you can use the [record container](/API/components/record-container.html) component instead.
+If you want to display a single record in a screen, for example a contact card, you can use the [record container](/API/components/record-container) component instead.
 
 ---
 
@@ -98,9 +98,9 @@ Fliplet.DynamicContainer.get().then(function (container) {
 });
 ```
 
-Note that we used the [findWithCursor](/API/fliplet-datasources.html#fetch-all-records-from-a-data-source) method instead of `find` to let the system manage pagination when the data is displayed in a list repeater.
+Note that we used the [findWithCursor](/API/fliplet-datasources#fetch-all-records-from-a-data-source) method instead of `find` to let the system manage pagination when the data is displayed in a list repeater.
 
-For more details, check the JS API documentation for the [findWithCursor](/API/fliplet-datasources.html#fetch-all-records-from-a-data-source) method.
+For more details, check the JS API documentation for the [findWithCursor](/API/fliplet-datasources#fetch-all-records-from-a-data-source) method.
 
 ### `container.connection()`
 

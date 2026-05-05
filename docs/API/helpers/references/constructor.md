@@ -145,42 +145,42 @@ Fliplet.Helper({
       <td><code>Object</code> or <code>Function</code></td>
       <td>optional</td>
       <td>
-        <a href="/API/helpers/fields.html#default-fields">The data for your helper</a>.</td>
+        <a href="/API/helpers/fields#default-fields">The data for your helper</a>.</td>
     </tr>
     <tr>
       <td><code>render.template</code></td>
       <td><code>String</code></td>
       <td>optional</td>
       <td>
-        <a href="/API/helpers/templates.html">An optional HTML template</a>.</td>
+        <a href="/API/helpers/templates">An optional HTML template</a>.</td>
     </tr>
     <tr>
       <td><code>render.beforeReady</code></td>
       <td><code>Function</code></td>
       <td>optional</td>
       <td>
-        <a href="/API/helpers/hooks.html#run-logic-before-a-helper-is-rendered">A function to run before the helper instance is rendered</a>.</td>
+        <a href="/API/helpers/hooks#run-logic-before-a-helper-is-rendered">A function to run before the helper instance is rendered</a>.</td>
     </tr>
     <tr>
       <td><code>render.ready</code></td>
       <td><code>Function</code></td>
       <td>optional</td>
       <td>
-        <a href="/API/helpers/hooks.html#run-logic-once-a-helper-is-rendered">A function to run when the helper instance is rendered</a>.</td>
+        <a href="/API/helpers/hooks#run-logic-once-a-helper-is-rendered">A function to run when the helper instance is rendered</a>.</td>
     </tr>
     <tr>
       <td><code>render.dependencies</code></td>
       <td><code>Array</code></td>
       <td>optional</td>
       <td>
-        <a href="/API/helpers/libraries.html">A list of dependencies to include when rendering the helper</a>.</td>
+        <a href="/API/helpers/libraries">A list of dependencies to include when rendering the helper</a>.</td>
     </tr>
     <tr>
       <td><code>configuration</code></td>
       <td><code>Object</code></td>
       <td>optional</td>
       <td>
-        <a href="/API/helpers/interface.html">The list of fields to present in the configuration UI</a>.</td>
+        <a href="/API/helpers/interface">The list of fields to present in the configuration UI</a>.</td>
     </tr>
     <tr>
       <td><code>configuration.title</code></td>
@@ -192,42 +192,42 @@ Fliplet.Helper({
       <td><code>configuration.fields</code></td>
       <td><code>Array</code></td>
       <td>required</td>
-      <td><a href="/API/helpers/interface-fields.html">The list of fields to display in the UI</a>.</td>
+      <td><a href="/API/helpers/interface-fields">The list of fields to display in the UI</a>.</td>
     </tr>
     <tr>
       <td><code>configuration.beforeReady</code></td>
       <td><code>Function</code></td>
       <td>optional</td>
       <td>
-        <a href="/API/helpers/interface-hooks.html#run-a-function-before-the-interface-is-initialized">A function to run before the configuration interface gets initialized</a>.</td>
+        <a href="/API/helpers/interface-hooks#run-a-function-before-the-interface-is-initialized">A function to run before the configuration interface gets initialized</a>.</td>
     </tr>
     <tr>
       <td><code>configuration.ready</code></td>
       <td><code>Function</code></td>
       <td>optional</td>
       <td>
-        <a href="/API/helpers/interface-hooks.html#run-a-function-when-the-interface-is-initialized">A function to run when the configuration interface gets initialized</a>.</td>
+        <a href="/API/helpers/interface-hooks#run-a-function-when-the-interface-is-initialized">A function to run when the configuration interface gets initialized</a>.</td>
     </tr>
     <tr>
       <td><code>configuration.beforeSave</code></td>
       <td><code>Function</code></td>
       <td>optional</td>
       <td>
-        <a href="/API/helpers/interface-hooks.html#run-a-function-before-the-interface-is-saved">A function to run before the configuration interface data is saved.</a>.</td>
+        <a href="/API/helpers/interface-hooks#run-a-function-before-the-interface-is-saved">A function to run before the configuration interface data is saved.</a>.</td>
     </tr>
     <tr>
       <td><code>views</code></td>
       <td><code>Object</code></td>
       <td>optional</td>
       <td>
-        <a href="/API/helpers/views.html">The list of rich content views</a>.</td>
+        <a href="/API/helpers/views">The list of rich content views</a>.</td>
     </tr>
     <tr>
       <td><code>childOf</code></td>
       <td><code>Array</code></td>
       <td>optional</td>
       <td>
-        <a href="/API/helpers/views.html#define-where-a-helper-can-be-dropped-into">The list of helpers an helper can be dropped in</a>.</td>
+        <a href="/API/helpers/views#define-where-a-helper-can-be-dropped-into">The list of helpers an helper can be dropped in</a>.</td>
     </tr>
   </tbody>
 </table>
@@ -286,37 +286,37 @@ Fliplet.Helper({
       <td><code>instance.set</code></td>
       <td><code>Function</code></td>
       <td>
-        <a href="/API/helpers/fields.html#updating-fields">Update the helper instance fields</a>.</td>
+        <a href="/API/helpers/fields#updating-fields">Update the helper instance fields</a>.</td>
     </tr>
     <tr>
       <td><code>instance.find</code></td>
       <td><code>Function</code></td>
       <td>
-        <a href="/API/helpers/methods.html#find-all-nested-helpers">Find nested helpers</a>.</td>
+        <a href="/API/helpers/methods#find-all-nested-helpers">Find nested helpers</a>.</td>
     </tr>
     <tr>
       <td><code>instance.findOne</code></td>
       <td><code>Function</code></td>
       <td>
-        <a href="/API/helpers/methods.html#find-a-nested-helper">Find a nested helper</a>.</td>
+        <a href="/API/helpers/methods#find-a-nested-helper">Find a nested helper</a>.</td>
     </tr>
     <tr>
       <td><code>instance.children</code></td>
       <td><code>Function</code></td>
       <td>
-        <a href="/API/helpers/methods.html#find-all-children-helpers">Find direct child helpers</a>.</td>
+        <a href="/API/helpers/methods#find-all-children-helpers">Find direct child helpers</a>.</td>
     </tr>
     <tr>
       <td><code>instance.parents</code></td>
       <td><code>Function</code></td>
       <td>
-        <a href="/API/helpers/methods.html#find-all-parents">Find all parent helpers</a>.</td>
+        <a href="/API/helpers/methods#find-all-parents">Find all parent helpers</a>.</td>
     </tr>
     <tr>
       <td><code>instance.closest</code></td>
       <td><code>Function</code></td>
       <td>
-        <a href="/API/helpers/methods.html#find-closest-helper">Find closest helper</a>.</td>
+        <a href="/API/helpers/methods#find-closest-helper">Find closest helper</a>.</td>
     </tr>
   </tbody>
 </table>

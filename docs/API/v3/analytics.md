@@ -152,5 +152,5 @@ window.addEventListener('scroll', function() {
 
 ## Related
 
-- [V3 routing](routing.md) — the route manifest that powers auto page-view pattern matching.
-- [Core analytics API](../core/analytics.md) — full reference for `Fliplet.App.Analytics`, including `track`, `get`, and `count`.
+- [V3 routing](routing) — the route manifest that powers auto page-view pattern matching.
+- [Core analytics API](../core/analytics) — full reference for `Fliplet.App.Analytics`, including `track`, `get`, and `count`.

@@ -348,5 +348,5 @@ $('.help').on('click', function () {
 
 ---
 
-[Back](README.md)
+[Back](README)
 {: .buttons}

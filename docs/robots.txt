@@ -7,38 +7,48 @@ Content-Signal: search=yes, ai-train=yes, ai-input=yes
 User-agent: GPTBot
 Allow: /
 Disallow: /Data-flow.html
+Disallow: /Data-flow
 
 User-agent: ClaudeBot
 Allow: /
 Disallow: /Data-flow.html
+Disallow: /Data-flow
 
 User-agent: Claude-Web
 Allow: /
 Disallow: /Data-flow.html
+Disallow: /Data-flow
 
 User-agent: PerplexityBot
 Allow: /
 Disallow: /Data-flow.html
+Disallow: /Data-flow
 
 User-agent: Google-Extended
 Allow: /
 Disallow: /Data-flow.html
+Disallow: /Data-flow
 
 User-agent: CCBot
 Allow: /
 Disallow: /Data-flow.html
+Disallow: /Data-flow
 
 User-agent: Applebot-Extended
 Allow: /
 Disallow: /Data-flow.html
+Disallow: /Data-flow
 
 User-agent: Meta-ExternalAgent
 Allow: /
 Disallow: /Data-flow.html
+Disallow: /Data-flow
 
 User-agent: cohere-ai
 Allow: /
 Disallow: /Data-flow.html
+Disallow: /Data-flow
 
 User-agent: *
 Disallow: /Data-flow.html
+Disallow: /Data-flow

@@ -124,5 +124,5 @@ The following events are available for attaching using the `.on()` method.
 * `variables` Triggered when variables are computed. The handler is triggered with the new `variables` object.
 * `newAchievements` Triggered when new achievements have been added for the user. The handler is triggered with an array of achievement objects with unique IDs.
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}

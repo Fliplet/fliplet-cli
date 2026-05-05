@@ -140,7 +140,7 @@ Having said that, **any html tag** is allowed to be specified.
 
 ## "interface"
 
-Declares `dependencies` and local `assets` to be used from the [interface.html](Interface.md). Please read our documentation about [dependencies and assets](../Dependencies-and-assets) for more details.
+Declares `dependencies` and local `assets` to be used from the [interface.html](Interface). Please read our documentation about [dependencies and assets](../Dependencies-and-assets) for more details.
 
 ## "build"
 
@@ -150,5 +150,5 @@ For page components you can also define `appAssets` that needs to be injected to
 
 ---
 
-[Back to components](../Building-components.md#the-component-definition-file)
+[Back to components](../Building-components#the-component-definition-file)
 {: .buttons}

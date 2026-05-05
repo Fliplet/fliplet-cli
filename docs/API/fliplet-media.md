@@ -413,5 +413,5 @@ Fliplet.Hooks.on('mediaFileDownloadProgress', function (file) {
 
 ---
 
-[Back to JS API documentation](../API-Documentation.md)
+[Back to JS API documentation](../API-Documentation)
 {: .buttons}

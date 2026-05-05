@@ -12,7 +12,7 @@ deprecated: false
 Tracker of Fliplet features recently shipped or in beta, linking to their developer documentation.
 
 <section class="blocks alt">
-  <a class="bl two" href="/API/core/ai.html">
+  <a class="bl two" href="/API/core/ai">
     <div>
       <span class="pin">Open beta</span>
       <h4>AI</h4>
@@ -20,7 +20,7 @@ Tracker of Fliplet features recently shipped or in beta, linking to their develo
       <button>Browse documentation &rarr;</button>
     </div>
   </a>
-  <a class="bl two" href="/API/core/app-actions.html">
+  <a class="bl two" href="/API/core/app-actions">
     <div>
       <span class="pin">Now available to all customers</span>
       <h4>App Actions</h4>
@@ -31,7 +31,7 @@ Tracker of Fliplet features recently shipped or in beta, linking to their develo
 </section>
 <hr />
 <section class="blocks alt">
-  <a class="bl two" href="/Data-source-security.html">
+  <a class="bl two" href="/Data-source-security">
     <div>
       <span class="pin">Now available to all customers</span>
       <h4>Data Source Custom Access rules</h4>
@@ -39,7 +39,7 @@ Tracker of Fliplet features recently shipped or in beta, linking to their develo
       <button>Browse documentation &rarr;</button>
     </div>
   </a>
-  <a class="bl two" href="/API/fliplet-payments.html">
+  <a class="bl two" href="/API/fliplet-payments">
     <div>
       <span class="pin">Now available to all customers</span>
       <h4>Payments</h4>

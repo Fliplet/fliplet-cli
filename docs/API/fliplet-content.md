@@ -38,13 +38,13 @@ Fliplet.Content(options)
 
 ## Related
 
-* [`Fliplet.Profile.Content()`](fliplet-profile-content.md) - Use `Fliplet.Profile.Content()` to create and manage content specific to the user.
+* [`Fliplet.Profile.Content()`](fliplet-profile-content) - Use `Fliplet.Profile.Content()` to create and manage content specific to the user.
 
 ## Examples
 
 ### Share a page with a URL
 
-This example uses the [`Fliplet.Communicate.shareURL()`](fliplet-communicate.md#share-a-url) API to share the URL once it's generated. This means the `fliplet-communicate` dependency also needs to be added.
+This example uses the [`Fliplet.Communicate.shareURL()`](fliplet-communicate#share-a-url) API to share the URL once it's generated. This means the `fliplet-communicate` dependency also needs to be added.
 
 ```js
 Fliplet.Content({dataSourceId: 2}).then(function (content) {
@@ -158,7 +158,7 @@ Delete existing entries.
 
 ## Related
 
-* [`Fliplet.Profile.Content()`](fliplet-profile-content.md)
+* [`Fliplet.Profile.Content()`](fliplet-profile-content)
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}

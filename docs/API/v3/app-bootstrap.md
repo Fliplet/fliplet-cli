@@ -50,11 +50,11 @@ Fliplet().then(function() {
 
 ## What's next: routing
 
-V3 uses History API routing driven by the manifest at `app.settings.v3`, accessed via `Fliplet.Router`. Hash routing is forbidden on every platform. For the full contract, per-framework examples, and the anti-patterns that break V3 apps, see [V3 routing](routing.md).
+V3 uses History API routing driven by the manifest at `app.settings.v3`, accessed via `Fliplet.Router`. Hash routing is forbidden on every platform. For the full contract, per-framework examples, and the anti-patterns that break V3 apps, see [V3 routing](routing).
 
 ## Related
 
-- [V3 routing](routing.md). History API contract, route manifest, and the forbidden-pattern reference.
-- [Fliplet Router JS API](fliplet-router.md). Method reference for `Fliplet.Router` (`getBasePath`, `getRouteManifest`, `resolveRoute`).
-- [V3 app settings convention](app-settings.md). Where `window.ENV.appSettings` comes from and the public/private key convention.
-- [Media JS APIs](../fliplet-media.md). Full reference for `Fliplet.Media.getContents` and related media calls.
+- [V3 routing](routing). History API contract, route manifest, and the forbidden-pattern reference.
+- [Fliplet Router JS API](fliplet-router). Method reference for `Fliplet.Router` (`getBasePath`, `getRouteManifest`, `resolveRoute`).
+- [V3 app settings convention](app-settings). Where `window.ENV.appSettings` comes from and the public/private key convention.
+- [Media JS APIs](../fliplet-media). Full reference for `Fliplet.Media.getContents` and related media calls.

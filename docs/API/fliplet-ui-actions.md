@@ -97,5 +97,5 @@ Fliplet.UI.Actions({
 
 ---
 
-[Back to Fliplet.UI](./fliplet-ui.md)
+[Back to Fliplet.UI](./fliplet-ui)
 {: .buttons}

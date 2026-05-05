@@ -31,7 +31,7 @@ var manifest = Fliplet.Router.getRouteManifest();   // { routes, defaultRoute, a
 Four requirements:
 
 1. **Read the base path** with `Fliplet.Router.getBasePath()` and pass it to your router's history/basename option. Never hardcode `'/'`. Slug-hosted apps, preview iframes, and native shells all have different bases.
-2. **Read the manifest** with `Fliplet.Router.getRouteManifest()`. Build your route table from `manifest.routes`. The manifest lives at `app.settings.v3` (see [App settings](app-settings.md)). Update it via the App Settings API (`PUT /v1/apps/:id` with `settings.v3`) or the Studio routing UI whenever you add or remove a user-visible route.
+2. **Read the manifest** with `Fliplet.Router.getRouteManifest()`. Build your route table from `manifest.routes`. The manifest lives at `app.settings.v3` (see [App settings](app-settings)). Update it via the App Settings API (`PUT /v1/apps/:id` with `settings.v3`) or the Studio routing UI whenever you add or remove a user-visible route.
 3. **Guard each route with `Fliplet.Router.resolveRoute(path)`** in the component, loader, or resolver:
    - It returns `{ allowed: true, content, route }` on success.
    - It returns `{ allowed: false, redirectTo, reason }` on denial, where `reason` is `'no-session'` or `'media-denied'`.
@@ -60,7 +60,7 @@ These six rules are the ones Fliplet can detect automatically from the boot HTML
 
 The same pattern applies to every framework: read the base path and manifest from `Fliplet.Router`, build the framework's router from that, and call `resolveRoute` in the component, loader, or resolver. The examples below show the shape in five common stacks; pick whichever matches your app.
 
-Every example assumes this manifest shape (see [App settings](app-settings.md) for how it's stored):
+Every example assumes this manifest shape (see [App settings](app-settings) for how it's stored):
 
 ```json
 {
@@ -317,7 +317,7 @@ Replace `navigate(...)` with the same helper used in your router (Svelte, vanill
 
 ## Related
 
-- [Fliplet Router JS API](fliplet-router.md). Full method reference for `Fliplet.Router` with return shapes, reason codes, and manifest shape.
-- [V3 app bootstrap constraints](app-bootstrap.md). The three boot-HTML fundamentals (dependencies, media fetch, init sequence). Routing defers to this doc.
-- [V3 app settings convention](app-settings.md). Where the route manifest is stored (`app.settings.v3`).
-- [Media JS APIs](../fliplet-media.md). `Fliplet.Media.getContents` details.
+- [Fliplet Router JS API](fliplet-router). Full method reference for `Fliplet.Router` with return shapes, reason codes, and manifest shape.
+- [V3 app bootstrap constraints](app-bootstrap). The three boot-HTML fundamentals (dependencies, media fetch, init sequence). Routing defers to this doc.
+- [V3 app settings convention](app-settings). Where the route manifest is stored (`app.settings.v3`).
+- [Media JS APIs](../fliplet-media). `Fliplet.Media.getContents` details.

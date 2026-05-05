@@ -126,5 +126,5 @@ curl https://api.fliplet.com/v1/apps/$APP_ID/tokens \
 
 ---
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}

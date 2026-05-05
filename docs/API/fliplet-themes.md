@@ -38,5 +38,5 @@ var value = Fliplet.Themes.Current.get('keyName');
 
 ---
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}

@@ -19,7 +19,7 @@ A menu consist in:
 Through the `menu.json` file, the `settings` property can control the behavioral properties of the menu.
 
 - `settings.position` (String) `top` or `bottom` indicates whether the menu DOM markup appear at the top of the HTML (right after the body tag is opened) or at the bottom before the body tag gets closed. See [default menu](https://github.com/Fliplet/fliplet-menu-bottom-bar/blob/master/menu.json#L32) for an example
-- `settings.showSettings` (Boolean) Default: `false` Set this to `true` to allow additional settings to be added via `interface.html` and any JavaScript added via the `interface` property of the `menu.json` file. See [component interfaces](components/Interface.md).
+- `settings.showSettings` (Boolean) Default: `false` Set this to `true` to allow additional settings to be added via `interface.html` and any JavaScript added via the `interface` property of the `menu.json` file. See [component interfaces](components/Interface).
 
 Menus can also specify . This can be configured through the `settings.position` on the `menu.json` file as we do on the .
 

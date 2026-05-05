@@ -131,5 +131,5 @@ For example:
 
 Need to read more about the interface? Once you're familiar with the above documentation on the component output, have a read to the previous section which covers the output of components interfaces.
 
-[Previous: interface of components (interface.html)](Interface.md)
+[Previous: interface of components (interface.html)](Interface)
 {: .buttons}

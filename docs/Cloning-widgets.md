@@ -51,5 +51,5 @@ To publish a component on Fliplet, please refer to the [publishing](Publishing) 
 
 ---
 
-[Back](README.md)
+[Back](README)
 {: .buttons}

@@ -105,9 +105,9 @@ Fliplet.UI.RangeSlider.get(el)
 
 ## Related
 
-  - [Number Input](fliplet-ui-number.md) (`fliplet-ui-number`)
+  - [Number Input](fliplet-ui-number) (`fliplet-ui-number`)
 
 ---
 
-[Back to Fliplet.UI](./fliplet-ui.md)
+[Back to Fliplet.UI](./fliplet-ui)
 {: .buttons}

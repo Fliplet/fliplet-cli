@@ -221,5 +221,5 @@ Fliplet.App.Submissions.get().then(function (submissions) {
 
 ---
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}

@@ -20,5 +20,5 @@ Use a 0-indexed query parameter to highlight an menu item.
 
 ---
 
-[Back to API documentation](../../API-Documentation.md)
+[Back to API documentation](../../API-Documentation)
 {: .buttons}

@@ -8,7 +8,7 @@ description: Fliplet.Router JS API reference for V3 apps. Covers getBasePath, ge
 
 <p class="info"><code>Fliplet.Router</code> is available on V3 apps only and is auto-loaded at boot. It depends on <code>fliplet-core</code> (<code>Fliplet.Env</code>, <code>Fliplet.User</code>) and <code>fliplet-media</code> (<code>Fliplet.Media.getContents</code>).</p>
 
-For the full routing contract, per-framework integration examples, and forbidden patterns, see [V3 routing](routing.md). This page is the API reference only.
+For the full routing contract, per-framework integration examples, and forbidden patterns, see [V3 routing](routing). This page is the API reference only.
 
 ## Contents
 
@@ -181,7 +181,7 @@ Transient errors (network failures, 5xx responses) do not resolve with a reason.
 
 ## Manifest shape
 
-The manifest is stored at `app.settings.v3` and emitted to the runtime via `window.ENV.appSettings`. See [V3 app settings convention](app-settings.md) for how settings are stored and filtered.
+The manifest is stored at `app.settings.v3` and emitted to the runtime via `window.ENV.appSettings`. See [V3 app settings convention](app-settings) for how settings are stored and filtered.
 
 ```json
 {
@@ -208,7 +208,7 @@ Update the manifest via the App Settings API (`PUT /v1/apps/:id` with `settings.
 
 ## Related
 
-- [V3 routing](routing.md). Full routing contract, per-framework examples, forbidden patterns, and post-login redirect.
-- [V3 app bootstrap constraints](app-bootstrap.md). Three constraints every V3 boot HTML must satisfy.
-- [V3 app settings convention](app-settings.md). Where the route manifest is stored (`app.settings.v3`).
-- [Media JS APIs](../fliplet-media.md). `Fliplet.Media.getContents` details.
+- [V3 routing](routing). Full routing contract, per-framework examples, forbidden patterns, and post-login redirect.
+- [V3 app bootstrap constraints](app-bootstrap). Three constraints every V3 boot HTML must satisfy.
+- [V3 app settings convention](app-settings). Where the route manifest is stored (`app.settings.v3`).
+- [Media JS APIs](../fliplet-media). `Fliplet.Media.getContents` details.

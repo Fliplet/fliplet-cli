@@ -79,5 +79,5 @@ fliplet publish
 
 ---
 
-[Back](README.md)
+[Back](README)
 {: .buttons}

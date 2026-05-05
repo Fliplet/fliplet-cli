@@ -25,7 +25,7 @@ Each app gets its own bag, keyed internally by `appId`, so values written from o
 | Persist a small structured object across app launches with a default shape | `fliplet-security` |
 | Protect specific Data Source columns (e.g. `firstName`, `bio`) end-to-end | `fliplet-encryption` (`Fliplet.DataSources.Encryption`) |
 | Encrypt rows on the server so the API never sees plaintext | `fliplet-encryption` |
-| Read/write the current login session | [`Fliplet.Session`](./fliplet-session.md) |
+| Read/write the current login session | [`Fliplet.Session`](./fliplet-session) |
 | Persist arbitrary unencrypted device data | `Fliplet.Storage` (in `fliplet-core`) |
 
 The two packages are complementary, not interchangeable. They're often used together: `fliplet-encryption` to protect what's stored remotely, `fliplet-security` to protect the encryption key itself on the device.
@@ -229,11 +229,11 @@ async function signOut() {
 
 ## Related
 
-- [`Fliplet.DataSources.Encryption`](./fliplet-encryption.md) — column-level encryption for Data Sources.
-- [`Fliplet.Session`](./fliplet-session.md) — current user session, login/logout, passport details.
+- [`Fliplet.DataSources.Encryption`](./fliplet-encryption) — column-level encryption for Data Sources.
+- [`Fliplet.Session`](./fliplet-session) — current user session, login/logout, passport details.
 - `Fliplet.Storage` (part of `fliplet-core`) — general-purpose unencrypted device storage.
 
 ---
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}

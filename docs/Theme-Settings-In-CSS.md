@@ -374,5 +374,5 @@ Table cell padding: `$cellPadding`
 
 ---
 
-[Back](README.md)
+[Back](README)
 {: .buttons}

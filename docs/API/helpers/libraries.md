@@ -8,7 +8,7 @@ deprecated: false
 ---
 # Helper external libraries
 
-Declare a Helper's runtime dependencies by listing [Fliplet-approved](/Fliplet-approved-libraries.html) or third-party JS/CSS libraries in its `render.dependencies` array.
+Declare a Helper's runtime dependencies by listing [Fliplet-approved](/Fliplet-approved-libraries) or third-party JS/CSS libraries in its `render.dependencies` array.
 
 ## Include Fliplet approved libraries
 

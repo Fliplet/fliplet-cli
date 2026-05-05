@@ -38,7 +38,7 @@ const VueRouter = window.VueRouter;
 
 ## Wiring to Fliplet.Router
 
-Full contract is in [V3 routing](../routing.md). Vue-specific note: pass the base path into `createWebHistory`:
+Full contract is in [V3 routing](../routing). Vue-specific note: pass the base path into `createWebHistory`:
 
 ```js
 const router = VueRouter.createRouter({
@@ -84,6 +84,6 @@ Then `<img :src="logoSrc">`. Using `src="{{ rawUrl }}"` directly, or computing t
 
 ## Related
 
-- [V3 app bootstrap](../app-bootstrap.md)
-- [V3 routing](../routing.md)
-- [V3 framework overview](overview.md)
+- [V3 app bootstrap](../app-bootstrap)
+- [V3 routing](../routing)
+- [V3 framework overview](overview)

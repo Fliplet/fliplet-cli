@@ -10,7 +10,7 @@ deprecated: false
 
 The Data Sources REST API lets external integrations read and modify the data sources belonging to a Fliplet app or organization.
 
-<p class="warning"><strong>Note:</strong> This RESTful API is intended to be used by 3rd party software such as external integrations. <strong>If you're using this in a Fliplet App, please use the <a href="/API/fliplet-datasources.html">Data Sources JS APIs</a> instead.</strong></p>
+<p class="warning"><strong>Note:</strong> This RESTful API is intended to be used by 3rd party software such as external integrations. <strong>If you're using this in a Fliplet App, please use the <a href="/API/fliplet-datasources">Data Sources JS APIs</a> instead.</strong></p>
 
 ---
 
@@ -66,7 +66,7 @@ The Data Sources REST API lets external integrations read and modify the data so
 
 ## Authentication
 
-Please head to the [how to authenticate](authenticate.md) page of the documentation to read more about how you can authorize your client to make API requests to Fliplet.
+Please head to the [how to authenticate](authenticate) page of the documentation to read more about how you can authorize your client to make API requests to Fliplet.
 
 ---
 

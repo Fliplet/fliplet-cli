@@ -48,5 +48,5 @@ Fliplet.DataSources.connect(0)
 
 ---
 
-[Back to Fliplet.UI](./fliplet-ui.md)
+[Back to Fliplet.UI](./fliplet-ui)
 {: .buttons}
