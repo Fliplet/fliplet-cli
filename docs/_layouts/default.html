@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#36344C">
+    {% if page.noindex %}<meta name="robots" content="noindex" />{% endif %}
     {% comment %}
       jekyll-seo-tag (v2.7.1) builds canonical/og:url from page.url which
       keeps .html. Capture the output and rewrite the page's absolute URL
@@ -74,8 +75,8 @@
         <div class="content">
           <div><h6></h6></div>
           <aside class="buttons">
-            <a href="/API-Documentation?source=hero" class="button">Explore our JS APIs</a>
-            <a href="/Introduction?source=hero" class="button">Start building</a>
+            <a href="/API-Documentation" class="button">Explore our JS APIs</a>
+            <a href="/Introduction" class="button">Start building</a>
           </aside>
         </div>
       </div>
