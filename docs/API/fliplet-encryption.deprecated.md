@@ -1,3 +1,8 @@
+---
+title: Deprecated encryption on Data Sources
+description: Legacy low-level encryption pattern for Fliplet Data Sources. Reference only — use the canonical Fliplet.Encryption API for new work.
+sitemap: false
+---
 ## Deprecated usage of encryption on Data Sources
 
 <p class="warning"><strong>DEPRECATED USE:</strong> The following implementation is considered to be very low level and it's not recommended unless you know what you're doing. Please refer to <a href="https://developers.fliplet.com/API/fliplet-encryption.html">https://developers.fliplet.com/API/fliplet-encryption.html</a> for the official implementation.</p>

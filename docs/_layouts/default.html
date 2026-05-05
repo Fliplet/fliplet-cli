@@ -1,13 +1,19 @@
-{% assign defaultDescription = "Developers documentation for the Fliplet Platform. Here you can learn how to extend your Fliplet Apps and also how to create new components, themes and menus. If you’re a Fliplet Studio user creating apps, you most likely want to look at our JS API documentation, where you can learn how to interact with our core framework and components to extend your apps."  %}
 <!DOCTYPE html>
 <html lang="en-us" class="with-sidebar">
   <head>
     <meta charset="UTF-8">
-    <title>{{ page.title | default: site.title }} | Fliplet Developers Documentation</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#36344C">
-    <meta property="og:image" content="https://developers.fliplet.com/assets/img/social.jpg?v2">
-    <meta name="description" content="{{ page.description | default: defaultDescription }}">
+    {% comment %}
+      jekyll-seo-tag (v2.7.1) builds canonical/og:url from page.url which
+      keeps .html. Capture the output and rewrite the page's absolute URL
+      to its no-extension form so the canonical matches our sitemap.
+    {% endcomment %}
+    {% capture seo_html %}{% seo %}{% endcapture %}
+    {% assign url_with_html = page.url | absolute_url %}
+    {% assign url_clean = page.url | replace: '.html', '' | replace: '/index', '/' | absolute_url %}
+    {% if url_with_html != url_clean %}{% assign seo_html = seo_html | replace: url_with_html, url_clean %}{% endif %}
+    {{ seo_html }}
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.3/dist/instantsearch.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
