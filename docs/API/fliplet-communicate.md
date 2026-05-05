@@ -284,8 +284,8 @@ Native apps will use the operating systems' built-in features to integrate with 
     <th width="50%">Android</th>
   </tr>
   <tr>
-    <td><img src="../assets/img/share-native-ios.png" /></td>
-    <td><img src="../assets/img/share-native-android.png" /></td>
+    <td><img src="../assets/img/share-native-ios.png" alt="Native share sheet on iOS" /></td>
+    <td><img src="../assets/img/share-native-android.png" alt="Native share sheet on Android" /></td>
   </tr>
 </table>
 
@@ -299,8 +299,8 @@ Web apps will show users a URL to copy and provide icons to share the URL with p
     <th width="33.5%">Mobile</th>
   </tr>
   <tr>
-    <td><img src="../assets/img/share-web-desktop.png" /></td>
-    <td><img src="../assets/img/share-web-mobile.png" /></td>
+    <td><img src="../assets/img/share-web-desktop.png" alt="Web share UI on desktop browsers" /></td>
+    <td><img src="../assets/img/share-web-mobile.png" alt="Web share UI on mobile browsers" /></td>
   </tr>
 </table>
 
