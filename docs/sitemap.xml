@@ -1,0 +1,14 @@
+---
+layout: null
+sitemap: false
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+{% for page in site.html_pages %}{% unless page.sitemap == false or page.permalink == '/' %}  <url>
+    <loc>{{ page.url | replace: '.html', '' | absolute_url | xml_escape }}</loc>{% if page.last_modified_at or page.date %}
+    <lastmod>{{ page.last_modified_at | default: page.date | date_to_xmlschema }}</lastmod>{% endif %}
+  </url>
+{% endunless %}{% endfor %}  <url>
+    <loc>{{ '/' | absolute_url }}</loc>
+  </url>
+</urlset>

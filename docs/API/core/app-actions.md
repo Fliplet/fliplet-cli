@@ -9,9 +9,9 @@ deprecated: true
 
 # App Actions V1 (deprecated)
 
-<p class="warning"><strong>Deprecated:</strong> App Actions V1 is deprecated and will be removed in a future release. Please use <a href="/API/core/app-actions-v3.html">App Actions V3</a> for all new development. Existing V1 actions will continue to work but should be migrated to V3.</p>
+<p class="warning"><strong>Deprecated:</strong> App Actions V1 is deprecated and will be removed in a future release. Please use <a href="/API/core/app-actions-v3">App Actions V3</a> for all new development. Existing V1 actions will continue to work but should be migrated to V3.</p>
 
-Run app screens automatically on a schedule or on demand in the cloud. Deprecated — use [App Actions V3](/API/core/app-actions-v3.html).
+Run app screens automatically on a schedule or on demand in the cloud. Deprecated — use [App Actions V3](/API/core/app-actions-v3).
 
 ![How it works](/assets/img/app-actions.png)
 

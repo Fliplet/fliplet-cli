@@ -547,5 +547,5 @@ Fliplet.Hooks.on('afterNotificationsInit', function (notifications) {
 
 ---
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}

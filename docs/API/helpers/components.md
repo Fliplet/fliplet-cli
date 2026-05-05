@@ -12,13 +12,13 @@ Package a Fliplet Helper as a reusable widget-framework component so it can be i
 
 ## 1. Install the basic software
 
-Install the [Fliplet CLI](/Quickstart.html) on your computer before continuing with the rest.
+Install the [Fliplet CLI](/Quickstart) on your computer before continuing with the rest.
 
 ---
 
 ## 2. Generate the component boilerplate
 
-Once you have installed the [Fliplet CLI](/Quickstart.html), open the shell of your computer and run the `fliplet create-widget <package> <name> --helper` command described below to create the initial structure of the component in a new directory with the same name as the `<name>` in the input.
+Once you have installed the [Fliplet CLI](/Quickstart), open the shell of your computer and run the `fliplet create-widget <package> <name> --helper` command described below to create the initial structure of the component in a new directory with the same name as the `<name>` in the input.
 
 The command requires two inputs:
 
@@ -158,6 +158,6 @@ Fliplet components are displayed in the components list with a unique icon for e
 
 ## 9. Publish your component to Fliplet Studio
 
-Publishing the component is as simple as running the `fliplet publish` CLI command after having [logged in](/Publishing.html) with your Studio account.
+Publishing the component is as simple as running the `fliplet publish` CLI command after having [logged in](/Publishing) with your Studio account.
 
-Please refer to our [publishing](/Publishing.html) documentation to publish your component on Fliplet Studio.
+Please refer to our [publishing](/Publishing) documentation to publish your component on Fliplet Studio.

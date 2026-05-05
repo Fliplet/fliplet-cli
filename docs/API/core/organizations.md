@@ -26,7 +26,7 @@ Use the logs JS API to fetch audit logs for an organization.
 
 Optional parameters:
 
-  - `type`: String or Array of strings ([see list of available types](/Organization-audit-log-types.html))
+  - `type`: String or Array of strings ([see list of available types](/Organization-audit-log-types))
   - `appId`: Number (ID) - the ID of the target app to filter logs for
   - `sessionId`: Number (ID) - this is shown in the "About this app" overlay as "Device ID"
   - `fields`: Array of strings
@@ -45,7 +45,7 @@ Fliplet.Organizations.Logs.get().then(function(response) {
 });
 ```
 
-Note that the following [types](/Organization-audit-log-types.html) are filtered out by default since they are primarily used for analytics: `app.analytics.pageView`, `app.analytics.event`, `app.view`, `app.update`,  `studio.analytics.presence`.
+Note that the following [types](/Organization-audit-log-types) are filtered out by default since they are primarily used for analytics: `app.analytics.pageView`, `app.analytics.event`, `app.view`, `app.update`,  `studio.analytics.presence`.
 
 Here's an example providing all optional parameters:
 

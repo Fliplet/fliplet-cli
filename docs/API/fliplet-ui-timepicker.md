@@ -103,10 +103,10 @@ Fliplet.UI.TimePicker.get(el)
 
 ## Related
 
-  - [Date Picker](fliplet-ui-datepicker.md)
-  - [Number Input](fliplet-ui-number.md)
+  - [Date Picker](fliplet-ui-datepicker)
+  - [Number Input](fliplet-ui-number)
 
 ---
 
-[Back to Fliplet.UI](./fliplet-ui.md)
+[Back to Fliplet.UI](./fliplet-ui)
 {: .buttons}

@@ -28,7 +28,7 @@ If the user is not logged in, a UUID is generated based on the specific app inst
 
 ## Usage
 
-See [`Fliplet.Content()`](fliplet-content.md) for more information on what features can be built with these helpers.
+See [`Fliplet.Content()`](fliplet-content) for more information on what features can be built with these helpers.
 
 To build these features, create an instance with `Fliplet.Profile.Content()` and use the returned object in the promise resolving function to call the available methods.
 
@@ -125,5 +125,5 @@ Delete existing entries.
     * **action** (Object) An object containing the action to query for deleting. This can use JSON-based queries.
   * **exact** (Boolean) If `true`, only entries with exact `content` matches will be deleted. (**Default**: `true`)
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}

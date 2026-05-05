@@ -39,5 +39,5 @@ The latter method returns an object with two public methods:
 
 ---
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}

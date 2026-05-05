@@ -42,5 +42,5 @@ action=openAccordion&title=Foo%20bar&scroll=true
 
 ---
 
-[Back to API documentation](../../API-Documentation.md)
+[Back to API documentation](../../API-Documentation)
 {: .buttons}

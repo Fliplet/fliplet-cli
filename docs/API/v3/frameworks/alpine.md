@@ -36,7 +36,7 @@ function goTo(path) {
 }
 ```
 
-Use `Fliplet.Router.resolveRoute(path)` in your `popstate` handler. See [V3 routing](../routing.md).
+Use `Fliplet.Router.resolveRoute(path)` in your `popstate` handler. See [V3 routing](../routing).
 
 ## Binding Fliplet.Media.authenticate
 
@@ -68,6 +68,6 @@ The `:src="src"` binding updates once the promise resolves. Do not try `:src="Fl
 
 ## Related
 
-- [V3 app bootstrap](../app-bootstrap.md)
-- [V3 routing](../routing.md)
-- [V3 framework overview](overview.md)
+- [V3 app bootstrap](../app-bootstrap)
+- [V3 routing](../routing)
+- [V3 framework overview](overview)

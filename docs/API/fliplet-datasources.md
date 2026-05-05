@@ -234,7 +234,7 @@ The `$filters` operator provides optimized performance and additional conditions
 }
 ```
 
-**📖 Complete Operators Reference:** [View detailed query operators documentation](datasources/query-operators.md)
+**📖 Complete Operators Reference:** [View detailed query operators documentation](datasources/query-operators)
 
 ### 2. Insert Records (Add Data)
 
@@ -892,11 +892,11 @@ console.log('Department statistics:', departmentStats);
 
 ### Joining Data from Other Data Sources
 
-For complex queries involving multiple data sources, see the [joins documentation](datasources/joins.md).
+For complex queries involving multiple data sources, see the [joins documentation](datasources/joins).
 
 ### Data Source Views
 
-For filtering data sources with predefined views, see the [views documentation](datasources/views.md).
+For filtering data sources with predefined views, see the [views documentation](datasources/views).
 
 ---
 
@@ -1592,5 +1592,5 @@ All examples in this documentation use this data structure and will work with th
 
 ---
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}

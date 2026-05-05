@@ -12,7 +12,7 @@ The Apps REST API lets external integrations list, read, create, update, and del
 
 ## Authentication
 
-Please head to the [how to authenticate](authenticate.md) page of the documentation to read more about how you can authorize your client to make API requests to Fliplet.
+Please head to the [how to authenticate](authenticate) page of the documentation to read more about how you can authorize your client to make API requests to Fliplet.
 
 ---
 

@@ -44,5 +44,5 @@ Fliplet.Page.scrollTo('.title', { context: '[data-entry-id="456"]' })
 
 ---
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}

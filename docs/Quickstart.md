@@ -90,5 +90,5 @@ You can check the latest available version of the Fliplet CLI on the [npm](https
 
 In the next section, you'll learn how to interact with our system.
 
-[Learn the JS APIs →](JS-APIs.md)
+[Learn the JS APIs →](JS-APIs)
 {: .buttons}

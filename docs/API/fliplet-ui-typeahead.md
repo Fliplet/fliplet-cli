@@ -102,5 +102,5 @@ Fliplet.UI.Typeahead.get(el)
 
 ---
 
-[Back to Fliplet.UI](./fliplet-ui.md)
+[Back to Fliplet.UI](./fliplet-ui)
 {: .buttons}

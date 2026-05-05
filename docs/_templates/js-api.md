@@ -85,5 +85,5 @@ The promise is resolved when the apple is digested.
 
 ---
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}

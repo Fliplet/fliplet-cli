@@ -8,7 +8,7 @@ deprecated: false
 ---
 # Helper configuration interface: external libraries
 
-Include [Fliplet-approved](/Fliplet-approved-libraries.html) or third-party JavaScript and CSS libraries in a Helper's configuration interface via the `dependencies` array.
+Include [Fliplet-approved](/Fliplet-approved-libraries) or third-party JavaScript and CSS libraries in a Helper's configuration interface via the `dependencies` array.
 
 ## Include Fliplet approved libraries
 

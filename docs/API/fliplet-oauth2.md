@@ -77,7 +77,7 @@ A common problem for developers is a browser to refuse access to a remote resour
 
 This can occur with OAuth2 services if the service provider is not configured to allow Fliplet's app domains.
 
-Cross-Origin Request Sharing (CORS) sometimes needs to be configured with the service provider to ensure API requests can be made across domains. See [AJAX cross domain and cross-origin requests](../AJAX-cross-domain.md) for more information.
+Cross-Origin Request Sharing (CORS) sometimes needs to be configured with the service provider to ensure API requests can be made across domains. See [AJAX cross domain and cross-origin requests](../AJAX-cross-domain) for more information.
 
 ## Methods
 
@@ -102,7 +102,7 @@ Fliplet.OAuth2.configure(services)
   * **grantUrl** (String) Grant URL as supplied by the OAuth2 service. Required if an *explicit grant* flow is used when calling `.login()`.
   * **grantData** (Object) A mapping object of data to pass to `grantUrl` when requesting an access token via the *explicit grant* flow.
   * **baseUrl** (String) Base URL for API requests. API requests made with a full URL will ignore the `baseUrl`. If `baseUrl` is not provided, API requests are expected to be called using a full URL.
-  * **useProxy** (Boolean) Set as `true` to use Fliplet's proxy when granting access token using the *explicit* the grant flow and when making API requests. This may be necessary if the service is not configured to work with cross-domain AJAX requests. See **[AJAX cross domain and cross-origin requests](../AJAX-cross-domain.md)** for more information. **Default**: `false`
+  * **useProxy** (Boolean) Set as `true` to use Fliplet's proxy when granting access token using the *explicit* the grant flow and when making API requests. This may be necessary if the service is not configured to work with cross-domain AJAX requests. See **[AJAX cross domain and cross-origin requests](../AJAX-cross-domain)** for more information. **Default**: `false`
   * **state** (String) `state` is an optional parameter that, if provided, is returned by the OAuth2 service during the redirect step for additional verification during login.
   * **scope** (String) A comma separated string of scopes as provided by the OAuth2 service.
   * **refresh** (Boolean) Indicates that the OAuth2 service supports refreshing access tokens to keep them valid. **Default**: `false`
@@ -184,5 +184,5 @@ Fliplet.Oauth2(service).on(eventName, fn)
 * **auth.fail** User fails to log in. The error response is passed to the event handler function.
 * **auth.logout** User is successfully logged out.
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}

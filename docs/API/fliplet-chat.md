@@ -502,5 +502,5 @@ Returns the per-conversation encryption key used when downloading attachments ta
 
 ---
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}

@@ -27,7 +27,7 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 - **March, 10th**: Added [new pagination options](https://developers.fliplet.com/API/fliplet-datasources.html#fetch-records-with-pagination) for the Data Source JS API
 - **February, 23rd**: Released new version 2.0.0 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html#releases-changelog) with improved SSL compatibility and logging.
 - **February, 21st**: Released new version 1.15.0 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html#releases-changelog) with improved logging when synchronizing files.
-- **February, 8th**: [Data Source security rules](/Data-source-security.html) are now required by all API tokens and DIS integrations when interacting with Data Sources
+- **February, 8th**: [Data Source security rules](/Data-source-security) are now required by all API tokens and DIS integrations when interacting with Data Sources
 - **January, 16th**: Added documentation for [custom Data Source security rules](https://developers.fliplet.com/Data-source-security.html#custom-security-rules)
 
 ---
@@ -38,7 +38,7 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 - **October, 27th**: Released new version 1.14.2 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html) with improvements to error logging.
 - **October, 25th**: Documentation added for [session expiration](https://developers.fliplet.com/App-security.html#session-expiration).
 - **October, 5th**: New Android framework version 6.0.3 with security updates.
-- **September, 6th**: Updated Chat JS APIs with options to [open a group conversation](/API/components/chat.html#startopen-a-group-conversation-with-one-or-more-people).
+- **September, 6th**: Updated Chat JS APIs with options to [open a group conversation](/API/components/chat#startopen-a-group-conversation-with-one-or-more-people).
 - **August, 5th**: New Android framework version 6.0.2 with support to the SDK 31.
 - **July, 20th**: New iOS and Android framework version 6.0.0 released with support for the upcoming localization feature.
 - **July, 7th**: New iOS framework version 5.3.2 released with bugfixes for the share dialog.
@@ -48,7 +48,7 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## 2021
 
-- Released new version 6.0.0 of the Fliplet CLI with improved support for [creating tests](/Testing-components.html) for your components.
+- Released new version 6.0.0 of the Fliplet CLI with improved support for [creating tests](/Testing-components) for your components.
 - Released new version 1.14.1 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html) with fixes for running a push operation without a primary key.
 - New Android framework version 5.2.0 released with a bugfix for apps built with the SDK30 not properly dismissing the virtual keyboard.
 - New Android framework version 5.1.0 released with full support for SDK 30 including a bugfix for taking pictures with camera not working as expected on Android 12.
@@ -67,14 +67,14 @@ Each week, we provide changelog notes on this page giving a summary of recent si
   - Added new documentation page listing all [organization audit log types](https://developers.fliplet.com/Organization-audit-log-types.html#list-of-audit-log-types-for-organizations).
 - Added public JS APIs for accessing [Organization audit logs](https://developers.fliplet.com/API/core/organizations.html#audit-logs).
   - Added public RESTful APIs for accessing [Organization audit logs](https://developers.fliplet.com/REST-API/fliplet-organizations.html#get-the-audit-logs-for-an-organization).
-- Added new page for APIs related to [Upcoming features](/Upcoming.html).
+- Added new page for APIs related to [Upcoming features](/Upcoming).
 
 ---
 
 ## 2020
 
 - New iOS framework version 4.3.0 released to improve support for **push notifications**.
-- Added public JS APIs for interacting with [Chat channels](/API/components/chat.html#public-channels).
+- Added public JS APIs for interacting with [Chat channels](/API/components/chat#public-channels).
 - Released new version 1.12.0 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html) with fixes for uninstalling Windows Services.
 - Released new version 1.11.0 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html) with support for case-insensitive primary key, log verbosity and absolute paths on the Windows service.
 - New iOS framework version 4.2.2 released and fixed an issue that caused clipboard warnings to be triggered when user revisits an app.
@@ -112,13 +112,13 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 - Added more examples on [resizing a Media File](https://developers.fliplet.com/REST-API/fliplet-media.html#stream-the-contents-of-a-file).
 - New examples on the documentation for the `beforeFormSubmit` hook of the [Form](https://developers.fliplet.com/API/components/form-builder.html#beforeformsubmit) component.
 - Added new method to programmatically submit a form built via the [Form](https://developers.fliplet.com/API/components/form-builder.html#programmatically-submit-a-form) component.
-- Documentation for screen link queries on [List from Data Source](API/components/list-from-data-source.md).
-- Documentation for configuring the Data Integration Service with [Sharepoint](Data-integration-service.md#integrate-with-sharepoint).
+- Documentation for screen link queries on [List from Data Source](API/components/list-from-data-source).
+- Documentation for configuring the Data Integration Service with [Sharepoint](Data-integration-service#integrate-with-sharepoint).
 - New hooks for the [Chart](https://developers.fliplet.com/API/components/charts.html#hooks) component.
-- Documentation page to explain the [Infrastructure Data Flow](/Data-flow.md) of the Fliplet platform.
+- Documentation page to explain the [Infrastructure Data Flow](/Data-flow) of the Fliplet platform.
 - Documentation page to explain the [App Execution Flow](https://developers.fliplet.com/Execution-flow.html) of Fliplet apps.
 - New hooks for the [Chat](https://developers.fliplet.com/API/components/chat.html) component.
-- General updates on the documentation for the [Data Integration Service](Data-integration-service.md).
+- General updates on the documentation for the [Data Integration Service](Data-integration-service).
 - Documentation page for the [Fliplet.Helper](https://developers.fliplet.com/API/helpers/overview.html) JS API.
 - General improvements to the guidelines and example on the [Output of components](https://developers.fliplet.com/components/Build-output.html#reading-previously-saved-settings) page used when developing custom components for Fliplet apps.
 - Updated jQuery to 3.4.1. See [all Fliplet approved libraries](https://developers.fliplet.com/Fliplet-approved-libraries.html).

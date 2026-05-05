@@ -99,7 +99,7 @@ The `flPanZoom` instance variable above makes available the following instance m
 
 ### Set new markers by Array or Object
 To set markers you will need to create the markers first and the pass them as below.
-To see how to create the marker go to [Create a marker](fliplet-ui-panzoom.md#create-a-marker).
+To see how to create the marker go to [Create a marker](fliplet-ui-panzoom#create-a-marker).
 
 ** Set a marker (Array) **
 `flPanZoom.markers.set([ {...} ])`
@@ -161,5 +161,5 @@ The `marker` instance variable above makes available the following instance meth
 
 ---
 
-[Back to Fliplet.UI](./fliplet-ui.md)
+[Back to Fliplet.UI](./fliplet-ui)
 {: .buttons}

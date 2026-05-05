@@ -276,5 +276,5 @@ Handlebars.compile('{{ TN foo notation="compact" compactDisplay="long" }}')({ fo
 
 ---
 
-[Back to API documentation](/API-Documentation.html)
+[Back to API documentation](/API-Documentation)
 {: .buttons}

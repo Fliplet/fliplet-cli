@@ -35,5 +35,5 @@ If you need to add more tags at runtime, simply run `Fliplet.Media.Audio.Player.
 
 ---
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}

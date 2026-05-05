@@ -23,7 +23,7 @@ widget.json
 
 ## Including external libraries
 
-Functions can define the list of [dependencies](/Dependencies-and-assets.html#dependencies-and-assets) to be used in the `widget.json` file under the `"build" > "dependencies"` key of the file.
+Functions can define the list of [dependencies](/Dependencies-and-assets#dependencies-and-assets) to be used in the `widget.json` file under the `"build" > "dependencies"` key of the file.
 
 ## The function definition file
 

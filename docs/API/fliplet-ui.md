@@ -19,32 +19,32 @@ The `Fliplet.UI` namespace contains classes for Fliplet-managed UI primitives su
 
 All pages load the `fliplet-pages` by default. It includes support for the following UI elements.
 
-  - [Actions](fliplet-ui-actions.md)
-  - [Toast](fliplet-ui-toast.md)
-    - [Error Toast](fliplet-ui-toast-error.md)
+  - [Actions](fliplet-ui-actions)
+  - [Toast](fliplet-ui-toast)
+    - [Error Toast](fliplet-ui-toast-error)
 
 The following UI elements are optionally available by adding extra packages to your app.
 
 ## Date & Time
 
-  - [Date Picker](fliplet-ui-datepicker.md) (`fliplet-ui-datetime`)
-  - [Time Picker](fliplet-ui-timepicker.md) (`fliplet-ui-datetime`)
-  - [Date Range](fliplet-ui-daterange.md) (`fliplet-ui-datetime`)
-  - [Time Range](fliplet-ui-timerange.md) (`fliplet-ui-datetime`)
+  - [Date Picker](fliplet-ui-datepicker) (`fliplet-ui-datetime`)
+  - [Time Picker](fliplet-ui-timepicker) (`fliplet-ui-datetime`)
+  - [Date Range](fliplet-ui-daterange) (`fliplet-ui-datetime`)
+  - [Time Range](fliplet-ui-timerange) (`fliplet-ui-datetime`)
 
 ## Number
 
-  - [Number Input](fliplet-ui-number.md) (`fliplet-ui-number`)
-  - [Range Slider](fliplet-ui-rangeslider.md) (`fliplet-ui-rangeslider`)
+  - [Number Input](fliplet-ui-number) (`fliplet-ui-number`)
+  - [Range Slider](fliplet-ui-rangeslider) (`fliplet-ui-rangeslider`)
 
 ## Multiple choice
 
-  - [Typeahead](fliplet-ui-typeahead.md) (`fliplet-ui-typeahead`)
+  - [Typeahead](fliplet-ui-typeahead) (`fliplet-ui-typeahead`)
 
 ## Data Display
 
-  - [Table](fliplet-table.md) (`fliplet-table`)
+  - [Table](fliplet-table) (`fliplet-table`)
 
 ## Others
 
-  - [PanZoom](fliplet-ui-panzoom.md) (`fliplet-ui-panzoom`)
+  - [PanZoom](fliplet-ui-panzoom) (`fliplet-ui-panzoom`)

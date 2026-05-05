@@ -59,7 +59,7 @@ Prefer `htm` unless the user has a specific reason to override.
 
 ## Wiring to Fliplet.Router
 
-Full contract in [V3 routing](../routing.md). React-specific: pass `basename` when creating the router:
+Full contract in [V3 routing](../routing). React-specific: pass `basename` when creating the router:
 
 ```js
 const router = createBrowserRouter(routes, {
@@ -110,6 +110,6 @@ Then `<img src={logoSrc} />`. Calling `Fliplet.Media.authenticate` at module sco
 
 ## Related
 
-- [V3 app bootstrap](../app-bootstrap.md)
-- [V3 routing](../routing.md)
-- [V3 framework overview](overview.md)
+- [V3 app bootstrap](../app-bootstrap)
+- [V3 routing](../routing)
+- [V3 framework overview](overview)

@@ -247,5 +247,5 @@ onUnmounted(() => {
 
 ---
 
-[Back to Fliplet.Core](./fliplet-core.md)
+[Back to Fliplet.Core](./fliplet-core)
 {: .buttons}

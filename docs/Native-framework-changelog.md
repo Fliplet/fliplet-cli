@@ -315,5 +315,5 @@ Please note that these versions have limited support for newer Fliplet features.
 
 ---
 
-[Back to home](README.md)
+[Back to home](README)
 {: .buttons}
