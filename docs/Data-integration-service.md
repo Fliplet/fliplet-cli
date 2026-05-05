@@ -60,7 +60,7 @@ The DIS agent runs on your infrastructure, connects to your local database or AP
 
 To synchronize your data with Fliplet servers you will need an authorization token generated via Fliplet Studio from an organization admin account.
 
-To generate a token, see the [authentication token documentation](REST-API/authenticate.md).
+To generate a token, see the [authentication token documentation](REST-API/authenticate).
 
 <p class="warning">After creating the API token, you also need to set up appropriate <a href="Data-source-security.html">Data Source security rules</a> on the specific <strong>API token</strong> for the Data Sources you are reading or writing data to.</p>
 
@@ -342,7 +342,7 @@ Any error found in your configuration will be printed out for you to look at.
 
 ### Troubleshoot errors with permissions
 
-The API token you created via Fliplet Studio (see [documentation](REST-API/authenticate.md)) requires specific access to the Data Source you want to access via DIS. To grant access, copy the token's ID from the "API tokens" UI in Fliplet Studio, then paste it in the "Studio users permissions" tab of the Data Source after clicking the "Add new user" button:
+The API token you created via Fliplet Studio (see [documentation](REST-API/authenticate)) requires specific access to the Data Source you want to access via DIS. To grant access, copy the token's ID from the "API tokens" UI in Fliplet Studio, then paste it in the "Studio users permissions" tab of the Data Source after clicking the "Add new user" button:
 
 ![img](assets/img/dis-permissions.png)
 
@@ -730,7 +730,7 @@ If you're planning to send sensitive data to a Fliplet Data Source, we recommend
 Here are the standards and options for the encryption algorithm and private key:
 
 - **Encryption algorithm**: [AES-256](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard).
-- **Encryption key**: you can decide whether the encryption key is provided by you or automatically generated and **managed by Fliplet into a secure keystore for your organization**. In the latter case, **the encryption key itself will be encrypted both at rest and during transit for extra added security**. On the other hand, when the key is provided by you it will never leave your machine so [you will be responsible for distributing this to your apps](/API/fliplet-encryption.html#set-the-encryptiondecryption-key) when the data must be decrypted.
+- **Encryption key**: you can decide whether the encryption key is provided by you or automatically generated and **managed by Fliplet into a secure keystore for your organization**. In the latter case, **the encryption key itself will be encrypted both at rest and during transit for extra added security**. On the other hand, when the key is provided by you it will never leave your machine so [you will be responsible for distributing this to your apps](/API/fliplet-encryption#set-the-encryptiondecryption-key) when the data must be decrypted.
 
 ### Keystore
 
@@ -818,7 +818,7 @@ Fliplet.DataSources.Encryption.KeyStore.getKey().then(function (key) {
 
 On the other hand, if you have provided your own encryption key you will just need to set it instead of fetching it from the keystore.
 
-Likewise, if you have set up a `salt` you will need to pass it as first argument of the `getKey` method shown above. More documentation can be found in the [Fliplet Encryption API reference](/API/fliplet-encryption.html#get-the-encryption-key-from-the-keystore).
+Likewise, if you have set up a `salt` you will need to pass it as first argument of the `getKey` method shown above. More documentation can be found in the [Fliplet Encryption API reference](/API/fliplet-encryption#get-the-encryption-key-from-the-keystore).
 
 ## Synchronization mode
 
@@ -1051,7 +1051,7 @@ Finally, make sure that **TLS 1.2 or 1.3** is [enabled on the OS settings](https
 
 #### Data Source security rules enforcement (February 8th, 2023)
 
-- [Data Source security rules](/Data-source-security.html) are now required by all API tokens and DIS integrations when interacting with Data Sources
+- [Data Source security rules](/Data-source-security) are now required by all API tokens and DIS integrations when interacting with Data Sources
 
 #### 1.14.3 (November 21st, 2022)
 

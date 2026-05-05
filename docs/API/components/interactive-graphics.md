@@ -167,5 +167,5 @@ Fliplet.Hooks.on('flInteractiveGraphicsLabelClick', function onLabelClick(data) 
 
 ---
 
-[Back](../../API-Documentation.md)
+[Back](../../API-Documentation)
 {: .buttons}

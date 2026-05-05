@@ -6,12 +6,12 @@ description: V3 authentication patterns for email/password login, session manage
 
 Authentication in V3 apps uses the `Fliplet.Session` API to authenticate users against a Data Source. This page covers email/password login, session checks, logout, forgot-password, and protected route patterns specific to V3 single-page apps.
 
-For SAML2/SSO configuration, use the SAML2 tab in App Settings (not code). For email verification (passwordless), see the [Email Verification docs](../components/email-verification.md). For the full Session API reference, see [Session JS APIs](../fliplet-session.md).
+For SAML2/SSO configuration, use the SAML2 tab in App Settings (not code). For email verification (passwordless), see the [Email Verification docs](../components/email-verification). For the full Session API reference, see [Session JS APIs](../fliplet-session).
 
 ## Prerequisites
 
 - A Data Source containing user records with at least `Email` and `Password` columns
-- Security rules configured on the Data Source (see [Data Source Security](../../Data-source-security.md))
+- Security rules configured on the Data Source (see [Data Source Security](../../Data-source-security))
 - The `fliplet-datasources` dependency added to your app
 
 ## Email/Password Login
@@ -234,7 +234,7 @@ async function getCurrentUser() {
 
 ## Logout
 
-Clear the session and redirect to the login screen. V3 uses History API routing on every platform, so redirect via your router (or `history.pushState` + `Fliplet.Router.getBasePath()`) — never `window.location.hash`. See [V3 Routing](routing.md) for the full contract.
+Clear the session and redirect to the login screen. V3 uses History API routing on every platform, so redirect via your router (or `history.pushState` + `Fliplet.Router.getBasePath()`) — never `window.location.hash`. See [V3 Routing](routing) for the full contract.
 
 ```js
 // Called from a component that has a router instance in scope.
@@ -261,7 +261,7 @@ async function logout() {
 
 ## Protected Routes with Vue Router Guards
 
-In V3 apps using Vue Router, protect routes by checking the session before navigation. This section assumes the router was built per the V3 routing contract (History API, base path from `Fliplet.Router.getBasePath()`, routes from `Fliplet.Router.getRouteManifest()`). See the [Vue Router 4 example](routing.md#vue-router-4-vue-3) in the V3 Routing doc — or the sibling examples for other frameworks — before wiring the guard below.
+In V3 apps using Vue Router, protect routes by checking the session before navigation. This section assumes the router was built per the V3 routing contract (History API, base path from `Fliplet.Router.getBasePath()`, routes from `Fliplet.Router.getRouteManifest()`). See the [Vue Router 4 example](routing#vue-router-4-vue-3) in the V3 Routing doc — or the sibling examples for other frameworks — before wiring the guard below.
 
 ### In the App Shell (App.vue)
 
@@ -524,10 +524,10 @@ var session = await Fliplet.User.getCachedSession();
 
 ## Related
 
-- [V3 Routing](routing.md) — base path, route manifest, `resolveRoute`, and post-login redirect pattern.
-- [V3 App Bootstrap](app-bootstrap.md) — the three boot-HTML constraints every V3 app must satisfy.
-- [Session JS APIs](../fliplet-session.md) — full session API reference
-- [Login Component](../components/login.md) — V2 login component hooks
-- [Email Verification](../components/email-verification.md) — passwordless login flow
-- [Data Source Security](../../Data-source-security.md) — security rules for user data sources
-- [App Security](../../App-security.md) — app-level access control rules
+- [V3 Routing](routing) — base path, route manifest, `resolveRoute`, and post-login redirect pattern.
+- [V3 App Bootstrap](app-bootstrap) — the three boot-HTML constraints every V3 app must satisfy.
+- [Session JS APIs](../fliplet-session) — full session API reference
+- [Login Component](../components/login) — V2 login component hooks
+- [Email Verification](../components/email-verification) — passwordless login flow
+- [Data Source Security](../../Data-source-security) — security rules for user data sources
+- [App Security](../../App-security) — app-level access control rules

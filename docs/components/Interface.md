@@ -100,7 +100,7 @@ Here's a sample of the interface for the button component:
 ```
 {% endraw %}
 
-[Read more on UI Guidelines](../UI-guidelines-interface.md)
+[Read more on UI Guidelines](../UI-guidelines-interface)
 {: .buttons}
 
 ---
@@ -109,7 +109,7 @@ Here's a sample of the interface for the button component:
 
 Components can include other components (if marked as providers) to add more functionalities or gather data from different sources.
 
-[Read more on using providers](Using-Providers.md)
+[Read more on using providers](Using-Providers)
 {: .buttons}
 
 ---
@@ -118,5 +118,5 @@ Components can include other components (if marked as providers) to add more fun
 
 Once you're familiar with the above documentation on the component interface, have a read to the next section which covers the output of components.
 
-[Next: output of components (build.html)](Build-output.md)
+[Next: output of components (build.html)](Build-output)
 {: .buttons}

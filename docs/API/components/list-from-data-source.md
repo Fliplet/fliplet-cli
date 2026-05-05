@@ -12,7 +12,7 @@ Configure templates, hooks, and query parameters for the List (from Data Source)
 
 ## Templates
 
-The **Edit component's code** feature allows you to change the templates for what users see in the component UI. This uses Handlebars as the templating engine, including some [custom helpers](../libraries/handlebars.md#using-helpers-to-enhance-your-templates) that Fliplet provide.
+The **Edit component's code** feature allows you to change the templates for what users see in the component UI. This uses Handlebars as the templating engine, including some [custom helpers](../libraries/handlebars#using-helpers-to-enhance-your-templates) that Fliplet provide.
 
 The summary and detail view templates are rendered using a predefined list of keyword variables, e.g. `Email`, `Telephone` and `LinkedIn` in the case of the Directory layout.
 
@@ -559,7 +559,7 @@ Using the available hooks, component instance configuration can be used to modif
 
 ### `dataQuery`
 
-(Object \| Function(`options`)) If a custom `getData` isn't used, `dataQuery` customizes the query for retrieving data from the data source. This can be used to limit the amount of data retrieved from the data source, reducing the amount of transferred and processed data. When an **Object** is provided, the object is passed to the `.find()` function as outlined in the [`Fliplet.DataSources` JS API](../../API/fliplet-datasources.md#find-specific-records). When a **Function** is provided, the function must return an object to be pased to the same `.find()` function. The function can make use of an `options` object that contains the following properties.
+(Object \| Function(`options`)) If a custom `getData` isn't used, `dataQuery` customizes the query for retrieving data from the data source. This can be used to limit the amount of data retrieved from the data source, reducing the amount of transferred and processed data. When an **Object** is provided, the object is passed to the `.find()` function as outlined in the [`Fliplet.DataSources` JS API](../../API/fliplet-datasources#find-specific-records). When a **Function** is provided, the function must return an object to be pased to the same `.find()` function. The function can make use of an `options` object that contains the following properties.
   - `config` (Object) Configuration used to initialize the component
   - `id` (Number) Entry ID
   - `uuid` (String) Component instance UUID
@@ -923,5 +923,5 @@ dynamicListPrefilterColumn=Category&dynamicListPrefilterValue=[Fruit,Vegetable]&
 
 ---
 
-[Back to API documentation](../../API-Documentation.md)
+[Back to API documentation](../../API-Documentation)
 {: .buttons}

@@ -12,7 +12,7 @@ The Media REST API lets external integrations upload, list, and manage media fil
 
 ## Authentication
 
-Please head to the [how to authenticate](authenticate.md) page of the documentation to read more about how you can authorize your client to make API requests to Fliplet.
+Please head to the [how to authenticate](authenticate) page of the documentation to read more about how you can authorize your client to make API requests to Fliplet.
 
 ---
 

@@ -42,5 +42,5 @@ e.g. `packages=lodash,fliplet-datasources,fliplet-media`
 
 ---
 
-[Back](README.md)
+[Back](README)
 {: .buttons}

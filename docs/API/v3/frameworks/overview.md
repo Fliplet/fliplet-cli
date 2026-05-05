@@ -15,7 +15,7 @@ Fetch the per-framework doc (`v3-framework-vue`, `v3-framework-react`, etc.) bef
 | No transpile | JSX, TSX, and any other syntax the browser can't parse natively will throw `SyntaxError: Unexpected token`. |
 | No bundler | Bare ESM imports (`import x from 'vue'`) fail. Dependencies must come from `Fliplet.require.lazy(name)` or a full CDN URL added via `add_dependencies`. |
 | No CSS preprocessing | No CSS Modules, no Sass, no PostCSS. Styles are plain CSS inlined in `<style>` or component HTML. |
-| Hash routing is rejected | `hashchange`, `window.location.hash`, `createWebHashHistory`, `HashRouter`, and `href="#/..."` are all rejected by the boot-HTML lint. History API only. See [V3 routing](../routing.md). |
+| Hash routing is rejected | `hashchange`, `window.location.hash`, `createWebHashHistory`, `HashRouter`, and `href="#/..."` are all rejected by the boot-HTML lint. History API only. See [V3 routing](../routing). |
 | Preloaded libraries | jQuery, Bootstrap CSS, Lodash, Moment, Animate.css, and fliplet-media are always available — never add them as dependencies. |
 
 ## Framework comparison
@@ -42,6 +42,6 @@ After picking, call `get_fliplet_docs('v3-framework-<name>')` for the specific c
 
 ## Related
 
-- [V3 app bootstrap](../app-bootstrap.md) — the three boot constraints every app must satisfy regardless of framework
-- [V3 routing](../routing.md) — History API contract, route manifest, forbidden-pattern reference
-- [V3 authentication patterns](../auth.md) — session, login, protected routes
+- [V3 app bootstrap](../app-bootstrap) — the three boot constraints every app must satisfy regardless of framework
+- [V3 routing](../routing) — History API contract, route manifest, forbidden-pattern reference
+- [V3 authentication patterns](../auth) — session, login, protected routes

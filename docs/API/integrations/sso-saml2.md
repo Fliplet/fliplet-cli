@@ -138,5 +138,5 @@ The following links might help you and your IT to configure the integration. Ple
 
 ---
 
-[Back to API documentation](../../API-Documentation.md)
+[Back to API documentation](../../API-Documentation)
 {: .buttons}

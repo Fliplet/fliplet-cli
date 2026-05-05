@@ -86,5 +86,5 @@ For page components you can also define `appAssets` that needs to be injected to
 }
 ```
 
-[Back to JS APIs and packages](JS-APIs#dependencies-packages.md)
+[Back to JS APIs and packages](JS-APIs#dependencies-packages)
 {: .buttons}

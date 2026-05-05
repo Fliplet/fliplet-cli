@@ -275,5 +275,5 @@ Fliplet.Payments.Customers.openBillingPortal({
 
 ---
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}

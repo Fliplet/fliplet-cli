@@ -282,5 +282,5 @@ Fliplet.Hooks.on('afterChartRender', fn);
 
 ---
 
-[Back to API documentation](../../API-Documentation.md)
+[Back to API documentation](../../API-Documentation)
 {: .buttons}

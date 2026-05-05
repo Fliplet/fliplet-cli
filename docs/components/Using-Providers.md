@@ -118,5 +118,5 @@ Fliplet.Widget.all([myProviderA, myProviderB, myProviderC]).then(function (resul
 
 ---
 
-[Back to the interface of components](Interface.md)
+[Back to the interface of components](Interface)
 {: .buttons}

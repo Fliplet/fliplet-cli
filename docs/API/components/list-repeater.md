@@ -24,7 +24,7 @@ Here's a HTML sample of a list repeater component in a dynamic container renderi
 </fl-dynamic-container>
 ```
 
-If you want to display a single record in a screen, for example a contact card, you can use the [record container](/API/components/record-container.html) component instead.
+If you want to display a single record in a screen, for example a contact card, you can use the [record container](/API/components/record-container) component instead.
 
 The following JS APIs are available in a screen once a **Repeater** component is dropped into the screen.
 

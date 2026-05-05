@@ -13,7 +13,7 @@ How to call third-party REST APIs from a Fliplet app using jQuery AJAX helpers, 
 
 This page shows you a few examples and libraries to get started integrating with third party API endpoints.
 
-<p class="quote">Note: integrating with third-party APIs may result in <strong><a href="/AJAX-cross-domain.html">cross domain policy issues</a> when the target domain does not allow API requests from the source origin (the Fliplet app)</strong>. Please read our support article <a href="/AJAX-cross-domain.html">here</a> to learn more on the topic.</p>
+<p class="quote">Note: integrating with third-party APIs may result in <strong><a href="/AJAX-cross-domain">cross domain policy issues</a> when the target domain does not allow API requests from the source origin (the Fliplet app)</strong>. Please read our support article <a href="/AJAX-cross-domain">here</a> to learn more on the topic.</p>
 
 All Fliplet apps have available the popular [jQuery](https://jquery.com/) library, which can be used on any screen when writing custom JavaScript code. Such library have easy-to-use helpers available to read and write data from/to an external API through the [jQuery AJAX](https://api.jquery.com/jquery.ajax/) methods, including:
 
@@ -36,7 +36,7 @@ $.get('https://jsonplaceholder.typicode.com/posts').then(function (elements) {
 
 As you may have noticed, jQuery AJAX methods all return a **Promise** object which makes integrating with Fliplet Hooks and JS APIs much easier.
 
-Here's an example where the above array from the 3rd-party API gets used to populate a [List from Data Source](/API/components/list-from-data-source.html) component:
+Here's an example where the above array from the 3rd-party API gets used to populate a [List from Data Source](/API/components/list-from-data-source) component:
 
 ```js
 Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {

@@ -257,5 +257,5 @@ For example:
 
 ---
 
-[Back](README.md)
+[Back](README)
 {: .buttons}

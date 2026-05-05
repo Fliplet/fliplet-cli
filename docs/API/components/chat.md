@@ -445,5 +445,5 @@ Fliplet.Hooks.on('flChatBeforeRedirectToLogin', function (navigate) {
 
 ---
 
-[Back to API documentation](../../API-Documentation.md)
+[Back to API documentation](../../API-Documentation)
 {: .buttons}
