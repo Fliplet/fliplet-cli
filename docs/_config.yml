@@ -1,7 +1,25 @@
+title: Fliplet Developers Documentation
+description: Developer documentation for the Fliplet Platform — extending Fliplet Apps and building components, themes and menus.
 url: https://developers.fliplet.com
+logo: /assets/img/social.jpg?v2
+
+twitter:
+  card: summary_large_image
+  username: flipletapp
+
+# Default front-matter applied to every page. The `image` key feeds
+# jekyll-seo-tag (v2.7.1) which only reads page-level image, not
+# site-level. Setting it here gives every page a default og:image
+# without editing every .md file.
+defaults:
+  - scope:
+      path: ""
+    values:
+      image: /assets/img/social.jpg?v2
 
 plugins:
   - jekyll-sitemap
+  - jekyll-seo-tag
 
 include:
   - _headers
