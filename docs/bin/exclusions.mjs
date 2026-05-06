@@ -16,6 +16,7 @@
 //   - API/fliplet-helper.md
 //   - API/core/app-tasks.md         redirect stubs that exist only for
 //                                   client-side JS, not human reading
+//   - 404.md                        custom 404 page, not a doc
 //   - CLAUDE.md                     repo-authoring meta-doc
 export const EXCLUDED_FILES = new Set([
   'disable-analytics.md',
@@ -23,6 +24,7 @@ export const EXCLUDED_FILES = new Set([
   'API/fliplet-core.md',
   'API/fliplet-helper.md',
   'API/core/app-tasks.md',
+  '404.md',
   'CLAUDE.md',
 ]);
 

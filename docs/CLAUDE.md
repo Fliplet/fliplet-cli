@@ -59,6 +59,7 @@ indexed by `build-agent-indexes.mjs` or served as a `.md` sibling:
 - `API/fliplet-core.md` — client-side JS redirect stub
 - `API/fliplet-helper.md` — client-side JS redirect stub
 - `API/core/app-tasks.md` — client-side JS redirect stub
+- `404.md` — custom not-found page
 
 Any `*.deprecated.md` pattern is excluded automatically.
 

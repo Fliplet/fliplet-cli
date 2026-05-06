@@ -56,7 +56,7 @@ var compiledHTML = template(context);
 $('#output').html(compiledHTML);
 ```
 
-<img src="../../assets/img/handlebars.png" alt="Handlebars logo" />
+<img src="../../assets/img/handlebars.png" alt="Handlebars logo" loading="lazy" />
 
 ## Using helpers to enhance your templates
 

@@ -15,6 +15,28 @@
 # So: per-path blocks must be SINGLE and CARRY ALL HEADERS, and wildcard
 # overlap with /*.md must be avoided.
 
+# Site-wide security headers. None of these collide with the per-path
+# Content-Type / CORS / Cache-Control rules below, so concatenation
+# rule (#1) doesn't apply — they all set DIFFERENT header names.
+#
+# Strict-Transport-Security: 2 years, include subdomains. HTTPS is already
+#   enforced at the edge; HSTS prevents a downgrade attack on a fresh
+#   visitor before the first 308.
+# X-Frame-Options: DENY — public docs site has no embed use case.
+# X-Content-Type-Options: nosniff — already auto-set by Cloudflare for
+#   the live origin, but we set explicitly so it survives any CF config
+#   change.
+# Referrer-Policy: same value the live site already serves.
+# Permissions-Policy: deny camera/mic/geolocation/USB/etc that the docs
+#   site never needs. Reduces blast radius if any embedded script is
+#   compromised.
+/*
+  Strict-Transport-Security: max-age=63072000; includeSubDomains
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), usb=(), payment=(), accelerometer=(), gyroscope=(), magnetometer=()
+
 # Per-path blocks for paths where CF Pages can't auto-detect Content-Type.
 # Each block carries every header that applies to that path, in one shot.
 /.well-known/llms.txt
