@@ -12,6 +12,7 @@ describe('EXCLUDED_FILES', () => {
     assert.ok(EXCLUDED_FILES.has('API/fliplet-helper.md'));
     assert.ok(EXCLUDED_FILES.has('API/core/app-tasks.md'));
     assert.ok(EXCLUDED_FILES.has('CLAUDE.md'));
+    assert.ok(EXCLUDED_FILES.has('404.md'));
   });
 
   it('does NOT include real product docs', () => {

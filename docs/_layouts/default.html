@@ -15,11 +15,26 @@
     {% assign url_clean = page.url | replace: '.html', '' | replace: '/index', '/' | absolute_url %}
     {% if url_with_html != url_clean %}{% assign seo_html = seo_html | replace: url_with_html, url_clean %}{% endif %}
     {{ seo_html }}
+    <link rel="icon" href="/favicon.ico" sizes="any" type="image/vnd.microsoft.icon">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.3/dist/instantsearch.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.0/animate.min.css">
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" crossorigin="anonymous">
-    <link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.3/dist/instantsearch-theme-algolia.min.css">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.3/dist/instantsearch.min.css"
+          integrity="sha384-fxVGldqBXPgRbnT8DtTPpqpkWorHBGO9CtbWksX2ayBhsifzLAi1NQ1Qj74HodM1"
+          crossorigin="anonymous">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.7.2/animate.min.css"
+          integrity="sha512-doJrC/ocU8VGVRx3O9981+2aYUn3fuWVWvqLi1U+tA2MWVzsw+NVKq1PrENF03M+TYBP92PnYUlXFH1ZW0FpLw=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer">
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
+          integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ=="
+          crossorigin="anonymous"
+          referrerpolicy="no-referrer">
+    <link rel="stylesheet" type="text/css"
+          href="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.3/dist/instantsearch-theme-algolia.min.css"
+          integrity="sha384-b1Aa0jw+ul4OIDix1IqMuZj4LQDzKwC796o4vTzL87MEeG0k1JKPWbARv6Wi9jzg"
+          crossorigin="anonymous">
     <link rel="stylesheet" href="{{ '/assets/css/termynal.css?v=' | append: site.github.build_revision | relative_url }}">
     <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
 
@@ -31,7 +46,9 @@
       })(window,document,'script','dataLayer','GTM-KLZKCRD');</script>
     <!-- End Google Tag Manager -->
 
-    <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.6.3/dist/instantsearch.min.js"
+            integrity="sha384-tULhOQSXdkXTV58+qRHodjuqj7CWI2IuStDSJY3936a+7SD7DZ1lPKrdtHp/freH"
+            crossorigin="anonymous"></script>
   </head>
   <body>
     <!-- Google Tag Manager (noscript) -->
@@ -47,13 +64,15 @@
         </a>
         <div class="spacer"></div>
         <div class="middle">
-          <ul class="nav">
-            <li class="active"><a href="/">Documentation</a></li>
-            <li><a href="https://help.fliplet.com/">Help centre</a></li>
-            <li><a href="https://community.fliplet.com/">Community</a></li>
-            <li><a href="https://status.fliplet.com/">Service status</a></li>
-            <li><a href="https://studio.fliplet.com">Your apps</a></li>
-          </ul>
+          <nav aria-label="Site">
+            <ul class="nav">
+              <li class="active"><a href="/">Documentation</a></li>
+              <li><a href="https://help.fliplet.com/">Help centre</a></li>
+              <li><a href="https://community.fliplet.com/">Community</a></li>
+              <li><a href="https://status.fliplet.com/">Service status</a></li>
+              <li><a href="https://studio.fliplet.com">Your apps</a></li>
+            </ul>
+          </nav>
           <div class="search-input">
             <input autocapitalize="off" autocomplete="off" autocorrect="off" placeholder="Type to search"  spellcheck="false" type="text" value="" />
             <a href="#" data-clear-search title="Clear current search">Clear  <i class="fa fa-times-circle"></i></a>
@@ -90,7 +109,7 @@
         </ul>
       </div>
       <div id="page">
-        <aside id="poc">
+        <nav id="poc" aria-label="Documentation">
           <div class="list">
             <div class="section-nav" data-section="core">
               <ul>
@@ -99,7 +118,7 @@
                 <li><a href="/API/core/misc">Common functions</a></li>
                 <li><span class="divider"></span></li>
                 <li><strong>Namespaces</strong></li>
-                <li><a href="/API/core/ai">AI <span class="label">Beta</span></a></a></li>
+                <li><a href="/API/core/ai">AI <span class="label">Beta</span></a></li>
                 <li><a href="/API/core/analytics">Analytics</a></li>
                 <li><a href="/API/core/api">API</a></li>
                 <li><a href="/API/core/app">App</a></li>
@@ -107,7 +126,7 @@
                 <li><a href="/API/core/app-actions-v2">App Actions V2 <span class="label label-deprecated">Deprecated</span></a></li>
                 <li><a href="/API/core/app-actions-v3">App Actions V3</a></li>
                 <li><a href="/API/core/apps">Apps</a></li>
-                <li><a href="/API/core/biometrics">Biometrics</li>
+                <li><a href="/API/core/biometrics">Biometrics</a></li>
                 <li><a href="/API/core/cache">Cache</a></li>
                 <li><a href="/API/core/encode">Encode</a></li>
                 <li><a href="/API/core/environment">Environment</a></li>
@@ -117,7 +136,7 @@
                 <li><a href="/API/core/modal">Modal</a></li>
                 <li><a href="/API/core/navigate">Navigate</a></li>
                 <li><a href="/API/core/navigator">Navigator</a></li>
-                <li><a href="/API/core/notifications">Notifications</li>
+                <li><a href="/API/core/notifications">Notifications</a></li>
                 <li><a href="/API/core/organizations">Organizations</a></li>
                 <li><a href="/API/core/profile">Profile</a></li>
                 <li><a href="/API/core/registry">Registry</a></li>
@@ -209,7 +228,7 @@
                 <ul>
                   <li><a href="/API-Documentation">Overview</a></li>
                   <li><p>Libraries</p></li>
-                  <li><a href="/API/core/overview">Core</a></a></li>
+                  <li><a href="/API/core/overview">Core</a></li>
                   <li><a href="/API/fliplet-communicate">Communicate</a></li>
                   <li><a href="/API/fliplet-datasources">Data Sources</a></li>
                   <li><a href="/API/fliplet-encryption">Encryption</a></li>
@@ -326,13 +345,13 @@
             <a href="https://fliplet.com/security/">Enterprise security</a>
             <a class="btn" href="https://fliplet.com/contact/"><i class="fas fa-question-circle"></i> Get help</a>
           </div>
-        </aside>
+        </nav>
         <div id="page-content">
-          <section class="main-content">
+          <main id="main" class="main-content">
             <div class="project-name">{{ page.title }}</div>
 
             {{ content }}
-          </section>
+          </main>
         </div>
         <aside id="toc">
           <div class="content">
@@ -386,41 +405,22 @@
       </footer>
     </div>
 
-<!-- Before the closing </head> -->
-<link
-  rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/docsearch.js@2.6.3/dist/cdn/docsearch.min.css"
-/>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/docsearch.js@2.6.3/dist/cdn/docsearch.min.css"
+          integrity="sha384-m2ikRCzP5EF96BXBKTjWxBJqZRlS6qNhm7+rE2Rvl8fIkEANrThfw+EVyeePWhM4"
+          crossorigin="anonymous">
 
-<!-- Before the closing </body> -->
-<script src="https://cdn.jsdelivr.net/npm/docsearch.js@2.6.3/dist/cdn/docsearch.min.js"></script>
-
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/docsearch.js@2.6.3/dist/cdn/docsearch.min.js"
+            integrity="sha384-8uEk67aWSZHvjtAX9hf2AB+KzYcssy31vRRTi9oP81zHtyIj7PQGAykGbQpB1L2J"
+            crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+            integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+            crossorigin="anonymous"
+            referrerpolicy="no-referrer"></script>
     <script src="{{ '/assets/js/typed.min.js?v=' | append: site.github.build_revision | relative_url }}"></script>
     <script data-termynal-container=".termynal1 | .termynal2" src="{{ '/assets/js/termynal.min.js?v=' | append: site.github.build_revision | relative_url }}"></script>
     <script src="{{ '/assets/js/index.js?v=' | append: site.github.build_revision | relative_url }}"></script>
     <!-- WebMCP: expose docs search/fetch as in-browser tools to AI agents -->
     <script src="{{ '/assets/js/webmcp.js?v=' | append: site.github.build_revision | relative_url }}" defer></script>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=UA-35892004-23"></script>
-  <script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'UA-35892004-23');
-  </script>
-
-    {% if site.google_analytics %}
-      <script type="text/javascript">
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-
-        ga('create', '{{ site.google_analytics }}', 'auto');
-        ga('send', 'pageview');
-      </script>
-    {% endif %}
   </body>
 </html>
