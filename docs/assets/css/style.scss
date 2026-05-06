@@ -188,6 +188,14 @@ h6 {
     flex: 0 1 auto;
     display: flex;
 
+    // The <nav> wrapper around <ul.nav> is layout-transparent so the
+    // <ul> remains the flex item directly inside .middle, preserving
+    // the original sizing behaviour. The <nav> still announces as a
+    // landmark to screen readers.
+    > nav {
+      display: contents;
+    }
+
     .search-input {
       position: relative;
       display: flex;
