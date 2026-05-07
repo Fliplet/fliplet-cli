@@ -1,5 +1,10 @@
 ---
+title: "V3 framework guide — picking and setup"
 description: Picking a frontend framework for a V3 app. Lists the runtime constraints every framework must cope with (no build step, no bundler, no transpile) and compares Vue, React, Alpine, and vanilla JS against them.
+type: guide
+tags: [js-api, v3, framework, overview]
+v3_relevant: true
+deprecated: false
 ---
 
 # V3 framework guide — picking and setup

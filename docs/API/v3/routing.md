@@ -1,5 +1,10 @@
 ---
+title: "V3 routing"
 description: Canonical routing patterns for V3 SPA apps. Covers base path, route manifest, access guard, per-framework examples, and the full list of forbidden patterns that break V3 apps.
+type: guide
+tags: [js-api, v3, routing]
+v3_relevant: true
+deprecated: false
 ---
 
 # V3 routing

@@ -1,5 +1,10 @@
 ---
+title: "Fliplet Router JS API"
 description: Fliplet.Router JS API reference for V3 apps. Covers getBasePath, getRouteManifest, getRouteConfig, and resolveRoute including return shapes, reason codes, and rejection behavior.
+type: api-reference
+tags: [js-api, v3, routing, router]
+v3_relevant: true
+deprecated: false
 ---
 
 # Fliplet Router JS API

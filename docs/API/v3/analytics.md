@@ -1,5 +1,10 @@
 ---
+title: "V3 app analytics and event tracking"
 description: V3 app analytics and event tracking. Page views are tracked automatically by the fliplet-analytics-spa runtime; this doc covers what you get for free and when to add event() calls for intent-bearing user actions.
+type: guide
+tags: [js-api, v3, analytics]
+v3_relevant: true
+deprecated: false
 ---
 
 # V3 app analytics and event tracking

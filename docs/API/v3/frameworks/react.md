@@ -1,5 +1,10 @@
 ---
+title: "V3 React apps"
 description: Constraints for building V3 apps in React. Covers the JSX transpilation problem (the #1 cause of first-deploy failures) with three alternatives, React Router 6 basename wiring to Fliplet.Router.getBasePath, and the no-build-step limits on CSS modules and TSX.
+type: guide
+tags: [js-api, v3, framework, react]
+v3_relevant: true
+deprecated: false
 ---
 
 # V3 React apps

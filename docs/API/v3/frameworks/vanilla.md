@@ -1,5 +1,10 @@
 ---
+title: "V3 vanilla-JS apps"
 description: Constraints for building V3 apps in vanilla JavaScript. The simplest baseline — no framework deps to load, no transpile traps. Covers History API routing under Fliplet.Router.getBasePath and media asset binding timing.
+type: guide
+tags: [js-api, v3, framework, vanilla-js]
+v3_relevant: true
+deprecated: false
 ---
 
 # V3 vanilla-JS apps

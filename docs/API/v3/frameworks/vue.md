@@ -1,5 +1,10 @@
 ---
+title: "V3 Vue apps"
 description: Constraints for building V3 apps in Vue 3. Covers the runtime-compiler vs runtime-only build choice, the .vue single-file-component tradeoff without a loader, and the Vue Router base-path wiring to Fliplet.Router.getBasePath.
+type: guide
+tags: [js-api, v3, framework, vue]
+v3_relevant: true
+deprecated: false
 ---
 
 # V3 Vue apps
