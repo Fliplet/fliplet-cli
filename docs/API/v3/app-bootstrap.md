@@ -1,5 +1,10 @@
 ---
+title: "V3 app bootstrap constraints"
 description: The three constraints every V3 boot HTML must satisfy. Covers Fliplet.require.lazy for dependencies, Fliplet.Media.getContents for source files, and the Fliplet().then(...) init sequence. Framework-agnostic.
+type: guide
+tags: [js-api, v3, bootstrap]
+v3_relevant: true
+deprecated: false
 ---
 
 # V3 app bootstrap constraints

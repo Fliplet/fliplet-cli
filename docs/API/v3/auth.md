@@ -1,5 +1,10 @@
 ---
+title: "V3 Authentication Patterns"
 description: V3 authentication patterns for email/password login, session management, logout, and protected routes. Use these patterns when building authentication flows in V3 apps.
+type: guide
+tags: [js-api, v3, auth, sessions]
+v3_relevant: true
+deprecated: false
 ---
 
 # V3 Authentication Patterns

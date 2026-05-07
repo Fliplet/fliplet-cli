@@ -1,5 +1,10 @@
 ---
+title: "V3 App Settings Convention"
 description: V3 app settings convention for storing public and private configuration. Covers the underscore prefix convention for editor-private settings.
+type: guide
+tags: [js-api, v3, app-settings]
+v3_relevant: true
+deprecated: false
 ---
 
 # V3 App Settings Convention

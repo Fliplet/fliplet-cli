@@ -1,5 +1,10 @@
 ---
+title: "V3 Alpine.js apps"
 description: Constraints for building V3 apps in Alpine.js. Alpine is attribute-driven HTML with no build step, so it maps cleanly to the V3 runtime. Covers x-init timing relative to Fliplet().then and History API routing pairing.
+type: guide
+tags: [js-api, v3, framework, alpine]
+v3_relevant: true
+deprecated: false
 ---
 
 # V3 Alpine.js apps
