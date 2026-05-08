@@ -39,3 +39,8 @@ exclude:
   - node_modules
   - CLAUDE.md
   - .well-known
+  # mcp-worker/ is the Cloudflare Worker source. Its README is dev
+  # documentation for the Worker, not a public doc — excluding it
+  # stops Jekyll indexing it (and stops jekyll-sitemap listing
+  # /mcp-worker/README which 404s on the live site).
+  - mcp-worker
