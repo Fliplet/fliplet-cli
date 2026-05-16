@@ -9,7 +9,7 @@ Build server-side automations that run on a schedule or in response to events. C
 
 ## Documentation
 
-- [App Actions V2 (deprecated)](https://developers.fliplet.com/API/core/app-actions-v2.html): Deprecated App Actions V2 — configure a pipeline of functions that runs on-device or in the cloud, ad hoc or on a schedule. Migrate to V3.
+- [App Actions V2 (deprecated)](https://developers.fliplet.com/API/core/app-actions-v2.html): Deprecated App Actions V2 — configure a pipeline of functions that runs on-device or in the cloud, ad hoc or on a schedule. Migrate to V3 App Actions.
 - [App Actions V3](https://developers.fliplet.com/API/core/app-actions-v3.html): Write and run JavaScript code directly on the server or client to perform automations, scheduled tasks and on-demand operations.
 - [App Actions V1 (deprecated)](https://developers.fliplet.com/API/core/app-actions.html): Deprecated App Actions V1 — run app screens automatically on a schedule or on demand in the cloud. Migrate to V3.
 

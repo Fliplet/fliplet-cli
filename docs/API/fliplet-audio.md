@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, audio]
 v3_relevant: true
 deprecated: false
+capabilities: [audio, sound, play audio, pause audio, music, podcast, mp3, streaming audio, audio playback]
 ---
 # `Fliplet.Media.Audio`
 

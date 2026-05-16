@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, tokens, api-keys, integrations]
 v3_relevant: true
 deprecated: false
+capabilities: [api token, access token, backend integration, server-to-server, machine-to-machine, jwt, bearer token, external service token, app token]
 ---
 
 # `Fliplet.App.Tokens`

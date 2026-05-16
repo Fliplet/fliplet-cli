@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, core, navigator]
 v3_relevant: true
 deprecated: false
+capabilities: [online, offline, connectivity, network state, device ready, network change, online status, offline detection]
 ---
 # `Fliplet.Navigator`
 

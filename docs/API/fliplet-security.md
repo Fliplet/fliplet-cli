@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, security, encryption, storage]
 v3_relevant: true
 deprecated: false
+capabilities: [encrypted device storage, secure storage, device token, secret, credential storage, per-user storage, app secret, sensitive value storage]
 ---
 # `Fliplet.Security`
 

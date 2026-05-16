@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, core]
 v3_relevant: true
 deprecated: false
+capabilities: [api request, http request, fetch, authenticated request, offline queue, request cache, fliplet api]
 ---
 # `Fliplet.API.request()`
 

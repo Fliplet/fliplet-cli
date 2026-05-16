@@ -49,6 +49,35 @@ work in both V1 and V3). Set false only for clearly V1-only content.
 **`deprecated`:** true for docs describing deprecated APIs. The llms.txt
 index still emits them; it is up to the consumer to prefer non-deprecated.
 
+### Optional fields for V3 library catalog
+
+The V3 library catalog (`/.well-known/llms-v3-libraries.json`, consumed by
+Studio's V3 AI builder) reads two extra optional fields from `API/fliplet-*.md`
+(installable packages) and `API/core/*.md` (ambient namespaces preloaded
+into every app):
+
+```yaml
+capabilities: [stripe, checkout, subscription, refund, billing, webhook]
+notes: "Installing this package transparently encrypts/decrypts columns in Fliplet.DataSources operations — install only when you intend to encrypt."
+exclude_from_v3_catalog: true        # opt the doc out of the catalog
+```
+
+**`capabilities`** — bracketed flow list of lowercase keywords describing
+what this API does in user-facing terms ("stripe", "image generation",
+"barcode scan"). The V3 builder system prompt embeds these so the agent can
+recognize when a user-described capability maps to an existing Fliplet API
+without a `search_libraries` round-trip. Aim for 6-12 keywords, including
+named third-party services where applicable.
+
+**`notes`** — short curation note for side-effects, do-not-use caveats, or
+gotchas the agent needs to know up-front. Used sparingly — most docs need
+none.
+
+**`exclude_from_v3_catalog: true`** — opts a `API/fliplet-*.md` or
+`API/core/*.md` doc out of the V3 catalog. Use for UI-primitive wrappers
+the V3 design system replaces, meta/overview docs, deprecated namespaces,
+or docs that aren't a Fliplet API per se.
+
 ## Exclusion list — do not index, do not polish
 
 These files are handled at the server or build layer and must never be

@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, core, registry]
 v3_relevant: true
 deprecated: false
+capabilities: [registry, runtime registry, component shared state, runtime helpers, global helpers, function registry, runtime key-value]
 ---
 # `Fliplet.Registry`
 

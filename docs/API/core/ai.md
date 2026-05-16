@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, core]
 v3_relevant: true
 deprecated: false
+capabilities: [ai, llm, openai, gemini, gpt, chat completion, image generation, dall-e, transcription, whisper, embeddings, streaming completion, vision, multimodal, ai assistant]
 ---
 # `Fliplet.AI`
 

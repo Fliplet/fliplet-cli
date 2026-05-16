@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, core, profile]
 v3_relevant: true
 deprecated: false
+capabilities: [profile, user profile, email, name, company, phone, device uuid, user attribute, profile attribute, namespaced profile]
 ---
 # `Fliplet.Profile`
 

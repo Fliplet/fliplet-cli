@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, core, organizations]
 v3_relevant: true
 deprecated: false
+capabilities: [organization, org, audit log, org settings, policies, org list, audit, compliance log]
 ---
 # `Fliplet.Organizations`
 

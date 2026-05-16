@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, core, cache]
 v3_relevant: true
 deprecated: false
+capabilities: [cache, memoize, async cache, ttl, expiry, background refresh, deduplicate, cached promise]
 ---
 # `Fliplet.Cache`
 

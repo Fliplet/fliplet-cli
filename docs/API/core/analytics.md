@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, core, analytics]
 v3_relevant: true
 deprecated: false
+capabilities: [analytics, tracking, page view, custom event, app analytics, system analytics, event tracking]
 ---
 # `Fliplet.Analytics`
 

@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, core, app, actions]
 v3_relevant: false
 deprecated: true
+exclude_from_v3_catalog: true
 ---
 
 # App Actions V2 (deprecated)

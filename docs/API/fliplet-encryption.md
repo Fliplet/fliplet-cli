@@ -5,6 +5,8 @@ type: api-reference
 tags: [js-api, encryption]
 v3_relevant: true
 deprecated: false
+capabilities: [encrypt, encryption, decrypt, column encryption, private key, data source column, secure column, on-device encryption, pgp]
+notes: "Installing this package transparently encrypts and decrypts the configured columns on every Fliplet.DataSources find/insert/update call — only install when you intend to encrypt, otherwise it will silently alter data-source operations."
 ---
 # `Fliplet.DataSources.Encryption`
 

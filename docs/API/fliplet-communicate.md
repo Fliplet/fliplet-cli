@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, communicate]
 v3_relevant: true
 deprecated: false
+capabilities: [email, send email, sms, send sms, batch email, batch sms, share url, share link, sendgrid, twilio, mailgun, compose email, mailto]
 ---
 # `Fliplet.Communicate`
 

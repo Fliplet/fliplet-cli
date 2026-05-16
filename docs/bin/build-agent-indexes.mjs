@@ -463,41 +463,102 @@ export function emitSkillMd(cluster, docsInCluster) {
 // and consumed by Studio's `searchLibraries.js` tool to drive V3 builder
 // library discovery, replacing the legacy /v1/widgets/assets fetch.
 //
-// Inclusion rule: docs whose `relPath` matches `API/fliplet-*.md` AND that
-// do NOT have `exclude_from_v3_catalog: true` in frontmatter. Package name
-// defaults to the URL slug (`API/fliplet-barcode.md` → `fliplet-barcode`)
-// and can be overridden via `package:` frontmatter for the rare slug-vs-pkg
-// mismatch case (none in the initial catalog, but the override exists).
+// Inclusion rules:
+//   - Installable packages: docs whose `relPath` matches `API/fliplet-*.md`.
+//     Emitted with `preloaded: false`. Package name defaults to the URL slug
+//     (`API/fliplet-barcode.md` → `fliplet-barcode`) and can be overridden
+//     via `package:` frontmatter.
+//   - Ambient (preloaded) namespaces: docs whose `relPath` matches
+//     `API/core/*.md`. Emitted with `preloaded: true` and `package:
+//     "fliplet-core"` since these APIs ship inside fliplet-core, which is
+//     bundled into every app and never needs `add_dependencies`.
 //
-// Schema is intentionally minimal: 4 fields per entry. Title and description
-// are reused from the existing build pipeline (frontmatter or H1+intro
-// extraction). No `provides`, `tags`, or `preloaded` — those either live in
-// `assets.json` (provides, consumed by dependencyDetector) or are
-// derivable / decorative for the agent (tags, preloaded). See
-// docs/plans/v3-library-catalog.md in the studio repo for the full design.
-const V3_LIBRARY_PATH_RE = /^API\/fliplet-[^/]+\.md$/;
+// Either kind is skipped when `exclude_from_v3_catalog: true` is set in
+// frontmatter. The catalog also surfaces two optional curation fields read
+// from doc frontmatter:
+//   - `capabilities:` — bracketed list of keywords used by the consumer
+//     (Studio's `searchLibraries.js` and the V3 builder system prompt) to
+//     anchor user-described capabilities ("stripe", "checkout", "image
+//     generation") to the canonical Fliplet API. Always emitted as an
+//     array; empty when frontmatter omits it.
+//   - `notes:` — short curation note for side-effects or do-not-use caveats
+//     (e.g. fliplet-encryption modifies Fliplet.DataSources). Only emitted
+//     when present.
+const V3_INSTALLABLE_PATH_RE = /^API\/fliplet-[^/]+\.md$/;
+const V3_AMBIENT_PATH_RE = /^API\/core\/[^/]+\.md$/;
 
 export function deriveV3Package(relPath) {
   const match = relPath.match(/^API\/(fliplet-[^/]+)\.md$/);
   return match ? match[1] : null;
 }
 
+// Parse a YAML-style flow list (`[a, b, c]`) or a bare comma-separated
+// string into a clean array of trimmed strings. Returns [] for empty,
+// missing, or `[]` inputs. The minimal frontmatter parser upstream keeps
+// the raw value as a literal string, so this is where the list shape
+// becomes an array.
+export function parseListFrontmatter(raw) {
+  if (raw == null) return [];
+  const s = String(raw).trim();
+  if (s === '' || s === '[]') return [];
+  const body = s.startsWith('[') && s.endsWith(']') ? s.slice(1, -1) : s;
+  return body
+    .split(',')
+    .map((t) => t.trim())
+    .map((t) => {
+      if ((t.startsWith('"') && t.endsWith('"')) || (t.startsWith("'") && t.endsWith("'"))) {
+        return t.slice(1, -1);
+      }
+      return t;
+    })
+    .filter((t) => t.length > 0);
+}
+
 export function emitV3LibraryCatalog(docs) {
   const libraries = [];
   for (const doc of docs) {
-    if (!V3_LIBRARY_PATH_RE.test(doc.relPath)) continue;
+    const isInstallable = V3_INSTALLABLE_PATH_RE.test(doc.relPath);
+    const isAmbient = V3_AMBIENT_PATH_RE.test(doc.relPath);
+    if (!isInstallable && !isAmbient) continue;
     const fm = doc.fm || {};
     if (fm.exclude_from_v3_catalog === 'true') continue;
-    const pkg = (fm.package && fm.package.trim()) || deriveV3Package(doc.relPath);
-    if (!pkg) continue;
-    libraries.push({
+
+    let pkg;
+    if (isInstallable) {
+      pkg = (fm.package && fm.package.trim()) || deriveV3Package(doc.relPath);
+      if (!pkg) continue;
+    } else {
+      // Ambient namespaces all ship inside fliplet-core (preloaded into
+      // every app). Studio consumers key off `preloaded` to decide whether
+      // `add_dependencies` is required, not off `package`.
+      pkg = 'fliplet-core';
+    }
+
+    const entry = {
       package: pkg,
+      namespace: doc.title,
       title: doc.title,
       description: doc.description || '',
       docUrl: doc.url,
-    });
+      preloaded: isAmbient,
+      capabilities: parseListFrontmatter(fm.capabilities),
+    };
+
+    if (fm.notes && fm.notes.trim() !== '') {
+      entry.notes = fm.notes.trim();
+    }
+
+    libraries.push(entry);
   }
-  libraries.sort((a, b) => a.package.localeCompare(b.package));
+  // Stable sort: installable first (preloaded=false), then ambient, alpha by
+  // package then namespace as a tiebreaker. Studio's renderer groups by
+  // `preloaded`; this order makes the JSON pleasant to read in diffs too.
+  libraries.sort((a, b) => {
+    if (a.preloaded !== b.preloaded) return a.preloaded ? 1 : -1;
+    const pkgCmp = (a.package || '').localeCompare(b.package || '');
+    if (pkgCmp !== 0) return pkgCmp;
+    return (a.namespace || '').localeCompare(b.namespace || '');
+  });
   return {
     version: 1,
     generatedAt: new Date().toISOString(),

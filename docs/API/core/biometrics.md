@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, core, biometrics]
 v3_relevant: true
 deprecated: false
+capabilities: [biometrics, face id, touch id, fingerprint, biometric authentication, native auth, device authentication, biometric verify]
 ---
 # `Fliplet.User.Biometrics`
 

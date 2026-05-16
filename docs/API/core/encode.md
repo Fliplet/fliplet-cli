@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, core, encode]
 v3_relevant: true
 deprecated: false
+capabilities: [base64, encode, url encode, query parameter encode, decode, base64 encode, double encode]
 ---
 # `Fliplet.Encode`
 
