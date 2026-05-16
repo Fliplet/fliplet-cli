@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, core, apps]
 v3_relevant: true
 deprecated: false
+capabilities: [app list, list apps, v1 apps, v2 apps, available apps, accessible apps]
 ---
 # `Fliplet.Apps`
 

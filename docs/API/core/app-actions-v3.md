@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, core, app, actions]
 v3_relevant: true
 deprecated: false
+capabilities: [app action, server function, cloud function, automation, scheduled task, cron, on-demand task, server-side javascript, background job, action trigger, webhook handler]
 ---
 
 # App Actions V3

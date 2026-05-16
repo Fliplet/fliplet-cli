@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, chat, messaging, realtime, conversations]
 v3_relevant: true
 deprecated: false
+capabilities: [chat, conversation, group chat, public channel, direct message, dm, im, messaging, real-time chat, contacts, chat room]
 ---
 # `Fliplet.Chat`
 

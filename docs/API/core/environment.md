@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, core, environment]
 v3_relevant: true
 deprecated: false
+capabilities: [environment, env vars, app id, api url, runtime mode, dependencies, current app, viewer mode, preview mode]
 ---
 # `Fliplet.Env`
 

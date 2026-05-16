@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, notifications]
 v3_relevant: true
 deprecated: false
+capabilities: [notification, push notification, in-app notification, scheduled notification, badge count, read receipt, notifications inbox, broadcast notification]
 ---
 # `Fliplet.Notifications`
 

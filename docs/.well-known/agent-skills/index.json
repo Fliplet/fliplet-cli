@@ -24,7 +24,7 @@
         "js-api",
         "server-side"
       ],
-      "sha256": "233171c1233976afa1a937a6ee11d25f9cdcc1bd7a7016a1e99e9f9339404d5f"
+      "sha256": "82011ba6cdb34e82efb785f3e8ba91907ce34665953be6694bd4874347f21dfa"
     },
     {
       "name": "fliplet-helpers-framework",
@@ -130,7 +130,7 @@
       "tags": [
         "js-api"
       ],
-      "sha256": "ae3a0b0f268ae8f98bec3aea9916256b042da25ae5f13d68a4008a50fe6e38f5"
+      "sha256": "901cd7e4a7b8b56ca226b0a9f7d2760ce7d73eeef166c36e067846bc78ec3b8b"
     },
     {
       "name": "fliplet-docs-index",

@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, datasources]
 v3_relevant: true
 deprecated: false
+capabilities: [data source, datasource, query, insert, update, delete, crud, records, table, database, pagination, sort, filter, subscribe, real-time records, bulk operations]
 ---
 # `Fliplet.DataSources`
 

@@ -20,6 +20,7 @@ import {
   emitMcpServerCard,
   emitV3LibraryCatalog,
   deriveV3Package,
+  parseListFrontmatter,
   assignToCluster,
   validateFrontmatter,
   ALLOWED_TYPES,
@@ -614,6 +615,32 @@ describe('cross-artifact consistency (against real docs/)', () => {
   });
 });
 
+describe('parseListFrontmatter', () => {
+  it('returns [] for null, undefined, empty, or "[]" input', () => {
+    assert.deepEqual(parseListFrontmatter(null), []);
+    assert.deepEqual(parseListFrontmatter(undefined), []);
+    assert.deepEqual(parseListFrontmatter(''), []);
+    assert.deepEqual(parseListFrontmatter('   '), []);
+    assert.deepEqual(parseListFrontmatter('[]'), []);
+  });
+
+  it('parses a bracketed flow list', () => {
+    assert.deepEqual(parseListFrontmatter('[a, b, c]'), ['a', 'b', 'c']);
+  });
+
+  it('strips single or double quotes around each item', () => {
+    assert.deepEqual(parseListFrontmatter('[a, "b c", \'d e\']'), ['a', 'b c', 'd e']);
+  });
+
+  it('accepts a bare comma-separated string (no brackets)', () => {
+    assert.deepEqual(parseListFrontmatter('one, two, three'), ['one', 'two', 'three']);
+  });
+
+  it('drops empty items and trims whitespace', () => {
+    assert.deepEqual(parseListFrontmatter('[ a ,  , b , ]'), ['a', 'b']);
+  });
+});
+
 describe('deriveV3Package', () => {
   it('extracts package name from API/fliplet-*.md', () => {
     assert.equal(deriveV3Package('API/fliplet-barcode.md'), 'fliplet-barcode');
@@ -649,6 +676,10 @@ describe('emitV3LibraryCatalog', () => {
     assert.equal(catalog.libraries[0].title, 'Fliplet Barcode');
     assert.equal(catalog.libraries[0].description, 'Camera scan');
     assert.equal(catalog.libraries[0].docUrl, 'https://developers.fliplet.com/API/fliplet-barcode.html');
+    assert.equal(catalog.libraries[0].preloaded, false);
+    assert.equal(catalog.libraries[0].namespace, 'Fliplet Barcode');
+    assert.deepEqual(catalog.libraries[0].capabilities, []);
+    assert.equal(catalog.libraries[0].notes, undefined);
   });
 
   it('excludes docs flagged with exclude_from_v3_catalog: true', () => {
@@ -661,15 +692,90 @@ describe('emitV3LibraryCatalog', () => {
     assert.equal(catalog.libraries[0].package, 'fliplet-barcode');
   });
 
-  it('excludes docs not matching API/fliplet-*.md path', () => {
+  it('excludes docs not matching the installable or ambient path patterns', () => {
     const docs = [
-      makeDoc('API/core/storage.md', {}, 'Storage'),
       makeDoc('Building-themes.md', {}, 'Themes'),
+      makeDoc('API/components/charts.md', {}, 'Charts'),
+      makeDoc('REST-API/Apps.md', {}, 'Apps'),
       makeDoc('API/fliplet-barcode.md'),
     ];
     const catalog = emitV3LibraryCatalog(docs);
     assert.equal(catalog.libraries.length, 1);
     assert.equal(catalog.libraries[0].package, 'fliplet-barcode');
+  });
+
+  it('emits ambient API/core/* docs as preloaded fliplet-core entries', () => {
+    const docs = [
+      makeDoc('API/core/ai.md', {}, 'Fliplet.AI', 'AI features'),
+      makeDoc('API/core/storage.md', {}, 'Fliplet.Storage', 'Persistence'),
+    ];
+    const catalog = emitV3LibraryCatalog(docs);
+    assert.equal(catalog.libraries.length, 2);
+    for (const entry of catalog.libraries) {
+      assert.equal(entry.preloaded, true);
+      assert.equal(entry.package, 'fliplet-core');
+    }
+    const ai = catalog.libraries.find((l) => l.namespace === 'Fliplet.AI');
+    assert.equal(ai.docUrl, 'https://developers.fliplet.com/API/core/ai.html');
+    assert.equal(ai.description, 'AI features');
+  });
+
+  it('reads capabilities[] frontmatter into a parsed array', () => {
+    const docs = [
+      makeDoc(
+        'API/fliplet-payments.md',
+        { capabilities: '[stripe, checkout, "subscription", \'refund\']' },
+      ),
+    ];
+    const catalog = emitV3LibraryCatalog(docs);
+    assert.deepEqual(catalog.libraries[0].capabilities, [
+      'stripe',
+      'checkout',
+      'subscription',
+      'refund',
+    ]);
+  });
+
+  it('emits empty capabilities array when frontmatter omits the field', () => {
+    const docs = [makeDoc('API/fliplet-barcode.md', {})];
+    const catalog = emitV3LibraryCatalog(docs);
+    assert.deepEqual(catalog.libraries[0].capabilities, []);
+  });
+
+  it('emits notes field only when set', () => {
+    const docs = [
+      makeDoc('API/fliplet-encryption.md', { notes: 'Modifies Fliplet.DataSources find/insert.' }),
+      makeDoc('API/fliplet-barcode.md'),
+    ];
+    const catalog = emitV3LibraryCatalog(docs);
+    const enc = catalog.libraries.find((l) => l.package === 'fliplet-encryption');
+    const bar = catalog.libraries.find((l) => l.package === 'fliplet-barcode');
+    assert.equal(enc.notes, 'Modifies Fliplet.DataSources find/insert.');
+    assert.equal(bar.notes, undefined);
+  });
+
+  it('sorts installable entries before ambient ones', () => {
+    const docs = [
+      makeDoc('API/core/storage.md', {}, 'Fliplet.Storage'),
+      makeDoc('API/fliplet-zebra.md', {}, 'Fliplet.Zebra'),
+      makeDoc('API/core/ai.md', {}, 'Fliplet.AI'),
+      makeDoc('API/fliplet-alpha.md', {}, 'Fliplet.Alpha'),
+    ];
+    const catalog = emitV3LibraryCatalog(docs);
+    assert.deepEqual(
+      catalog.libraries.map((l) => `${l.preloaded ? 'A' : 'I'}:${l.namespace}`),
+      ['I:Fliplet.Alpha', 'I:Fliplet.Zebra', 'A:Fliplet.AI', 'A:Fliplet.Storage'],
+    );
+  });
+
+  it('honors exclude_from_v3_catalog on ambient docs too', () => {
+    const docs = [
+      makeDoc('API/core/ai.md', {}, 'Fliplet.AI'),
+      makeDoc('API/core/overview.md', { exclude_from_v3_catalog: 'true' }, 'Overview'),
+    ];
+    const catalog = emitV3LibraryCatalog(docs);
+    assert.equal(catalog.libraries.length, 1);
+    assert.equal(catalog.libraries[0].namespace, 'Fliplet.AI');
   });
 
   it('honors package: frontmatter override', () => {

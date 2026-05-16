@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, app-store, submissions, publishing]
 v3_relevant: true
 deprecated: false
+capabilities: [app store, google play, submission, app version, build number, store metadata, app status, native build, app review]
 ---
 # `Fliplet.App.Submissions`
 

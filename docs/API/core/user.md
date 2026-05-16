@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, core, user]
 v3_relevant: true
 deprecated: false
+capabilities: [user, current user, auth token, signin, sign out, log out, user attributes, user profile, login, authentication]
 ---
 # `Fliplet.User`
 

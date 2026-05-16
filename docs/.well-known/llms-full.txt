@@ -8,7 +8,7 @@ Reference and guides for extending Fliplet apps with the JS API, REST API, and c
 <section class="sides">
   <div>
     <h2>Customize your apps with our low code technologies</h2>
-    <p>Welcome to the <strong>Fliplet developers documentation</strong> website. Here you can learn how to extend your Fliplet Apps, create new components, themes and menus.<br /><br />Start by having a look at our <a href="/API-Documentation.html">JS API</a> documentation to learn how to interact with our core framework and components to extend your apps.</p>
+    <p>Welcome to the <strong>Fliplet developers documentation</strong> website. Here you can learn how to extend your Fliplet Apps, create new components, themes and menus.<br /><br />Start by having a look at our <a href="/API-Documentation">JS API</a> documentation to learn how to interact with our core framework and components to extend your apps.</p>
   </div>
   <div>
     <div class="img" style="background-image:url('/assets/img/code-review.svg')"></div>
@@ -28,7 +28,7 @@ Reference and guides for extending Fliplet apps with the JS API, REST API, and c
 <section class="sides">
   <div>
     <h2>Integrate with on-prem data</h2>
-    <p>Use our open-source <a href="/Data-integration-service.html">Data Integration Service</a> software to fetch data from your on-prem infrastructure and integrate a secure login system to your apps using <a href="/API/integrations/sso-saml2.html">Single Sign-On with SAML2</a> or other identity providers. The choice is yours!</p>
+    <p>Use our open-source <a href="/Data-integration-service">Data Integration Service</a> software to fetch data from your on-prem infrastructure and integrate a secure login system to your apps using <a href="/API/integrations/sso-saml2">Single Sign-On with SAML2</a> or other identity providers. The choice is yours!</p>
   </div>
   <div>
     <div class="img" style="background-image:url('/assets/img/forms.svg')"></div>
@@ -41,7 +41,7 @@ Reference and guides for extending Fliplet apps with the JS API, REST API, and c
   </div>
   <div class="alt">
     <h2>Create complex workflows</h2>
-    <p>Start with a simple proof-of-concept, then start leveraging our technology to virtually built anything else!<br /><br />We have a <a href="/API-Documentation.html">JS API</a> for any occasion, give it a read and find out how easy is to get started.</p>
+    <p>Start with a simple proof-of-concept, then start leveraging our technology to virtually built anything else!<br /><br />We have a <a href="/API-Documentation">JS API</a> for any occasion, give it a read and find out how easy is to get started.</p>
   </div>
 </section>
 
@@ -51,14 +51,14 @@ Reference and guides for extending Fliplet apps with the JS API, REST API, and c
 
 {% raw %}
 <section class="blocks">
-  <a class="bl two" href="/API-Documentation.html">
+  <a class="bl two" href="/API-Documentation">
     <div>
       <i class="fas fa-code"></i>
       <h4>JavaScript API Documentation</h4>
       <p>Learn how to use our SDK and enrich apps within seconds.</p>
     </div>
   </a>
-  <a class="bl two" href="/REST-API-Documentation.html">
+  <a class="bl two" href="/REST-API-Documentation">
     <div>
       <i class="fas fa-bezier-curve"></i>
       <h4>REST API Documentation</h4>
@@ -68,7 +68,7 @@ Reference and guides for extending Fliplet apps with the JS API, REST API, and c
 </section>
 {% endraw %}
 
-To get a brief introduction to the technologies we use and the stack of the platform, we recommend having a quick read at the **[Introduction to the platform](Introduction.md)** page of the documentation.
+To get a brief introduction to the technologies we use and the stack of the platform, we recommend having a quick read at the **[Introduction to the platform](Introduction)** page of the documentation.
 
 ---
 
@@ -77,7 +77,7 @@ To get a brief introduction to the technologies we use and the stack of the plat
 Here's a short list of requested features that are coming up on our platform in the near future or have just been released.
 
 <section class="blocks alt">
-  <a class="bl two" href="/API/core/app-actions.html">
+  <a class="bl two" href="/API/core/app-actions">
     <div>
       <span class="pin">Available to all customers</span>
       <h4>App Actions</h4>
@@ -85,7 +85,7 @@ Here's a short list of requested features that are coming up on our platform in 
       <button>Browse documentation &rarr;</button>
     </div>
   </a>
-  <a class="bl two" href="/API/core/ai.html">
+  <a class="bl two" href="/API/core/ai">
     <div>
       <span class="pin">Open beta</span>
       <h4>AI</h4>
@@ -535,15 +535,15 @@ URL: https://developers.fliplet.com/API-Documentation.html
 
 # JS API Documentation
 
-Index of Fliplet's JavaScript APIs (Core, Data Sources, Media, UI, Communicate) for working with apps, screens, users, and components from custom code. See the [JS APIs](JS-APIs.md) section for guidance on using these packages in your Fliplet apps, components, and themes.
+Index of Fliplet's JavaScript APIs (Core, Data Sources, Media, UI, Communicate) for working with apps, screens, users, and components from custom code. See the [JS APIs](JS-APIs) section for guidance on using these packages in your Fliplet apps, components, and themes.
 
-<p class="quote">Are you rather looking for our <strong>RESTful APIs</strong> for complex backend integrations? Jump to our <a href="/REST-API-Documentation.html">documentation</a> to read more.</p>
+<p class="quote">Are you rather looking for our <strong>RESTful APIs</strong> for complex backend integrations? Jump to our <a href="/REST-API-Documentation">documentation</a> to read more.</p>
 
 ---
 
 {% raw %}
 <section class="blocks alt">
-  <a class="bl two" href="/API/core/overview.html">
+  <a class="bl two" href="/API/core/overview">
     <div>
       <span class="pin">Recommended library</span>
       <h4>Core</h4>
@@ -557,7 +557,7 @@ Index of Fliplet's JavaScript APIs (Core, Data Sources, Media, UI, Communicate) 
       <button>View documentation</button>
     </div>
   </a>
-  <a class="bl two" href="/API/fliplet-datasources.html">
+  <a class="bl two" href="/API/fliplet-datasources">
     <div>
       <span class="pin">Recommended library</span>
       <h4>Data Sources</h4>
@@ -573,7 +573,7 @@ Index of Fliplet's JavaScript APIs (Core, Data Sources, Media, UI, Communicate) 
   </a>
 </section>
 <section class="blocks alt">
-  <a class="bl two" href="/API/core/overview.html">
+  <a class="bl two" href="/API/core/overview">
     <div>
       <h4>Communicate</h4>
       <p>Send emails, texts and share URLs to users of your apps.</p>
@@ -585,7 +585,7 @@ Index of Fliplet's JavaScript APIs (Core, Data Sources, Media, UI, Communicate) 
       <button>View documentation</button>
     </div>
   </a>
-  <a class="bl two" href="/API/fliplet-datasources.html">
+  <a class="bl two" href="/API/fliplet-datasources">
     <div>
       <h4>Encryption</h4>
       <p>Set up encryption and decryption for your apps.</p>
@@ -606,56 +606,56 @@ Index of Fliplet's JavaScript APIs (Core, Data Sources, Media, UI, Communicate) 
 
 These JS APIs falls into the most common category and almost all apps, components and themes use at least one of them. All apps include `fliplet-core` by default, and any other can easily be included on your app screens via Fliplet Studio.
 
-  - [Audio](API/fliplet-audio.md) (`fliplet-audio`)
-  - [Audio Player](API/fliplet-audio-player.md) (`fliplet-audio-player`)
-  - [Barcode](API/fliplet-barcode.md) (`fliplet-barcode`)
-  - [Communicate](API/fliplet-communicate.md) (`fliplet-communicate`)
-  - [Content](API/fliplet-content.md) (`fliplet-content`)
-  - [Core](API/fliplet-core.md) (`fliplet-core`)
-  - [CSV](API/fliplet-csv.md) (`fliplet-csv`)
-  - [Data Sources](API/fliplet-datasources.md) (`fliplet-datasources`)
-  - [Database](API/fliplet-database.md) (`fliplet-database`)
-  - [Encryption](API/fliplet-encryption.md) (`fliplet-encryption`)
-  - [Helper](API/helpers/overview.md) (`fliplet-helper`)
-  - [Gamify](API/fliplet-gamify.md) (`fliplet-gamify`)
-  - [Like Buttons](API/like-buttons.md) (`fliplet-like:0.2`) (Beta)
-  - [Media](API/fliplet-media.md) (`fliplet-media`)
-  - [Notifications](API/fliplet-notifications.md) (`fliplet-notifications`)
-  - [OAuth2](API/fliplet-oauth2.md) (`fliplet-oauth2`) (Beta)
-  - [Payments](API/fliplet-payments.md) (`fliplet-payments`)
-  - [Session](API/fliplet-session.md) (`fliplet-session`)
-  - [Studio UI](UI-guidelines-interface.md) (`fliplet-studio-ui`)
-  - [Themes](API/fliplet-themes.md) (`fliplet-themes`)
-  - [Page](API/fliplet-page.md) (`fliplet-pages`)
-  - [UI](API/fliplet-ui.md)
+  - [Audio](API/fliplet-audio) (`fliplet-audio`)
+  - [Audio Player](API/fliplet-audio-player) (`fliplet-audio-player`)
+  - [Barcode](API/fliplet-barcode) (`fliplet-barcode`)
+  - [Communicate](API/fliplet-communicate) (`fliplet-communicate`)
+  - [Content](API/fliplet-content) (`fliplet-content`)
+  - [Core](API/fliplet-core) (`fliplet-core`)
+  - [CSV](API/fliplet-csv) (`fliplet-csv`)
+  - [Data Sources](API/fliplet-datasources) (`fliplet-datasources`)
+  - [Database](API/fliplet-database) (`fliplet-database`)
+  - [Encryption](API/fliplet-encryption) (`fliplet-encryption`)
+  - [Helper](API/helpers/overview) (`fliplet-helper`)
+  - [Gamify](API/fliplet-gamify) (`fliplet-gamify`)
+  - [Like Buttons](API/like-buttons) (`fliplet-like:0.2`) (Beta)
+  - [Media](API/fliplet-media) (`fliplet-media`)
+  - [Notifications](API/fliplet-notifications) (`fliplet-notifications`)
+  - [OAuth2](API/fliplet-oauth2) (`fliplet-oauth2`) (Beta)
+  - [Payments](API/fliplet-payments) (`fliplet-payments`)
+  - [Session](API/fliplet-session) (`fliplet-session`)
+  - [Studio UI](UI-guidelines-interface) (`fliplet-studio-ui`)
+  - [Themes](API/fliplet-themes) (`fliplet-themes`)
+  - [Page](API/fliplet-page) (`fliplet-pages`)
+  - [UI](API/fliplet-ui)
 
 ---
 
 ## Fliplet Components
 
-  - [Accordions](API/components/accordions.md)
-  - [Data Directory](API/components/data-directory.md)
-  - [List (from data source)](API/components/list-from-data-source.md)
-  - [Form](API/components/form-builder.md)
-  - [Chat](API/components/chat.md)
-  - [Charts](API/components/charts.md)
-  - [Push Notifications](API/components/push-notifications.md)
-  - [Interactive Graphics](API/components/interactive-graphics.md)
-  - [Email Verification](API/components/email-verification.md)
-  - [Bottom icon bar menu](API/components/menu-bottom-icon-bar.md)
+  - [Accordions](API/components/accordions)
+  - [Data Directory](API/components/data-directory)
+  - [List (from data source)](API/components/list-from-data-source)
+  - [Form](API/components/form-builder)
+  - [Chat](API/components/chat)
+  - [Charts](API/components/charts)
+  - [Push Notifications](API/components/push-notifications)
+  - [Interactive Graphics](API/components/interactive-graphics)
+  - [Email Verification](API/components/email-verification)
+  - [Bottom icon bar menu](API/components/menu-bottom-icon-bar)
 
 ---
 
 ## Third-party integrations
 
-  - [Single Sign-on with SAML2](API/integrations/sso-saml2.md)
+  - [Single Sign-on with SAML2](API/integrations/sso-saml2)
   - Single Sign-on with OAuth2 (Coming soon)
 
 ---
 
 ## Third-party libraries
 
-  - [Handlebars](API/libraries/handlebars.md)
+  - [Handlebars](API/libraries/handlebars)
 
 ---
 
@@ -714,7 +714,7 @@ action=openAccordion&title=Foo%20bar&scroll=true
 
 ---
 
-[Back to API documentation](../../API-Documentation.md)
+[Back to API documentation](../../API-Documentation)
 {: .buttons}
 
 ---
@@ -998,7 +998,7 @@ Fliplet.Hooks.on('afterChartRender', fn);
 
 ---
 
-[Back to API documentation](../../API-Documentation.md)
+[Back to API documentation](../../API-Documentation)
 {: .buttons}
 
 ---
@@ -1445,7 +1445,7 @@ Fliplet.Hooks.on('flChatBeforeRedirectToLogin', function (navigate) {
 
 ---
 
-[Back to API documentation](../../API-Documentation.md)
+[Back to API documentation](../../API-Documentation)
 {: .buttons}
 
 ---
@@ -1560,7 +1560,7 @@ Search the directory with the keyword "engineer"
 
 ---
 
-[Back to API documentation](../../API-Documentation.md)
+[Back to API documentation](../../API-Documentation)
 {: .buttons}
 
 ---
@@ -1570,7 +1570,7 @@ URL: https://developers.fliplet.com/API/components/dynamic-container.html
 
 # Dynamic Container JS APIs
 
-Bind a screen region to a data source query via `Fliplet.DynamicContainer` so the component renders a list of entries with bound expressions, typically paired with the [list repeater](/API/components/list-repeater.html) component.
+Bind a screen region to a data source query via `Fliplet.DynamicContainer` so the component renders a list of entries with bound expressions, typically paired with the [list repeater](/API/components/list-repeater) component.
 
 Here's a HTML sample of a dynamic container with a list repeater component rendering a dynamic value from the loaded data source entries:
 
@@ -1586,7 +1586,7 @@ Here's a HTML sample of a dynamic container with a list repeater component rende
 </fl-dynamic-container>
 ```
 
-If you want to display a single record in a screen, for example a contact card, you can use the [record container](/API/components/record-container.html) component instead.
+If you want to display a single record in a screen, for example a contact card, you can use the [record container](/API/components/record-container) component instead.
 
 ---
 
@@ -1660,9 +1660,9 @@ Fliplet.DynamicContainer.get().then(function (container) {
 });
 ```
 
-Note that we used the [findWithCursor](/API/fliplet-datasources.html#fetch-all-records-from-a-data-source) method instead of `find` to let the system manage pagination when the data is displayed in a list repeater.
+Note that we used the [findWithCursor](/API/fliplet-datasources#fetch-all-records-from-a-data-source) method instead of `find` to let the system manage pagination when the data is displayed in a list repeater.
 
-For more details, check the JS API documentation for the [findWithCursor](/API/fliplet-datasources.html#fetch-all-records-from-a-data-source) method.
+For more details, check the JS API documentation for the [findWithCursor](/API/fliplet-datasources#fetch-all-records-from-a-data-source) method.
 
 ### `container.connection()`
 
@@ -1796,7 +1796,7 @@ Fliplet.Hooks.on('onUserVerified', function (data) {
 
 ---
 
-[Back to API documentation](../../API-Documentation.md)
+[Back to API documentation](../../API-Documentation)
 {: .buttons}
 
 ---
@@ -2372,7 +2372,7 @@ Fliplet.DataSources.connect(dataSourceId).then(function (connection) {
 });
 ```
 
-[Back to API documentation](../../API-Documentation.md)
+[Back to API documentation](../../API-Documentation)
 {: .buttons}
 
 ---
@@ -2541,7 +2541,7 @@ Fliplet.Hooks.on('flInteractiveGraphicsLabelClick', function onLabelClick(data) 
 
 ---
 
-[Back](../../API-Documentation.md)
+[Back](../../API-Documentation)
 {: .buttons}
 
 ---
@@ -2555,7 +2555,7 @@ Configure templates, hooks, and query parameters for the List (from Data Source)
 
 ## Templates
 
-The **Edit component's code** feature allows you to change the templates for what users see in the component UI. This uses Handlebars as the templating engine, including some [custom helpers](../libraries/handlebars.md#using-helpers-to-enhance-your-templates) that Fliplet provide.
+The **Edit component's code** feature allows you to change the templates for what users see in the component UI. This uses Handlebars as the templating engine, including some [custom helpers](../libraries/handlebars#using-helpers-to-enhance-your-templates) that Fliplet provide.
 
 The summary and detail view templates are rendered using a predefined list of keyword variables, e.g. `Email`, `Telephone` and `LinkedIn` in the case of the Directory layout.
 
@@ -3102,7 +3102,7 @@ Using the available hooks, component instance configuration can be used to modif
 
 ### `dataQuery`
 
-(Object \| Function(`options`)) If a custom `getData` isn't used, `dataQuery` customizes the query for retrieving data from the data source. This can be used to limit the amount of data retrieved from the data source, reducing the amount of transferred and processed data. When an **Object** is provided, the object is passed to the `.find()` function as outlined in the [`Fliplet.DataSources` JS API](../../API/fliplet-datasources.md#find-specific-records). When a **Function** is provided, the function must return an object to be pased to the same `.find()` function. The function can make use of an `options` object that contains the following properties.
+(Object \| Function(`options`)) If a custom `getData` isn't used, `dataQuery` customizes the query for retrieving data from the data source. This can be used to limit the amount of data retrieved from the data source, reducing the amount of transferred and processed data. When an **Object** is provided, the object is passed to the `.find()` function as outlined in the [`Fliplet.DataSources` JS API](../../API/fliplet-datasources#find-specific-records). When a **Function** is provided, the function must return an object to be pased to the same `.find()` function. The function can make use of an `options` object that contains the following properties.
   - `config` (Object) Configuration used to initialize the component
   - `id` (Number) Entry ID
   - `uuid` (String) Component instance UUID
@@ -3466,7 +3466,7 @@ dynamicListPrefilterColumn=Category&dynamicListPrefilterValue=[Fruit,Vegetable]&
 
 ---
 
-[Back to API documentation](../../API-Documentation.md)
+[Back to API documentation](../../API-Documentation)
 {: .buttons}
 
 ---
@@ -3492,7 +3492,7 @@ Here's a HTML sample of a list repeater component in a dynamic container renderi
 </fl-dynamic-container>
 ```
 
-If you want to display a single record in a screen, for example a contact card, you can use the [record container](/API/components/record-container.html) component instead.
+If you want to display a single record in a screen, for example a contact card, you can use the [record container](/API/components/record-container) component instead.
 
 The following JS APIs are available in a screen once a **Repeater** component is dropped into the screen.
 
@@ -3693,7 +3693,7 @@ Fliplet.Hooks.on('sessionValidate', function (data) {
 
 ---
 
-[Back to API documentation](../../API-Documentation.md)
+[Back to API documentation](../../API-Documentation)
 {: .buttons}
 
 ---
@@ -3715,7 +3715,7 @@ Use a 0-indexed query parameter to highlight an menu item.
 
 ---
 
-[Back to API documentation](../../API-Documentation.md)
+[Back to API documentation](../../API-Documentation)
 {: .buttons}
 
 ---
@@ -5529,9 +5529,9 @@ URL: https://developers.fliplet.com/API/core/app-actions-v2.html
 
 # App Actions V2 (deprecated)
 
-<p class="warning"><strong>Deprecated:</strong> App Actions V2 is deprecated and will be removed in a future release. Please use <a href="/API/core/app-actions-v3.html">App Actions V3</a> for all new development. V3 provides a simpler, code-based approach — write a single <code>execute(context)</code> function instead of configuring function pipelines. Existing V2 actions will continue to work but should be migrated to V3.</p>
+<p class="warning"><strong>Deprecated:</strong> App Actions V2 is deprecated and will be removed in a future release. Please use <a href="/API/core/app-actions-v3">App Actions V3</a> for all new development. V3 provides a simpler, code-based approach — write a single <code>execute(context)</code> function instead of configuring function pipelines. Existing V2 actions will continue to work but should be migrated to V3.</p>
 
-Configure a pipeline of functions that runs on-device or in the cloud, either ad hoc or on a schedule. Deprecated — use [App Actions V3](/API/core/app-actions-v3.html).
+Configure a pipeline of functions that runs on-device or in the cloud, either ad hoc or on a schedule. Deprecated — use [App Actions V3](/API/core/app-actions-v3).
 
 ![How it works](/assets/img/app-actions-v2.png)
 
@@ -6232,7 +6232,7 @@ Write and run JavaScript code directly on the server or client to perform automa
 
 ## Data models and key concepts
 
-1. A V3 app action consists of a unique `name`, JavaScript `code` defining an `execute(context)` function, and optional `frequency`, `timezone`, `environment`, `triggers` and `dependencies`.
+1. A V3 app action consists of a unique `name`, JavaScript `code` defining an `execute(context)` function, and optional `description`, `frequency`, `timezone`, `environment`, `triggers` and `dependencies`.
 2. An app action can be created as **scheduled** (when using the `frequency` parameter) or to be run **on-demand**.
 3. An app action runs on the server when `environment` is set to `server` or `any`.
 4. An app action runs on the client side when `environment` is set to `client` or `any`.
@@ -6835,6 +6835,7 @@ Use `Fliplet.App.V3.Actions.create()` to create a V3 action. This always creates
 |-----------|------|----------|---------|-------------|
 | `name` | String | Yes | — | Unique name for the action. Only letters, numbers, dashes and underscores. Max 255 characters. Example: `send-weekly-report` |
 | `code` | String | Yes | — | JavaScript code defining an `async function execute(context)` function |
+| `description` | String | No | `null` | Free-text description of the action's purpose. Max 1000 characters. Use this for clarity and management of actions in the UI and API responses. |
 | `active` | Boolean | No | `false` | Whether the action is enabled. Must be `true` for the action to execute |
 | `environment` | String | No | `"server"` | Execution environment: `"server"`, `"client"`, or `"any"` |
 | `triggers` | Array | No | `[]` | Array of trigger configuration objects |
@@ -6922,6 +6923,7 @@ var result = await Fliplet.App.V3.Actions.create({
 ```js
 var result = await Fliplet.App.V3.Actions.create({
   name: 'confirm-booking',
+  description: 'Marks a booking as confirmed and notifies the customer',
   code: `async function execute(context) {
     // context.payload contains whatever was passed to run() or runWithResult()
     // e.g., { entryId: 123, name: 'Nick' }
@@ -6942,6 +6944,8 @@ var result = await Fliplet.App.V3.Actions.create({
 // result.action — the created action object
 // result.action.id — use this ID to run, publish, update, or delete
 ```
+
+The `description` parameter is optional — actions can be created without it, in which case `description` is `null` on the returned action object.
 
 ### Create an action with a log trigger
 
@@ -7139,6 +7143,7 @@ Every API method that returns an action (`get`, `getById`, `create`, `update`, `
   "id": 12345,
   "appId": 67890,
   "name": "confirm-booking",
+  "description": "Marks a booking as confirmed and notifies the customer",
   "code": "async function execute(context) { return { success: true }; }",
   "active": true,
   "environment": "server",
@@ -7165,6 +7170,7 @@ Every API method that returns an action (`get`, `getById`, `create`, `update`, `
 | `id` | Number | Unique action ID. Use this for `update()`, `remove()`, `publish()`, `unpublish()`, `run()`, `runWithResult()` |
 | `appId` | Number | ID of the app this action belongs to |
 | `name` | String | Unique action name within the app |
+| `description` | String or null | Free-text description set on the action, or `null` if not set |
 | `code` | String | The JavaScript source code |
 | `active` | Boolean | Whether the action is enabled |
 | `environment` | String | `"server"`, `"client"`, or `"any"` |
@@ -7194,7 +7200,7 @@ console.log(result.action.active); // true
 
 ## Update an action
 
-Use `Fliplet.App.V3.Actions.update()` to update any property of the **master** action. You can update `name`, `code`, `active`, `environment`, `triggers`, `dependencies`, `frequency`, and `timezone`. Include only the properties you want to change — omitted properties remain unchanged.
+Use `Fliplet.App.V3.Actions.update()` to update any property of the **master** action. You can update `name`, `code`, `description`, `active`, `environment`, `triggers`, `dependencies`, `frequency`, and `timezone`. Include only the properties you want to change — omitted properties remain unchanged. Pass `description: null` (or an empty string) to clear an existing description.
 
 - **Parameters:**
   - `id` (Number) — The action ID (must be the master action, not the production version)
@@ -7456,6 +7462,8 @@ All error responses follow this format:
 | `NAME_TOO_LONG` | Name exceeds 255 characters |
 | `NAME_INVALID_CHARS` | Name contains invalid characters (only letters, numbers, dashes and underscores allowed) |
 | `NAME_ALREADY_EXISTS` | Name already used by another action in this app |
+| `DESCRIPTION_INVALID` | Description must be a string |
+| `DESCRIPTION_TOO_LONG` | Description exceeds 1000 characters |
 | `CODE_REQUIRED` | Code is required for V3 actions |
 | `CODE_EMPTY` | Code cannot be empty |
 | `CODE_VALIDATION_FAILED` | Code failed validation — either the `execute` function is missing, the function is not `async`, or required dependencies are not listed |
@@ -7541,9 +7549,9 @@ URL: https://developers.fliplet.com/API/core/app-actions.html
 
 # App Actions V1 (deprecated)
 
-<p class="warning"><strong>Deprecated:</strong> App Actions V1 is deprecated and will be removed in a future release. Please use <a href="/API/core/app-actions-v3.html">App Actions V3</a> for all new development. Existing V1 actions will continue to work but should be migrated to V3.</p>
+<p class="warning"><strong>Deprecated:</strong> App Actions V1 is deprecated and will be removed in a future release. Please use <a href="/API/core/app-actions-v3">App Actions V3</a> for all new development. Existing V1 actions will continue to work but should be migrated to V3.</p>
 
-Run app screens automatically on a schedule or on demand in the cloud. Deprecated — use [App Actions V3](/API/core/app-actions-v3.html).
+Run app screens automatically on a schedule or on demand in the cloud. Deprecated — use [App Actions V3](/API/core/app-actions-v3).
 
 ![How it works](/assets/img/app-actions.png)
 
@@ -8823,7 +8831,7 @@ Handlebars.compile('{{ TN foo notation="compact" compactDisplay="long" }}')({ fo
 
 ---
 
-[Back to API documentation](/API-Documentation.html)
+[Back to API documentation](/API-Documentation)
 {: .buttons}
 
 ---
@@ -9602,7 +9610,7 @@ Use the logs JS API to fetch audit logs for an organization.
 
 Optional parameters:
 
-  - `type`: String or Array of strings ([see list of available types](/Organization-audit-log-types.html))
+  - `type`: String or Array of strings ([see list of available types](/Organization-audit-log-types))
   - `appId`: Number (ID) - the ID of the target app to filter logs for
   - `sessionId`: Number (ID) - this is shown in the "About this app" overlay as "Device ID"
   - `fields`: Array of strings
@@ -9621,7 +9629,7 @@ Fliplet.Organizations.Logs.get().then(function(response) {
 });
 ```
 
-Note that the following [types](/Organization-audit-log-types.html) are filtered out by default since they are primarily used for analytics: `app.analytics.pageView`, `app.analytics.event`, `app.view`, `app.update`,  `studio.analytics.presence`.
+Note that the following [types](/Organization-audit-log-types) are filtered out by default since they are primarily used for analytics: `app.analytics.pageView`, `app.analytics.event`, `app.view`, `app.update`,  `studio.analytics.presence`.
 
 Here's an example providing all optional parameters:
 
@@ -11254,7 +11262,7 @@ connection.find({
 
 ---
 
-[Back to DataSources general documentation](../fliplet-datasources.md)
+[Back to DataSources general documentation](../fliplet-datasources)
 {: .buttons}
 
 ---
@@ -11643,7 +11651,7 @@ const userData = await getComplexUserData({
 
 ## Using operators in custom security rules
 
-When writing [custom security rules](/Data-source-security.html#custom-security-rules), you can query other Data Sources using the `DataSources` server-side library. The `find` and `findOne` methods support the same query operators listed above.
+When writing [custom security rules](/Data-source-security#custom-security-rules), you can query other Data Sources using the `DataSources` server-side library. The `find` and `findOne` methods support the same query operators listed above.
 
 ```js
 // Custom security rule: grant access if user is a manager in the same office
@@ -11670,9 +11678,9 @@ Both `find` and `findOne` accept:
 | `limit` | Number | `100` | Maximum number of records to return |
 | `offset` | Number | `0` | Number of records to skip |
 
-<p class="quote">The operators on this page are for <strong>querying data</strong>. The <code>require</code> property in security rules uses a different set of requirement types (<code>equals</code>, <code>notequals</code>, <code>contains</code>) to validate incoming queries — see <a href="/Data-source-security.html#data-requirements-and-query-validation">data requirements and query validation</a>.</p>
+<p class="quote">The operators on this page are for <strong>querying data</strong>. The <code>require</code> property in security rules uses a different set of requirement types (<code>equals</code>, <code>notequals</code>, <code>contains</code>) to validate incoming queries — see <a href="/Data-source-security#data-requirements-and-query-validation">data requirements and query validation</a>.</p>
 
-[Back to Data Sources Documentation](../fliplet-datasources.md)
+[Back to Data Sources Documentation](../fliplet-datasources)
 {: .buttons}
 
 ---
@@ -11947,7 +11955,7 @@ Fliplet.App.Submissions.get().then(function (submissions) {
 
 ---
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}
 
 ---
@@ -11983,7 +11991,7 @@ If you need to add more tags at runtime, simply run `Fliplet.Media.Audio.Player.
 
 ---
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}
 
 ---
@@ -12022,7 +12030,7 @@ Fliplet.Media.Audio('https://path/to/file.mp3').then(function (audio) {
 
 ---
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}
 
 ---
@@ -12159,7 +12167,7 @@ Fliplet.Barcode.encode(text, options).then(function (data) {
 
 ---
 
-[Back to Fliplet.UI](./fliplet-ui.md)
+[Back to Fliplet.UI](./fliplet-ui)
 {: .buttons}
 
 ---
@@ -12663,7 +12671,7 @@ Returns the per-conversation encryption key used when downloading attachments ta
 
 ---
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}
 
 ---
@@ -12949,8 +12957,8 @@ Native apps will use the operating systems' built-in features to integrate with 
     <th width="50%">Android</th>
   </tr>
   <tr>
-    <td><img src="../assets/img/share-native-ios.png" /></td>
-    <td><img src="../assets/img/share-native-android.png" /></td>
+    <td><img src="../assets/img/share-native-ios.png" alt="Native share sheet on iOS" loading="lazy" /></td>
+    <td><img src="../assets/img/share-native-android.png" alt="Native share sheet on Android" loading="lazy" /></td>
   </tr>
 </table>
 
@@ -12964,8 +12972,8 @@ Web apps will show users a URL to copy and provide icons to share the URL with p
     <th width="33.5%">Mobile</th>
   </tr>
   <tr>
-    <td><img src="../assets/img/share-web-desktop.png" /></td>
-    <td><img src="../assets/img/share-web-mobile.png" /></td>
+    <td><img src="../assets/img/share-web-desktop.png" alt="Web share UI on desktop browsers" loading="lazy" /></td>
+    <td><img src="../assets/img/share-web-mobile.png" alt="Web share UI on mobile browsers" loading="lazy" /></td>
   </tr>
 </table>
 
@@ -13028,7 +13036,7 @@ Fliplet.Communicate.shareURL({
 
 ### Share a page in a Fliplet app
 
-See [documentation for `Fliplet.Content`](fliplet-content.md#share-a-page-with-a-url).
+See [documentation for `Fliplet.Content`](fliplet-content#share-a-page-with-a-url).
 
 ---
 
@@ -13056,7 +13064,7 @@ Fliplet.Communicate.sendPushNotification(appId, {
 
 ---
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}
 
 ---
@@ -13095,13 +13103,13 @@ Fliplet.Content(options)
 
 ## Related
 
-* [`Fliplet.Profile.Content()`](fliplet-profile-content.md) - Use `Fliplet.Profile.Content()` to create and manage content specific to the user.
+* [`Fliplet.Profile.Content()`](fliplet-profile-content) - Use `Fliplet.Profile.Content()` to create and manage content specific to the user.
 
 ## Examples
 
 ### Share a page with a URL
 
-This example uses the [`Fliplet.Communicate.shareURL()`](fliplet-communicate.md#share-a-url) API to share the URL once it's generated. This means the `fliplet-communicate` dependency also needs to be added.
+This example uses the [`Fliplet.Communicate.shareURL()`](fliplet-communicate#share-a-url) API to share the URL once it's generated. This means the `fliplet-communicate` dependency also needs to be added.
 
 ```js
 Fliplet.Content({dataSourceId: 2}).then(function (content) {
@@ -13215,9 +13223,9 @@ Delete existing entries.
 
 ## Related
 
-* [`Fliplet.Profile.Content()`](fliplet-profile-content.md)
+* [`Fliplet.Profile.Content()`](fliplet-profile-content)
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}
 
 ---
@@ -13333,7 +13341,7 @@ Fliplet.CSV.email(data, options);
 
 ---
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}
 
 ---
@@ -13373,7 +13381,7 @@ The latter method returns an object with two public methods:
 
 ---
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}
 
 ---
@@ -13609,7 +13617,7 @@ The `$filters` operator provides optimized performance and additional conditions
 }
 ```
 
-**📖 Complete Operators Reference:** [View detailed query operators documentation](datasources/query-operators.md)
+**📖 Complete Operators Reference:** [View detailed query operators documentation](datasources/query-operators)
 
 ### 2. Insert Records (Add Data)
 
@@ -14267,11 +14275,11 @@ console.log('Department statistics:', departmentStats);
 
 ### Joining Data from Other Data Sources
 
-For complex queries involving multiple data sources, see the [joins documentation](datasources/joins.md).
+For complex queries involving multiple data sources, see the [joins documentation](datasources/joins).
 
 ### Data Source Views
 
-For filtering data sources with predefined views, see the [views documentation](datasources/views.md).
+For filtering data sources with predefined views, see the [views documentation](datasources/views).
 
 ---
 
@@ -14967,7 +14975,7 @@ All examples in this documentation use this data structure and will work with th
 
 ---
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}
 
 ---
@@ -15293,7 +15301,7 @@ The following events are available for attaching using the `.on()` method.
 * `variables` Triggered when variables are computed. The handler is triggered with the new `variables` object.
 * `newAchievements` Triggered when new achievements have been added for the user. The handler is triggered with an array of achievement objects with unique IDs.
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}
 
 ---
@@ -15708,7 +15716,7 @@ Fliplet.Hooks.on('mediaFileDownloadProgress', function (file) {
 
 ---
 
-[Back to JS API documentation](../API-Documentation.md)
+[Back to JS API documentation](../API-Documentation)
 {: .buttons}
 
 ---
@@ -16257,7 +16265,7 @@ Fliplet.Hooks.on('afterNotificationsInit', function (notifications) {
 
 ---
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}
 
 ---
@@ -16335,7 +16343,7 @@ A common problem for developers is a browser to refuse access to a remote resour
 
 This can occur with OAuth2 services if the service provider is not configured to allow Fliplet's app domains.
 
-Cross-Origin Request Sharing (CORS) sometimes needs to be configured with the service provider to ensure API requests can be made across domains. See [AJAX cross domain and cross-origin requests](../AJAX-cross-domain.md) for more information.
+Cross-Origin Request Sharing (CORS) sometimes needs to be configured with the service provider to ensure API requests can be made across domains. See [AJAX cross domain and cross-origin requests](../AJAX-cross-domain) for more information.
 
 ## Methods
 
@@ -16360,7 +16368,7 @@ Fliplet.OAuth2.configure(services)
   * **grantUrl** (String) Grant URL as supplied by the OAuth2 service. Required if an *explicit grant* flow is used when calling `.login()`.
   * **grantData** (Object) A mapping object of data to pass to `grantUrl` when requesting an access token via the *explicit grant* flow.
   * **baseUrl** (String) Base URL for API requests. API requests made with a full URL will ignore the `baseUrl`. If `baseUrl` is not provided, API requests are expected to be called using a full URL.
-  * **useProxy** (Boolean) Set as `true` to use Fliplet's proxy when granting access token using the *explicit* the grant flow and when making API requests. This may be necessary if the service is not configured to work with cross-domain AJAX requests. See **[AJAX cross domain and cross-origin requests](../AJAX-cross-domain.md)** for more information. **Default**: `false`
+  * **useProxy** (Boolean) Set as `true` to use Fliplet's proxy when granting access token using the *explicit* the grant flow and when making API requests. This may be necessary if the service is not configured to work with cross-domain AJAX requests. See **[AJAX cross domain and cross-origin requests](../AJAX-cross-domain)** for more information. **Default**: `false`
   * **state** (String) `state` is an optional parameter that, if provided, is returned by the OAuth2 service during the redirect step for additional verification during login.
   * **scope** (String) A comma separated string of scopes as provided by the OAuth2 service.
   * **refresh** (Boolean) Indicates that the OAuth2 service supports refreshing access tokens to keep them valid. **Default**: `false`
@@ -16442,7 +16450,7 @@ Fliplet.Oauth2(service).on(eventName, fn)
 * **auth.fail** User fails to log in. The error response is passed to the event handler function.
 * **auth.logout** User is successfully logged out.
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}
 
 ---
@@ -16487,7 +16495,7 @@ Fliplet.Page.scrollTo('.title', { context: '[data-entry-id="456"]' })
 
 ---
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}
 
 ---
@@ -16763,7 +16771,7 @@ Fliplet.Payments.Customers.openBillingPortal({
 
 ---
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}
 
 ---
@@ -16792,7 +16800,7 @@ If the user is not logged in, a UUID is generated based on the specific app inst
 
 ## Usage
 
-See [`Fliplet.Content()`](fliplet-content.md) for more information on what features can be built with these helpers.
+See [`Fliplet.Content()`](fliplet-content) for more information on what features can be built with these helpers.
 
 To build these features, create an instance with `Fliplet.Profile.Content()` and use the returned object in the promise resolving function to call the available methods.
 
@@ -16889,7 +16897,7 @@ Delete existing entries.
     * **action** (Object) An object containing the action to query for deleting. This can use JSON-based queries.
   * **exact** (Boolean) If `true`, only entries with exact `content` matches will be deleted. (**Default**: `true`)
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}
 
 ---
@@ -16916,7 +16924,7 @@ Each app gets its own bag, keyed internally by `appId`, so values written from o
 | Persist a small structured object across app launches with a default shape | `fliplet-security` |
 | Protect specific Data Source columns (e.g. `firstName`, `bio`) end-to-end | `fliplet-encryption` (`Fliplet.DataSources.Encryption`) |
 | Encrypt rows on the server so the API never sees plaintext | `fliplet-encryption` |
-| Read/write the current login session | [`Fliplet.Session`](./fliplet-session.md) |
+| Read/write the current login session | [`Fliplet.Session`](./fliplet-session) |
 | Persist arbitrary unencrypted device data | `Fliplet.Storage` (in `fliplet-core`) |
 
 The two packages are complementary, not interchangeable. They're often used together: `fliplet-encryption` to protect what's stored remotely, `fliplet-security` to protect the encryption key itself on the device.
@@ -17120,13 +17128,13 @@ async function signOut() {
 
 ## Related
 
-- [`Fliplet.DataSources.Encryption`](./fliplet-encryption.md) — column-level encryption for Data Sources.
-- [`Fliplet.Session`](./fliplet-session.md) — current user session, login/logout, passport details.
+- [`Fliplet.DataSources.Encryption`](./fliplet-encryption) — column-level encryption for Data Sources.
+- [`Fliplet.Session`](./fliplet-session) — current user session, login/logout, passport details.
 - `Fliplet.Storage` (part of `fliplet-core`) — general-purpose unencrypted device storage.
 
 ---
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}
 
 ---
@@ -17325,7 +17333,7 @@ var locales = Fliplet.App.Locales.get();
 
 ---
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}
 
 ---
@@ -17574,7 +17582,7 @@ onUnmounted(() => {
 
 ---
 
-[Back to Fliplet.Core](./fliplet-core.md)
+[Back to Fliplet.Core](./fliplet-core)
 {: .buttons}
 
 ---
@@ -18550,7 +18558,7 @@ var value = Fliplet.Themes.Current.get('keyName');
 
 ---
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}
 
 ---
@@ -18677,7 +18685,7 @@ curl https://api.fliplet.com/v1/apps/$APP_ID/tokens \
 
 ---
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}
 
 ---
@@ -18775,7 +18783,7 @@ Fliplet.UI.Actions({
 
 ---
 
-[Back to Fliplet.UI](./fliplet-ui.md)
+[Back to Fliplet.UI](./fliplet-ui)
 {: .buttons}
 
 ---
@@ -19391,7 +19399,7 @@ handleClickOutside: function(event) {
 
 ---
 
-[Back to Fliplet.UI](./fliplet-ui.md)
+[Back to Fliplet.UI](./fliplet-ui)
 {: .buttons}
 
 ---
@@ -19495,13 +19503,13 @@ Fliplet.UI.DatePicker.get(el)
 
 ## Related
 
-  - [Date Range](fliplet-ui-daterange.md)
-  - [Time Picker](fliplet-ui-timepicker.md)
-  - [Time Range](fliplet-ui-timerange.md)
+  - [Date Range](fliplet-ui-daterange)
+  - [Time Picker](fliplet-ui-timepicker)
+  - [Time Range](fliplet-ui-timerange)
 
 ---
 
-[Back to Fliplet.UI](./fliplet-ui.md)
+[Back to Fliplet.UI](./fliplet-ui)
 {: .buttons}
 
 ---
@@ -19615,13 +19623,13 @@ Fliplet.UI.DateRange.get(el)
 
 ## Related
 
-  - [Time Range](fliplet-ui-timerange.md)
-  - [Date Picker](fliplet-ui-datepicker.md)
-  - [Time Picker](fliplet-ui-timepicker.md)
+  - [Time Range](fliplet-ui-timerange)
+  - [Date Picker](fliplet-ui-datepicker)
+  - [Time Picker](fliplet-ui-timepicker)
 
 ---
 
-[Back to Fliplet.UI](./fliplet-ui.md)
+[Back to Fliplet.UI](./fliplet-ui)
 {: .buttons}
 
 ---
@@ -19722,11 +19730,11 @@ Fliplet.UI.NumberInput.get(el)
 
 ## Related
 
-  - [Number Input](fliplet-ui-number.md) (`fliplet-ui-number`)
+  - [Number Input](fliplet-ui-number) (`fliplet-ui-number`)
 
 ---
 
-[Back to Fliplet.UI](./fliplet-ui.md)
+[Back to Fliplet.UI](./fliplet-ui)
 {: .buttons}
 
 ---
@@ -19826,7 +19834,7 @@ The `flPanZoom` instance variable above makes available the following instance m
 
 ### Set new markers by Array or Object
 To set markers you will need to create the markers first and the pass them as below.
-To see how to create the marker go to [Create a marker](fliplet-ui-panzoom.md#create-a-marker).
+To see how to create the marker go to [Create a marker](fliplet-ui-panzoom#create-a-marker).
 
 ** Set a marker (Array) **
 `flPanZoom.markers.set([ {...} ])`
@@ -19888,7 +19896,7 @@ The `marker` instance variable above makes available the following instance meth
 
 ---
 
-[Back to Fliplet.UI](./fliplet-ui.md)
+[Back to Fliplet.UI](./fliplet-ui)
 {: .buttons}
 
 ---
@@ -19994,11 +20002,11 @@ Fliplet.UI.RangeSlider.get(el)
 
 ## Related
 
-  - [Number Input](fliplet-ui-number.md) (`fliplet-ui-number`)
+  - [Number Input](fliplet-ui-number) (`fliplet-ui-number`)
 
 ---
 
-[Back to Fliplet.UI](./fliplet-ui.md)
+[Back to Fliplet.UI](./fliplet-ui)
 {: .buttons}
 
 ---
@@ -20102,12 +20110,12 @@ Fliplet.UI.TimePicker.get(el)
 
 ## Related
 
-  - [Date Picker](fliplet-ui-datepicker.md)
-  - [Number Input](fliplet-ui-number.md)
+  - [Date Picker](fliplet-ui-datepicker)
+  - [Number Input](fliplet-ui-number)
 
 ---
 
-[Back to Fliplet.UI](./fliplet-ui.md)
+[Back to Fliplet.UI](./fliplet-ui)
 {: .buttons}
 
 ---
@@ -20221,13 +20229,13 @@ Fliplet.UI.DatePicker.get(el)
 
 ## Related
 
-  - [Time Range](fliplet-ui-timerange.md)
-  - [Date Picker](fliplet-ui-datepicker.md)
-  - [Time Picker](fliplet-ui-timepicker.md)
+  - [Time Range](fliplet-ui-timerange)
+  - [Date Picker](fliplet-ui-datepicker)
+  - [Time Picker](fliplet-ui-timepicker)
 
 ---
 
-[Back to Fliplet.UI](./fliplet-ui.md)
+[Back to Fliplet.UI](./fliplet-ui)
 {: .buttons}
 
 ---
@@ -20276,7 +20284,7 @@ Fliplet.DataSources.connect(0)
 
 ---
 
-[Back to Fliplet.UI](./fliplet-ui.md)
+[Back to Fliplet.UI](./fliplet-ui)
 {: .buttons}
 
 ---
@@ -20450,11 +20458,11 @@ Fliplet.UI.Toast({
 
 ## Related
 
-* [Error Toast](fliplet-ui-toast-error.md)
+* [Error Toast](fliplet-ui-toast-error)
 
 ---
 
-[Back to Fliplet.UI](./fliplet-ui.md)
+[Back to Fliplet.UI](./fliplet-ui)
 {: .buttons}
 
 ---
@@ -20557,7 +20565,7 @@ Fliplet.UI.Typeahead.get(el)
 
 ---
 
-[Back to Fliplet.UI](./fliplet-ui.md)
+[Back to Fliplet.UI](./fliplet-ui)
 {: .buttons}
 
 ---
@@ -20577,35 +20585,35 @@ The `Fliplet.UI` namespace contains classes for Fliplet-managed UI primitives su
 
 All pages load the `fliplet-pages` by default. It includes support for the following UI elements.
 
-  - [Actions](fliplet-ui-actions.md)
-  - [Toast](fliplet-ui-toast.md)
-    - [Error Toast](fliplet-ui-toast-error.md)
+  - [Actions](fliplet-ui-actions)
+  - [Toast](fliplet-ui-toast)
+    - [Error Toast](fliplet-ui-toast-error)
 
 The following UI elements are optionally available by adding extra packages to your app.
 
 ## Date & Time
 
-  - [Date Picker](fliplet-ui-datepicker.md) (`fliplet-ui-datetime`)
-  - [Time Picker](fliplet-ui-timepicker.md) (`fliplet-ui-datetime`)
-  - [Date Range](fliplet-ui-daterange.md) (`fliplet-ui-datetime`)
-  - [Time Range](fliplet-ui-timerange.md) (`fliplet-ui-datetime`)
+  - [Date Picker](fliplet-ui-datepicker) (`fliplet-ui-datetime`)
+  - [Time Picker](fliplet-ui-timepicker) (`fliplet-ui-datetime`)
+  - [Date Range](fliplet-ui-daterange) (`fliplet-ui-datetime`)
+  - [Time Range](fliplet-ui-timerange) (`fliplet-ui-datetime`)
 
 ## Number
 
-  - [Number Input](fliplet-ui-number.md) (`fliplet-ui-number`)
-  - [Range Slider](fliplet-ui-rangeslider.md) (`fliplet-ui-rangeslider`)
+  - [Number Input](fliplet-ui-number) (`fliplet-ui-number`)
+  - [Range Slider](fliplet-ui-rangeslider) (`fliplet-ui-rangeslider`)
 
 ## Multiple choice
 
-  - [Typeahead](fliplet-ui-typeahead.md) (`fliplet-ui-typeahead`)
+  - [Typeahead](fliplet-ui-typeahead) (`fliplet-ui-typeahead`)
 
 ## Data Display
 
-  - [Table](fliplet-table.md) (`fliplet-table`)
+  - [Table](fliplet-table) (`fliplet-table`)
 
 ## Others
 
-  - [PanZoom](fliplet-ui-panzoom.md) (`fliplet-ui-panzoom`)
+  - [PanZoom](fliplet-ui-panzoom) (`fliplet-ui-panzoom`)
 
 ---
 
@@ -20618,13 +20626,13 @@ Package a Fliplet Helper as a reusable widget-framework component so it can be i
 
 ## 1. Install the basic software
 
-Install the [Fliplet CLI](/Quickstart.html) on your computer before continuing with the rest.
+Install the [Fliplet CLI](/Quickstart) on your computer before continuing with the rest.
 
 ---
 
 ## 2. Generate the component boilerplate
 
-Once you have installed the [Fliplet CLI](/Quickstart.html), open the shell of your computer and run the `fliplet create-widget <package> <name> --helper` command described below to create the initial structure of the component in a new directory with the same name as the `<name>` in the input.
+Once you have installed the [Fliplet CLI](/Quickstart), open the shell of your computer and run the `fliplet create-widget <package> <name> --helper` command described below to create the initial structure of the component in a new directory with the same name as the `<name>` in the input.
 
 The command requires two inputs:
 
@@ -20764,9 +20772,9 @@ Fliplet components are displayed in the components list with a unique icon for e
 
 ## 9. Publish your component to Fliplet Studio
 
-Publishing the component is as simple as running the `fliplet publish` CLI command after having [logged in](/Publishing.html) with your Studio account.
+Publishing the component is as simple as running the `fliplet publish` CLI command after having [logged in](/Publishing) with your Studio account.
 
-Please refer to our [publishing](/Publishing.html) documentation to publish your component on Fliplet Studio.
+Please refer to our [publishing](/Publishing) documentation to publish your component on Fliplet Studio.
 
 ---
 
@@ -21964,7 +21972,7 @@ URL: https://developers.fliplet.com/API/helpers/interface-libraries.html
 
 # Helper configuration interface: external libraries
 
-Include [Fliplet-approved](/Fliplet-approved-libraries.html) or third-party JavaScript and CSS libraries in a Helper's configuration interface via the `dependencies` array.
+Include [Fliplet-approved](/Fliplet-approved-libraries) or third-party JavaScript and CSS libraries in a Helper's configuration interface via the `dependencies` array.
 
 ## Include Fliplet approved libraries
 
@@ -22229,7 +22237,7 @@ URL: https://developers.fliplet.com/API/helpers/libraries.html
 
 # Helper external libraries
 
-Declare a Helper's runtime dependencies by listing [Fliplet-approved](/Fliplet-approved-libraries.html) or third-party JS/CSS libraries in its `render.dependencies` array.
+Declare a Helper's runtime dependencies by listing [Fliplet-approved](/Fliplet-approved-libraries) or third-party JS/CSS libraries in its `render.dependencies` array.
 
 ## Include Fliplet approved libraries
 
@@ -22801,42 +22809,42 @@ Fliplet.Helper({
       <td><code>Object</code> or <code>Function</code></td>
       <td>optional</td>
       <td>
-        <a href="/API/helpers/fields.html#default-fields">The data for your helper</a>.</td>
+        <a href="/API/helpers/fields#default-fields">The data for your helper</a>.</td>
     </tr>
     <tr>
       <td><code>render.template</code></td>
       <td><code>String</code></td>
       <td>optional</td>
       <td>
-        <a href="/API/helpers/templates.html">An optional HTML template</a>.</td>
+        <a href="/API/helpers/templates">An optional HTML template</a>.</td>
     </tr>
     <tr>
       <td><code>render.beforeReady</code></td>
       <td><code>Function</code></td>
       <td>optional</td>
       <td>
-        <a href="/API/helpers/hooks.html#run-logic-before-a-helper-is-rendered">A function to run before the helper instance is rendered</a>.</td>
+        <a href="/API/helpers/hooks#run-logic-before-a-helper-is-rendered">A function to run before the helper instance is rendered</a>.</td>
     </tr>
     <tr>
       <td><code>render.ready</code></td>
       <td><code>Function</code></td>
       <td>optional</td>
       <td>
-        <a href="/API/helpers/hooks.html#run-logic-once-a-helper-is-rendered">A function to run when the helper instance is rendered</a>.</td>
+        <a href="/API/helpers/hooks#run-logic-once-a-helper-is-rendered">A function to run when the helper instance is rendered</a>.</td>
     </tr>
     <tr>
       <td><code>render.dependencies</code></td>
       <td><code>Array</code></td>
       <td>optional</td>
       <td>
-        <a href="/API/helpers/libraries.html">A list of dependencies to include when rendering the helper</a>.</td>
+        <a href="/API/helpers/libraries">A list of dependencies to include when rendering the helper</a>.</td>
     </tr>
     <tr>
       <td><code>configuration</code></td>
       <td><code>Object</code></td>
       <td>optional</td>
       <td>
-        <a href="/API/helpers/interface.html">The list of fields to present in the configuration UI</a>.</td>
+        <a href="/API/helpers/interface">The list of fields to present in the configuration UI</a>.</td>
     </tr>
     <tr>
       <td><code>configuration.title</code></td>
@@ -22848,42 +22856,42 @@ Fliplet.Helper({
       <td><code>configuration.fields</code></td>
       <td><code>Array</code></td>
       <td>required</td>
-      <td><a href="/API/helpers/interface-fields.html">The list of fields to display in the UI</a>.</td>
+      <td><a href="/API/helpers/interface-fields">The list of fields to display in the UI</a>.</td>
     </tr>
     <tr>
       <td><code>configuration.beforeReady</code></td>
       <td><code>Function</code></td>
       <td>optional</td>
       <td>
-        <a href="/API/helpers/interface-hooks.html#run-a-function-before-the-interface-is-initialized">A function to run before the configuration interface gets initialized</a>.</td>
+        <a href="/API/helpers/interface-hooks#run-a-function-before-the-interface-is-initialized">A function to run before the configuration interface gets initialized</a>.</td>
     </tr>
     <tr>
       <td><code>configuration.ready</code></td>
       <td><code>Function</code></td>
       <td>optional</td>
       <td>
-        <a href="/API/helpers/interface-hooks.html#run-a-function-when-the-interface-is-initialized">A function to run when the configuration interface gets initialized</a>.</td>
+        <a href="/API/helpers/interface-hooks#run-a-function-when-the-interface-is-initialized">A function to run when the configuration interface gets initialized</a>.</td>
     </tr>
     <tr>
       <td><code>configuration.beforeSave</code></td>
       <td><code>Function</code></td>
       <td>optional</td>
       <td>
-        <a href="/API/helpers/interface-hooks.html#run-a-function-before-the-interface-is-saved">A function to run before the configuration interface data is saved.</a>.</td>
+        <a href="/API/helpers/interface-hooks#run-a-function-before-the-interface-is-saved">A function to run before the configuration interface data is saved.</a>.</td>
     </tr>
     <tr>
       <td><code>views</code></td>
       <td><code>Object</code></td>
       <td>optional</td>
       <td>
-        <a href="/API/helpers/views.html">The list of rich content views</a>.</td>
+        <a href="/API/helpers/views">The list of rich content views</a>.</td>
     </tr>
     <tr>
       <td><code>childOf</code></td>
       <td><code>Array</code></td>
       <td>optional</td>
       <td>
-        <a href="/API/helpers/views.html#define-where-a-helper-can-be-dropped-into">The list of helpers an helper can be dropped in</a>.</td>
+        <a href="/API/helpers/views#define-where-a-helper-can-be-dropped-into">The list of helpers an helper can be dropped in</a>.</td>
     </tr>
   </tbody>
 </table>
@@ -22942,37 +22950,37 @@ Fliplet.Helper({
       <td><code>instance.set</code></td>
       <td><code>Function</code></td>
       <td>
-        <a href="/API/helpers/fields.html#updating-fields">Update the helper instance fields</a>.</td>
+        <a href="/API/helpers/fields#updating-fields">Update the helper instance fields</a>.</td>
     </tr>
     <tr>
       <td><code>instance.find</code></td>
       <td><code>Function</code></td>
       <td>
-        <a href="/API/helpers/methods.html#find-all-nested-helpers">Find nested helpers</a>.</td>
+        <a href="/API/helpers/methods#find-all-nested-helpers">Find nested helpers</a>.</td>
     </tr>
     <tr>
       <td><code>instance.findOne</code></td>
       <td><code>Function</code></td>
       <td>
-        <a href="/API/helpers/methods.html#find-a-nested-helper">Find a nested helper</a>.</td>
+        <a href="/API/helpers/methods#find-a-nested-helper">Find a nested helper</a>.</td>
     </tr>
     <tr>
       <td><code>instance.children</code></td>
       <td><code>Function</code></td>
       <td>
-        <a href="/API/helpers/methods.html#find-all-children-helpers">Find direct child helpers</a>.</td>
+        <a href="/API/helpers/methods#find-all-children-helpers">Find direct child helpers</a>.</td>
     </tr>
     <tr>
       <td><code>instance.parents</code></td>
       <td><code>Function</code></td>
       <td>
-        <a href="/API/helpers/methods.html#find-all-parents">Find all parent helpers</a>.</td>
+        <a href="/API/helpers/methods#find-all-parents">Find all parent helpers</a>.</td>
     </tr>
     <tr>
       <td><code>instance.closest</code></td>
       <td><code>Function</code></td>
       <td>
-        <a href="/API/helpers/methods.html#find-closest-helper">Find closest helper</a>.</td>
+        <a href="/API/helpers/methods#find-closest-helper">Find closest helper</a>.</td>
     </tr>
   </tbody>
 </table>
@@ -23505,7 +23513,7 @@ The following links might help you and your IT to configure the integration. Ple
 
 ---
 
-[Back to API documentation](../../API-Documentation.md)
+[Back to API documentation](../../API-Documentation)
 {: .buttons}
 
 ---
@@ -23563,7 +23571,7 @@ var compiledHTML = template(context);
 $('#output').html(compiledHTML);
 ```
 
-<img src="../../assets/img/handlebars.png" />
+<img src="../../assets/img/handlebars.png" alt="Handlebars logo" loading="lazy" />
 
 ## Using helpers to enhance your templates
 
@@ -23771,7 +23779,7 @@ btn.getTarget();
 
 ---
 
-[Back to API documentation](../API-Documentation.md)
+[Back to API documentation](../API-Documentation)
 {: .buttons}
 
 ---
@@ -24086,6 +24094,1850 @@ provider.emit('widget-autosize');
 
 [Back to Providers](../../components/Using-Providers.html)
 {: .buttons}
+
+---
+
+# V3 app analytics and event tracking
+URL: https://developers.fliplet.com/API/v3/analytics.html
+
+# V3 app analytics and event tracking
+
+V3 apps get page-view tracking, session tracking, and device tracking for free — you don't need to wire any of it up. What you **do** need to add are `Fliplet.App.Analytics.event(...)` calls for meaningful user interactions that can't be inferred from a route change: form submissions, CTA clicks, flow completions, error acknowledgments.
+
+This doc tells you what's automatic, what to add, and how to keep event taxonomy clean enough that the analytics dashboards stay readable at scale.
+
+## Contents
+
+- [What you get for free](#what-you-get-for-free)
+- [What to add — custom events](#what-to-add--custom-events)
+- [Taxonomy — category, action, label](#taxonomy--category-action-label)
+- [Worked examples](#worked-examples)
+- [What **not** to track](#what-not-to-track)
+- [Related](#related)
+
+## What you get for free
+
+The `fliplet-analytics-spa` runtime library is preloaded on every V3 app and fires a `pageView` on every client-side route change. No code from the app is required.
+
+What it covers:
+
+- **Initial page load** — one `pageView` when `Fliplet.ready()` resolves.
+- **Client-side navigation** — one `pageView` on every `history.pushState` / `history.replaceState` (from any framework), plus `popstate` (back/forward) and `hashchange`. Consecutive navigations to the same URL are de-duped.
+- **Sessions** — the core analytics session (rotates every 30 minutes, per user) is managed by `fliplet-core`.
+- **Device / platform context** — `_platform`, `_os`, `_userEmail`, `_analyticsSessionId`, `_pageId`, `_pageTitle` are added to every event by the core tracker.
+
+Each auto `pageView` payload includes:
+
+| Field | Example | Notes |
+| --- | --- | --- |
+| `_pageTitle` | `/orders/:id` | Matched route pattern from the V3 manifest; falls back to raw path if no pattern matches. |
+| `_route` | `/orders/:id` | Same as `_pageTitle`, reserved for future payload enrichment. |
+| `_routeRaw` | `/orders/123?ref=email#top` | Actual URL including query and hash. |
+| `_routeParams` | `{ id: "123" }` | Params extracted from the pattern. |
+| `_routeName` | `"Order"` | `name` from the manifest route entry (if set). |
+
+Because page views are automatic, **do not call `Fliplet.App.Analytics.pageView(...)` yourself** from V3 app code. You'll double-count and pollute the pattern-matching.
+
+## What to add — custom events
+
+Use `Fliplet.App.Analytics.event(...)` for user-intent signals that can't be inferred from the URL. A rule of thumb: if a product manager would ask "how many people did X", X is probably an event.
+
+```js
+Fliplet.App.Analytics.event({
+  category: 'contact-form',
+  action: 'submit',
+  label: 'support-request'
+});
+```
+
+Good candidates:
+
+- Form submissions (with the form's name as `label`).
+- Primary CTAs — "Sign up", "Request demo", "Add to cart".
+- Flow completions — e.g. the user reaches the "thank you" step of a checkout.
+- Error acknowledgments — the user clicks "retry" or dismisses an error toast.
+- Feature toggles — user opens a filter panel, switches tabs into a rarely-used view.
+
+Poor candidates (skip these):
+
+- Scroll position, hover, focus / blur — too noisy, high cardinality, rarely answer a business question.
+- Anything tied to route changes — page views cover this.
+- Keystrokes or character-by-character input — always noise.
+
+## Taxonomy — category, action, label
+
+Events are aggregated in the dashboards by these three fields. Keep them disciplined or the dashboards become unreadable.
+
+- **`category`** — a stable, bounded namespace. Treat it like a table name. Examples: `'contact-form'`, `'onboarding'`, `'cart'`. Don't use free-form strings like `'Tracking user clicks on button 3'`.
+- **`action`** — a verb describing what happened. Examples: `'submit'`, `'click'`, `'complete'`, `'dismiss'`, `'retry'`. Past-tense is fine (`'submitted'`), just be consistent.
+- **`label`** — the specific instance, bounded. Examples: `'support-request'`, `'step-3'`, `'paywall'`. Never put PII here — no emails, phone numbers, names, user IDs, auth tokens, or free-form user input.
+
+Cardinality rule: `category` × `action` × `label` should produce at most a few hundred unique combinations per app. If a value is effectively unbounded (e.g. per-user IDs), it does not belong in the analytics payload — query the data source instead.
+
+## Worked examples
+
+### Good — form submission on a contact form
+
+```js
+document.querySelector('#contact-form').addEventListener('submit', function() {
+  Fliplet.App.Analytics.event({
+    category: 'contact-form',
+    action: 'submit',
+    label: 'support-request'
+  });
+});
+```
+
+### Good — checkout flow completion
+
+```js
+function onOrderConfirmed(order) {
+  Fliplet.App.Analytics.event({
+    category: 'checkout',
+    action: 'complete',
+    label: order.plan // 'starter' | 'pro' | 'enterprise' — bounded set
+  });
+}
+```
+
+### Good — user dismisses an error toast
+
+```js
+toast.on('dismiss', function() {
+  Fliplet.App.Analytics.event({
+    category: 'error',
+    action: 'dismiss',
+    label: toast.code // 'network', 'validation', 'unauthorized' — bounded
+  });
+});
+```
+
+### Bad — duplicating automatic page views
+
+```js
+// DO NOT do this. Page views are auto-tracked.
+router.afterEach(function(to) {
+  Fliplet.App.Analytics.pageView({ _pageTitle: to.path });
+});
+```
+
+### Bad — unbounded label containing PII
+
+```js
+// DO NOT do this. email is PII and has unbounded cardinality.
+Fliplet.App.Analytics.event({
+  category: 'login',
+  action: 'submit',
+  label: user.email
+});
+```
+
+### Bad — every scroll
+
+```js
+// DO NOT do this. Scroll noise drowns out real signals.
+window.addEventListener('scroll', function() {
+  Fliplet.App.Analytics.event({ category: 'scroll', action: 'move' });
+});
+```
+
+## What **not** to track
+
+- **PII** — never put emails, phone numbers, names, address fragments, auth tokens, or session IDs into `label` or any custom field you pass to `event(...)`. Core adds `_userEmail` automatically if the user is logged in; that's the sanctioned channel.
+- **Secrets** — same as PII: no auth tokens, no API keys, no one-time codes.
+- **High-cardinality identifiers** — per-record IDs, UUIDs, free-text user input. Aggregate these in data sources; they don't belong in analytics.
+- **Anything already on the URL** — auto page views already capture the route pattern and params. Don't add events that duplicate that information.
+
+## Related
+
+- [V3 routing](routing) — the route manifest that powers auto page-view pattern matching.
+- [Core analytics API](../core/analytics) — full reference for `Fliplet.App.Analytics`, including `track`, `get`, and `count`.
+
+---
+
+# V3 app bootstrap constraints
+URL: https://developers.fliplet.com/API/v3/app-bootstrap.html
+
+# V3 app bootstrap constraints
+
+A V3 app is a single HTML boot page that hosts the whole SPA. The page can use any framework (Vue, React, Svelte, vanilla JS, etc.), but it **must** satisfy three constraints so the Fliplet runtime, dependency loader, and media authentication work correctly.
+
+Each constraint maps to a concrete platform guarantee: (1) dependencies resolve through the Fliplet asset pipeline so versioning, caching, and per-environment injection work; (2) source files are fetched with signed media requests so private apps don't leak their screens; (3) the runtime registers its globals (`Fliplet.ENV`, `Fliplet.Router`, `Fliplet.Session`, etc.) before your framework mounts.
+
+<p class="warning">Skip any of these constraints and the app either fails at boot, or works in dev and breaks in production.</p>
+
+## 1. Fetch dependencies with `Fliplet.require.lazy`
+
+Any registered Fliplet dependency (Vue, React, Vue Router, etc.) **must** be loaded with `Fliplet.require.lazy(name)`. Never use `<script>` tags, `import`, or raw CDN URLs. These bypass the Fliplet asset pipeline and break versioning, caching, and dependency resolution.
+
+```js
+Fliplet.require.lazy('vue').then(function() {
+  // the 'vue' global is now available
+});
+```
+
+Chain multiple `.then()` calls to load several dependencies in sequence.
+
+## 2. Fetch source files with `Fliplet.Media.getContents`
+
+Source files for the app (component files, templates, JSON config, etc.) live in the app's media library. Their contents **must** be fetched at runtime with `Fliplet.Media.getContents(fileId)`. Never call `fetch()` on a media URL directly. Media URLs require authentication and will fail without it.
+
+```js
+Fliplet.Media.getContents(fileId).then(function(content) {
+  // content is the raw file source as a string
+});
+```
+
+The `fileId` is the **numeric `id`** of the file in the app's media library (returned by media upload APIs). It is never a URL.
+
+## 3. Init sequence
+
+The boot script must end with this call:
+
+```js
+Fliplet().then(function() {
+  // runtime is ready. Mount your framework or start your app here.
+});
+```
+
+`Fliplet().then(...)` waits for the Fliplet runtime to be fully ready before the app starts.
+
+<p class="warning">Skipping this breaks the boot.</p>
+
+## What's next: routing
+
+V3 uses History API routing driven by the manifest at `app.settings.v3`, accessed via `Fliplet.Router`. Hash routing is forbidden on every platform. For the full contract, per-framework examples, and the anti-patterns that break V3 apps, see [V3 routing](routing).
+
+## Related
+
+- [V3 routing](routing). History API contract, route manifest, and the forbidden-pattern reference.
+- [Fliplet Router JS API](fliplet-router). Method reference for `Fliplet.Router` (`getBasePath`, `getRouteManifest`, `resolveRoute`).
+- [V3 app settings convention](app-settings). Where `window.ENV.appSettings` comes from and the public/private key convention.
+- [Media JS APIs](../fliplet-media). Full reference for `Fliplet.Media.getContents` and related media calls.
+
+---
+
+# V3 App Settings Convention
+URL: https://developers.fliplet.com/API/v3/app-settings.html
+
+# V3 App Settings Convention
+
+App settings in V3 use `app.settings` to store configuration for features like authentication, push notifications, and analytics. This page describes the naming convention that controls which settings are visible to the app runtime (preview and published apps) vs only to Studio editors.
+
+## The Underscore Convention
+
+Settings keys that start with `_` are **editor-private**. They are visible to Studio editors managing the app but are NOT included in the app runtime (preview iframe, published apps, bundled apps).
+
+| Key pattern | Who can read it | Example |
+|---|---|---|
+| `settingName` | App runtime + Studio + backend | `app.settings.saml2` (IdP URL, attribute mappings) |
+| `_settingName` | Studio editors + backend only | `app.settings._saml2` (IdP certificate) |
+
+The convention uses **top-level key namespacing**. All private settings for a feature go under a single `_feature` key, not mixed into the public feature key.
+
+## How It Works
+
+```
+app.settings = {
+  // Public settings — visible to the running app, Studio, and backend
+  saml2: {
+    idpUrl: 'https://idp.company.com/sso',
+    attributeMappings: { email: 'Email', name: 'Name' }
+  },
+
+  // Editor-private settings — visible to Studio editors, NOT to the running app
+  _saml2: {
+    idpCertificate: '-----BEGIN CERTIFICATE-----\nMIID...'
+  }
+}
+```
+
+When the app loads in the preview iframe or as a published app, `_saml2` is stripped from `window.ENV.appSettings`. The running app only sees:
+
+```js
+window.ENV.appSettings = {
+  saml2: {
+    idpUrl: 'https://idp.company.com/sso',
+    attributeMappings: { email: 'Email', name: 'Name' }
+  }
+  // _saml2 is NOT here
+}
+```
+
+Backend code (server-side passports, hooks, app actions) reads the full `app.settings` from the model — no filtering is applied server-side.
+
+## Usage Patterns
+
+### Reading Public Settings (App Runtime)
+
+```js
+// In a Vue component or app code — reads from the runtime environment
+var appSettings = window.ENV.appSettings || {};
+var saml2Config = appSettings.saml2;
+
+if (saml2Config && saml2Config.idpUrl) {
+  // SAML2 is configured — show SSO login button
+}
+```
+
+### Reading All Settings (Studio)
+
+```js
+// In Studio code (AppSettings.vue, tools, etc.) — reads full settings including _prefixed
+var response = await Fliplet.API.request({ url: 'v1/apps/' + appId + '/settings/' });
+var settings = response;
+
+// settings._saml2 is available here (editor context)
+var certificate = settings._saml2 && settings._saml2.idpCertificate;
+```
+
+### Saving Settings
+
+The `PUT /v1/apps/:id` endpoint performs a **shallow merge** on `settings`. Top-level keys in your request overwrite existing keys with the same name. Keys you don't include are preserved. Nested objects are replaced entirely, not deep-merged.
+
+```js
+// Save both public and private settings together.
+// This MERGES at the top level: saml2 and _saml2 are set/replaced,
+// but other top-level keys (customCSS, etc.) are preserved.
+await Fliplet.API.request({
+  url: 'v1/apps/' + appId,
+  method: 'PUT',
+  data: {
+    settings: {
+      saml2: {
+        idpUrl: 'https://idp.company.com/sso',
+        attributeMappings: { email: 'Email', name: 'Name' }
+      },
+      _saml2: {
+        idpCertificate: certificateText
+      }
+    }
+  }
+});
+
+// WARNING: This replaces the ENTIRE _saml2 object.
+// If _saml2 previously had { idpCertificate, otherField },
+// after this call it only has { idpCertificate }.
+// Always send the complete object for each top-level key.
+```
+
+## DO and DON'T
+
+```js
+// DO: Use top-level namespacing for private settings
+app.settings._saml2 = { idpCertificate: '...' };
+
+// DON'T: Mix private keys inside a public namespace
+app.settings.saml2 = { idpUrl: '...', _certificate: '...' };
+// The _ filter only operates on top-level keys. Nested _ keys are NOT filtered.
+
+// DO: Put related public and private config in sibling keys
+app.settings.push = { enabled: true };       // public
+app.settings._push = { apnsCertificate: '...' };  // editor-private
+
+// DON'T: Store secrets that should never leave the server in _ keys
+// _ keys are visible to Studio editors. For truly server-only secrets,
+// a future convention (__prefix) will be used. For now, use app widgets
+// or environment variables for server-only secrets.
+
+// DO: Check for existence before reading settings
+var saml2 = app.settings.saml2 || {};
+
+// DON'T: Assume settings exist — they may not be configured yet
+var url = app.settings.saml2.idpUrl; // Throws if saml2 is undefined
+```
+
+## When to Use Private Settings
+
+Use `_` prefix for settings that:
+- Contain credentials, certificates, or keys that app users should not see
+- Are only needed by Studio UI or backend processing, not by the running app
+- Would be a security risk if exposed in client-side JavaScript
+
+Examples:
+- `_saml2.idpCertificate` — X.509 certificate for SAML signature verification
+- `_push.apnsCertificate` — Apple Push Notification certificate (future)
+- `_analytics.apiKey` — Analytics service API key (future)
+
+## Related
+
+- [Session JS APIs](../fliplet-session) — session management
+- [V3 Authentication Patterns](auth) — auth flows for V3 apps
+- [App Security](../../App-security) — app-level access control
+
+---
+
+# V3 Authentication Patterns
+URL: https://developers.fliplet.com/API/v3/auth.html
+
+# V3 Authentication Patterns
+
+Authentication in V3 apps uses the `Fliplet.Session` API to authenticate users against a Data Source. This page covers email/password login, session checks, logout, forgot-password, and protected route patterns specific to V3 single-page apps.
+
+For SAML2/SSO configuration, use the SAML2 tab in App Settings (not code). For email verification (passwordless), see the [Email Verification docs](../components/email-verification). For the full Session API reference, see [Session JS APIs](../fliplet-session).
+
+## Prerequisites
+
+- A Data Source containing user records with at least `Email` and `Password` columns
+- Security rules configured on the Data Source (see [Data Source Security](../../Data-source-security))
+- The `fliplet-datasources` dependency added to your app
+
+## Email/Password Login
+
+### Basic Login
+
+Authenticate a user against a Data Source using `Fliplet.Session.authorize()`. This creates a server-side session that persists across page navigations.
+
+```js
+async function loginUser(email, password, dataSourceId) {
+  try {
+    const session = await Fliplet.Session.authorize({
+      passport: 'dataSource',
+      dataSourceId: dataSourceId,
+      where: {
+        Email: email,
+        Password: password
+      }
+    });
+
+    // session.entries.dataSource.data contains the matched user record
+    // e.g., { Email: 'user@company.com', Name: 'Jane Smith', Role: 'Editor' }
+    const user = session.entries.dataSource.data;
+
+    console.log('Logged in as:', user.Email);
+
+    return session;
+  } catch (error) {
+    // Common errors:
+    // - "Unauthorized" — email or password does not match any record
+    // - Network errors — device is offline
+    console.error('Login failed:', error.message || error);
+    throw error;
+  }
+}
+```
+
+**Parameters for `Fliplet.Session.authorize()`:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `passport` | String | Yes | Must be `'dataSource'` for email/password login |
+| `dataSourceId` | Number | Yes | The ID of the Data Source containing user records |
+| `where` | Object | Yes | Field-value pairs to match. Typically `{ Email, Password }` |
+
+**Returns:** `Promise<Session>` — the session object with `entries.dataSource.data` containing the matched user record.
+
+**Errors:** Throws if credentials don't match or if the network request fails. The error does NOT reveal whether the email or password was wrong (security best practice).
+
+### Login Screen Vue Component
+
+A complete login screen as a Vue SFC for V3 apps:
+
+```html
+<template>
+  <div class="login-screen">
+    <div class="login-card">
+      <h1>Sign In</h1>
+      <form @submit.prevent="handleLogin">
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            id="email"
+            v-model="email"
+            type="email"
+            required
+            autocomplete="email"
+            placeholder="you@company.com"
+          />
+        </div>
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input
+            id="password"
+            v-model="password"
+            type="password"
+            required
+            autocomplete="current-password"
+          />
+        </div>
+        <p v-if="errorMessage" class="error-text">{{ errorMessage }}</p>
+        <button type="submit" :disabled="isLoading">
+          {{ isLoading ? 'Signing in...' : 'Sign In' }}
+        </button>
+      </form>
+      <p class="forgot-link">
+        <a href="#" @click.prevent="$router.push('/forgot-password')">Forgot password?</a>
+      </p>
+    </div>
+  </div>
+</template>
+
+<script>
+// Replace with the actual Data Source ID for your users table
+var USERS_DATA_SOURCE_ID = 123456;
+
+export default {
+  data: function() {
+    return {
+      email: '',
+      password: '',
+      errorMessage: '',
+      isLoading: false
+    };
+  },
+  methods: {
+    handleLogin: async function() {
+      this.errorMessage = '';
+      this.isLoading = true;
+
+      try {
+        await Fliplet.Session.authorize({
+          passport: 'dataSource',
+          dataSourceId: USERS_DATA_SOURCE_ID,
+          where: {
+            Email: this.email,
+            Password: this.password
+          }
+        });
+
+        // Login successful — navigate to the home screen
+        this.$router.push('/home');
+      } catch (error) {
+        this.errorMessage = 'Invalid email or password. Please try again.';
+      } finally {
+        this.isLoading = false;
+      }
+    }
+  }
+};
+</script>
+
+<style scoped>
+.login-screen {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+}
+.login-card {
+  width: 100%;
+  max-width: 400px;
+}
+.form-group {
+  margin-bottom: 16px;
+}
+.form-group label {
+  display: block;
+  margin-bottom: 4px;
+  font-weight: 500;
+}
+.form-group input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 16px;
+}
+.error-text {
+  color: #dc3545;
+  font-size: 14px;
+}
+button[type="submit"] {
+  width: 100%;
+  padding: 12px;
+  background: #4A90D9;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 16px;
+  cursor: pointer;
+}
+button[type="submit"]:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+.forgot-link {
+  text-align: center;
+  margin-top: 16px;
+}
+</style>
+```
+
+## Session Check
+
+Check whether the user is logged in. Use this in your App shell component or route guards to protect screens.
+
+```js
+async function isLoggedIn() {
+  try {
+    var session = await Fliplet.User.getCachedSession();
+
+    // getCachedSession returns the locally cached session (works offline).
+    // session.entries.dataSource exists if the user logged in via email/password.
+    return !!(session && session.entries && session.entries.dataSource);
+  } catch (error) {
+    return false;
+  }
+}
+```
+
+`Fliplet.User.getCachedSession()` is fast and works offline because it reads from local storage. Use it for UI decisions (show/hide content). For server-verified session checks, use `Fliplet.Session.get()` instead (requires network).
+
+### Get the Logged-In User's Data
+
+```js
+async function getCurrentUser() {
+  var session = await Fliplet.User.getCachedSession();
+
+  if (!session || !session.entries || !session.entries.dataSource) {
+    return null; // Not logged in
+  }
+
+  // Returns all columns from the user's Data Source record
+  // e.g., { Email: 'jane@company.com', Name: 'Jane Smith', Role: 'Editor' }
+  return session.entries.dataSource.data;
+}
+```
+
+## Logout
+
+Clear the session and redirect to the login screen. V3 uses History API routing on every platform, so redirect via your router (or `history.pushState` + `Fliplet.Router.getBasePath()`) — never `window.location.hash`. See [V3 Routing](routing) for the full contract.
+
+```js
+// Called from a component that has a router instance in scope.
+async function logout(router) {
+  await Fliplet.Session.logout('dataSource');
+
+  router.push('/login');
+}
+```
+
+If you don't have a router handy (e.g., a framework-agnostic helper), use the History API directly:
+
+```js
+async function logout() {
+  await Fliplet.Session.logout('dataSource');
+
+  history.pushState({}, '', Fliplet.Router.getBasePath() + '/login');
+  // Trigger your router's re-render. In vanilla setups, dispatch a popstate.
+  window.dispatchEvent(new PopStateEvent('popstate'));
+}
+```
+
+`Fliplet.Session.logout('dataSource')` clears the dataSource passport. To log out from all passport types (dataSource, saml2, flipletLogin), call `Fliplet.Session.logout()` with no arguments.
+
+## Protected Routes with Vue Router Guards
+
+In V3 apps using Vue Router, protect routes by checking the session before navigation. This section assumes the router was built per the V3 routing contract (History API, base path from `Fliplet.Router.getBasePath()`, routes from `Fliplet.Router.getRouteManifest()`). See the [Vue Router 4 example](routing#vue-router-4-vue-3) in the V3 Routing doc — or the sibling examples for other frameworks — before wiring the guard below.
+
+### In the App Shell (App.vue)
+
+Add a `beforeEach` guard to the router in your boot template's `initVueApp()` function. This does NOT go inside an SFC file. It goes in the boot HTML:
+
+```js
+// Inside initVueApp(), after creating the router:
+router.beforeEach(function(to, from, next) {
+  // Define which routes are public (accessible without login)
+  var publicRoutes = ['/login', '/forgot-password', '/reset-password'];
+
+  if (publicRoutes.indexOf(to.path) !== -1) {
+    return next(); // Public route — allow
+  }
+
+  // Check session for protected routes
+  Fliplet.User.getCachedSession().then(function(session) {
+    if (session && session.entries && session.entries.dataSource) {
+      next(); // Logged in — allow
+    } else {
+      next('/login'); // Not logged in — redirect to login
+    }
+  }).catch(function() {
+    next('/login'); // Error checking session — redirect to login
+  });
+});
+```
+
+### Route Configuration
+
+Define your routes so the login screen is accessible without authentication:
+
+```js
+routes: [
+  { path: '/', redirect: '/home' },
+  { path: '/login', name: 'Login', component: function() { return loadComponent(COMPONENT_FILES.Login); } },
+  { path: '/forgot-password', name: 'ForgotPassword', component: function() { return loadComponent(COMPONENT_FILES.ForgotPassword); } },
+  { path: '/home', name: 'Home', component: function() { return loadComponent(COMPONENT_FILES.Home); } },
+  { path: '/settings', name: 'Settings', component: function() { return loadComponent(COMPONENT_FILES.Settings); } }
+]
+```
+
+## Forgot Password
+
+Password reset uses the existing Data Source validation APIs. Code generation, storage, email delivery, and verification all happen server-side. The client orchestrates the UI steps.
+
+The flow uses three existing APIs:
+1. `dataSource.sendValidation()` — server generates a code, stores it, sends it via email
+2. `dataSource.validate()` — server verifies the code, marks the user as needing a password reset
+3. `Fliplet.Session.updateUserPassword()` — server updates the password
+
+**Do NOT build custom password reset logic.** These APIs handle code generation, expiry, and verification server-side. The client never sees the reset code.
+
+### Forgot Password Screen (Vue SFC)
+
+```html
+<template>
+  <div class="forgot-password-screen">
+    <div class="form-card">
+      <h1>Reset Password</h1>
+
+      <!-- Step 1: Enter email -->
+      <div v-if="step === 'email'">
+        <p>Enter your email address and we'll send you a verification code.</p>
+        <form @submit.prevent="sendCode">
+          <div class="form-group">
+            <label for="reset-email">Email</label>
+            <input id="reset-email" v-model="email" type="email" required />
+          </div>
+          <p v-if="errorMessage" class="error-text">{{ errorMessage }}</p>
+          <button type="submit" :disabled="isLoading">
+            {{ isLoading ? 'Sending...' : 'Send Code' }}
+          </button>
+        </form>
+      </div>
+
+      <!-- Step 2: Enter code -->
+      <div v-if="step === 'verify'">
+        <p>Enter the verification code sent to {{ email }}</p>
+        <form @submit.prevent="verifyCode">
+          <div class="form-group">
+            <label for="code">Verification Code</label>
+            <input id="code" v-model="code" type="text" required />
+          </div>
+          <p v-if="errorMessage" class="error-text">{{ errorMessage }}</p>
+          <button type="submit" :disabled="isLoading">
+            {{ isLoading ? 'Verifying...' : 'Verify Code' }}
+          </button>
+        </form>
+      </div>
+
+      <!-- Step 3: New password -->
+      <div v-if="step === 'reset'">
+        <p>Choose a new password.</p>
+        <form @submit.prevent="resetPassword">
+          <div class="form-group">
+            <label for="new-password">New Password</label>
+            <input id="new-password" v-model="newPassword" type="password" required minlength="8" />
+          </div>
+          <div class="form-group">
+            <label for="confirm-password">Confirm Password</label>
+            <input id="confirm-password" v-model="confirmPassword" type="password" required minlength="8" />
+          </div>
+          <p v-if="errorMessage" class="error-text">{{ errorMessage }}</p>
+          <button type="submit" :disabled="isLoading">
+            {{ isLoading ? 'Resetting...' : 'Reset Password' }}
+          </button>
+        </form>
+      </div>
+
+      <p class="back-link">
+        <a href="#" @click.prevent="$router.push('/login')">Back to Sign In</a>
+      </p>
+    </div>
+  </div>
+</template>
+
+<script>
+var USERS_DATA_SOURCE_ID = 123456; // Replace with your Users data source ID
+var EMAIL_COLUMN = 'Email';        // The column name for email in your data source
+var PASSWORD_COLUMN = 'Password';  // The column name for password in your data source
+
+export default {
+  data: function() {
+    return {
+      step: 'email',
+      email: '',
+      code: '',
+      newPassword: '',
+      confirmPassword: '',
+      errorMessage: '',
+      isLoading: false,
+      dataSource: null
+    };
+  },
+  methods: {
+    getDataSource: async function() {
+      if (!this.dataSource) {
+        this.dataSource = await Fliplet.DataSources.connect(USERS_DATA_SOURCE_ID);
+      }
+      return this.dataSource;
+    },
+    sendCode: async function() {
+      this.errorMessage = '';
+      this.isLoading = true;
+
+      try {
+        var ds = await this.getDataSource();
+        var where = {};
+        where[EMAIL_COLUMN] = this.email;
+
+        // Server generates a code, stores it on the entry, and sends it via email.
+        // Returns 204 regardless of whether the email exists (no information leak).
+        await ds.sendValidation({
+          type: 'email',
+          where: where
+        });
+
+        this.step = 'verify';
+      } catch (error) {
+        this.errorMessage = 'Something went wrong. Please try again.';
+      } finally {
+        this.isLoading = false;
+      }
+    },
+    verifyCode: async function() {
+      this.errorMessage = '';
+      this.isLoading = true;
+
+      try {
+        var ds = await this.getDataSource();
+
+        // Server validates the code and marks the session for password reset.
+        // This also logs the user in temporarily so updateUserPassword works.
+        await ds.validate({
+          type: 'email',
+          where: {
+            code: this.code
+          },
+          requiresPasswordReset: true
+        });
+
+        this.step = 'reset';
+      } catch (error) {
+        this.errorMessage = 'Invalid or expired code. Please try again.';
+      } finally {
+        this.isLoading = false;
+      }
+    },
+    resetPassword: async function() {
+      this.errorMessage = '';
+
+      if (this.newPassword !== this.confirmPassword) {
+        this.errorMessage = 'Passwords do not match.';
+        return;
+      }
+
+      if (this.newPassword.length < 8) {
+        this.errorMessage = 'Password must be at least 8 characters.';
+        return;
+      }
+
+      this.isLoading = true;
+
+      try {
+        // Server updates the password on the data source entry and logs out the user.
+        await Fliplet.Session.updateUserPassword({
+          newPassword: this.newPassword,
+          passwordColumn: PASSWORD_COLUMN
+        });
+
+        // Password updated — redirect to login
+        this.$router.push('/login');
+      } catch (error) {
+        this.errorMessage = 'Failed to reset password. Please try again.';
+      } finally {
+        this.isLoading = false;
+      }
+    }
+  }
+};
+</script>
+```
+
+**API Reference for the forgot-password flow:**
+
+| Step | Client calls | Server does |
+|---|---|---|
+| Send code | `dataSource.sendValidation({ type: 'email', where: { Email: '...' } })` | Generates code, stores on entry, sends email. Returns 204 (no info leak). |
+| Verify code | `dataSource.validate({ type: 'email', where: { code: '...' }, requiresPasswordReset: true })` | Validates code, checks expiry (24h default), creates temporary session. |
+| Reset password | `Fliplet.Session.updateUserPassword({ newPassword, passwordColumn })` | Updates password column on data source entry, logs out user. |
+
+This is the same flow the V2 login widget uses. All security-critical operations (code generation, validation, password storage) happen server-side.
+
+## Patterns — DO and DON'T
+
+```js
+// DO: Use Fliplet.Session.authorize() for email/password login
+await Fliplet.Session.authorize({ passport: 'dataSource', dataSourceId: id, where: { Email, Password } });
+
+// DON'T: Store session tokens in localStorage
+// localStorage is partitioned in cross-origin iframes (Studio preview).
+// Fliplet.Session handles storage internally.
+
+// DO: Use Fliplet.User.getCachedSession() for session checks (fast, works offline)
+var session = await Fliplet.User.getCachedSession();
+
+// DON'T: Use Fliplet.Session.get() for every session check
+// Session.get() makes a network request. Use getCachedSession() for UI decisions.
+
+// DO: Use Vue Router guards for protected routes (see above)
+// DON'T: Check the session inside every component's mounted() hook
+
+// DO: Use Fliplet.Session.logout('dataSource') for dataSource logouts
+// DON'T: Clear cookies or localStorage manually — the SDK handles cleanup
+
+// DO: Show generic "Invalid email or password" errors
+// DON'T: Reveal whether the email or password was wrong separately
+```
+
+## Related
+
+- [V3 Routing](routing) — base path, route manifest, `resolveRoute`, and post-login redirect pattern.
+- [V3 App Bootstrap](app-bootstrap) — the three boot-HTML constraints every V3 app must satisfy.
+- [Session JS APIs](../fliplet-session) — full session API reference
+- [Login Component](../components/login) — V2 login component hooks
+- [Email Verification](../components/email-verification) — passwordless login flow
+- [Data Source Security](../../Data-source-security) — security rules for user data sources
+- [App Security](../../App-security) — app-level access control rules
+
+---
+
+# Fliplet Router JS API
+URL: https://developers.fliplet.com/API/v3/fliplet-router.html
+
+# Fliplet Router JS API
+
+`Fliplet.Router` is the client-side routing helper for V3 SPA apps. It reads the route manifest from `app.settings.v3`, normalizes the base path for the current hosting context (slug-hosted web, Studio preview iframe, native shell), and performs server-ACL-backed access checks for each route.
+
+<p class="info"><code>Fliplet.Router</code> is available on V3 apps only and is auto-loaded at boot. It depends on <code>fliplet-core</code> (<code>Fliplet.Env</code>, <code>Fliplet.User</code>) and <code>fliplet-media</code> (<code>Fliplet.Media.getContents</code>).</p>
+
+For the full routing contract, per-framework integration examples, and forbidden patterns, see [V3 routing](routing). This page is the API reference only.
+
+## Contents
+
+- [Methods](#methods)
+  - [getBasePath()](#flipletroutergetbasepath)
+  - [getRouteManifest()](#flipletroutergetroutemanifest)
+  - [getRouteConfig(path)](#flipletroutergetrouteconfigpath)
+  - [resolveRoute(pathOrRoute)](#flipletrouterresolveroutepathorroute)
+- [Reason codes](#reason-codes)
+- [Manifest shape](#manifest-shape)
+- [Related](#related)
+
+## Methods
+
+### `Fliplet.Router.getBasePath()`
+
+Returns the base path used by the router's history mode, normalized with a trailing slash so string concatenation doesn't produce `//route`.
+
+**Returns:** `String`
+
+The value depends on the hosting context:
+
+| Context | Example value |
+|---|---|
+| Root-hosted web app | `/` |
+| Slug-hosted web app | `/my-slug/` |
+| Studio preview iframe | `/v1/apps/42/pages/99/preview/` |
+| Native shell | Computed by the shell at runtime |
+
+```js
+var base = Fliplet.Router.getBasePath();
+
+// Pass to Vue Router 4:
+var history = VueRouter.createWebHistory(base);
+
+// Pass to React Router 6:
+var router = ReactRouterDOM.createBrowserRouter(routes, { basename: base });
+```
+
+<p class="warning">Never hardcode <code>'/'</code>. Slug-hosted apps, preview iframes, and native shells all mount the SPA at a different base.</p>
+
+### `Fliplet.Router.getRouteManifest()`
+
+Returns the route manifest stored in `app.settings.v3`. Defaults are provided for every field so callers can use the return value without null checks.
+
+**Returns:** `Object` with the following properties:
+
+| Property | Type | Default | Description |
+|---|---|---|---|
+| `routes` | `Array<Object>` | `[]` | Route entries. See [Manifest shape](#manifest-shape). |
+| `defaultRoute` | `String` | `'/'` | Path to redirect to from `/`. |
+| `authRedirect` | `String` | `'/login'` | Path to redirect to when a route is denied. |
+
+```js
+var manifest = Fliplet.Router.getRouteManifest();
+
+manifest.routes.forEach(function(r) {
+  console.log(r.name, r.path, r.fileId, r.public);
+});
+
+console.log(manifest.defaultRoute); // '/home'
+console.log(manifest.authRedirect); // '/login'
+```
+
+### `Fliplet.Router.getRouteConfig(path)`
+
+Looks up a single route entry from the manifest by path. The lookup is path-based and normalizes leading slashes (`home` and `/home` match the same route).
+
+**Parameters:**
+
+| Name | Type | Description |
+|---|---|---|
+| `path` | `String` | Route path, with or without a leading slash. |
+
+**Returns:** `Object | undefined`. The matching route entry from `manifest.routes`, or `undefined` if no route matches.
+
+```js
+var route = Fliplet.Router.getRouteConfig('/home');
+
+if (route) {
+  console.log(route.fileId);   // 222
+  console.log(route.public);   // true
+} else {
+  // Path isn't in the manifest
+}
+```
+
+### `Fliplet.Router.resolveRoute(pathOrRoute)`
+
+Resolves a route to its access decision **and** its screen source. On success, `result.content` is the screen's source already loaded via `Fliplet.Media.getContents` — render it directly rather than re-fetching. The server's media ACL is the source of truth; this method either fast-fails when the outcome is known (no session, unknown route) or derives the decision from the server's 401/403 response.
+
+**Parameters:**
+
+| Name | Type | Description |
+|---|---|---|
+| `pathOrRoute` | `String \| Object` | A route path (string) or a route entry object from the manifest. |
+
+**Returns:** `Promise` that:
+
+- **Resolves** with an access decision (see shapes below).
+- **Rejects** with the underlying error on transient or infra failures (network errors, 5xx responses) so callers can show an error UI instead of redirecting silently.
+
+**Resolution shape on success:**
+
+```js
+{
+  allowed: true,
+  content: '<!-- raw screen HTML/JS source -->',
+  route: { name: 'Home', path: '/home', fileId: 222, public: true }
+}
+```
+
+**Resolution shape on denial:**
+
+```js
+{
+  allowed: false,
+  redirectTo: '/login',      // manifest.authRedirect
+  reason: 'no-session',      // see Reason codes below
+  status: 401                // only present when reason is 'media-denied'
+}
+```
+
+<p class="warning">Don't call <code>Fliplet.Media.getContents(fileId)</code> yourself. <code>resolveRoute</code> already does this internally and returns the content in <code>result.content</code>. A second fetch duplicates the round trip, can race with the access check, and fails outright on private media where auth headers aren't applied.</p>
+
+**Example:**
+
+```js
+Fliplet.Router.resolveRoute('/my-account').then(function(result) {
+  if (!result.allowed) {
+    // Redirect to the auth screen (or wherever the server says)
+    navigate(result.redirectTo);
+    return;
+  }
+
+  // Mount the screen using result.content
+  mountScreen(result.content, result.route);
+}, function(err) {
+  // Transient failure (network, 5xx). Show an error UI rather than redirecting.
+  showErrorScreen(err);
+});
+```
+
+**Passing a route object instead of a path:**
+
+If you already have a route entry from the manifest, you can pass it directly to skip the path lookup:
+
+```js
+var manifest = Fliplet.Router.getRouteManifest();
+var route = manifest.routes[0];
+
+Fliplet.Router.resolveRoute(route).then(function(result) {
+  // ...
+});
+```
+
+## Reason codes
+
+When `resolveRoute` resolves with `allowed: false`, the `reason` property indicates why. Handle each case explicitly.
+
+| `reason` | Triggered when | `redirectTo` | `status` |
+|---|---|---|---|
+| `unknown-route` | The path doesn't match any manifest entry, or the matched entry has no `fileId`. | `manifest.authRedirect` | Not set |
+| `no-session` | The route is non-public and `Fliplet.User.getCachedSession()` returned no session. | `manifest.authRedirect` | Not set |
+| `media-denied` | The server returned `401` or `403` when fetching the screen source. | `manifest.authRedirect` | `401` or `403` |
+
+<p class="warning">The manifest's <code>public: true</code> flag is advisory. It just lets the client skip a known-401 round trip. Flipping <code>public: true</code> in the manifest without updating the media file's access rule grants no access; the server still returns 401 and <code>resolveRoute</code> resolves with <code>reason: 'media-denied'</code>.</p>
+
+Transient errors (network failures, 5xx responses) do not resolve with a reason. They **reject** the Promise with the underlying error so you can distinguish "user can't access this" from "infrastructure is broken".
+
+## Manifest shape
+
+The manifest is stored at `app.settings.v3` and emitted to the runtime via `window.ENV.appSettings`. See [V3 app settings convention](app-settings) for how settings are stored and filtered.
+
+```json
+{
+  "routes": [
+    { "name": "Home",      "path": "/home",       "fileId": 222, "public": true },
+    { "name": "Login",     "path": "/login",      "fileId": 444, "public": true },
+    { "name": "MyAccount", "path": "/my-account", "fileId": 333 }
+  ],
+  "defaultRoute": "/home",
+  "authRedirect": "/login"
+}
+```
+
+Each route entry has the following properties:
+
+| Property | Type | Required | Description |
+|---|---|---|---|
+| `name` | `String` | Yes | Display name for the route. Used in Studio UI and as a named route in framework routers. |
+| `path` | `String` | Yes | URL path the route is mounted at. Must begin with `/`. |
+| `fileId` | `Number` | Yes | Numeric `id` of the media file holding the screen source. `resolveRoute` fetches this via `Fliplet.Media.getContents`. |
+| `public` | `Boolean` | No | If `true`, the client skips the session check before fetching media. Defaults to `false`. Advisory only; the server media ACL is still enforced. |
+
+Update the manifest via the App Settings API (`PUT /v1/apps/:id` with `settings.v3`) or the Studio routing UI whenever you add or remove a user-visible route.
+
+## Related
+
+- [V3 routing](routing). Full routing contract, per-framework examples, forbidden patterns, and post-login redirect.
+- [V3 app bootstrap constraints](app-bootstrap). Three constraints every V3 boot HTML must satisfy.
+- [V3 app settings convention](app-settings). Where the route manifest is stored (`app.settings.v3`).
+- [Media JS APIs](../fliplet-media). `Fliplet.Media.getContents` details.
+
+---
+
+# V3 Alpine.js apps
+URL: https://developers.fliplet.com/API/v3/frameworks/alpine.html
+
+# V3 Alpine.js apps
+
+Alpine fits V3 well because it's attribute-driven HTML with no compile step. Components are just `<div x-data="{...}">` — the kind of markup V3 already evaluates natively. Best fit: form-heavy UIs, settings panels, and single-page CRUD where you'd otherwise reach for jQuery.
+
+## Loading the framework
+
+Add `alpinejs` via `add_dependencies`, then:
+
+```js
+const Alpine = await Fliplet.require.lazy('alpinejs');
+Alpine.start();
+```
+
+**Call `Alpine.start()` inside your `Fliplet().then(...)` callback**, not at module load. Alpine scans the DOM and initializes `x-data` components when it starts — if it starts before the Fliplet runtime resolves, any `x-init` or `x-data` expression that calls `Fliplet.*` will error.
+
+## Features that need a build step
+
+None that Alpine itself requires. The generic V3 constraints still apply:
+
+- No bare ESM `import` across uploaded source files — use `Fliplet.require.lazy` for external deps.
+- No TypeScript.
+- No CSS preprocessing.
+
+## Wiring to Fliplet.Router
+
+Alpine has no router. Pair it with History API routing the same way as vanilla JS:
+
+```js
+function goTo(path) {
+  history.pushState({}, '', Fliplet.Router.getBasePath() + path);
+  window.dispatchEvent(new PopStateEvent('popstate'));
+}
+```
+
+Use `Fliplet.Router.resolveRoute(path)` in your `popstate` handler. See [V3 routing](../routing).
+
+## Binding Fliplet.Media.authenticate
+
+Compute the authenticated URL inside `x-init` or a method, then set a data property:
+
+```html
+<img x-data="{ src: '' }"
+     x-init="Fliplet.Media.authenticate(rawUrl).then(u => src = u)"
+     :src="src">
+```
+
+The `:src="src"` binding updates once the promise resolves. Do not try `:src="Fliplet.Media.authenticate(rawUrl)"` — that binds the Promise, not the URL.
+
+## Common errors
+
+| Symptom in `get_preview_logs('errors')` | Cause | Fix |
+|---|---|---|
+| `Alpine Expression Error: Fliplet is not defined` | `Alpine.start()` called before `Fliplet()` resolved | Move `Alpine.start()` inside `Fliplet().then(...)` |
+| `<img>` renders with a Promise in `src` | Using `Fliplet.Media.authenticate(url)` directly in `:src` | Resolve into a state variable first (see above) |
+| Components don't react | `Alpine.start()` called before the target markup was in the DOM | Ensure the screen source is inserted before Alpine starts, or use `Alpine.initTree(el)` on newly inserted markup |
+
+## DO / DON'T
+
+- DO call `Alpine.start()` inside `Fliplet().then(...)`.
+- DO resolve authenticated URLs into a reactive `x-data` field before binding.
+- DO pair Alpine with History API routing from `Fliplet.Router.getBasePath()`.
+- DON'T bind a Promise directly into an attribute (`:src`, `:href`).
+- DON'T use hash-based navigation — rejected by lint.
+
+## Related
+
+- [V3 app bootstrap](../app-bootstrap)
+- [V3 routing](../routing)
+- [V3 framework overview](overview)
+
+---
+
+# V3 framework guide — picking and setup
+URL: https://developers.fliplet.com/API/v3/frameworks/overview.html
+
+# V3 framework guide — picking and setup
+
+V3 apps run **without a build step**. Source files are uploaded to the media library and fetched at runtime via `Fliplet.Media.getContents`. Dependencies are resolved through `Fliplet.require.lazy`, not `import`. This changes which framework features work and which quietly fail.
+
+Fetch the per-framework doc (`v3-framework-vue`, `v3-framework-react`, etc.) before scaffolding. This doc is for picking.
+
+## The runtime constraints (apply to every framework)
+
+| Constraint | What it means |
+|---|---|
+| No transpile | JSX, TSX, and any other syntax the browser can't parse natively will throw `SyntaxError: Unexpected token`. |
+| No bundler | Bare ESM imports (`import x from 'vue'`) fail. Dependencies must come from `Fliplet.require.lazy(name)` or a full CDN URL added via `add_dependencies`. |
+| No CSS preprocessing | No CSS Modules, no Sass, no PostCSS. Styles are plain CSS inlined in `<style>` or component HTML. |
+| Hash routing is rejected | `hashchange`, `window.location.hash`, `createWebHashHistory`, `HashRouter`, and `href="#/..."` are all rejected by the boot-HTML lint. History API only. See [V3 routing](../routing). |
+| Preloaded libraries | jQuery, Bootstrap CSS, Lodash, Moment, Animate.css, and fliplet-media are always available — never add them as dependencies. |
+
+## Framework comparison
+
+| Framework | Needs compile? | Router support | Good fit for |
+|---|---|---|---|
+| Vanilla JS | No | History API (manual) | Single-screen apps, very simple flows |
+| Vue 3 | No (runtime-compiler build) | Vue Router 4 (`createWebHistory`) | Multi-screen apps with reactive state |
+| React | **Yes, for JSX** | React Router 6 (`basename`) | Users who asked for React; otherwise prefer Vue |
+| Alpine.js | No | Pair with vanilla History API | Form-heavy, attribute-driven UIs |
+
+## Picking rules
+
+Default order when the user hasn't expressed a preference:
+
+1. **One screen, no forms**: vanilla JS
+2. **Multi-screen, reactive state**: Vue 3 — best balance of no-build ergonomics and features
+3. **Form-heavy single-page CRUD**: Alpine.js
+4. **User explicitly asked for React**: React, via `htm` or `React.createElement` (see `v3-framework-react`)
+
+## What to fetch next
+
+After picking, call `get_fliplet_docs('v3-framework-<name>')` for the specific constraints. Every per-framework doc covers: loading the framework, features that need a build step (and what to do instead), wiring to `Fliplet.Router`, binding `Fliplet.Media.authenticate`, common errors, and DO/DON'T.
+
+## Related
+
+- [V3 app bootstrap](../app-bootstrap) — the three boot constraints every app must satisfy regardless of framework
+- [V3 routing](../routing) — History API contract, route manifest, forbidden-pattern reference
+- [V3 authentication patterns](../auth) — session, login, protected routes
+
+---
+
+# V3 React apps
+URL: https://developers.fliplet.com/API/v3/frameworks/react.html
+
+# V3 React apps
+
+React works in V3, but it needs more thought than Vue because **JSX cannot run without a transpiler**. The browser will throw `SyntaxError: Unexpected token '<'` the first time it sees JSX in an uploaded source file. The V3 runtime does not transpile.
+
+## Loading the framework
+
+Add `react` and `react-dom` via `add_dependencies` with `lazy: true`, then:
+
+```js
+await Fliplet.require.lazy('react');
+await Fliplet.require.lazy('react-dom');
+const React = window.React;
+const ReactDOM = window.ReactDOM;
+```
+
+`Fliplet.require.lazy(name)` resolves once the UMD bundle has executed; the module itself lands on `window` (`window.React`, `window.ReactDOM`, `window.htm`, `window.ReactRouterDOM`). Read it off `window` after the `await` — assigning the awaited value directly gives you the URL string, not the module.
+
+For routing, `react-router-dom`'s UMD bundle is not self-contained — it delegates its named exports (`Navigate`, `Outlet`, `useNavigate`, `useLocation`, `Link`, `createBrowserRouter`, …) to two peer packages that must be loaded first as globals:
+
+```js
+await Fliplet.require.lazy('@remix-run/router');  // sets window.RemixRouter
+await Fliplet.require.lazy('react-router');       // sets window.ReactRouter, needs RemixRouter
+await Fliplet.require.lazy('react-router-dom');   // sets window.ReactRouterDOM, needs the two above
+const ReactRouterDOM = window.ReactRouterDOM;
+```
+
+Add all three via `add_dependencies` with `lazy: true` and match the minor versions across them (e.g. `react-router-dom@6.26.x` + `react-router@6.26.x` + `@remix-run/router@1.19.x`). Skipping `react-router` or `@remix-run/router` leaves `ReactRouterDOM.Navigate` etc. as throwing getters that fail at first render.
+
+Adding them via `add_dependencies` is not enough — listing a package as a lazy dep only registers the URL. The boot script must also `await Fliplet.require.lazy(name)` on all three (in the order above) before accessing any `ReactRouterDOM.*` export, or you'll hit `ReactRouterDOM.createBrowserRouter is not a function`.
+
+## Features that need a build step
+
+The big one:
+
+### JSX
+
+JSX is not valid JavaScript. Three ways to write React in V3 without a transpiler:
+
+| Option | Cost | When to use |
+|---|---|---|
+| **`htm` tagged templates** | ~1KB | **Recommended.** Looks nearly identical to JSX; runs in the browser. Load via `Fliplet.require.lazy('htm')`. |
+| `React.createElement` | 0 | Verbose but dependency-free. Fine for small apps or one-off components. |
+| `@babel/standalone` | ~2MB, slow first boot | Only if the user explicitly insists on raw JSX. Add via `add_dependencies` with the CDN URL and lazy-load. Adds 1–2 seconds to app boot. |
+
+Prefer `htm` unless the user has a specific reason to override.
+
+### Others
+
+| Feature | Why it fails | Do this instead |
+|---|---|---|
+| `.tsx`, `.ts` | No TypeScript transpiler | Plain JavaScript |
+| Bare ESM imports (`import React from 'react'`) | No bundler resolves the specifier | `Fliplet.require.lazy('react')` |
+| CSS Modules (`styles.module.css`) | No bundler to process them | Inline `<style>` or a plain `.css` uploaded as a media file |
+| `import './styles.css'` | Same | Upload the CSS as a media file and inject a `<link>` with the authenticated URL |
+
+## Wiring to Fliplet.Router
+
+Full contract in [V3 routing](../routing). React-specific: pass `basename` when creating the router:
+
+```js
+const router = createBrowserRouter(routes, {
+  basename: Fliplet.Router.getBasePath()
+});
+```
+
+`HashRouter` is rejected by the boot-HTML lint (rule `hash-router-react`). Build routes from `Fliplet.Router.getRouteManifest()`; route loaders should call `Fliplet.Router.resolveRoute(path)`.
+
+## Binding Fliplet.Media.authenticate
+
+Authenticated URLs are async. Resolve them in `useEffect` and store in state:
+
+```js
+const [logoSrc, setLogoSrc] = useState('');
+useEffect(() => {
+  Fliplet.Media.authenticate(rawUrl).then(setLogoSrc);
+}, [rawUrl]);
+```
+
+Then `<img src={logoSrc} />`. Calling `Fliplet.Media.authenticate` at module scope gives you a Promise, not a URL — the `src` will render empty.
+
+## Common errors
+
+| Symptom in `get_preview_logs('errors')` | Cause | Fix |
+|---|---|---|
+| `SyntaxError: Unexpected token '<'` | Raw JSX in an uploaded source file | Switch to `htm` tagged templates or `React.createElement` |
+| `Cannot use import statement outside a module` | Bare ESM `import` | Use `Fliplet.require.lazy` |
+| `ReferenceError: React is not defined` inside a component | Component file ran before `react` resolved | Load dependencies in the boot HTML and pass React into component factories, or use `Fliplet.require.lazy` inside the component |
+| `TypeError: useEffect is not a function` | React and react-dom versions mismatched | Pin matching versions in `add_dependencies` |
+| `TypeError: React.createElement is not a function` / `htm.bind is not a function` | Assigned the `await` result to `React`/`htm` directly — that value is the URL string | `await Fliplet.require.lazy('react'); const React = window.React;` (same for `htm`, `ReactDOM`, `ReactRouterDOM`) |
+| `Cannot read properties of undefined (reading 'Navigate'\|'Outlet'\|'useNavigate'\|…)` thrown from inside `react-router-dom.*.min.js` | `react-router-dom` UMD loaded without its peer UMDs — named exports are getters that forward to `window.ReactRouter` / `window.RemixRouter` | Also load `@remix-run/router` and `react-router` (matching minor version) before `react-router-dom`. See [Loading the framework](#loading-the-framework). |
+
+## DO / DON'T
+
+- DO use `htm` tagged templates as the default JSX alternative.
+- DO pass `basename: Fliplet.Router.getBasePath()` to `createBrowserRouter`.
+- DO resolve `Fliplet.Media.authenticate` inside `useEffect` and store in state.
+- DON'T ship raw JSX — it will always throw on first deploy.
+- DON'T use `HashRouter` — rejected by lint.
+- DON'T use `.tsx` or TypeScript — no transpiler available.
+- DON'T use CSS Modules or `import './styles.css'` — no bundler.
+- DON'T render with `innerHTML`, `outerHTML`, `insertAdjacentHTML`, or `element.append(htmlString)` inside screen files. If you wrote `el.innerHTML = ...` in a component, you wrote a templating engine — not React — and you introduced an XSS surface on every future edit.
+- DON'T write a manual `escapeHtml()` helper. Needing one means you're using `innerHTML` somewhere — fix that instead. React and `htm` escape interpolated values by default.
+- DON'T `if`-chain or `switch` on `location.pathname` to decide what to render, even with `react-router-dom` installed. That's what the router you just installed is for. (The boot-HTML lint flags this via `ruleId: path-dispatcher`.)
+- DON'T use raw `<a href="/path">` for in-app navigation — it triggers a full page reload and defeats the SPA. Use `<Link>` or `useNavigate()` from `react-router-dom`.
+- DON'T reach into screens from the boot file via `document.getElementById` / `querySelector`. Each screen owns its own state, fetches, and handlers; the boot owns routing and framework bootstrap only. If you're wiring screens from the outside, you've inverted the component model.
+
+## Related
+
+- [V3 app bootstrap](../app-bootstrap)
+- [V3 routing](../routing)
+- [V3 framework overview](overview)
+
+---
+
+# V3 vanilla-JS apps
+URL: https://developers.fliplet.com/API/v3/frameworks/vanilla.html
+
+# V3 vanilla-JS apps
+
+Vanilla JS is the lowest-friction V3 target because there is no framework to load and no syntax the browser can't parse. Most of the work is just respecting the V3 bootstrap contract and the routing lint.
+
+## Loading the framework
+
+Nothing to load. Still call `Fliplet().then(...)` before touching Fliplet APIs — the runtime needs to finish registering globals.
+
+## Features that need a build step
+
+Vanilla JS is the cheapest option precisely because nothing here needs a build step. Two things to still be careful of:
+
+- **No bare ESM imports across source files.** `import { helper } from './helpers'` fails because there is no bundler to resolve the specifier. Load shared code either as a single uploaded source file evaluated via `Fliplet.Media.getContents`, or as a registered dependency via `Fliplet.require.lazy`.
+- **Top-level `await` across files** won't work for the same reason — no module graph.
+
+Modern browser syntax (optional chaining, nullish coalescing, destructuring, async/await inside functions) is fine. The target is a current Chromium.
+
+## Wiring to Fliplet.Router
+
+Use the History API directly. The navigation call is:
+
+```js
+history.pushState({}, '', Fliplet.Router.getBasePath() + path);
+window.dispatchEvent(new PopStateEvent('popstate'));
+```
+
+Read the current route by stripping `Fliplet.Router.getBasePath()` from `location.pathname`. Route resolution (access check + screen-source fetch) goes through `Fliplet.Router.resolveRoute(path)` — see [V3 routing](../routing).
+
+## Binding Fliplet.Media.authenticate
+
+Authenticated URLs resolve asynchronously. Compute the URL, then assign it to the DOM element:
+
+```js
+const url = await Fliplet.Media.authenticate(rawUrl);
+imgEl.src = url;
+```
+
+Don't compute the URL at module load and hope it's ready — the element will have `src=""` (or the unauthenticated URL) for long enough to render broken.
+
+## Common errors
+
+| Symptom in `get_preview_logs('errors')` | Cause | Fix |
+|---|---|---|
+| `ReferenceError: Fliplet is not defined` | Code ran before `Fliplet().then(...)` resolved | Move initialization inside the `Fliplet().then(...)` callback |
+| `SyntaxError: Cannot use import statement outside a module` | ESM `import` in an uploaded source file | Load the dependency via `Fliplet.require.lazy` or inline the helper |
+| Image/font renders broken then disappears | Raw media URL used without `Fliplet.Media.authenticate` | Wrap the URL and assign after the promise resolves |
+
+## DO / DON'T
+
+- DO navigate with `history.pushState(state, '', Fliplet.Router.getBasePath() + path)`.
+- DO dispatch `popstate` after `pushState` so listeners re-render.
+- DON'T read or write `window.location.hash` — rejected by the routing lint.
+- DON'T use `href="#/..."` for internal links — rejected by the routing lint.
+- DON'T `import` across uploaded source files — resolve shared code via `Fliplet.require.lazy` or a single boot file.
+
+## Related
+
+- [V3 app bootstrap](../app-bootstrap)
+- [V3 routing](../routing)
+- [V3 framework overview](overview)
+
+---
+
+# V3 Vue apps
+URL: https://developers.fliplet.com/API/v3/frameworks/vue.html
+
+# V3 Vue apps
+
+Vue 3 is the best-supported multi-screen framework in V3 because a runtime-compiler build exists — meaning `template` strings compile in the browser without a toolchain. The traps below come from using the wrong Vue build, or reaching for features that assume Vite/webpack.
+
+## Loading the framework
+
+Add `vue` via `add_dependencies` with `lazy: true`, then:
+
+```js
+await Fliplet.require.lazy('vue');
+const Vue = window.Vue;
+```
+
+`Fliplet.require.lazy(name)` resolves once the UMD bundle has executed; the module itself lands on `window` (`window.Vue`, `window.VueRouter`). Read it off `window` after the `await` — assigning the awaited value directly gives you the URL string, not the module.
+
+**Pick the runtime-compiler build (usually `vue.global.js`), not the runtime-only build.** The runtime-only build (`vue.runtime.global.js`) does not include the template compiler — any component that uses `template: '...'` strings will fail to render. The runtime-only build only works if every component is authored as a pre-compiled render function, which is impractical without a bundler.
+
+For Vue Router, the separate dependency:
+
+```js
+await Fliplet.require.lazy('vue-router');
+const VueRouter = window.VueRouter;
+```
+
+## Features that need a build step
+
+| Feature | Why it fails | Do this instead |
+|---|---|---|
+| `.vue` single-file components | There is no loader resolving them at runtime | Use plain component objects with `template:` strings, **or** add `vue3-sfc-loader` as a dependency if the app genuinely needs SFCs. Pick one approach per app and stay consistent. |
+| `<script setup>` | Requires SFC compilation | Use the Options API or explicit `setup()` function on component objects. |
+| `<style scoped>` | Requires SFC compilation | Scope manually by wrapping each component's CSS in a root class selector. |
+| Bare ESM imports (`import Vue from 'vue'`) | No bundler resolves the specifier | Use `Fliplet.require.lazy('vue')`. |
+| TypeScript (`.ts`, `.tsx`) | No transpiler | Plain JavaScript. |
+
+## Wiring to Fliplet.Router
+
+Full contract is in [V3 routing](../routing). Vue-specific note: pass the base path into `createWebHistory`:
+
+```js
+const router = VueRouter.createRouter({
+  history: VueRouter.createWebHistory(Fliplet.Router.getBasePath()),
+  routes: [...]
+});
+```
+
+`createWebHashHistory` is rejected by the boot-HTML lint (rule `create-web-hash-history`).
+
+Build routes from `Fliplet.Router.getRouteManifest()` — do not hardcode. In each route's resolver, call `Fliplet.Router.resolveRoute(path)`. The `content` field in its result IS the screen's source — already fetched for you via `Fliplet.Media.getContents`. Return it from your loader and render it in your component; don't fetch the file again.
+
+## Binding Fliplet.Media.authenticate
+
+Authenticated URLs resolve asynchronously — bind through reactivity, not at module load:
+
+```js
+// inside a component
+data() { return { logoSrc: '' }; },
+async mounted() {
+  this.logoSrc = await Fliplet.Media.authenticate(rawUrl);
+}
+```
+
+Then `<img :src="logoSrc">`. Using `src="{{ rawUrl }}"` directly, or computing the authenticated URL at module scope, leaves the image broken until the template re-renders.
+
+## Common errors
+
+| Symptom in `get_preview_logs('errors')` | Cause | Fix |
+|---|---|---|
+| `[Vue warn]: Component is missing template or render function` | Runtime-only Vue build loaded; `template:` strings silently ignored | Switch to the runtime-compiler build (`vue.global.js`) |
+| `Uncaught SyntaxError: Unexpected token '<'` inside a component file | `.vue` SFC uploaded without `vue3-sfc-loader` | Either convert the component to a plain object with `template:` string, or add `vue3-sfc-loader` |
+| Blank screen, no errors | Component returned from `Fliplet.Media.getContents` wasn't registered before router resolved | Register the component inside the route resolver, not at module load |
+
+## DO / DON'T
+
+- DO use `Fliplet.require.lazy('vue')` and the runtime-compiler build.
+- DO build the router from `Fliplet.Router.getRouteManifest()` + `getBasePath()`.
+- DO bind authenticated media URLs into reactive `data()` fields.
+- DON'T use `createWebHashHistory` — rejected by lint.
+- DON'T author `.vue` SFCs without `vue3-sfc-loader` loaded.
+- DON'T `import` anything — use `Fliplet.require.lazy`.
+
+## Related
+
+- [V3 app bootstrap](../app-bootstrap)
+- [V3 routing](../routing)
+- [V3 framework overview](overview)
+
+---
+
+# V3 routing
+URL: https://developers.fliplet.com/API/v3/routing.html
+
+# V3 routing
+
+This is the canonical routing reference for V3 apps. It covers the `Fliplet.Router` contract, the forbidden patterns that break V3 apps on one or more hosting contexts, per-framework examples (Vue Router 4, Vue Router 3, React Router, Svelte, vanilla JS), and the post-login redirect pattern.
+
+Routing in V3 is non-obvious because the defaults in most frameworks are wrong for the platform. V3 apps run in three different hosting contexts (slug-hosted web, Studio preview iframe, native shell), each with a different base path. Read this doc before writing boot HTML for any multi-screen V3 app.
+
+## Contents
+
+- [The contract](#the-contract)
+- [Forbidden patterns](#forbidden-patterns)
+- [Framework examples](#framework-examples)
+- [Post-login redirect](#post-login-redirect)
+- [Common pitfalls](#common-pitfalls)
+- [Related](#related)
+
+## The contract
+
+V3 uses the **History API on every platform** (web, preview iframe, and native). Hash routing is forbidden because every hosting context (slug-hosted web apps, the Studio preview iframe, and native shells) mounts the SPA at a different base path. Hashes hide that base from the server, break deep-link sharing, and make post-login redirects unreliable across the three contexts.
+
+<p class="info"><code>Fliplet.Router</code> is auto-loaded on V3 apps and is the only sanctioned router API. You build your framework's router from the manifest; you do not hand-roll routes.</p>
+
+```js
+var base     = Fliplet.Router.getBasePath();        // '/', '/my-slug/', '/v1/apps/42/pages/99/preview/', or native base
+var manifest = Fliplet.Router.getRouteManifest();   // { routes, defaultRoute, authRedirect }
+```
+
+Four requirements:
+
+1. **Read the base path** with `Fliplet.Router.getBasePath()` and pass it to your router's history/basename option. Never hardcode `'/'`. Slug-hosted apps, preview iframes, and native shells all have different bases.
+2. **Read the manifest** with `Fliplet.Router.getRouteManifest()`. Build your route table from `manifest.routes`. The manifest lives at `app.settings.v3` (see [App settings](app-settings)). Update it via the App Settings API (`PUT /v1/apps/:id` with `settings.v3`) or the Studio routing UI whenever you add or remove a user-visible route.
+3. **Guard each route with `Fliplet.Router.resolveRoute(path)`** in the component, loader, or resolver:
+   - It returns `{ allowed: true, content, route }` on success.
+   - It returns `{ allowed: false, redirectTo, reason }` on denial, where `reason` is `'no-session'` or `'media-denied'`.
+   - It already fetches the screen source via `Fliplet.Media.getContents(fileId)` internally. Don't call it yourself.
+   - It rejects on transient or infra errors (5xx, network) so you can show an error UI instead of redirecting silently.
+4. **Guard against stale navigations.** If the user has navigated away before an access check resolves, don't redirect. Compare the resolved route against the current route before calling `push`.
+
+<p class="warning"><strong>Server media ACL is the final gate.</strong> The manifest's <code>public: true</code> flag is advisory. It just lets the client skip a known-401 round trip. Flipping <code>public: true</code> in the manifest without updating the media file's access rule grants no access.</p>
+
+## Forbidden patterns
+
+These patterns break V3 apps on at least one hosting context (slug-hosted web, preview iframe, or native). Treat them as hard constraints. The Fliplet Studio AI builder enforces them with an automated lint on generated boot HTML (each violation carries a `ruleId` matching the rows below); hand-authored apps must follow the same rules.
+
+| `ruleId` | What's forbidden | What to do instead |
+|---|---|---|
+| `hash-change-event` | `window.addEventListener('hashchange', …)` or `window.onhashchange = …` | Use `popstate` with `history.pushState`. The browser fires `popstate` on back/forward; call `pushState` explicitly when navigating. |
+| `window-location-hash` | Reading or writing `window.location.hash` / `location.hash` | Navigate with `history.pushState(state, '', Fliplet.Router.getBasePath() + path)`. Read the current path from `location.pathname` after stripping the base prefix. |
+| `create-web-hash-history` | `VueRouter.createWebHashHistory(…)` | `VueRouter.createWebHistory(Fliplet.Router.getBasePath())`. |
+| `hash-router-react` | `HashRouter` (React Router) | `createBrowserRouter(routes, { basename: Fliplet.Router.getBasePath() })`. |
+| `hash-href` | `href="#/..."` or `href='#/...'` | Use real paths (`href="/home"`) and intercept clicks to call `history.pushState` via your router. |
+| `path-dispatcher` | 3+ `if (location.pathname === '/…')` branches, or `switch (location.pathname) { case '/…': … }`, used as a hand-rolled router | Build your framework's router from `Fliplet.Router.getRouteManifest()`. Each framework's wiring is in [Framework examples](#framework-examples) below. Single-branch guards like `if (location.pathname === '/login') return;` are fine — the lint only fires on dispatcher-shaped chains. |
+
+These six rules are the ones Fliplet can detect automatically from the boot HTML. Additional anti-patterns (hand-rolled `SCREENS` maps, pathname reads without base-stripping, double-fetching media) live in the [Common pitfalls](#common-pitfalls) section below. They aren't detected statically but are equally wrong.
+
+## Framework examples
+
+The same pattern applies to every framework: read the base path and manifest from `Fliplet.Router`, build the framework's router from that, and call `resolveRoute` in the component, loader, or resolver. The examples below show the shape in five common stacks; pick whichever matches your app.
+
+Every example assumes this manifest shape (see [App settings](app-settings) for how it's stored):
+
+```json
+{
+  "routes": [
+    { "name": "Home",      "path": "/home",       "fileId": 222, "public": true },
+    { "name": "Login",     "path": "/login",      "fileId": 444, "public": true },
+    { "name": "MyAccount", "path": "/my-account", "fileId": 333 }
+  ],
+  "defaultRoute": "/home",
+  "authRedirect": "/login"
+}
+```
+
+### Vue Router 4 (Vue 3)
+
+```js
+Fliplet.require.lazy('vue-router').then(function() {
+  var manifest = Fliplet.Router.getRouteManifest();
+  var history = VueRouter.createWebHistory(Fliplet.Router.getBasePath());
+
+  var routes = manifest.routes.map(function(r) {
+    return {
+      path: r.path,
+      name: r.name,
+      component: function() {
+        return Fliplet.Router.resolveRoute(r.path).then(function(result) {
+          if (!result.allowed) {
+            // Race guard: only redirect if the user is still on this route.
+            if (router.currentRoute.value.path === r.path) {
+              router.push(result.redirectTo);
+            }
+
+            return { template: '<div></div>' };
+          }
+
+          return parseScreen(result.content); // framework-specific
+        });
+      }
+    };
+  });
+
+  routes.unshift({ path: '/', redirect: manifest.defaultRoute });
+
+  var router = VueRouter.createRouter({ history: history, routes: routes });
+  // mount and use the router as usual
+});
+```
+
+### Vue Router 3 (Vue 2)
+
+```js
+Fliplet.require.lazy('vue-router').then(function() {
+  var manifest = Fliplet.Router.getRouteManifest();
+
+  var routes = manifest.routes.map(function(r) {
+    return {
+      path: r.path,
+      name: r.name,
+      component: function(resolve) {
+        Fliplet.Router.resolveRoute(r.path).then(function(result) {
+          if (!result.allowed) {
+            if (router.currentRoute.path === r.path) {
+              router.push(result.redirectTo);
+            }
+
+            resolve({ template: '<div></div>' });
+
+            return;
+          }
+
+          resolve(parseScreen(result.content));
+        });
+      }
+    };
+  });
+
+  routes.unshift({ path: '/', redirect: manifest.defaultRoute });
+
+  var router = new VueRouter({
+    mode: 'history',
+    base: Fliplet.Router.getBasePath(),
+    routes: routes
+  });
+});
+```
+
+### React Router 6
+
+React Router doesn't infer the base path; you must pass it to `basename`. Use a loader to call `resolveRoute` before the component renders.
+
+```js
+Fliplet.require.lazy('react-router-dom').then(function() {
+  var manifest = Fliplet.Router.getRouteManifest();
+
+  function routeLoader(path) {
+    return function() {
+      return Fliplet.Router.resolveRoute(path).then(function(result) {
+        if (!result.allowed) {
+          throw ReactRouterDOM.redirect(result.redirectTo);
+        }
+
+        return { content: result.content, route: result.route };
+      });
+    };
+  }
+
+  var routes = manifest.routes.map(function(r) {
+    return {
+      path: r.path,
+      loader: routeLoader(r.path),
+      element: React.createElement(ScreenRenderer)
+    };
+  });
+
+  routes.unshift({ path: '/', loader: function() { throw ReactRouterDOM.redirect(manifest.defaultRoute); } });
+
+  var router = ReactRouterDOM.createBrowserRouter(routes, {
+    basename: Fliplet.Router.getBasePath()
+  });
+});
+```
+
+`ScreenRenderer` reads `useLoaderData()` and renders `data.content`. Race-handling is built in; React Router cancels stale loaders automatically.
+
+### Svelte
+
+Most Svelte routers default to hash mode. Pick one that supports history, or thin-wrap `history.pushState` yourself:
+
+```js
+var manifest = Fliplet.Router.getRouteManifest();
+var base = Fliplet.Router.getBasePath();
+
+function navigate(path) {
+  history.pushState({}, '', base.replace(/\/$/, '') + path);
+  render(path);
+}
+
+function render(path) {
+  var target = path === '/' ? manifest.defaultRoute : path;
+
+  Fliplet.Router.resolveRoute(target).then(function(result) {
+    if (location.pathname !== base.replace(/\/$/, '') + target) return; // stale
+
+    if (!result.allowed) {
+      navigate(result.redirectTo);
+
+      return;
+    }
+
+    mountScreen(result.content);
+  });
+}
+
+window.addEventListener('popstate', function() {
+  render(location.pathname.replace(new RegExp('^' + base.replace(/\/$/, '')), '') || '/');
+});
+
+render(location.pathname.replace(new RegExp('^' + base.replace(/\/$/, '')), '') || '/');
+```
+
+### Vanilla JS (no router library)
+
+Same pattern as Svelte: `pushState` for navigation, `popstate` for back/forward, normalize against the base path. Keep a module-scoped `currentNavId` to ignore stale resolutions:
+
+```js
+var manifest = Fliplet.Router.getRouteManifest();
+var base = Fliplet.Router.getBasePath();
+var basePrefix = base.replace(/\/$/, '');
+var currentNavId = 0;
+
+function stripBase(pathname) {
+  if (basePrefix && pathname.indexOf(basePrefix) === 0) {
+    return pathname.slice(basePrefix.length) || '/';
+  }
+  return pathname || '/';
+}
+
+function render(path) {
+  var navId = ++currentNavId;
+  var target = (path && path !== '/') ? path : manifest.defaultRoute;
+
+  return Fliplet.Router.resolveRoute(target).then(function(result) {
+    if (navId !== currentNavId) return; // user navigated away, ignore
+
+    if (!result.allowed) {
+      navigate(result.redirectTo);
+      return;
+    }
+
+    document.getElementById('app').innerHTML = result.content;
+  });
+}
+
+function navigate(path) {
+  history.pushState({}, '', basePrefix + path);
+  render(path);
+}
+
+document.addEventListener('click', function(event) {
+  var link = event.target.closest('a[href^="/"]');
+  if (!link || link.target === '_blank' || event.metaKey || event.ctrlKey) return;
+  event.preventDefault();
+  navigate(link.getAttribute('href'));
+});
+
+window.addEventListener('popstate', function() {
+  render(stripBase(location.pathname));
+});
+
+render(stripBase(location.pathname));
+```
+
+## Post-login redirect
+
+When `resolveRoute` returns `reason: 'no-session'` or `reason: 'media-denied'`, stash the intended path before navigating to `authRedirect`. After a successful login, consume it.
+
+### Vue Router 4 example
+
+```js
+// Before redirecting to the auth screen:
+sessionStorage.setItem('fl:postLoginPath', router.currentRoute.value.fullPath);
+router.push(result.redirectTo);
+
+// After a successful login:
+var target = sessionStorage.getItem('fl:postLoginPath');
+sessionStorage.removeItem('fl:postLoginPath');
+router.push(target || manifest.defaultRoute);
+```
+
+### Framework-agnostic equivalent
+
+```js
+// Before redirecting to the auth screen:
+sessionStorage.setItem('fl:postLoginPath', location.pathname + location.search);
+navigate(result.redirectTo);
+
+// After a successful login:
+var target = sessionStorage.getItem('fl:postLoginPath');
+sessionStorage.removeItem('fl:postLoginPath');
+navigate(target || manifest.defaultRoute);
+```
+
+Replace `navigate(...)` with the same helper used in your router (Svelte, vanilla JS, or React Router's `navigate()` from `useNavigate()`).
+
+## Common pitfalls
+
+- **Don't hand-roll a `SCREENS = { home: 1234, … }` map or a pathname-if-chain.** That's what the route manifest is for. Store it in `app.settings.v3` and read it back via `Fliplet.Router.getRouteManifest().routes`. Hand-rolled maps drift when screens are renamed, duplicate the `public` and `fileId` metadata the server already authored, and bypass the manifest as the single source of truth for routing.
+- **Don't read `window.location.pathname` directly to determine the current route.** Strip the base path first. `Fliplet.Router.getBasePath()` returns the prefix to remove. Slug-hosted apps and preview iframes host the SPA under a non-root path; raw `pathname` reads will misidentify the current route in both contexts.
+- **Don't fetch the screen's media URL yourself.** `Fliplet.Router.resolveRoute` already calls `Fliplet.Media.getContents(fileId)` under the hood and returns the content in `result.content`. A second fetch duplicates the network round trip, can race with the access check, and will fail outright on private media where auth headers aren't applied.
+- **Don't discard `result.content` from `resolveRoute`.** The `content` field IS the screen's source — already fetched for you. Your route loader should return `{ content: result.content, route: result.route }` so the component can render `data.content` directly. If your loader returns only `{ path }` and your screens are defined inline in the component, you've duplicated every screen in two places — the manifest's `fileId` and the hardcoded inline copy — and you've paid for a fetch you then threw away. The `resolveRoute` name is the hint: the method resolves a route to its **full resolution** (access + content), not just an access decision.
+- **Don't assume the server-side ACL matches the manifest's `public` flag.** The manifest is advisory; the server decides. Always handle `reason: 'media-denied'`. Flipping `public: true` without updating the media file's access rule grants no access; you'll ship an app that works in dev and 401s in production.
+- **Don't skip the route manifest on multi-screen apps.** The manifest at `app.settings.v3` IS the app's routing definition. Without it, `Fliplet.Router.getRouteManifest().routes` is empty and nothing resolves. The boot HTML has no fallback path list; an empty manifest silently renders a blank app.
+- **Don't use raw `<a href="/path">` for in-app navigation.** It triggers a full page reload and tears down your SPA — the framework re-bootstraps from scratch on every click, state is lost, and the post-login redirect pattern breaks because your app never saw the original navigation. Intercept clicks via your framework's router: Vue Router's `<router-link>`, React Router's `<Link>` (or `useNavigate()`), or a vanilla click handler that calls `history.pushState`. External links (`http(s)://…`, `mailto:`, `tel:`) are fine as raw `<a>` — those are *supposed* to leave the SPA.
+
+## Related
+
+- [Fliplet Router JS API](fliplet-router). Full method reference for `Fliplet.Router` with return shapes, reason codes, and manifest shape.
+- [V3 app bootstrap constraints](app-bootstrap). The three boot-HTML fundamentals (dependencies, media fetch, init sequence). Routing defers to this doc.
+- [V3 app settings convention](app-settings). Where the route manifest is stored (`app.settings.v3`).
+- [Media JS APIs](../fliplet-media). `Fliplet.Media.getContents` details.
 
 ---
 
@@ -24675,7 +26527,7 @@ The `widget.json` file defines your component as well as the **dependencies** an
 
 Please note: if you make changes to the `widget.json` file, restart the development server (`fliplet run`) to apply the changes you made.
 
-[Read more about the widget.json](components/Definition.md)
+[Read more about the widget.json](components/Definition)
 {: .buttons}
 
 ---
@@ -24724,7 +26576,7 @@ Therefore, to recap:
 ```
 {% endraw %}
 
-[Jump to the interface documentation](components/Interface.md)
+[Jump to the interface documentation](components/Interface)
 {: .buttons}
 
 ---
@@ -24739,7 +26591,7 @@ Therefore, to recap:
 ```
 {% endraw %}
 
-[Jump to the build (output) documentation](components/Build-output.md)
+[Jump to the build (output) documentation](components/Build-output)
 {: .buttons}
 
 ---
@@ -24766,7 +26618,7 @@ widget.json
 
 ## Including external libraries
 
-Functions can define the list of [dependencies](/Dependencies-and-assets.html#dependencies-and-assets) to be used in the `widget.json` file under the `"build" > "dependencies"` key of the file.
+Functions can define the list of [dependencies](/Dependencies-and-assets#dependencies-and-assets) to be used in the `widget.json` file under the `"build" > "dependencies"` key of the file.
 
 ## The function definition file
 
@@ -24879,7 +26731,7 @@ A menu consist in:
 Through the `menu.json` file, the `settings` property can control the behavioral properties of the menu.
 
 - `settings.position` (String) `top` or `bottom` indicates whether the menu DOM markup appear at the top of the HTML (right after the body tag is opened) or at the bottom before the body tag gets closed. See [default menu](https://github.com/Fliplet/fliplet-menu-bottom-bar/blob/master/menu.json#L32) for an example
-- `settings.showSettings` (Boolean) Default: `false` Set this to `true` to allow additional settings to be added via `interface.html` and any JavaScript added via the `interface` property of the `menu.json` file. See [component interfaces](components/Interface.md).
+- `settings.showSettings` (Boolean) Default: `false` Set this to `true` to allow additional settings to be added via `interface.html` and any JavaScript added via the `interface` property of the `menu.json` file. See [component interfaces](components/Interface).
 
 Menus can also specify . This can be configured through the `settings.position` on the `menu.json` file as we do on the .
 
@@ -25061,7 +26913,7 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 - **March, 10th**: Added [new pagination options](https://developers.fliplet.com/API/fliplet-datasources.html#fetch-records-with-pagination) for the Data Source JS API
 - **February, 23rd**: Released new version 2.0.0 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html#releases-changelog) with improved SSL compatibility and logging.
 - **February, 21st**: Released new version 1.15.0 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html#releases-changelog) with improved logging when synchronizing files.
-- **February, 8th**: [Data Source security rules](/Data-source-security.html) are now required by all API tokens and DIS integrations when interacting with Data Sources
+- **February, 8th**: [Data Source security rules](/Data-source-security) are now required by all API tokens and DIS integrations when interacting with Data Sources
 - **January, 16th**: Added documentation for [custom Data Source security rules](https://developers.fliplet.com/Data-source-security.html#custom-security-rules)
 
 ---
@@ -25072,7 +26924,7 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 - **October, 27th**: Released new version 1.14.2 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html) with improvements to error logging.
 - **October, 25th**: Documentation added for [session expiration](https://developers.fliplet.com/App-security.html#session-expiration).
 - **October, 5th**: New Android framework version 6.0.3 with security updates.
-- **September, 6th**: Updated Chat JS APIs with options to [open a group conversation](/API/components/chat.html#startopen-a-group-conversation-with-one-or-more-people).
+- **September, 6th**: Updated Chat JS APIs with options to [open a group conversation](/API/components/chat#startopen-a-group-conversation-with-one-or-more-people).
 - **August, 5th**: New Android framework version 6.0.2 with support to the SDK 31.
 - **July, 20th**: New iOS and Android framework version 6.0.0 released with support for the upcoming localization feature.
 - **July, 7th**: New iOS framework version 5.3.2 released with bugfixes for the share dialog.
@@ -25082,7 +26934,7 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 
 ## 2021
 
-- Released new version 6.0.0 of the Fliplet CLI with improved support for [creating tests](/Testing-components.html) for your components.
+- Released new version 6.0.0 of the Fliplet CLI with improved support for [creating tests](/Testing-components) for your components.
 - Released new version 1.14.1 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html) with fixes for running a push operation without a primary key.
 - New Android framework version 5.2.0 released with a bugfix for apps built with the SDK30 not properly dismissing the virtual keyboard.
 - New Android framework version 5.1.0 released with full support for SDK 30 including a bugfix for taking pictures with camera not working as expected on Android 12.
@@ -25101,14 +26953,14 @@ Each week, we provide changelog notes on this page giving a summary of recent si
   - Added new documentation page listing all [organization audit log types](https://developers.fliplet.com/Organization-audit-log-types.html#list-of-audit-log-types-for-organizations).
 - Added public JS APIs for accessing [Organization audit logs](https://developers.fliplet.com/API/core/organizations.html#audit-logs).
   - Added public RESTful APIs for accessing [Organization audit logs](https://developers.fliplet.com/REST-API/fliplet-organizations.html#get-the-audit-logs-for-an-organization).
-- Added new page for APIs related to [Upcoming features](/Upcoming.html).
+- Added new page for APIs related to [Upcoming features](/Upcoming).
 
 ---
 
 ## 2020
 
 - New iOS framework version 4.3.0 released to improve support for **push notifications**.
-- Added public JS APIs for interacting with [Chat channels](/API/components/chat.html#public-channels).
+- Added public JS APIs for interacting with [Chat channels](/API/components/chat#public-channels).
 - Released new version 1.12.0 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html) with fixes for uninstalling Windows Services.
 - Released new version 1.11.0 of the [Data Integration Service](https://developers.fliplet.com/Data-integration-service.html) with support for case-insensitive primary key, log verbosity and absolute paths on the Windows service.
 - New iOS framework version 4.2.2 released and fixed an issue that caused clipboard warnings to be triggered when user revisits an app.
@@ -25146,13 +26998,13 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 - Added more examples on [resizing a Media File](https://developers.fliplet.com/REST-API/fliplet-media.html#stream-the-contents-of-a-file).
 - New examples on the documentation for the `beforeFormSubmit` hook of the [Form](https://developers.fliplet.com/API/components/form-builder.html#beforeformsubmit) component.
 - Added new method to programmatically submit a form built via the [Form](https://developers.fliplet.com/API/components/form-builder.html#programmatically-submit-a-form) component.
-- Documentation for screen link queries on [List from Data Source](API/components/list-from-data-source.md).
-- Documentation for configuring the Data Integration Service with [Sharepoint](Data-integration-service.md#integrate-with-sharepoint).
+- Documentation for screen link queries on [List from Data Source](API/components/list-from-data-source).
+- Documentation for configuring the Data Integration Service with [Sharepoint](Data-integration-service#integrate-with-sharepoint).
 - New hooks for the [Chart](https://developers.fliplet.com/API/components/charts.html#hooks) component.
-- Documentation page to explain the [Infrastructure Data Flow](/Data-flow.md) of the Fliplet platform.
+- Documentation page to explain the [Infrastructure Data Flow](/Data-flow) of the Fliplet platform.
 - Documentation page to explain the [App Execution Flow](https://developers.fliplet.com/Execution-flow.html) of Fliplet apps.
 - New hooks for the [Chat](https://developers.fliplet.com/API/components/chat.html) component.
-- General updates on the documentation for the [Data Integration Service](Data-integration-service.md).
+- General updates on the documentation for the [Data Integration Service](Data-integration-service).
 - Documentation page for the [Fliplet.Helper](https://developers.fliplet.com/API/helpers/overview.html) JS API.
 - General improvements to the guidelines and example on the [Output of components](https://developers.fliplet.com/components/Build-output.html#reading-previously-saved-settings) page used when developing custom components for Fliplet apps.
 - Updated jQuery to 3.4.1. See [all Fliplet approved libraries](https://developers.fliplet.com/Fliplet-approved-libraries.html).
@@ -25214,7 +27066,7 @@ To publish a component on Fliplet, please refer to the [publishing](Publishing) 
 
 ---
 
-[Back](README.md)
+[Back](README)
 {: .buttons}
 
 ---
@@ -25518,25 +27370,25 @@ Coding and documentation standards used across Fliplet APIs, components, and exa
 
 1. [Documentation Standards](#documentation-standards)
 2. [Development Environment Guidelines](#development-environment-guidelines)
-3. [JavaScript Coding Standards](javascript-coding-standards.md)
-   - 3.1. [Modern JavaScript (ES6+) - Recommended](javascript-coding-standards.md#modern-javascript-es6---recommended)
-   - 3.2. [Legacy JavaScript (ES5) - Compatibility](javascript-coding-standards.md#legacy-javascript-es5---compatibility)
-4. [Fliplet API Patterns](code-api-patterns.md)
-   - 4.1. [API Categories Overview](code-api-patterns.md#api-categories-overview)
-   - 4.2. [Connection and Initialization Patterns](code-api-patterns.md#connection-and-initialization-patterns)
-   - 4.3. [CRUD Operation Patterns](code-api-patterns.md#crud-operation-patterns-for-all-apis)
-   - 4.4. [Navigation Patterns](code-api-patterns.md#navigation-patterns)
-   - 4.5. [Communication Patterns](code-api-patterns.md#communication-patterns)
+3. [JavaScript Coding Standards](javascript-coding-standards)
+   - 3.1. [Modern JavaScript (ES6+) - Recommended](javascript-coding-standards#modern-javascript-es6---recommended)
+   - 3.2. [Legacy JavaScript (ES5) - Compatibility](javascript-coding-standards#legacy-javascript-es5---compatibility)
+4. [Fliplet API Patterns](code-api-patterns)
+   - 4.1. [API Categories Overview](code-api-patterns#api-categories-overview)
+   - 4.2. [Connection and Initialization Patterns](code-api-patterns#connection-and-initialization-patterns)
+   - 4.3. [CRUD Operation Patterns](code-api-patterns#crud-operation-patterns-for-all-apis)
+   - 4.4. [Navigation Patterns](code-api-patterns#navigation-patterns)
+   - 4.5. [Communication Patterns](code-api-patterns#communication-patterns)
 5. [Quick Reference Guide](#quick-reference-guide)
 6. [Code Examples and Testing](#code-examples-and-testing)
    - 6.1. [Complete Example Requirements](#complete-example-requirements)
    - 6.2. [Asset Provision Standards](#asset-provision-standards)
    - 6.3. [Test Templates and Setup](#test-templates-and-setup)
-7. [Approved Libraries](approved-libraries.md)
-   - 7.1. [Available Libraries](approved-libraries.md#available-libraries)
-   - 7.2. [Library Usage Guidelines](approved-libraries.md#library-usage-guidelines)
-   - 7.3. [Performance Considerations](approved-libraries.md#performance-considerations)
-   - 7.4. [Custom Library Integration](approved-libraries.md#custom-library-integration)
+7. [Approved Libraries](approved-libraries)
+   - 7.1. [Available Libraries](approved-libraries#available-libraries)
+   - 7.2. [Library Usage Guidelines](approved-libraries#library-usage-guidelines)
+   - 7.3. [Performance Considerations](approved-libraries#performance-considerations)
+   - 7.4. [Custom Library Integration](approved-libraries#custom-library-integration)
 
 
 ## Documentation Standards
@@ -25642,7 +27494,7 @@ demonstrateMethod().catch(console.error);
 
 **See also:** [Error Handling Patterns](#error-handling-patterns)
 
-# Documentation Principles
+## Documentation Principles
 
 1. **Complete & Testable** - Every example must work immediately when copied
 2. **Asset Provision** - Provide all required files, data, and setup instructions
@@ -26327,11 +28179,11 @@ When developing with Fliplet, remember to:
 
 - **Getting Started:** [Documentation Standards](#documentation-standards)
 - **Environment Setup:** [Development Environment Guidelines](#development-environment-guidelines)
-- **Coding Patterns:** [JavaScript Coding Standards](javascript-coding-standards.md)
-- **API Usage:** [Fliplet API Patterns](code-api-patterns.md)
+- **Coding Patterns:** [JavaScript Coding Standards](javascript-coding-standards)
+- **API Usage:** [Fliplet API Patterns](code-api-patterns)
 - **Quick Lookup:** [Quick Reference Guide](#quick-reference-guide)
 - **Testing:** [Code Examples and Testing](#code-examples-and-testing)
-- **Libraries:** [Approved Libraries](approved-libraries.md)
+- **Libraries:** [Approved Libraries](approved-libraries)
 
 For questions or clarifications, refer to the [Fliplet Developer Documentation](https://developers.fliplet.com/) or contact the development team.
 
@@ -26530,7 +28382,7 @@ For example:
 
 Need to read more about the interface? Once you're familiar with the above documentation on the component output, have a read to the previous section which covers the output of components interfaces.
 
-[Previous: interface of components (interface.html)](Interface.md)
+[Previous: interface of components (interface.html)](Interface)
 {: .buttons}
 
 ---
@@ -26672,7 +28524,7 @@ Having said that, **any html tag** is allowed to be specified.
 
 ## "interface"
 
-Declares `dependencies` and local `assets` to be used from the [interface.html](Interface.md). Please read our documentation about [dependencies and assets](../Dependencies-and-assets) for more details.
+Declares `dependencies` and local `assets` to be used from the [interface.html](Interface). Please read our documentation about [dependencies and assets](../Dependencies-and-assets) for more details.
 
 ## "build"
 
@@ -26682,7 +28534,7 @@ For page components you can also define `appAssets` that needs to be injected to
 
 ---
 
-[Back to components](../Building-components.md#the-component-definition-file)
+[Back to components](../Building-components#the-component-definition-file)
 {: .buttons}
 
 ---
@@ -26784,7 +28636,7 @@ Here's a sample of the interface for the button component:
 ```
 {% endraw %}
 
-[Read more on UI Guidelines](../UI-guidelines-interface.md)
+[Read more on UI Guidelines](../UI-guidelines-interface)
 {: .buttons}
 
 ---
@@ -26793,7 +28645,7 @@ Here's a sample of the interface for the button component:
 
 Components can include other components (if marked as providers) to add more functionalities or gather data from different sources.
 
-[Read more on using providers](Using-Providers.md)
+[Read more on using providers](Using-Providers)
 {: .buttons}
 
 ---
@@ -26802,7 +28654,7 @@ Components can include other components (if marked as providers) to add more fun
 
 Once you're familiar with the above documentation on the component interface, have a read to the next section which covers the output of components.
 
-[Next: output of components (build.html)](Build-output.md)
+[Next: output of components (build.html)](Build-output)
 {: .buttons}
 
 ---
@@ -26922,7 +28774,7 @@ Fliplet.Widget.all([myProviderA, myProviderB, myProviderC]).then(function (resul
 
 ---
 
-[Back to the interface of components](Interface.md)
+[Back to the interface of components](Interface)
 {: .buttons}
 
 ---
@@ -27462,7 +29314,7 @@ The DIS agent runs on your infrastructure, connects to your local database or AP
 
 To synchronize your data with Fliplet servers you will need an authorization token generated via Fliplet Studio from an organization admin account.
 
-To generate a token, see the [authentication token documentation](REST-API/authenticate.md).
+To generate a token, see the [authentication token documentation](REST-API/authenticate).
 
 <p class="warning">After creating the API token, you also need to set up appropriate <a href="Data-source-security.html">Data Source security rules</a> on the specific <strong>API token</strong> for the Data Sources you are reading or writing data to.</p>
 
@@ -27744,7 +29596,7 @@ Any error found in your configuration will be printed out for you to look at.
 
 ### Troubleshoot errors with permissions
 
-The API token you created via Fliplet Studio (see [documentation](REST-API/authenticate.md)) requires specific access to the Data Source you want to access via DIS. To grant access, copy the token's ID from the "API tokens" UI in Fliplet Studio, then paste it in the "Studio users permissions" tab of the Data Source after clicking the "Add new user" button:
+The API token you created via Fliplet Studio (see [documentation](REST-API/authenticate)) requires specific access to the Data Source you want to access via DIS. To grant access, copy the token's ID from the "API tokens" UI in Fliplet Studio, then paste it in the "Studio users permissions" tab of the Data Source after clicking the "Add new user" button:
 
 ![img](assets/img/dis-permissions.png)
 
@@ -28132,7 +29984,7 @@ If you're planning to send sensitive data to a Fliplet Data Source, we recommend
 Here are the standards and options for the encryption algorithm and private key:
 
 - **Encryption algorithm**: [AES-256](https://en.wikipedia.org/wiki/Advanced_Encryption_Standard).
-- **Encryption key**: you can decide whether the encryption key is provided by you or automatically generated and **managed by Fliplet into a secure keystore for your organization**. In the latter case, **the encryption key itself will be encrypted both at rest and during transit for extra added security**. On the other hand, when the key is provided by you it will never leave your machine so [you will be responsible for distributing this to your apps](/API/fliplet-encryption.html#set-the-encryptiondecryption-key) when the data must be decrypted.
+- **Encryption key**: you can decide whether the encryption key is provided by you or automatically generated and **managed by Fliplet into a secure keystore for your organization**. In the latter case, **the encryption key itself will be encrypted both at rest and during transit for extra added security**. On the other hand, when the key is provided by you it will never leave your machine so [you will be responsible for distributing this to your apps](/API/fliplet-encryption#set-the-encryptiondecryption-key) when the data must be decrypted.
 
 ### Keystore
 
@@ -28220,7 +30072,7 @@ Fliplet.DataSources.Encryption.KeyStore.getKey().then(function (key) {
 
 On the other hand, if you have provided your own encryption key you will just need to set it instead of fetching it from the keystore.
 
-Likewise, if you have set up a `salt` you will need to pass it as first argument of the `getKey` method shown above. More documentation can be found in the [Fliplet Encryption API reference](/API/fliplet-encryption.html#get-the-encryption-key-from-the-keystore).
+Likewise, if you have set up a `salt` you will need to pass it as first argument of the `getKey` method shown above. More documentation can be found in the [Fliplet Encryption API reference](/API/fliplet-encryption#get-the-encryption-key-from-the-keystore).
 
 ## Synchronization mode
 
@@ -28453,7 +30305,7 @@ Finally, make sure that **TLS 1.2 or 1.3** is [enabled on the OS settings](https
 
 #### Data Source security rules enforcement (February 8th, 2023)
 
-- [Data Source security rules](/Data-source-security.html) are now required by all API tokens and DIS integrations when interacting with Data Sources
+- [Data Source security rules](/Data-source-security) are now required by all API tokens and DIS integrations when interacting with Data Sources
 
 #### 1.14.3 (November 21st, 2022)
 
@@ -29614,7 +31466,7 @@ For page components you can also define `appAssets` that needs to be injected to
 }
 ```
 
-[Back to JS APIs and packages](JS-APIs#dependencies-packages.md)
+[Back to JS APIs and packages](JS-APIs#dependencies-packages)
 {: .buttons}
 
 ---
@@ -30332,7 +32184,7 @@ e.g. `packages=lodash,fliplet-datasources,fliplet-media`
 
 ---
 
-[Back](README.md)
+[Back](README)
 {: .buttons}
 
 ---
@@ -30346,7 +32198,7 @@ How to call third-party REST APIs from a Fliplet app using jQuery AJAX helpers, 
 
 This page shows you a few examples and libraries to get started integrating with third party API endpoints.
 
-<p class="quote">Note: integrating with third-party APIs may result in <strong><a href="/AJAX-cross-domain.html">cross domain policy issues</a> when the target domain does not allow API requests from the source origin (the Fliplet app)</strong>. Please read our support article <a href="/AJAX-cross-domain.html">here</a> to learn more on the topic.</p>
+<p class="quote">Note: integrating with third-party APIs may result in <strong><a href="/AJAX-cross-domain">cross domain policy issues</a> when the target domain does not allow API requests from the source origin (the Fliplet app)</strong>. Please read our support article <a href="/AJAX-cross-domain">here</a> to learn more on the topic.</p>
 
 All Fliplet apps have available the popular [jQuery](https://jquery.com/) library, which can be used on any screen when writing custom JavaScript code. Such library have easy-to-use helpers available to read and write data from/to an external API through the [jQuery AJAX](https://api.jquery.com/jquery.ajax/) methods, including:
 
@@ -30369,7 +32221,7 @@ $.get('https://jsonplaceholder.typicode.com/posts').then(function (elements) {
 
 As you may have noticed, jQuery AJAX methods all return a **Promise** object which makes integrating with Fliplet Hooks and JS APIs much easier.
 
-Here's an example where the above array from the 3rd-party API gets used to populate a [List from Data Source](/API/components/list-from-data-source.html) component:
+Here's an example where the above array from the 3rd-party API gets used to populate a [List from Data Source](/API/components/list-from-data-source) component:
 
 ```js
 Fliplet.Hooks.on('flListDataBeforeGetData', function (options) {
@@ -30472,13 +32324,13 @@ This means in order to start the development you will need to install [Node.js](
 
 The **Fliplet CLI** will enable you to develop and test components and themes on your machine, without having to rely on our APIs or even be connected to the internet while coding.
 
-Check the [Quickstart](Quickstart.md) section for more details about getting started with the development.
+Check the [Quickstart](Quickstart) section for more details about getting started with the development.
 
 ---
 
 In the next section we'll help you installing the development tools.
 
-[Quickstart →](Quickstart.md)
+[Quickstart →](Quickstart)
 {: .buttons}
 
 ---
@@ -30727,7 +32579,7 @@ Here's an example to give you a quick idea of how it works:
 
 *2. I can then use the JS APIs provided by the package, like `Fliplet.Media.Files.upload()` to upload a file.*
 
-Our [API Documentation](API-Documentation.md) and open-source components will give you plenty of examples about the available methods to use.
+Our [API Documentation](API-Documentation) and open-source components will give you plenty of examples about the available methods to use.
 
 Note: dependencies can include other dependencies (e.g. `fliplet-core` also includes `jquery`).
 
@@ -30804,7 +32656,7 @@ Make sure you're familiar with promises before diving into building components.
 
 When you're ready, move to the next section of the documentation to start building your first component.
 
-[Build a component →](Building-components.md)
+[Build a component →](Building-components)
 {: .buttons}
 
 ---
@@ -31218,7 +33070,7 @@ Please note that these versions have limited support for newer Fliplet features.
 
 ---
 
-[Back to home](README.md)
+[Back to home](README)
 {: .buttons}
 
 ---
@@ -31412,11 +33264,11 @@ document.addEventListener('backbutton', function () {
 }, false);
 ```
 
-Please ensure you avoid putting it on screens that can go back to screens you don't want users to access. If you'd prefer to transition to another screen, please check the docs for [Fliplet.Navigate](API/fliplet-core.md#navigate).
+Please ensure you avoid putting it on screens that can go back to screens you don't want users to access. If you'd prefer to transition to another screen, please check the docs for [Fliplet.Navigate](API/fliplet-core#navigate).
 
 ---
 
-[Back to home](README.md)
+[Back to home](README)
 {: .buttons}
 
 ---
@@ -31446,14 +33298,14 @@ if (Fliplet.Env.is('native')) {
 
 ## Manually creating a P12 certificate
 
-If you're using Fliplet Automated App Build system with an Apple Enterprise account and want to manually provide your certificate, we will need its P12 key. Please follow [this](aab/create-p12-certificate.md) steps to generate one with your Apple account.
+If you're using Fliplet Automated App Build system with an Apple Enterprise account and want to manually provide your certificate, we will need its P12 key. Please follow [this](aab/create-p12-certificate) steps to generate one with your Apple account.
 
-[How to generate a P12 certificate](aab/create-p12-certificate.md)
+[How to generate a P12 certificate](aab/create-p12-certificate)
 {: .buttons}
 
 ---
 
-[Back to home](README.md)
+[Back to home](README)
 {: .buttons}
 
 ---
@@ -31534,7 +33386,7 @@ fliplet publish
 
 ---
 
-[Back](README.md)
+[Back](README)
 {: .buttons}
 
 ---
@@ -31626,7 +33478,7 @@ You can check the latest available version of the Fliplet CLI on the [npm](https
 
 In the next section, you'll learn how to interact with our system.
 
-[Learn the JS APIs →](JS-APIs.md)
+[Learn the JS APIs →](JS-APIs)
 {: .buttons}
 
 ---
@@ -31733,13 +33585,13 @@ URL: https://developers.fliplet.com/REST-API-Documentation.html
 
 Index of Fliplet REST endpoints for Data Sources, Media, Notifications, Apps, and more — intended for third-party integrations.
 
-<p class="warning"><strong>Note:</strong> Fliplet RESTful APIs are intended to be used by 3rd party software such as external integrations. <strong>If you want to interact with our APIs in a Fliplet App, please use the <a href="/API-Documentation.html">JS APIs</a> instead.</strong></p>
+<p class="warning"><strong>Note:</strong> Fliplet RESTful APIs are intended to be used by 3rd party software such as external integrations. <strong>If you want to interact with our APIs in a Fliplet App, please use the <a href="/API-Documentation">JS APIs</a> instead.</strong></p>
 
 ## Authentication
 
 All our APIs require your client to authenticate when accessing the endpoints. Please check how to before heading to the reference for specific features.
 
-[How to authenticate »](REST-API/authenticate.md)
+[How to authenticate »](REST-API/authenticate)
 {: .buttons}
 
 ---
@@ -31750,42 +33602,42 @@ All our APIs require your client to authenticate when accessing the endpoints. P
 
 Read and write data to our virtual tables and enhance your Fliplet apps. This is often used to integrate your list of contacts (e.g. from Azure Directory) with Fliplet.
 
-[View documentation for Data Sources »](REST-API/fliplet-datasources.md)
+[View documentation for Data Sources »](REST-API/fliplet-datasources)
 {: .buttons}
 
 ### Media
 
 Upload files to Fliplet for use in Fliplet apps.
 
-[View documentation for Media »](REST-API/fliplet-media.md)
+[View documentation for Media »](REST-API/fliplet-media)
 {: .buttons}
 
 ### Notifications
 
 Create and manage a notification inbox for the users of your Fliplet apps.
 
-[View documentation for Notifications »](REST-API/fliplet-notifications.md)
+[View documentation for Notifications »](REST-API/fliplet-notifications)
 {: .buttons}
 
 ### Apps
 
 Read and update your apps data.
 
-[View documentation for Apps »](REST-API/fliplet-apps.md)
+[View documentation for Apps »](REST-API/fliplet-apps)
 {: .buttons}
 
 ### App Subscriptions (push notifications)
 
 Read and manage your app's users subscribed via push notifications.
 
-[View documentation for App Subscriptions »](REST-API/fliplet-app-subscriptions.md)
+[View documentation for App Subscriptions »](REST-API/fliplet-app-subscriptions)
 {: .buttons}
 
 ### Organizations
 
 Read audit logs for your organization.
 
-[View documentation for Organizations »](REST-API/fliplet-organizations.md)
+[View documentation for Organizations »](REST-API/fliplet-organizations)
 {: .buttons}
 
 ---
@@ -31852,13 +33704,13 @@ Note: The token does not expire, but can be revoked at any time should you want 
 
 <p class="quote">Some API endpoints may require you to use the app's production ID for extra added security, since API tokens don't have access to the working draft apps you see in Studio. You can grab the production app's ID by heading to the <strong>https://api.fliplet.com/v1/apps/</strong> endpoint and verify the value for the <code>productionAppId</code> for the apps you have access to</p>
 
-Please note that you may need to set up appropriate Data Source [security rules](/Data-source-security.html) on the API token for the Data Sources you are reading or writing data to.
+Please note that you may need to set up appropriate Data Source [security rules](/Data-source-security) on the API token for the Data Sources you are reading or writing data to.
 
 ---
 
-All done? Jump to the [Data Sources](fliplet-datasources.md) documentation to start using our REST APIs!
+All done? Jump to the [Data Sources](fliplet-datasources) documentation to start using our REST APIs!
 
-[Next »](fliplet-datasources.md)
+[Next »](fliplet-datasources)
 {: .buttons}
 
 ---
@@ -31937,7 +33789,7 @@ URL: https://developers.fliplet.com/REST-API/fliplet-app-subscriptions.html
 
 The App Subscriptions REST API lets you read and manage your app's users subscribed via push notifications.
 
-<p class="warning"><strong>Note:</strong> This RESTful API is intended to be used by 3rd party software such as external integrations. <strong>If you're using this in a Fliplet App, please use the <a href="/API/fliplet-notifications.html">Notifications JS APIs</a> instead.</strong></p>
+<p class="warning"><strong>Note:</strong> This RESTful API is intended to be used by 3rd party software such as external integrations. <strong>If you're using this in a Fliplet App, please use the <a href="/API/fliplet-notifications">Notifications JS APIs</a> instead.</strong></p>
 
 ---
 
@@ -31989,7 +33841,7 @@ The Apps REST API lets external integrations list, read, create, update, and del
 
 ## Authentication
 
-Please head to the [how to authenticate](authenticate.md) page of the documentation to read more about how you can authorize your client to make API requests to Fliplet.
+Please head to the [how to authenticate](authenticate) page of the documentation to read more about how you can authorize your client to make API requests to Fliplet.
 
 ---
 
@@ -32083,11 +33935,11 @@ URL: https://developers.fliplet.com/REST-API/fliplet-communicate.html
 
 The Communicate REST API lets external integrations send emails and SMS from a Fliplet app, subject to per-account rate limits.
 
-<p class="warning"><strong>Note:</strong> This RESTful API is intended to be used by 3rd party software such as external integrations. <strong>If you're using this in a Fliplet App, please use the <a href="/API/fliplet-communicate.html">Communicate JS APIs</a> instead.</strong></p>
+<p class="warning"><strong>Note:</strong> This RESTful API is intended to be used by 3rd party software such as external integrations. <strong>If you're using this in a Fliplet App, please use the <a href="/API/fliplet-communicate">Communicate JS APIs</a> instead.</strong></p>
 
 ## Authentication
 
-Please head to the [how to authenticate](authenticate.md) page of the documentation to read more about how you can authorize your client to make API requests to Fliplet.
+Please head to the [how to authenticate](authenticate) page of the documentation to read more about how you can authorize your client to make API requests to Fliplet.
 
 ---
 
@@ -32271,7 +34123,7 @@ URL: https://developers.fliplet.com/REST-API/fliplet-datasources.html
 
 The Data Sources REST API lets external integrations read and modify the data sources belonging to a Fliplet app or organization.
 
-<p class="warning"><strong>Note:</strong> This RESTful API is intended to be used by 3rd party software such as external integrations. <strong>If you're using this in a Fliplet App, please use the <a href="/API/fliplet-datasources.html">Data Sources JS APIs</a> instead.</strong></p>
+<p class="warning"><strong>Note:</strong> This RESTful API is intended to be used by 3rd party software such as external integrations. <strong>If you're using this in a Fliplet App, please use the <a href="/API/fliplet-datasources">Data Sources JS APIs</a> instead.</strong></p>
 
 ---
 
@@ -32327,7 +34179,7 @@ The Data Sources REST API lets external integrations read and modify the data so
 
 ## Authentication
 
-Please head to the [how to authenticate](authenticate.md) page of the documentation to read more about how you can authorize your client to make API requests to Fliplet.
+Please head to the [how to authenticate](authenticate) page of the documentation to read more about how you can authorize your client to make API requests to Fliplet.
 
 ---
 
@@ -33175,7 +35027,7 @@ The Media REST API lets external integrations upload, list, and manage media fil
 
 ## Authentication
 
-Please head to the [how to authenticate](authenticate.md) page of the documentation to read more about how you can authorize your client to make API requests to Fliplet.
+Please head to the [how to authenticate](authenticate) page of the documentation to read more about how you can authorize your client to make API requests to Fliplet.
 
 ---
 
@@ -33598,11 +35450,11 @@ URL: https://developers.fliplet.com/REST-API/fliplet-notifications.html
 
 The Notifications REST API lets external integrations create, schedule, and publish in-app and push notifications to Fliplet app users.
 
-<p class="warning"><strong>Note:</strong> This RESTful API is intended to be used by 3rd party software such as external integrations. <strong>If you're using this in a Fliplet App, please use the <a href="/API/fliplet-notifications.html">Notifications JS APIs</a> instead.</strong></p>
+<p class="warning"><strong>Note:</strong> This RESTful API is intended to be used by 3rd party software such as external integrations. <strong>If you're using this in a Fliplet App, please use the <a href="/API/fliplet-notifications">Notifications JS APIs</a> instead.</strong></p>
 
 ## Authentication
 
-Please head to the [how to authenticate](authenticate.md) page of the documentation to read more about how you can authorize your client to make API requests to Fliplet.
+Please head to the [how to authenticate](authenticate) page of the documentation to read more about how you can authorize your client to make API requests to Fliplet.
 
 ---
 
@@ -33888,7 +35740,7 @@ Please head to the [how to authenticate](#organization-tokens) page of the docum
 
 Optional parameters:
 
-  - `type`: String or Array of strings ([see list of available types](/Organization-audit-log-types.html))
+  - `type`: String or Array of strings ([see list of available types](/Organization-audit-log-types))
   - `appId`: Number (ID)
   - `fields`: Array of strings
   - `startDate`: ISODATE String
@@ -33901,7 +35753,7 @@ Optional parameters:
 
 <p class="quote">Note: when using GET requests, arrays can be given as a CSV string (e.g. <code>type=foo,bar</code>)</p>
 
-The following [types](/Organization-audit-log-types.html) are filtered out by default since they are primarily used for analytics: `app.analytics.pageView`, `app.analytics.event`, `app.view`, `app.update`,  `studio.analytics.presence`.
+The following [types](/Organization-audit-log-types) are filtered out by default since they are primarily used for analytics: `app.analytics.pageView`, `app.analytics.event`, `app.view`, `app.update`,  `studio.analytics.presence`.
 
 **Response  (Status code: 200 OK):**
 
@@ -34042,7 +35894,7 @@ Response  (Status code: 201 Created):
 }
 ```
 
-Once you have a token, see [how to use it](authenticate.md) when making API requests.
+Once you have a token, see [how to use it](authenticate) when making API requests.
 
 ---
 
@@ -34588,7 +36440,7 @@ Table cell padding: `$cellPadding`
 
 ---
 
-[Back](README.md)
+[Back](README)
 {: .buttons}
 
 ---
@@ -35089,7 +36941,7 @@ For example:
 
 ---
 
-[Back](README.md)
+[Back](README)
 {: .buttons}
 
 ---
@@ -35439,7 +37291,7 @@ $('.help').on('click', function () {
 
 ---
 
-[Back](README.md)
+[Back](README)
 {: .buttons}
 
 ---
@@ -35452,7 +37304,7 @@ URL: https://developers.fliplet.com/Upcoming.html
 Tracker of Fliplet features recently shipped or in beta, linking to their developer documentation.
 
 <section class="blocks alt">
-  <a class="bl two" href="/API/core/ai.html">
+  <a class="bl two" href="/API/core/ai">
     <div>
       <span class="pin">Open beta</span>
       <h4>AI</h4>
@@ -35460,7 +37312,7 @@ Tracker of Fliplet features recently shipped or in beta, linking to their develo
       <button>Browse documentation &rarr;</button>
     </div>
   </a>
-  <a class="bl two" href="/API/core/app-actions.html">
+  <a class="bl two" href="/API/core/app-actions">
     <div>
       <span class="pin">Now available to all customers</span>
       <h4>App Actions</h4>
@@ -35471,7 +37323,7 @@ Tracker of Fliplet features recently shipped or in beta, linking to their develo
 </section>
 <hr />
 <section class="blocks alt">
-  <a class="bl two" href="/Data-source-security.html">
+  <a class="bl two" href="/Data-source-security">
     <div>
       <span class="pin">Now available to all customers</span>
       <h4>Data Source Custom Access rules</h4>
@@ -35479,7 +37331,7 @@ Tracker of Fliplet features recently shipped or in beta, linking to their develo
       <button>Browse documentation &rarr;</button>
     </div>
   </a>
-  <a class="bl two" href="/API/fliplet-payments.html">
+  <a class="bl two" href="/API/fliplet-payments">
     <div>
       <span class="pin">Now available to all customers</span>
       <h4>Payments</h4>

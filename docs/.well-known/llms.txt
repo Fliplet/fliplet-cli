@@ -7,7 +7,7 @@
 - [Fliplet.AI](https://developers.fliplet.com/API/core/ai.html): Build AI features with `Fliplet.AI` — chat, completions, streaming, image generation, transcription, and embeddings via OpenAI or Google Gemini proxies.
 - [Fliplet.Analytics](https://developers.fliplet.com/API/core/analytics.html): Enable, disable, and check analytics tracking, and record custom app events and page views from JavaScript.
 - [Fliplet.API.request()](https://developers.fliplet.com/API/core/api.html): Make authenticated HTTP requests to Fliplet APIs with automatic URL construction, caching, offline queueing, and error handling.
-- [App Actions V2 (deprecated)](https://developers.fliplet.com/API/core/app-actions-v2.html): Deprecated App Actions V2 — configure a pipeline of functions that runs on-device or in the cloud, ad hoc or on a schedule. Migrate to V3.
+- [App Actions V2 (deprecated)](https://developers.fliplet.com/API/core/app-actions-v2.html): Deprecated App Actions V2 — configure a pipeline of functions that runs on-device or in the cloud, ad hoc or on a schedule. Migrate to V3 App Actions.
 - [App Actions V3](https://developers.fliplet.com/API/core/app-actions-v3.html): Write and run JavaScript code directly on the server or client to perform automations, scheduled tasks and on-demand operations.
 - [App Actions V1 (deprecated)](https://developers.fliplet.com/API/core/app-actions.html): Deprecated App Actions V1 — run app screens automatically on a schedule or on demand in the cloud. Migrate to V3.
 - [Fliplet.App](https://developers.fliplet.com/API/core/app.html): Retrieve the current app's public slug, build shareable screen URLs, and access app-level settings from JavaScript.
@@ -101,7 +101,7 @@
 - [Fliplet.App.Submissions](https://developers.fliplet.com/API/fliplet-app-submissions.html): Read App Store and Google Play submission metadata for the current Fliplet app — version, status, build numbers — via the fliplet-app-submissions package.
 - [Fliplet.Media.Audio.Player](https://developers.fliplet.com/API/fliplet-audio-player.html): Embed an audio player UI in a screen by tagging HTML elements with audio URLs; the framework auto-initializes players on screen load.
 - [Fliplet.Media.Audio](https://developers.fliplet.com/API/fliplet-audio.html): Play, pause, stop, and seek audio files on device or from a URL in Fliplet apps via the Audio namespace.
-- [Fliplet.Barcode](https://developers.fliplet.com/API/fliplet-barcode.html): Scan QR codes and other 1D/2D barcodes from the device camera via the fliplet-barcode package.
+- [Fliplet.Barcode](https://developers.fliplet.com/API/fliplet-barcode.html): Generate QR codes and 1D/2D barcodes on screen, and scan them from the device camera, via the fliplet-barcode package.
 - [Fliplet.Chat](https://developers.fliplet.com/API/fliplet-chat.html): Build chat, group conversations, and public channels in a Fliplet app via the fliplet-chat package, which exposes Fliplet.Chat, Fliplet.Chat.connect, and Fliplet.Chat.init.
 - [Fliplet.Communicate](https://developers.fliplet.com/API/fliplet-communicate.html): Send email, SMS, push notifications, and share URLs from a Fliplet app using a single Communicate namespace.
 - [Fliplet.Content()](https://developers.fliplet.com/API/fliplet-content.html): Create, query, update, and delete shared content records (bookmarks, likes, saved searches) backed by a data source via Fliplet.Content.
@@ -136,6 +136,17 @@
 - [Fliplet.UI.Typeahead()](https://developers.fliplet.com/API/fliplet-ui-typeahead.html): Render a typeahead input with real-time suggestions, free-input toggle, max items, and get/set/change methods via Fliplet.UI.Typeahead.
 - [Fliplet.UI](https://developers.fliplet.com/API/fliplet-ui.html): Fliplet-managed UI primitives — toasts, action sheets, modals, date/time pickers, typeahead, tables, panzoom — under the Fliplet.UI namespace.
 - [Fliplet.LikeButton](https://developers.fliplet.com/API/like-buttons.html): Embed a one-tap like button on any screen element, backed by a Data Source that records likes per content ID.
+- [V3 app analytics and event tracking](https://developers.fliplet.com/API/v3/analytics.html): V3 app analytics and event tracking. Page views are tracked automatically by the fliplet-analytics-spa runtime; this doc covers what you get for free and when to add event() calls for intent-bearing…
+- [V3 app bootstrap constraints](https://developers.fliplet.com/API/v3/app-bootstrap.html): The three constraints every V3 boot HTML must satisfy. Covers Fliplet.require.lazy for dependencies, Fliplet.Media.getContents for source files, and the Fliplet().then(...) init sequence. Framework-a…
+- [V3 App Settings Convention](https://developers.fliplet.com/API/v3/app-settings.html): V3 app settings convention for storing public and private configuration. Covers the underscore prefix convention for editor-private settings.
+- [V3 Authentication Patterns](https://developers.fliplet.com/API/v3/auth.html): V3 authentication patterns for email/password login, session management, logout, and protected routes. Use these patterns when building authentication flows in V3 apps.
+- [Fliplet Router JS API](https://developers.fliplet.com/API/v3/fliplet-router.html): Fliplet.Router JS API reference for V3 apps. Covers getBasePath, getRouteManifest, getRouteConfig, and resolveRoute including return shapes, reason codes, and rejection behavior.
+- [V3 Alpine.js apps](https://developers.fliplet.com/API/v3/frameworks/alpine.html): Constraints for building V3 apps in Alpine.js. Alpine is attribute-driven HTML with no build step, so it maps cleanly to the V3 runtime. Covers x-init timing relative to Fliplet().then and History AP…
+- [V3 framework guide — picking and setup](https://developers.fliplet.com/API/v3/frameworks/overview.html): Picking a frontend framework for a V3 app. Lists the runtime constraints every framework must cope with (no build step, no bundler, no transpile) and compares Vue, React, Alpine, and vanilla JS again…
+- [V3 React apps](https://developers.fliplet.com/API/v3/frameworks/react.html): Constraints for building V3 apps in React. Covers the JSX transpilation problem (the #1 cause of first-deploy failures) with three alternatives, React Router 6 basename wiring to Fliplet.Router.getBa…
+- [V3 vanilla-JS apps](https://developers.fliplet.com/API/v3/frameworks/vanilla.html): Constraints for building V3 apps in vanilla JavaScript. The simplest baseline — no framework deps to load, no transpile traps. Covers History API routing under Fliplet.Router.getBasePath and media as…
+- [V3 Vue apps](https://developers.fliplet.com/API/v3/frameworks/vue.html): Constraints for building V3 apps in Vue 3. Covers the runtime-compiler vs runtime-only build choice, the .vue single-file-component tradeoff without a loader, and the Vue Router base-path wiring to F…
+- [V3 routing](https://developers.fliplet.com/API/v3/routing.html): Canonical routing patterns for V3 SPA apps. Covers base path, route manifest, access guard, per-framework examples, and the full list of forbidden patterns that break V3 apps.
 
 ## REST APIs
 

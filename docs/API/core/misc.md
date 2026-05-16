@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, core, misc]
 v3_relevant: true
 deprecated: false
+capabilities: [compile, handlebars, template, mustache, guid, uuid, unique id, string templating, generate id]
 ---
 # Fliplet common functions
 
