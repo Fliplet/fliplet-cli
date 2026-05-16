@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-15T23:42:02.520Z",
+  "generatedAt": "2026-05-16T15:54:05.264Z",
   "libraries": [
     {
       "package": "fliplet-app-submissions",
@@ -65,7 +65,7 @@
       "package": "fliplet-chat",
       "namespace": "Fliplet.Chat",
       "title": "Fliplet.Chat",
-      "description": "Build chat, group conversations, and public channels in a Fliplet app via the fliplet-chat package, which exposes Fliplet.Chat, Fliplet.Chat.connect, and Fliplet.Chat.init.",
+      "description": "Build one-to-one, group, and public-channel chat features. Fliplet.Chat owns the conversations and messages data sources internally — supply only the contacts list (who can chat with whom).",
       "docUrl": "https://developers.fliplet.com/API/fliplet-chat.html",
       "preloaded": false,
       "capabilities": [
@@ -79,8 +79,11 @@
         "messaging",
         "real-time chat",
         "contacts",
-        "chat room"
-      ]
+        "chat room",
+        "typing indicator",
+        "message history"
+      ],
+      "notes": "Owns the conversations and messages data sources internally — never propose `Conversations`, `Messages`, `Typing Status`, or similar data sources of your own. The only data source you design is the `contacts` list passed to `Fliplet.Chat.connect()` (who can chat with whom)."
     },
     {
       "package": "fliplet-communicate",
