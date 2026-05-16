@@ -102,7 +102,7 @@
 - [Fliplet.Media.Audio.Player](https://developers.fliplet.com/API/fliplet-audio-player.html): Embed an audio player UI in a screen by tagging HTML elements with audio URLs; the framework auto-initializes players on screen load.
 - [Fliplet.Media.Audio](https://developers.fliplet.com/API/fliplet-audio.html): Play, pause, stop, and seek audio files on device or from a URL in Fliplet apps via the Audio namespace.
 - [Fliplet.Barcode](https://developers.fliplet.com/API/fliplet-barcode.html): Generate QR codes and 1D/2D barcodes on screen, and scan them from the device camera, via the fliplet-barcode package.
-- [Fliplet.Chat](https://developers.fliplet.com/API/fliplet-chat.html): Build chat, group conversations, and public channels in a Fliplet app via the fliplet-chat package, which exposes Fliplet.Chat, Fliplet.Chat.connect, and Fliplet.Chat.init.
+- [Fliplet.Chat](https://developers.fliplet.com/API/fliplet-chat.html): Build one-to-one, group, and public-channel chat features. Fliplet.Chat owns the conversations and messages data sources internally — supply only the contacts list (who can chat with whom).
 - [Fliplet.Communicate](https://developers.fliplet.com/API/fliplet-communicate.html): Send email, SMS, push notifications, and share URLs from a Fliplet app using a single Communicate namespace.
 - [Fliplet.Content()](https://developers.fliplet.com/API/fliplet-content.html): Create, query, update, and delete shared content records (bookmarks, likes, saved searches) backed by a data source via Fliplet.Content.
 - [Fliplet.CSV](https://developers.fliplet.com/API/fliplet-csv.html): Encode and decode CSV in Fliplet apps via the fliplet-csv package.
