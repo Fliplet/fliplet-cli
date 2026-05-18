@@ -52,12 +52,13 @@ index still emits them; it is up to the consumer to prefer non-deprecated.
 ### Optional fields for V3 library catalog
 
 The V3 library catalog (`/.well-known/llms-v3-libraries.json`, consumed by
-Studio's V3 AI builder) reads two extra optional fields from `API/fliplet-*.md`
+Studio's V3 AI builder) reads three extra optional fields from `API/fliplet-*.md`
 (installable packages) and `API/core/*.md` (ambient namespaces preloaded
 into every app):
 
 ```yaml
 capabilities: [stripe, checkout, subscription, refund, billing, webhook]
+category: commerce
 notes: "Installing this package transparently encrypts/decrypts columns in Fliplet.DataSources operations — install only when you intend to encrypt."
 exclude_from_v3_catalog: true        # opt the doc out of the catalog
 ```
@@ -68,6 +69,16 @@ what this API does in user-facing terms ("stripe", "image generation",
 recognize when a user-described capability maps to an existing Fliplet API
 without a `search_libraries` round-trip. Aim for 6-12 keywords, including
 named third-party services where applicable.
+
+**`category`** — single string from the enumerated set
+`{ data, identity, communications, media, native, commerce, integration,
+automation, analytics, meta }`. Drives the section grouping on the
+auto-generated `/v3/capabilities` index page. Pick the dominant facet —
+cross-cutting APIs (e.g. `Fliplet.Notifications` = communications +
+native) pick the one that matches how end-users describe what the API
+does. Required on non-excluded catalog entries; lint warns when absent,
+errors when value is outside the allowed set. See `docs/CONTRIBUTING.md`
+for guidance on which value to pick.
 
 **`notes`** — short curation note for side-effects, do-not-use caveats, or
 gotchas the agent needs to know up-front. Used sparingly — most docs need
@@ -109,8 +120,14 @@ docs/**/*.md
    │       llms.txt, llms-full.txt,
    │       agent-skills/index.json,
    │       agent-skills/<cluster>/SKILL.md   (12 capability clusters),
-   │       mcp/server-card.json
+   │       mcp/server-card.json,
+   │       llms-v3-libraries.json            (V3 builder catalog)
    │     }
+   │     docs/v3/capabilities.md             (auto-generated index page)
+   │
+   │     Also runs validateFrontmatter + validateCapabilities in --strict
+   │     mode (CI). Capability lints enforce: non-empty/lowercase/unique/
+   │     ≤40-char `capabilities[]`; `category:` value ∈ enumerated set.
    │
    ├── bundle exec jekyll build
    │     ↓
@@ -232,6 +249,12 @@ Counters drift toward more layers when fewer would do:
 - **No second taxonomy for the same docs.** We already publish per-page
   (`llms.txt`) and clustered (`agent-skills/`) views; a third
   classification needs a distinct audience that neither serves.
+  - **Exception**: `docs/v3/capabilities.md` is auto-generated from
+    frontmatter `category:` and serves a distinct audience (PMs / partner
+    developers / external evaluators asking "what can apps do?"). It is
+    not hand-maintained prose and re-derives from the catalog on every
+    build, so it cannot drift. Audit any future "we need a third
+    taxonomy" proposal against the same generated-from-frontmatter bar.
 
 ## Repository conventions
 

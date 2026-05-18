@@ -647,7 +647,7 @@ export function validateFrontmatter(docs) {
 // All errors carry a `hint` (one-liner fix) and a `docUrl` pointing to the
 // CONTRIBUTING checklist. The strict-mode runner in main() includes them
 // in the printed error message.
-const CONTRIBUTING_URL = `${BASE_URL}/CONTRIBUTING`;
+const CONTRIBUTING_URL = `${BASE_URL}/CONTRIBUTING.html`;
 
 export function validateCapabilities(docs) {
   const errors = [];
