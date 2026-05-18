@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, core, localization]
 v3_relevant: true
 deprecated: false
+category: meta
 capabilities: [localization, i18n, translation, translate string, locale, date format, number format, i18next, multilingual, internationalization]
 ---
 

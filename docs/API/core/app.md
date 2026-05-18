@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, core, app]
 v3_relevant: true
 deprecated: false
+category: meta
 capabilities: [app slug, public url, app settings, app logs, screen url, share url, preview mode, device orientation, app metadata, app config]
 ---
 # `Fliplet.App`

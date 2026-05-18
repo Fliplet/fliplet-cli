@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, core, screens]
 v3_relevant: true
 deprecated: false
+category: meta
 capabilities: [screen, page, list screens, current screen, screen url, share screen, screen id, public screen url]
 ---
 # `Fliplet.Pages` and `Fliplet.Page`

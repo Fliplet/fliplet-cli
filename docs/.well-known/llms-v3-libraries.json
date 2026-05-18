@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-16T15:54:05.264Z",
+  "generatedAt": "2026-05-18T16:59:34.786Z",
   "libraries": [
     {
       "package": "fliplet-app-submissions",
@@ -19,7 +19,8 @@
         "app status",
         "native build",
         "app review"
-      ]
+      ],
+      "category": "commerce"
     },
     {
       "package": "fliplet-audio",
@@ -38,7 +39,8 @@
         "mp3",
         "streaming audio",
         "audio playback"
-      ]
+      ],
+      "category": "media"
     },
     {
       "package": "fliplet-barcode",
@@ -59,7 +61,8 @@
         "upc",
         "1d barcode",
         "2d barcode"
-      ]
+      ],
+      "category": "media"
     },
     {
       "package": "fliplet-chat",
@@ -83,6 +86,7 @@
         "typing indicator",
         "message history"
       ],
+      "category": "communications",
       "notes": "Owns the conversations and messages data sources internally — never propose `Conversations`, `Messages`, `Typing Status`, or similar data sources of your own. The only data source you design is the `contacts` list passed to `Fliplet.Chat.connect()` (who can chat with whom)."
     },
     {
@@ -106,7 +110,8 @@
         "mailgun",
         "compose email",
         "mailto"
-      ]
+      ],
+      "category": "communications"
     },
     {
       "package": "fliplet-datasources",
@@ -132,7 +137,8 @@
         "subscribe",
         "real-time records",
         "bulk operations"
-      ]
+      ],
+      "category": "data"
     },
     {
       "package": "fliplet-encryption",
@@ -152,6 +158,7 @@
         "on-device encryption",
         "pgp"
       ],
+      "category": "data",
       "notes": "Installing this package transparently encrypts and decrypts the configured columns on every Fliplet.DataSources find/insert/update call — only install when you intend to encrypt, otherwise it will silently alter data-source operations."
     },
     {
@@ -175,7 +182,8 @@
         "attachment",
         "browse files",
         "search files"
-      ]
+      ],
+      "category": "media"
     },
     {
       "package": "fliplet-notifications",
@@ -193,7 +201,8 @@
         "read receipt",
         "notifications inbox",
         "broadcast notification"
-      ]
+      ],
+      "category": "communications"
     },
     {
       "package": "fliplet-payments",
@@ -219,7 +228,8 @@
         "product",
         "cart",
         "donation"
-      ]
+      ],
+      "category": "commerce"
     },
     {
       "package": "fliplet-security",
@@ -237,7 +247,8 @@
         "per-user storage",
         "app secret",
         "sensitive value storage"
-      ]
+      ],
+      "category": "identity"
     },
     {
       "package": "fliplet-session",
@@ -256,7 +267,8 @@
         "passport",
         "sso session",
         "connected account"
-      ]
+      ],
+      "category": "identity"
     },
     {
       "package": "fliplet-socket",
@@ -278,7 +290,8 @@
         "server push",
         "live data",
         "socket.io"
-      ]
+      ],
+      "category": "communications"
     },
     {
       "package": "fliplet-tokens",
@@ -297,7 +310,8 @@
         "bearer token",
         "external service token",
         "app token"
-      ]
+      ],
+      "category": "integration"
     },
     {
       "package": "fliplet-core",
@@ -315,7 +329,8 @@
         "share screen",
         "screen id",
         "public screen url"
-      ]
+      ],
+      "category": "meta"
     },
     {
       "package": "fliplet-core",
@@ -336,7 +351,8 @@
         "namespaced storage",
         "json storage",
         "local storage"
-      ]
+      ],
+      "category": "data"
     },
     {
       "package": "fliplet-core",
@@ -357,7 +373,8 @@
         "background job",
         "action trigger",
         "webhook handler"
-      ]
+      ],
+      "category": "automation"
     },
     {
       "package": "fliplet-core",
@@ -376,7 +393,8 @@
         "unique id",
         "string templating",
         "generate id"
-      ]
+      ],
+      "category": "meta"
     },
     {
       "package": "fliplet-core",
@@ -401,7 +419,8 @@
         "vision",
         "multimodal",
         "ai assistant"
-      ]
+      ],
+      "category": "automation"
     },
     {
       "package": "fliplet-core",
@@ -418,7 +437,8 @@
         "app analytics",
         "system analytics",
         "event tracking"
-      ]
+      ],
+      "category": "analytics"
     },
     {
       "package": "fliplet-core",
@@ -435,7 +455,8 @@
         "offline queue",
         "request cache",
         "fliplet api"
-      ]
+      ],
+      "category": "integration"
     },
     {
       "package": "fliplet-core",
@@ -455,7 +476,8 @@
         "device orientation",
         "app metadata",
         "app config"
-      ]
+      ],
+      "category": "meta"
     },
     {
       "package": "fliplet-core",
@@ -471,7 +493,8 @@
         "v2 apps",
         "available apps",
         "accessible apps"
-      ]
+      ],
+      "category": "meta"
     },
     {
       "package": "fliplet-core",
@@ -489,7 +512,8 @@
         "background refresh",
         "deduplicate",
         "cached promise"
-      ]
+      ],
+      "category": "data"
     },
     {
       "package": "fliplet-core",
@@ -506,7 +530,8 @@
         "decode",
         "base64 encode",
         "double encode"
-      ]
+      ],
+      "category": "meta"
     },
     {
       "package": "fliplet-core",
@@ -525,7 +550,8 @@
         "current app",
         "viewer mode",
         "preview mode"
-      ]
+      ],
+      "category": "meta"
     },
     {
       "package": "fliplet-core",
@@ -543,7 +569,8 @@
         "before save",
         "form submit hook",
         "async hook"
-      ]
+      ],
+      "category": "automation"
     },
     {
       "package": "fliplet-core",
@@ -563,7 +590,8 @@
         "i18next",
         "multilingual",
         "internationalization"
-      ]
+      ],
+      "category": "meta"
     },
     {
       "package": "fliplet-core",
@@ -590,7 +618,8 @@
         "navigate to screen",
         "confirm dialog",
         "prompt dialog"
-      ]
+      ],
+      "category": "meta"
     },
     {
       "package": "fliplet-core",
@@ -608,7 +637,8 @@
         "network change",
         "online status",
         "offline detection"
-      ]
+      ],
+      "category": "native"
     },
     {
       "package": "fliplet-core",
@@ -624,7 +654,8 @@
         "scheduled local notification",
         "native notification",
         "browser notification"
-      ]
+      ],
+      "category": "communications"
     },
     {
       "package": "fliplet-core",
@@ -642,7 +673,8 @@
         "org list",
         "audit",
         "compliance log"
-      ]
+      ],
+      "category": "identity"
     },
     {
       "package": "fliplet-core",
@@ -658,7 +690,8 @@
         "human-readable error",
         "error handling",
         "error response"
-      ]
+      ],
+      "category": "meta"
     },
     {
       "package": "fliplet-core",
@@ -678,7 +711,8 @@
         "user attribute",
         "profile attribute",
         "namespaced profile"
-      ]
+      ],
+      "category": "identity"
     },
     {
       "package": "fliplet-core",
@@ -695,7 +729,8 @@
         "global helpers",
         "function registry",
         "runtime key-value"
-      ]
+      ],
+      "category": "meta"
     },
     {
       "package": "fliplet-core",
@@ -712,7 +747,8 @@
         "listen to studio events",
         "message studio",
         "studio bridge"
-      ]
+      ],
+      "category": "meta"
     },
     {
       "package": "fliplet-core",
@@ -732,7 +768,8 @@
         "user profile",
         "login",
         "authentication"
-      ]
+      ],
+      "category": "identity"
     },
     {
       "package": "fliplet-core",
@@ -750,7 +787,8 @@
         "native auth",
         "device authentication",
         "biometric verify"
-      ]
+      ],
+      "category": "identity"
     },
     {
       "package": "fliplet-core",
@@ -769,7 +807,8 @@
         "widget interface",
         "namespaced widget",
         "component instance"
-      ]
+      ],
+      "category": "meta"
     }
   ]
 }

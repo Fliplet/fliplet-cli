@@ -27,6 +27,28 @@ import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, relative, resolve, sep } from 'node:path';
 import { shouldExclude } from './exclusions.mjs';
+import {
+  ALLOWED_CATEGORIES,
+  ALLOWED_CATEGORIES_SET,
+  deriveV3Package,
+  emitCapabilitiesIndex,
+  emitV3LibraryCatalog,
+  isV3CatalogEntry,
+  parseListFrontmatter,
+} from './emitters.mjs';
+
+// Re-export from emitters.mjs to preserve the import surface used by tests
+// (bin/__tests__/build-agent-indexes.test.mjs). New code should import
+// directly from emitters.mjs.
+export {
+  ALLOWED_CATEGORIES,
+  ALLOWED_CATEGORIES_SET,
+  deriveV3Package,
+  emitCapabilitiesIndex,
+  emitV3LibraryCatalog,
+  isV3CatalogEntry,
+  parseListFrontmatter,
+};
 
 const here = dirname(fileURLToPath(import.meta.url));
 const docsRoot = resolve(here, '..');
@@ -459,112 +481,11 @@ export function emitSkillMd(cluster, docsInCluster) {
   );
 }
 
-// V3 library catalog manifest. Emitted at /.well-known/llms-v3-libraries.json
-// and consumed by Studio's `searchLibraries.js` tool to drive V3 builder
-// library discovery, replacing the legacy /v1/widgets/assets fetch.
-//
-// Inclusion rules:
-//   - Installable packages: docs whose `relPath` matches `API/fliplet-*.md`.
-//     Emitted with `preloaded: false`. Package name defaults to the URL slug
-//     (`API/fliplet-barcode.md` → `fliplet-barcode`) and can be overridden
-//     via `package:` frontmatter.
-//   - Ambient (preloaded) namespaces: docs whose `relPath` matches
-//     `API/core/*.md`. Emitted with `preloaded: true` and `package:
-//     "fliplet-core"` since these APIs ship inside fliplet-core, which is
-//     bundled into every app and never needs `add_dependencies`.
-//
-// Either kind is skipped when `exclude_from_v3_catalog: true` is set in
-// frontmatter. The catalog also surfaces two optional curation fields read
-// from doc frontmatter:
-//   - `capabilities:` — bracketed list of keywords used by the consumer
-//     (Studio's `searchLibraries.js` and the V3 builder system prompt) to
-//     anchor user-described capabilities ("stripe", "checkout", "image
-//     generation") to the canonical Fliplet API. Always emitted as an
-//     array; empty when frontmatter omits it.
-//   - `notes:` — short curation note for side-effects or do-not-use caveats
-//     (e.g. fliplet-encryption modifies Fliplet.DataSources). Only emitted
-//     when present.
-const V3_INSTALLABLE_PATH_RE = /^API\/fliplet-[^/]+\.md$/;
-const V3_AMBIENT_PATH_RE = /^API\/core\/[^/]+\.md$/;
-
-export function deriveV3Package(relPath) {
-  const match = relPath.match(/^API\/(fliplet-[^/]+)\.md$/);
-  return match ? match[1] : null;
-}
-
-// Parse a YAML-style flow list (`[a, b, c]`) or a bare comma-separated
-// string into a clean array of trimmed strings. Returns [] for empty,
-// missing, or `[]` inputs. The minimal frontmatter parser upstream keeps
-// the raw value as a literal string, so this is where the list shape
-// becomes an array.
-export function parseListFrontmatter(raw) {
-  if (raw == null) return [];
-  const s = String(raw).trim();
-  if (s === '' || s === '[]') return [];
-  const body = s.startsWith('[') && s.endsWith(']') ? s.slice(1, -1) : s;
-  return body
-    .split(',')
-    .map((t) => t.trim())
-    .map((t) => {
-      if ((t.startsWith('"') && t.endsWith('"')) || (t.startsWith("'") && t.endsWith("'"))) {
-        return t.slice(1, -1);
-      }
-      return t;
-    })
-    .filter((t) => t.length > 0);
-}
-
-export function emitV3LibraryCatalog(docs) {
-  const libraries = [];
-  for (const doc of docs) {
-    const isInstallable = V3_INSTALLABLE_PATH_RE.test(doc.relPath);
-    const isAmbient = V3_AMBIENT_PATH_RE.test(doc.relPath);
-    if (!isInstallable && !isAmbient) continue;
-    const fm = doc.fm || {};
-    if (fm.exclude_from_v3_catalog === 'true') continue;
-
-    let pkg;
-    if (isInstallable) {
-      pkg = (fm.package && fm.package.trim()) || deriveV3Package(doc.relPath);
-      if (!pkg) continue;
-    } else {
-      // Ambient namespaces all ship inside fliplet-core (preloaded into
-      // every app). Studio consumers key off `preloaded` to decide whether
-      // `add_dependencies` is required, not off `package`.
-      pkg = 'fliplet-core';
-    }
-
-    const entry = {
-      package: pkg,
-      namespace: doc.title,
-      title: doc.title,
-      description: doc.description || '',
-      docUrl: doc.url,
-      preloaded: isAmbient,
-      capabilities: parseListFrontmatter(fm.capabilities),
-    };
-
-    if (fm.notes && fm.notes.trim() !== '') {
-      entry.notes = fm.notes.trim();
-    }
-
-    libraries.push(entry);
-  }
-  // Stable sort: installable first (preloaded=false), then ambient, alpha by
-  // package then namespace as a tiebreaker. Studio's renderer groups by
-  // `preloaded`; this order makes the JSON pleasant to read in diffs too.
-  libraries.sort((a, b) => {
-    if (a.preloaded !== b.preloaded) return a.preloaded ? 1 : -1;
-    const pkgCmp = (a.package || '').localeCompare(b.package || '');
-    if (pkgCmp !== 0) return pkgCmp;
-    return (a.namespace || '').localeCompare(b.namespace || '');
-  });
-  return {
-    version: 1,
-    generatedAt: new Date().toISOString(),
-    libraries,
-  };
-}
+// V3 library catalog (emitV3LibraryCatalog) and capabilities index page
+// (emitCapabilitiesIndex) emitters live in ./emitters.mjs. They share an
+// `isV3CatalogEntry(doc)` predicate so neither drifts from the other.
+// Re-exports above keep `bin/__tests__/build-agent-indexes.test.mjs`
+// working without a test-side import change.
 
 // MCP Server Card per SEP-1649
 // (https://github.com/modelcontextprotocol/modelcontextprotocol/pull/2127).
@@ -698,6 +619,123 @@ export function validateFrontmatter(docs) {
   return errors;
 }
 
+// Strict-mode capability-field validator. Returns an array of error objects
+// (`{ relPath, field, message, hint, docUrl }`) — empty array means clean.
+//
+// Scope: only docs that pass `isV3CatalogEntry(doc)`. This is intentionally
+// different from `validateFrontmatter` (which runs on every doc): the lints
+// here enforce the catalog's invariants, and docs outside the catalog
+// (guides, REST API, etc.) don't have `capabilities:` or `category:` at all.
+//
+// Two rule families:
+//
+//   `capabilities:` (already-curated field — these lints catch authoring
+//   slips after the field was added):
+//     - empty/absent (must have at least one keyword on a catalog entry)
+//     - non-lowercase token (e.g. `Stripe` should be `stripe`)
+//     - duplicate token within one entry
+//     - token >40 chars (probably a run-on or comma left out)
+//     - WARN if a token starts with `[` — strong signal of bracket-mismatch
+//       in the YAML flow list (e.g. `capabilities: [stripe, checkout`
+//       without the closing `]`). `parseListFrontmatter` parses this
+//       silently with `[stripe` as the first token.
+//
+//   `category:` (new field — enforces the enum):
+//     - empty/absent
+//     - value not in `ALLOWED_CATEGORIES_SET`
+//
+// All errors carry a `hint` (one-liner fix) and a `docUrl` pointing to the
+// CONTRIBUTING checklist. The strict-mode runner in main() includes them
+// in the printed error message.
+const CONTRIBUTING_URL = `${BASE_URL}/CONTRIBUTING`;
+
+export function validateCapabilities(docs) {
+  const errors = [];
+  for (const doc of docs) {
+    if (!isV3CatalogEntry(doc)) continue;
+    const fm = doc.fm || {};
+
+    // capabilities[]
+    const capsRaw = fm.capabilities;
+    const caps = parseListFrontmatter(capsRaw);
+    if (capsRaw == null || capsRaw.trim() === '' || capsRaw.trim() === '[]' || caps.length === 0) {
+      errors.push({
+        relPath: doc.relPath,
+        field: 'capabilities',
+        message: '`capabilities:` is empty or missing on a V3 catalog entry',
+        hint: 'Add 6–12 lowercase keywords describing what this API does (e.g. `[stripe, checkout, subscription]`).',
+        docUrl: CONTRIBUTING_URL,
+      });
+    } else {
+      const seen = new Set();
+      for (const token of caps) {
+        if (token.startsWith('[')) {
+          errors.push({
+            relPath: doc.relPath,
+            field: 'capabilities',
+            message: `\`capabilities:\` token \`${token}\` starts with \`[\` — likely a bracket-mismatch in YAML`,
+            hint: 'Check that the flow list is wrapped correctly, e.g. `capabilities: [a, b, c]` (note the closing `]`).',
+            docUrl: CONTRIBUTING_URL,
+            severity: 'warn',
+          });
+        }
+        if (token !== token.toLowerCase()) {
+          errors.push({
+            relPath: doc.relPath,
+            field: 'capabilities',
+            message: `\`capabilities:\` token \`${token}\` contains uppercase characters`,
+            hint: 'Capability keywords must be lowercase (e.g. `stripe`, not `Stripe`).',
+            docUrl: CONTRIBUTING_URL,
+          });
+        }
+        if (token.length > 40) {
+          errors.push({
+            relPath: doc.relPath,
+            field: 'capabilities',
+            message: `\`capabilities:\` token is >40 chars: \`${token}\``,
+            hint: 'Keywords should be short. Check for a missing comma.',
+            docUrl: CONTRIBUTING_URL,
+          });
+        }
+        if (seen.has(token)) {
+          errors.push({
+            relPath: doc.relPath,
+            field: 'capabilities',
+            message: `\`capabilities:\` duplicate token \`${token}\``,
+            hint: 'Remove the duplicate.',
+            docUrl: CONTRIBUTING_URL,
+          });
+        }
+        seen.add(token);
+      }
+    }
+
+    // category (enforced once D3.1 backfill completes — until then, the
+    // empty/missing rule is a soft warning so CI doesn't fail before the
+    // category-backfill commit lands).
+    const cat = fm.category && fm.category.trim();
+    if (!cat) {
+      errors.push({
+        relPath: doc.relPath,
+        field: 'category',
+        message: '`category:` is missing on a V3 catalog entry',
+        hint: `Pick one of: ${ALLOWED_CATEGORIES.join(', ')}.`,
+        docUrl: CONTRIBUTING_URL,
+        severity: 'warn',
+      });
+    } else if (!ALLOWED_CATEGORIES_SET.has(cat)) {
+      errors.push({
+        relPath: doc.relPath,
+        field: 'category',
+        message: `\`category: ${cat}\` is not in the allowed set`,
+        hint: `Allowed values: ${ALLOWED_CATEGORIES.join(', ')}.`,
+        docUrl: CONTRIBUTING_URL,
+      });
+    }
+  }
+  return errors;
+}
+
 function main() {
   const strict = process.argv.includes('--strict');
   const docs = collectDocs(docsRoot);
@@ -716,6 +754,35 @@ function main() {
     if (strict) {
       console.error(
         `\n${fmErrors.length} frontmatter error${fmErrors.length === 1 ? '' : 's'} — failing build (--strict).`,
+      );
+      process.exit(1);
+    }
+  }
+
+  // Capability lints run after frontmatter validation. Scope: V3 catalog
+  // entries only (see isV3CatalogEntry). Each error carries a `hint` and
+  // a `docUrl` to the CONTRIBUTING checklist so authors know exactly how
+  // to fix.
+  const capErrors = validateCapabilities(docs);
+  const capHardErrors = capErrors.filter((e) => e.severity !== 'warn');
+  const capWarns = capErrors.filter((e) => e.severity === 'warn');
+  if (capWarns.length > 0) {
+    for (const e of capWarns) {
+      console.error(`[warn] ${e.relPath}: ${e.message}`);
+      if (e.hint) console.error(`         hint: ${e.hint}`);
+      if (e.docUrl) console.error(`         see:  ${e.docUrl}`);
+    }
+  }
+  if (capHardErrors.length > 0) {
+    const tag = strict ? '[error]' : '[warn]';
+    for (const e of capHardErrors) {
+      console.error(`${tag} ${e.relPath}: ${e.message}`);
+      if (e.hint) console.error(`         hint: ${e.hint}`);
+      if (e.docUrl) console.error(`         see:  ${e.docUrl}`);
+    }
+    if (strict) {
+      console.error(
+        `\n${capHardErrors.length} capability error${capHardErrors.length === 1 ? '' : 's'} — failing build (--strict).`,
       );
       process.exit(1);
     }
@@ -766,6 +833,14 @@ function main() {
     JSON.stringify(v3Catalog, null, 2) + '\n',
   );
 
+  // Capabilities index page. Written to docs/v3/capabilities.md so Jekyll
+  // renders it like any other doc. Byte-stable (no timestamps) so two runs
+  // against identical input produce byte-identical output.
+  const v3Dir = join(docsRoot, 'v3');
+  mkdirSync(v3Dir, { recursive: true });
+  const capabilitiesPage = emitCapabilitiesIndex(docs);
+  writeFileSync(join(v3Dir, 'capabilities.md'), capabilitiesPage);
+
   console.log('Generated:');
   console.log(`  .well-known/llms.txt                 (${llmsTxt.length} bytes, ${docs.length} entries)`);
   console.log(`  .well-known/llms-full.txt            (${llmsFull.length} bytes)`);
@@ -776,6 +851,7 @@ function main() {
   }
   console.log(`  .well-known/mcp/server-card.json     (${MCP_ENDPOINT})`);
   console.log(`  .well-known/llms-v3-libraries.json   (${v3Catalog.libraries.length} V3 librar${v3Catalog.libraries.length === 1 ? 'y' : 'ies'})`);
+  console.log(`  v3/capabilities.md                   (${capabilitiesPage.length} bytes)`);
 }
 
 // Run main() only when invoked as a script, not when imported by tests.

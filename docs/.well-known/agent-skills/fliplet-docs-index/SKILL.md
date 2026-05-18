@@ -43,6 +43,7 @@ These docs don't belong to a single capability cluster — they are general onbo
 - [Fliplet open source resources](https://developers.fliplet.com/open-source.html): Where to find Fliplet's open-source code, pre-built app solutions, screen templates, community code examples, and developer documentation.
 - [Fliplet CLI quickstart](https://developers.fliplet.com/Quickstart.html): Install Node.js and the Fliplet CLI so you can develop and test components, themes, and menus on your machine.
 - [Upcoming and recently launched features](https://developers.fliplet.com/Upcoming.html): Tracker of Fliplet features recently shipped or in beta, linking to their developer documentation.
+- [V3 capabilities](https://developers.fliplet.com/v3/capabilities.html): Auto-generated index of every Fliplet JS API surface available to V3 apps, grouped by capability category.
 - [Fliplet VS Code extension](https://developers.fliplet.com/VS-Code-Extension-Setup-Usage.html): Install, authenticate, and use the Fliplet VS Code extension to develop Fliplet apps directly from your editor.
 
 ## Full site index

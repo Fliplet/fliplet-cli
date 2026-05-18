@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, core, storage]
 v3_relevant: true
 deprecated: false
+category: data
 capabilities: [storage, persistence, key-value, app storage, device storage, browser storage, preferences, settings, namespaced storage, json storage, local storage]
 ---
 # `Fliplet.Storage` and `Fliplet.App.Storage`

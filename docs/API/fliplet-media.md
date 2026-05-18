@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, media]
 v3_relevant: true
 deprecated: false
+category: media
 capabilities: [file, folder, upload, download, media, image, picture, photo, file storage, file manager, attachment, browse files, search files]
 ---
 # `Fliplet.Media`

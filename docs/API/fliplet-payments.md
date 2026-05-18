@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, payments]
 v3_relevant: true
 deprecated: false
+category: commerce
 capabilities: [payments, stripe, checkout, subscription, recurring billing, billing, refund, webhook, price id, customer portal, payment intent, ecommerce, order, product, cart, donation]
 ---
 

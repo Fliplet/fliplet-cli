@@ -226,4 +226,5 @@
 - [UI guidelines for component settings (interface)](https://developers.fliplet.com/UI-guidelines-interface.html): Recommended Bootstrap-based styles for buttons, forms, and typography in a Fliplet component's Studio settings interface.
 - [Upcoming and recently launched features](https://developers.fliplet.com/Upcoming.html): Tracker of Fliplet features recently shipped or in beta, linking to their developer documentation.
 - [Fliplet URLs and IP addresses](https://developers.fliplet.com/URLs-and-IP-Addresses.html): Domains and ports that Fliplet Studio, web apps, native apps, and the Data Integration Service need reachable through a corporate firewall.
+- [V3 capabilities](https://developers.fliplet.com/v3/capabilities.html): Auto-generated index of every Fliplet JS API surface available to V3 apps, grouped by capability category.
 - [Fliplet VS Code extension](https://developers.fliplet.com/VS-Code-Extension-Setup-Usage.html): Install, authenticate, and use the Fliplet VS Code extension to develop Fliplet apps directly from your editor.

@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, chat, messaging, realtime, conversations]
 v3_relevant: true
 deprecated: false
+category: communications
 capabilities: [chat, conversation, group chat, public channel, direct message, dm, im, messaging, real-time chat, contacts, chat room, typing indicator, message history]
 notes: "Owns the conversations and messages data sources internally — never propose `Conversations`, `Messages`, `Typing Status`, or similar data sources of your own. The only data source you design is the `contacts` list passed to `Fliplet.Chat.connect()` (who can chat with whom)."
 ---

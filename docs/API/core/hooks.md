@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, core, hooks]
 v3_relevant: true
 deprecated: false
+category: automation
 capabilities: [hook, before hook, after hook, lifecycle, event callback, before save, form submit hook, async hook]
 ---
 # `Fliplet.Hooks`

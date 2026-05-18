@@ -19,10 +19,15 @@ import {
   emitSkillMd,
   emitMcpServerCard,
   emitV3LibraryCatalog,
+  emitCapabilitiesIndex,
   deriveV3Package,
   parseListFrontmatter,
+  isV3CatalogEntry,
+  ALLOWED_CATEGORIES,
+  ALLOWED_CATEGORIES_SET,
   assignToCluster,
   validateFrontmatter,
+  validateCapabilities,
   ALLOWED_TYPES,
   CLUSTERS,
   collectDocs,
@@ -830,5 +835,324 @@ describe('emitV3LibraryCatalog', () => {
       catalog.libraries.map((l) => l.package).sort(),
       ['fliplet-a', 'fliplet-b'],
     );
+  });
+
+  it('emits category when present in frontmatter', () => {
+    const docs = [
+      makeDoc('API/fliplet-payments.md', { category: 'commerce' }),
+    ];
+    const catalog = emitV3LibraryCatalog(docs);
+    assert.equal(catalog.libraries[0].category, 'commerce');
+  });
+
+  it('omits category when frontmatter is empty', () => {
+    const docs = [makeDoc('API/fliplet-payments.md', {})];
+    const catalog = emitV3LibraryCatalog(docs);
+    assert.equal(catalog.libraries[0].category, undefined);
+  });
+});
+
+describe('isV3CatalogEntry', () => {
+  function doc(relPath, fm = {}) {
+    return { relPath, fm };
+  }
+
+  it('returns true for installable fliplet-* docs', () => {
+    assert.equal(isV3CatalogEntry(doc('API/fliplet-barcode.md')), true);
+    assert.equal(isV3CatalogEntry(doc('API/fliplet-payments.md')), true);
+  });
+
+  it('returns true for ambient core/* docs', () => {
+    assert.equal(isV3CatalogEntry(doc('API/core/storage.md')), true);
+    assert.equal(isV3CatalogEntry(doc('API/core/ai.md')), true);
+  });
+
+  it('returns false for paths outside the catalog', () => {
+    assert.equal(isV3CatalogEntry(doc('REST-API/Apps.md')), false);
+    assert.equal(isV3CatalogEntry(doc('Building-themes.md')), false);
+    assert.equal(isV3CatalogEntry(doc('API/components/forms.md')), false);
+    assert.equal(isV3CatalogEntry(doc('API/datasources/queries.md')), false);
+  });
+
+  it('returns false when frontmatter has exclude_from_v3_catalog: true', () => {
+    assert.equal(
+      isV3CatalogEntry(doc('API/fliplet-ui.md', { exclude_from_v3_catalog: 'true' })),
+      false,
+    );
+    assert.equal(
+      isV3CatalogEntry(doc('API/core/modal.md', { exclude_from_v3_catalog: 'true' })),
+      false,
+    );
+  });
+
+  it('honours the exclude flag only as the literal string "true"', () => {
+    assert.equal(
+      isV3CatalogEntry(doc('API/fliplet-a.md', { exclude_from_v3_catalog: 'false' })),
+      true,
+    );
+    assert.equal(
+      isV3CatalogEntry(doc('API/fliplet-a.md', { exclude_from_v3_catalog: '' })),
+      true,
+    );
+  });
+});
+
+describe('validateCapabilities', () => {
+  function entry(relPath, fm = {}) {
+    return { relPath, fm };
+  }
+
+  it('returns no errors for a well-formed catalog entry', () => {
+    const docs = [
+      entry('API/fliplet-payments.md', {
+        capabilities: '[stripe, checkout, subscription]',
+        category: 'commerce',
+      }),
+    ];
+    assert.deepEqual(validateCapabilities(docs), []);
+  });
+
+  it('skips docs outside the V3 catalog (no false positives)', () => {
+    const docs = [
+      entry('REST-API/Apps.md', {}),
+      entry('Building-themes.md', {}),
+      entry('API/components/forms.md', {}),
+      entry('API/fliplet-x.md', { exclude_from_v3_catalog: 'true' }),
+    ];
+    assert.deepEqual(validateCapabilities(docs), []);
+  });
+
+  it('flags missing capabilities[] on a catalog entry', () => {
+    const docs = [entry('API/fliplet-payments.md', { category: 'commerce' })];
+    const errors = validateCapabilities(docs);
+    const capError = errors.find((e) => e.field === 'capabilities');
+    assert.ok(capError);
+    assert.match(capError.message, /empty or missing/);
+    assert.ok(capError.hint);
+    assert.ok(capError.docUrl);
+  });
+
+  it('flags empty capabilities[] (e.g. `[]`)', () => {
+    const docs = [entry('API/fliplet-payments.md', { capabilities: '[]', category: 'commerce' })];
+    const errors = validateCapabilities(docs);
+    assert.ok(errors.find((e) => e.field === 'capabilities'));
+  });
+
+  it('flags non-lowercase tokens', () => {
+    const docs = [
+      entry('API/fliplet-payments.md', {
+        capabilities: '[Stripe, checkout]',
+        category: 'commerce',
+      }),
+    ];
+    const errors = validateCapabilities(docs);
+    const e = errors.find((x) => x.message.includes('Stripe'));
+    assert.ok(e);
+    assert.match(e.message, /uppercase/);
+  });
+
+  it('flags tokens >40 chars', () => {
+    const long = 'a-very-very-very-very-very-very-very-long-token';
+    const docs = [
+      entry('API/fliplet-payments.md', {
+        capabilities: `[${long}]`,
+        category: 'commerce',
+      }),
+    ];
+    const errors = validateCapabilities(docs);
+    assert.ok(errors.find((e) => e.message.includes('>40 chars')));
+  });
+
+  it('flags duplicate tokens within one entry', () => {
+    const docs = [
+      entry('API/fliplet-payments.md', {
+        capabilities: '[stripe, checkout, stripe]',
+        category: 'commerce',
+      }),
+    ];
+    const errors = validateCapabilities(docs);
+    assert.ok(errors.find((e) => e.message.includes('duplicate')));
+  });
+
+  it('warns when a token starts with `[` (bracket-mismatch footgun)', () => {
+    // `capabilities: [stripe, checkout` (missing `]`) parses as
+    // `['[stripe', 'checkout']` — the leading `[` token signals this.
+    const docs = [
+      entry('API/fliplet-payments.md', {
+        capabilities: '[stripe, checkout',
+        category: 'commerce',
+      }),
+    ];
+    const errors = validateCapabilities(docs);
+    const warn = errors.find((e) => e.message.includes('bracket-mismatch'));
+    assert.ok(warn);
+    assert.equal(warn.severity, 'warn');
+  });
+
+  it('warns when category is missing on a catalog entry', () => {
+    const docs = [
+      entry('API/fliplet-payments.md', {
+        capabilities: '[stripe, checkout]',
+      }),
+    ];
+    const errors = validateCapabilities(docs);
+    const cat = errors.find((e) => e.field === 'category');
+    assert.ok(cat);
+    assert.equal(cat.severity, 'warn');
+    assert.match(cat.message, /missing/);
+  });
+
+  it('errors when category value is not in the allowed enum', () => {
+    const docs = [
+      entry('API/fliplet-payments.md', {
+        capabilities: '[stripe]',
+        category: 'identitiy', // typo
+      }),
+    ];
+    const errors = validateCapabilities(docs);
+    const cat = errors.find((e) => e.field === 'category');
+    assert.ok(cat);
+    assert.equal(cat.severity, undefined); // hard error
+    assert.match(cat.message, /not in the allowed set/);
+  });
+
+  it('every error carries hint and docUrl', () => {
+    const docs = [
+      entry('API/fliplet-payments.md', {
+        capabilities: '[Stripe, stripe, stripe]',
+      }),
+    ];
+    const errors = validateCapabilities(docs);
+    assert.ok(errors.length > 0);
+    for (const e of errors) {
+      assert.ok(e.hint, `error on field ${e.field} missing hint`);
+      assert.ok(e.docUrl, `error on field ${e.field} missing docUrl`);
+    }
+  });
+});
+
+describe('emitCapabilitiesIndex', () => {
+  function doc(relPath, title, description, fm = {}) {
+    return {
+      relPath,
+      url: `https://developers.fliplet.com/${relPath.replace(/\.md$/, '.html')}`,
+      title,
+      description,
+      fm,
+    };
+  }
+
+  it('skips docs outside the V3 catalog', () => {
+    const docs = [
+      doc('Building-themes.md', 'Themes', 'Theme guide'),
+      doc('REST-API/Apps.md', 'Apps', 'REST'),
+    ];
+    const out = emitCapabilitiesIndex(docs);
+    assert.match(out, /No content/i.test(out) || !/Building-themes/.test(out) ? /.*/ : /unreachable/);
+    assert.ok(!out.includes('Themes — Theme guide'));
+  });
+
+  it('groups entries by category in ALLOWED_CATEGORIES order', () => {
+    const docs = [
+      doc('API/fliplet-payments.md', 'Fliplet.Payments', 'Stripe', { category: 'commerce', capabilities: '[stripe]' }),
+      doc('API/fliplet-datasources.md', 'Fliplet.DataSources', 'CRUD', { category: 'data', capabilities: '[crud]' }),
+      doc('API/core/user.md', 'Fliplet.User', 'Auth', { category: 'identity', capabilities: '[auth]' }),
+    ];
+    const out = emitCapabilitiesIndex(docs);
+    const dataIdx = out.indexOf('## Data');
+    const identityIdx = out.indexOf('## Identity');
+    const commerceIdx = out.indexOf('## Commerce');
+    assert.ok(dataIdx > 0);
+    assert.ok(identityIdx > dataIdx, 'Identity section after Data');
+    assert.ok(commerceIdx > identityIdx, 'Commerce after Identity');
+  });
+
+  it('puts uncategorised entries under an Uncategorized heading', () => {
+    const docs = [
+      doc('API/fliplet-x.md', 'Fliplet.X', 'No category here', {}),
+    ];
+    const out = emitCapabilitiesIndex(docs);
+    assert.match(out, /## Uncategorized/);
+    assert.match(out, /Fliplet\.X/);
+  });
+
+  it('marks ambient entries as preloaded', () => {
+    const docs = [
+      doc('API/core/storage.md', 'Fliplet.Storage', 'Persist', { category: 'data', capabilities: '[storage]' }),
+      doc('API/fliplet-datasources.md', 'Fliplet.DataSources', 'Query', { category: 'data', capabilities: '[crud]' }),
+    ];
+    const out = emitCapabilitiesIndex(docs);
+    assert.match(out, /Fliplet\.Storage[^—]*\*\*\(preloaded\)\*\*/);
+    // Installable should NOT have the preloaded tag
+    const dsLine = out.split('\n').find((l) => l.includes('Fliplet.DataSources'));
+    assert.ok(!dsLine.includes('preloaded'));
+  });
+
+  it('contains required frontmatter so validateFrontmatter passes on the generated file', () => {
+    const out = emitCapabilitiesIndex([]);
+    assert.match(out, /^---\n/);
+    assert.match(out, /title:/);
+    assert.match(out, /description:/);
+    assert.match(out, /type: reference/);
+    assert.match(out, /tags: \[v3, capabilities, js-api\]/);
+  });
+
+  it('produces byte-identical output across two runs (no timestamp drift)', () => {
+    const docs = [
+      doc('API/fliplet-payments.md', 'Fliplet.Payments', 'Stripe', { category: 'commerce', capabilities: '[stripe]' }),
+      doc('API/core/user.md', 'Fliplet.User', 'Auth', { category: 'identity', capabilities: '[auth]' }),
+    ];
+    const a = emitCapabilitiesIndex(docs);
+    const b = emitCapabilitiesIndex(docs);
+    assert.equal(a, b);
+  });
+
+  it('sorts entries within a category alphabetically by namespace', () => {
+    const docs = [
+      doc('API/fliplet-payments.md', 'Fliplet.Payments', 'd', { category: 'commerce', capabilities: '[a]' }),
+      doc('API/fliplet-app-submissions.md', 'Fliplet.App.Submissions', 'd', { category: 'commerce', capabilities: '[a]' }),
+    ];
+    const out = emitCapabilitiesIndex(docs);
+    const submissionsIdx = out.indexOf('Fliplet.App.Submissions');
+    const paymentsIdx = out.indexOf('Fliplet.Payments');
+    assert.ok(submissionsIdx > 0 && paymentsIdx > 0);
+    assert.ok(submissionsIdx < paymentsIdx, 'App.Submissions sorts before Payments');
+  });
+
+  it('treats unknown category values as uncategorised', () => {
+    const docs = [
+      doc('API/fliplet-x.md', 'Fliplet.X', 'd', { category: 'bogus', capabilities: '[a]' }),
+    ];
+    const out = emitCapabilitiesIndex(docs);
+    assert.match(out, /## Uncategorized/);
+  });
+});
+
+describe('ALLOWED_CATEGORIES', () => {
+  it('has exactly 10 values', () => {
+    assert.equal(ALLOWED_CATEGORIES.length, 10);
+  });
+
+  it('matches the documented enum order', () => {
+    assert.deepEqual(ALLOWED_CATEGORIES, [
+      'data',
+      'identity',
+      'communications',
+      'media',
+      'native',
+      'commerce',
+      'integration',
+      'automation',
+      'analytics',
+      'meta',
+    ]);
+  });
+
+  it('exposes a Set for fast lookup', () => {
+    assert.ok(ALLOWED_CATEGORIES_SET instanceof Set);
+    assert.equal(ALLOWED_CATEGORIES_SET.size, ALLOWED_CATEGORIES.length);
+    for (const c of ALLOWED_CATEGORIES) {
+      assert.ok(ALLOWED_CATEGORIES_SET.has(c));
+    }
   });
 });

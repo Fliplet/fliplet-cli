@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, session]
 v3_relevant: true
 deprecated: false
+category: identity
 capabilities: [session, auth session, login state, current user session, offline session, signin state, passport, sso session, connected account]
 ---
 # `Fliplet.Session`
