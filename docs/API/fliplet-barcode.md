@@ -9,7 +9,7 @@ capabilities: [barcode, qr code, qrcode, scan, scanner, camera scan, generate ba
 ---
 # `Fliplet.Barcode`
 
-Scan QR codes and other 1D/2D barcodes from the device camera, and generate barcode images on screen, via the `fliplet-barcode` package. Barcode scanning is only supported in native apps.
+Scan QR codes and other 1D/2D barcodes from the device camera, and generate barcode images on screen, via the `fliplet-barcode` package. Camera scanning works on both web (via the bundled `html5-qrcode` library) and native apps (via Cordova).
 
 ## Install
 
@@ -21,7 +21,12 @@ Add the `fliplet-barcode` dependency to your screen or app resources.
 
 Scan a QR code or barcode.
 
-**Note**: Barcode scanning is only supported in native apps.
+Scanning is supported on **both native apps and the web**. `Fliplet.Barcode.scan()` automatically picks the correct implementation based on `Fliplet.Env.is('web')`:
+
+* **Web (browser, Studio preview, PWA):** opens an in-page overlay backed by the bundled `html5-qrcode` library (loaded automatically as a dependency of `fliplet-barcode` — no separate install needed) and uses `navigator.mediaDevices.getUserMedia` to access the device camera.
+* **Native (iOS, Android via Cordova):** uses the [PhoneGap Plugin BarcodeScanner](https://github.com/phonegap/phonegap-plugin-barcodescanner) to open the native camera scanner.
+
+Both paths resolve with the same `{ cancelled, text, format }` shape so callers don't need to branch.
 
 ### Usage
 
@@ -29,13 +34,13 @@ Scan a QR code or barcode.
 Fliplet.Barcode.scan(options).then(function (result) {
   // result.text
   // result.format
-  // result.cancelled
+  // result.cancelled  // 0 = scanned, 1 = user closed
 }).catch(function (error) {
-  // scan failed
+  // scan failed (e.g. camera permission denied, scanner unavailable)
 });
 ```
 
-* **options** (Object) A map of optional configurations for the scanner. See [**PhoneGap Plugin BarcodeScanner** documentation](https://github.com/phonegap/phonegap-plugin-barcodescanner) for a full list of supported options. The default options used by Fliplet is listed below.
+* **options** (Object) A map of optional configurations for the scanner. Options are honored on native only — the web scanner uses the html5-qrcode defaults. See [**PhoneGap Plugin BarcodeScanner** documentation](https://github.com/phonegap/phonegap-plugin-barcodescanner) for the full native options list. The defaults used by Fliplet are listed below.
 
 ```js
 options = {
@@ -47,6 +52,14 @@ options = {
   prompt: 'Place a barcode inside the scan area', // Android
 };
 ```
+
+### Web requirements
+
+For the web path to work, the host page must satisfy all of the following:
+
+* The page must be served over **HTTPS** (or `localhost`) — browsers block `getUserMedia` on insecure origins.
+* The user must grant the browser's **camera permission** prompt. If permission is denied, the promise rejects with the `cameraDisallowed` translation key.
+* The runtime must expose `Fliplet.Utils.Overlay` (provided by the `fliplet-pages` package, which is part of the standard Fliplet app shell). If you load `fliplet-barcode` outside that shell, ensure `fliplet-pages` is also loaded — otherwise the scanner throws `Fliplet.Utils.Overlay is not a constructor` before the camera prompt opens.
 
 ## Fliplet.Barcode.show()
 
