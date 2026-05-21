@@ -12082,12 +12082,13 @@ Hold the `scanner` instance in component state (e.g. `this.webScanner = scanner`
 
 **On native** (`isWeb === false`): call `Fliplet.Barcode.scan(options)` directly. It works correctly when Cordova is actually loaded — the bug only affects the web path.
 
-**Error handling.** Surface `error.message` to the user; distinguish at minimum these `error.name` values:
+**Error handling.** Surface `error.message` to the user; check `error.name` FIRST in the order below, and only fall through to the HTTPS check after no name matched:
 
 - `NotAllowedError` / `PermissionDeniedError` → "Camera access was blocked. Allow it in your browser settings and try again."
 - `NotFoundError` / `DevicesNotFoundError` → "No camera was found on this device."
 - `NotReadableError` / `TrackStartError` → "The camera is in use by another app or tab."
-- `window.location.protocol !== 'https:'` and the hostname is not `localhost` → "Browser camera access needs HTTPS."
+
+Then, **as a final fallback on the web path only**: if no `error.name` matched AND `window.location.protocol !== 'https:'` AND `window.location.hostname !== 'localhost'`, return "Browser camera access needs HTTPS." Do NOT run this HTTPS check on the native code path — Cordova WebViews can load from `file://`, `ionic://localhost`, or `https://localhost` depending on platform and plugin version, so the check would misfire and tell native users their HTTPS is wrong. Practically, gate the HTTPS branch behind the same `isWeb` boolean you used to choose the scanner.
 
 **Do NOT** collapse all errors to "preview only" or "device build required" copy. Those messages mislead users and block working scanners on web. The scanner *does* work on web — the runtime check above is the only thing that needs to be right.
 
