@@ -6,10 +6,11 @@ tags: [js-api, barcode]
 v3_relevant: true
 deprecated: false
 capabilities: [barcode, qr code, qrcode, scan, scanner, camera scan, generate barcode, ean, upc, 1d barcode, 2d barcode]
+notes: "Scanning auto-detects platform (web uses the browser camera via the bundled html5-qrcode library; native uses the device's Cordova barcode plugin) — never gate Fliplet.Barcode.scan() with Fliplet.Env.is('native') checks, and never render 'preview only' or 'device build required' fallback copy on web."
 ---
 # `Fliplet.Barcode`
 
-Scan QR codes and other 1D/2D barcodes from the device camera, and generate barcode images on screen, via the `fliplet-barcode` package. Barcode scanning is only supported in native apps.
+Scan QR codes and other 1D/2D barcodes from the device camera, and generate barcode images on screen, via the `fliplet-barcode` package. Works in both web and native apps — the library auto-selects the appropriate scanner for each environment.
 
 ## Install
 
@@ -21,7 +22,7 @@ Add the `fliplet-barcode` dependency to your screen or app resources.
 
 Scan a QR code or barcode.
 
-**Note**: Barcode scanning is only supported in native apps.
+**Note**: `Fliplet.Barcode.scan()` works in both web and native apps. The `fliplet-barcode` package handles the platform difference internally (browser camera on web, device plugin on native) — no extra libraries, no `Fliplet.Env.is(...)` guards, no fallback copy needed. Just add `fliplet-barcode` as a dependency and call `Fliplet.Barcode.scan()`.
 
 ### Usage
 

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-16T15:54:05.264Z",
+  "generatedAt": "2026-05-20T16:53:32.189Z",
   "libraries": [
     {
       "package": "fliplet-app-submissions",
@@ -59,7 +59,8 @@
         "upc",
         "1d barcode",
         "2d barcode"
-      ]
+      ],
+      "notes": "Scanning auto-detects platform (web uses the browser camera via the bundled html5-qrcode library; native uses the device's Cordova barcode plugin) — never gate Fliplet.Barcode.scan() with Fliplet.Env.is('native') checks, and never render 'preview only' or 'device build required' fallback copy on web."
     },
     {
       "package": "fliplet-chat",
