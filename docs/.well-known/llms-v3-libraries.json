@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-21T10:27:06.490Z",
+  "generatedAt": "2026-05-21T11:13:14.539Z",
   "libraries": [
     {
       "package": "fliplet-app-submissions",
@@ -60,7 +60,7 @@
         "1d barcode",
         "2d barcode"
       ],
-      "notes": "For apps that scan on both web (browser camera) and native (Cordova plugin), do NOT rely on Fliplet.Barcode.scan() alone — the library's platform auto-detection can be wrong in Studio preview iframes and some published-web builds, causing it to silently take the Cordova path on web. Branch on RUNTIME Cordova availability (`!window.cordova && navigator.mediaDevices?.getUserMedia`) and use `Html5Qrcode` directly on web (loaded transitively via `Fliplet.require.lazy.chain('fliplet-barcode')`). Render the scanner into an inline div with explicit min-height (≥320px), handle granular permission errors (NotAllowedError, NotFoundError, NotReadableError, HTTPS), and call Fliplet.Barcode.scan() only when window.cordova is present. The canonical Vue recipe is in the doc body's 'Recommended pattern (web + native)' section — copy that pattern verbatim, never collapse the catch to 'preview only' or 'device build required' copy."
+      "notes": "Fliplet.Barcode.scan()'s internal web/native dispatch is unreliable in Studio preview and some published-web builds (the platform field can be wrong in a browser). On web, detect Cordova at runtime — NOT via Fliplet.Env.is — and call Html5Qrcode directly. See the doc body's 'Recommended pattern (web + native)' section for the canonical guidance and the two non-obvious code expressions. Never collapse errors to 'preview only' / 'device build required' copy."
     },
     {
       "package": "fliplet-chat",

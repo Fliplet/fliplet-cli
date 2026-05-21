@@ -12052,176 +12052,44 @@ Add the `fliplet-barcode` dependency to your screen or app resources.
 
 Scan a QR code or barcode.
 
-**Note**: For apps that scan on both **web** and **native**, do not call `Fliplet.Barcode.scan()` alone. The library's platform auto-detection can be wrong in Studio preview iframes and some published-web builds — the call then silently routes to the Cordova path on web (which rejects, because Cordova isn't loaded). Use the **Recommended pattern (web + native)** below — branch on actual `window.cordova` availability and use `Html5Qrcode` directly on web. This is the only way to reliably open the camera on first attempt in both environments.
+**Note**: For apps that target both **web** and **native**, use the [Recommended pattern (web + native)](#recommended-pattern-web--native) below. Calling `Fliplet.Barcode.scan()` alone is unreliable on web — its internal platform check can be wrong in Studio preview and some published-web builds, causing it to silently take the Cordova path on web (which rejects, because Cordova isn't loaded).
 
 ### Recommended pattern (web + native)
 
-Detect runtime Cordova availability and use `Html5Qrcode` directly on web (loaded transitively via `Fliplet.require.lazy.chain('fliplet-barcode')`); fall through to `Fliplet.Barcode.scan()` on native.
+`Fliplet.Barcode.scan()` decides web-vs-native internally by calling `Fliplet.Env.is('web')`, which reads `window.ENV.platform`. That value is set to `"native"` in Studio preview iframes and in some published-web builds, so the call rejects on web because the Cordova plugin isn't loaded in a browser. Detect Cordova yourself at runtime and call `Html5Qrcode` directly on web; only call `Fliplet.Barcode.scan()` on native.
 
-In your screen template, include the inline div the web scanner renders into, a trigger button, and a status/error region:
-
-```html
-<div v-if="webScannerActive">
-  <div id="web-scanner" class="web-scanner"></div>
-  <button @click="stopWebScanner">Stop scanner</button>
-</div>
-<button @click="scanCode" :disabled="scanning">
-  {{ scanning ? 'Scanner open…' : 'Scan QR code' }}
-</button>
-<div v-if="message" :class="messageType">
-  <strong>{{ messageTitle }}</strong>
-  <span>{{ message }}</span>
-</div>
-```
-
-In your component logic:
+**Runtime web check.** Compute this once in your scan handler before deciding which scanner to start. Use exactly this expression — do NOT substitute `Fliplet.Env.is('web')` or any check on `window.ENV.platform`:
 
 ```js
-data: function() {
-  return {
-    scanning: false,
-    webScanner: null,
-    webScannerActive: false,
-    message: '',
-    messageTitle: '',
-    messageType: 'info'
-  };
-},
-beforeUnmount: function() {
-  this.stopWebScanner();
-},
-methods: {
-  // 1) Branch on RUNTIME Cordova absence — not Fliplet.Env.is('web') or
-  //    window.ENV.platform, which can be wrong in preview / web builds.
-  shouldUseWebScanner: function() {
-    var hasWebCamera = !!(navigator.mediaDevices
-      && typeof navigator.mediaDevices.getUserMedia === 'function');
-    var isNative = !!(window.cordova || window.PhoneGap || window.Cordova);
-    return hasWebCamera && !isNative;
-  },
-
-  // 2) Single entry point — branches based on shouldUseWebScanner().
-  scanCode: async function() {
-    this.message = '';
-    this.scanning = true;
-    try {
-      if (this.shouldUseWebScanner()) {
-        await this.startWebScanner();
-        return;
-      }
-      var result = await Fliplet.Barcode.scan({
-        preferFrontCamera: false,
-        showFlipCameraButton: true,
-        showTorchButton: true,
-        prompt: 'Place the QR code inside the scan area'
-      });
-      if (!result || result.cancelled) {
-        this.showMessage('Scan cancelled', 'No code was scanned.', 'info');
-        return;
-      }
-      this.handleScanResult(result.text || '');
-    } catch (error) {
-      this.showMessage('Scanner unavailable', this.permissionMessage(error), 'error');
-    } finally {
-      if (!this.webScannerActive) this.scanning = false;
-    }
-  },
-
-  // 3) Web scanner — Html5Qrcode rendered into the inline div.
-  startWebScanner: async function() {
-    this.webScannerActive = true;
-    await this.$nextTick();
-    // The fliplet-barcode chain bundles html5-qrcode, so its global
-    // (`window.Html5Qrcode`) becomes available after the chain loads.
-    await Fliplet.require.lazy.chain('fliplet-barcode');
-    if (!window.Html5Qrcode) {
-      throw new Error('Html5Qrcode (bundled with fliplet-barcode) did not load');
-    }
-    var scanner = new window.Html5Qrcode('web-scanner');
-    var self = this;
-    this.webScanner = scanner;
-    await scanner.start(
-      { facingMode: 'environment' },
-      { fps: 10, qrbox: { width: 250, height: 250 } },
-      function(decodedText) {
-        self.stopWebScanner().then(function() {
-          self.handleScanResult(decodedText);
-        });
-      },
-      function() {} // ignore continuous decode failures
-    );
-  },
-
-  // 4) Clean shutdown — always stop AND clear, swallow already-stopped errors.
-  stopWebScanner: async function() {
-    try {
-      if (this.webScanner && this.webScanner.isScanning) {
-        await this.webScanner.stop();
-      }
-      if (this.webScanner && typeof this.webScanner.clear === 'function') {
-        await this.webScanner.clear();
-      }
-    } catch (e) { /* already stopped */ }
-    finally {
-      this.webScanner = null;
-      this.webScannerActive = false;
-      this.scanning = false;
-    }
-  },
-
-  // 5) Granular permission/error messages — DO NOT collapse to
-  //    "preview only" or "device build required".
-  permissionMessage: function(error) {
-    var name = error && error.name ? error.name : '';
-    var text = error && error.message ? error.message : '';
-    if (text.indexOf('Camera streaming not supported') !== -1 || text.indexOf('NotSupported') !== -1) {
-      return 'This window cannot start a live camera feed. Open the app directly in a browser tab.';
-    }
-    if (name === 'NotAllowedError' || name === 'PermissionDeniedError' || text.indexOf('Permission') !== -1) {
-      return 'Camera access was blocked. Please allow camera access in your browser settings, then try again.';
-    }
-    if (name === 'NotFoundError' || name === 'DevicesNotFoundError') {
-      return 'No camera was found on this device.';
-    }
-    if (name === 'NotReadableError' || name === 'TrackStartError') {
-      return 'The camera is already in use by another app or tab.';
-    }
-    if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost') {
-      return 'Browser camera access needs HTTPS. Open the app via an HTTPS URL.';
-    }
-    return 'Camera scanning could not start in this view.';
-  },
-
-  handleScanResult: function(text) {
-    // App-specific handling — parse the text, route, etc.
-  },
-
-  showMessage: function(title, message, type) {
-    this.messageTitle = title;
-    this.message = message;
-    this.messageType = type || 'info';
-  }
-}
+const isWeb = !!(navigator.mediaDevices && navigator.mediaDevices.getUserMedia)
+  && !(window.cordova || window.PhoneGap || window.Cordova);
 ```
 
-Add this minimum CSS so the camera feed has space to render:
+**On web** (`isWeb === true`): render an inline `<div id="web-scanner" class="web-scanner">` in your template (controlled by a `v-if`/conditional so it only mounts while scanning is active), give it `min-height: 320px` and a sensible width in CSS (without explicit dimensions the camera feed has no room to render), then load the chain and start the scanner. `html5-qrcode` ships transitively inside the `fliplet-barcode` chain, so `window.Html5Qrcode` becomes available after the chain loads:
 
-```css
-.web-scanner {
-  width: min(480px, 100%);
-  min-height: 320px;
-  overflow: hidden;
-  border-radius: 16px;
-}
-.web-scanner video { border-radius: 16px; }
+```js
+await Fliplet.require.lazy.chain('fliplet-barcode'); // exposes window.Html5Qrcode
+const scanner = new window.Html5Qrcode('web-scanner');
+await scanner.start(
+  { facingMode: 'environment' },
+  { fps: 10, qrbox: { width: 250, height: 250 } },
+  (decodedText) => { scanner.stop(); /* handle decodedText */ },
+  () => {} // ignore continuous decode failures
+);
 ```
 
-**Why this pattern works first-time:**
+Hold the `scanner` instance in component state (e.g. `this.webScanner = scanner`) so you can dismiss it later. On unmount or when the user dismisses the scanner, call `scanner.stop()` then `scanner.clear()` wrapped in `try/catch` — both throw when the scanner has already stopped.
 
-- `shouldUseWebScanner()` checks RUNTIME Cordova absence, not the static `Fliplet.Env.is('web')` or `window.ENV.platform` (which can be wrong in preview iframes and some web builds).
-- `Html5Qrcode` directly bypasses `Fliplet.Barcode.scan()`'s buggy platform dispatch on the web path — no library-side detection bug to trip on.
-- The inline div avoids overlay timing issues that can suppress the browser's camera-permission popup.
-- Granular permission messages tell users what's actually wrong (HTTPS, denied permission, missing camera) instead of misleading "device build" copy that blocks them entirely.
+**On native** (`isWeb === false`): call `Fliplet.Barcode.scan(options)` directly. It works correctly when Cordova is actually loaded — the bug only affects the web path.
+
+**Error handling.** Surface `error.message` to the user; distinguish at minimum these `error.name` values:
+
+- `NotAllowedError` / `PermissionDeniedError` → "Camera access was blocked. Allow it in your browser settings and try again."
+- `NotFoundError` / `DevicesNotFoundError` → "No camera was found on this device."
+- `NotReadableError` / `TrackStartError` → "The camera is in use by another app or tab."
+- `window.location.protocol !== 'https:'` and the hostname is not `localhost` → "Browser camera access needs HTTPS."
+
+**Do NOT** collapse all errors to "preview only" or "device build required" copy. Those messages mislead users and block working scanners on web. The scanner *does* work on web — the runtime check above is the only thing that needs to be right.
 
 ### Simple native-only usage
 
