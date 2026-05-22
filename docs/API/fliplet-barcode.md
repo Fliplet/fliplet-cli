@@ -2,7 +2,7 @@
 
 ## Install
 
-Add the `fliplet-barcode` dependency to your screen or app resources.
+Add `fliplet-barcode` (for native) and `jsqr` (for web) as Combo-B lazy dependencies.
 
 ## Fliplet.Barcode.scan()
 
@@ -10,9 +10,76 @@ Add the `fliplet-barcode` dependency to your screen or app resources.
 
 Scan a QR code or barcode.
 
-**Note**: Barcode scanning is only supported in native apps.
+**Note**: For apps that target both **web** and **native**, use the [Recommended pattern (web + native)](#recommended-pattern-web--native) below. `Fliplet.Barcode.scan()` alone is unreliable on web — branch on `navigator.mediaDevices.getUserMedia` availability instead of `Fliplet.Env.is`.
 
-### Usage
+### Recommended pattern (web + native)
+
+Branch on web camera API availability: use it inline with `jsQR` if present, otherwise fall back to `Fliplet.Barcode.scan()`.
+
+The template needs an inline `<video ref="scannerVideo" autoplay muted playsinline>` (visible) and `<canvas ref="scannerCanvas" style="display:none">` (for frame sampling).
+
+```js
+methods: {
+  scanTicket: async function() {
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+      await this.startWebScanner();
+      return;
+    }
+    await Fliplet.require.lazy.chain('fliplet-barcode');
+    var scan = await Fliplet.Barcode.scan({ prompt: 'Place the QR inside the area' });
+    if (scan && !scan.cancelled && scan.text) this.handleCode(scan.text);
+  },
+
+  startWebScanner: async function() {
+    await Fliplet.require.lazy('jsqr');
+    this.scannerStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'environment' },
+      audio: false
+    });
+    this.scannerActive = true;
+    await this.$nextTick();
+    var video = this.$refs.scannerVideo;
+    video.srcObject = this.scannerStream;
+    await video.play();
+    this.scanLoop();
+  },
+
+  scanLoop: function() {
+    if (!this.scannerActive) return;
+    var video = this.$refs.scannerVideo;
+    var canvas = this.$refs.scannerCanvas;
+    if (video.readyState === video.HAVE_ENOUGH_DATA) {
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      var ctx = canvas.getContext('2d');
+      ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+      var data = ctx.getImageData(0, 0, canvas.width, canvas.height);
+      var qr = window.jsQR(data.data, canvas.width, canvas.height, { inversionAttempts: 'dontInvert' });
+      if (qr && qr.data) {
+        this.stopWebScanner();
+        this.handleCode(qr.data);
+        return;
+      }
+    }
+    this.scannerFrame = requestAnimationFrame(this.scanLoop.bind(this));
+  },
+
+  stopWebScanner: function() {
+    if (this.scannerFrame) cancelAnimationFrame(this.scannerFrame);
+    if (this.scannerStream) this.scannerStream.getTracks().forEach(function(t) { t.stop(); });
+    this.scannerStream = null;
+    this.scannerActive = false;
+  }
+}
+```
+
+Call `stopWebScanner()` in `beforeUnmount` to release the camera stream when leaving the screen.
+
+Do NOT branch on `Fliplet.Env.is('web')` or `window.ENV.platform` — those can be wrong in Studio preview and some published-web builds. The `navigator.mediaDevices.getUserMedia` check is the only reliable signal.
+
+### Simple native-only usage
+
+If your app only ships as a native build, you can call `Fliplet.Barcode.scan()` directly:
 
 ```js
 Fliplet.Barcode.scan(options).then(function (result) {
@@ -24,16 +91,16 @@ Fliplet.Barcode.scan(options).then(function (result) {
 });
 ```
 
-* **options** (Object) A map of optional configurations for the scanner. See [**PhoneGap Plugin BarcodeScanner** documentation](https://github.com/phonegap/phonegap-plugin-barcodescanner) for a full list of supported options. The default options used by Fliplet is listed below.
+* **options** (Object) A map of optional configurations for the scanner. See [**PhoneGap Plugin BarcodeScanner** documentation](https://github.com/phonegap/phonegap-plugin-barcodescanner) for a full list of supported options.
 
 ```js
 options = {
-  preferFrontCamera: false, // iOS and Android
-  showFlipCameraButton: true, // iOS and Android
-  showTorchButton: true, // iOS and Android
-  torchOn: false, // Android, launch with the torch switched on (if available)
-  saveHistory: true, // Android, save scan history (default false)
-  prompt: 'Place a barcode inside the scan area', // Android
+  preferFrontCamera: false,
+  showFlipCameraButton: true,
+  showTorchButton: true,
+  torchOn: false,
+  saveHistory: true,
+  prompt: 'Place a barcode inside the scan area'
 };
 ```
 
