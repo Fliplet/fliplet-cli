@@ -2,7 +2,7 @@
 
 ## Install
 
-Add `fliplet-barcode` as a Combo-B lazy dependency. **`html5-qrcode` is already bundled inside the `fliplet-barcode` chain — do NOT declare it as a separate lazy dependency, and do NOT use `jsqr`.**
+Add `fliplet-barcode` as a Combo-B lazy dependency. The chain provides `html5-qrcode` for the web path and `Fliplet.Barcode` for the native path in a single load.
 
 ## Fliplet.Barcode.scan()
 
@@ -24,7 +24,7 @@ Both paths come from the **same `fliplet-barcode` chain** — `Fliplet.require.l
 **Why this pattern works:**
 
 1. **`typeof window.cordova !== 'undefined'`** is the runtime signal that's set if and only if the native Cordova runtime has loaded. It distinguishes a native APK from a web browser regardless of how the app was built or where it's previewed.
-2. **`Fliplet.require.lazy.chain('fliplet-barcode')`** loads everything in one call. The chain bundles `html5-qrcode.min.js` for the web path AND `Fliplet.Barcode.scan()` for the native path — no separate `html5-qrcode` or `jsqr` declarations needed.
+2. **`Fliplet.require.lazy.chain('fliplet-barcode')`** loads everything in one call. The chain bundles `html5-qrcode.min.js` for the web path AND `Fliplet.Barcode.scan()` for the native path.
 3. **On native, `Fliplet.Barcode.scan()`** delegates permission and UI to the bundled `cordova-plugin-barcodescanner` plugin — it handles the OS permission popup and opens a native scanner (ZXing on Android, AVFoundation on iOS).
 
 #### Template
@@ -121,7 +121,7 @@ beforeUnmount() { this.stopWebScanner(); }
 
 #### Things to avoid
 
-- Don't declare `html5-qrcode` or `jsqr` as separate top-level lazy dependencies — the chain already bundles `html5-qrcode`, and declaring it separately can shadow the chain-provided version.
+- Don't declare `html5-qrcode` as a separate top-level lazy dependency — the chain already bundles it, and a separate declaration can shadow the chain-provided version.
 - Don't call `getUserMedia` or instantiate `Html5Qrcode` from the native path — `Fliplet.Barcode.scan()` is the cleaner entry point and handles permissions for you.
 - Don't render into a `<video>`+`<canvas>` pair — `Html5Qrcode` manages its own DOM inside the `<div id="web-scanner">` target.
 
