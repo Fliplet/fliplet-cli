@@ -10,7 +10,7 @@ Add `fliplet-barcode` as a Combo-B lazy dependency. **`html5-qrcode` is already 
 
 Scan a QR code or barcode.
 
-**Note**: For apps that target both **web** and **native**, use the [Recommended pattern (web + native)](#recommended-pattern-web--native) below. `Fliplet.Barcode.scan()`'s internal platform check (`Fliplet.Env.is('web')`) is unreliable in Studio preview iframes — wrap the call with a `window.cordova` runtime check instead.
+**Note**: The [Recommended pattern (web + native)](#recommended-pattern-web--native) below is the canonical scanner implementation. It handles Studio preview, published web, and native APKs through a single code path, with the OS camera-permission popup triggered automatically on device.
 
 ### Recommended pattern (web + native)
 
@@ -21,13 +21,11 @@ Use the **runtime presence of `window.cordova`** to decide the path:
 
 Both paths come from the **same `fliplet-barcode` chain** — `Fliplet.require.lazy.chain('fliplet-barcode')` exposes `window.Html5Qrcode` globally AND makes `Fliplet.Barcode.scan()` available.
 
-**Three rules that make this work first-attempt:**
+**Why this pattern works:**
 
-1. **Detect via `typeof window.cordova !== 'undefined'`** — defined only when the native Cordova runtime is loaded. Studio preview iframes and published-web builds never have it.
-   - DO NOT use `Fliplet.Env.is('web')` or `window.ENV.platform` — those return `'native'` inside Studio preview iframes (where Cordova is NOT loaded), routing the code down the wrong path.
-   - DO NOT use `navigator.mediaDevices.getUserMedia` for detection either — modern Cordova WebView fully supports `getUserMedia`, so the check incorrectly routes native apps to the web path, bypassing the Cordova permission system and silently failing to acquire the camera.
-2. **On native, just call `Fliplet.Barcode.scan()`** — do not call `getUserMedia` or `Html5Qrcode` from the native path. The cordova-plugin-barcodescanner handles the permission popup and the scanner UI for you (ZXing on Android, AVFoundation on iOS).
-3. **Use `Fliplet.require.lazy.chain('fliplet-barcode')`, NOT `Fliplet.require.lazy('html5-qrcode')`.** `html5-qrcode` is a transitive dependency inside the chain — it is not (and should not be) declared as a separate top-level lazy dep.
+1. **`typeof window.cordova !== 'undefined'`** is the runtime signal that's set if and only if the native Cordova runtime has loaded. It distinguishes a native APK from a web browser regardless of how the app was built or where it's previewed.
+2. **`Fliplet.require.lazy.chain('fliplet-barcode')`** loads everything in one call. The chain bundles `html5-qrcode.min.js` for the web path AND `Fliplet.Barcode.scan()` for the native path — no separate `html5-qrcode` or `jsqr` declarations needed.
+3. **On native, `Fliplet.Barcode.scan()`** delegates permission and UI to the bundled `cordova-plugin-barcodescanner` plugin — it handles the OS permission popup and opens a native scanner (ZXing on Android, AVFoundation on iOS).
 
 #### Template
 
@@ -59,10 +57,8 @@ data: function() {
 },
 methods: {
   scanTicket: async function() {
-    // Runtime detection — window.cordova is defined ONLY when the native Cordova
-    // runtime has loaded. Studio preview iframes and published web never have it.
-    // Do NOT branch on Fliplet.Env.is or window.ENV.platform — those return 'native'
-    // inside Studio preview iframes where Cordova is NOT actually loaded.
+    // Runtime detection — window.cordova is defined only when the native Cordova
+    // runtime has loaded. Studio preview iframes and published web do not have it.
     if (typeof window.cordova !== 'undefined') {
       // Native: cordova.plugins.barcodeScanner handles CAMERA permission via the
       // standard Cordova mechanism (OS popup appears automatically), then opens
@@ -123,14 +119,11 @@ Call `stopWebScanner()` in `beforeUnmount` (Vue 3) or `beforeDestroy` (Vue 2) to
 beforeUnmount() { this.stopWebScanner(); }
 ```
 
-#### What NOT to do
+#### Things to avoid
 
-- Don't use `Fliplet.require.lazy('html5-qrcode')` — html5-qrcode isn't typically a top-level lazy dep; that call throws `Lazy dependency "html5-qrcode" is not registered`. Always go through the chain.
-- Don't use `jsqr` — `html5-qrcode` from the chain already covers the same use case and supports more formats.
-- Don't branch on `Fliplet.Env.is('web')` or `window.ENV.platform` — Studio preview iframes set these to `'native'` even though Cordova isn't loaded, sending the code down the wrong path.
-- Don't branch on `navigator.mediaDevices.getUserMedia` — Cordova WebView fully supports it, so this check incorrectly classifies native apps as web. The native code path needs the Cordova plugin's permission flow, not raw `getUserMedia`.
-- Don't call `getUserMedia` or instantiate `Html5Qrcode` on the native path. The native path goes through `Fliplet.Barcode.scan()` only.
-- Don't render into a `<video>`+`<canvas>` pair — that was the jsQR pattern. `html5-qrcode` manages its own DOM inside the `<div id="web-scanner">` target.
+- Don't declare `html5-qrcode` or `jsqr` as separate top-level lazy dependencies — the chain already bundles `html5-qrcode`, and declaring it separately can shadow the chain-provided version.
+- Don't call `getUserMedia` or instantiate `Html5Qrcode` from the native path — `Fliplet.Barcode.scan()` is the cleaner entry point and handles permissions for you.
+- Don't render into a `<video>`+`<canvas>` pair — `Html5Qrcode` manages its own DOM inside the `<div id="web-scanner">` target.
 
 ### Simple native-only usage
 
