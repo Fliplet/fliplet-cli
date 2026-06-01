@@ -1,15 +1,15 @@
 ---
 title: Fliplet.Navigator
-description: "Detect online/offline state, listen for connectivity changes, and wait for the device to be ready."
+description: "Detect online/offline state, listen for connectivity changes, wait for the device to be ready, and get the device's current GPS location and coordinates."
 type: api-reference
 tags: [js-api, core, navigator]
 v3_relevant: true
 deprecated: false
-capabilities: [online, offline, connectivity, network state, device ready, network change, online status, offline detection]
+capabilities: [online, offline, connectivity, network state, device ready, network change, online status, offline detection, location, gps, geolocation, current location, device location, coordinates, latitude, longitude, position, nearby, geofence, map location]
 ---
 # `Fliplet.Navigator`
 
-Detect online/offline state, listen for connectivity changes, and wait for the device to be ready.
+Detect online/offline state, listen for connectivity changes, wait for the device to be ready, and get the device's current GPS location and coordinates.
 
 ### Check whether the device is online
 
