@@ -1,5 +1,5 @@
 ---
-description: Constraints for building V3 apps in React. Covers the JSX transpilation problem (the #1 cause of first-deploy failures) with three alternatives, React Router 6 basename wiring to Fliplet.Router.getBasePath, and the no-build-step limits on CSS modules and TSX.
+description: Constraints for building V3 apps in React. Covers the JSX transpilation problem (the #1 cause of first-deploy failures) with three alternatives, React Router 6 createHashRouter wiring (no basename — native- and preview-iframe-safe), and the no-build-step limits on CSS modules and TSX.
 ---
 
 # V3 React apps
@@ -19,7 +19,7 @@ const ReactDOM = window.ReactDOM;
 
 `Fliplet.require.lazy(name)` resolves once the UMD bundle has executed; the module itself lands on `window` (`window.React`, `window.ReactDOM`, `window.htm`, `window.ReactRouterDOM`). Read it off `window` after the `await` — assigning the awaited value directly gives you the URL string, not the module.
 
-For routing, `react-router-dom`'s UMD bundle is not self-contained — it delegates its named exports (`Navigate`, `Outlet`, `useNavigate`, `useLocation`, `Link`, `createBrowserRouter`, …) to two peer packages that must be loaded first as globals:
+For routing, `react-router-dom`'s UMD bundle is not self-contained — it delegates its named exports (`Navigate`, `Outlet`, `useNavigate`, `useLocation`, `Link`, `createHashRouter`, …) to two peer packages that must be loaded first as globals:
 
 ```js
 await Fliplet.require.lazy('@remix-run/router');  // sets window.RemixRouter
@@ -30,7 +30,7 @@ const ReactRouterDOM = window.ReactRouterDOM;
 
 Add all three via `add_dependencies` with `lazy: true` and match the minor versions across them (e.g. `react-router-dom@6.26.x` + `react-router@6.26.x` + `@remix-run/router@1.19.x`). Skipping `react-router` or `@remix-run/router` leaves `ReactRouterDOM.Navigate` etc. as throwing getters that fail at first render.
 
-Adding them via `add_dependencies` is not enough — listing a package as a lazy dep only registers the URL. The boot script must also `await Fliplet.require.lazy(name)` on all three (in the order above) before accessing any `ReactRouterDOM.*` export, or you'll hit `ReactRouterDOM.createBrowserRouter is not a function`.
+Adding them via `add_dependencies` is not enough — listing a package as a lazy dep only registers the URL. The boot script must also `await Fliplet.require.lazy(name)` on all three (in the order above) before accessing any `ReactRouterDOM.*` export, or you'll hit `ReactRouterDOM.createHashRouter is not a function`.
 
 ## Features that need a build step
 
@@ -59,15 +59,13 @@ Prefer `htm` unless the user has a specific reason to override.
 
 ## Wiring to Fliplet.Router
 
-Full contract in [V3 routing](../routing.md). React-specific: pass `basename` when creating the router:
+Full contract in [V3 routing](../routing.md). React-specific: use `createHashRouter` (no basename) on every platform:
 
 ```js
-const router = createBrowserRouter(routes, {
-  basename: Fliplet.Router.getBasePath()
-});
+const router = ReactRouterDOM.createHashRouter(routes);   // no basename
 ```
 
-`HashRouter` is rejected by the boot-HTML lint (rule `hash-router-react`). Build routes from `Fliplet.Router.getRouteManifest()`; route loaders should call `Fliplet.Router.resolveRoute(path)`.
+`createHashRouter` is the V3 standard for React because it sidesteps two problems at once: `createBrowserRouter` renders blank in the V3 preview iframe (the initial URL has no path after the basename), and on native it throws a `file:` `SecurityError` (`file://` blocks `pushState` path changes). Hash mode only ever touches the fragment, so the same router works on web and native with no platform branch — unlike Vue and vanilla, which must branch on `Fliplet.Router.isNative()`. The boot-HTML lint flags both `createBrowserRouter` (`react-browser-router`) and the `<HashRouter>` component (`hash-router-react`); use the `createHashRouter` data-router form. Build routes from `Fliplet.Router.getRouteManifest()`; route loaders should call `Fliplet.Router.resolveRoute(path)`.
 
 ## Binding Fliplet.Media.authenticate
 
@@ -96,10 +94,10 @@ Then `<img src={logoSrc} />`. Calling `Fliplet.Media.authenticate` at module sco
 ## DO / DON'T
 
 - DO use `htm` tagged templates as the default JSX alternative.
-- DO pass `basename: Fliplet.Router.getBasePath()` to `createBrowserRouter`.
+- DO use `ReactRouterDOM.createHashRouter(routes)` (no basename) — it works in the preview iframe and on native unchanged.
 - DO resolve `Fliplet.Media.authenticate` inside `useEffect` and store in state.
 - DON'T ship raw JSX — it will always throw on first deploy.
-- DON'T use `HashRouter` — rejected by lint.
+- DON'T use `createBrowserRouter` or the `<HashRouter>` component — both are rejected by lint; use the `createHashRouter` data-router form.
 - DON'T use `.tsx` or TypeScript — no transpiler available.
 - DON'T use CSS Modules or `import './styles.css'` — no bundler.
 - DON'T render with `innerHTML`, `outerHTML`, `insertAdjacentHTML`, or `element.append(htmlString)` inside screen files. If you wrote `el.innerHTML = ...` in a component, you wrote a templating engine — not React — and you introduced an XSS surface on every future edit.

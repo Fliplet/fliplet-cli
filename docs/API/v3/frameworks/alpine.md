@@ -1,5 +1,5 @@
 ---
-description: Constraints for building V3 apps in Alpine.js. Alpine is attribute-driven HTML with no build step, so it maps cleanly to the V3 runtime. Covers x-init timing relative to Fliplet().then and History API routing pairing.
+description: Constraints for building V3 apps in Alpine.js. Alpine is attribute-driven HTML with no build step, so it maps cleanly to the V3 runtime. Covers x-init timing relative to Fliplet().then and platform-conditional routing pairing (History API on web, location.hash on native, branched on Fliplet.Router.isNative).
 ---
 
 # V3 Alpine.js apps
@@ -27,16 +27,20 @@ None that Alpine itself requires. The generic V3 constraints still apply:
 
 ## Wiring to Fliplet.Router
 
-Alpine has no router. Pair it with History API routing the same way as vanilla JS:
+Alpine has no router. Pair it with platform-conditional routing the same way as vanilla JS — History API on web, hash on native (Cordova `file://` blocks `pushState` path changes):
 
 ```js
 function goTo(path) {
-  history.pushState({}, '', Fliplet.Router.getBasePath() + path);
-  window.dispatchEvent(new PopStateEvent('popstate'));
+  if (Fliplet.Router.isNative()) {
+    location.hash = path;                                        // native — fires 'hashchange'
+  } else {
+    history.pushState({}, '', Fliplet.Router.getBasePath() + path);
+    window.dispatchEvent(new PopStateEvent('popstate'));         // web — fires 'popstate'
+  }
 }
 ```
 
-Use `Fliplet.Router.resolveRoute(path)` in your `popstate` handler. See [V3 routing](../routing.md).
+Use `Fliplet.Router.resolveRoute(path)` in your route handler, and listen for `hashchange` on native / `popstate` on web. See [V3 routing](../routing.md).
 
 ## Binding Fliplet.Media.authenticate
 
@@ -64,7 +68,7 @@ The `:src="src"` binding updates once the promise resolves. Do not try `:src="Fl
 - DO resolve authenticated URLs into a reactive `x-data` field before binding.
 - DO pair Alpine with History API routing from `Fliplet.Router.getBasePath()`.
 - DON'T bind a Promise directly into an attribute (`:src`, `:href`).
-- DON'T use hash-based navigation — rejected by lint.
+- DON'T use hash-based navigation on web — the lint flags it unless you branch on `Fliplet.Router.isNative()` (hash is the required native branch).
 
 ## Related
 

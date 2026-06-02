@@ -15,17 +15,17 @@ Fetch the per-framework doc (`v3-framework-vue`, `v3-framework-react`, etc.) bef
 | No transpile | JSX, TSX, and any other syntax the browser can't parse natively will throw `SyntaxError: Unexpected token`. |
 | No bundler | Bare ESM imports (`import x from 'vue'`) fail. Dependencies must come from `Fliplet.require.lazy(name)` or a full CDN URL added via `add_dependencies`. |
 | No CSS preprocessing | No CSS Modules, no Sass, no PostCSS. Styles are plain CSS inlined in `<style>` or component HTML. |
-| Hash routing is rejected | `hashchange`, `window.location.hash`, `createWebHashHistory`, `HashRouter`, and `href="#/..."` are all rejected by the boot-HTML lint. History API only. See [V3 routing](../routing.md). |
+| Routing is platform-conditional | History API on web, hash on native (Cordova `file://` blocks `pushState` path changes). Branch the history backend on `Fliplet.Router.isNative()`. The boot-HTML lint flags unguarded hash patterns (`createWebHashHistory`, `location.hash`, `hashchange`, `href="#/..."`) AND unguarded `createWebHistory`. React is the exception — `createHashRouter` on every platform, no branch. See [V3 routing](../routing.md). |
 | Preloaded libraries | jQuery, Bootstrap CSS, Lodash, Moment, Animate.css, and fliplet-media are always available — never add them as dependencies. |
 
 ## Framework comparison
 
 | Framework | Needs compile? | Router support | Good fit for |
 |---|---|---|---|
-| Vanilla JS | No | History API (manual) | Single-screen apps, very simple flows |
-| Vue 3 | No (runtime-compiler build) | Vue Router 4 (`createWebHistory`) | Multi-screen apps with reactive state |
-| React | **Yes, for JSX** | React Router 6 (`basename`) | Users who asked for React; otherwise prefer Vue |
-| Alpine.js | No | Pair with vanilla History API | Form-heavy, attribute-driven UIs |
+| Vanilla JS | No | History API on web, hash on native (manual branch) | Single-screen apps, very simple flows |
+| Vue 3 | No (runtime-compiler build) | Vue Router 4 (`createWebHistory` / `createWebHashHistory`, branched on `isNative()`) | Multi-screen apps with reactive state |
+| React | **Yes, for JSX** | React Router 6 (`createHashRouter`, no branch) | Users who asked for React; otherwise prefer Vue |
+| Alpine.js | No | Pair with platform-conditional History/hash routing | Form-heavy, attribute-driven UIs |
 
 ## Picking rules
 

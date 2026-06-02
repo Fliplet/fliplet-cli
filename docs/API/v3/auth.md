@@ -234,7 +234,7 @@ async function getCurrentUser() {
 
 ## Logout
 
-Clear the session and redirect to the login screen. V3 uses History API routing on every platform, so redirect via your router (or `history.pushState` + `Fliplet.Router.getBasePath()`) — never `window.location.hash`. See [V3 Routing](routing.md) for the full contract.
+Clear the session and redirect to the login screen. Redirect via your router so the platform-correct history backend is used (History API on web, hash on native). If you redirect by hand instead of through a router, branch on `Fliplet.Router.isNative()` — `history.pushState` + `Fliplet.Router.getBasePath()` on web, `location.hash` on native. See [V3 Routing](routing.md) for the full contract.
 
 ```js
 // Called from a component that has a router instance in scope.
