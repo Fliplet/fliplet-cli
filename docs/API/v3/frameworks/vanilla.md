@@ -1,6 +1,6 @@
 ---
 title: "V3 vanilla-JS apps"
-description: Constraints for building V3 apps in vanilla JavaScript. The simplest baseline — no framework deps to load, no transpile traps. Covers History API routing under Fliplet.Router.getBasePath and media asset binding timing.
+description: Constraints for building V3 apps in vanilla JavaScript. The simplest baseline — no framework deps to load, no transpile traps. Covers platform-conditional routing (History API + Fliplet.Router.getBasePath on web, location.hash on native, branched on Fliplet.Router.isNative) and media asset binding timing.
 type: guide
 tags: [js-api, v3, framework, vanilla-js]
 v3_relevant: true
@@ -26,14 +26,18 @@ Modern browser syntax (optional chaining, nullish coalescing, destructuring, asy
 
 ## Wiring to Fliplet.Router
 
-Use the History API directly. The navigation call is:
+Navigation is platform-conditional: the History API on web, the hash on native (Cordova `file://` blocks `pushState` path changes). Branch on `Fliplet.Router.isNative()`:
 
 ```js
-history.pushState({}, '', Fliplet.Router.getBasePath() + path);
-window.dispatchEvent(new PopStateEvent('popstate'));
+if (Fliplet.Router.isNative()) {
+  location.hash = path;                                        // native — fires 'hashchange'
+} else {
+  history.pushState({}, '', Fliplet.Router.getBasePath() + path);
+  window.dispatchEvent(new PopStateEvent('popstate'));         // web — fires 'popstate'
+}
 ```
 
-Read the current route by stripping `Fliplet.Router.getBasePath()` from `location.pathname`. Route resolution (access check + screen-source fetch) goes through `Fliplet.Router.resolveRoute(path)` — see [V3 routing](../routing).
+Read the current route from `location.hash` on native, or by stripping `Fliplet.Router.getBasePath()` from `location.pathname` on web. Listen for `hashchange` on native and `popstate` on web — match the listener to the navigation mechanism. Route resolution (access check + screen-source fetch) goes through `Fliplet.Router.resolveRoute(path)` — see [V3 routing](../routing).
 
 ## Binding Fliplet.Media.authenticate
 
@@ -56,10 +60,11 @@ Don't compute the URL at module load and hope it's ready — the element will ha
 
 ## DO / DON'T
 
-- DO navigate with `history.pushState(state, '', Fliplet.Router.getBasePath() + path)`.
-- DO dispatch `popstate` after `pushState` so listeners re-render.
-- DON'T read or write `window.location.hash` — rejected by the routing lint.
-- DON'T use `href="#/..."` for internal links — rejected by the routing lint.
+- DO branch navigation on `Fliplet.Router.isNative()` — `location.hash = path` on native, `history.pushState(state, '', Fliplet.Router.getBasePath() + path)` on web.
+- DO dispatch `popstate` after `pushState` on web so listeners re-render; on native the `hashchange` event fires on its own.
+- DO listen for `hashchange` on native and `popstate` on web — match the listener to the navigation mechanism.
+- DON'T read or write `window.location.hash` on web — the routing lint flags it unless you branch on `Fliplet.Router.isNative()` (hash is the required native branch).
+- DON'T use `href="#/..."` literals for internal links — render real paths and intercept clicks, letting the platform pick the URL shape.
 - DON'T `import` across uploaded source files — resolve shared code via `Fliplet.require.lazy` or a single boot file.
 
 ## Related

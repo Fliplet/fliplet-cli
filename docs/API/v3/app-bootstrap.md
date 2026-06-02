@@ -55,7 +55,7 @@ Fliplet().then(function() {
 
 ## What's next: routing
 
-V3 uses History API routing driven by the manifest at `app.settings.v3`, accessed via `Fliplet.Router`. Hash routing is forbidden on every platform. For the full contract, per-framework examples, and the anti-patterns that break V3 apps, see [V3 routing](routing).
+V3 routing is driven by the manifest at `app.settings.v3`, accessed via `Fliplet.Router`. It's platform-conditional: History API on web, hash on native (Cordova `file://` blocks `pushState` path changes) — branch on `Fliplet.Router.isNative()`. For the full contract, per-framework examples, and the anti-patterns that break V3 apps, see [V3 routing](routing).
 
 ## Related
 

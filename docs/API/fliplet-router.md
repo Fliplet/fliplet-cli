@@ -1,6 +1,6 @@
 ---
 title: "Fliplet Router JS API"
-description: Fliplet.Router JS API reference for V3 apps. Covers getBasePath, getRouteManifest, getRouteConfig, and resolveRoute including return shapes, reason codes, and rejection behavior.
+description: Fliplet.Router JS API reference for V3 apps. Covers getBasePath, isNative, getHistoryMode (platform-conditional history — path on web, hash on native), getRouteManifest, getRouteConfig, and resolveRoute including return shapes, reason codes, and rejection behavior.
 type: api-reference
 tags: [js-api, v3, routing, router]
 v3_relevant: true
@@ -22,6 +22,8 @@ For the full routing contract, per-framework integration examples, and forbidden
 
 - [Methods](#methods)
   - [getBasePath()](#flipletroutergetbasepath)
+  - [isNative()](#flipletrouterisnative)
+  - [getHistoryMode()](#flipletroutergethistorymode)
   - [getRouteManifest()](#flipletroutergetroutemanifest)
   - [getRouteConfig(path)](#flipletroutergetrouteconfigpath)
   - [resolveRoute(pathOrRoute)](#flipletrouterresolveroutepathorroute)
@@ -46,17 +48,45 @@ The value depends on the hosting context:
 | Studio preview iframe | `/v1/apps/42/pages/99/preview/` |
 | Native shell | Computed by the shell at runtime |
 
+The base path applies to **web** history only. On native the app routes through the hash, which takes no base — branch on [`Fliplet.Router.isNative()`](#flipletrouterisnative):
+
 ```js
 var base = Fliplet.Router.getBasePath();
 
-// Pass to Vue Router 4:
-var history = VueRouter.createWebHistory(base);
+// Vue Router 4 — platform-conditional history backend:
+var history = Fliplet.Router.isNative()
+  ? VueRouter.createWebHashHistory()        // native — hash, no base
+  : VueRouter.createWebHistory(base);       // web — path + base
 
-// Pass to React Router 6:
-var router = ReactRouterDOM.createBrowserRouter(routes, { basename: base });
+// React Router 6 — createHashRouter on every platform (no basename):
+var router = ReactRouterDOM.createHashRouter(routes);
 ```
 
-<p class="warning">Never hardcode <code>'/'</code>. Slug-hosted apps, preview iframes, and native shells all mount the SPA at a different base.</p>
+<p class="warning">On web, never hardcode <code>'/'</code> — slug-hosted apps and preview iframes mount the SPA at a different base. Don't pass the base path to the native (hash) history backend.</p>
+
+### `Fliplet.Router.isNative()`
+
+Returns whether the app is running inside a native (Cordova) shell, where pages are served from a `file://` URL. This is the single source of truth for the routing platform branch: native shells block `history.pushState()` from changing the path of a `file:` URL, so they must route through the hash.
+
+**Returns:** `Boolean` — `true` in a native shell, `false` on web (slug-hosted apps and the Studio preview iframe).
+
+```js
+var history = Fliplet.Router.isNative()
+  ? VueRouter.createWebHashHistory()                       // native — hash only
+  : VueRouter.createWebHistory(Fliplet.Router.getBasePath()); // web — path + base
+```
+
+### `Fliplet.Router.getHistoryMode()`
+
+Returns the history mode the app should use, derived from [`isNative()`](#flipletrouterisnative). Use it when you want the decision as a value rather than a boolean branch.
+
+**Returns:** `String` — `'hash'` on native, `'history'` on web.
+
+```js
+if (Fliplet.Router.getHistoryMode() === 'hash') {
+  // route via location.hash
+}
+```
 
 ### `Fliplet.Router.getRouteManifest()`
 
