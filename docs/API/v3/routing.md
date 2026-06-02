@@ -19,7 +19,11 @@ Routing in V3 is non-obvious because the defaults in most frameworks are wrong f
 
 ## The contract
 
-V3 uses the **History API on every platform** (web, preview iframe, and native). Hash routing is forbidden because every hosting context (slug-hosted web apps, the Studio preview iframe, and native shells) mounts the SPA at a different base path. Hashes hide that base from the server, break deep-link sharing, and make post-login redirects unreliable across the three contexts.
+V3 routing is **platform-conditional**: the **History API on web** (slug-hosted apps and the Studio preview iframe) and **hash routing on native** (Cordova `file://` shells). `Fliplet.Router` is the single source of truth for the decision — `Fliplet.Router.isNative()` returns whether the app is running in a native shell, and `Fliplet.Router.getHistoryMode()` returns `'hash'` on native, `'history'` on web.
+
+On web, hash routing is wrong: every hosting context mounts the SPA at a different base path, and hashes hide that base from the server, break deep-link sharing, and make post-login redirects unreliable. On native, path-based history is *impossible*: WebKit blocks `history.pushState()` / `replaceState()` from changing the path of a `file:` URL — only the query and fragment may change — so the first path navigation throws `SecurityError: … Only differences in query and fragment are allowed for file: URLs` and the screen goes blank. Native apps must route through the hash.
+
+Build the history backend by branching on `Fliplet.Router.isNative()` — see the per-framework examples below. React is the exception: it uses `createHashRouter` on both platforms (which also fixes a preview-iframe blank-render issue), so it needs no branch.
 
 <p class="info"><code>Fliplet.Router</code> is auto-loaded on V3 apps and is the only sanctioned router API. You build your framework's router from the manifest; you do not hand-roll routes.</p>
 
@@ -30,7 +34,7 @@ var manifest = Fliplet.Router.getRouteManifest();   // { routes, defaultRoute, a
 
 Four requirements:
 
-1. **Read the base path** with `Fliplet.Router.getBasePath()` and pass it to your router's history/basename option. Never hardcode `'/'`. Slug-hosted apps, preview iframes, and native shells all have different bases.
+1. **On web, read the base path** with `Fliplet.Router.getBasePath()` and pass it to your router's history/basename option. Never hardcode `'/'`. Slug-hosted apps and preview iframes host the SPA under different non-root bases. On native the app routes through the hash, so the base path doesn't apply to the history backend (`createWebHashHistory()` / `location.hash` take no base). Branch on `Fliplet.Router.isNative()`.
 2. **Read the manifest** with `Fliplet.Router.getRouteManifest()`. Build your route table from `manifest.routes`. The manifest lives at `app.settings.v3` (see [App settings](app-settings.md)). Update it via the App Settings API (`PUT /v1/apps/:id` with `settings.v3`) or the Studio routing UI whenever you add or remove a user-visible route.
 3. **Guard each route with `Fliplet.Router.resolveRoute(path)`** in the component, loader, or resolver:
    - It returns `{ allowed: true, content, route }` on success.
@@ -45,16 +49,20 @@ Four requirements:
 
 These patterns break V3 apps on at least one hosting context (slug-hosted web, preview iframe, or native). Treat them as hard constraints. The Fliplet Studio AI builder enforces them with an automated lint on generated boot HTML (each violation carries a `ruleId` matching the rows below); hand-authored apps must follow the same rules.
 
-| `ruleId` | What's forbidden | What to do instead |
+The hash rows are **platform-conditional**: hash navigation is *required* on native, so the lint suppresses them when the boot HTML branches on `Fliplet.Router.isNative()` / `getHistoryMode()`. Unguarded, they fire — because hash mode on web (or path mode on native) is wrong. The two React rows fire **unconditionally**: `createHashRouter` is correct for React on every platform, so neither `createBrowserRouter` nor the `<HashRouter>` component is ever right in a V3 app.
+
+| `ruleId` | What's forbidden (unguarded) | What to do instead |
 |---|---|---|
-| `hash-change-event` | `window.addEventListener('hashchange', …)` or `window.onhashchange = …` | Use `popstate` with `history.pushState`. The browser fires `popstate` on back/forward; call `pushState` explicitly when navigating. |
-| `window-location-hash` | Reading or writing `window.location.hash` / `location.hash` | Navigate with `history.pushState(state, '', Fliplet.Router.getBasePath() + path)`. Read the current path from `location.pathname` after stripping the base prefix. |
-| `create-web-hash-history` | `VueRouter.createWebHashHistory(…)` | `VueRouter.createWebHistory(Fliplet.Router.getBasePath())`. |
-| `hash-router-react` | `HashRouter` (React Router) | `createBrowserRouter(routes, { basename: Fliplet.Router.getBasePath() })`. |
-| `hash-href` | `href="#/..."` or `href='#/...'` | Use real paths (`href="/home"`) and intercept clicks to call `history.pushState` via your router. |
+| `hash-change-event` | `window.addEventListener('hashchange', …)` or `window.onhashchange = …` with no platform guard | On web, use `popstate` with `history.pushState`. On native, `hashchange` is the correct event — branch on `Fliplet.Router.isNative()` so the listener matches the navigation mechanism (`popstate` on web, `hashchange` on native). |
+| `window-location-hash` | Reading or writing `window.location.hash` / `location.hash` with no platform guard | On web, navigate with `history.pushState(state, '', Fliplet.Router.getBasePath() + path)` and read the current path from `location.pathname` after stripping the base. On native, `location.hash` is required (path `pushState` is blocked on `file:`). Branch on `Fliplet.Router.isNative()`. |
+| `create-web-hash-history` | `VueRouter.createWebHashHistory(…)` used unconditionally | Make it platform-conditional: `Fliplet.Router.isNative() ? VueRouter.createWebHashHistory() : VueRouter.createWebHistory(Fliplet.Router.getBasePath())`. |
+| `unguarded-web-history` | `VueRouter.createWebHistory(…)` with no platform guard anywhere in the document | Same branch as above — unguarded path history throws a `file:` `SecurityError` on native. Gate the history backend on `Fliplet.Router.isNative()`. |
+| `react-browser-router` | `createBrowserRouter(…)` (React Router) | `ReactRouterDOM.createHashRouter(routes)` (no basename). It renders correctly in the preview iframe and works on native unchanged — React needs no platform branch. |
+| `hash-router-react` | `HashRouter` component (React Router) | Use the `createHashRouter(routes)` data-router form, not the `<HashRouter>` component. |
+| `hash-href` | `href="#/..."` or `href='#/...'` in markup with no platform guard | Render real paths (`href="/home"`) and intercept clicks to call your router, which picks the URL shape per platform (path on web, hash on native). |
 | `path-dispatcher` | 3+ `if (location.pathname === '/…')` branches, or `switch (location.pathname) { case '/…': … }`, used as a hand-rolled router | Build your framework's router from `Fliplet.Router.getRouteManifest()`. Each framework's wiring is in [Framework examples](#framework-examples) below. Single-branch guards like `if (location.pathname === '/login') return;` are fine — the lint only fires on dispatcher-shaped chains. |
 
-These six rules are the ones Fliplet can detect automatically from the boot HTML. Additional anti-patterns (hand-rolled `SCREENS` maps, pathname reads without base-stripping, double-fetching media) live in the [Common pitfalls](#common-pitfalls) section below. They aren't detected statically but are equally wrong.
+These rules are the ones Fliplet can detect automatically from the boot HTML. Additional anti-patterns (hand-rolled `SCREENS` maps, pathname reads without base-stripping, double-fetching media) live in the [Common pitfalls](#common-pitfalls) section below. They aren't detected statically but are equally wrong.
 
 ## Framework examples
 
@@ -79,7 +87,11 @@ Every example assumes this manifest shape (see [App settings](app-settings.md) f
 ```js
 Fliplet.require.lazy('vue-router').then(function() {
   var manifest = Fliplet.Router.getRouteManifest();
-  var history = VueRouter.createWebHistory(Fliplet.Router.getBasePath());
+  // Platform-conditional: native (file://) must route through the hash; web
+  // uses path history under the base path.
+  var history = Fliplet.Router.isNative()
+    ? VueRouter.createWebHashHistory()                         // native — hash only
+    : VueRouter.createWebHistory(Fliplet.Router.getBasePath()); // web — path + basename
 
   var routes = manifest.routes.map(function(r) {
     return {
@@ -140,8 +152,10 @@ Fliplet.require.lazy('vue-router').then(function() {
   routes.unshift({ path: '/', redirect: manifest.defaultRoute });
 
   var router = new VueRouter({
-    mode: 'history',
-    base: Fliplet.Router.getBasePath(),
+    // Platform-conditional: native (file://) must use hash mode; web uses
+    // path history under the base path.
+    mode: Fliplet.Router.isNative() ? 'hash' : 'history',
+    base: Fliplet.Router.isNative() ? undefined : Fliplet.Router.getBasePath(),
     routes: routes
   });
 });
@@ -149,7 +163,7 @@ Fliplet.require.lazy('vue-router').then(function() {
 
 ### React Router 6
 
-React Router doesn't infer the base path; you must pass it to `basename`. Use a loader to call `resolveRoute` before the component renders.
+React uses `createHashRouter` (no basename) on every platform — it sidesteps both the preview-iframe blank-render issue (initial URL has no path after the basename) and the native `file:` `pushState` restriction, so no platform branch is needed. Use a loader to call `resolveRoute` before the component renders.
 
 ```js
 Fliplet.require.lazy('react-router-dom').then(function() {
@@ -177,9 +191,7 @@ Fliplet.require.lazy('react-router-dom').then(function() {
 
   routes.unshift({ path: '/', loader: function() { throw ReactRouterDOM.redirect(manifest.defaultRoute); } });
 
-  var router = ReactRouterDOM.createBrowserRouter(routes, {
-    basename: Fliplet.Router.getBasePath()
-  });
+  var router = ReactRouterDOM.createHashRouter(routes);   // no basename — hash mode works in the preview iframe and on native unchanged
 });
 ```
 
@@ -192,17 +204,28 @@ Most Svelte routers default to hash mode. Pick one that supports history, or thi
 ```js
 var manifest = Fliplet.Router.getRouteManifest();
 var base = Fliplet.Router.getBasePath();
+var native = Fliplet.Router.isNative();   // file:// → route via the hash
+var basePrefix = base.replace(/\/$/, '');
+
+function currentPath() {
+  if (native) return location.hash.replace(/^#/, '') || '/';
+  return location.pathname.replace(new RegExp('^' + basePrefix), '') || '/';
+}
 
 function navigate(path) {
-  history.pushState({}, '', base.replace(/\/$/, '') + path);
-  render(path);
+  if (native) {
+    location.hash = path;                 // fires 'hashchange' → render
+  } else {
+    history.pushState({}, '', basePrefix + path);
+    render(path);                         // pushState doesn't fire popstate; render directly
+  }
 }
 
 function render(path) {
   var target = path === '/' ? manifest.defaultRoute : path;
 
   Fliplet.Router.resolveRoute(target).then(function(result) {
-    if (location.pathname !== base.replace(/\/$/, '') + target) return; // stale
+    if (currentPath() !== target) return; // stale
 
     if (!result.allowed) {
       navigate(result.redirectTo);
@@ -214,22 +237,29 @@ function render(path) {
   });
 }
 
-window.addEventListener('popstate', function() {
-  render(location.pathname.replace(new RegExp('^' + base.replace(/\/$/, '')), '') || '/');
+// hashchange on native, popstate on web — matches the navigate() mechanism.
+window.addEventListener(native ? 'hashchange' : 'popstate', function() {
+  render(currentPath());
 });
 
-render(location.pathname.replace(new RegExp('^' + base.replace(/\/$/, '')), '') || '/');
+render(currentPath());
 ```
 
 ### Vanilla JS (no router library)
 
-Same pattern as Svelte: `pushState` for navigation, `popstate` for back/forward, normalize against the base path. Keep a module-scoped `currentNavId` to ignore stale resolutions:
+Same pattern as Svelte, branched on platform: on web `pushState` for navigation and `popstate` for back/forward (normalized against the base path); on native `location.hash` and `hashchange` (path `pushState` is blocked on `file:`). Keep a module-scoped `currentNavId` to ignore stale resolutions:
 
 ```js
 var manifest = Fliplet.Router.getRouteManifest();
 var base = Fliplet.Router.getBasePath();
 var basePrefix = base.replace(/\/$/, '');
+var native = Fliplet.Router.isNative();   // file:// → route via the hash
 var currentNavId = 0;
+
+function currentPath() {
+  if (native) return location.hash.replace(/^#/, '') || '/';
+  return stripBase(location.pathname);
+}
 
 function stripBase(pathname) {
   if (basePrefix && pathname.indexOf(basePrefix) === 0) {
@@ -255,8 +285,12 @@ function render(path) {
 }
 
 function navigate(path) {
-  history.pushState({}, '', basePrefix + path);
-  render(path);
+  if (native) {
+    location.hash = path;                 // fires 'hashchange' → render
+  } else {
+    history.pushState({}, '', basePrefix + path);
+    render(path);                         // pushState doesn't fire popstate; render directly
+  }
 }
 
 document.addEventListener('click', function(event) {
@@ -266,11 +300,12 @@ document.addEventListener('click', function(event) {
   navigate(link.getAttribute('href'));
 });
 
-window.addEventListener('popstate', function() {
-  render(stripBase(location.pathname));
+// hashchange on native, popstate on web — matches the navigate() mechanism.
+window.addEventListener(native ? 'hashchange' : 'popstate', function() {
+  render(currentPath());
 });
 
-render(stripBase(location.pathname));
+render(currentPath());
 ```
 
 ## Post-login redirect
@@ -308,7 +343,7 @@ Replace `navigate(...)` with the same helper used in your router (Svelte, vanill
 ## Common pitfalls
 
 - **Don't hand-roll a `SCREENS = { home: 1234, … }` map or a pathname-if-chain.** That's what the route manifest is for. Store it in `app.settings.v3` and read it back via `Fliplet.Router.getRouteManifest().routes`. Hand-rolled maps drift when screens are renamed, duplicate the `public` and `fileId` metadata the server already authored, and bypass the manifest as the single source of truth for routing.
-- **Don't read `window.location.pathname` directly to determine the current route.** Strip the base path first. `Fliplet.Router.getBasePath()` returns the prefix to remove. Slug-hosted apps and preview iframes host the SPA under a non-root path; raw `pathname` reads will misidentify the current route in both contexts.
+- **Don't read `window.location.pathname` directly to determine the current route.** On web, strip the base path first — `Fliplet.Router.getBasePath()` returns the prefix to remove. Slug-hosted apps and preview iframes host the SPA under a non-root path; raw `pathname` reads will misidentify the current route in both contexts. On native the route lives in `location.hash`, not the pathname — branch on `Fliplet.Router.isNative()` (a single `currentPath()` helper that returns the hash on native and the base-stripped pathname on web keeps the rest of the router platform-agnostic).
 - **Don't fetch the screen's media URL yourself.** `Fliplet.Router.resolveRoute` already calls `Fliplet.Media.getContents(fileId)` under the hood and returns the content in `result.content`. A second fetch duplicates the network round trip, can race with the access check, and will fail outright on private media where auth headers aren't applied.
 - **Don't discard `result.content` from `resolveRoute`.** The `content` field IS the screen's source — already fetched for you. Your route loader should return `{ content: result.content, route: result.route }` so the component can render `data.content` directly. If your loader returns only `{ path }` and your screens are defined inline in the component, you've duplicated every screen in two places — the manifest's `fileId` and the hardcoded inline copy — and you've paid for a fetch you then threw away. The `resolveRoute` name is the hint: the method resolves a route to its **full resolution** (access + content), not just an access decision.
 - **Don't assume the server-side ACL matches the manifest's `public` flag.** The manifest is advisory; the server decides. Always handle `reason: 'media-denied'`. Flipping `public: true` without updating the media file's access rule grants no access; you'll ship an app that works in dev and 401s in production.
