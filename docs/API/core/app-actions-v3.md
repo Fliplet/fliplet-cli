@@ -5,7 +5,7 @@ type: api-reference
 tags: [js-api, core, app, actions]
 v3_relevant: true
 deprecated: false
-capabilities: [app action, server function, cloud function, automation, scheduled task, cron, on-demand task, server-side javascript, background job, action trigger, webhook handler]
+capabilities: [app action, server function, cloud function, automation, scheduled task, cron, on-demand task, server-side javascript, background job, action trigger, webhook handler, version history, restore version, rollback]
 ---
 
 # App Actions V3
@@ -44,6 +44,7 @@ Write and run JavaScript code directly on the server or client to perform automa
 8. Scheduled app actions only run the **published (production)** version of an action. On-demand actions run the version from the same environment they are fired from (e.g., Fliplet Viewer runs the master version, live apps run the production version).
 9. An action must have `active` set to `true` to be executed. Inactive actions do **not** run regardless of whether they are on-demand, scheduled, or triggered by events.
 10. If a scheduled action fails, the error is logged and the execution is skipped. Scheduled actions do **not** retry on failure — they wait for the next cron tick.
+11. Every **create**, **update**, and **restore** snapshots the action's configuration to a **version history**. Up to **100** versions are retained per action; older snapshots are pruned automatically. Snapshotting is best-effort and never blocks the create/update response. See [Version history](#version-history).
 
 ### Execution environments
 
@@ -1078,6 +1079,204 @@ await Fliplet.App.V3.Actions.unpublish(12345);
 // The master version still exists and can be edited and republished
 ```
 
+## Version history
+
+Every time a V3 action is **created**, **updated**, or **restored**, the platform stores a snapshot of its configuration in a version history. This lets you browse how an action changed over time and roll back to an earlier configuration.
+
+Version history is accessed through the REST API. Call the endpoints directly, or from app code via [`Fliplet.API.request()`](https://developers.fliplet.com/API/core/api.html). All examples below use `Fliplet.API.request()`.
+
+The endpoints are served from your region's API host, the same hosts used elsewhere:
+
+- `EU` `https://api.fliplet.com`
+- `US` `https://us.api.fliplet.com`
+- `CA` `https://ca.api.fliplet.com`
+
+All three endpoints require **editor** permissions on the **master** app, and the action must be a V3 action.
+
+### How snapshots are created
+
+| When | `action` value on the snapshot |
+|------|--------------------------------|
+| `create()` | `create` |
+| `update()` | `update` |
+| `restore` (before applying the old config) | `pre-restore` |
+
+- Snapshots are taken **after** the create/update succeeds. If snapshotting itself fails, the error is logged to the platform's error tracking but the API still returns success — versioning never blocks a write.
+- A maximum of **100** snapshots are kept per action. When a new snapshot pushes the count over 100, the **oldest** snapshots are pruned.
+- Restoring an action first takes a `pre-restore` snapshot of the current configuration, so a restore is itself undo-able (restore the `pre-restore` version to get back to where you were).
+- Deleting an action cascades to its version history — all snapshots for that action are removed.
+
+### What a snapshot contains
+
+Each snapshot stores the full action configuration at that point in time:
+
+`name`, `description`, `active`, `frequency`, `timezone`, `triggers`, `environment`, `code`, `actionVersion`, `dependencies`, `assets`, plus the internal `functions`, `widgetInstanceIds`, `masterTaskId`, and `productionTaskId` fields. For V3 actions, `functions` and `widgetInstanceIds` are empty. The snapshot also records the `action` reason (`create`, `update`, or `pre-restore`).
+
+### List version history
+
+Returns the snapshots for an action, most recent first. The list payload is a lightweight **summary** — the heavy fields (`code`, `dependencies`, `assets`) are omitted to keep responses small. Fetch a single version to get the full snapshot.
+
+```
+GET /v3/apps/:appId/actions/:actionId/versions
+```
+
+**Query parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `limit` | Number | No | 50 | Maximum number of versions to return (max 100) |
+| `offset` | Number | No | 0 | Number of versions to skip (for pagination) |
+
+**Summary fields returned per version:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | Number | Unique version ID. Use this with the get/restore endpoints |
+| `createdAt` | String (ISO 8601) | When the snapshot was taken |
+| `userId` | Number or null | ID of the user who triggered the snapshot |
+| `user` | Object or null | `{ id, firstName, lastName, email }` of that user, when available |
+| `action` | String | Reason for the snapshot: `create`, `update`, or `pre-restore` |
+| `name` | String | Action name at the time of the snapshot |
+| `description` | String or null | Description at the time of the snapshot |
+| `active` | Boolean | Whether the action was active |
+| `environment` | String | `server`, `client`, or `any` |
+| `frequency` | String or null | Cron expression, if scheduled |
+
+```js
+var response = await Fliplet.API.request({
+  url: 'v3/apps/' + appId + '/actions/' + actionId + '/versions',
+  method: 'GET'
+});
+// response.status — "VERSIONS_LISTED"
+// response.versions — array of version summaries (most recent first)
+// response.pagination — { limit, offset, total, hasMore }
+
+response.versions.forEach(function (version) {
+  console.log(version.id, version.action, version.createdAt);
+});
+```
+
+Example response:
+
+```json
+{
+  "status": "VERSIONS_LISTED",
+  "versions": [
+    {
+      "id": 5012,
+      "createdAt": "2026-05-21T13:07:15.000Z",
+      "userId": 409996,
+      "user": { "id": 409996, "firstName": "Nick", "lastName": "Smith", "email": "nick@company.com" },
+      "action": "update",
+      "name": "confirm-booking",
+      "description": "Marks a booking as confirmed and notifies the customer",
+      "active": true,
+      "environment": "server",
+      "frequency": null
+    }
+  ],
+  "pagination": { "limit": 50, "offset": 0, "total": 12, "hasMore": false }
+}
+```
+
+### Get a single version
+
+Returns the **full** snapshot for one version, including `code`, `dependencies`, and `assets`.
+
+```
+GET /v3/apps/:appId/actions/:actionId/versions/:versionId
+```
+
+```js
+var response = await Fliplet.API.request({
+  url: 'v3/apps/' + appId + '/actions/' + actionId + '/versions/' + versionId,
+  method: 'GET'
+});
+// response.status — "VERSION_RETRIEVED"
+// response.version.data — the full configuration snapshot
+```
+
+Example response:
+
+```json
+{
+  "status": "VERSION_RETRIEVED",
+  "version": {
+    "id": 5012,
+    "createdAt": "2026-05-21T13:07:15.000Z",
+    "userId": 409996,
+    "user": { "id": 409996, "firstName": "Nick", "lastName": "Smith", "email": "nick@company.com" },
+    "data": {
+      "action": "update",
+      "name": "confirm-booking",
+      "description": "Marks a booking as confirmed and notifies the customer",
+      "active": true,
+      "frequency": null,
+      "timezone": null,
+      "functions": [],
+      "triggers": [{ "trigger": "manual" }],
+      "assets": [
+        {
+          "name": "fliplet-datasources",
+          "url": "https://cdn.fliplet.com/assets/fliplet-datasources/1.0/datasources.js",
+          "path": "assets/fliplet-datasources/1.0/datasources.js"
+        }
+      ],
+      "environment": "server",
+      "widgetInstanceIds": [],
+      "masterTaskId": null,
+      "productionTaskId": null,
+      "code": "async function execute(context) { return { success: true }; }",
+      "actionVersion": "v3",
+      "dependencies": ["fliplet-datasources"]
+    }
+  }
+}
+```
+
+<p class="warning">A <code>versionId</code> that does not exist for this action returns a <code>404</code> with status <code>VERSION_NOT_FOUND</code>.</p>
+
+### Restore a version
+
+Overwrites the action's current configuration with the configuration captured in a given snapshot.
+
+```
+POST /v3/apps/:appId/actions/:actionId/versions/:versionId/restore
+```
+
+The restore:
+
+- Takes a `pre-restore` snapshot of the current configuration first, so the restore can itself be undone.
+- Restores every field from the snapshot **except** `masterTaskId` and `productionTaskId` (those describe the action's identity and publish state, not its config).
+- Re-applies the cron schedule if the restored configuration has a `frequency` and is `active`.
+- Writes an `appAction.v3.restore` audit log carrying both `restoredFromVersionId` and `preRestoreVersionId`.
+
+```js
+var response = await Fliplet.API.request({
+  url: 'v3/apps/' + appId + '/actions/' + actionId + '/versions/' + versionId + '/restore',
+  method: 'POST'
+});
+// response.status — "ACTION_RESTORED"
+// response.action — the action object after the restore
+// response.restoredFromVersionId — the version that was restored
+// response.preRestoreVersionId — the snapshot of the state right before this restore
+```
+
+Example response:
+
+```json
+{
+  "status": "ACTION_RESTORED",
+  "action": { "id": 12345, "name": "confirm-booking", "active": true, "environment": "server", "isPublished": false },
+  "restoredFromVersionId": 5012,
+  "preRestoreVersionId": 5040
+}
+```
+
+<p class="warning">You can <strong>not</strong> restore a published (production) action. Restoring returns a <code>403</code> with status <code>CANNOT_RESTORE_PRODUCTION</code> — restore the <strong>master</strong> action and republish instead.</p>
+
+<p class="warning">If the snapshot's <code>name</code> now collides with a different action in the same app, the restore returns a <code>409</code> with status <code>NAME_ALREADY_EXISTS</code>. Rename or remove the conflicting action first.</p>
+
 ## Get the logs for an action
 
 Each time an action runs, a log record is generated. Use `Fliplet.App.V3.Actions.getLogs()` to fetch these logs.
@@ -1284,22 +1483,25 @@ All error responses follow this format:
 |--------|-------------|
 | `ACTION_NOT_FOUND` | No action found with the given ID or name |
 | `ACTION_NOT_V3` | Action exists but is not a V3 action (it is a legacy V2 action) |
+| `VERSION_NOT_FOUND` | No version found with the given ID for this action |
 | `CANNOT_UPDATE_PRODUCTION` | Cannot update a published action directly — update the master and republish |
 | `CANNOT_DELETE_PRODUCTION` | Cannot delete a production action directly — delete the master action instead |
+| `CANNOT_RESTORE_PRODUCTION` | Cannot restore a published (production) action directly — restore the master action and republish |
 | `CLIENT_ACTION_NOT_RUNNABLE` | Client-only actions cannot be run on the server via `run()` or `runWithResult()` |
 | `ACTION_INACTIVE` | Cannot run an inactive action — set `active: true` first |
 | `APP_NOT_PUBLISHED` | App must be published before publishing an action |
 | `ACTION_NOT_PUBLISHED` | Action is not published (attempting to unpublish an action that is not published) |
 | `EXECUTION_FAILED` | Action execution failed (runtime error in the `execute()` function) |
 | `PUBLISH_FAILED` | Failed to publish action |
+| `RESTORE_FAILED` | Failed to restore the action to the requested version |
 
 ## Rate limits
 
 | Operation | Limit |
 |-----------|-------|
-| CRUD operations (`get`, `getById`, `create`, `update`, `remove`) | 60 requests per 60 seconds |
+| CRUD operations (`get`, `getById`, `create`, `update`, `remove`) and version reads (list / get versions) | 60 requests per 60 seconds |
 | Run action (`run`, `runWithResult`) | 30 requests per 60 seconds |
-| Publish / Unpublish | 10 requests per 60 seconds |
+| Publish / Unpublish / Restore version | 10 requests per 60 seconds |
 
 <p class="warning">Rate limits are per app, not per action. Exceeding the limit results in a <code>429</code> HTTP status code.</p>
 
