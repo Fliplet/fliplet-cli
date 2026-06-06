@@ -1,5 +1,5 @@
 ---
-title: "`Fliplet.Pages` and `Fliplet.Page`"
+title: "Fliplet.Pages and Fliplet.Page"
 description: "List app screens, get the current screen's public URL, and build shareable URLs for any screen by ID."
 type: api-reference
 tags: [js-api, core, screens]

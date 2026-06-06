@@ -1,5 +1,5 @@
 ---
-title: "`Fliplet.Native.Maintenance`"
+title: Fliplet.Native.Maintenance
 description: "File-system abstraction layer for Cordova: read, write, copy, move, delete, unzip, directory ops. The plumbing under Fliplet.Native.Downloads and Fliplet.Native.Updates."
 type: api-reference
 tags: [js-api, native, cordova, file-system, ios, android]

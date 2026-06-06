@@ -585,6 +585,16 @@ export function validateFrontmatter(docs) {
         field: 'title',
         message: 'missing or empty `title:` in frontmatter',
       });
+    } else if (fm.title.includes('`')) {
+      // Backticks in frontmatter `title:` render as literal text in the
+      // layout (`_layouts/default.html` prints `{{ page.title }}` raw,
+      // not through markdownify). Backticks belong in the body H1 only.
+      errors.push({
+        relPath: doc.relPath,
+        field: 'title',
+        message: `\`title:\` contains backticks — they render as literal text in the page header, not as code`,
+        hint: 'Strip backticks from `title:` in frontmatter; keep them in the body H1 (`# `Fliplet.X``).',
+      });
     }
     if (!fm.description || fm.description.trim() === '') {
       errors.push({

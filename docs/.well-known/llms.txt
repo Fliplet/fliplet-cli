@@ -28,9 +28,9 @@
 - [Fliplet Core overview](https://developers.fliplet.com/API/core/overview.html): Fliplet Core is the JS library bundled into every app screen — storage, navigation, user, API, and dozens of device helpers.
 - [Fliplet.Profile](https://developers.fliplet.com/API/core/profile.html): Read and write namespaced user profile attributes (email, name, company, phone) and fetch the device UUID.
 - [Fliplet.Registry](https://developers.fliplet.com/API/core/registry.html): Store and retrieve runtime values and functions by key so components can share state and helpers.
-- [`Fliplet.require`](https://developers.fliplet.com/API/core/require.html): Load scripts and stylesheets on demand, and resolve lazy dependencies registered in the app bundle.
-- [`Fliplet.Pages` and `Fliplet.Page`](https://developers.fliplet.com/API/core/screens.html): List app screens, get the current screen's public URL, and build shareable URLs for any screen by ID.
-- [`Fliplet.Storage` and `Fliplet.App.Storage`](https://developers.fliplet.com/API/core/storage.html): Persist JSON-serializable values to device or browser storage, scoped globally or to the current app.
+- [Fliplet.require](https://developers.fliplet.com/API/core/require.html): Load scripts and stylesheets on demand, and resolve lazy dependencies registered in the app bundle.
+- [Fliplet.Pages and Fliplet.Page](https://developers.fliplet.com/API/core/screens.html): List app screens, get the current screen's public URL, and build shareable URLs for any screen by ID.
+- [Fliplet.Storage and Fliplet.App.Storage](https://developers.fliplet.com/API/core/storage.html): Persist JSON-serializable values to device or browser storage, scoped globally or to the current app.
 - [Fliplet.Studio](https://developers.fliplet.com/API/core/studio.html): Emit events to Fliplet Studio and listen for events from it when building widget interfaces.
 - [Fliplet.User](https://developers.fliplet.com/API/core/user.html): Get and set the current user's auth token, profile details, and preferences, and sign the user out.
 - [Fliplet.Widget](https://developers.fliplet.com/API/core/widget.html): Access widget instance IDs, settings, and data, and coordinate save and ready events between widget and interface.
@@ -114,9 +114,9 @@
 - [fliplet-error-tracking](https://developers.fliplet.com/API/fliplet-error-tracking.html): Auto-loading runtime that captures JavaScript exceptions and unhandled promise rejections and batches them to Fliplet.App.Logs.
 - [Fliplet.Gamify](https://developers.fliplet.com/API/fliplet-gamify.html): Configure gamification with logs, variables, and achievements via Fliplet.Gamify; track points, milestones, and badges backed by a data source per user.
 - [Fliplet.Media](https://developers.fliplet.com/API/fliplet-media.html): Browse folders, upload and manage files, and download media to devices via the Fliplet Media namespace.
-- [`Fliplet.Native`](https://developers.fliplet.com/API/fliplet-native.html): Cordova-bridge APIs for native Fliplet apps — app management, updates, downloads, locale, notifications, status bar, and lifecycle interactions.
-- [`Fliplet.Native.Downloads`](https://developers.fliplet.com/API/fliplet-native/downloads.html): Native asset download orchestrator for Fliplet apps — manages app-bundle downloads with concurrency, retries, incremental updates, and progress tracking.
-- [`Fliplet.Native.Maintenance`](https://developers.fliplet.com/API/fliplet-native/maintenance.html): File-system abstraction layer for Cordova: read, write, copy, move, delete, unzip, directory ops. The plumbing under Fliplet.Native.Downloads and Fliplet.Native.Updates.
+- [Fliplet.Native](https://developers.fliplet.com/API/fliplet-native.html): Cordova-bridge APIs for native Fliplet apps — app management, updates, downloads, locale, notifications, status bar, and lifecycle interactions.
+- [Fliplet.Native.Downloads](https://developers.fliplet.com/API/fliplet-native/downloads.html): Native asset download orchestrator for Fliplet apps — manages app-bundle downloads with concurrency, retries, incremental updates, and progress tracking.
+- [Fliplet.Native.Maintenance](https://developers.fliplet.com/API/fliplet-native/maintenance.html): File-system abstraction layer for Cordova: read, write, copy, move, delete, unzip, directory ops. The plumbing under Fliplet.Native.Downloads and Fliplet.Native.Updates.
 - [Fliplet.Notifications](https://developers.fliplet.com/API/fliplet-notifications.html): Read, send, and schedule in-app and push notifications in Fliplet apps, with support for scopes, read receipts, and badge counts.
 - [Fliplet.OAuth2 (Beta)](https://developers.fliplet.com/API/fliplet-oauth2.html): The `fliplet-oauth2` package contains helpers for standardizing requests to OAuth2 web services with a client-side integration.
 - [Fliplet.Page](https://developers.fliplet.com/API/fliplet-page.html): Utilities for interacting with the current Fliplet screen — including smooth-scrolling to an element with configurable duration and offsets.

@@ -1,5 +1,5 @@
 ---
-title: "`Fliplet.Native.Downloads`"
+title: Fliplet.Native.Downloads
 description: "Native asset download orchestrator for Fliplet apps — manages app-bundle downloads with concurrency, retries, incremental updates, and progress tracking."
 type: api-reference
 tags: [js-api, native, cordova, downloads, ios, android, app-bundle]

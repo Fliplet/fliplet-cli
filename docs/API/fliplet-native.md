@@ -1,5 +1,5 @@
 ---
-title: "`Fliplet.Native`"
+title: Fliplet.Native
 description: "Cordova-bridge APIs for native Fliplet apps — app management, updates, downloads, locale, notifications, status bar, and lifecycle interactions."
 type: api-reference
 tags: [js-api, native, cordova, ios, android]

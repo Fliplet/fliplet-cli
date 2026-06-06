@@ -10116,7 +10116,7 @@ multiply(2, 3); // 6
 
 ---
 
-# `Fliplet.require`
+# Fliplet.require
 URL: https://developers.fliplet.com/API/core/require.html
 
 # `Fliplet.require`
@@ -10289,7 +10289,7 @@ console.log(url); // 'https://cdn.fliplet.com/libs/signature-pad/1.5.3/signature
 
 ---
 
-# `Fliplet.Pages` and `Fliplet.Page`
+# Fliplet.Pages and Fliplet.Page
 URL: https://developers.fliplet.com/API/core/screens.html
 
 # `Fliplet.Pages` and `Fliplet.Page`
@@ -10362,7 +10362,7 @@ Fliplet.API.request({
 
 ---
 
-# `Fliplet.Storage` and `Fliplet.App.Storage`
+# Fliplet.Storage and Fliplet.App.Storage
 URL: https://developers.fliplet.com/API/core/storage.html
 
 # `Fliplet.Storage` and `Fliplet.App.Storage`
@@ -16728,7 +16728,7 @@ Fliplet.Hooks.on('mediaFileDownloadProgress', function (file) {
 
 ---
 
-# `Fliplet.Native`
+# Fliplet.Native
 URL: https://developers.fliplet.com/API/fliplet-native.html
 
 # `Fliplet.Native`
@@ -17123,7 +17123,7 @@ Internally, `init()` uses a W3C brightness calculation (`(r * 299 + g * 587 + b 
 
 ---
 
-# `Fliplet.Native.Downloads`
+# Fliplet.Native.Downloads
 URL: https://developers.fliplet.com/API/fliplet-native/downloads.html
 
 # `Fliplet.Native.Downloads`
@@ -17426,7 +17426,7 @@ A DOM-level event is also dispatched on `document`: `flDownloadFinished<appId>` 
 
 ---
 
-# `Fliplet.Native.Maintenance`
+# Fliplet.Native.Maintenance
 URL: https://developers.fliplet.com/API/fliplet-native/maintenance.html
 
 # `Fliplet.Native.Maintenance`
@@ -31533,7 +31533,7 @@ When you add a new `fliplet-*` package, follow this 10-step checklist:
 1. **Start from the template.** Copy `_templates/doc-template.md` (or `_templates/js-api.md` for a JavaScript API reference) to `docs/API/fliplet-<package>.md`. Filename must match the npm package name, prefixed with `fliplet-`.
 
 2. **Set the required frontmatter.** Every doc needs:
-   - `title:` matching the H1 (minus enclosing backticks)
+   - `title:` matching the H1 **with backticks stripped** — the Jekyll layout prints `title:` as literal text in the page header, so backticks would render as `\`Fliplet.X\`` instead of formatted code. Body H1 keeps the backticks for code formatting; frontmatter `title:` does not. Example: `title: Fliplet.Payments` in frontmatter; `` # `Fliplet.Payments` `` in body. Lint enforces this.
    - `description:` 1–2 sentences, ≤160 chars, standalone
    - `type:` one of `api-reference` / `guide` / `how-to` / `concept` / `tutorial` / `reference` / `integration`
    - `tags:` first tag is the canonical area (`js-api`, `rest-api`, etc.), then 1–5 specifics, lowercase dash-separated
@@ -40227,6 +40227,7 @@ Every Fliplet JS API available to V3 apps, grouped by capability category. Each 
 
 ## Native
 
+- [``Fliplet.Native``](https://developers.fliplet.com/API/fliplet-native.html) — Cordova-bridge APIs for native Fliplet apps — app management, updates, downloads, locale, notifications, status bar, and lifecycle interactions.
 - [`Fliplet.Navigator`](https://developers.fliplet.com/API/core/navigator.html) **(preloaded)** — Detect online/offline state, listen for connectivity changes, and wait for the device to be ready.
 
 ## Commerce

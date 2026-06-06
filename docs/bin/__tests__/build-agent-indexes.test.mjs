@@ -328,6 +328,25 @@ describe('validateFrontmatter', () => {
     assert.ok(errs.every((e) => e.field === 'title'));
   });
 
+  it('flags backticks in title (renders as literal in the layout)', () => {
+    const errs = validateFrontmatter([
+      { relPath: 'a.md', fm: { ...fullyValid.fm, title: '`Fliplet.X`' } },
+      { relPath: 'b.md', fm: { ...fullyValid.fm, title: '`Fliplet.Storage` and `Fliplet.App.Storage`' } },
+    ]);
+    assert.equal(errs.length, 2);
+    assert.ok(errs.every((e) => e.field === 'title'));
+    assert.ok(errs.every((e) => e.message.includes('backticks')));
+    assert.ok(errs.every((e) => e.hint && e.hint.includes('body H1')));
+  });
+
+  it('accepts title without backticks (plain text)', () => {
+    const errs = validateFrontmatter([
+      { relPath: 'a.md', fm: { ...fullyValid.fm, title: 'Fliplet.X' } },
+      { relPath: 'b.md', fm: { ...fullyValid.fm, title: 'Fliplet.Storage and Fliplet.App.Storage' } },
+    ]);
+    assert.equal(errs.length, 0);
+  });
+
   it('flags missing description', () => {
     const errs = validateFrontmatter([
       { relPath: 'a.md', fm: { title: 'T', type: 'guide', tags: '[x]' } },

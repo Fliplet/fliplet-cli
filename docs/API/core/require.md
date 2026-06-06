@@ -1,5 +1,5 @@
 ---
-title: "`Fliplet.require`"
+title: Fliplet.require
 description: "Load scripts and stylesheets on demand, and resolve lazy dependencies registered in the app bundle."
 type: api-reference
 tags: [js-api, framework, runtime, dependencies, lazy-load]

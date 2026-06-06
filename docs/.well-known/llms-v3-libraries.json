@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-06-06T22:52:55.512Z",
+  "generatedAt": "2026-06-06T23:24:22.341Z",
   "libraries": [
     {
       "package": "fliplet-analytics-spa",
@@ -223,8 +223,8 @@
     },
     {
       "package": "fliplet-native",
-      "namespace": "`Fliplet.Native`",
-      "title": "`Fliplet.Native`",
+      "namespace": "Fliplet.Native",
+      "title": "Fliplet.Native",
       "description": "Cordova-bridge APIs for native Fliplet apps — app management, updates, downloads, locale, notifications, status bar, and lifecycle interactions.",
       "docUrl": "https://developers.fliplet.com/API/fliplet-native.html",
       "preloaded": false,
@@ -434,65 +434,6 @@
         "app token"
       ],
       "category": "integration"
-    },
-    {
-      "package": "fliplet-core",
-      "namespace": "`Fliplet.Pages` and `Fliplet.Page`",
-      "title": "`Fliplet.Pages` and `Fliplet.Page`",
-      "description": "List app screens, get the current screen's public URL, and build shareable URLs for any screen by ID.",
-      "docUrl": "https://developers.fliplet.com/API/core/screens.html",
-      "preloaded": true,
-      "capabilities": [
-        "screen",
-        "page",
-        "list screens",
-        "current screen",
-        "screen url",
-        "share screen",
-        "screen id",
-        "public screen url"
-      ],
-      "category": "navigation"
-    },
-    {
-      "package": "fliplet-core",
-      "namespace": "`Fliplet.require`",
-      "title": "`Fliplet.require`",
-      "description": "Load scripts and stylesheets on demand, and resolve lazy dependencies registered in the app bundle.",
-      "docUrl": "https://developers.fliplet.com/API/core/require.html",
-      "preloaded": true,
-      "capabilities": [
-        "dynamic import",
-        "lazy load",
-        "script loader",
-        "stylesheet loader",
-        "dependency resolution",
-        "module loader",
-        "cdn"
-      ],
-      "category": "framework"
-    },
-    {
-      "package": "fliplet-core",
-      "namespace": "`Fliplet.Storage` and `Fliplet.App.Storage`",
-      "title": "`Fliplet.Storage` and `Fliplet.App.Storage`",
-      "description": "Persist JSON-serializable values to device or browser storage, scoped globally or to the current app.",
-      "docUrl": "https://developers.fliplet.com/API/core/storage.html",
-      "preloaded": true,
-      "capabilities": [
-        "storage",
-        "persistence",
-        "key-value",
-        "app storage",
-        "device storage",
-        "browser storage",
-        "preferences",
-        "settings",
-        "namespaced storage",
-        "json storage",
-        "local storage"
-      ],
-      "category": "data"
     },
     {
       "package": "fliplet-core",
@@ -818,6 +759,25 @@
     },
     {
       "package": "fliplet-core",
+      "namespace": "Fliplet.Pages and Fliplet.Page",
+      "title": "Fliplet.Pages and Fliplet.Page",
+      "description": "List app screens, get the current screen's public URL, and build shareable URLs for any screen by ID.",
+      "docUrl": "https://developers.fliplet.com/API/core/screens.html",
+      "preloaded": true,
+      "capabilities": [
+        "screen",
+        "page",
+        "list screens",
+        "current screen",
+        "screen url",
+        "share screen",
+        "screen id",
+        "public screen url"
+      ],
+      "category": "navigation"
+    },
+    {
+      "package": "fliplet-core",
       "namespace": "Fliplet.parseError()",
       "title": "Fliplet.parseError()",
       "description": "Turn any error response or object into a human-readable message by scanning common error properties.",
@@ -871,6 +831,46 @@
         "runtime key-value"
       ],
       "category": "framework"
+    },
+    {
+      "package": "fliplet-core",
+      "namespace": "Fliplet.require",
+      "title": "Fliplet.require",
+      "description": "Load scripts and stylesheets on demand, and resolve lazy dependencies registered in the app bundle.",
+      "docUrl": "https://developers.fliplet.com/API/core/require.html",
+      "preloaded": true,
+      "capabilities": [
+        "dynamic import",
+        "lazy load",
+        "script loader",
+        "stylesheet loader",
+        "dependency resolution",
+        "module loader",
+        "cdn"
+      ],
+      "category": "framework"
+    },
+    {
+      "package": "fliplet-core",
+      "namespace": "Fliplet.Storage and Fliplet.App.Storage",
+      "title": "Fliplet.Storage and Fliplet.App.Storage",
+      "description": "Persist JSON-serializable values to device or browser storage, scoped globally or to the current app.",
+      "docUrl": "https://developers.fliplet.com/API/core/storage.html",
+      "preloaded": true,
+      "capabilities": [
+        "storage",
+        "persistence",
+        "key-value",
+        "app storage",
+        "device storage",
+        "browser storage",
+        "preferences",
+        "settings",
+        "namespaced storage",
+        "json storage",
+        "local storage"
+      ],
+      "category": "data"
     },
     {
       "package": "fliplet-core",
