@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-18T17:05:16.435Z",
+  "generatedAt": "2026-06-06T22:08:26.937Z",
   "libraries": [
     {
       "package": "fliplet-app-submissions",
@@ -330,7 +330,7 @@
         "screen id",
         "public screen url"
       ],
-      "category": "meta"
+      "category": "navigation"
     },
     {
       "package": "fliplet-core",
@@ -551,7 +551,7 @@
         "viewer mode",
         "preview mode"
       ],
-      "category": "meta"
+      "category": "framework"
     },
     {
       "package": "fliplet-core",
@@ -591,7 +591,7 @@
         "multilingual",
         "internationalization"
       ],
-      "category": "meta"
+      "category": "framework"
     },
     {
       "package": "fliplet-core",
@@ -619,7 +619,7 @@
         "confirm dialog",
         "prompt dialog"
       ],
-      "category": "meta"
+      "category": "navigation"
     },
     {
       "package": "fliplet-core",
@@ -730,7 +730,7 @@
         "function registry",
         "runtime key-value"
       ],
-      "category": "meta"
+      "category": "framework"
     },
     {
       "package": "fliplet-core",
@@ -748,7 +748,7 @@
         "message studio",
         "studio bridge"
       ],
-      "category": "meta"
+      "category": "framework"
     },
     {
       "package": "fliplet-core",
@@ -808,7 +808,7 @@
         "namespaced widget",
         "component instance"
       ],
-      "category": "meta"
+      "category": "framework"
     }
   ]
 }

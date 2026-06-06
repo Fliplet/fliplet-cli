@@ -72,13 +72,18 @@ named third-party services where applicable.
 
 **`category`** — single string from the enumerated set
 `{ data, identity, communications, media, native, commerce, integration,
-automation, analytics, meta }`. Drives the section grouping on the
-auto-generated `/v3/capabilities` index page. Pick the dominant facet —
-cross-cutting APIs (e.g. `Fliplet.Notifications` = communications +
-native) pick the one that matches how end-users describe what the API
-does. Required on non-excluded catalog entries; lint warns when absent,
-errors when value is outside the allowed set. See `docs/CONTRIBUTING.md`
-for guidance on which value to pick.
+automation, analytics, observability, framework, navigation, meta }`.
+Drives the section grouping on the auto-generated `/v3/capabilities`
+index page. Pick the dominant facet — cross-cutting APIs (e.g.
+`Fliplet.Notifications` = communications + native) pick the one that
+matches how end-users describe what the API does. Required on
+non-excluded catalog entries; lint warns when absent, errors when value
+is outside the allowed set. See `docs/CONTRIBUTING.md` for guidance on
+which value to pick.
+
+`meta` is the residual bucket — keep it small. If `meta` exceeds 6-8
+entries, split it further (the framework + navigation split happened
+when the earlier "platform" residual hit 12+ entries).
 
 **`notes`** — short curation note for side-effects, do-not-use caveats, or
 gotchas the agent needs to know up-front. Used sparingly — most docs need

@@ -5,7 +5,7 @@ type: api-reference
 tags: [js-api, core, widget]
 v3_relevant: true
 deprecated: false
-category: meta
+category: framework
 capabilities: [widget, widget instance, widget settings, widget data, save event, ready event, widget interface, namespaced widget, component instance]
 ---
 # `Fliplet.Widget`

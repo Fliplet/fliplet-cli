@@ -67,17 +67,23 @@ Every Fliplet JS API available to V3 apps, grouped by capability category. Each 
 
 - [`Fliplet.Analytics`](https://developers.fliplet.com/API/core/analytics.html) **(preloaded)** — Enable, disable, and check analytics tracking, and record custom app events and page views from JavaScript.
 
-## Meta
+## Framework
+
+- [`Fliplet.Env`](https://developers.fliplet.com/API/core/environment.html) **(preloaded)** — Read environment variables such as `appId`, `appName`, `mode`, and `apiUrl` from the current runtime.
+- [`Fliplet.Locale`](https://developers.fliplet.com/API/core/localization.html) **(preloaded)** — Translate strings and format dates and numbers in Fliplet components via Fliplet.Locale, the T() shorthand, and translation.json files using i18next.
+- [`Fliplet.Registry`](https://developers.fliplet.com/API/core/registry.html) **(preloaded)** — Store and retrieve runtime values and functions by key so components can share state and helpers.
+- [`Fliplet.Studio`](https://developers.fliplet.com/API/core/studio.html) **(preloaded)** — Emit events to Fliplet Studio and listen for events from it when building widget interfaces.
+- [`Fliplet.Widget`](https://developers.fliplet.com/API/core/widget.html) **(preloaded)** — Access widget instance IDs, settings, and data, and coordinate save and ready events between widget and interface.
+
+## Navigation
 
 - [``Fliplet.Pages` and `Fliplet.Page``](https://developers.fliplet.com/API/core/screens.html) **(preloaded)** — List app screens, get the current screen's public URL, and build shareable URLs for any screen by ID.
+- [`Fliplet.Navigate`](https://developers.fliplet.com/API/core/navigate.html) **(preloaded)** — Navigate between app screens, open external URLs, pass query parameters, and handle back, home, and modal navigation via Fliplet.Navigate.
+
+## Meta
+
 - [`Fliplet common functions`](https://developers.fliplet.com/API/core/misc.html) **(preloaded)** — Utility helpers on the global `Fliplet` object: `Fliplet.compile()` for templating and `Fliplet.guid()` for unique IDs.
 - [`Fliplet.App`](https://developers.fliplet.com/API/core/app.html) **(preloaded)** — Retrieve the current app's public slug, build shareable screen URLs, and access app-level settings from JavaScript.
 - [`Fliplet.Apps`](https://developers.fliplet.com/API/core/apps.html) **(preloaded)** — List the Fliplet apps the current user can access, and filter between legacy V1 and modern V2 apps.
 - [`Fliplet.Encode`](https://developers.fliplet.com/API/core/encode.html) **(preloaded)** — Encode strings as base64 and double-encode URL query parameters safely for transport.
-- [`Fliplet.Env`](https://developers.fliplet.com/API/core/environment.html) **(preloaded)** — Read environment variables such as `appId`, `appName`, `mode`, and `apiUrl` from the current runtime.
-- [`Fliplet.Locale`](https://developers.fliplet.com/API/core/localization.html) **(preloaded)** — Translate strings and format dates and numbers in Fliplet components via Fliplet.Locale, the T() shorthand, and translation.json files using i18next.
-- [`Fliplet.Navigate`](https://developers.fliplet.com/API/core/navigate.html) **(preloaded)** — Navigate between app screens, open external URLs, pass query parameters, and handle back, home, and modal navigation via Fliplet.Navigate.
 - [`Fliplet.parseError()`](https://developers.fliplet.com/API/core/error.html) **(preloaded)** — Turn any error response or object into a human-readable message by scanning common error properties.
-- [`Fliplet.Registry`](https://developers.fliplet.com/API/core/registry.html) **(preloaded)** — Store and retrieve runtime values and functions by key so components can share state and helpers.
-- [`Fliplet.Studio`](https://developers.fliplet.com/API/core/studio.html) **(preloaded)** — Emit events to Fliplet Studio and listen for events from it when building widget interfaces.
-- [`Fliplet.Widget`](https://developers.fliplet.com/API/core/widget.html) **(preloaded)** — Access widget instance IDs, settings, and data, and coordinate save and ready events between widget and interface.

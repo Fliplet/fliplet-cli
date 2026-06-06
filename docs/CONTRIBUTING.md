@@ -40,10 +40,13 @@ When you add a new `fliplet-*` package, follow this 10-step checklist:
    - `media` — upload, transform, audio, scanning, barcode
    - `native` — native-only APIs (Cordova bridge)
    - `commerce` — payments, subscriptions, app store / play store metadata
-   - `integration` — REST API, OAuth, webhooks, app actions, hooks
-   - `automation` — AI, app actions runtime, tasks, scheduling
-   - `analytics` — analytics, error tracking, navigation, metrics
-   - `meta` — registry, widget, common functions, framework-level helpers
+   - `integration` — REST API, OAuth, webhooks
+   - `automation` — AI, app actions runtime, hooks, scheduling
+   - `analytics` — event tracking, custom metrics, page views (user behaviour)
+   - `observability` — logs, error capture, audit trails (app health — distinct from `analytics`)
+   - `framework` — runtime, registry, environment, widget, locale, dynamic loading (framework-level glue)
+   - `navigation` — screen navigation, URL routing, screen listing
+   - `meta` — residual catch-all (app metadata, encoding helpers, error parsing, common functions). Keep small — if `meta` exceeds 6-8 entries, propose a split rather than letting it absorb new entries
 
    Pick the dominant facet. A cross-cutting API like `Fliplet.Notifications` (communications + native) picks `communications` because that's how end-users describe what it does.
 

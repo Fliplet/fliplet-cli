@@ -21,9 +21,15 @@ const V3_AMBIENT_PATH_RE = /^API\/core\/[^/]+\.md$/;
 // one primary category; the auto-generated capabilities page groups entries
 // by this value.
 //
-// Order matters: the capabilities page renders sections in this order, so
-// `data` and `identity` lead and the more orthogonal buckets (`automation`,
-// `analytics`, `meta`) trail.
+// Order matters: the capabilities page renders sections in this order. Most
+// commonly-reached-for categories lead (`data`, `identity`); navigation +
+// framework follow; orthogonal/service categories (`automation`,
+// `analytics`, `observability`, `meta`) trail.
+//
+// `meta` is the residual bucket — kept deliberately small. If `meta` grows
+// past 6-8 entries again, split it further rather than letting it absorb
+// the new entries (the same anti-pattern that motivated the framework +
+// navigation split when the earlier "platform" residual hit 12+ entries).
 export const ALLOWED_CATEGORIES = [
   'data',
   'identity',
@@ -34,6 +40,9 @@ export const ALLOWED_CATEGORIES = [
   'integration',
   'automation',
   'analytics',
+  'observability',
+  'framework',
+  'navigation',
   'meta',
 ];
 
@@ -223,6 +232,9 @@ export function emitCapabilitiesIndex(docs) {
     integration: 'Integration',
     automation: 'Automation',
     analytics: 'Analytics',
+    observability: 'Observability',
+    framework: 'Framework',
+    navigation: 'Navigation',
     meta: 'Meta',
   };
 

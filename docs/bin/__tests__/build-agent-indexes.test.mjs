@@ -1129,8 +1129,8 @@ describe('emitCapabilitiesIndex', () => {
 });
 
 describe('ALLOWED_CATEGORIES', () => {
-  it('has exactly 10 values', () => {
-    assert.equal(ALLOWED_CATEGORIES.length, 10);
+  it('has exactly 13 values', () => {
+    assert.equal(ALLOWED_CATEGORIES.length, 13);
   });
 
   it('matches the documented enum order', () => {
@@ -1144,6 +1144,9 @@ describe('ALLOWED_CATEGORIES', () => {
       'integration',
       'automation',
       'analytics',
+      'observability',
+      'framework',
+      'navigation',
       'meta',
     ]);
   });

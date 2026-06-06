@@ -5,7 +5,7 @@ type: api-reference
 tags: [js-api, core, studio]
 v3_relevant: true
 deprecated: false
-category: meta
+category: framework
 capabilities: [studio events, widget interface, studio communication, send event to studio, listen to studio events, message studio, studio bridge]
 ---
 # `Fliplet.Studio`
