@@ -16728,6 +16728,1126 @@ Fliplet.Hooks.on('mediaFileDownloadProgress', function (file) {
 
 ---
 
+# `Fliplet.Native`
+URL: https://developers.fliplet.com/API/fliplet-native.html
+
+# `Fliplet.Native`
+
+`Fliplet.Native` is the Cordova-bridge layer that powers Fliplet apps running inside the native iOS and Android wrappers. It bootstraps the on-device app store, coordinates over-the-air (OTA) updates and asset downloads, handles deep-linked local notifications, applies the device locale, and exposes lifecycle hooks (long-press-to-exit, status bar styling, framework version). Every method on this page assumes the Cordova runtime is present — code that runs in both web and native builds must feature-detect before calling in.
+
+<p class="warning"><strong>Native-wrapper-only.</strong> All <code>Fliplet.Native</code> APIs require the Cordova bridge and are only meaningful inside a native build. Always feature-detect via <code>Fliplet.Env.get('platform') === 'native'</code> before calling.</p>
+
+```js
+// Standard feature-detect before touching any Fliplet.Native API
+if (Fliplet.Env.get('platform') === 'native') {
+  Fliplet.Native.StatusBar.hide();
+}
+```
+
+---
+
+## Package overview
+
+`Fliplet.Native` is split across nine sub-namespaces. The seven smaller ones are documented inline on this page. The two largest — `Downloads` and `Maintenance` — each have a dedicated reference.
+
+| Namespace | Source file | Documented in |
+|---|---|---|
+| `Fliplet.Native` (bootstrap) | `native.js` | [Bootstrap](#bootstrap--fliplet-native) (this page) |
+| `Fliplet.Native.AppManagement` | `app-management.js` | [App management](#app-management--fliplet-native-appmanagement) (this page) |
+| `Fliplet.Native.Interaction` | `app-interaction.js` | [App interaction](#app-interaction--fliplet-native-interaction) (this page) |
+| `Fliplet.Native.Updates` | `app-updates.js` | [Updates](#updates--fliplet-native-updates) (this page) |
+| `Fliplet.Native.Locale` | `locale.js` | [Locale](#locale--fliplet-native-locale) (this page) |
+| `Fliplet.Native.Notifications` | `notifications.js` | [Notifications](#notifications--fliplet-native-notifications) (this page) |
+| `Fliplet.Native.StatusBar` | `status-bar.js` | [Status bar](#status-bar--fliplet-native-statusbar) (this page) |
+| `Fliplet.Native.Downloads` | `downloads.js` | [`fliplet-native/downloads`](./fliplet-native/downloads) |
+| `Fliplet.Native.Maintenance` | `maintenance.js` | [`fliplet-native/maintenance`](./fliplet-native/maintenance) |
+
+---
+
+## Bootstrap — `Fliplet.Native`
+
+The root `Fliplet.Native` object is the boot orchestrator. It runs automatically once Cordova plugins are ready: it restores enforced and standard user details from storage, initializes `AppManagement`, `Maintenance`, `Downloads`, `Locale`, locks screen orientation, marks the screen as ready via `Fliplet.Navigator.ready()`, kicks off `Updates`, and — for preview builds — wires up the long-press-to-exit gesture via `Interaction`. On Android it also attaches a `resize` listener that scrolls the focused input into view when the soft keyboard opens, and prevents the hardware back button from navigating away.
+
+Two public methods are exposed.
+
+### `Fliplet.Native.init()`
+
+Runs the full boot sequence above and returns a promise that resolves when the native layer is ready. The Fliplet native wrapper calls this automatically inside `Fliplet.Navigator.onPluginsReady()` — application code does not normally need to invoke it.
+
+```js
+Fliplet.Native.init().then(function () {
+  console.log('Native layer ready');
+});
+```
+
+### `Fliplet.Native.getFrameworkVersion()`
+
+Returns a promise resolving to the version string of the bundled native framework. The version is cached in `Fliplet.Storage` under `fl_framework_version`; on a cache miss the method reads `www/framework-data.json` from the Cordova application directory and falls back to `'2.0.0'` if neither source is available.
+
+```js
+Fliplet.Native.getFrameworkVersion().then(function (version) {
+  console.log('Framework version:', version);
+});
+```
+
+---
+
+## App management — `Fliplet.Native.AppManagement`
+
+`Fliplet.Native.AppManagement` is the local app registry. It maintains a PV-backed (`local_apps`) array of every app installed on the device, syncs it with the server's `/v1/apps` list, and merges incremental bundle diffs by asset `path` (the canonical identity across syncs — URLs change every cycle because of auth tokens and cache-busters). Both v1 (legacy, by edition) and v2 apps are supported in the same store.
+
+### `init()`
+
+Loads the `local_apps` PV record into memory. Called by `Fliplet.Native.init()` during boot.
+
+```js
+Fliplet.Native.AppManagement.init();
+```
+
+### `getLocalApps()`
+
+Returns a promise resolving to the array of installed apps on the device.
+
+```js
+Fliplet.Native.AppManagement.getLocalApps().then(function (apps) {
+  console.log('Installed apps:', apps.length);
+});
+```
+
+### `getLocalAppsSync()`
+
+Synchronous variant of `getLocalApps()`. Returns the array directly, or `undefined` if `init()` has not yet completed.
+
+```js
+var apps = Fliplet.Native.AppManagement.getLocalAppsSync();
+```
+
+### `setLocalApps(apps)`
+
+Replaces the local apps array and persists it to the PV store. Returns a promise.
+
+```js
+Fliplet.Native.AppManagement.setLocalApps(newApps);
+```
+
+### `getServerApps()`
+
+Calls `GET v1/apps` and returns a promise resolving to the authorized server-side app list. As a side effect, creates a data directory for every app (including legacy `editions[]` entries) via `Fliplet.Native.Maintenance.createDirectoryForApp`. Resolves with an empty array when offline.
+
+```js
+Fliplet.Native.AppManagement.getServerApps().then(function (apps) {
+  console.log('Server returned', apps.length, 'apps');
+});
+```
+
+### `getFullApps()`
+
+Returns a promise resolving to the union of server and local apps, annotated with `local` (present on device), `delete` (no longer on server), and `iconPath` (filesystem URL of the cached icon). The icon lookup is skipped on Windows.
+
+```js
+Fliplet.Native.AppManagement.getFullApps().then(function (apps) {
+  apps.forEach(function (app) {
+    if (app.delete) {
+      // App was removed server-side
+    }
+  });
+});
+```
+
+### `addLocalApp(app)`
+
+Upserts an app entry into local storage. New apps are appended; existing entries are merged via the asset-diff algorithm described above. Returns a promise.
+
+```js
+Fliplet.Native.AppManagement.addLocalApp(app);
+```
+
+### `removeLocalApp(app)`
+
+Cancels active downloads for the app, deletes its data folder, removes it from the local store, and unsubscribes the current user from its push channel. Returns a promise.
+
+```js
+Fliplet.Native.AppManagement.removeLocalApp(app);
+```
+
+### `getAppData(appId)`
+
+Synchronous lookup of a locally stored app record by ID. Returns the object or `undefined`.
+
+```js
+var app = Fliplet.Native.AppManagement.getAppData(123);
+```
+
+### `setAppFullData(appData)`
+
+Fetches the full bundle for an app via `getFullAppData()` and persists the merged record. Returns a promise resolving with the merged app.
+
+### `removeAppAssets(options)`
+
+Removes specific asset entries (by `path`) from a locally stored app record without deleting the underlying files.
+
+- `options.appId` (Number) — App ID
+- `options.assets` (Array) — assets to remove; each must include `path`
+
+```js
+Fliplet.Native.AppManagement.removeAppAssets({
+  appId: 123,
+  assets: [{ path: 'js/old-bundle.js' }]
+});
+```
+
+### `getAppIcon(app)`
+
+Resolves the local filesystem icon path for an app and writes it to `app.iconPath`. Skipped on Windows. Returns a promise resolving with the (possibly mutated) app.
+
+### `doesAppIconExist(app, fileList)`
+
+Helper used by `getAppIcon`. Reads directory entries from a `fileList` and sets `app.iconPath` to the first entry's `nativeURL` if any are found. Returns a promise resolving with the app.
+
+### `removeAppStorage(appId)`
+
+Clears every Fliplet storage namespace tied to an app: per-app storage (`Fliplet.App.Storage`), secure storage (`Fliplet.Security.Storage`), the queued data-source request queue, and the per-app push-permission flag. Returns a promise rejecting if `appId` is falsy.
+
+```js
+Fliplet.Native.AppManagement.removeAppStorage(123);
+```
+
+### Deprecated methods
+
+| Method | Notes |
+|---|---|
+| `refreshAppList()` | FV 1.0 era; left in place for compatibility |
+| `removeLocalAppData(appId)` | Mutates the in-memory array without persisting |
+
+---
+
+## App interaction — `Fliplet.Native.Interaction`
+
+`Fliplet.Native.Interaction` ships the long-press escape hatch used in preview builds: a 500 ms tap-and-hold or a 30 px swipe-down from the top edge surfaces a native confirm dialog with "Check for updates", "Exit", and "Cancel" buttons. The first time a user triggers it, a one-off help dialog is shown and the choice ("Don't remind me again") is persisted in `Fliplet.Storage` under `tapAndHoldLearned`. Hosts can disable the entire mechanism by setting the `exitAppDisabled` environment flag.
+
+> The namespace is `Fliplet.Native.Interaction` — not `Fliplet.Native.AppInteraction`.
+
+### `init(portalSpecific)`
+
+Wires up the pointer, touch, and pointer-cancel listeners on `document.body`. When `portalSpecific` is `true`, the "Exit" button calls `Fliplet.Navigate.exitApp()` (close the wrapper); otherwise it calls `Fliplet.Navigate.toDefault()` (return to the default app). Called automatically by `Fliplet.Native.init()` with `portalSpecific = true` when `Fliplet.App.isPreview(true)` is truthy. The listeners are not attached if the env flag `exitAppDisabled` is set to `false`.
+
+```js
+Fliplet.Native.Interaction.init(true);
+```
+
+### `returnToBookshelf()`
+
+Programmatically triggers the same confirm dialog without waiting for a long press. Reentrant — a second call while the dialog is already open is a no-op.
+
+```js
+Fliplet.Native.Interaction.returnToBookshelf();
+```
+
+---
+
+## Updates — `Fliplet.Native.Updates`
+
+`Fliplet.Native.Updates` runs the OTA update pipeline. On boot it reads the last-update timestamp, checks for a pending notification-driven update, and either fires an immediate check or arms a 30-second polling timer. Updates come in three flavors:
+
+- **`silent`** — assets are downloaded and applied in the background; the user sees no UI
+- **`visible`** — a non-blocking update overlay is shown with progress
+- **`forced`** — a blocking overlay that prevents app use until the update completes
+
+Four `Fliplet.Hooks` are emitted along the way:
+
+| Hook | When it fires |
+|---|---|
+| `checkForUpdates` | At the start of every update check (passes `{ appId, manual }`) |
+| `updateCompleted` | After a successful asset download and apply |
+| `updateFailed` | After a failed download or apply |
+| `dataSourceUpdated` | When a data source is incrementally updated mid-cycle |
+
+### `init()`
+
+Reads `fl_last_update_time` from storage, restores any in-progress download UI, checks `fl_notification_update` for a deferred notification payload, then either runs `checkForUpdates(appId, fromNotification, null, navigationUpdate)` immediately (first run or notification-triggered) or calls `createUpdateTimer()` to schedule the next 30-second poll. Called automatically by `Fliplet.Native.init()`. Returns a promise.
+
+```js
+Fliplet.Native.Updates.init();
+```
+
+### `checkForUpdates(appId, manual, lastUpdateType, notificationData, force)`
+
+Queries `GET v1/apps/:id/bundle/update`, coordinates the update UI for the returned release type, delegates incremental data-source diffs, queues asset downloads via `Fliplet.Native.Downloads`, and resumes notification-deep-link navigation once the update settles. Use this from a "Check for updates" button.
+
+- `appId` (Number) — app to check
+- `manual` (Boolean) — `true` to surface "no updates available" feedback to the user
+- `lastUpdateType` (String, optional) — `'silent'` \| `'visible'` \| `'forced'`; used to resume an interrupted UI state
+- `notificationData` (Object, optional) — payload to navigate to after the update completes
+- `force` (Boolean, optional) — treat the result as a `forced` update regardless of server response
+
+```js
+Fliplet.Native.Updates.checkForUpdates(Fliplet.Env.get('appId'), true);
+```
+
+### `createUpdateTimer()`
+
+Re-arms the 30-second background poll. Called internally after each successful check; safe to call manually to reset the timer.
+
+```js
+Fliplet.Native.Updates.createUpdateTimer();
+```
+
+---
+
+## Locale — `Fliplet.Native.Locale`
+
+`Fliplet.Native.Locale` loads the on-device translation file (`<appId>/strings.json`) into `Fliplet.Env('translation')` at boot and lets you switch the active locale by rewriting the file. The strings file is delivered as part of the OTA bundle. After loading, the standard `Fliplet.initializeLocale()` hook runs so the rest of the framework picks up the new strings.
+
+### `init(appId)`
+
+Reads `<appId>/strings.json` from the Fliplet data folder via `Fliplet.Native.Maintenance.readFileContent`. If the file contains a `_locales` array, the first entry is set as `userLocale` and the array as `userLocales` in the env. Then sets `translation` in the env, calls `Fliplet.initializeLocale()`, and returns a promise. Called automatically by `Fliplet.Native.init()` with the current app ID.
+
+```js
+Fliplet.Native.Locale.init(Fliplet.Env.get('appId'));
+```
+
+### `updateSessionLocale(appId, locale)`
+
+Promotes the given locale to index 0 of the `_locales` array inside `strings.json` and writes the file back to disk. Subsequent boots will load that locale first.
+
+```js
+Fliplet.Native.Locale.updateSessionLocale(Fliplet.Env.get('appId'), 'fr-FR');
+```
+
+---
+
+## Notifications — `Fliplet.Native.Notifications`
+
+`Fliplet.Native.Notifications` is the **click handler** for local notifications — it does not send notifications. When the user taps a notification produced by `cordova.plugins.notification.local`, the handler runs the `pushNotificationOpen` hook, optionally switches Fliplet organization (when the payload includes `organizationId + region` and a `fliplet_login_component` is configured), then navigates to the target screen or external URL. The handler also coordinates a special case: if a URL action arrives with an org switch, the page reloads first and the notification is replayed from `fl_pending_notification` storage so the URL opens in the refreshed context.
+
+> Use the standard `Fliplet.Notifications` and `Fliplet.App.Push` APIs to **send** push notifications. `Fliplet.Native.Notifications` only handles the click side.
+
+### `init()`
+
+Binds `cordova.plugins.notification.local.on('click', ...)` and replays any pending notification stored in `fl_pending_notification` (from an org-switch reload cycle). No-op if `cordova.plugins.notification` is undefined (web, simulator without the plugin). Called automatically by the native bootstrap.
+
+```js
+Fliplet.Native.Notifications.init();
+```
+
+### `handle(data, delay)`
+
+Processes a raw notification payload directly. Use this to drive the same deep-link logic from a programmatic notification source.
+
+- `data` (Object) — the `customData` payload. Recognized fields:
+  - `action` (String) — `'screen'` or `'url'`
+  - `page` (Number) — target page or master page ID (for `action: 'screen'`)
+  - `appId` / `masterAppId` (Number) — cross-app navigation
+  - `organizationId` + `region` (String) — switch organization before navigating
+  - `transition` (String) — Fliplet.Navigate transition style
+- `delay` (Number, optional) — milliseconds to wait before navigating (only applies to in-app screen navigation)
+
+```js
+Fliplet.Native.Notifications.handle({
+  action: 'screen',
+  page: 106,
+  transition: 'slide.left'
+}, 250);
+```
+
+---
+
+## Status bar — `Fliplet.Native.StatusBar`
+
+`Fliplet.Native.StatusBar` wraps the `cordova-plugin-statusbar` plugin and the iPhone X+ notch detector. The `init()` method is **iOS only** (guarded by `Modernizr.ios`); `setColor`, `show`, `hide`, and `isVisible` are safe on Android too (the underlying plugin works on both) and log an error if the plugin is missing. The `notch` property is updated automatically on orientation change for any browser with an orientation API.
+
+### `Fliplet.Native.StatusBar.notch`
+
+String property — `''`, `'left'`, or `'right'` — indicating the side of the screen the notch occupies in the current orientation. Updated by an `orientationchange` listener when `Modernizr.notch` is truthy. The corresponding CSS class (`notch-left` / `notch-right`) is also applied to `document.documentElement`.
+
+```js
+if (Fliplet.Native.StatusBar.notch === 'left') {
+  // Pad the left edge of the layout
+}
+```
+
+### `init()`
+
+iOS only. Ensures the status bar is visible, calls `StatusBar.overlaysWebView(false)` so the webview sits below the bar instead of behind it (the native default is `true`), and picks the text color based on the brightness of `Fliplet.Page.getStatusBarBgColor()` — light text on dark backgrounds, default (dark) text on light. Called automatically by the native bootstrap.
+
+```js
+Fliplet.Native.StatusBar.init();
+```
+
+### `setColor(color)`
+
+Sets the status bar text style. Accepts `'light'` (calls `StatusBar.styleLightContent()`) or `'dark'` / `'default'` / anything else (calls `StatusBar.styleDefault()`). Logs an error if the StatusBar plugin is unavailable.
+
+```js
+Fliplet.Native.StatusBar.setColor('light');
+```
+
+### `show()`
+
+Shows the native status bar via `StatusBar.show()`. No-op with an error log if the plugin is unavailable.
+
+```js
+Fliplet.Native.StatusBar.show();
+```
+
+### `hide()`
+
+Hides the native status bar via `StatusBar.hide()`. No-op with an error log if the plugin is unavailable.
+
+```js
+Fliplet.Native.StatusBar.hide();
+```
+
+### `isVisible()`
+
+Returns the current `StatusBar.isVisible` boolean, or `false` if the plugin is unavailable.
+
+```js
+if (!Fliplet.Native.StatusBar.isVisible()) {
+  Fliplet.Native.StatusBar.show();
+}
+```
+
+### Brightness helper
+
+Internally, `init()` uses a W3C brightness calculation (`(r * 299 + g * 587 + b * 114) / 1000 > 123`) on the page's status-bar background color to decide between light and dark text. The 123 threshold is the W3C contrast guideline midpoint.
+
+---
+
+## See also
+
+- [`fliplet-native/downloads`](./fliplet-native/downloads) — asset download queue and progress
+- [`fliplet-native/maintenance`](./fliplet-native/maintenance) — Cordova filesystem and bundle management
+- [`Fliplet.App` push notification subscriptions](./core/app.md#push-notification-subscriptions) — sending and subscribing to push notifications
+- [`fliplet-runtime`](./fliplet-runtime.md) — the runtime that boots before `Fliplet.Native`
+
+---
+
+# `Fliplet.Native.Downloads`
+URL: https://developers.fliplet.com/API/fliplet-native/downloads.html
+
+# `Fliplet.Native.Downloads`
+
+`Fliplet.Native.Downloads` is the asset-delivery engine that powers over-the-air (OTA) updates inside a Fliplet native app. It queues every file the app needs, hands transfers to the Cordova `BackgroundTransfer` plugin, persists queue state in a PV (persistent value) so a download can resume after a cold start, applies incremental DataSource diffs without re-downloading, and reports progress, retries, and errors back to the surrounding `Fliplet.Native.Updates` flow. The queue is keyed by app ID, so a single device can hold partial download state for multiple Fliplet apps at once.
+
+> **Native wrapper only.** Every method on this page requires the Fliplet native runtime (Cordova `BackgroundTransfer`, `cordova.file`, and `PV` are all required). Feature-detect before calling:
+>
+> ```js
+> if (Fliplet.Env.get('platform') !== 'native') {
+>   return;
+> }
+> ```
+
+## What this namespace does
+
+The boot sequence in `Fliplet.Native.init()` calls `Fliplet.Native.Downloads.init()` once on app start. From that point the namespace owns three responsibilities: maintaining the per-app download queue in the `apps_downloads` PV, running the queue with bounded concurrency through `BackgroundTransfer`, and handing finished bundles to `Fliplet.Native.Maintenance` for copy/unzip into the app's data directory. Application code rarely calls anything other than `cancelAppDownloads`, `getPercentageDownloadAsync`, and `getAppErrorSummary` directly — the rest is wired up by `Fliplet.Native.Updates.checkForUpdates()`.
+
+## Initialization and queue
+
+### `init()`
+
+Resolves the platform-specific Cordova file paths, initializes the `download_manager_config` and `apps_downloads` PVs, and automatically resumes any download that was in flight when the previous session ended. Called once by `Fliplet.Native.init()`; app code does not need to call it.
+
+```js
+Fliplet.Native.Downloads.init().then(function () {
+  console.log('Downloads namespace ready');
+});
+```
+
+On Android, init also lowers the concurrent-download cap from 8 to 5 (see [Concurrency and platform differences](#concurrency-and-platform-differences)).
+
+### `startDownloads(appId, hasIncrementalUpdates)`
+
+Walks the queued asset list for `appId` and dispatches transfers up to the concurrency cap. Each asset is treated as one of:
+
+- `action: 'download'` (or no `action`) — queued for transfer if it has not already been marked `downloaded`.
+- `action: 'delete'` — slated for removal once the rest of the bundle finishes.
+
+If every asset in the queue is a `delete` and the update is not incremental, the assets are removed and the queue entry is cleared without any network activity. If `hasIncrementalUpdates` is true and the asset list is empty, the namespace synthesises a "forceComplete" event so the post-download copy and PV-update steps still run — that is how a pure DataSource diff finalizes.
+
+```js
+Fliplet.Native.Downloads.startDownloads(12345, false).then(function () {
+  console.log('All transfers settled');
+});
+```
+
+`startDownloads` is called automatically from `init()` on resume and from `Fliplet.Native.Updates.checkForUpdates()` after the bundle manifest is fetched.
+
+### `addAppDownload(app, hasIncrementalUpdates)`
+
+Adds (or replaces) an app entry in the `apps_downloads` PV. The `app` object must contain at least `id` and `assets`; pass `hasIncrementalUpdates: true` to keep the entry even when `assets` is empty. Returns a Promise that resolves once the PV is persisted.
+
+```js
+Fliplet.Native.Downloads.addAppDownload({
+  id: 12345,
+  version: 42,
+  assets: [
+    { url: 'https://api.fliplet.com/v1/widgets/.../file.js', path: 'widgets/abc/file.js' }
+  ],
+  startingPageId: 67890
+}, false);
+```
+
+This is normally called by the Updates module; calling it directly is appropriate when you are wiring a custom update path.
+
+## Queue inspection
+
+### `getAppDownloads(appId)`
+
+Returns a Promise that **resolves with no value when an entry exists** for `appId` in the queue, and **rejects with no value when none does**. Use it as a presence check rather than a getter — the queue contents are not exposed by this method.
+
+```js
+Fliplet.Native.Downloads.getAppDownloads(12345)
+  .then(function () { console.log('App 12345 is downloading'); })
+  .catch(function () { console.log('App 12345 is not in the queue'); });
+```
+
+### `getAllAppsDownloads()`
+
+Synchronous. Returns the raw queue array from the `apps_downloads` PV. Each entry is the full app object that was passed to `addAppDownload`, with each asset annotated with `status` (`'downloaded'` once finished) and `nrOfDownloads` (count of completed assets).
+
+```js
+var queue = Fliplet.Native.Downloads.getAllAppsDownloads();
+queue.forEach(function (app) {
+  console.log(app.id, app.nrOfDownloads, '/', app.assets.length);
+});
+```
+
+### `setAppsDownloads(apps)`
+
+Synchronous. Overwrites the entire queue with `apps` and persists the PV. Used internally to restore state; calling it directly is a power-user escape hatch — incorrect input will desynchronise the queue from the BackgroundTransfer state.
+
+### `cancelAppDownloads(appId)`
+
+Cancels every in-flight BackgroundTransfer promise tied to `appId`, removes the queue entry, and resets the internal counters (`filesCurrentlyDownloading`, `downloadQueue`, `legacyDownload`, `progress`). Returns a Promise that resolves once the cancellation has propagated.
+
+```js
+Fliplet.Native.Downloads.cancelAppDownloads(12345).then(function () {
+  console.log('Downloads canceled');
+});
+```
+
+This is the method to call from a "Cancel update" button in your UI.
+
+## Progress
+
+### `getPercentageDownload(appId)`
+
+Synchronous. Returns a number 0–99 representing the current progress for `appId`:
+
+- If `appId` is not in the queue but is already a local app, returns `100`.
+- If `appId` is not in the queue and not installed locally, returns `-1` (the `DOWNLOAD_CANCEL` sentinel).
+- For legacy (V1) zip-based downloads, returns the byte-level `progress` variable updated by the BackgroundTransfer progress callback.
+- For V2+ asset-based downloads, returns `nrOfDownloads / assetsToDownload.length * 99`. The cap at 99 reserves the last percent for the post-download copy/unzip step.
+
+```js
+var pct = Fliplet.Native.Downloads.getPercentageDownload(12345);
+$('.progress-bar').css('width', pct + '%');
+```
+
+### `getPercentageDownloadAsync(appId)`
+
+Returns a Promise that resolves with the same value as `getPercentageDownload(appId)` **unless** the app has accumulated severe download errors — in which case it resolves with `-1` (the `DOWNLOAD_CANCEL` sentinel) so the UI can switch to an error state. Use this in any code path where the UI should react to error conditions; use the sync variant only for tight render loops.
+
+```js
+Fliplet.Native.Downloads.getPercentageDownloadAsync(12345).then(function (pct) {
+  if (pct === -1) {
+    showErrorState();
+    return;
+  }
+  updateProgressBar(pct);
+});
+```
+
+### `getNrOfDownloads(appId)`
+
+Synchronous. Returns the number of assets queued for download (excluding `action: 'delete'` entries) for `appId`, or `0` if the app is not in the queue.
+
+```js
+var total = Fliplet.Native.Downloads.getNrOfDownloads(12345);
+console.log('Downloading ' + total + ' files');
+```
+
+## Single file operations
+
+These three methods are independent of the per-app queue and operate on the Cordova filesystem directly. They are the right primitives for screens that need to fetch or read a single asset outside the OTA update pipeline.
+
+### `downloadFile(options)`
+
+Downloads a single file via `BackgroundTransfer.BackgroundDownloader` and writes it into the app's downloads folder (or a subfolder of it). Returns a Promise that resolves with the BackgroundTransfer result object once the file is on disk.
+
+| Option | Type | Description |
+|---|---|---|
+| `fileName` | string | Local file name to create. |
+| `fileUrl` | string | Remote URL to download from. |
+| `dir` | string | *Optional.* Subfolder under the downloads folder. Created if absent. |
+| `onProgress` | function | *Optional.* Called with the BackgroundTransfer progress object on every update. |
+| `onStart` | function | *Optional.* Called with the download Promise as soon as the transfer starts. Defining this opts the call out of the namespace's internal completion queue — the caller owns the promise. |
+
+```js
+Fliplet.Native.Downloads.downloadFile({
+  fileName: 'manual.pdf',
+  fileUrl: 'https://example.com/manual.pdf',
+  dir: 'docs',
+  onProgress: function (event) {
+    console.log(event.bytesReceived, '/', event.totalBytesToReceive);
+  }
+}).then(function (result) {
+  console.log('Saved to', result.fileData.savedFilePath);
+});
+```
+
+### `getFile(options)`
+
+Reads a previously downloaded file from the app's downloads folder. Returns a Promise that resolves with the Cordova `FileEntry`.
+
+| Option | Type | Description |
+|---|---|---|
+| `fileName` | string | Local file name to read. |
+| `dir` | string | *Optional.* Subfolder under the downloads folder. |
+
+```js
+Fliplet.Native.Downloads.getFile({ fileName: 'manual.pdf', dir: 'docs' })
+  .then(function (fileEntry) {
+    console.log(fileEntry.toURL());
+  });
+```
+
+### `getTempDownloadPath()`
+
+Synchronous. Returns the full string path of the temporary download directory (`<downloadsFolder>/appTempFiles/`). Use it when you need to construct a path for `Fliplet.Native.Maintenance` calls that operate on in-flight downloads.
+
+```js
+var tempPath = Fliplet.Native.Downloads.getTempDownloadPath();
+```
+
+## Error handling
+
+The namespace records every failed transfer into a per-app summary, persisted in `Fliplet.Storage` under the `downloadsErrorSummary` key. Two methods expose it:
+
+### `getErrorMessage(appId)`
+
+Returns a Promise that resolves with the **first** error entry recorded for `appId` (or `undefined` if no errors have been recorded). Each entry is the raw BackgroundTransfer error object — `error.fileData.savedFilePath` identifies the file that failed.
+
+```js
+Fliplet.Native.Downloads.getErrorMessage(12345).then(function (error) {
+  if (error) {
+    console.error('First failure:', error.fileData.savedFilePath);
+  }
+});
+```
+
+### `getAppErrorSummary(appId)`
+
+Returns a Promise that resolves with the full summary object `{ appId, summary: [error, error, ...] }` or `undefined` if nothing has been recorded.
+
+```js
+Fliplet.Native.Downloads.getAppErrorSummary(12345).then(function (errorSummary) {
+  if (errorSummary) {
+    console.log('Total failures:', errorSummary.summary.length);
+    errorSummary.summary.forEach(function (e) {
+      console.error(e.fileData.savedFilePath, e.fileData.reason);
+    });
+  }
+});
+```
+
+### Non-severe error policy
+
+Not every failed file aborts the update. The namespace classifies an error as **non-severe** when every entry in the summary fails on one of:
+
+- A path containing `entries.json` (bundled DataSource — falls back to online).
+- A common image extension (`png`, `jpg`, `jpeg`, `gif`, `svg`, `webp`, and many others — see `COMMON_IMG_EXT` in the source).
+
+If the summary is non-severe, `getPercentageDownloadAsync` still reports real progress and the update completes successfully. If it contains anything else (a missing JS file, a missing HTML page, etc.), the update is treated as failed and `getPercentageDownloadAsync` resolves with `-1`.
+
+### Retry policy
+
+When `BackgroundTransfer` reports a failure, the namespace retries the same file up to **4 times** for these reason codes:
+
+| Reason | Meaning |
+|---|---|
+| `502` | No reason given |
+| `1000` | `ERROR_UNKNOWN` |
+| `1004` | `ERROR_HTTP_DATA_ERROR` |
+| `1008` | `ERROR_CANNOT_RESUME` |
+| `-1001` | Request timed out |
+| `-1003` | Server hostname not found |
+| `-1005` | Network connection lost |
+| `-1200` | SSL handshake error |
+
+`404` is treated as "system will deal with it" (no retry, classified by the non-severe filter above). `1006` (`ERROR_INSUFFICIENT_SPACE`) immediately rejects with a "storage full" message — no retry, no recovery. Any other reason code skips retry and is recorded in the error summary.
+
+## Concurrency and platform differences
+
+| Platform | Concurrent downloads | Downloads folder | Local data folder |
+|---|---|---|---|
+| iOS | 8 | `cordova.file.dataDirectory` | `cordova.file.dataDirectory` |
+| Android | 5 | `cordova.file.externalDataDirectory` | `cordova.file.applicationStorageDirectory + 'files/'` |
+| Windows | 8 | `cordova.file.dataDirectory` | `cordova.file.dataDirectory` |
+
+Android caps concurrency lower because the platform throttles parallel `BackgroundTransfer` operations more aggressively and excessive parallelism causes spurious failures. The cap is read once at `init()` time.
+
+The temp download path is always `<downloadsFolder>/appTempFiles/<appId>/`. Files land there first, then `Fliplet.Native.Maintenance` copies (or unzips, for legacy bundles) them into the per-app folder under the local data folder.
+
+## Hooks
+
+The namespace fires two `Fliplet.Hooks` events on completion. Register handlers via `Fliplet.Hooks.on()` from anywhere in your app code (global JS is the natural place).
+
+### `updateCompleted`
+
+Fired once every queued asset for an app has been downloaded, copied, and the queue entry has been cleared.
+
+```js
+Fliplet.Hooks.on('updateCompleted', function (data) {
+  console.log('Update finished for app', data.appId);
+});
+```
+
+### `updateFailed`
+
+Fired when the download flow rejects with a severe error.
+
+```js
+Fliplet.Hooks.on('updateFailed', function (data) {
+  console.error('Update failed for app', data.appId, data.error);
+});
+```
+
+Both hooks also trigger a `Fliplet.App.Logs` entry (`update.success` or `update.failed`) so the failure is visible in Studio's app activity log without any extra wiring.
+
+A DOM-level event is also dispatched on `document`: `flDownloadFinished<appId>` (no payload) on success, and `flEventNativeDownloadFailed` (with `event.detail.appId`) on each failed file. These are lower-level than the hooks and are used by the built-in update overlay UI; new code should prefer the hooks.
+
+## See also
+
+- [`Fliplet.Native`](../fliplet-native) — the parent namespace and boot sequence.
+- [`Fliplet.Native.Maintenance`](./maintenance) — filesystem primitives that Downloads delegates to for copy, unzip, and delete.
+- [`Fliplet.Native.Updates`](../fliplet-native#updates) — the OTA update flow that drives the Downloads queue.
+
+---
+
+# `Fliplet.Native.Maintenance`
+URL: https://developers.fliplet.com/API/fliplet-native/maintenance.html
+
+# `Fliplet.Native.Maintenance`
+
+`Fliplet.Native.Maintenance` is the file-system abstraction layer that wraps the
+Cordova File plugin (`cordova-plugin-file`), the `cordova-plugin-zip` archive
+plugin, and `cordova-plugin-file-opener2` behind a Promise-based JavaScript
+API. It exposes the read/write/copy/delete/unzip primitives that
+`Fliplet.Native.Downloads`, `Fliplet.Native.Updates`, and
+`Fliplet.Native.AppManagement` compose into the higher-level download,
+update, and bundle-copy flows. Most app code does not call Maintenance
+directly — it is the plumbing layer.
+
+## Feature detection
+
+The namespace exists only inside the native Fliplet shell (iOS and Android
+Cordova builds). Feature-detect before calling any method:
+
+```js
+if (Fliplet.Native && Fliplet.Native.Maintenance) {
+  // Native shell — Maintenance is available
+  Fliplet.Native.Maintenance.readFileContent('apps/123/manifest.json');
+}
+```
+
+Outside the native shell — web preview, Studio canvas, mobile browser —
+`Fliplet.Native.Maintenance` is `undefined`. Every method returns a Promise
+that depends on `cordova.file.*` path constants and `window.resolveLocalFileSystemURL`,
+neither of which exists in a browser context.
+
+## What this namespace does
+
+Maintenance owns three responsibilities: (1) resolving the platform-specific
+roots (`FlipletDataDir/`, `appTempFiles/`, `www/`) on first use via
+`setupFilePaths()` so callers do not have to know whether they are on iOS or
+Android; (2) wrapping the imperative, callback-style Cordova File API into
+Promise-returning helpers; and (3) providing the launch hand-off the Cordova
+shell calls (`init`, `launchStartPage`) when the app first opens. It is used
+internally by `Fliplet.Native.Downloads` (to stage and persist downloaded app
+bundles), `Fliplet.Native.Updates` (to swap files when an update is
+applied), and `Fliplet.Native.AppManagement` (to register the local app list).
+
+## Reading files
+
+### `readFileContent(fileName)`
+
+Reads a file via `FileReader.readAsText()` and resolves with the text content.
+
+| Argument | Type | Description |
+|---|---|---|
+| `fileName` | `String` | Full URL to the file (`cdvfile://`, `file://`, or an absolute path produced by `getFlipletDataFolder()` etc.). |
+
+Returns a `Promise<String>` that resolves with the file's text content, or
+rejects if the file cannot be resolved or read.
+
+```js
+var dataDir = Fliplet.Native.Maintenance.getFlipletDataFolder();
+
+Fliplet.Native.Maintenance.readFileContent(dataDir + '123/manifest.json')
+  .then(function(content) {
+    var manifest = JSON.parse(content);
+
+    console.log('App version:', manifest.version);
+  });
+```
+
+### `readDirectoryFiles(directoryToRead)`
+
+Lists the immediate entries of a directory using the Cordova
+`DirectoryReader`.
+
+| Argument | Type | Description |
+|---|---|---|
+| `directoryToRead` | `String` | Full URL to the directory. |
+
+Returns a `Promise<Array<Entry>>` resolved with Cordova `FileEntry` /
+`DirectoryEntry` objects. Each entry has `name`, `fullPath`, `nativeURL`,
+`isDirectory`, and `isFile`.
+
+```js
+var dataDir = Fliplet.Native.Maintenance.getFlipletDataFolder();
+
+Fliplet.Native.Maintenance.readDirectoryFiles(dataDir + '123/')
+  .then(function(entries) {
+    entries.forEach(function(entry) {
+      console.log(entry.isDirectory ? 'dir:' : 'file:', entry.name);
+    });
+  });
+```
+
+## Writing files
+
+### `writeFile(fileName, data, options)`
+
+Writes data into a file inside the Fliplet data folder. The data is
+JSON-serialized and wrapped in a `Blob` before being written.
+
+| Argument | Type | Description |
+|---|---|---|
+| `fileName` | `String` | File path **relative to `FlipletDataDir/`**. The file must already exist — `writeFile` calls `getFile` with `{ create: false }`. |
+| `data` | `Object` | Data to write. Serialized with `JSON.stringify` before writing. |
+| `options` | `Object` | Required. |
+| `options.mimeType` | `String` | Required. Used as the `Blob` type. Rejects immediately if omitted. |
+
+Returns a `Promise` that resolves when the write completes, or rejects with
+the `FileError` from Cordova.
+
+```js
+Fliplet.Native.Maintenance.writeFile(
+  '123/manifest.json',
+  { version: '2.1.0', updatedAt: Date.now() },
+  { mimeType: 'application/json' }
+);
+```
+
+## Copying and moving
+
+### `copyFile(options)`
+
+Copies a single Cordova `FileEntry` into a destination `DirectoryEntry`.
+
+| Property | Type | Description |
+|---|---|---|
+| `options.file` | `FileEntry` | The file to copy (as returned by `readDirectoryFiles` or `resolveLocalFileSystemURL`). |
+| `options.destinationFolder` | `DirectoryEntry` | Target directory. |
+| `options.fromAppBundle` | `Boolean` | When `true`, copies directly via `file.copyTo`. When `false`, the file is first staged through the temp download dir and then copied. |
+
+Returns a `Promise` resolved when the copy completes.
+
+### `copyFileListIntoDirectory(options)`
+
+Copies a list of files into a destination directory in parallel, ordering
+them by depth so parent directories are created before their children.
+
+| Property | Type | Description |
+|---|---|---|
+| `options.fileList` | `Array<FileEntry>` | Files to copy. |
+| `options.destinationFolder` | `DirectoryEntry` | Destination directory. |
+| `options.fromAppBundle` | `Boolean` | Pass-through flag forwarded to each `copyFile` call. |
+
+Returns a `Promise` resolved when every copy completes.
+
+```js
+Fliplet.Native.Maintenance.readDirectoryFiles(sourceUrl)
+  .then(function(fileList) {
+    return Fliplet.Native.Maintenance.copyFileListIntoDirectory({
+      fileList: fileList,
+      destinationFolder: targetDirEntry,
+      fromAppBundle: true
+    });
+  });
+```
+
+### `copyFileBasedOnFullPaths(options)`
+
+Convenience wrapper around `copyFile` for callers that hold absolute paths
+instead of resolved Cordova entries. It resolves both paths, then delegates
+to `copyFile` with `fromAppBundle: true`.
+
+| Property | Type | Description |
+|---|---|---|
+| `options.filePath` | `String` | Full URL of the source file. |
+| `options.destinationFolderPath` | `String` | Full URL of the destination directory. |
+
+Returns a `Promise` resolved when the copy completes. Rejects if either
+path is empty or fails to resolve.
+
+```js
+Fliplet.Native.Maintenance.copyFileBasedOnFullPaths({
+  filePath: 'cdvfile://localhost/persistent/appTempFiles/123/manifest.json',
+  destinationFolderPath: 'cdvfile://localhost/persistent/FlipletDataDir/123/'
+});
+```
+
+## Removing
+
+### `deleteFiles(options)`
+
+Recursively deletes one or more app directories underneath a parent data
+folder. This is the bulk-delete path used when an app is uninstalled.
+
+| Property | Type | Description |
+|---|---|---|
+| `options.list` | `Array<Number>` | App IDs whose directories should be removed. Each ID is `.toString()`-converted to a folder name. |
+| `options.dataFolder` | `String` | Parent folder URL — typically `getFlipletDataFolder()`. |
+
+Returns a `Promise` that resolves when every directory is removed. Rejects
+with `{ code: 9, message }` if any individual `removeRecursively` fails.
+
+```js
+Fliplet.Native.Maintenance.deleteFiles({
+  list: [123, 456],
+  dataFolder: Fliplet.Native.Maintenance.getFlipletDataFolder()
+});
+```
+
+### `deleteListOfFiles(options)`
+
+Removes a list of individual files inside a single app's folder. Files that
+do not exist are silently skipped (resolved as success) — the operation is
+idempotent.
+
+| Property | Type | Description |
+|---|---|---|
+| `options.appId` | `Number` | App ID — used to scope removal to `FlipletDataDir/<appId>/`. |
+| `options.assets` | `Array<{ path: String }>` | Files to remove, each described by a `path` relative to the app folder. |
+
+Returns a `Promise` resolved with the original `options` once all files
+finish processing.
+
+```js
+Fliplet.Native.Maintenance.deleteListOfFiles({
+  appId: 123,
+  assets: [
+    { path: 'pages/old-screen.html' },
+    { path: 'assets/legacy-bundle.js' }
+  ]
+});
+```
+
+## Directory operations
+
+### `createDirectoryForApp(appID)`
+
+Creates `FlipletDataDir/<appID>/` if it does not exist. No-op on Windows
+(returns `Promise.resolve()` immediately).
+
+| Argument | Type | Description |
+|---|---|---|
+| `appID` | `Number \| String` | App ID. Converted to string for the directory name. |
+
+Returns a `Promise<DirectoryEntry>` resolved with the directory entry.
+
+### `getFlipletDataFolder()`
+
+Returns the full URL of the Fliplet data folder
+(`<documentsFolder>FlipletDataDir/`), where downloaded apps are stored. Calls
+`setupFilePaths()` synchronously the first time.
+
+```js
+var dataDir = Fliplet.Native.Maintenance.getFlipletDataFolder();
+// e.g. 'cdvfile://localhost/persistent/FlipletDataDir/'
+```
+
+### `getFlipletWWWFolder()`
+
+Returns the full URL of the Cordova `www/` directory inside the application
+bundle — where the shell's bundled JS, CSS, and HTML live.
+
+### `getFlipletTempFolder()`
+
+Returns the full URL of the temporary download folder
+(`<documentsFolder>appTempFiles/`), where new app bundles are staged before
+being copied into `FlipletDataDir/`.
+
+## Existence checks
+
+### `checkIfFileExists(fileUrl)`
+
+Checks whether a file exists **relative to `FlipletDataDir/`**. Resolves if
+the file is found, rejects otherwise. If `flipletDataFolder` has not yet
+been initialized, `setupFilePaths()` is called automatically — safe to call
+before `Fliplet.Native.init()` resolves.
+
+| Argument | Type | Description |
+|---|---|---|
+| `fileUrl` | `String` | Path relative to `FlipletDataDir/`, e.g. `'123/manifest.json'`. |
+
+Returns a `Promise<void>`. Failures are also captured to Sentry (`Raven`)
+with full environment context.
+
+```js
+Fliplet.Native.Maintenance.checkIfFileExists('123/screens/home.html')
+  .then(function() {
+    console.log('Screen is downloaded.');
+  })
+  .catch(function() {
+    console.log('Screen missing — trigger a re-download.');
+  });
+```
+
+### `checkValidFileFullPath(fullPath)`
+
+Validates that a fully-qualified path resolves to an entry on the device's
+file system. Unlike `checkIfFileExists`, this accepts an absolute URL —
+useful for verifying paths produced outside the Fliplet data folder.
+
+| Argument | Type | Description |
+|---|---|---|
+| `fullPath` | `String` | Full URL of the file. |
+
+Returns a `Promise<Entry>` resolved with the Cordova entry, rejected if the
+path is empty or unresolvable.
+
+### `getFileMetaData(fullPath)`
+
+Resolves with the Cordova `File` metadata object (MIME `type`, `name`,
+`size`, `lastModified`) for a fully-qualified file path.
+
+| Argument | Type | Description |
+|---|---|---|
+| `fullPath` | `String` | Full URL of the file. |
+
+Returns a `Promise<File>`.
+
+```js
+Fliplet.Native.Maintenance.getFileMetaData(
+  'cdvfile://localhost/persistent/FlipletDataDir/123/report.pdf'
+).then(function(meta) {
+  console.log(meta.type, meta.size); // 'application/pdf', 102400
+});
+```
+
+## Archive operations
+
+### `unzipFilesIntoDirectory(fileList)`
+
+Unzips a list of zip files sequentially into `FlipletDataDir/`. Each archive
+is moved into its own subdirectory (named after the zip's basename) and
+unpacked there using `cordova-plugin-zip`.
+
+| Argument | Type | Description |
+|---|---|---|
+| `fileList` | `Array<FileEntry>` | Cordova `FileEntry` objects pointing at the zip files. |
+
+Returns a `Promise<void>` resolved when every archive finishes extracting.
+
+```js
+Fliplet.Native.Maintenance.readDirectoryFiles(tempFolderUrl)
+  .then(function(entries) {
+    var zips = entries.filter(function(e) {
+      return e.isFile && /\.zip$/i.test(e.name);
+    });
+
+    return Fliplet.Native.Maintenance.unzipFilesIntoDirectory(zips);
+  });
+```
+
+## Launch helpers
+
+These methods are called by the Cordova shell's `maintenance.html` boot
+sequence. They are exposed for completeness but rarely useful to app code.
+
+### `init()`
+
+Boots the maintenance flow: clears stale storage keys, sets up file paths,
+loads the preloaded app list, and navigates to the default app's start
+page. Called once by `maintenance.html` on cold start.
+
+Returns a `Promise<void>`.
+
+### `initWithParams()`
+
+Lighter init: only runs `setupFilePaths()`. Used when the shell is reloaded
+mid-flight and the path globals need to be re-established without the full
+boot.
+
+### `launchStartPage(launchPage)`
+
+Resolves the default app's starting page and navigates to it. If
+`launchPage` is provided it overrides the manifest's `startingPageId`.
+
+| Argument | Type | Description |
+|---|---|---|
+| `launchPage` | `Number \| null` | Page ID to launch, or `null` to use the manifest default. |
+
+Returns a `Promise<void>`.
+
+### `nativeOpenFile(filePath)`
+
+Opens a file in the device's default OS handler via
+`cordova-plugin-file-opener2`. Used to open downloaded PDFs, documents,
+images, etc. If the path is already a `cdvfile://` URL it is used as-is;
+otherwise it is resolved relative to the current app's data folder.
+
+| Argument | Type | Description |
+|---|---|---|
+| `filePath` | `String` | A `cdvfile://` URL, or a path relative to `FlipletDataDir/<currentAppId>/`. |
+
+Returns a `Promise<void>`. On `ACTIVITY_NOT_FOUND` (no installed app can
+handle the MIME type), surfaces a localized "unsupported file type" popup.
+
+```js
+Fliplet.Native.Maintenance.nativeOpenFile('downloads/report.pdf');
+```
+
+## App-list helpers
+
+### `getPreloadedAppList()`
+
+Reads `default.js` from the `www/` folder (or returns a cached copy) and
+resolves with the preloaded app list shipped inside the bundle.
+
+Returns a `Promise<Array<App>>`.
+
+### `saveAppDataJSON()`
+
+Reads the preloaded app list and registers each app with
+`Fliplet.Native.AppManagement.addLocalApp`.
+
+Returns a `Promise<void>`.
+
+### `getDefaultAppID()`
+
+Reads `fl_default_app_id` from `NativeStorage` and resolves with the value.
+
+Returns a `Promise<String>`.
+
+## See also
+
+- [`../fliplet-native`](../fliplet-native) — parent namespace overview, feature
+  detection, and platform support.
+- [`./downloads`](./downloads) — high-level download API built on
+  `copyFileListIntoDirectory`, `unzipFilesIntoDirectory`, and
+  `checkIfFileExists`.
+- [`../fliplet-runtime`](../fliplet-runtime) — the readiness model
+  (`Fliplet()`, `Fliplet.Env.get('platform')`) used to guard native-only
+  code paths.
+
+---
+
 # Fliplet.Notifications
 URL: https://developers.fliplet.com/API/fliplet-notifications.html
 

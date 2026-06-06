@@ -45,6 +45,7 @@ Every Fliplet JS API available to V3 apps, grouped by capability category. Each 
 
 ## Native
 
+- [``Fliplet.Native``](https://developers.fliplet.com/API/fliplet-native.html) — Cordova-bridge APIs for native Fliplet apps — app management, updates, downloads, locale, notifications, status bar, and lifecycle interactions.
 - [`Fliplet.Navigator`](https://developers.fliplet.com/API/core/navigator.html) **(preloaded)** — Detect online/offline state, listen for connectivity changes, and wait for the device to be ready.
 
 ## Commerce

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-06-06T22:39:18.233Z",
+  "generatedAt": "2026-06-06T22:52:55.512Z",
   "libraries": [
     {
       "package": "fliplet-analytics-spa",
@@ -220,6 +220,32 @@
         "search files"
       ],
       "category": "media"
+    },
+    {
+      "package": "fliplet-native",
+      "namespace": "`Fliplet.Native`",
+      "title": "`Fliplet.Native`",
+      "description": "Cordova-bridge APIs for native Fliplet apps — app management, updates, downloads, locale, notifications, status bar, and lifecycle interactions.",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-native.html",
+      "preloaded": false,
+      "capabilities": [
+        "native bridge",
+        "cordova",
+        "ios",
+        "android",
+        "app updates",
+        "app management",
+        "status bar",
+        "push notifications",
+        "downloads",
+        "file system",
+        "screen orientation",
+        "local notifications",
+        "deep links",
+        "organization switch"
+      ],
+      "category": "native",
+      "notes": "Native-wrapper-only. Feature-detect via Fliplet.Env.get('platform') === 'native' before calling. Calls are no-ops or throw on web."
     },
     {
       "package": "fliplet-notifications",
