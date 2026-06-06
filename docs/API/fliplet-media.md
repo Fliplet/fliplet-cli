@@ -169,6 +169,104 @@ Fliplet.Media.Files.update(123, {
 
 Note: when moving a file from a folder to an app or organization, please set its `mediaFolderId` to `null`.
 
+### Get file metadata
+
+Fetches the metadata object for a single file by its ID.
+
+```js
+Fliplet.Media.Files.get(123).then(function (file) {
+  console.log(file.name, file.url, file.contentType);
+});
+```
+
+Endpoint: `GET v1/media/files/{id}`
+
+The resolved object has the same shape as the entries returned by `Fliplet.Media.Folders.get()` — see the [sample response](#get-the-list-of-folders-and-files-for-your-organization-or-a-specific-app) above for the full field list.
+
+### Get metadata for multiple files
+
+Fetches metadata for a list of files in a single request. On native platforms the result is cached in `Fliplet.Cache` for 1 hour (keyed by a hash of the request body), so repeated calls with the same arguments avoid redundant network traffic.
+
+```js
+Fliplet.Media.Files.getAll({
+  files: [123, 456, 789],
+  attributes: ['id', 'name', 'url', 'updatedAt'] // optional — omit to get all fields
+}).then(function (files) {
+  files.forEach(function (file) {
+    console.log(file.id, file.name);
+  });
+});
+```
+
+Endpoint: `POST v1/media/files/aggregate`
+
+The `files` array contains the numeric IDs of the files to fetch. The optional `attributes` array limits which fields the server returns.
+
+### Get file contents
+
+Fetches the raw contents of a file. Pass optional transform parameters to have the server resize or convert images before delivery.
+
+```js
+// Fetch an image resized to the "medium" preset (960 px on the longest side)
+// and converted to WebP at 80% quality
+Fliplet.Media.Files.getContents(123, {
+  size: 'medium', // small | medium | large | xlarge | xxlarge | xxxlarge
+  format: 'webp', // jpg | webp
+  quality: 80     // 1–100; defaults to 88 for jpg and 80 for webp
+}).then(function (contents) {
+  // contents type depends on the server response and any responseType override
+});
+```
+
+Endpoint: `GET v1/media/files/{id}/contents`
+
+**Transform options:**
+
+| Option | Type | Description |
+|---|---|---|
+| `size` | String | Named size preset (`small` 640 px, `medium` 960 px, `large` 1366 px, `xlarge` 1980 px, `xxlarge` 2560 px, `xxxlarge` 3840 px) or a raw ImageMagick geometry string. The server scales proportionally and skips resizing when the image is already within the requested dimension. |
+| `format` | String | Output image format. Accepted values: `jpg`, `webp`. |
+| `quality` | Number | Compression quality from 1 to 100. Defaults to `88` for `jpg` and `80` for `webp` when `format` is set. |
+
+### Get cached images
+
+Matches a local list of file names against a server folder, downloads any files that are missing or stale, and returns resolved metadata for each matched file. On web, no file is downloaded — signed content URLs are returned directly. On native platforms, files are stored to device storage via `Fliplet.Native.Downloads.downloadFile` and per-file metadata is tracked with `Fliplet.Storage` so that subsequent calls skip files that have not changed on the server.
+
+```js
+Fliplet.Media.Files.getCachedImages({
+  folderId: 456,                // ID of the Media folder to sync from
+  files: [                      // local list of files to match
+    { name: 'hero.jpg' },
+    { name: 'logo.png' }
+  ],
+  size: 'large',                // optional transform options (same as getContents)
+  format: 'webp',
+  quality: 80,
+  onProgress: function (file, fileInfo) {
+    // called after each file is resolved or downloaded
+    console.log('Ready:', file.name, fileInfo.path);
+  }
+}).then(function (images) {
+  // images is an array of objects:
+  // { id, path, fileName, name, updatedAt }
+  images.forEach(function (img) {
+    document.querySelector('#' + img.name).src = img.path;
+  });
+});
+```
+
+Each entry in the resolved array contains:
+
+| Property | Description |
+|---|---|
+| `id` | Numeric ID of the file on the server. |
+| `path` | On web: authenticated content URL. On native: absolute local file path. |
+| `fileName` | Local file name used for storage (includes folder ID and transform tokens). |
+| `name` | Original file name as matched against the `files` input list. |
+| `updatedAt` | Timestamp of the file version that was last downloaded. |
+
+Files present in the `files` input list but not found in the server folder are silently omitted from the result.
+
 ---
 
 ## Search folders and files
