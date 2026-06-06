@@ -20,7 +20,7 @@ When you add a new `fliplet-*` package, follow this 10-step checklist:
 1. **Start from the template.** Copy `_templates/doc-template.md` (or `_templates/js-api.md` for a JavaScript API reference) to `docs/API/fliplet-<package>.md`. Filename must match the npm package name, prefixed with `fliplet-`.
 
 2. **Set the required frontmatter.** Every doc needs:
-   - `title:` matching the H1 (minus enclosing backticks)
+   - `title:` matching the H1 **with backticks stripped** — the Jekyll layout prints `title:` as literal text in the page header, so backticks would render as `\`Fliplet.X\`` instead of formatted code. Body H1 keeps the backticks for code formatting; frontmatter `title:` does not. Example: `title: Fliplet.Payments` in frontmatter; `` # `Fliplet.Payments` `` in body. Lint enforces this.
    - `description:` 1–2 sentences, ≤160 chars, standalone
    - `type:` one of `api-reference` / `guide` / `how-to` / `concept` / `tutorial` / `reference` / `integration`
    - `tags:` first tag is the canonical area (`js-api`, `rest-api`, etc.), then 1–5 specifics, lowercase dash-separated

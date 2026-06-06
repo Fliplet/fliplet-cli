@@ -15,10 +15,10 @@ Every Fliplet JS API available to V3 apps, grouped by capability category. Each 
 
 ## Data
 
-- [``Fliplet.Storage` and `Fliplet.App.Storage``](https://developers.fliplet.com/API/core/storage.html) **(preloaded)** — Persist JSON-serializable values to device or browser storage, scoped globally or to the current app.
 - [`Fliplet.Cache`](https://developers.fliplet.com/API/core/cache.html) **(preloaded)** — Run async operations once and memoize their results, with optional expiry and background refresh.
 - [`Fliplet.DataSources`](https://developers.fliplet.com/API/fliplet-datasources.html) — Connect to, query, insert, update, and delete records in Fliplet Data Sources from inside an app. All methods are promise-based.
 - [`Fliplet.DataSources.Encryption`](https://developers.fliplet.com/API/fliplet-encryption.html) — Automatically encrypt and decrypt selected Data Source columns on-device by registering a private key and column list.
+- [`Fliplet.Storage and Fliplet.App.Storage`](https://developers.fliplet.com/API/core/storage.html) **(preloaded)** — Persist JSON-serializable values to device or browser storage, scoped globally or to the current app.
 
 ## Identity
 
@@ -45,6 +45,7 @@ Every Fliplet JS API available to V3 apps, grouped by capability category. Each 
 
 ## Native
 
+- [`Fliplet.Native`](https://developers.fliplet.com/API/fliplet-native.html) — Cordova-bridge APIs for native Fliplet apps — app management, updates, downloads, locale, notifications, status bar, and lifecycle interactions.
 - [`Fliplet.Navigator`](https://developers.fliplet.com/API/core/navigator.html) **(preloaded)** — Detect online/offline state, listen for connectivity changes, and wait for the device to be ready.
 
 ## Commerce
@@ -65,20 +66,29 @@ Every Fliplet JS API available to V3 apps, grouped by capability category. Each 
 
 ## Analytics
 
+- [`fliplet-analytics-spa`](https://developers.fliplet.com/API/fliplet-analytics-spa.html) — Auto page-view tracker for V3 SPA apps. Hooks the History API so every client-side route change emits a pageView — no app code required.
 - [`Fliplet.Analytics`](https://developers.fliplet.com/API/core/analytics.html) **(preloaded)** — Enable, disable, and check analytics tracking, and record custom app events and page views from JavaScript.
+
+## Observability
+
+- [`fliplet-error-tracking`](https://developers.fliplet.com/API/fliplet-error-tracking.html) — Auto-loading runtime that captures JavaScript exceptions and unhandled promise rejections and batches them to Fliplet.App.Logs.
 
 ## Framework
 
+- [`fliplet-runtime`](https://developers.fliplet.com/API/fliplet-runtime.html) — V3 SPA bootstrap that wires Fliplet.Env, Registry, Studio, Navigator, and Locale into the global Fliplet object and manages the page-ready lifecycle.
+- [`fliplet-service-worker`](https://developers.fliplet.com/API/fliplet-service-worker.html) — Background service worker that receives web push notifications, displays them, and marks them read — automatically registered by fliplet-core on web.
 - [`Fliplet.Env`](https://developers.fliplet.com/API/core/environment.html) **(preloaded)** — Read environment variables such as `appId`, `appName`, `mode`, and `apiUrl` from the current runtime.
 - [`Fliplet.Locale`](https://developers.fliplet.com/API/core/localization.html) **(preloaded)** — Translate strings and format dates and numbers in Fliplet components via Fliplet.Locale, the T() shorthand, and translation.json files using i18next.
 - [`Fliplet.Registry`](https://developers.fliplet.com/API/core/registry.html) **(preloaded)** — Store and retrieve runtime values and functions by key so components can share state and helpers.
+- [`Fliplet.require`](https://developers.fliplet.com/API/core/require.html) **(preloaded)** — Load scripts and stylesheets on demand, and resolve lazy dependencies registered in the app bundle.
 - [`Fliplet.Studio`](https://developers.fliplet.com/API/core/studio.html) **(preloaded)** — Emit events to Fliplet Studio and listen for events from it when building widget interfaces.
 - [`Fliplet.Widget`](https://developers.fliplet.com/API/core/widget.html) **(preloaded)** — Access widget instance IDs, settings, and data, and coordinate save and ready events between widget and interface.
 
 ## Navigation
 
-- [``Fliplet.Pages` and `Fliplet.Page``](https://developers.fliplet.com/API/core/screens.html) **(preloaded)** — List app screens, get the current screen's public URL, and build shareable URLs for any screen by ID.
+- [`Fliplet Router JS API`](https://developers.fliplet.com/API/fliplet-router.html) — Fliplet.Router JS API reference for V3 apps. Covers getBasePath, getRouteManifest, getRouteConfig, and resolveRoute including return shapes, reason codes, and rejection behavior.
 - [`Fliplet.Navigate`](https://developers.fliplet.com/API/core/navigate.html) **(preloaded)** — Navigate between app screens, open external URLs, pass query parameters, and handle back, home, and modal navigation via Fliplet.Navigate.
+- [`Fliplet.Pages and Fliplet.Page`](https://developers.fliplet.com/API/core/screens.html) **(preloaded)** — List app screens, get the current screen's public URL, and build shareable URLs for any screen by ID.
 
 ## Meta
 

@@ -1594,5 +1594,208 @@ All examples in this documentation use this data structure and will work with th
 
 ---
 
+## Offline database (native only)
+
+`Fliplet.DataSources.Database` is the offline-first database API for native Fliplet apps. It loads bundled JSON files from device storage on native (or fetches them via the REST bundle endpoint on web during development), then exposes a synchronous collection handle for CRUD and diff operations against the in-memory data.
+
+<p class="warning">This API is primarily for <strong>native</strong> apps. On web it falls back to fetching the bundle, which is suitable for dev/test only.</p>
+
+**Important notes:**
+
+- **Module-level cache.** Once a bundle is loaded the parsed object is reused for the process lifetime — subsequent calls to `Fliplet.DataSources.Database` with the same identifier do not re-read the file.
+- **No write batching.** Every mutating collection method (`insert`, `update`, `remove`, `applyDiff`) writes the full JSON file to disk via `Fliplet.Native.Maintenance.writeFile` within the same Promise chain.
+- **`update()` deep-merges.** Pass only the fields you want changed; existing fields not present in the second argument are left intact.
+- **`applyDiff({ fullRefresh: true })`** replaces the entire local collection with the server payload. Without `fullRefresh`, the diff removes entries by id and then appends the updated set.
+
+### Opening the database
+
+`Fliplet.DataSources.Database(options)` → `Promise<DatabaseHandle>`
+
+| Option | Type | Required | Description |
+|---|---|---|---|
+| `id` | Number \| String | Yes (unless `isName`) | Data source ID, or name when `isName: true` |
+| `isName` | Boolean | No | Set to `true` when `id` holds the data source name |
+| `name` | String | No | Alternative way to supply the name (used together with `isName: true`) |
+| `appId` | Number | No | Defaults to `Fliplet.Env.get('appId')` |
+
+```js
+// Open by data source ID
+const db = await Fliplet.DataSources.Database({ id: 42 });
+
+// Open by data source name
+const db = await Fliplet.DataSources.Database({ id: 'Products', isName: true });
+```
+
+### Selecting a data source
+
+`database.dataSource(id, opts?)` → `CollectionHandle` (synchronous — returns immediately, no Promise)
+
+```js
+const db = await Fliplet.DataSources.Database({ id: 42 });
+
+// Select by numeric ID
+const products = db.dataSource(42);
+
+// Select by name using the opts object
+const inventory = db.dataSource(null, { name: 'Inventory' });
+```
+
+### Reading data
+
+#### `find(where, options?)` → `Promise<Array>`
+
+Runs a [sift.js](https://github.com/crcn/sift.js) MongoDB-style query against `entry.data`. Supports data-source views (row-level filters) when `options.views` is provided.
+
+| Option | Type | Description |
+|---|---|---|
+| `limit` | Number | Maximum number of entries to return |
+| `views` | Array\<String\> | Names of data-source views to apply as row-level filters |
+
+```js
+const db = await Fliplet.DataSources.Database({ id: 42 });
+const products = db.dataSource(42);
+
+// Return all entries
+const all = await products.find({});
+
+// Filter by category
+const electronics = await products.find({ Category: 'Electronics' });
+
+// MongoDB-style operators
+const affordable = await products.find(
+  { Price: { $lte: 99.99 }, InStock: true },
+  { limit: 20 }
+);
+
+// Apply a pre-configured view called "PublicCatalogue"
+const publicItems = await products.find({}, { views: ['PublicCatalogue'] });
+```
+
+#### `findById(id)` → `Promise<Object|undefined>`
+
+```js
+const product = await products.findById(101);
+
+if (product) {
+  console.log(product.data.Name, product.data.Price);
+}
+```
+
+### Writing data
+
+All write methods mutate the in-memory collection first, then persist the full JSON bundle to disk.
+
+#### `insert(entry)` → `Promise<Object>`
+
+```js
+const db = await Fliplet.DataSources.Database({ id: 55 });
+const inventory = db.dataSource(55);
+
+const newItem = await inventory.insert({
+  id: 9001,
+  data: {
+    SKU: 'WH-001',
+    Name: 'Wireless Headphones',
+    Price: 79.99,
+    InStock: true,
+    Category: 'Electronics'
+  }
+});
+```
+
+#### `update(existingEntry, entry)` → `Promise<Object>`
+
+Deep-merges `entry` into `existingEntry` in-place. Pass only the fields you want changed.
+
+```js
+const db = await Fliplet.DataSources.Database({ id: 55 });
+const inventory = db.dataSource(55);
+
+const headphones = await inventory.findById(9001);
+
+// Update price and stock status only — all other fields are preserved
+await inventory.update(headphones, {
+  data: { Price: 69.99, InStock: false }
+});
+```
+
+#### `remove(entry)` → `Promise<Object>`
+
+Accepts an entry object (matched by `id`) or a predicate function.
+
+```js
+const db = await Fliplet.DataSources.Database({ id: 55 });
+const inventory = db.dataSource(55);
+
+// Remove a specific entry by reference
+const item = await inventory.findById(9001);
+await inventory.remove(item);
+
+// Remove all out-of-stock entries using a predicate
+await inventory.remove(entry => entry.data.InStock === false);
+```
+
+### Applying server diffs
+
+`applyDiff(diff)` → `Promise<void>`
+
+Used internally by the Fliplet native update pipeline to apply incremental server changes to the local bundle.
+
+| Field | Type | Description |
+|---|---|---|
+| `updated` | Array | Entries to upsert (replace or append) |
+| `deleted` | Array | Entries to remove by id |
+| `fullRefresh` | Boolean | When `true`, replaces the entire local collection with `updated` |
+
+```js
+const db = await Fliplet.DataSources.Database({ id: 42 });
+const products = db.dataSource(42);
+
+// Incremental update from server
+await products.applyDiff({
+  updated: [
+    { id: 101, data: { Name: 'Laptop Pro', Price: 1299.99, InStock: true } },
+    { id: 102, data: { Name: 'USB-C Hub', Price: 49.99, InStock: true } }
+  ],
+  deleted: [
+    { id: 88 }
+  ]
+});
+
+// Full refresh — replace the entire local collection
+await products.applyDiff({
+  fullRefresh: true,
+  updated: [
+    { id: 201, data: { Name: 'Monitor 4K', Price: 499.99, InStock: true } }
+  ],
+  deleted: []
+});
+```
+
+### Indexes
+
+#### `indexes(columnsArray)` → `Promise<Object>`
+
+Returns unique values per column across all entries in the collection. If the bundle already contains a pre-computed `indexes` map, that is used directly; otherwise unique values are derived by scanning entries.
+
+```js
+const db = await Fliplet.DataSources.Database({ id: 55 });
+const inventory = db.dataSource(55);
+
+const uniqueValues = await inventory.indexes(['Category', 'InStock']);
+// { Category: ['Electronics', 'Accessories'], InStock: [true, false] }
+```
+
+#### `index(columnName)` → `Promise<Array>`
+
+Returns unique values for a single column.
+
+```js
+const categories = await inventory.index('Category');
+// ['Electronics', 'Accessories', 'Peripherals']
+```
+
+---
+
 [Back to API documentation](../API-Documentation)
 {: .buttons}
