@@ -7965,7 +7965,25 @@ var locales = Fliplet.App.Locales.get();
 
 ---
 
+### Get the default locale for the current app
+
+`Fliplet.App.Locales.getDefault()` returns the first element from `Fliplet.App.Locales.get()`, which is the locale that Fliplet Studio designates as the primary locale.
+
+```js
+var defaultLocale = Fliplet.App.Locales.getDefault();
+// e.g. "en"
+```
+
+---
+
 ## Settings
+
+| Method | Returns | Description |
+|---|---|---|
+| `Fliplet.App.Settings.getAll()` | `Object` | Returns all settings for the current app |
+| `Fliplet.App.Settings.get(key)` | `*` | Returns the value of a single setting |
+| `Fliplet.App.Settings.set(data)` | `Promise` | Saves or updates one or more settings |
+| `Fliplet.App.Settings.unset(keys)` | `Promise` | Deletes one or more settings by key name |
 
 ### Get the current app settings
 
@@ -8003,6 +8021,12 @@ Fliplet.App.Settings.unset(['foo', 'hello']).then(function () {
 
 ---
 
+### Development-mode caveat
+
+When `Fliplet.Env.get('development') === true` (i.e. the app is running inside Fliplet Viewer or Studio), `set()` and `unset()` skip the network call entirely and mutate `window.ENV.appSettings` directly. The returned promise resolves immediately. This means settings changes made in preview are not persisted to the server.
+
+---
+
 ## Logs
 
 ### Get the logs for an app
@@ -8029,6 +8053,191 @@ Fliplet.App.Logs.create({
 
 ---
 
+### Create a batch of logs for an app
+
+`Fliplet.App.Logs.createBatch(data)` posts multiple log entries in a single request and returns the created log records.
+
+**Parameters:**
+
+| Name | Type | Description |
+|---|---|---|
+| `data.logs` | `Array<{type: String, data: Object}>` | Array of log objects to create |
+| `data.async` | `Boolean` | When `true`, the server processes the batch asynchronously |
+
+**Returns:** `Promise<Array>` — the created log records.
+
+```js
+Fliplet.App.Logs.createBatch({
+  logs: [
+    { type: 'jobs', data: { result: 'ok' } },
+    { type: 'jobs', data: { result: 'skipped' } }
+  ],
+  async: false
+}).then(function (logs) {
+  // logs<Array>
+});
+```
+
+---
+
+## Releases
+
+### Get the releases for the current app
+
+`Fliplet.App.Releases.get()` returns the releases array from the current app record. It delegates to `Fliplet.App.get()`, which fetches `GET /v1/apps/:appId` on first call and caches the result for the lifetime of the page.
+
+**Returns:** `Promise<Array>` — the app's releases.
+
+```js
+Fliplet.App.Releases.get().then(function (releases) {
+  // releases<Array>
+  console.log(releases);
+});
+```
+
+---
+
+## Analytics
+
+The `Fliplet.App.Analytics` namespace tracks page views and custom events. All data is sent to the app logs endpoint and is subject to the global tracking toggle (`Fliplet.Analytics.isTrackingEnabled()`). Calls made inside an App Actions runtime (where `user.type === 'taskToken'`) are silently skipped.
+
+### Session management
+
+```js
+// Initialise (or resume) the current analytics session.
+// Returns a Promise<String> containing the session UUID.
+// Sessions expire after 30 minutes of inactivity.
+Fliplet.App.Analytics.Session.init().then(function (sessionId) {
+  console.log(sessionId);
+});
+
+// Reset the current session so the next track() call starts a new one.
+Fliplet.App.Analytics.Session.reset();
+```
+
+---
+
+### User tracking opt-in / opt-out
+
+When user tracking is disabled, the user's email address is not attached to analytics events. The setting is in-memory only and resets on page load.
+
+```js
+Fliplet.App.Analytics.enableUserTracking();
+Fliplet.App.Analytics.disableUserTracking();
+
+Fliplet.App.Analytics.isUserTrackingEnabled().then(function (enabled) {
+  // enabled<Boolean>
+});
+```
+
+---
+
+### Track a page view or event
+
+`track(type, data, options)` is the low-level tracking method. Use the convenience helpers `pageView()` and `event()` in most cases.
+
+**Parameters:**
+
+| Name | Type | Description |
+|---|---|---|
+| `type` | `String` | Must be `'pageView'` or `'event'` |
+| `data` | `Object` | Payload attached to the log entry. The runtime enriches it with `_platform`, `_os`, `_analyticsSessionId`, `_pageId`, `_pageTitle`, and `_deviceTrackingId`. |
+| `options.enqueue` | `Boolean` | When `true`, the event is placed directly in the offline queue without attempting an immediate network send. |
+
+```js
+Fliplet.App.Analytics.track('event', {
+  category: 'button',
+  action: 'click',
+  label: 'Submit'
+});
+```
+
+---
+
+### Track an event
+
+```js
+Fliplet.App.Analytics.event({
+  category: 'video',
+  action: 'play',
+  label: 'Intro video'
+});
+```
+
+---
+
+### Track a page view
+
+```js
+// Object form
+Fliplet.App.Analytics.pageView({ _pageTitle: 'Home' });
+
+// String shorthand — automatically wrapped as { _pageTitle: data }
+Fliplet.App.Analytics.pageView('Home');
+```
+
+---
+
+### Retrieve analytics logs
+
+`get(query, options)` delegates to `Fliplet.App.Logs.get` and pre-filters to analytics log types only.
+
+```js
+Fliplet.App.Analytics.get({
+  where: { 'data._pageTitle': 'Home' }
+}).then(function (logs) {
+  // logs<Array>
+});
+```
+
+---
+
+### Count analytics events
+
+```js
+Fliplet.App.Analytics.count({
+  where: { type: { $like: '%pageView%' } }
+}).then(function (total) {
+  // total<Number>
+});
+```
+
+---
+
+### Aggregate analytics data
+
+`Fliplet.App.Analytics.Aggregate.get(options)` posts a grouping/sum specification to `POST /v1/apps/:appId/analytics` and returns the first value from the response object. Pass `includeCount: true` to receive the full response instead.
+
+If `options.authToken` is provided it is forwarded as the `Auth-token` request header and then deleted from the payload before the request is sent.
+
+```js
+Fliplet.App.Analytics.Aggregate.get({
+  groupBy: '_pageTitle',
+  sum: 'count',
+  includeCount: true
+}).then(function (response) {
+  console.log(response);
+});
+```
+
+`Aggregate.count(options)` wraps `Aggregate.get` with `count: true`. The `options.column` field is required.
+
+```js
+Fliplet.App.Analytics.Aggregate.count({
+  column: '_pageTitle'
+}).then(function (result) {
+  console.log(result);
+});
+```
+
+---
+
+### Offline queue behaviour
+
+When a non-429 network error occurs, the event is pushed to `Fliplet.App.Storage` under the key `flAnalyticsQueue` and replayed in FIFO order the next time a tracking call succeeds. Pass `options.enqueue = true` to bypass the send attempt entirely and write directly to the queue (useful when you know the device is offline).
+
+---
+
 ## Tokens
 
 ### Get the Tokens for an app
@@ -8038,6 +8247,25 @@ Fliplet.App.Tokens.get(options).then(function (tokens) {
   // tokens<Array>
 });
 ```
+
+---
+
+## Push notification subscriptions
+
+### Get the push notification subscriptions for the current app
+
+`Fliplet.App.Subscriptions.get()` returns the list of device push subscriptions registered for the current app.
+
+**Returns:** `Promise<Array>` — the app's push notification subscriptions.
+
+```js
+Fliplet.App.Subscriptions.get().then(function (subscriptions) {
+  // subscriptions<Array>
+  console.log(subscriptions);
+});
+```
+
+<p class="info">This method covers the <strong>read</strong> side of push subscriptions. Sending push notifications is handled by a separate server-side API.</p>
 
 ---
 
@@ -8062,6 +8290,10 @@ Fliplet.App.Orientation.lock(orientation)
 ```
 
 * `orientation` (String) `portrait` or `landscape`. If called with no parameters, the app orientation from the settings will be used.
+
+**Notes:**
+- Devices where either the screen width or height is less than 640 px are treated as phones and always forced to `'portrait'`, regardless of the value passed to `lock()`.
+- Passing `'all'` to `lock()` delegates to `unlock()` internally — it does not lock to a specific orientation, it releases any existing lock.
 
 <p class="warning">This feature is only available on <strong>native apps</strong>. Web apps will simply ignore this setting.</p>
 
@@ -9653,6 +9885,27 @@ Fliplet.Organizations.Logs.get({
 
 ---
 
+## Analytics
+
+Read organization-level analytics aggregates via `Fliplet.Organizations.Analytics.get(data)`. The function passes `data` as a POST body to the REST endpoint and resolves with the raw response — the accepted shape is determined by the REST endpoint, not by this wrapper.
+
+```js
+Fliplet.Organizations.Analytics.get({
+  type: 'screen-views',
+  appId: 123,
+  startDate: '2026-01-01',
+  endDate: '2026-12-31'
+}).then(function (response) {
+  console.log(response);
+});
+```
+
+**Endpoint:** `POST v1/organizations/:orgId/analytics`
+
+Like the Audit logs endpoint, this uses POST despite being a read operation — query parameters are sent in the JSON body rather than as URL query string.
+
+---
+
 ## Settings
 
 ### Get the current organization settings
@@ -9860,6 +10113,179 @@ var foo = Fliplet.Registry.get('foo');
 var multiply = Fliplet.Registry.get('multiply');
 multiply(2, 3); // 6
 ```
+
+---
+
+# `Fliplet.require`
+URL: https://developers.fliplet.com/API/core/require.html
+
+# `Fliplet.require`
+
+`Fliplet.require` and its `Fliplet.require.lazy` family give you two ways to load scripts and stylesheets at runtime: through the bootstrap gate (blocking app startup until assets are ready) or on demand after the app is already running.
+
+## Two-tier model
+
+Fliplet's runtime has two distinct loading tiers:
+
+- **Bootstrap gate** (`Fliplet.require`) — assets declared here must finish loading before the `plugins-ready` promise resolves. The app does not start rendering until they are done. Use this for foundational libraries your entire app depends on.
+- **On-demand** (`Fliplet.require.lazy` and family) — assets load without touching the bootstrap gate. Each call returns its own Promise and the rest of the app continues running. Use this for optional features, heavy third-party libraries, or anything you want to defer until a user action.
+
+## `Fliplet.require`
+
+Loads one or more scripts after `plugins-ready` and, when they have finished loading, resolves the internal bootstrap gate so the app can proceed.
+
+**Signature**
+
+```js
+Fliplet.require(scripts)
+```
+
+| Parameter | Type | Description |
+|---|---|---|
+| `scripts` | `String \| Array<String>` | A single script URL or an array of script URLs to load in series. |
+
+The function does not return a Promise. It fires-and-forgets — the runtime resolves the bootstrap gate internally once all scripts have loaded.
+
+**Example**
+
+```js
+// Load a single script before the app starts
+Fliplet.require('https://cdn.example.com/chart.min.js');
+
+// Load multiple scripts in series
+Fliplet.require([
+  'https://cdn.example.com/moment.min.js',
+  'https://cdn.example.com/moment-timezone.min.js'
+]);
+```
+
+## `Fliplet.require.lazy`
+
+Loads a single dependency on demand without blocking the bootstrap gate. Returns a Promise that resolves when the asset is ready. Input can be a registered name, a raw URL, or a media file ID.
+
+**Signature**
+
+```js
+Fliplet.require.lazy(input, options)
+```
+
+| Parameter | Type | Description |
+|---|---|---|
+| `input` | `String \| Number` | Registered dependency name, a URL (http/https/protocol-relative), or a numeric media file ID. |
+| `options` | `Object` | Optional. Supported key: `responseType` (used when `input` is a media file ID). |
+
+### By registered name
+
+Dependencies registered in the app bundle under `Fliplet.Env.get('dependencies').lazy` can be loaded by name. The runtime resolves the correct URL for the current environment (web or native) automatically.
+
+If the named dependency has transitive deps (`dep.chain` is set), calling `.lazy()` rejects with an error instructing you to use `.chain()` instead.
+
+```js
+Fliplet.require.lazy('signature-pad').then(function() {
+  // SignaturePad is now available on window
+  var pad = new SignaturePad(document.getElementById('canvas'));
+});
+```
+
+### By URL
+
+Pass any `http://`, `https://`, or protocol-relative (`//`) URL. The runtime infers the asset type from the file extension — `.css` triggers `loadStylesheet`, everything else triggers `loadScript`. Duplicate URLs are deduped: a second call with the same URL resolves immediately without a second network request.
+
+```js
+// Load a JavaScript library
+Fliplet.require.lazy('https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js').then(function() {
+  var ctx = document.getElementById('myChart').getContext('2d');
+  new Chart(ctx, { type: 'bar', data: { labels: ['A', 'B'], datasets: [{ data: [1, 2] }] } });
+});
+
+// Load a stylesheet
+Fliplet.require.lazy('https://cdn.example.com/theme.css').then(function() {
+  console.log('Stylesheet applied');
+});
+```
+
+### By media file ID
+
+Pass a numeric Fliplet media file ID. The runtime fetches the file's metadata to determine its content type, then loads it as a script, stylesheet, or raw content accordingly. Requires `fliplet-media` to be loaded.
+
+Pass `{ responseType: 'json' }` (or any other `responseType`) to skip content-type detection and return the raw file contents directly via `Fliplet.Media.getContents`.
+
+```js
+// Load by media file ID — content type detected automatically
+Fliplet.require.lazy(123456).then(function() {
+  console.log('Media file loaded');
+});
+
+// Fetch a JSON media file's contents directly
+Fliplet.require.lazy(123456, { responseType: 'json' }).then(function(data) {
+  console.log('JSON data:', data);
+});
+```
+
+## `Fliplet.require.lazy.chain`
+
+Loads a registered dependency that has transitive dependencies (`dep.chain`), walking the chain in serial order. This is the required path for any named dep that `.lazy()` rejects on — the error message from `.lazy()` tells you to call `.chain()`.
+
+The result per name is memoized in `chainPromises{}`, so repeated calls within the same session resolve from the cache without re-loading.
+
+For named deps that have no chain, `.chain()` falls back to `Fliplet.require.lazy(name)` automatically.
+
+**Signature**
+
+```js
+Fliplet.require.lazy.chain(name)
+```
+
+| Parameter | Type | Description |
+|---|---|---|
+| `name` | `String` | Registered lazy dependency name. |
+
+Returns a `Promise` that resolves when the named dependency and all its transitive deps have loaded.
+
+**Example**
+
+```js
+// 'select2' is registered with a dep.chain (jQuery must load first)
+Fliplet.require.lazy.chain('select2').then(function() {
+  $('#my-select').select2();
+});
+```
+
+## Inspect the registry
+
+### `Fliplet.require.lazy.list()`
+
+Returns an array of all registered lazy dependency names from `Fliplet.Env.get('dependencies').lazy`.
+
+```js
+var names = Fliplet.require.lazy.list();
+console.log(names); // e.g. ['signature-pad', 'select2', 'chart-js']
+```
+
+### `Fliplet.require.lazy.get(name)`
+
+Returns the resolved URL for a named dependency without loading it. On native apps, returns `dep.path`; on web, returns `dep.url`. Returns `null` if the name is not registered.
+
+```js
+var url = Fliplet.require.lazy.get('signature-pad');
+console.log(url); // 'https://cdn.fliplet.com/libs/signature-pad/1.5.3/signature_pad.min.js'
+```
+
+## Error handling
+
+`Fliplet.require.lazy` (and `.chain`) rejects under these conditions:
+
+- **Not a string or number** — input type is invalid; message: `Fliplet.require.lazy() expects a string or number`.
+- **Named dep with a chain** — the dep is registered with transitive deps; message instructs use of `.chain()`.
+- **Named dep with no URL** — the dep record has neither `dep.path` (native) nor `dep.url` (web).
+- **Unrecognized string that is not a URL** — input is not a registered name and not an `http://`, `https://`, or `//` URL; message lists all available registered names.
+- **Unregistered name passed to `.chain()`** — name is not in the lazy deps map; message lists all available registered names.
+- **Media file loaded without `fliplet-media`** — `Fliplet.Media` is not defined when a numeric ID is passed; message: `Fliplet.Media is not available. Ensure fliplet-media is loaded.`
+
+## See also
+
+- [`API/fliplet-runtime.md`](../fliplet-runtime) — the full runtime package that provides `Fliplet.require`
+- [`API/core/environment.md`](environment) — `Fliplet.Env.get('dependencies')` where lazy dep metadata lives
 
 ---
 
@@ -11734,6 +12160,132 @@ Fliplet.DataSources.connect(123).then(function (connection) {
   })
 }).then(console.log)
 ```
+
+---
+
+# fliplet-analytics-spa
+URL: https://developers.fliplet.com/API/fliplet-analytics-spa.html
+
+# `fliplet-analytics-spa`
+
+`fliplet-analytics-spa` is a self-installing runtime that gives every V3 SPA app automatic page-view tracking. It monkey-patches the browser History API and listens for navigation events so that every client-side route change produces a `Fliplet.App.Analytics.pageView()` call enriched with the matched route pattern, route name, and extracted params. No application code is required.
+
+---
+
+## What you get for free
+
+Installing this package on a V3 app monkey-patches `history.pushState` and `history.replaceState`, and attaches listeners for `popstate` and `hashchange`. Every distinct client-side navigation — from any routing framework, a manual `history.pushState` call, or a browser back/forward gesture — fires `Fliplet.App.Analytics.pageView()` with the resolved route context. The initial page view fires when `Fliplet.ready()` resolves, so the core analytics queue is already wired up before the first event is sent. Consecutive navigations to the same URL are de-duplicated, so a router that calls both `pushState` and `replaceState` on the same transition only produces one event.
+
+---
+
+## Boot sequence and install guard
+
+The IIFE runs synchronously at script load time and completes in microseconds. Its first action is to set `window.__FLIPLET_ANALYTICS_SPA = true`. If that flag is already set — because the script loaded twice — it exits immediately, preventing duplicate patching.
+
+After setting the guard, the script checks that `window.Fliplet`, `Fliplet.Env`, `Fliplet.App`, and `Fliplet.App.Analytics` are all present. If any is missing, it exits silently without patching anything.
+
+Next it reads the route manifest:
+
+```js
+var manifest = (Fliplet.Env.get('appSettings') || {}).v3 || {};
+var routes = Array.isArray(manifest.routes) ? manifest.routes : [];
+```
+
+If `routes` is empty or missing, the script exits without patching — there is nothing to match against, so History patching would produce low-quality analytics.
+
+Once all guards pass, the History API is patched and the initial page view is queued:
+
+```js
+if (typeof Fliplet.ready === 'function') {
+  Fliplet.ready().then(firePageView);
+} else {
+  setTimeout(firePageView, 0);
+}
+```
+
+The `setTimeout` fallback ensures the initial `firePageView` is always deferred at least one tick so `window.location` is stable.
+
+---
+
+## How it intercepts route changes
+
+`history.pushState` and `history.replaceState` are each replaced with a wrapper that calls the original method first — committing the navigation — and then schedules `firePageView` via `setTimeout(firePageView, 0)`. The one-tick deferral ensures `window.location.pathname`, `.search`, and `.hash` already reflect the new URL when the page-view payload is read.
+
+`popstate` (browser back/forward) and `hashchange` (hash-only fragment changes) are covered by direct event listeners on `window`. Both call `firePageView` synchronously because the browser has already updated `window.location` by the time these events fire.
+
+---
+
+## Route resolution and the app manifest
+
+Routes are loaded once at boot from `(Fliplet.Env.get('appSettings') || {}).v3.routes`. Each entry is a plain object with at minimum a `path` string, and optionally a `name` string:
+
+```json
+{ "path": "/orders/:id/edit", "name": "Edit order" }
+```
+
+Routes are sorted longest-pattern-first before any matching happens, so `/orders/:id/edit` is tested before `/orders/:id`. This ensures more-specific patterns win.
+
+`matchPattern(pattern, actual)` splits both strings on `/` and requires equal segment counts. Literal segments must match exactly. Segments whose first character is `:` are named parameters — their corresponding actual-path segment is decoded via `decodeURIComponent` (falling back to the raw value if decoding throws) and stored in a params object keyed by the parameter name without the leading colon.
+
+Before matching, the base path is stripped from `window.location.pathname` using `Fliplet.Env.get('basePath')`. This normalizes slug-hosted URLs (`/my-slug/login` → `/login`) and preview-iframe URLs so analytics always log the logical V3 route rather than the host-specific prefix.
+
+If no route pattern matches the current path, the matched pattern field falls back to the path-only portion of the raw logical URL (no query string, no hash).
+
+---
+
+## Event payload
+
+Each call to `Fliplet.App.Analytics.pageView()` receives:
+
+| Field | Type | Value |
+| --- | --- | --- |
+| `_pageTitle` | string | `routeName` if the matched route has a `name`; otherwise the matched pattern; otherwise the raw path. |
+| `_route` | string | The matched route pattern. Identical to `_pageTitle` when the route has no name. Raw path when no route matches. |
+| `_routeRaw` | string | The full logical URL: base-path-stripped pathname + `window.location.search` + `window.location.hash`. |
+| `_routeParams` | object | Named parameter values extracted from the matched pattern. Empty object when no route matches. |
+| `_routeName` | string \| undefined | The `name` field from the matched manifest route entry. `undefined` when the route has no name or no route matches. |
+
+The V3 analytics guide at [V3 app analytics and event tracking](v3/analytics) documents how `_pageTitle` and `_routeParams` appear in the analytics dashboards and explains what the core tracker adds automatically (session ID, platform, user email, page ID).
+
+---
+
+## Deduplication
+
+`firePageView` begins by computing `rawPath`:
+
+```js
+var rawPath = stripBasePath(window.location.pathname)
+  + window.location.search
+  + window.location.hash;
+```
+
+This is compared to a module-level `lastPath` variable initialized to `null`. If `rawPath === lastPath`, the function returns immediately and no event is sent. Otherwise, `lastPath` is updated to the new value before calling `Fliplet.App.Analytics.pageView()`.
+
+This means the first of any pair of identical consecutive navigations passes through, and all subsequent identical ones are suppressed. It is the behavior that prevents double-firing when a router calls both `pushState` and an internal `replaceState` (to normalize the URL) during the same transition.
+
+---
+
+## What this package does not expose
+
+`fliplet-analytics-spa` has no public JavaScript surface. It provides:
+
+- No constructor, class, or namespace on `window` or `Fliplet`
+- No configuration object — the only input is the manifest routes array in `appSettings.v3.routes`
+- No custom events for the app to subscribe to
+- No methods to pause, resume, or flush tracking
+- No way to override the payload fields per-navigation
+
+The only lever available is the route manifest. Adding or updating routes in the V3 app manifest changes what pattern and name appear in the analytics payload for matching URLs.
+
+Because page views are tracked automatically, **do not call `Fliplet.App.Analytics.pageView()` yourself** from V3 app code — it will double-count navigations and corrupt pattern-based aggregations in the analytics dashboards.
+
+---
+
+## See also
+
+- [V3 app analytics and event tracking](v3/analytics) — covers what the auto page-view payload means in the dashboards, when to add `Fliplet.App.Analytics.event()` calls for custom events, and taxonomy rules
+- [Core analytics API](core/analytics) — full reference for the `Fliplet.Analytics` namespace
+- [Core app API](core/app) — documents `Fliplet.App.Analytics.event()` and the full `Fliplet.App.Analytics` surface
 
 ---
 
@@ -14975,6 +15527,209 @@ All examples in this documentation use this data structure and will work with th
 
 ---
 
+## Offline database (native only)
+
+`Fliplet.DataSources.Database` is the offline-first database API for native Fliplet apps. It loads bundled JSON files from device storage on native (or fetches them via the REST bundle endpoint on web during development), then exposes a synchronous collection handle for CRUD and diff operations against the in-memory data.
+
+<p class="warning">This API is primarily for <strong>native</strong> apps. On web it falls back to fetching the bundle, which is suitable for dev/test only.</p>
+
+**Important notes:**
+
+- **Module-level cache.** Once a bundle is loaded the parsed object is reused for the process lifetime — subsequent calls to `Fliplet.DataSources.Database` with the same identifier do not re-read the file.
+- **No write batching.** Every mutating collection method (`insert`, `update`, `remove`, `applyDiff`) writes the full JSON file to disk via `Fliplet.Native.Maintenance.writeFile` within the same Promise chain.
+- **`update()` deep-merges.** Pass only the fields you want changed; existing fields not present in the second argument are left intact.
+- **`applyDiff({ fullRefresh: true })`** replaces the entire local collection with the server payload. Without `fullRefresh`, the diff removes entries by id and then appends the updated set.
+
+### Opening the database
+
+`Fliplet.DataSources.Database(options)` → `Promise<DatabaseHandle>`
+
+| Option | Type | Required | Description |
+|---|---|---|---|
+| `id` | Number \| String | Yes (unless `isName`) | Data source ID, or name when `isName: true` |
+| `isName` | Boolean | No | Set to `true` when `id` holds the data source name |
+| `name` | String | No | Alternative way to supply the name (used together with `isName: true`) |
+| `appId` | Number | No | Defaults to `Fliplet.Env.get('appId')` |
+
+```js
+// Open by data source ID
+const db = await Fliplet.DataSources.Database({ id: 42 });
+
+// Open by data source name
+const db = await Fliplet.DataSources.Database({ id: 'Products', isName: true });
+```
+
+### Selecting a data source
+
+`database.dataSource(id, opts?)` → `CollectionHandle` (synchronous — returns immediately, no Promise)
+
+```js
+const db = await Fliplet.DataSources.Database({ id: 42 });
+
+// Select by numeric ID
+const products = db.dataSource(42);
+
+// Select by name using the opts object
+const inventory = db.dataSource(null, { name: 'Inventory' });
+```
+
+### Reading data
+
+#### `find(where, options?)` → `Promise<Array>`
+
+Runs a [sift.js](https://github.com/crcn/sift.js) MongoDB-style query against `entry.data`. Supports data-source views (row-level filters) when `options.views` is provided.
+
+| Option | Type | Description |
+|---|---|---|
+| `limit` | Number | Maximum number of entries to return |
+| `views` | Array\<String\> | Names of data-source views to apply as row-level filters |
+
+```js
+const db = await Fliplet.DataSources.Database({ id: 42 });
+const products = db.dataSource(42);
+
+// Return all entries
+const all = await products.find({});
+
+// Filter by category
+const electronics = await products.find({ Category: 'Electronics' });
+
+// MongoDB-style operators
+const affordable = await products.find(
+  { Price: { $lte: 99.99 }, InStock: true },
+  { limit: 20 }
+);
+
+// Apply a pre-configured view called "PublicCatalogue"
+const publicItems = await products.find({}, { views: ['PublicCatalogue'] });
+```
+
+#### `findById(id)` → `Promise<Object|undefined>`
+
+```js
+const product = await products.findById(101);
+
+if (product) {
+  console.log(product.data.Name, product.data.Price);
+}
+```
+
+### Writing data
+
+All write methods mutate the in-memory collection first, then persist the full JSON bundle to disk.
+
+#### `insert(entry)` → `Promise<Object>`
+
+```js
+const db = await Fliplet.DataSources.Database({ id: 55 });
+const inventory = db.dataSource(55);
+
+const newItem = await inventory.insert({
+  id: 9001,
+  data: {
+    SKU: 'WH-001',
+    Name: 'Wireless Headphones',
+    Price: 79.99,
+    InStock: true,
+    Category: 'Electronics'
+  }
+});
+```
+
+#### `update(existingEntry, entry)` → `Promise<Object>`
+
+Deep-merges `entry` into `existingEntry` in-place. Pass only the fields you want changed.
+
+```js
+const db = await Fliplet.DataSources.Database({ id: 55 });
+const inventory = db.dataSource(55);
+
+const headphones = await inventory.findById(9001);
+
+// Update price and stock status only — all other fields are preserved
+await inventory.update(headphones, {
+  data: { Price: 69.99, InStock: false }
+});
+```
+
+#### `remove(entry)` → `Promise<Object>`
+
+Accepts an entry object (matched by `id`) or a predicate function.
+
+```js
+const db = await Fliplet.DataSources.Database({ id: 55 });
+const inventory = db.dataSource(55);
+
+// Remove a specific entry by reference
+const item = await inventory.findById(9001);
+await inventory.remove(item);
+
+// Remove all out-of-stock entries using a predicate
+await inventory.remove(entry => entry.data.InStock === false);
+```
+
+### Applying server diffs
+
+`applyDiff(diff)` → `Promise<void>`
+
+Used internally by the Fliplet native update pipeline to apply incremental server changes to the local bundle.
+
+| Field | Type | Description |
+|---|---|---|
+| `updated` | Array | Entries to upsert (replace or append) |
+| `deleted` | Array | Entries to remove by id |
+| `fullRefresh` | Boolean | When `true`, replaces the entire local collection with `updated` |
+
+```js
+const db = await Fliplet.DataSources.Database({ id: 42 });
+const products = db.dataSource(42);
+
+// Incremental update from server
+await products.applyDiff({
+  updated: [
+    { id: 101, data: { Name: 'Laptop Pro', Price: 1299.99, InStock: true } },
+    { id: 102, data: { Name: 'USB-C Hub', Price: 49.99, InStock: true } }
+  ],
+  deleted: [
+    { id: 88 }
+  ]
+});
+
+// Full refresh — replace the entire local collection
+await products.applyDiff({
+  fullRefresh: true,
+  updated: [
+    { id: 201, data: { Name: 'Monitor 4K', Price: 499.99, InStock: true } }
+  ],
+  deleted: []
+});
+```
+
+### Indexes
+
+#### `indexes(columnsArray)` → `Promise<Object>`
+
+Returns unique values per column across all entries in the collection. If the bundle already contains a pre-computed `indexes` map, that is used directly; otherwise unique values are derived by scanning entries.
+
+```js
+const db = await Fliplet.DataSources.Database({ id: 55 });
+const inventory = db.dataSource(55);
+
+const uniqueValues = await inventory.indexes(['Category', 'InStock']);
+// { Category: ['Electronics', 'Accessories'], InStock: [true, false] }
+```
+
+#### `index(columnName)` → `Promise<Array>`
+
+Returns unique values for a single column.
+
+```js
+const categories = await inventory.index('Category');
+// ['Electronics', 'Accessories', 'Peripherals']
+```
+
+---
+
 [Back to API documentation](../API-Documentation)
 {: .buttons}
 
@@ -15178,6 +15933,160 @@ Fliplet.DataSources.Encryption().encrypt(345, [
 ```
 
 That's it! The system will take care of automatically encrypting and decrypting data for you for the Data Sources you have defined.
+
+---
+
+# fliplet-error-tracking
+URL: https://developers.fliplet.com/API/fliplet-error-tracking.html
+
+# `fliplet-error-tracking`
+
+`fliplet-error-tracking` is an auto-loading IIFE that installs three global error hooks and silently batches captured errors to `Fliplet.App.Logs.createBatch()`. It ships as part of the Fliplet runtime middleware and requires no configuration — adding it to your app dependencies is sufficient for it to work.
+
+---
+
+## What you get for free
+
+The script runs as a self-executing function the moment the browser parses it, which is before any app JavaScript runs. It registers three hooks (`window.onerror`, `unhandledrejection`, and a `Promise.prototype.then` wrapper), buffers captured errors in memory, and flushes the buffer to `Fliplet.App.Logs.createBatch()` every 5 seconds. An idempotency guard (`window.__FLIPLET_ERROR_TRACKING = true`) is set before any hooks are installed, so loading the script twice is safe and the second load exits immediately.
+
+---
+
+## What gets captured
+
+### `window.onerror`
+
+Chains with any `window.onerror` handler already registered before the script loads. The original handler is stored and called after `pushError` so third-party error trackers are not displaced. Each error contributes:
+
+- `message` — from `error.message` when an `Error` object is provided, otherwise the string `msg` argument
+- `source` — the script URL where the error occurred
+- `line`, `col` — line and column numbers
+- `stack` — the full stack trace from the `Error` object (truncated to 4096 chars at flush time)
+
+### `window.addEventListener('unhandledrejection', ...)`
+
+Listeners added via `addEventListener` stack rather than replace, so this hook coexists with any existing rejection listeners. For each event:
+
+- `message` — `reason.message` when `reason` is an `Error`; otherwise `String(reason)` or the literal `"Unhandled promise rejection"` when `reason` is falsy
+- `stack` — `reason.stack` when `reason` is an `Error`; otherwise absent
+- `source`, `line`, `col` — always `null` for promise rejections (the browser does not expose a source location here)
+
+### `Promise.prototype.then` wrapper
+
+Frameworks such as Vue and vue-router intercept promise rejections internally before the browser's unhandled-rejection machinery fires, which means `unhandledrejection` never triggers for those errors. The wrapper catches synchronous exceptions thrown inside `onFulfilled` and `onRejected` callbacks at the point of throw, calls `pushError`, then re-throws so the framework's own error path is unaffected.
+
+The flush pipeline calls `Fliplet.App.Logs.createBatch()` using a saved reference to the native `Promise.prototype.then` (`origThen`, captured before any wrapping). This means the flush promise chain bypasses the wrapper entirely, preventing a flush-handler exception from re-entering `pushError` and creating a recursive loop.
+
+---
+
+## Error payload
+
+Each entry in the `logs` array sent to `Fliplet.App.Logs.createBatch()` has this shape:
+
+```json
+{
+  "type": "app.error.live",
+  "data": {
+    "message": "Cannot read properties of undefined",
+    "source": "https://example.com/app/js/main.js",
+    "line": 42,
+    "col": 7,
+    "stack": "TypeError: Cannot read properties of undefined\n    at ...",
+    "count": 3,
+    "userAgent": "Mozilla/5.0 ...",
+    "pageUrl": "https://example.com/app",
+    "timestamp": 1700000000000,
+    "pageId": 1234,
+    "platform": "web"
+  }
+}
+```
+
+Field details:
+
+| Field | Type | Notes |
+|---|---|---|
+| `type` | string | `app.error.live` in production; `app.error.preview` when `Fliplet.Env.get('mode') === 'preview'`. Resolved at capture time; falls back to `app.error.live` if `Fliplet.Env` is not yet available |
+| `message` | string | Error message |
+| `source` | string \| null | Script URL, or `null` for promise rejections |
+| `line` | number \| null | Line number, or `null` for promise rejections |
+| `col` | number \| null | Column number, or `null` for promise rejections |
+| `stack` | string | Stack trace, truncated to 4096 characters |
+| `count` | number | Number of times this unique error occurred in the session; repeated occurrences increment this field rather than creating new buffer entries |
+| `userAgent` | string | `navigator.userAgent` at capture time |
+| `pageUrl` | string | `location.origin + location.pathname` — query string and fragment are stripped to avoid capturing auth tokens, reset codes, or email addresses that apps may place in the URL |
+| `timestamp` | number | Unix milliseconds at capture time |
+| `pageId` | number \| null | `Fliplet.Env.get('pageId')`, or `null` if not yet available |
+| `platform` | string \| null | `Fliplet.Env.get('platform')`, or `null` if not yet available |
+| `droppedCount` | number | Present only on the **first** log in a batch when prior errors were silently dropped due to buffer overflow. Records how many distinct errors were lost |
+
+The batch envelope sent to the API is:
+
+```json
+{
+  "logs": [...],
+  "async": true
+}
+```
+
+---
+
+## Buffering and deduplication
+
+| Constant | Value | Meaning |
+|---|---|---|
+| `BUFFER_MAX` | 50 | Maximum number of unique error fingerprints held in memory at once |
+| `SESSION_MAX` | 500 | Maximum total error occurrences (unique + repeats) accepted per page session |
+| `FLUSH_MS` | 5000 ms | Normal flush interval |
+| `CORE_POLL_MS` | 1000 ms | Retry interval when `Fliplet.App.Logs.createBatch` is not yet available |
+| `BACKOFF_BASE_MS` | 5000 ms | Initial backoff delay after a retryable flush failure |
+| `BACKOFF_MAX_MS` | 300000 ms (5 min) | Maximum backoff delay (exponential, doubles each retry, capped here) |
+
+**Fingerprinting.** Each error is fingerprinted as `message + NUL + source + NUL + line + NUL + col`. The NUL separator prevents collisions when a message itself contains the separator character. Repeat occurrences of the same fingerprint increment the existing entry's `count` field and do not add to the buffer.
+
+**Buffer overflow.** When the buffer already holds 50 distinct fingerprints and a new distinct error arrives, the error is dropped and `droppedCount` is incremented. The `droppedCount` value is included in the `data` of the first log entry in the next flush so it is not lost.
+
+**Session exhaustion.** When `sessionErrorCount` reaches 500, `pushError` becomes a no-op for the remainder of the page session and `window.__FLIPLET_ERROR_TRACKING_EXHAUSTED = true` is set.
+
+**Backoff.** Retryable conditions are: network error (HTTP status 0 or absent), HTTP 429, and any HTTP 5xx. On a retryable failure the batch is re-enqueued into the buffer and the next flush is delayed by an exponentially increasing interval starting at 5 seconds and capped at 5 minutes. Non-retryable 4xx responses are logged once to `console.warn` and the batch is dropped.
+
+---
+
+## Page unload behavior
+
+`visibilitychange` (when `document.visibilityState === 'hidden'`) and `pagehide` both trigger a synchronous beacon flush. The beacon is built locally — it does not call `Fliplet.App.Logs.createBatch()` — because `fliplet-core` may still be initializing at unload time. The beacon POST target is:
+
+```
+{apiUrl}v1/apps/{appId}/logs/create/batch
+```
+
+The body is a JSON `Blob` with `Content-Type: application/json` sent via `navigator.sendBeacon`. If `appId` is unavailable or `navigator.sendBeacon` is not supported, the beacon is silently skipped. The buffer and fingerprint map are cleared after a successful `sendBeacon` call.
+
+---
+
+## Where errors go (`Fliplet.App.Logs`)
+
+Captured errors are written through `Fliplet.App.Logs.createBatch()`, which POSTs the batch envelope to:
+
+```
+POST v1/apps/:appId/logs/create/batch
+```
+
+This is the same API method available to app code. See [`Fliplet.App.Logs`](core/app) for the full method reference.
+
+---
+
+## Configuration
+
+There are no configuration flags, window variables, or runtime toggles. The script is auto-loaded by platform middleware; app developers have no action to take.
+
+The only way to suppress all hooks is to set `window.__FLIPLET_ERROR_TRACKING = true` before the script is parsed. The idempotency guard at the top of the IIFE detects this and exits without installing any hooks. This is an escape hatch for environments that have their own error tracking pipeline and want to prevent double-capture; it is not a documented feature.
+
+---
+
+## See also
+
+- [`Fliplet.App.Logs`](core/app) — the batch logging API that receives captured errors
+- [`Fliplet.parseError`](core/error) — companion utility for formatting errors into a consistent message string
 
 ---
 
@@ -15469,6 +16378,104 @@ Fliplet.Media.Files.update(123, {
 ```
 
 Note: when moving a file from a folder to an app or organization, please set its `mediaFolderId` to `null`.
+
+### Get file metadata
+
+Fetches the metadata object for a single file by its ID.
+
+```js
+Fliplet.Media.Files.get(123).then(function (file) {
+  console.log(file.name, file.url, file.contentType);
+});
+```
+
+Endpoint: `GET v1/media/files/{id}`
+
+The resolved object has the same shape as the entries returned by `Fliplet.Media.Folders.get()` — see the [sample response](#get-the-list-of-folders-and-files-for-your-organization-or-a-specific-app) above for the full field list.
+
+### Get metadata for multiple files
+
+Fetches metadata for a list of files in a single request. On native platforms the result is cached in `Fliplet.Cache` for 1 hour (keyed by a hash of the request body), so repeated calls with the same arguments avoid redundant network traffic.
+
+```js
+Fliplet.Media.Files.getAll({
+  files: [123, 456, 789],
+  attributes: ['id', 'name', 'url', 'updatedAt'] // optional — omit to get all fields
+}).then(function (files) {
+  files.forEach(function (file) {
+    console.log(file.id, file.name);
+  });
+});
+```
+
+Endpoint: `POST v1/media/files/aggregate`
+
+The `files` array contains the numeric IDs of the files to fetch. The optional `attributes` array limits which fields the server returns.
+
+### Get file contents
+
+Fetches the raw contents of a file. Pass optional transform parameters to have the server resize or convert images before delivery.
+
+```js
+// Fetch an image resized to the "medium" preset (960 px on the longest side)
+// and converted to WebP at 80% quality
+Fliplet.Media.Files.getContents(123, {
+  size: 'medium', // small | medium | large | xlarge | xxlarge | xxxlarge
+  format: 'webp', // jpg | webp
+  quality: 80     // 1–100; defaults to 88 for jpg and 80 for webp
+}).then(function (contents) {
+  // contents type depends on the server response and any responseType override
+});
+```
+
+Endpoint: `GET v1/media/files/{id}/contents`
+
+**Transform options:**
+
+| Option | Type | Description |
+|---|---|---|
+| `size` | String | Named size preset (`small` 640 px, `medium` 960 px, `large` 1366 px, `xlarge` 1980 px, `xxlarge` 2560 px, `xxxlarge` 3840 px) or a raw ImageMagick geometry string. The server scales proportionally and skips resizing when the image is already within the requested dimension. |
+| `format` | String | Output image format. Accepted values: `jpg`, `webp`. |
+| `quality` | Number | Compression quality from 1 to 100. Defaults to `88` for `jpg` and `80` for `webp` when `format` is set. |
+
+### Get cached images
+
+Matches a local list of file names against a server folder, downloads any files that are missing or stale, and returns resolved metadata for each matched file. On web, no file is downloaded — signed content URLs are returned directly. On native platforms, files are stored to device storage via `Fliplet.Native.Downloads.downloadFile` and per-file metadata is tracked with `Fliplet.Storage` so that subsequent calls skip files that have not changed on the server.
+
+```js
+Fliplet.Media.Files.getCachedImages({
+  folderId: 456,                // ID of the Media folder to sync from
+  files: [                      // local list of files to match
+    { name: 'hero.jpg' },
+    { name: 'logo.png' }
+  ],
+  size: 'large',                // optional transform options (same as getContents)
+  format: 'webp',
+  quality: 80,
+  onProgress: function (file, fileInfo) {
+    // called after each file is resolved or downloaded
+    console.log('Ready:', file.name, fileInfo.path);
+  }
+}).then(function (images) {
+  // images is an array of objects:
+  // { id, path, fileName, name, updatedAt }
+  images.forEach(function (img) {
+    document.querySelector('#' + img.name).src = img.path;
+  });
+});
+```
+
+Each entry in the resolved array contains:
+
+| Property | Description |
+|---|---|
+| `id` | Numeric ID of the file on the server. |
+| `path` | On web: authenticated content URL. On native: absolute local file path. |
+| `fileName` | Local file name used for storage (includes folder ID and transform tokens). |
+| `name` | Original file name as matched against the `files` input list. |
+| `updatedAt` | Timestamp of the file version that was last downloaded. |
+
+Files present in the `files` input list but not found in the server folder are silently omitted from the result.
 
 ---
 
@@ -16902,6 +17909,469 @@ Delete existing entries.
 
 ---
 
+# Fliplet Router JS API
+URL: https://developers.fliplet.com/API/fliplet-router.html
+
+# Fliplet Router JS API
+
+`Fliplet.Router` is the client-side routing helper for V3 SPA apps. It reads the route manifest from `app.settings.v3`, normalizes the base path for the current hosting context (slug-hosted web, Studio preview iframe, native shell), and performs server-ACL-backed access checks for each route.
+
+<p class="info"><code>Fliplet.Router</code> is available on V3 apps only and is auto-loaded at boot. It depends on <code>fliplet-core</code> (<code>Fliplet.Env</code>, <code>Fliplet.User</code>) and <code>fliplet-media</code> (<code>Fliplet.Media.getContents</code>).</p>
+
+For the full routing contract, per-framework integration examples, and forbidden patterns, see [V3 routing](v3/routing). This page is the API reference only.
+
+## Contents
+
+- [Methods](#methods)
+  - [getBasePath()](#flipletroutergetbasepath)
+  - [getRouteManifest()](#flipletroutergetroutemanifest)
+  - [getRouteConfig(path)](#flipletroutergetrouteconfigpath)
+  - [resolveRoute(pathOrRoute)](#flipletrouterresolveroutepathorroute)
+- [Reason codes](#reason-codes)
+- [Manifest shape](#manifest-shape)
+- [Related](#related)
+
+## Methods
+
+### `Fliplet.Router.getBasePath()`
+
+Returns the base path used by the router's history mode, normalized with a trailing slash so string concatenation doesn't produce `//route`.
+
+**Returns:** `String`
+
+The value depends on the hosting context:
+
+| Context | Example value |
+|---|---|
+| Root-hosted web app | `/` |
+| Slug-hosted web app | `/my-slug/` |
+| Studio preview iframe | `/v1/apps/42/pages/99/preview/` |
+| Native shell | Computed by the shell at runtime |
+
+```js
+var base = Fliplet.Router.getBasePath();
+
+// Pass to Vue Router 4:
+var history = VueRouter.createWebHistory(base);
+
+// Pass to React Router 6:
+var router = ReactRouterDOM.createBrowserRouter(routes, { basename: base });
+```
+
+<p class="warning">Never hardcode <code>'/'</code>. Slug-hosted apps, preview iframes, and native shells all mount the SPA at a different base.</p>
+
+### `Fliplet.Router.getRouteManifest()`
+
+Returns the route manifest stored in `app.settings.v3`. Defaults are provided for every field so callers can use the return value without null checks.
+
+**Returns:** `Object` with the following properties:
+
+| Property | Type | Default | Description |
+|---|---|---|---|
+| `routes` | `Array<Object>` | `[]` | Route entries. See [Manifest shape](#manifest-shape). |
+| `defaultRoute` | `String` | `'/'` | Path to redirect to from `/`. |
+| `authRedirect` | `String` | `'/login'` | Path to redirect to when a route is denied. |
+
+```js
+var manifest = Fliplet.Router.getRouteManifest();
+
+manifest.routes.forEach(function(r) {
+  console.log(r.name, r.path, r.fileId, r.public);
+});
+
+console.log(manifest.defaultRoute); // '/home'
+console.log(manifest.authRedirect); // '/login'
+```
+
+### `Fliplet.Router.getRouteConfig(path)`
+
+Looks up a single route entry from the manifest by path. The lookup is path-based and normalizes leading slashes (`home` and `/home` match the same route).
+
+**Parameters:**
+
+| Name | Type | Description |
+|---|---|---|
+| `path` | `String` | Route path, with or without a leading slash. |
+
+**Returns:** `Object | undefined`. The matching route entry from `manifest.routes`, or `undefined` if no route matches.
+
+```js
+var route = Fliplet.Router.getRouteConfig('/home');
+
+if (route) {
+  console.log(route.fileId);   // 222
+  console.log(route.public);   // true
+} else {
+  // Path isn't in the manifest
+}
+```
+
+### `Fliplet.Router.resolveRoute(pathOrRoute)`
+
+Resolves a route to its access decision **and** its screen source. On success, `result.content` is the screen's source already loaded via `Fliplet.Media.getContents` — render it directly rather than re-fetching. The server's media ACL is the source of truth; this method either fast-fails when the outcome is known (unknown route) or derives the decision from the server's 401/403 response.
+
+**Parameters:**
+
+| Name | Type | Description |
+|---|---|---|
+| `pathOrRoute` | `String \| Object` | A route path (string) or a route entry object from the manifest. |
+
+**Returns:** `Promise` that:
+
+- **Resolves** with an access decision (see shapes below).
+- **Rejects** with the underlying error on transient or infra failures (network errors, 5xx responses) so callers can show an error UI instead of redirecting silently.
+
+**Resolution shape on success:**
+
+```js
+{
+  allowed: true,
+  content: '<!-- raw screen HTML/JS source -->',
+  route: { name: 'Home', path: '/home', fileId: 222, public: true }
+}
+```
+
+**Resolution shape on denial:**
+
+```js
+{
+  allowed: false,
+  redirectTo: '/login',      // manifest.authRedirect
+  reason: 'media-denied',    // see Reason codes below
+  status: 401                // only present when reason is 'media-denied'
+}
+```
+
+<p class="warning">Don't call <code>Fliplet.Media.getContents(fileId)</code> yourself. <code>resolveRoute</code> already does this internally and returns the content in <code>result.content</code>. A second fetch duplicates the round trip, can race with the access check, and fails outright on private media where auth headers aren't applied.</p>
+
+**Example:**
+
+```js
+Fliplet.Router.resolveRoute('/my-account').then(function(result) {
+  if (!result.allowed) {
+    // Redirect to the auth screen (or wherever the server says)
+    navigate(result.redirectTo);
+    return;
+  }
+
+  // Mount the screen using result.content
+  mountScreen(result.content, result.route);
+}, function(err) {
+  // Transient failure (network, 5xx). Show an error UI rather than redirecting.
+  showErrorScreen(err);
+});
+```
+
+**Passing a route object instead of a path:**
+
+If you already have a route entry from the manifest, you can pass it directly to skip the path lookup:
+
+```js
+var manifest = Fliplet.Router.getRouteManifest();
+var route = manifest.routes[0];
+
+Fliplet.Router.resolveRoute(route).then(function(result) {
+  // ...
+});
+```
+
+## Reason codes
+
+When `resolveRoute` resolves with `allowed: false`, the `reason` property indicates why. Handle each case explicitly.
+
+| `reason` | Triggered when | `redirectTo` | `status` |
+|---|---|---|---|
+| `unknown-route` | The path doesn't match any manifest entry, or the matched entry has no `fileId`. | `manifest.authRedirect` | Not set |
+| `media-denied` | The server returned `401` or `403` when fetching the screen source. | `manifest.authRedirect` | `401` or `403` |
+
+<p class="warning">The manifest's <code>public: true</code> flag is advisory. It just lets the client skip a known-401 round trip. Flipping <code>public: true</code> in the manifest without updating the media file's access rule grants no access; the server still returns 401 and <code>resolveRoute</code> resolves with <code>reason: 'media-denied'</code>.</p>
+
+Transient errors (network failures, 5xx responses) do not resolve with a reason. They **reject** the Promise with the underlying error so you can distinguish "user can't access this" from "infrastructure is broken".
+
+## Manifest shape
+
+The manifest is stored at `app.settings.v3` and emitted to the runtime via `window.ENV.appSettings`. See [V3 app settings convention](v3/app-settings) for how settings are stored and filtered.
+
+```json
+{
+  "routes": [
+    { "name": "Home",      "path": "/home",       "fileId": 222, "public": true },
+    { "name": "Login",     "path": "/login",      "fileId": 444, "public": true },
+    { "name": "MyAccount", "path": "/my-account", "fileId": 333 }
+  ],
+  "defaultRoute": "/home",
+  "authRedirect": "/login"
+}
+```
+
+Each route entry has the following properties:
+
+| Property | Type | Required | Description |
+|---|---|---|---|
+| `name` | `String` | Yes | Display name for the route. Used in Studio UI and as a named route in framework routers. |
+| `path` | `String` | Yes | URL path the route is mounted at. Must begin with `/`. |
+| `fileId` | `Number` | Yes | Numeric `id` of the media file holding the screen source. `resolveRoute` fetches this via `Fliplet.Media.getContents`. |
+| `public` | `Boolean` | No | If `true`, the client skips the session check before fetching media. Defaults to `false`. Advisory only; the server media ACL is still enforced. |
+
+Update the manifest via the App Settings API (`PUT /v1/apps/:id` with `settings.v3`) or the Studio routing UI whenever you add or remove a user-visible route.
+
+## Related
+
+- [V3 routing](v3/routing). Full routing contract, per-framework examples, forbidden patterns, and post-login redirect.
+- [V3 app bootstrap constraints](v3/app-bootstrap). Three constraints every V3 boot HTML must satisfy.
+- [V3 app settings convention](v3/app-settings). Where the route manifest is stored (`app.settings.v3`).
+- [Media JS APIs](fliplet-media). `Fliplet.Media.getContents` details.
+
+---
+
+# fliplet-runtime
+URL: https://developers.fliplet.com/API/fliplet-runtime.html
+
+# `fliplet-runtime`
+
+`fliplet-runtime` is the foundational bootstrap script for every Fliplet SPA. It assigns the global `Fliplet` object, registers the core ambient namespaces (`Env`, `Registry`, `Studio`, `Navigator`), wires the page-ready Promise chain, and — on web — auto-initializes locale before signalling that the app is ready.
+
+---
+
+Dependency name: `fliplet-runtime`
+
+## What this package does
+
+When the browser loads `fliplet-runtime`, it runs immediately as a self-invoking function scoped to `window`. It creates the `Fliplet` callable shim, attaches the core ambient namespaces as IIFEs, configures three internal Promises (`pluginsReadyPromise`, `readyPromise`, and `requirePromise`) that gate the app's ready lifecycle, and registers `Fliplet.require` and `Fliplet.require.lazy` for dynamic dependency loading. On web (non-`interact`) platforms, the package automatically calls `Fliplet.initializeLocale()` once `Fliplet.require` signals that all eager dependencies have loaded, then resolves the ready Promise so app code can run. On native platforms, the same flow is triggered manually by calling `Fliplet.Navigator.ready()`.
+
+---
+
+## Boot sequence
+
+The following steps happen in order each time `fliplet-runtime` loads. Line numbers refer to `runtime.js` v1.0.
+
+1. **`window.Fliplet` callable shim assigned** (line 10–12). If `window.Fliplet` is not already defined, it is set to a function that returns `Fliplet.Navigator.onReady()`. Any argument passed to this function is ignored — the function always delegates to the ready Promise. See [The Fliplet(callback) callable shim](#the-flipletcallback-callable-shim) below.
+
+2. **`Fliplet.Env` IIFE executes** (line 22–54). Registers `get`, `set`, and `is` methods that read and write `window.ENV`. `window.ENV` must already exist; the runtime does not create it.
+
+3. **`Fliplet.Registry` IIFE executes** (line 59–74). Creates a private registry map with `set` and `get`. Calling `set` on an already-registered key prints a console warning and is a no-op.
+
+4. **`Fliplet.Studio` IIFE executes** (line 102–175). Registers `emit`, `onEvent`, `onMessage`, and `getPreviewDevice`. These are the bridge to the Studio editor frame over `postMessage`.
+
+5. **`Fliplet.Navigator` IIFE executes** (line 515–607). Creates three internal Promises:
+   - `pluginsReadyPromise` — resolves when the device/DOM is ready.
+   - `readyPromise` — resolves when the app is fully initialized (returned by `Fliplet.Navigator.onReady()`).
+   - `requirePromise` — resolves when `Fliplet.require` has finished loading all eager dependencies.
+
+6. **`pluginsReadyPromise` is wired to the platform event** (line 536–542):
+   - **Native**: resolved on the Cordova `deviceready` document event.
+   - **Web (DOM not yet complete)**: resolved on `DOMContentLoaded`.
+   - **Web (DOM already complete)**: resolved synchronously (i.e., `resolvePluginsReady()` is called immediately).
+
+7. **`Fliplet.require` is assigned** (line 623–635). Calling `Fliplet.require(scripts)` with a non-empty array waits for `pluginsReadyPromise`, then loads the scripts in series/parallel order and resolves `requirePromise`. Calling it with no arguments or an empty array resolves `requirePromise` immediately.
+
+8. **`Fliplet.require.lazy` (and `.lazy.list`, `.lazy.get`, `.lazy.chain`) are assigned** (line 692–801). These are independent of `requirePromise`; each call returns its own Promise and does not affect the boot sequence.
+
+9. **Web auto-ready path** (line 579–587): When `requirePromise` resolves AND `Fliplet.Env.get('platform') === 'web'` AND `Fliplet.Env.get('mode') !== 'interact'`, the runtime calls `Fliplet.initializeLocale()` and then resolves `readyPromise` via `systemReady()`. The `interact` mode check suppresses this auto-flow inside the Studio editor canvas — in interact mode the ready Promise never resolves automatically.
+
+10. **Native manual-ready path**: On native, `requirePromise` resolving does not trigger `systemReady`. Instead, `Fliplet.initializeLocale()` is **not called automatically**; the app (or its widget orchestrator) must call `Fliplet.Navigator.ready()` explicitly. `Fliplet.Navigator.ready()` calls `requirePromise.then(systemReady)` (line 604).
+
+---
+
+## Ambient namespaces
+
+The following namespaces are registered by `fliplet-runtime` and are available globally as soon as the script loads. Each links to its dedicated reference doc.
+
+- **`Fliplet.Env`** — read and write environment variables from `window.ENV`. See [`Fliplet.Env`](core/environment.md).
+- **`Fliplet.Registry`** — a write-once, key/value store shared across all packages loaded in the same page. See [`Fliplet.Registry`](core/registry.md).
+- **`Fliplet.Studio`** — `postMessage` bridge for communicating with the Studio editor frame. See [`Fliplet.Studio`](core/studio.md).
+- **`Fliplet.Navigator`** — the ready-Promise API (`onReady`, `onPluginsReady`, `ready`). See [`Fliplet.Navigator`](core/navigator.md).
+- **`Fliplet.Locale`** — assigned after `Fliplet.initializeLocale()` resolves; provides `translate`, `date`, `number`, and `addTranslation`. See [`Fliplet.Locale`](core/localization.md).
+- **`Fliplet.require` / `Fliplet.require.lazy`** — eager and lazy dynamic dependency loading. See [`Fliplet.require`](core/require.md).
+
+---
+
+## The `Fliplet(callback)` callable shim
+
+`fliplet-runtime` sets `window.Fliplet` to a plain function that, when called, returns `Fliplet.Navigator.onReady()`:
+
+```js
+// Lines 10–12 in runtime.js
+w.Fliplet = w.Fliplet || function() {
+  return Fliplet.Navigator.onReady();
+};
+```
+
+**The shim ignores every argument you pass to it.** Calling `Fliplet(myFn)` does _not_ invoke `myFn` — it returns the ready Promise. The correct usage pattern is to chain `.then()`:
+
+```js
+// Correct: chain .then() to run code when the app is ready
+Fliplet().then(function() {
+  console.log('App is ready');
+});
+
+// Also correct: identical behaviour, no argument needed
+Fliplet.Navigator.onReady().then(function() {
+  console.log('App is ready');
+});
+```
+
+If you want to run a named function:
+
+```js
+function onAppReady() {
+  console.log('App is ready');
+}
+
+// Pass the function reference into .then(), not into Fliplet()
+Fliplet().then(onAppReady);
+```
+
+---
+
+## Top-level helpers
+
+### `Fliplet.extend(obj, fn)`
+
+Merges properties returned by `fn` onto `obj`. Both arguments are required; `fn` must return a plain object.
+
+**Signature**
+
+```js
+Fliplet.extend(obj, fn)
+```
+
+- `obj` **Required** (Object) — the target object to extend.
+- `fn` **Required** (Function) — a factory function that returns an object whose keys are merged onto `obj`.
+
+Throws if either argument is the wrong type, or if `fn()` does not return an object.
+
+**Example**
+
+```js
+// Extend Fliplet with a custom namespace
+Fliplet.extend(Fliplet, function() {
+  return {
+    MyUtils: {
+      greet: function(name) {
+        return 'Hello, ' + name;
+      }
+    }
+  };
+});
+
+console.log(Fliplet.MyUtils.greet('Alice')); // 'Hello, Alice'
+```
+
+---
+
+### `Fliplet.parseNumber(input [, allowNaN])`
+
+Converts a mixed-type input into a JavaScript number, handling strings and locale-agnostic numeric coercion. This function is assigned to `Fliplet.parseNumber` inside `Fliplet.initializeLocale()` (line 366), so **it is only available after `Fliplet.ready()` has resolved** (i.e., after locale initialization).
+
+**Signature**
+
+```js
+Fliplet.parseNumber(input)
+Fliplet.parseNumber(input, allowNaN)
+```
+
+- `input` **Required** (any) — the value to convert.
+- `allowNaN` **Optional** (Boolean, default `false`) — when `true`, `undefined`, `null`, and empty strings return `NaN` instead of `0` or `null`.
+
+**Return values (default mode, `allowNaN = false`)**
+
+| Input | Return |
+|---|---|
+| `undefined` or `0` | `0` |
+| String with no digits (e.g. `'abc'`) | `null` |
+| Numeric string (e.g. `'3.14'`) | `3.14` |
+| Any value `Number()` can parse | the parsed number |
+| Any value `Number()` returns `NaN` for | `null` |
+
+**Return values (`allowNaN = true`)**
+
+| Input | Return |
+|---|---|
+| `undefined`, `null`, or `''` | `NaN` |
+| Everything else | `Number(input)` (may be `NaN`) |
+
+**Example**
+
+```js
+// Only call after Fliplet.ready(), because parseNumber is assigned during locale init
+Fliplet().then(function() {
+  console.log(Fliplet.parseNumber('42'));        // 42
+  console.log(Fliplet.parseNumber(''));          // null
+  console.log(Fliplet.parseNumber(undefined));   // 0
+  console.log(Fliplet.parseNumber('', true));    // NaN
+});
+```
+
+---
+
+### `Fliplet.initializeLocale()`
+
+Bootstraps `i18next` with the app's locale configuration from `Fliplet.Env`, assigns `window.T` (translate), `window.TD` (localize date), and `window.TN` (localize number), and populates `Fliplet.Locale`. Returns a Promise that resolves when i18next is initialized.
+
+On web (non-`interact`) apps, the runtime calls this automatically as part of the boot sequence (step 9 above). You only need to call it directly in exceptional cases such as re-initializing locale after a language change.
+
+**Signature**
+
+```js
+Fliplet.initializeLocale()
+// Returns: Promise
+```
+
+**What it assigns on resolution**
+
+| Global | Type | Description |
+|---|---|---|
+| `window.T` | Function | `i18next.t(key, options)` — translate a key |
+| `window.TD` | Function | `localizeDate(value, options)` — format a date for the current locale |
+| `window.TN` | Function | `localizeNumber(input, options)` — format a number for the current locale |
+| `Fliplet.Locale` | Object | `{ addTranslation, translate, date, number, getDefault, plugins }` |
+| `Fliplet.parseNumber` | Function | See [`Fliplet.parseNumber`](#flipletparsenumberinput--allownan) above |
+
+**Example**
+
+```js
+// Normally called automatically on web. Example of manual use:
+Fliplet.initializeLocale().then(function() {
+  console.log(window.T('app.greeting')); // translated string
+  console.log(Fliplet.Locale.getDefault()); // e.g. 'en'
+});
+```
+
+---
+
+## Side effects on load
+
+`fliplet-runtime` makes the following mutations to the global environment when the script is parsed and executed. These occur before any app code runs.
+
+- **`window.Fliplet`** (line 10) — assigned to the callable shim function if not already defined.
+- **`window.ENV`** — read by `Fliplet.Env.get` and written by `Fliplet.Env.set`. The runtime reads from it immediately (e.g., to determine `platform` and `mode`); it does not create `window.ENV`.
+- **`document` event listener: `'deviceready'`** (line 537) — added on native platform to resolve `pluginsReadyPromise`.
+- **`document` event listener: `'DOMContentLoaded'`** (line 539) — added on web when the DOM is not yet complete, to resolve `pluginsReadyPromise`.
+- **`window.T` / `window.TD` / `window.TN`** (line 470–472) — assigned _after_ `Fliplet.initializeLocale()` resolves (deferred; not immediate).
+- **`Fliplet.Locale`** (line 474–487) — assigned _after_ `Fliplet.initializeLocale()` resolves (deferred).
+- **`Fliplet.parseNumber`** (line 366) — assigned _after_ `Fliplet.initializeLocale()` resolves (deferred).
+- **`<script>` tag injected into `<head>`** (line 929) — each call to `loadScript` (internally, via `Fliplet.require` or `Fliplet.require.lazy`) appends a `<script>` element to `document.head`.
+- **`<link rel="stylesheet">` tag injected into `<head>`** (line 967) — each call to `loadStylesheet` (internally, via `Fliplet.require` or `Fliplet.require.lazy`) appends a `<link>` element to `document.head`.
+
+---
+
+## See also
+
+- [`Fliplet.Env`](core/environment.md) — environment variable API
+- [`Fliplet.Registry`](core/registry.md) — write-once global registry
+- [`Fliplet.Studio`](core/studio.md) — Studio editor postMessage bridge
+- [`Fliplet.Navigator`](core/navigator.md) — device and page-ready lifecycle
+- [`Fliplet.Locale`](core/localization.md) — i18n, date, and number formatting
+- [`Fliplet.require`](core/require.md) — eager and lazy dependency loading
+
+---
+
+[Back to API documentation](../API-Documentation)
+{: .buttons}
+
+---
+
 # Fliplet.Security
 URL: https://developers.fliplet.com/API/fliplet-security.html
 
@@ -17136,6 +18606,191 @@ async function signOut() {
 
 [Back to API documentation](../API-Documentation)
 {: .buttons}
+
+---
+
+# fliplet-service-worker
+URL: https://developers.fliplet.com/API/fliplet-service-worker.html
+
+# `fliplet-service-worker`
+
+`fliplet-service-worker` is the browser service worker that powers web push notifications in Fliplet apps. It runs in its own isolated service-worker context — separate from the app's JavaScript — and handles two jobs: displaying an incoming push notification and responding when the user taps one. There is no public JavaScript API to call; the service worker operates automatically once registered by `fliplet-core`.
+
+---
+
+## What this package does
+
+The worker is a 99-line script (`sw.js`) with exactly two event listeners:
+
+- **`push`** — receives an incoming push payload from the browser's push service and shows a system notification.
+- **`notificationclick`** — handles a tap on that notification: closes it, optionally marks it read via the Fliplet API, and focuses or opens the target app URL.
+
+The service worker does **not** intercept fetch requests, cache any assets, or implement offline support. It has no `fetch` event listener and does nothing to alter the network behavior of the app.
+
+---
+
+## How the service worker is registered
+
+`fliplet-core` registers the service worker automatically when both of the following conditions are true:
+
+1. `Modernizr.pushnotification` is truthy — the browser supports the Push and Notifications APIs.
+2. `Fliplet.Env.get('platform') === 'web'` — the app is running as a web app, not a native iOS or Android build.
+
+Registration happens via:
+
+```js
+navigator.serviceWorker.register('/assets/fliplet-service-worker/1.0/sw.js')
+```
+
+The service worker is registered at the root scope (`/`), so it controls all pages under the app's origin.
+
+After registration, the browser prompts the user for notification permission. If permission is granted, `fliplet-core` calls `pushManager.subscribe()` with:
+
+```js
+{
+  userVisibleOnly: true,
+  applicationServerKey: urlBase64ToUint8Array(Fliplet.Env.get('vapidPublicKey'))
+}
+```
+
+**Studio preview mode** — when `Fliplet.Env.get('preview') === true`, the service worker is never registered. Instead, `fliplet-core` uses a `postMessage` bridge: it calls `Fliplet.Studio.emit('get-push-notification-token')` and listens for a `push-notification-token` message from the Studio frame. This allows push notification testing during development without a real service worker.
+
+---
+
+## Push notification handling
+
+The `push` event listener (sw.js lines 5–35) fires whenever the browser delivers a push message.
+
+**Parsing the payload**
+
+The listener calls `event.data.json()` to parse the payload as JSON. On a parse failure it falls back to:
+
+```js
+{ title: 'Test notification', body: event.data.text() }
+```
+
+**Expected payload shape**
+
+```json
+{
+  "title": "Message title",
+  "body": "Message body text",
+  "image": "https://example.com/icon.png",
+  "data": { }
+}
+```
+
+**Showing the notification**
+
+The title is resolved as `data.title || data.appName || 'Notification'`. The worker then calls:
+
+```js
+self.registration.showNotification(title, {
+  body: data.body,
+  icon: data.image,
+  data: data
+})
+```
+
+The `data` object is passed through to the notification so that the `notificationclick` handler can read it later.
+
+**Badge support** — The source contains a TODO comment for `navigator.setAppBadge`. Badge support is not implemented.
+
+---
+
+## Notification click handling
+
+The `notificationclick` event listener (sw.js lines 37–98) fires when the user taps a displayed notification.
+
+**Reading the action**
+
+The handler reads from `event.notification.data`:
+
+```js
+var data = event.notification.data;
+var customData = data.custom && data.custom.customData || data.customData || {};
+var action = customData.action || data.action;
+```
+
+**Closing the notification**
+
+`event.notification.close()` is called unconditionally so the notification dismisses regardless of what happens next.
+
+**Marking as read**
+
+If `action !== 'screen'`, the handler POSTs to the Fliplet API to mark the notification read:
+
+```
+POST {baseUrl}v1/apps/{appId}/notifications/mark-as-read?appId={appId}
+Content-Type: application/json
+credentials: include
+mode: cors
+
+{ "entries": [appNotificationId] }
+```
+
+The fetch uses cookie-based authentication (`credentials: 'include'`). Any error is swallowed silently via `.catch(console.error)` — the notification is still dismissed.
+
+When `action === 'screen'`, the mark-as-read POST is skipped. The app context handles it instead via URL query parameters (see [Communicating with the app context](#communicating-with-the-app-context)).
+
+**Focusing or opening the app window**
+
+If `data.url` is present, the handler searches all open window clients:
+
+```js
+clients.matchAll({ type: 'window', includeUncontrolled: true })
+```
+
+It focuses the first client whose URL starts with the target URL. If no matching client is found, it calls `clients.openWindow(urlToOpen)` to open a new tab.
+
+If `data.url` is absent, the handler returns after closing the notification and (where applicable) sending the mark-as-read request.
+
+---
+
+## Communicating with the app context
+
+The service worker sends no `postMessage` to the app. The only handoff mechanism is URL query parameters appended to `data.url` before the window is opened or focused:
+
+| Parameter | Description |
+|---|---|
+| `appNotificationId` | ID of the notification entry |
+| `appNotificationAction` | The action value from the payload |
+| `appNotificationTargetPage` | The target screen slug |
+
+`fliplet-core`'s `navigate.js` reads these parameters on startup (lines 179–188) and stores them in `Fliplet.Storage` for the app to consume.
+
+---
+
+## Debugging
+
+Use Chrome DevTools to inspect the service worker:
+
+- **Application → Service Workers** — verify the worker is registered, check its status, and send a test push event.
+- **Application → Push Messaging** — trigger a test push payload without a real server.
+- **Network tab** — filter by `mark-as-read` to confirm the POST fires after a notification tap.
+- **Lighthouse** — the PWA audit will flag if the service worker is missing or failing to register.
+
+In preview mode inside Fliplet Studio the service worker is never active; use the Studio push notification test panel instead.
+
+---
+
+## Limitations
+
+- No offline caching and no `fetch` event interception — this service worker does not make the app work offline.
+- The mark-as-read POST uses cookie authentication. It silently fails if the session cookie has expired or if third-party cookies are blocked.
+- When `action === 'screen'`, the mark-as-read POST is intentionally skipped; the app is responsible for reading `appNotificationId` from the URL and calling the API itself.
+- The service worker is registered at the root scope (`/`). Any other service worker registered at the same scope on the same origin will replace it on activation.
+- The script path contains no content hash. Updates rely on the standard browser service worker lifecycle: the browser byte-compares `sw.js` on each load and triggers an update install when the file changes.
+- Badge support (`navigator.setAppBadge` / `navigator.clearAppBadge`) is stubbed in TODO comments but not implemented.
+- The service worker is never registered in Studio preview mode — the preview frame uses a `postMessage` bridge instead.
+
+---
+
+## See also
+
+- [`fliplet-core`](fliplet-core) — the runtime that registers this service worker and manages the push subscription lifecycle.
+- [Push notification subscriptions](core/app#push-notification-subscriptions) — `Fliplet.App.Subscriptions` methods for subscribing and unsubscribing a device.
+- [`Fliplet.App.PushNotifications.send`](core/app#push-notifications) — the sender-side API for dispatching push notifications from app code.
 
 ---
 
@@ -24311,7 +25966,7 @@ V3 uses History API routing driven by the manifest at `app.settings.v3`, accesse
 ## Related
 
 - [V3 routing](routing). History API contract, route manifest, and the forbidden-pattern reference.
-- [Fliplet Router JS API](fliplet-router). Method reference for `Fliplet.Router` (`getBasePath`, `getRouteManifest`, `resolveRoute`).
+- [Fliplet Router JS API](../fliplet-router). Method reference for `Fliplet.Router` (`getBasePath`, `getRouteManifest`, `resolveRoute`).
 - [V3 app settings convention](app-settings). Where `window.ENV.appSettings` comes from and the public/private key convention.
 - [Media JS APIs](../fliplet-media). Full reference for `Fliplet.Media.getContents` and related media calls.
 
@@ -24999,222 +26654,6 @@ var session = await Fliplet.User.getCachedSession();
 - [Email Verification](../components/email-verification) — passwordless login flow
 - [Data Source Security](../../Data-source-security) — security rules for user data sources
 - [App Security](../../App-security) — app-level access control rules
-
----
-
-# Fliplet Router JS API
-URL: https://developers.fliplet.com/API/v3/fliplet-router.html
-
-# Fliplet Router JS API
-
-`Fliplet.Router` is the client-side routing helper for V3 SPA apps. It reads the route manifest from `app.settings.v3`, normalizes the base path for the current hosting context (slug-hosted web, Studio preview iframe, native shell), and performs server-ACL-backed access checks for each route.
-
-<p class="info"><code>Fliplet.Router</code> is available on V3 apps only and is auto-loaded at boot. It depends on <code>fliplet-core</code> (<code>Fliplet.Env</code>, <code>Fliplet.User</code>) and <code>fliplet-media</code> (<code>Fliplet.Media.getContents</code>).</p>
-
-For the full routing contract, per-framework integration examples, and forbidden patterns, see [V3 routing](routing). This page is the API reference only.
-
-## Contents
-
-- [Methods](#methods)
-  - [getBasePath()](#flipletroutergetbasepath)
-  - [getRouteManifest()](#flipletroutergetroutemanifest)
-  - [getRouteConfig(path)](#flipletroutergetrouteconfigpath)
-  - [resolveRoute(pathOrRoute)](#flipletrouterresolveroutepathorroute)
-- [Reason codes](#reason-codes)
-- [Manifest shape](#manifest-shape)
-- [Related](#related)
-
-## Methods
-
-### `Fliplet.Router.getBasePath()`
-
-Returns the base path used by the router's history mode, normalized with a trailing slash so string concatenation doesn't produce `//route`.
-
-**Returns:** `String`
-
-The value depends on the hosting context:
-
-| Context | Example value |
-|---|---|
-| Root-hosted web app | `/` |
-| Slug-hosted web app | `/my-slug/` |
-| Studio preview iframe | `/v1/apps/42/pages/99/preview/` |
-| Native shell | Computed by the shell at runtime |
-
-```js
-var base = Fliplet.Router.getBasePath();
-
-// Pass to Vue Router 4:
-var history = VueRouter.createWebHistory(base);
-
-// Pass to React Router 6:
-var router = ReactRouterDOM.createBrowserRouter(routes, { basename: base });
-```
-
-<p class="warning">Never hardcode <code>'/'</code>. Slug-hosted apps, preview iframes, and native shells all mount the SPA at a different base.</p>
-
-### `Fliplet.Router.getRouteManifest()`
-
-Returns the route manifest stored in `app.settings.v3`. Defaults are provided for every field so callers can use the return value without null checks.
-
-**Returns:** `Object` with the following properties:
-
-| Property | Type | Default | Description |
-|---|---|---|---|
-| `routes` | `Array<Object>` | `[]` | Route entries. See [Manifest shape](#manifest-shape). |
-| `defaultRoute` | `String` | `'/'` | Path to redirect to from `/`. |
-| `authRedirect` | `String` | `'/login'` | Path to redirect to when a route is denied. |
-
-```js
-var manifest = Fliplet.Router.getRouteManifest();
-
-manifest.routes.forEach(function(r) {
-  console.log(r.name, r.path, r.fileId, r.public);
-});
-
-console.log(manifest.defaultRoute); // '/home'
-console.log(manifest.authRedirect); // '/login'
-```
-
-### `Fliplet.Router.getRouteConfig(path)`
-
-Looks up a single route entry from the manifest by path. The lookup is path-based and normalizes leading slashes (`home` and `/home` match the same route).
-
-**Parameters:**
-
-| Name | Type | Description |
-|---|---|---|
-| `path` | `String` | Route path, with or without a leading slash. |
-
-**Returns:** `Object | undefined`. The matching route entry from `manifest.routes`, or `undefined` if no route matches.
-
-```js
-var route = Fliplet.Router.getRouteConfig('/home');
-
-if (route) {
-  console.log(route.fileId);   // 222
-  console.log(route.public);   // true
-} else {
-  // Path isn't in the manifest
-}
-```
-
-### `Fliplet.Router.resolveRoute(pathOrRoute)`
-
-Resolves a route to its access decision **and** its screen source. On success, `result.content` is the screen's source already loaded via `Fliplet.Media.getContents` — render it directly rather than re-fetching. The server's media ACL is the source of truth; this method either fast-fails when the outcome is known (no session, unknown route) or derives the decision from the server's 401/403 response.
-
-**Parameters:**
-
-| Name | Type | Description |
-|---|---|---|
-| `pathOrRoute` | `String \| Object` | A route path (string) or a route entry object from the manifest. |
-
-**Returns:** `Promise` that:
-
-- **Resolves** with an access decision (see shapes below).
-- **Rejects** with the underlying error on transient or infra failures (network errors, 5xx responses) so callers can show an error UI instead of redirecting silently.
-
-**Resolution shape on success:**
-
-```js
-{
-  allowed: true,
-  content: '<!-- raw screen HTML/JS source -->',
-  route: { name: 'Home', path: '/home', fileId: 222, public: true }
-}
-```
-
-**Resolution shape on denial:**
-
-```js
-{
-  allowed: false,
-  redirectTo: '/login',      // manifest.authRedirect
-  reason: 'no-session',      // see Reason codes below
-  status: 401                // only present when reason is 'media-denied'
-}
-```
-
-<p class="warning">Don't call <code>Fliplet.Media.getContents(fileId)</code> yourself. <code>resolveRoute</code> already does this internally and returns the content in <code>result.content</code>. A second fetch duplicates the round trip, can race with the access check, and fails outright on private media where auth headers aren't applied.</p>
-
-**Example:**
-
-```js
-Fliplet.Router.resolveRoute('/my-account').then(function(result) {
-  if (!result.allowed) {
-    // Redirect to the auth screen (or wherever the server says)
-    navigate(result.redirectTo);
-    return;
-  }
-
-  // Mount the screen using result.content
-  mountScreen(result.content, result.route);
-}, function(err) {
-  // Transient failure (network, 5xx). Show an error UI rather than redirecting.
-  showErrorScreen(err);
-});
-```
-
-**Passing a route object instead of a path:**
-
-If you already have a route entry from the manifest, you can pass it directly to skip the path lookup:
-
-```js
-var manifest = Fliplet.Router.getRouteManifest();
-var route = manifest.routes[0];
-
-Fliplet.Router.resolveRoute(route).then(function(result) {
-  // ...
-});
-```
-
-## Reason codes
-
-When `resolveRoute` resolves with `allowed: false`, the `reason` property indicates why. Handle each case explicitly.
-
-| `reason` | Triggered when | `redirectTo` | `status` |
-|---|---|---|---|
-| `unknown-route` | The path doesn't match any manifest entry, or the matched entry has no `fileId`. | `manifest.authRedirect` | Not set |
-| `no-session` | The route is non-public and `Fliplet.User.getCachedSession()` returned no session. | `manifest.authRedirect` | Not set |
-| `media-denied` | The server returned `401` or `403` when fetching the screen source. | `manifest.authRedirect` | `401` or `403` |
-
-<p class="warning">The manifest's <code>public: true</code> flag is advisory. It just lets the client skip a known-401 round trip. Flipping <code>public: true</code> in the manifest without updating the media file's access rule grants no access; the server still returns 401 and <code>resolveRoute</code> resolves with <code>reason: 'media-denied'</code>.</p>
-
-Transient errors (network failures, 5xx responses) do not resolve with a reason. They **reject** the Promise with the underlying error so you can distinguish "user can't access this" from "infrastructure is broken".
-
-## Manifest shape
-
-The manifest is stored at `app.settings.v3` and emitted to the runtime via `window.ENV.appSettings`. See [V3 app settings convention](app-settings) for how settings are stored and filtered.
-
-```json
-{
-  "routes": [
-    { "name": "Home",      "path": "/home",       "fileId": 222, "public": true },
-    { "name": "Login",     "path": "/login",      "fileId": 444, "public": true },
-    { "name": "MyAccount", "path": "/my-account", "fileId": 333 }
-  ],
-  "defaultRoute": "/home",
-  "authRedirect": "/login"
-}
-```
-
-Each route entry has the following properties:
-
-| Property | Type | Required | Description |
-|---|---|---|---|
-| `name` | `String` | Yes | Display name for the route. Used in Studio UI and as a named route in framework routers. |
-| `path` | `String` | Yes | URL path the route is mounted at. Must begin with `/`. |
-| `fileId` | `Number` | Yes | Numeric `id` of the media file holding the screen source. `resolveRoute` fetches this via `Fliplet.Media.getContents`. |
-| `public` | `Boolean` | No | If `true`, the client skips the session check before fetching media. Defaults to `false`. Advisory only; the server media ACL is still enforced. |
-
-Update the manifest via the App Settings API (`PUT /v1/apps/:id` with `settings.v3`) or the Studio routing UI whenever you add or remove a user-visible route.
-
-## Related
-
-- [V3 routing](routing). Full routing contract, per-framework examples, forbidden patterns, and post-login redirect.
-- [V3 app bootstrap constraints](app-bootstrap). Three constraints every V3 boot HTML must satisfy.
-- [V3 app settings convention](app-settings). Where the route manifest is stored (`app.settings.v3`).
-- [Media JS APIs](../fliplet-media). `Fliplet.Media.getContents` details.
 
 ---
 
@@ -25934,7 +27373,7 @@ Replace `navigate(...)` with the same helper used in your router (Svelte, vanill
 
 ## Related
 
-- [Fliplet Router JS API](fliplet-router). Full method reference for `Fliplet.Router` with return shapes, reason codes, and manifest shape.
+- [Fliplet Router JS API](../fliplet-router). Full method reference for `Fliplet.Router` with return shapes, reason codes, and manifest shape.
 - [V3 app bootstrap constraints](app-bootstrap). The three boot-HTML fundamentals (dependencies, media fetch, init sequence). Routing defers to this doc.
 - [V3 app settings convention](app-settings). Where the route manifest is stored (`app.settings.v3`).
 - [Media JS APIs](../fliplet-media). `Fliplet.Media.getContents` details.
@@ -37688,10 +39127,18 @@ Every Fliplet JS API available to V3 apps, grouped by capability category. Each 
 
 ## Analytics
 
+- [`fliplet-analytics-spa`](https://developers.fliplet.com/API/fliplet-analytics-spa.html) — Auto page-view tracker for V3 SPA apps. Hooks the History API so every client-side route change emits a pageView — no app code required.
 - [`Fliplet.Analytics`](https://developers.fliplet.com/API/core/analytics.html) **(preloaded)** — Enable, disable, and check analytics tracking, and record custom app events and page views from JavaScript.
+
+## Observability
+
+- [`fliplet-error-tracking`](https://developers.fliplet.com/API/fliplet-error-tracking.html) — Auto-loading runtime that captures JavaScript exceptions and unhandled promise rejections and batches them to Fliplet.App.Logs.
 
 ## Framework
 
+- [``Fliplet.require``](https://developers.fliplet.com/API/core/require.html) **(preloaded)** — Load scripts and stylesheets on demand, and resolve lazy dependencies registered in the app bundle.
+- [`fliplet-runtime`](https://developers.fliplet.com/API/fliplet-runtime.html) — V3 SPA bootstrap that wires Fliplet.Env, Registry, Studio, Navigator, and Locale into the global Fliplet object and manages the page-ready lifecycle.
+- [`fliplet-service-worker`](https://developers.fliplet.com/API/fliplet-service-worker.html) — Background service worker that receives web push notifications, displays them, and marks them read — automatically registered by fliplet-core on web.
 - [`Fliplet.Env`](https://developers.fliplet.com/API/core/environment.html) **(preloaded)** — Read environment variables such as `appId`, `appName`, `mode`, and `apiUrl` from the current runtime.
 - [`Fliplet.Locale`](https://developers.fliplet.com/API/core/localization.html) **(preloaded)** — Translate strings and format dates and numbers in Fliplet components via Fliplet.Locale, the T() shorthand, and translation.json files using i18next.
 - [`Fliplet.Registry`](https://developers.fliplet.com/API/core/registry.html) **(preloaded)** — Store and retrieve runtime values and functions by key so components can share state and helpers.
@@ -37701,6 +39148,7 @@ Every Fliplet JS API available to V3 apps, grouped by capability category. Each 
 ## Navigation
 
 - [``Fliplet.Pages` and `Fliplet.Page``](https://developers.fliplet.com/API/core/screens.html) **(preloaded)** — List app screens, get the current screen's public URL, and build shareable URLs for any screen by ID.
+- [`Fliplet Router JS API`](https://developers.fliplet.com/API/fliplet-router.html) — Fliplet.Router JS API reference for V3 apps. Covers getBasePath, getRouteManifest, getRouteConfig, and resolveRoute including return shapes, reason codes, and rejection behavior.
 - [`Fliplet.Navigate`](https://developers.fliplet.com/API/core/navigate.html) **(preloaded)** — Navigate between app screens, open external URLs, pass query parameters, and handle back, home, and modal navigation via Fliplet.Navigate.
 
 ## Meta
@@ -37750,7 +39198,7 @@ These are the user-facing JS surfaces V3 apps can call. Some already have docs; 
 
 | # | Package / Namespace | Type | Source | Current doc? |
 |---|---|---|---|---|
-| 4 | `fliplet-router` | installable | `fliplet-router/1.0/` | ✓ API/v3/fliplet-router.md (not yet in V3 catalog because of path) |
+| 4 | `fliplet-router` | installable | `fliplet-router/1.0/` | ✓ API/fliplet-router.md (in V3 catalog) |
 | 5 | `fliplet-runtime` | installable | `fliplet-runtime/1.0/` | needs doc |
 | 6 | `fliplet-service-worker` | installable | `fliplet-service-worker/1.0/` | needs doc |
 | 7 | `fliplet-analytics-spa` | installable | `fliplet-analytics-spa/1.0/` | partial — API/v3/analytics.md (guide, covers Fliplet.App.Analytics surface but not the runtime) |
