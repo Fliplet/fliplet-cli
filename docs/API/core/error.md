@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, core, error]
 v3_relevant: true
 deprecated: false
+category: meta
 capabilities: [error, parse error, error message, human-readable error, error handling, error response]
 ---
 # `Fliplet.parseError()`

@@ -192,6 +192,7 @@
 - [Fliplet coding and documentation standards](https://developers.fliplet.com/coding-standards.html): Coding and documentation standards used across Fliplet APIs, components, and examples, so both humans and AI tools produce consistent Fliplet code.
 - [Component events](https://developers.fliplet.com/Component-events.html): Listen for component lifecycle events (adding, added, removed, moved, render) emitted while users edit a Fliplet screen, via Fliplet.Hooks.on('componentEvent').
 - [Context targeting](https://developers.fliplet.com/Context-targeting.html): Target devices in Fliplet apps via Modernizr classes and JS flags for iOS, Android, Windows, web, native, mobile/tablet/desktop, notch, and Studio edit mode.
+- [Contributing to developer documentation](https://developers.fliplet.com/CONTRIBUTING.html): How to author docs in fliplet-cli/docs — frontmatter schema, capability tagging, the V3 catalog, and the CI checks that run on every PR.
 - [Custom Headers](https://developers.fliplet.com/Custom-Headers.html): Configure custom HTTP response headers (CSP, HSTS, CORS, custom security headers) for a Fliplet app via Fliplet.App.Settings and the Developer Options panel.
 - [Custom HTML templates for Fliplet components](https://developers.fliplet.com/Custom-template-for-components.html): How to override a component's default template with custom HTML and Handlebars in the new container-based drag-and-drop system.
 - [Fliplet infrastructure data flow](https://developers.fliplet.com/Data-flow.html): Architecture diagram showing how data flows between Fliplet Studio, Fliplet servers, app clients, and connected data sources.
@@ -226,4 +227,5 @@
 - [UI guidelines for component settings (interface)](https://developers.fliplet.com/UI-guidelines-interface.html): Recommended Bootstrap-based styles for buttons, forms, and typography in a Fliplet component's Studio settings interface.
 - [Upcoming and recently launched features](https://developers.fliplet.com/Upcoming.html): Tracker of Fliplet features recently shipped or in beta, linking to their developer documentation.
 - [Fliplet URLs and IP addresses](https://developers.fliplet.com/URLs-and-IP-Addresses.html): Domains and ports that Fliplet Studio, web apps, native apps, and the Data Integration Service need reachable through a corporate firewall.
+- [V3 capabilities](https://developers.fliplet.com/v3/capabilities.html): Auto-generated index of every Fliplet JS API surface available to V3 apps, grouped by capability category.
 - [Fliplet VS Code extension](https://developers.fliplet.com/VS-Code-Extension-Setup-Usage.html): Install, authenticate, and use the Fliplet VS Code extension to develop Fliplet apps directly from your editor.

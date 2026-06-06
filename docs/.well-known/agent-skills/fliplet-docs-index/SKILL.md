@@ -34,6 +34,7 @@ These docs don't belong to a single capability cluster — they are general onbo
 - [Best practice and advices when building components](https://developers.fliplet.com/Best-practises.html): Gotchas for Fliplet components: instance data, multi-drop handling, Handlebars escaping for Vue/Angular curly braces, and required dependencies.
 - [Changelog](https://developers.fliplet.com/Changelog.html): Changelog notes giving a summary of recent significant changes to the documentation.
 - [Fliplet coding and documentation standards](https://developers.fliplet.com/coding-standards.html): Coding and documentation standards used across Fliplet APIs, components, and examples, so both humans and AI tools produce consistent Fliplet code.
+- [Contributing to developer documentation](https://developers.fliplet.com/CONTRIBUTING.html): How to author docs in fliplet-cli/docs — frontmatter schema, capability tagging, the V3 catalog, and the CI checks that run on every PR.
 - [Sending events between components](https://developers.fliplet.com/Event-emitter.html): Components interfaces can send events to Fliplet Studio using a event emitter bus provided with the `fliplet-core` dependency.
 - [Fliplet app execution flow](https://developers.fliplet.com/Execution-flow.html): The rendering and hook lifecycle Fliplet apps go through before a screen is shown to the user, and where to safely run custom code within it.
 - [Introduction to the Fliplet developer platform](https://developers.fliplet.com/Introduction.html): Overview of the Fliplet developer stack (JavaScript, SASS, Handlebars) and the kinds of apps, components, themes, and menus you can build on it.
@@ -43,6 +44,7 @@ These docs don't belong to a single capability cluster — they are general onbo
 - [Fliplet open source resources](https://developers.fliplet.com/open-source.html): Where to find Fliplet's open-source code, pre-built app solutions, screen templates, community code examples, and developer documentation.
 - [Fliplet CLI quickstart](https://developers.fliplet.com/Quickstart.html): Install Node.js and the Fliplet CLI so you can develop and test components, themes, and menus on your machine.
 - [Upcoming and recently launched features](https://developers.fliplet.com/Upcoming.html): Tracker of Fliplet features recently shipped or in beta, linking to their developer documentation.
+- [V3 capabilities](https://developers.fliplet.com/v3/capabilities.html): Auto-generated index of every Fliplet JS API surface available to V3 apps, grouped by capability category.
 - [Fliplet VS Code extension](https://developers.fliplet.com/VS-Code-Extension-Setup-Usage.html): Install, authenticate, and use the Fliplet VS Code extension to develop Fliplet apps directly from your editor.
 
 ## Full site index
