@@ -60,6 +60,6 @@ V3 uses History API routing driven by the manifest at `app.settings.v3`, accesse
 ## Related
 
 - [V3 routing](routing). History API contract, route manifest, and the forbidden-pattern reference.
-- [Fliplet Router JS API](fliplet-router). Method reference for `Fliplet.Router` (`getBasePath`, `getRouteManifest`, `resolveRoute`).
+- [Fliplet Router JS API](../fliplet-router). Method reference for `Fliplet.Router` (`getBasePath`, `getRouteManifest`, `resolveRoute`).
 - [V3 app settings convention](app-settings). Where `window.ENV.appSettings` comes from and the public/private key convention.
 - [Media JS APIs](../fliplet-media). Full reference for `Fliplet.Media.getContents` and related media calls.

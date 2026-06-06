@@ -5,6 +5,9 @@ type: api-reference
 tags: [js-api, v3, routing, router]
 v3_relevant: true
 deprecated: false
+category: navigation
+capabilities: [spa routing, route manifest, screen navigation, base path, access guard, history api, vue router, react router, svelte, private screens, media acl, authentication redirect]
+notes: "Auto-loaded on V3 apps at boot. Depends on fliplet-core (Fliplet.Env, Fliplet.User) and fliplet-media (Fliplet.Media.getContents). Do not call Fliplet.Media.getContents directly for screen fetches — resolveRoute already does this and returns content in result.content."
 ---
 
 # Fliplet Router JS API
@@ -13,7 +16,7 @@ deprecated: false
 
 <p class="info"><code>Fliplet.Router</code> is available on V3 apps only and is auto-loaded at boot. It depends on <code>fliplet-core</code> (<code>Fliplet.Env</code>, <code>Fliplet.User</code>) and <code>fliplet-media</code> (<code>Fliplet.Media.getContents</code>).</p>
 
-For the full routing contract, per-framework integration examples, and forbidden patterns, see [V3 routing](routing). This page is the API reference only.
+For the full routing contract, per-framework integration examples, and forbidden patterns, see [V3 routing](v3/routing). This page is the API reference only.
 
 ## Contents
 
@@ -103,7 +106,7 @@ if (route) {
 
 ### `Fliplet.Router.resolveRoute(pathOrRoute)`
 
-Resolves a route to its access decision **and** its screen source. On success, `result.content` is the screen's source already loaded via `Fliplet.Media.getContents` — render it directly rather than re-fetching. The server's media ACL is the source of truth; this method either fast-fails when the outcome is known (no session, unknown route) or derives the decision from the server's 401/403 response.
+Resolves a route to its access decision **and** its screen source. On success, `result.content` is the screen's source already loaded via `Fliplet.Media.getContents` — render it directly rather than re-fetching. The server's media ACL is the source of truth; this method either fast-fails when the outcome is known (unknown route) or derives the decision from the server's 401/403 response.
 
 **Parameters:**
 
@@ -132,7 +135,7 @@ Resolves a route to its access decision **and** its screen source. On success, `
 {
   allowed: false,
   redirectTo: '/login',      // manifest.authRedirect
-  reason: 'no-session',      // see Reason codes below
+  reason: 'media-denied',    // see Reason codes below
   status: 401                // only present when reason is 'media-denied'
 }
 ```
@@ -177,7 +180,6 @@ When `resolveRoute` resolves with `allowed: false`, the `reason` property indica
 | `reason` | Triggered when | `redirectTo` | `status` |
 |---|---|---|---|
 | `unknown-route` | The path doesn't match any manifest entry, or the matched entry has no `fileId`. | `manifest.authRedirect` | Not set |
-| `no-session` | The route is non-public and `Fliplet.User.getCachedSession()` returned no session. | `manifest.authRedirect` | Not set |
 | `media-denied` | The server returned `401` or `403` when fetching the screen source. | `manifest.authRedirect` | `401` or `403` |
 
 <p class="warning">The manifest's <code>public: true</code> flag is advisory. It just lets the client skip a known-401 round trip. Flipping <code>public: true</code> in the manifest without updating the media file's access rule grants no access; the server still returns 401 and <code>resolveRoute</code> resolves with <code>reason: 'media-denied'</code>.</p>
@@ -186,7 +188,7 @@ Transient errors (network failures, 5xx responses) do not resolve with a reason.
 
 ## Manifest shape
 
-The manifest is stored at `app.settings.v3` and emitted to the runtime via `window.ENV.appSettings`. See [V3 app settings convention](app-settings) for how settings are stored and filtered.
+The manifest is stored at `app.settings.v3` and emitted to the runtime via `window.ENV.appSettings`. See [V3 app settings convention](v3/app-settings) for how settings are stored and filtered.
 
 ```json
 {
@@ -213,7 +215,7 @@ Update the manifest via the App Settings API (`PUT /v1/apps/:id` with `settings.
 
 ## Related
 
-- [V3 routing](routing). Full routing contract, per-framework examples, forbidden patterns, and post-login redirect.
-- [V3 app bootstrap constraints](app-bootstrap). Three constraints every V3 boot HTML must satisfy.
-- [V3 app settings convention](app-settings). Where the route manifest is stored (`app.settings.v3`).
-- [Media JS APIs](../fliplet-media). `Fliplet.Media.getContents` details.
+- [V3 routing](v3/routing). Full routing contract, per-framework examples, forbidden patterns, and post-login redirect.
+- [V3 app bootstrap constraints](v3/app-bootstrap). Three constraints every V3 boot HTML must satisfy.
+- [V3 app settings convention](v3/app-settings). Where the route manifest is stored (`app.settings.v3`).
+- [Media JS APIs](fliplet-media). `Fliplet.Media.getContents` details.

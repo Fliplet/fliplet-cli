@@ -41,7 +41,7 @@ These are the user-facing JS surfaces V3 apps can call. Some already have docs; 
 
 | # | Package / Namespace | Type | Source | Current doc? |
 |---|---|---|---|---|
-| 4 | `fliplet-router` | installable | `fliplet-router/1.0/` | ✓ API/v3/fliplet-router.md (not yet in V3 catalog because of path) |
+| 4 | `fliplet-router` | installable | `fliplet-router/1.0/` | ✓ API/fliplet-router.md (in V3 catalog) |
 | 5 | `fliplet-runtime` | installable | `fliplet-runtime/1.0/` | needs doc |
 | 6 | `fliplet-service-worker` | installable | `fliplet-service-worker/1.0/` | needs doc |
 | 7 | `fliplet-analytics-spa` | installable | `fliplet-analytics-spa/1.0/` | partial — API/v3/analytics.md (guide, covers Fliplet.App.Analytics surface but not the runtime) |
