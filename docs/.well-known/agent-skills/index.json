@@ -11,7 +11,7 @@
         "js-api",
         "security"
       ],
-      "sha256": "89e97e708da750d25d3fb1150fa960df2ce1ac3bb8ee8ed242b9429f73ff4df4"
+      "sha256": "aee16d3438981d6d8ebf2403a42fc3603365474978d00677946795d45836ab6f"
     },
     {
       "name": "fliplet-app-actions",
@@ -24,7 +24,7 @@
         "js-api",
         "server-side"
       ],
-      "sha256": "82011ba6cdb34e82efb785f3e8ba91907ce34665953be6694bd4874347f21dfa"
+      "sha256": "d18541c028f3c8b7f8c748a082a7d8fedff03843e10e4743bcb2b77403157737"
     },
     {
       "name": "fliplet-helpers-framework",
@@ -36,7 +36,7 @@
         "helpers-framework",
         "components-framework"
       ],
-      "sha256": "89fdc96793698322137b56a95f65d1a928514499e8cc9113407138c663c7c488"
+      "sha256": "4125a1e03b9a51fc312aed9744721bed6ad4042a89937b7539f75d4421783459"
     },
     {
       "name": "fliplet-rest-api",
@@ -48,7 +48,7 @@
         "rest-api",
         "server-side"
       ],
-      "sha256": "5dccfe05277178594185a920779bff805cd9d9168e5ea3abae4e460a2dd0aa6a"
+      "sha256": "437370382448243dc036eef2a2628fa805d7f2de4e6f8c8625011e66aed34fde"
     },
     {
       "name": "fliplet-components-framework",
@@ -60,7 +60,7 @@
         "components-framework",
         "widgets"
       ],
-      "sha256": "f93c398ed8cc5e45468722a387b94484d679c1fc648cdde25f4e901041712ee4"
+      "sha256": "91e726cd1028c2100de039719510fc8943580b4e3ac50ec03f3dc3ff1ed4f3d9"
     },
     {
       "name": "fliplet-themes-framework",
@@ -71,7 +71,7 @@
       "tags": [
         "themes-framework"
       ],
-      "sha256": "3d38819114996c96b5855c369b1b7bd0e092f0218de756e1b0e428dbd8cbeb5f"
+      "sha256": "cd653cbbba86f28e70cb46574803bd6ed84ed67f6019242b5103bd76356e67f9"
     },
     {
       "name": "fliplet-menus-framework",
@@ -82,7 +82,7 @@
       "tags": [
         "menus-framework"
       ],
-      "sha256": "382bab2323f49874d5833d44d3135d9171f281e741552cb711e6e12419ce1987"
+      "sha256": "215cb1be3bc4ff5e5b17e43e73a48120c29cb25dcb4444aa23cad0f682a2cb08"
     },
     {
       "name": "fliplet-app-build-and-publish",
@@ -94,7 +94,7 @@
         "publish",
         "platform"
       ],
-      "sha256": "31c9528d565f2a6106b6a1923f1efd9d8ecc29afd13c34084c4bb1bb4f9dbec7"
+      "sha256": "e135c93a40d0bb84fb9dfa8a425d1946b6c3580cb02c8f91bb0679ff5077c05a"
     },
     {
       "name": "fliplet-security-and-compliance",
@@ -106,7 +106,7 @@
         "security",
         "compliance"
       ],
-      "sha256": "6033b95c679d6b08ec74485f74beb40dfab32961925396e3227a52a4dde6a038"
+      "sha256": "58da5c894e0fa35a02782868caddf22691a8bdef08e0d91c1bf69d27f0ede18b"
     },
     {
       "name": "fliplet-integrations",
@@ -119,7 +119,7 @@
         "sso",
         "oauth"
       ],
-      "sha256": "4474108e162ad48db664657430d68a17e7c1e75fe6b2e6b836795092f41d0d88"
+      "sha256": "f87ebca612d98f378b3caa0819808f092c450a824970a558da6b12c163c23f37"
     },
     {
       "name": "fliplet-js-api",
@@ -130,7 +130,7 @@
       "tags": [
         "js-api"
       ],
-      "sha256": "b6e2a0226fbeb2132118ed5270ce52df23e09897a7f36d813b54df3ad8b65574"
+      "sha256": "c6c8631886d1f8a2188f866f5592635721a96ddcf06dbef432ee2a1d31a9cd4a"
     },
     {
       "name": "fliplet-docs-index",
@@ -143,7 +143,7 @@
         "index",
         "fallback"
       ],
-      "sha256": "dacc37a93791f2fd8cd7dc7e23d158a7b75a8ecce87a64065799461eb2c4c5d5"
+      "sha256": "01c1b831f67f9a60772498769ecfdc565ccfd023ac87faaff6a86db718490695"
     }
   ]
 }

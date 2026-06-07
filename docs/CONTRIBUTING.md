@@ -73,6 +73,7 @@ When you add a new `fliplet-*` package, follow this 10-step checklist:
    - Tokens that start with `[` (bracket-mismatch in your YAML flow list)
    - Missing `category:` or values outside the allowed enum
    - Standard frontmatter violations from `validateFrontmatter`
+   - **Broken internal cross-links** (from `validateCrossLinks` — see "Internal links" below)
 
 10. **Open the PR.** CF Pages will build a branch preview. Visit the preview URL to confirm:
     - Your doc renders with the right layout
@@ -84,6 +85,35 @@ When you add a new `fliplet-*` package, follow this 10-step checklist:
 The same rules apply with two adjustments:
 - Don't change `title:` casually — the V3 AI builder embeds the namespace title in its system prompt; renaming silently shifts what the agent recognises.
 - Don't reorder `capabilities[]` — the field is hashed downstream; reordering = diff churn without semantic change.
+
+## Internal links
+
+Write internal cross-links the natural way — directory-relative to the target's
+`.md`, exactly as Jekyll and the published site resolve them:
+
+- `[joins](datasources/joins)` — bare, relative to the current doc's directory
+- `[routing](../routing)` — parent-relative
+- `[guides](/Quickstart)` — root-absolute
+- A full `https://developers.fliplet.com/API/...md` URL also works
+
+`--strict` runs `validateCrossLinks`, which resolves each link the way CF Pages
+serves clean URLs (`.md`/`.html`/extensionless all map to the `.md` source) and
+**fails the build if the target file doesn't exist** — that's how link rot is
+caught at review time instead of shipping a dead link. External links (openai,
+github, `help.fliplet.com`, `api.fliplet.com`, …) and asset links (`.png`,
+`.txt`, …) are left alone.
+
+Two escape hatches for a deliberate exception (e.g. a forward-reference to a doc
+landing in a later PR):
+
+- Inline: put `<!-- lint-ignore-link -->` anywhere on the link's line.
+- Whole-target: add it to `LINK_ALLOWLIST` in `bin/build-agent-indexes.mjs`.
+
+> Note the asymmetry: AI **skills** (`src/v3/ai/skills/`, Studio repo) auto-resolve
+> relative sibling links at load time and silently drop unresolvable ones, whereas
+> these **docs** fail the build on a broken link. They differ on purpose — the
+> skills bundle is fully in memory at load, the docs validator runs statically over
+> the file tree. Don't assume one's behaviour from the other.
 
 ## Where does each thing live?
 

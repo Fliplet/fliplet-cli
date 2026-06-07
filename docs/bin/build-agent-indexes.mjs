@@ -26,7 +26,7 @@ import { readFileSync, writeFileSync, mkdirSync, readdirSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, relative, resolve, sep } from 'node:path';
-import { shouldExclude } from './exclusions.mjs';
+import { shouldExclude, EXCLUDED_DIRS } from './exclusions.mjs';
 import {
   ALLOWED_CATEGORIES,
   ALLOWED_CATEGORIES_SET,
@@ -376,6 +376,16 @@ export function urlForPath(relPath) {
   return `${BASE_URL}/${relPath.replace(/\.md$/, '.html')}`;
 }
 
+// URL of the raw Markdown sibling — what AI agents should fetch. The server-side
+// web_fetch (and the MCP worker's fetch_fliplet_doc) refuse non-Google HTML and
+// require `.md`, so every AI-consumption surface (llms.txt, llms-full.txt,
+// agent-skills, the V3 library catalog) emits `.md` URLs. The human-facing
+// capabilities page keeps `urlForPath` (.html). README publishes as `/index.md`.
+export function urlForPathMd(relPath) {
+  if (relPath === 'README.md') return `${BASE_URL}/index.md`;
+  return `${BASE_URL}/${relPath}`;
+}
+
 function skillNameForPath(relPath) {
   return relPath
     .replace(/\.md$/, '')
@@ -403,7 +413,7 @@ export function emitLlmsTxt(docs) {
     out += `\n## ${group.label}\n\n`;
     for (const doc of entries) {
       const desc = doc.description ? `: ${doc.description}` : '';
-      out += `- [${doc.title}](${doc.url})${desc}\n`;
+      out += `- [${doc.title}](${doc.urlMd || doc.url})${desc}\n`;
     }
   }
   return out;
@@ -411,7 +421,7 @@ export function emitLlmsTxt(docs) {
 
 export function emitLlmsFullTxt(docs) {
   return docs
-    .map((doc) => `# ${doc.title}\nURL: ${doc.url}\n\n${doc.body.trim()}\n`)
+    .map((doc) => `# ${doc.title}\nURL: ${doc.urlMd || doc.url}\n\n${doc.body.trim()}\n`)
     .join('\n---\n\n');
 }
 
@@ -445,7 +455,7 @@ export function emitSkillMd(cluster, docsInCluster) {
 
   if (cluster.name === 'fliplet-docs-index') {
     const fallbackDocs = docsInCluster
-      .map((d) => `- [${d.title}](${d.url})${d.description ? `: ${d.description}` : ''}`)
+      .map((d) => `- [${d.title}](${d.urlMd || d.url})${d.description ? `: ${d.description}` : ''}`)
       .join('\n');
     return (
       fm +
@@ -460,14 +470,14 @@ export function emitSkillMd(cluster, docsInCluster) {
       `These docs don't belong to a single capability cluster — they are general onboarding, conventions, or cross-cutting references. Listed here so they remain reachable via agent-skills discovery even when no specific cluster is loaded:\n\n` +
       fallbackDocs +
       `\n\n## Full site index\n\n` +
-      `If you need the complete list across every cluster, fetch [${BASE_URL}/.well-known/llms.txt](${BASE_URL}/.well-known/llms.txt). Each entry is a one-line summary; replace \`.html\` with \`.md\` on any doc URL to fetch the raw Markdown.\n\n` +
+      `If you need the complete list across every cluster, fetch [${BASE_URL}/.well-known/llms.txt](${BASE_URL}/.well-known/llms.txt). Each entry is a one-line summary; doc URLs are raw \`.md\` and can be fetched directly.\n\n` +
       `## MCP server\n\n` +
       `For tool-driven discovery, point an MCP-aware client at [${MCP_ENDPOINT}](${MCP_ENDPOINT}). The server exposes \`search_fliplet_docs\` and \`fetch_fliplet_doc\`.\n`
     );
   }
 
   const docList = docsInCluster
-    .map((d) => `- [${d.title}](${d.url})${d.description ? `: ${d.description}` : ''}`)
+    .map((d) => `- [${d.title}](${d.urlMd || d.url})${d.description ? `: ${d.description}` : ''}`)
     .join('\n');
 
   return (
@@ -477,7 +487,7 @@ export function emitSkillMd(cluster, docsInCluster) {
     `## Documentation\n\n` +
     docList +
     `\n\n## How to load full content\n\n` +
-    `Replace \`.html\` with \`.md\` on any URL above to fetch the raw Markdown source. To search across all Fliplet developer docs, use the MCP server at [${MCP_ENDPOINT}](${MCP_ENDPOINT}) (tools: \`search_fliplet_docs\`, \`fetch_fliplet_doc\`), or fetch [${BASE_URL}/.well-known/llms-full.txt](${BASE_URL}/.well-known/llms-full.txt) for the entire site as a single stream.\n`
+    `The URLs above are raw \`.md\` and can be fetched directly. To search across all Fliplet developer docs, use the MCP server at [${MCP_ENDPOINT}](${MCP_ENDPOINT}) (tools: \`search_fliplet_docs\`, \`fetch_fliplet_doc\`), or fetch [${BASE_URL}/.well-known/llms-full.txt](${BASE_URL}/.well-known/llms-full.txt) for the entire site as a single stream.\n`
   );
 }
 
@@ -539,6 +549,7 @@ export function collectDocs(rootDir) {
     docs.push({
       relPath,
       url: urlForPath(relPath),
+      urlMd: urlForPathMd(relPath),
       title,
       description: truncate(description, 200),
       group: pickGroup(relPath),
@@ -746,6 +757,226 @@ export function validateCapabilities(docs) {
   return errors;
 }
 
+// ---------------------------------------------------------------------------
+// Cross-link validation (strict-mode link-rot detection).
+//
+// Catches internal Markdown links that don't resolve to an existing doc file,
+// without forcing any authoring convention — authors keep writing natural
+// directory-relative links. Mirrors the validateFrontmatter/validateCapabilities
+// error shape ({ relPath, link, resolvedTarget, message, hint }) and the
+// --strict gate in main().
+//
+// Design notes (verified against the live corpus):
+//   - Link shapes in docs/API+v3: bare, ./, ../ (parent), /-rooted, plus .md /
+//     .html / extensionless targets and #anchor combos. All are resolved.
+//   - External links to foreign hosts are skipped; absolute
+//     https://developers.fliplet.com links ARE resolved (catches typo'd
+//     self-links).
+//   - Targets are validated against the on-disk .md set (NOT collectDocs's
+//     published set) so redirect stubs like API/fliplet-core.md — excluded from
+//     indexing but real, linkable files — count as valid targets. Only
+//     generated/vendor/meta DIRECTORIES (EXCLUDED_DIRS) are skipped.
+//   - Extraction is fence-aware and strips inline-code spans so links inside
+//     ``` blocks or `code` aren't matched. Images (`![]()`) are skipped.
+//   - Escape hatch: `<!-- lint-ignore-link -->` anywhere on the line, plus the
+//     LINK_ALLOWLIST constant for whole-target exceptions (e.g. forward-refs).
+
+// Whole-target exceptions (e.g. a doc deliberately linking a not-yet-merged
+// page). Keep empty unless there's a real forward-reference; prefer fixing the
+// link or the inline `<!-- lint-ignore-link -->` marker.
+const LINK_ALLOWLIST = new Set([]);
+
+const CROSS_LINK_HINT =
+  'Point the link at an existing .md target: a directory-relative path ' +
+  '(e.g. `datasources/joins` from API/, or `../routing`) or a full ' +
+  'https://developers.fliplet.com/...md URL. For an intentional exception add ' +
+  '`<!-- lint-ignore-link -->` on the line or extend LINK_ALLOWLIST.';
+
+// Walk every *.md under rootDir, skipping only EXCLUDED_DIRS (generated/vendor/
+// meta). Unlike walkMarkdown this keeps EXCLUDED_FILES (redirect stubs,
+// *.deprecated.md) because those are still valid link *targets*.
+function* walkAllMarkdown(dir, rootDir = dir) {
+  let entries;
+  try {
+    entries = readdirSync(dir, { withFileTypes: true });
+  } catch {
+    return;
+  }
+  for (const entry of entries) {
+    const full = join(dir, entry.name);
+    const rel = relative(rootDir, full).split(sep).join('/');
+    if (entry.isDirectory()) {
+      if (EXCLUDED_DIRS.includes(entry.name)) continue;
+      yield* walkAllMarkdown(full, rootDir);
+    } else if (entry.isFile() && entry.name.endsWith('.md')) {
+      yield rel;
+    }
+  }
+}
+
+const INLINE_LINK_RE = /(!?)\[(?:[^\]]*)\]\(\s*([^)\s]+)(?:\s+[^)]*)?\)/g;
+
+// Extract candidate internal-link targets from a markdown body. Fence-aware
+// (skips ``` / ~~~ code blocks) and strips inline-code spans. Returns
+// { target, line, ignore }[]. Images are skipped.
+export function extractCrossLinks(body) {
+  const out = [];
+  const lines = body.split(/\r?\n/);
+  let inFence = false;
+  let fenceChar = '';
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const fence = line.match(/^\s*(```+|~~~+)/);
+    if (fence) {
+      const ch = fence[1][0];
+      if (!inFence) {
+        inFence = true;
+        fenceChar = ch;
+      } else if (ch === fenceChar) {
+        inFence = false;
+      }
+      continue;
+    }
+    if (inFence) continue;
+    const ignore = line.includes('lint-ignore-link');
+    // Drop inline-code spans so `[x](y)` inside backticks isn't matched.
+    const stripped = line.replace(/`[^`]*`/g, '');
+    // Reference-style link definitions: `[label]: target`
+    const refDef = stripped.match(/^\s{0,3}\[[^\]]+\]:\s*(\S+)/);
+    if (refDef) {
+      out.push({ target: refDef[1], line: i + 1, ignore });
+      continue;
+    }
+    let m;
+    INLINE_LINK_RE.lastIndex = 0;
+    while ((m = INLINE_LINK_RE.exec(stripped)) !== null) {
+      if (m[1] === '!') continue; // image
+      out.push({ target: m[2], line: i + 1, ignore });
+    }
+  }
+  return out;
+}
+
+// A target is "doc-like" if its last segment is extensionless or ends in
+// .md/.html. Anything else (.txt, .png, .csv, .pdf, …) is a file asset, not a
+// doc cross-link, and is validated elsewhere (or not at all) — skip it.
+function hasNonDocExtension(p) {
+  const seg = p.split('/').pop() || '';
+  const dot = seg.lastIndexOf('.');
+  if (dot <= 0) return false; // no extension, or a dotfile
+  const ext = seg.slice(dot + 1).toLowerCase();
+  return ext !== 'md' && ext !== 'html';
+}
+
+// Collapse '.'/'..' segments. Returns null if the path escapes the root.
+function normalizeRelTarget(p) {
+  const parts = [];
+  for (const seg of p.split('/')) {
+    if (seg === '' || seg === '.') continue;
+    if (seg === '..') {
+      if (parts.length === 0) return null;
+      parts.pop();
+      continue;
+    }
+    parts.push(seg);
+  }
+  return parts.join('/');
+}
+
+// Classify a raw link target. Returns one of:
+//   { skip: true }                         — external/anchor/scheme, ignore
+//   { escaped: true }                      — relative link escaped docs root
+//   { resolved: '<repo-rel base>' }        — internal target to validate
+export function classifyCrossLink(target, fromRelPath) {
+  let t = (target || '').trim();
+  if (t.startsWith('<') && t.endsWith('>')) t = t.slice(1, -1);
+  if (!t || t.startsWith('#')) return { skip: true };
+
+  if (/^https?:\/\//i.test(t)) {
+    let u;
+    try {
+      u = new URL(t);
+    } catch {
+      return { skip: true };
+    }
+    if (u.hostname !== 'developers.fliplet.com') return { skip: true };
+    const path = u.pathname.replace(/^\/+/, '');
+    if (path === '') return { resolved: 'README.md' };
+    if (hasNonDocExtension(path)) return { skip: true };
+    return { resolved: normalizeRelTarget(path) ?? '' };
+  }
+  if (/^[a-z][a-z0-9+.-]*:/i.test(t)) return { skip: true }; // mailto:, tel:, data:, …
+
+  let path = t.replace(/[?#].*$/, ''); // strip query + anchor
+  if (!path) return { skip: true };
+  if (hasNonDocExtension(path)) return { skip: true }; // asset link, not a doc
+
+  let baseDir;
+  if (path.startsWith('/')) {
+    baseDir = '';
+    path = path.replace(/^\/+/, '');
+  } else {
+    const slash = fromRelPath.lastIndexOf('/');
+    baseDir = slash === -1 ? '' : fromRelPath.slice(0, slash);
+  }
+  const norm = normalizeRelTarget(baseDir ? `${baseDir}/${path}` : path);
+  if (norm === null) return { escaped: true };
+  if (norm === '') return { resolved: 'README.md' };
+  return { resolved: norm };
+}
+
+// Does a source .md exist for the resolved target? Mirrors how CF Pages
+// serves clean URLs: a bare/`.html` path maps back to its `.md` source.
+function crossLinkTargetExists(resolved, validSet) {
+  const candidates = [];
+  if (resolved.endsWith('.md')) {
+    candidates.push(resolved);
+  } else if (resolved.endsWith('.html')) {
+    candidates.push(resolved.replace(/\.html$/, '.md'));
+  } else {
+    candidates.push(`${resolved}.md`, `${resolved}/README.md`, `${resolved}/index.md`);
+  }
+  return candidates.some((c) => validSet.has(c));
+}
+
+// Strict-mode cross-link validator. Returns { relPath, link, resolvedTarget,
+// message, hint, line }[] — empty array means clean.
+export function validateCrossLinks(docs, rootDir) {
+  const validSet = new Set();
+  for (const rel of walkAllMarkdown(rootDir)) validSet.add(rel);
+
+  const errors = [];
+  for (const doc of docs) {
+    for (const link of extractCrossLinks(doc.body)) {
+      if (link.ignore || LINK_ALLOWLIST.has(link.target)) continue;
+      const c = classifyCrossLink(link.target, doc.relPath);
+      if (c.skip) continue;
+      if (c.escaped) {
+        errors.push({
+          relPath: doc.relPath,
+          link: link.target,
+          resolvedTarget: null,
+          message: `cross-link \`${link.target}\` escapes the docs root`,
+          hint: CROSS_LINK_HINT,
+          line: link.line,
+        });
+        continue;
+      }
+      if (!crossLinkTargetExists(c.resolved, validSet)) {
+        errors.push({
+          relPath: doc.relPath,
+          link: link.target,
+          resolvedTarget: c.resolved,
+          message: `cross-link \`${link.target}\` → \`${c.resolved}\` not found`,
+          hint: CROSS_LINK_HINT,
+          line: link.line,
+        });
+      }
+    }
+  }
+  return errors;
+}
+
 function main() {
   const strict = process.argv.includes('--strict');
   const docs = collectDocs(docsRoot);
@@ -793,6 +1024,23 @@ function main() {
     if (strict) {
       console.error(
         `\n${capHardErrors.length} capability error${capHardErrors.length === 1 ? '' : 's'} — failing build (--strict).`,
+      );
+      process.exit(1);
+    }
+  }
+
+  // Cross-link validation: catch internal links that don't resolve to an
+  // existing doc file. Same --strict gate as the validators above.
+  const linkErrors = validateCrossLinks(docs, docsRoot);
+  if (linkErrors.length > 0) {
+    const tag = strict ? '[error]' : '[warn]';
+    for (const e of linkErrors) {
+      console.error(`${tag} ${e.relPath}:${e.line}: ${e.message}`);
+      if (e.hint) console.error(`         hint: ${e.hint}`);
+    }
+    if (strict) {
+      console.error(
+        `\n${linkErrors.length} cross-link error${linkErrors.length === 1 ? '' : 's'} — failing build (--strict).`,
       );
       process.exit(1);
     }

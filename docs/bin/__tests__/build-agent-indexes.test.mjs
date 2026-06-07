@@ -13,6 +13,7 @@ import {
   parseFrontmatter,
   extractH1AndIntro,
   urlForPath,
+  urlForPathMd,
   truncate,
   emitLlmsTxt,
   emitAgentSkills,
@@ -31,6 +32,9 @@ import {
   ALLOWED_TYPES,
   CLUSTERS,
   collectDocs,
+  extractCrossLinks,
+  classifyCrossLink,
+  validateCrossLinks,
 } from '../build-agent-indexes.mjs';
 
 describe('parseFrontmatter', () => {
@@ -157,6 +161,26 @@ describe('urlForPath', () => {
       urlForPath('Data-source-security.md'),
       'https://developers.fliplet.com/Data-source-security.html',
     );
+  });
+});
+
+describe('urlForPathMd (raw .md URL for AI surfaces)', () => {
+  it('keeps the .md extension for nested paths', () => {
+    assert.equal(
+      urlForPathMd('API/datasources/joins.md'),
+      'https://developers.fliplet.com/API/datasources/joins.md',
+    );
+  });
+
+  it('maps README.md to /index.md (the published homepage sibling)', () => {
+    assert.equal(urlForPathMd('README.md'), 'https://developers.fliplet.com/index.md');
+  });
+
+  it('never emits .html (the shape web_fetch / the MCP worker reject)', () => {
+    for (const p of ['API/core/storage.md', 'Data-source-security.md', 'API/fliplet-media.md']) {
+      assert.ok(urlForPathMd(p).endsWith('.md'));
+      assert.ok(!urlForPathMd(p).includes('.html'));
+    }
   });
 });
 
@@ -1176,5 +1200,164 @@ describe('ALLOWED_CATEGORIES', () => {
     for (const c of ALLOWED_CATEGORIES) {
       assert.ok(ALLOWED_CATEGORIES_SET.has(c));
     }
+  });
+});
+
+describe('extractCrossLinks', () => {
+  it('captures inline links and reference definitions', () => {
+    const body = '[a](foo/bar)\n\nText [b](../baz) more.\n\n[ref]: qux/quux\n';
+    const targets = extractCrossLinks(body).map((l) => l.target);
+    assert.deepEqual(targets, ['foo/bar', '../baz', 'qux/quux']);
+  });
+
+  it('skips images', () => {
+    const targets = extractCrossLinks('![alt](pic.png) and [real](doc)').map((l) => l.target);
+    assert.deepEqual(targets, ['doc']);
+  });
+
+  it('skips links inside fenced code blocks (``` and ~~~)', () => {
+    const body = '```\n[notalink](nope)\n```\n\n[real](yes)\n\n~~~\n[also](nope2)\n~~~\n';
+    const targets = extractCrossLinks(body).map((l) => l.target);
+    assert.deepEqual(targets, ['yes']);
+  });
+
+  it('skips links inside inline-code spans', () => {
+    const targets = extractCrossLinks('Use `[x](y)` literally, but [real](z) counts.').map((l) => l.target);
+    assert.deepEqual(targets, ['z']);
+  });
+
+  it('flags the lint-ignore-link marker on the line', () => {
+    const links = extractCrossLinks('[skip](broken) <!-- lint-ignore-link -->');
+    assert.equal(links[0].ignore, true);
+  });
+
+  it('reports 1-based line numbers', () => {
+    const links = extractCrossLinks('line1\n\n[x](y)\n');
+    assert.equal(links[0].line, 3);
+  });
+});
+
+describe('classifyCrossLink', () => {
+  const from = 'API/fliplet-datasources.md'; // dir = API
+
+  it('resolves a bare directory-relative link', () => {
+    assert.deepEqual(classifyCrossLink('datasources/joins', from), { resolved: 'API/datasources/joins' });
+  });
+
+  it('resolves a ./ current-dir link', () => {
+    assert.deepEqual(classifyCrossLink('./fliplet-ui', from), { resolved: 'API/fliplet-ui' });
+  });
+
+  it('resolves a ../ parent link WITHOUT emitting literal ".."', () => {
+    const r = classifyCrossLink('../API-Documentation', from);
+    assert.deepEqual(r, { resolved: 'API-Documentation' });
+    assert.ok(!r.resolved.includes('..'));
+  });
+
+  it('resolves a deeper ../../ parent link', () => {
+    assert.deepEqual(classifyCrossLink('../../API-Documentation', 'API/v3/auth.md'), {
+      resolved: 'API-Documentation',
+    });
+  });
+
+  it('resolves a /-rooted link against the docs root', () => {
+    assert.deepEqual(classifyCrossLink('/Quickstart', from), { resolved: 'Quickstart' });
+  });
+
+  it('strips a #anchor before resolving', () => {
+    assert.deepEqual(classifyCrossLink('../routing#guards', from), { resolved: 'routing' });
+  });
+
+  it('skips a pure #anchor', () => {
+    assert.deepEqual(classifyCrossLink('#section', from), { skip: true });
+  });
+
+  it('skips foreign hosts', () => {
+    assert.deepEqual(classifyCrossLink('https://platform.openai.com/x', from), { skip: true });
+    assert.deepEqual(classifyCrossLink('https://help.fliplet.com/x', from), { skip: true });
+  });
+
+  it('resolves an absolute developers.fliplet.com link', () => {
+    assert.deepEqual(
+      classifyCrossLink('https://developers.fliplet.com/API/datasources/joins.html', from),
+      { resolved: 'API/datasources/joins.html' },
+    );
+  });
+
+  it('skips non-doc asset extensions (.txt/.png/.pdf)', () => {
+    assert.deepEqual(classifyCrossLink('../../assets/misc/cert.txt', from), { skip: true });
+    assert.deepEqual(classifyCrossLink('logo.png', from), { skip: true });
+  });
+
+  it('skips mailto: and other schemes', () => {
+    assert.deepEqual(classifyCrossLink('mailto:a@b.com', from), { skip: true });
+  });
+
+  it('flags a relative link that escapes the docs root', () => {
+    assert.deepEqual(classifyCrossLink('../../../etc/passwd.md', 'API/foo.md'), { escaped: true });
+  });
+});
+
+describe('validateCrossLinks (end-to-end on a tmp fixture)', () => {
+  const fixtureDir = join(tmpdir(), `cross-links-test-${Date.now()}`);
+  mkdirSync(join(fixtureDir, 'API', 'datasources'), { recursive: true });
+  // Valid targets on disk
+  writeFileSync(join(fixtureDir, 'README.md'), '# Home\n\nIntro.\n');
+  writeFileSync(join(fixtureDir, 'API-Documentation.md'), '# API\n\nIndex.\n');
+  writeFileSync(join(fixtureDir, 'API', 'datasources', 'joins.md'), '# Joins\n\nJoins doc.\n');
+  // A redirect-stub-style EXCLUDED file: indexing skips it, but it is a VALID link target
+  writeFileSync(join(fixtureDir, 'API', 'fliplet-core.md'), '# Core\n\nStub.\n');
+
+  function doc(relPath, body) {
+    return { relPath, body };
+  }
+
+  it('returns no errors when every internal link resolves', () => {
+    const docs = [
+      doc(
+        'API/fliplet-datasources.md',
+        '# DS\n\nSee [joins](datasources/joins) and [back](../API-Documentation).\n' +
+          'Also [core](fliplet-core) and [home](/README.md).\n' +
+          '[ext](https://platform.openai.com/x) and ![img](pic.png).\n',
+      ),
+    ];
+    assert.deepEqual(validateCrossLinks(docs, fixtureDir), []);
+  });
+
+  it('treats an EXCLUDED_FILES target (redirect stub) as valid', () => {
+    const docs = [doc('API/x.md', '[core](fliplet-core)')];
+    assert.deepEqual(validateCrossLinks(docs, fixtureDir), []);
+  });
+
+  it('resolves .html links to their .md source', () => {
+    const docs = [doc('API/x.md', '[j](datasources/joins.html)')];
+    assert.deepEqual(validateCrossLinks(docs, fixtureDir), []);
+  });
+
+  it('flags a broken link with the full error contract', () => {
+    const docs = [doc('API/x.md', '# X\n\n[bad](datasources/missing)\n')];
+    const errors = validateCrossLinks(docs, fixtureDir);
+    assert.equal(errors.length, 1);
+    const e = errors[0];
+    assert.equal(e.relPath, 'API/x.md');
+    assert.equal(e.link, 'datasources/missing');
+    assert.equal(e.resolvedTarget, 'API/datasources/missing');
+    assert.match(e.message, /not found/);
+    assert.ok(e.hint);
+    assert.equal(typeof e.line, 'number');
+  });
+
+  it('suppresses a broken link marked lint-ignore-link', () => {
+    const docs = [doc('API/x.md', '[bad](datasources/missing) <!-- lint-ignore-link -->')];
+    assert.deepEqual(validateCrossLinks(docs, fixtureDir), []);
+  });
+
+  it('does not flag links inside fenced code blocks', () => {
+    const docs = [doc('API/x.md', '```\n[bad](datasources/missing)\n```\n')];
+    assert.deepEqual(validateCrossLinks(docs, fixtureDir), []);
+  });
+
+  it('(teardown)', () => {
+    rmSync(fixtureDir, { recursive: true, force: true });
   });
 });

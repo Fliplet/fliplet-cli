@@ -132,7 +132,10 @@ export function emitV3LibraryCatalog(docs) {
       namespace: doc.title,
       title: doc.title,
       description: doc.description || '',
-      docUrl: doc.url,
+      // AI-consumption surface: emit the raw .md URL (Studio's V3 builder fetches
+      // this directly; web_fetch refuses HTML). Falls back to .url for any doc
+      // record without urlMd (e.g. test fixtures).
+      docUrl: doc.urlMd || doc.url,
       preloaded: isAmbient,
       capabilities: parseListFrontmatter(fm.capabilities),
     };
