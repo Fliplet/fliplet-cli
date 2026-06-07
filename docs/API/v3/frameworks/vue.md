@@ -1,6 +1,6 @@
 ---
 title: "V3 Vue apps"
-description: Constraints for building V3 apps in Vue 3. Covers the runtime-compiler vs runtime-only build choice, the .vue single-file-component tradeoff without a loader, and the Vue Router base-path wiring to Fliplet.Router.getBasePath.
+description: Constraints for building V3 apps in Vue 3. Covers the runtime-compiler vs runtime-only build choice, the .vue single-file-component tradeoff without a loader, and the platform-conditional Vue Router history wiring (createWebHistory + base path on web, createWebHashHistory on native, branched on Fliplet.Router.isNative).
 type: guide
 tags: [js-api, v3, framework, vue]
 v3_relevant: true
@@ -43,16 +43,18 @@ const VueRouter = window.VueRouter;
 
 ## Wiring to Fliplet.Router
 
-Full contract is in [V3 routing](../routing). Vue-specific note: pass the base path into `createWebHistory`:
+Full contract is in [V3 routing](../routing). Vue-specific note: the history backend is platform-conditional — path history with the base path on web, hash history on native (Cordova `file://` blocks `pushState` path changes):
 
 ```js
 const router = VueRouter.createRouter({
-  history: VueRouter.createWebHistory(Fliplet.Router.getBasePath()),
+  history: Fliplet.Router.isNative()
+    ? VueRouter.createWebHashHistory()                       // native — hash only
+    : VueRouter.createWebHistory(Fliplet.Router.getBasePath()), // web — path + basename
   routes: [...]
 });
 ```
 
-`createWebHashHistory` is rejected by the boot-HTML lint (rule `create-web-hash-history`).
+Unconditional `createWebHistory()` throws a `file:` `SecurityError` on native; unconditional `createWebHashHistory()` produces ugly `#/route` URLs on web. The boot-HTML lint flags both unless you branch on `Fliplet.Router.isNative()` (`unguarded-web-history` / `create-web-hash-history`).
 
 Build routes from `Fliplet.Router.getRouteManifest()` — do not hardcode. In each route's resolver, call `Fliplet.Router.resolveRoute(path)`. The `content` field in its result IS the screen's source — already fetched for you via `Fliplet.Media.getContents`. Return it from your loader and render it in your component; don't fetch the file again.
 
@@ -82,8 +84,10 @@ Then `<img :src="logoSrc">`. Using `src="{{ rawUrl }}"` directly, or computing t
 
 - DO use `Fliplet.require.lazy('vue')` and the runtime-compiler build.
 - DO build the router from `Fliplet.Router.getRouteManifest()` + `getBasePath()`.
+- DO branch the history backend on `Fliplet.Router.isNative()` — `createWebHashHistory()` on native, `createWebHistory(getBasePath())` on web.
 - DO bind authenticated media URLs into reactive `data()` fields.
-- DON'T use `createWebHashHistory` — rejected by lint.
+- DON'T use `createWebHistory()` unconditionally — it throws a `file:` `SecurityError` on native. Gate it on `Fliplet.Router.isNative()`.
+- DON'T use `createWebHashHistory()` on web — hash mode is only for native.
 - DON'T author `.vue` SFCs without `vue3-sfc-loader` loaded.
 - DON'T `import` anything — use `Fliplet.require.lazy`.
 
