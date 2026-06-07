@@ -1,5 +1,5 @@
 # Fliplet Developers documentation
-URL: https://developers.fliplet.com/
+URL: https://developers.fliplet.com/index.md
 
 # Fliplet Developers documentation
 
@@ -100,7 +100,7 @@ Here's a short list of requested features that are coming up on our platform in 
 ---
 
 # Manually creating a P12 certificate
-URL: https://developers.fliplet.com/aab/create-p12-certificate.html
+URL: https://developers.fliplet.com/aab/create-p12-certificate.md
 
 # Manually creating a P12 certificate
 
@@ -133,7 +133,7 @@ Generate a P12 signing key from an Apple Enterprise account to supply to Fliplet
 ---
 
 # AI-powered Fliplet development with Cursor
-URL: https://developers.fliplet.com/AI-powered-development-with-Cursor.html
+URL: https://developers.fliplet.com/AI-powered-development-with-Cursor.md
 
 # AI-powered Fliplet development with Cursor
 
@@ -176,7 +176,7 @@ By combining the power of Fliplet's tools with AI-driven development through Cur
 ---
 
 # AJAX cross-domain and cross-origin requests
-URL: https://developers.fliplet.com/AJAX-cross-domain.html
+URL: https://developers.fliplet.com/AJAX-cross-domain.md
 
 # AJAX cross-domain and cross-origin requests
 
@@ -228,7 +228,7 @@ A proxy service acts as an intermediary for requests from the requester to the r
 ---
 
 # Fliplet analytics event reference
-URL: https://developers.fliplet.com/Analytics-documentation.html
+URL: https://developers.fliplet.com/Analytics-documentation.md
 
 # Fliplet analytics event reference
 
@@ -531,7 +531,7 @@ Reference list of analytics event types Fliplet emits for page views, navigation
 ---
 
 # JS API Documentation
-URL: https://developers.fliplet.com/API-Documentation.html
+URL: https://developers.fliplet.com/API-Documentation.md
 
 # JS API Documentation
 
@@ -676,7 +676,7 @@ These APIs are currently undocumented and reserved for internal use. They are us
 ---
 
 # Accordion component
-URL: https://developers.fliplet.com/API/components/accordions.html
+URL: https://developers.fliplet.com/API/components/accordions.md
 
 # Accordion component
 
@@ -720,7 +720,7 @@ action=openAccordion&title=Foo%20bar&scroll=true
 ---
 
 # Charts component
-URL: https://developers.fliplet.com/API/components/charts.html
+URL: https://developers.fliplet.com/API/components/charts.md
 
 # Charts component
 
@@ -1004,7 +1004,7 @@ Fliplet.Hooks.on('afterChartRender', fn);
 ---
 
 # Chat JS APIs
-URL: https://developers.fliplet.com/API/components/chat.html
+URL: https://developers.fliplet.com/API/components/chat.md
 
 # Chat JS APIs
 
@@ -1451,7 +1451,7 @@ Fliplet.Hooks.on('flChatBeforeRedirectToLogin', function (navigate) {
 ---
 
 # Data Directory JS APIs
-URL: https://developers.fliplet.com/API/components/data-directory.html
+URL: https://developers.fliplet.com/API/components/data-directory.md
 
 # Data Directory JS APIs
 
@@ -1566,7 +1566,7 @@ Search the directory with the keyword "engineer"
 ---
 
 # Dynamic Container JS APIs
-URL: https://developers.fliplet.com/API/components/dynamic-container.html
+URL: https://developers.fliplet.com/API/components/dynamic-container.md
 
 # Dynamic Container JS APIs
 
@@ -1680,7 +1680,7 @@ Fliplet.DynamicContainer.get().then(function (container) {
 ---
 
 # Email Verification component
-URL: https://developers.fliplet.com/API/components/email-verification.html
+URL: https://developers.fliplet.com/API/components/email-verification.md
 
 # Email Verification component
 
@@ -1802,7 +1802,7 @@ Fliplet.Hooks.on('onUserVerified', function (data) {
 ---
 
 # Form JS APIs
-URL: https://developers.fliplet.com/API/components/form-builder.html
+URL: https://developers.fliplet.com/API/components/form-builder.md
 
 # Form JS APIs
 
@@ -2378,7 +2378,7 @@ Fliplet.DataSources.connect(dataSourceId).then(function (connection) {
 ---
 
 # Interactive Graphics JS APIs
-URL: https://developers.fliplet.com/API/components/interactive-graphics.html
+URL: https://developers.fliplet.com/API/components/interactive-graphics.md
 
 # Interactive Graphics JS APIs
 
@@ -2547,7 +2547,7 @@ Fliplet.Hooks.on('flInteractiveGraphicsLabelClick', function onLabelClick(data) 
 ---
 
 # List (from Data Source) component
-URL: https://developers.fliplet.com/API/components/list-from-data-source.html
+URL: https://developers.fliplet.com/API/components/list-from-data-source.md
 
 # List (from Data Source) component
 
@@ -3472,7 +3472,7 @@ dynamicListPrefilterColumn=Category&dynamicListPrefilterValue=[Fruit,Vegetable]&
 ---
 
 # List Repeater JS APIs
-URL: https://developers.fliplet.com/API/components/list-repeater.html
+URL: https://developers.fliplet.com/API/components/list-repeater.md
 
 # List Repeater JS APIs
 
@@ -3592,7 +3592,7 @@ Fliplet.Hooks.on('repeaterDataRetrieveError', function(result) {
 ---
 
 # Login
-URL: https://developers.fliplet.com/API/components/login.html
+URL: https://developers.fliplet.com/API/components/login.md
 
 # Login
 
@@ -3699,7 +3699,7 @@ Fliplet.Hooks.on('sessionValidate', function (data) {
 ---
 
 # Bottom Icon Bar menu component
-URL: https://developers.fliplet.com/API/components/menu-bottom-icon-bar.html
+URL: https://developers.fliplet.com/API/components/menu-bottom-icon-bar.md
 
 # Bottom Icon Bar menu component
 
@@ -3721,7 +3721,7 @@ Use a 0-indexed query parameter to highlight an menu item.
 ---
 
 # Push Notifications JS APIs
-URL: https://developers.fliplet.com/API/components/push-notifications.html
+URL: https://developers.fliplet.com/API/components/push-notifications.md
 
 # Push Notifications JS APIs
 
@@ -3838,7 +3838,7 @@ Fliplet.User.getPushToken({}).then(function (token) {
 ---
 
 # Record container JS APIs
-URL: https://developers.fliplet.com/API/components/record-container.html
+URL: https://developers.fliplet.com/API/components/record-container.md
 
 # Record container JS APIs
 
@@ -3952,7 +3952,7 @@ Fliplet.Hooks.on('recordContainerBeforeRetrieveData', function () {
 ---
 
 # Fliplet.AI
-URL: https://developers.fliplet.com/API/core/ai.html
+URL: https://developers.fliplet.com/API/core/ai.md
 
 # `Fliplet.AI`
 
@@ -4874,7 +4874,7 @@ It is recommended to implement robust error handling in your application, provid
 ---
 
 # Fliplet.Analytics
-URL: https://developers.fliplet.com/API/core/analytics.html
+URL: https://developers.fliplet.com/API/core/analytics.md
 
 # `Fliplet.Analytics`
 
@@ -5229,7 +5229,7 @@ This will return data by operation system and browser.
 ---
 
 # Fliplet.API.request()
-URL: https://developers.fliplet.com/API/core/api.html
+URL: https://developers.fliplet.com/API/core/api.md
 
 # `Fliplet.API.request()`
 
@@ -5525,7 +5525,7 @@ Fliplet.API.request({
 ---
 
 # App Actions V2 (deprecated)
-URL: https://developers.fliplet.com/API/core/app-actions-v2.html
+URL: https://developers.fliplet.com/API/core/app-actions-v2.md
 
 # App Actions V2 (deprecated)
 
@@ -6204,7 +6204,7 @@ If you're using an app action to make requests to your server you may need to wh
 ---
 
 # App Actions V3
-URL: https://developers.fliplet.com/API/core/app-actions-v3.html
+URL: https://developers.fliplet.com/API/core/app-actions-v3.md
 
 # App Actions V3
 
@@ -7545,7 +7545,7 @@ If you use an app action to make requests to your server, you may need to whitel
 ---
 
 # App Actions V1 (deprecated)
-URL: https://developers.fliplet.com/API/core/app-actions.html
+URL: https://developers.fliplet.com/API/core/app-actions.md
 
 # App Actions V1 (deprecated)
 
@@ -7918,7 +7918,7 @@ If you're using an app action to make requests to your server you may need to wh
 ---
 
 # Fliplet.App
-URL: https://developers.fliplet.com/API/core/app.html
+URL: https://developers.fliplet.com/API/core/app.md
 
 # `Fliplet.App`
 
@@ -8362,7 +8362,7 @@ Fliplet.Hooks.on('afterAboutAppOpen', function (overlay) {
 ---
 
 # Fliplet.Apps
-URL: https://developers.fliplet.com/API/core/apps.html
+URL: https://developers.fliplet.com/API/core/apps.md
 
 # `Fliplet.Apps`
 
@@ -8381,7 +8381,7 @@ Fliplet.Apps.get().then(function (apps) {
 ---
 
 # Fliplet.User.Biometrics
-URL: https://developers.fliplet.com/API/core/biometrics.html
+URL: https://developers.fliplet.com/API/core/biometrics.md
 
 # `Fliplet.User.Biometrics`
 
@@ -8427,7 +8427,7 @@ Fliplet.User.Biometrics.verify({
 ---
 
 # Fliplet.Cache
-URL: https://developers.fliplet.com/API/core/cache.html
+URL: https://developers.fliplet.com/API/core/cache.md
 
 # `Fliplet.Cache`
 
@@ -8488,7 +8488,7 @@ Fliplet.Cache.clear();
 ---
 
 # Fliplet.Encode
-URL: https://developers.fliplet.com/API/core/encode.html
+URL: https://developers.fliplet.com/API/core/encode.md
 
 # `Fliplet.Encode`
 
@@ -8614,7 +8614,7 @@ var formData = {
 ---
 
 # Fliplet.Env
-URL: https://developers.fliplet.com/API/core/environment.html
+URL: https://developers.fliplet.com/API/core/environment.md
 
 # `Fliplet.Env`
 
@@ -8684,7 +8684,7 @@ if (Fliplet.Env.is('web')) {
 ---
 
 # Fliplet.parseError()
-URL: https://developers.fliplet.com/API/core/error.html
+URL: https://developers.fliplet.com/API/core/error.md
 
 # `Fliplet.parseError()`
 
@@ -8717,7 +8717,7 @@ Any unknown objects are then turned into JSON strings.
 ---
 
 # Fliplet.Hooks
-URL: https://developers.fliplet.com/API/core/hooks.html
+URL: https://developers.fliplet.com/API/core/hooks.md
 
 # `Fliplet.Hooks`
 
@@ -8792,7 +8792,7 @@ The second function is an error handler that runs if the promise is rejected for
 ---
 
 # Fliplet.Locale
-URL: https://developers.fliplet.com/API/core/localization.html
+URL: https://developers.fliplet.com/API/core/localization.md
 
 # `Fliplet.Locale`
 
@@ -9069,7 +9069,7 @@ Handlebars.compile('{{ TN foo notation="compact" compactDisplay="long" }}')({ fo
 ---
 
 # Fliplet common functions
-URL: https://developers.fliplet.com/API/core/misc.html
+URL: https://developers.fliplet.com/API/core/misc.md
 
 # Fliplet common functions
 
@@ -9115,7 +9115,7 @@ var guid = Fliplet.guid();
 ---
 
 # Fliplet.Modal
-URL: https://developers.fliplet.com/API/core/modal.html
+URL: https://developers.fliplet.com/API/core/modal.md
 
 # `Fliplet.Modal`
 
@@ -9148,7 +9148,7 @@ Fliplet.Modal.alert({ message: 'Thanks for confirming'}).then(function () {
 ---
 
 # Fliplet.Navigate
-URL: https://developers.fliplet.com/API/core/navigate.html
+URL: https://developers.fliplet.com/API/core/navigate.md
 
 # `Fliplet.Navigate`
 
@@ -9528,7 +9528,7 @@ Fliplet.Navigate.runFunction('myFunction', { foo: 'bar' });
 ---
 
 # Fliplet.Navigator
-URL: https://developers.fliplet.com/API/core/navigator.html
+URL: https://developers.fliplet.com/API/core/navigator.md
 
 # `Fliplet.Navigator`
 
@@ -9608,7 +9608,7 @@ Fliplet.Navigator.location().then(function (position) {
 ---
 
 # Fliplet.Navigator.Notifications
-URL: https://developers.fliplet.com/API/core/notifications.html
+URL: https://developers.fliplet.com/API/core/notifications.md
 
 # `Fliplet.Navigator.Notifications`
 
@@ -9820,7 +9820,7 @@ Note: compared to native devices, web support for local notifications is limited
 ---
 
 # Fliplet.Organizations
-URL: https://developers.fliplet.com/API/core/organizations.html
+URL: https://developers.fliplet.com/API/core/organizations.md
 
 # `Fliplet.Organizations`
 
@@ -9987,7 +9987,7 @@ Here's a list of the default blacklisted extensions we have in place: *exe, jar,
 ---
 
 # Fliplet Core overview
-URL: https://developers.fliplet.com/API/core/overview.html
+URL: https://developers.fliplet.com/API/core/overview.md
 
 # Fliplet Core overview
 
@@ -10046,7 +10046,7 @@ Features are arranged by namespace, e.g. "<strong>Screen</strong>" is the namesp
 ---
 
 # Fliplet.Profile
-URL: https://developers.fliplet.com/API/core/profile.html
+URL: https://developers.fliplet.com/API/core/profile.md
 
 # `Fliplet.Profile`
 
@@ -10085,7 +10085,7 @@ Use `Fliplet.Profile.getDeviceUuid()` to get the device's UUID.
 ---
 
 # Fliplet.Registry
-URL: https://developers.fliplet.com/API/core/registry.html
+URL: https://developers.fliplet.com/API/core/registry.md
 
 # `Fliplet.Registry`
 
@@ -10117,7 +10117,7 @@ multiply(2, 3); // 6
 ---
 
 # Fliplet.require
-URL: https://developers.fliplet.com/API/core/require.html
+URL: https://developers.fliplet.com/API/core/require.md
 
 # `Fliplet.require`
 
@@ -10290,7 +10290,7 @@ console.log(url); // 'https://cdn.fliplet.com/libs/signature-pad/1.5.3/signature
 ---
 
 # Fliplet.Pages and Fliplet.Page
-URL: https://developers.fliplet.com/API/core/screens.html
+URL: https://developers.fliplet.com/API/core/screens.md
 
 # `Fliplet.Pages` and `Fliplet.Page`
 
@@ -10363,7 +10363,7 @@ Fliplet.API.request({
 ---
 
 # Fliplet.Storage and Fliplet.App.Storage
-URL: https://developers.fliplet.com/API/core/storage.html
+URL: https://developers.fliplet.com/API/core/storage.md
 
 # `Fliplet.Storage` and `Fliplet.App.Storage`
 
@@ -10504,7 +10504,7 @@ myNamespaceStorage.clear()
 ---
 
 # Fliplet.Studio
-URL: https://developers.fliplet.com/API/core/studio.html
+URL: https://developers.fliplet.com/API/core/studio.md
 
 # `Fliplet.Studio`
 
@@ -10626,7 +10626,7 @@ Fliplet.Studio.emit('navigate', {
 ---
 
 # Fliplet.User
-URL: https://developers.fliplet.com/API/core/user.html
+URL: https://developers.fliplet.com/API/core/user.md
 
 # `Fliplet.User`
 
@@ -10678,7 +10678,7 @@ Fliplet.User.Preferences.get().then(function (preferences) {
 ---
 
 # Fliplet.Widget
-URL: https://developers.fliplet.com/API/core/widget.html
+URL: https://developers.fliplet.com/API/core/widget.md
 
 # `Fliplet.Widget`
 
@@ -11059,7 +11059,7 @@ Fliplet.Foo.getAll({ type: 'bar' }).then((instances) => { /* Returns an array of
 ---
 
 # Data Source joins
-URL: https://developers.fliplet.com/API/datasources/joins.html
+URL: https://developers.fliplet.com/API/datasources/joins.md
 
 # Data Source joins
 
@@ -11694,7 +11694,7 @@ connection.find({
 ---
 
 # Data Sources query operators
-URL: https://developers.fliplet.com/API/datasources/query-operators.html
+URL: https://developers.fliplet.com/API/datasources/query-operators.md
 
 # Data Sources query operators
 
@@ -12112,7 +12112,7 @@ Both `find` and `findOne` accept:
 ---
 
 # Data Source views
-URL: https://developers.fliplet.com/API/datasources/views.html
+URL: https://developers.fliplet.com/API/datasources/views.md
 
 # Data Source views
 
@@ -12164,7 +12164,7 @@ Fliplet.DataSources.connect(123).then(function (connection) {
 ---
 
 # fliplet-analytics-spa
-URL: https://developers.fliplet.com/API/fliplet-analytics-spa.html
+URL: https://developers.fliplet.com/API/fliplet-analytics-spa.md
 
 # `fliplet-analytics-spa`
 
@@ -12290,7 +12290,7 @@ Because page views are tracked automatically, **do not call `Fliplet.App.Analyti
 ---
 
 # Fliplet.App.Submissions
-URL: https://developers.fliplet.com/API/fliplet-app-submissions.html
+URL: https://developers.fliplet.com/API/fliplet-app-submissions.md
 
 # `Fliplet.App.Submissions`
 
@@ -12513,7 +12513,7 @@ Fliplet.App.Submissions.get().then(function (submissions) {
 ---
 
 # Fliplet.Media.Audio.Player
-URL: https://developers.fliplet.com/API/fliplet-audio-player.html
+URL: https://developers.fliplet.com/API/fliplet-audio-player.md
 
 # `Fliplet.Media.Audio.Player`
 
@@ -12549,7 +12549,7 @@ If you need to add more tags at runtime, simply run `Fliplet.Media.Audio.Player.
 ---
 
 # Fliplet.Media.Audio
-URL: https://developers.fliplet.com/API/fliplet-audio.html
+URL: https://developers.fliplet.com/API/fliplet-audio.md
 
 # `Fliplet.Media.Audio`
 
@@ -12588,7 +12588,7 @@ Fliplet.Media.Audio('https://path/to/file.mp3').then(function (audio) {
 ---
 
 # Fliplet.Barcode
-URL: https://developers.fliplet.com/API/fliplet-barcode.html
+URL: https://developers.fliplet.com/API/fliplet-barcode.md
 
 # `Fliplet.Barcode`
 
@@ -12725,7 +12725,7 @@ Fliplet.Barcode.encode(text, options).then(function (data) {
 ---
 
 # Fliplet.Chat
-URL: https://developers.fliplet.com/API/fliplet-chat.html
+URL: https://developers.fliplet.com/API/fliplet-chat.md
 
 # `Fliplet.Chat`
 
@@ -13229,7 +13229,7 @@ Returns the per-conversation encryption key used when downloading attachments ta
 ---
 
 # Fliplet.Communicate
-URL: https://developers.fliplet.com/API/fliplet-communicate.html
+URL: https://developers.fliplet.com/API/fliplet-communicate.md
 
 # `Fliplet.Communicate`
 
@@ -13622,7 +13622,7 @@ Fliplet.Communicate.sendPushNotification(appId, {
 ---
 
 # Fliplet.Content()
-URL: https://developers.fliplet.com/API/fliplet-content.html
+URL: https://developers.fliplet.com/API/fliplet-content.md
 
 # `Fliplet.Content()`
 
@@ -13783,7 +13783,7 @@ Delete existing entries.
 ---
 
 # Fliplet.CSV
-URL: https://developers.fliplet.com/API/fliplet-csv.html
+URL: https://developers.fliplet.com/API/fliplet-csv.md
 
 # `Fliplet.CSV`
 
@@ -13899,7 +13899,7 @@ Fliplet.CSV.email(data, options);
 ---
 
 # Fliplet.Database
-URL: https://developers.fliplet.com/API/fliplet-database.html
+URL: https://developers.fliplet.com/API/fliplet-database.md
 
 # `Fliplet.Database`
 
@@ -13939,7 +13939,7 @@ The latter method returns an object with two public methods:
 ---
 
 # Fliplet.DataSources
-URL: https://developers.fliplet.com/API/fliplet-datasources.html
+URL: https://developers.fliplet.com/API/fliplet-datasources.md
 
 # `Fliplet.DataSources`
 
@@ -15736,7 +15736,7 @@ const categories = await inventory.index('Category');
 ---
 
 # Fliplet.DataSources.Encryption
-URL: https://developers.fliplet.com/API/fliplet-encryption.html
+URL: https://developers.fliplet.com/API/fliplet-encryption.md
 
 # `Fliplet.DataSources.Encryption`
 
@@ -15937,7 +15937,7 @@ That's it! The system will take care of automatically encrypting and decrypting 
 ---
 
 # fliplet-error-tracking
-URL: https://developers.fliplet.com/API/fliplet-error-tracking.html
+URL: https://developers.fliplet.com/API/fliplet-error-tracking.md
 
 # `fliplet-error-tracking`
 
@@ -16091,7 +16091,7 @@ The only way to suppress all hooks is to set `window.__FLIPLET_ERROR_TRACKING = 
 ---
 
 # Fliplet.Gamify
-URL: https://developers.fliplet.com/API/fliplet-gamify.html
+URL: https://developers.fliplet.com/API/fliplet-gamify.md
 
 # `Fliplet.Gamify`
 
@@ -16216,7 +16216,7 @@ The following events are available for attaching using the `.on()` method.
 ---
 
 # Fliplet.Media
-URL: https://developers.fliplet.com/API/fliplet-media.html
+URL: https://developers.fliplet.com/API/fliplet-media.md
 
 # `Fliplet.Media`
 
@@ -16729,7 +16729,7 @@ Fliplet.Hooks.on('mediaFileDownloadProgress', function (file) {
 ---
 
 # Fliplet.Native
-URL: https://developers.fliplet.com/API/fliplet-native.html
+URL: https://developers.fliplet.com/API/fliplet-native.md
 
 # `Fliplet.Native`
 
@@ -17124,7 +17124,7 @@ Internally, `init()` uses a W3C brightness calculation (`(r * 299 + g * 587 + b 
 ---
 
 # Fliplet.Native.Downloads
-URL: https://developers.fliplet.com/API/fliplet-native/downloads.html
+URL: https://developers.fliplet.com/API/fliplet-native/downloads.md
 
 # `Fliplet.Native.Downloads`
 
@@ -17427,7 +17427,7 @@ A DOM-level event is also dispatched on `document`: `flDownloadFinished<appId>` 
 ---
 
 # Fliplet.Native.Maintenance
-URL: https://developers.fliplet.com/API/fliplet-native/maintenance.html
+URL: https://developers.fliplet.com/API/fliplet-native/maintenance.md
 
 # `Fliplet.Native.Maintenance`
 
@@ -17849,7 +17849,7 @@ Returns a `Promise<String>`.
 ---
 
 # Fliplet.Notifications
-URL: https://developers.fliplet.com/API/fliplet-notifications.html
+URL: https://developers.fliplet.com/API/fliplet-notifications.md
 
 # `Fliplet.Notifications`
 
@@ -18398,7 +18398,7 @@ Fliplet.Hooks.on('afterNotificationsInit', function (notifications) {
 ---
 
 # Fliplet.OAuth2 (Beta)
-URL: https://developers.fliplet.com/API/fliplet-oauth2.html
+URL: https://developers.fliplet.com/API/fliplet-oauth2.md
 
 # `Fliplet.OAuth2` (Beta)
 
@@ -18583,7 +18583,7 @@ Fliplet.Oauth2(service).on(eventName, fn)
 ---
 
 # Fliplet.Page
-URL: https://developers.fliplet.com/API/fliplet-page.html
+URL: https://developers.fliplet.com/API/fliplet-page.md
 
 # `Fliplet.Page`
 
@@ -18628,7 +18628,7 @@ Fliplet.Page.scrollTo('.title', { context: '[data-entry-id="456"]' })
 ---
 
 # Fliplet.Payments
-URL: https://developers.fliplet.com/API/fliplet-payments.html
+URL: https://developers.fliplet.com/API/fliplet-payments.md
 
 # `Fliplet.Payments`
 
@@ -18904,7 +18904,7 @@ Fliplet.Payments.Customers.openBillingPortal({
 ---
 
 # Fliplet.Profile.Content()
-URL: https://developers.fliplet.com/API/fliplet-profile-content.html
+URL: https://developers.fliplet.com/API/fliplet-profile-content.md
 
 # `Fliplet.Profile.Content()`
 
@@ -19030,7 +19030,7 @@ Delete existing entries.
 ---
 
 # Fliplet Router JS API
-URL: https://developers.fliplet.com/API/fliplet-router.html
+URL: https://developers.fliplet.com/API/fliplet-router.md
 
 # Fliplet Router JS API
 
@@ -19245,7 +19245,7 @@ Update the manifest via the App Settings API (`PUT /v1/apps/:id` with `settings.
 ---
 
 # fliplet-runtime
-URL: https://developers.fliplet.com/API/fliplet-runtime.html
+URL: https://developers.fliplet.com/API/fliplet-runtime.md
 
 # `fliplet-runtime`
 
@@ -19493,7 +19493,7 @@ Fliplet.initializeLocale().then(function() {
 ---
 
 # Fliplet.Security
-URL: https://developers.fliplet.com/API/fliplet-security.html
+URL: https://developers.fliplet.com/API/fliplet-security.md
 
 # `Fliplet.Security`
 
@@ -19730,7 +19730,7 @@ async function signOut() {
 ---
 
 # fliplet-service-worker
-URL: https://developers.fliplet.com/API/fliplet-service-worker.html
+URL: https://developers.fliplet.com/API/fliplet-service-worker.md
 
 # `fliplet-service-worker`
 
@@ -19915,7 +19915,7 @@ In preview mode inside Fliplet Studio the service worker is never active; use th
 ---
 
 # Fliplet.Session
-URL: https://developers.fliplet.com/API/fliplet-session.html
+URL: https://developers.fliplet.com/API/fliplet-session.md
 
 # `Fliplet.Session`
 
@@ -20114,7 +20114,7 @@ var locales = Fliplet.App.Locales.get();
 ---
 
 # Fliplet.Socket
-URL: https://developers.fliplet.com/API/fliplet-socket.html
+URL: https://developers.fliplet.com/API/fliplet-socket.md
 
 # `Fliplet.Socket`
 
@@ -20363,7 +20363,7 @@ onUnmounted(() => {
 ---
 
 # Fliplet.UI.Table
-URL: https://developers.fliplet.com/API/fliplet-table.html
+URL: https://developers.fliplet.com/API/fliplet-table.md
 
 # `Fliplet.UI.Table`
 
@@ -21300,7 +21300,7 @@ You can override these styles by targeting the CSS classes in your own styleshee
 ---
 
 # Fliplet.Themes
-URL: https://developers.fliplet.com/API/fliplet-themes.html
+URL: https://developers.fliplet.com/API/fliplet-themes.md
 
 # `Fliplet.Themes`
 
@@ -21339,7 +21339,7 @@ var value = Fliplet.Themes.Current.get('keyName');
 ---
 
 # Fliplet.App.Tokens
-URL: https://developers.fliplet.com/API/fliplet-tokens.html
+URL: https://developers.fliplet.com/API/fliplet-tokens.md
 
 # `Fliplet.App.Tokens`
 
@@ -21466,7 +21466,7 @@ curl https://api.fliplet.com/v1/apps/$APP_ID/tokens \
 ---
 
 # Fliplet.UI.Actions()
-URL: https://developers.fliplet.com/API/fliplet-ui-actions.html
+URL: https://developers.fliplet.com/API/fliplet-ui-actions.md
 
 # `Fliplet.UI.Actions()`
 
@@ -21564,7 +21564,7 @@ Fliplet.UI.Actions({
 ---
 
 # Fliplet.UI.AddressField()
-URL: https://developers.fliplet.com/API/fliplet-ui-address.html
+URL: https://developers.fliplet.com/API/fliplet-ui-address.md
 
 # `Fliplet.UI.AddressField()`
 
@@ -22180,7 +22180,7 @@ handleClickOutside: function(event) {
 ---
 
 # Fliplet.UI.DatePicker()
-URL: https://developers.fliplet.com/API/fliplet-ui-datepicker.html
+URL: https://developers.fliplet.com/API/fliplet-ui-datepicker.md
 
 # `Fliplet.UI.DatePicker()`
 
@@ -22290,7 +22290,7 @@ Fliplet.UI.DatePicker.get(el)
 ---
 
 # Fliplet.UI.DateRange()
-URL: https://developers.fliplet.com/API/fliplet-ui-daterange.html
+URL: https://developers.fliplet.com/API/fliplet-ui-daterange.md
 
 # `Fliplet.UI.DateRange()`
 
@@ -22410,7 +22410,7 @@ Fliplet.UI.DateRange.get(el)
 ---
 
 # Fliplet.UI.NumberInput()
-URL: https://developers.fliplet.com/API/fliplet-ui-number.html
+URL: https://developers.fliplet.com/API/fliplet-ui-number.md
 
 # `Fliplet.UI.NumberInput()`
 
@@ -22515,7 +22515,7 @@ Fliplet.UI.NumberInput.get(el)
 ---
 
 # Fliplet.UI.PanZoom
-URL: https://developers.fliplet.com/API/fliplet-ui-panzoom.html
+URL: https://developers.fliplet.com/API/fliplet-ui-panzoom.md
 
 # `Fliplet.UI.PanZoom`
 
@@ -22677,7 +22677,7 @@ The `marker` instance variable above makes available the following instance meth
 ---
 
 # Fliplet.UI.RangeSlider()
-URL: https://developers.fliplet.com/API/fliplet-ui-rangeslider.html
+URL: https://developers.fliplet.com/API/fliplet-ui-rangeslider.md
 
 # `Fliplet.UI.RangeSlider()`
 
@@ -22787,7 +22787,7 @@ Fliplet.UI.RangeSlider.get(el)
 ---
 
 # Fliplet.UI.TimePicker()
-URL: https://developers.fliplet.com/API/fliplet-ui-timepicker.html
+URL: https://developers.fliplet.com/API/fliplet-ui-timepicker.md
 
 # `Fliplet.UI.TimePicker()`
 
@@ -22896,7 +22896,7 @@ Fliplet.UI.TimePicker.get(el)
 ---
 
 # Fliplet.UI.TimeRange()
-URL: https://developers.fliplet.com/API/fliplet-ui-timerange.html
+URL: https://developers.fliplet.com/API/fliplet-ui-timerange.md
 
 # `Fliplet.UI.TimeRange()`
 
@@ -23016,7 +23016,7 @@ Fliplet.UI.DatePicker.get(el)
 ---
 
 # Fliplet.UI.Toast.error()
-URL: https://developers.fliplet.com/API/fliplet-ui-toast-error.html
+URL: https://developers.fliplet.com/API/fliplet-ui-toast-error.md
 
 # `Fliplet.UI.Toast.error()`
 
@@ -23065,7 +23065,7 @@ Fliplet.DataSources.connect(0)
 ---
 
 # Fliplet.UI.Toast()
-URL: https://developers.fliplet.com/API/fliplet-ui-toast.html
+URL: https://developers.fliplet.com/API/fliplet-ui-toast.md
 
 # `Fliplet.UI.Toast()`
 
@@ -23243,7 +23243,7 @@ Fliplet.UI.Toast({
 ---
 
 # Fliplet.UI.Typeahead()
-URL: https://developers.fliplet.com/API/fliplet-ui-typeahead.html
+URL: https://developers.fliplet.com/API/fliplet-ui-typeahead.md
 
 # `Fliplet.UI.Typeahead()`
 
@@ -23346,7 +23346,7 @@ Fliplet.UI.Typeahead.get(el)
 ---
 
 # Fliplet.UI
-URL: https://developers.fliplet.com/API/fliplet-ui.html
+URL: https://developers.fliplet.com/API/fliplet-ui.md
 
 # `Fliplet.UI`
 
@@ -23393,7 +23393,7 @@ The following UI elements are optionally available by adding extra packages to y
 ---
 
 # Distributing Helpers as components
-URL: https://developers.fliplet.com/API/helpers/components.html
+URL: https://developers.fliplet.com/API/helpers/components.md
 
 # Distributing Helpers as components
 
@@ -23554,7 +23554,7 @@ Please refer to our [publishing](/Publishing) documentation to publish your comp
 ---
 
 # Dynamic components
-URL: https://developers.fliplet.com/API/helpers/dynamic-components.html
+URL: https://developers.fliplet.com/API/helpers/dynamic-components.md
 
 # Dynamic components
 
@@ -23666,7 +23666,7 @@ Fliplet.Helper({
 ---
 
 # Helper example: decision tree
-URL: https://developers.fliplet.com/API/helpers/example-decision-tree.html
+URL: https://developers.fliplet.com/API/helpers/example-decision-tree.md
 
 # Helper example: decision tree
 
@@ -23837,7 +23837,7 @@ fl-helper[name="question"] {
 ---
 
 # Helper example: question and answer
-URL: https://developers.fliplet.com/API/helpers/example-question.html
+URL: https://developers.fliplet.com/API/helpers/example-question.md
 
 # Helper example: question and answer
 
@@ -23958,7 +23958,7 @@ fl-helper[name="question"] {
 ---
 
 # Helper fields (attributes)
-URL: https://developers.fliplet.com/API/helpers/fields.html
+URL: https://developers.fliplet.com/API/helpers/fields.md
 
 # Helper fields (attributes)
 
@@ -24087,7 +24087,7 @@ Fliplet.Helper({
 ---
 
 # Helper lifecycle hooks and events
-URL: https://developers.fliplet.com/API/helpers/hooks.html
+URL: https://developers.fliplet.com/API/helpers/hooks.md
 
 # Helper lifecycle hooks and events
 
@@ -24171,7 +24171,7 @@ Fliplet.Hooks.on('afterHelpersRender', function () {
 ---
 
 # Helper configuration interface: fields
-URL: https://developers.fliplet.com/API/helpers/interface-fields.html
+URL: https://developers.fliplet.com/API/helpers/interface-fields.md
 
 # Helper configuration interface: fields
 
@@ -24567,7 +24567,7 @@ Example:
 ---
 
 # Helper configuration interface: hooks and events
-URL: https://developers.fliplet.com/API/helpers/interface-hooks.html
+URL: https://developers.fliplet.com/API/helpers/interface-hooks.md
 
 # Helper configuration interface: hooks and events
 
@@ -24743,7 +24743,7 @@ Fliplet.Helper({
 ---
 
 # Helper configuration interface: external libraries
-URL: https://developers.fliplet.com/API/helpers/interface-libraries.html
+URL: https://developers.fliplet.com/API/helpers/interface-libraries.md
 
 # Helper configuration interface: external libraries
 
@@ -24791,7 +24791,7 @@ Fliplet.Helper({
 ---
 
 # Helper configuration interface: methods
-URL: https://developers.fliplet.com/API/helpers/interface-methods.html
+URL: https://developers.fliplet.com/API/helpers/interface-methods.md
 
 # Helper configuration interface: methods
 
@@ -24949,7 +24949,7 @@ var instances = Fliplet.Helper.find({
 ---
 
 # Helper configuration interface
-URL: https://developers.fliplet.com/API/helpers/interface.html
+URL: https://developers.fliplet.com/API/helpers/interface.md
 
 # Helper configuration interface
 
@@ -25008,7 +25008,7 @@ Each field can define its name, type and label. Once the user saves the configur
 ---
 
 # Helper external libraries
-URL: https://developers.fliplet.com/API/helpers/libraries.html
+URL: https://developers.fliplet.com/API/helpers/libraries.md
 
 # Helper external libraries
 
@@ -25050,7 +25050,7 @@ Type is required and should be either `js` or `css` depending on the content of 
 ---
 
 # Helper instance and class methods
-URL: https://developers.fliplet.com/API/helpers/methods.html
+URL: https://developers.fliplet.com/API/helpers/methods.md
 
 # Helper instance and class methods
 
@@ -25306,7 +25306,7 @@ welcome.greet();
 ---
 
 # Fliplet Helpers overview
-URL: https://developers.fliplet.com/API/helpers/overview.html
+URL: https://developers.fliplet.com/API/helpers/overview.md
 
 # Fliplet Helpers overview
 
@@ -25362,7 +25362,7 @@ We now know what Helpers are. The next question is "what can we use them for?"
 ---
 
 # Fliplet Helpers quickstart
-URL: https://developers.fliplet.com/API/helpers/quickstart.html
+URL: https://developers.fliplet.com/API/helpers/quickstart.md
 
 # Fliplet Helpers quickstart
 
@@ -25443,7 +25443,7 @@ This is also how you can copy and paste helper instances between your apps or sc
 ---
 
 # Fliplet.Helper() constructor reference
-URL: https://developers.fliplet.com/API/helpers/references/constructor.html
+URL: https://developers.fliplet.com/API/helpers/references/constructor.md
 
 # Fliplet.Helper() constructor reference
 
@@ -25763,7 +25763,7 @@ Fliplet.Helper({
 ---
 
 # Fliplet.Helper.field() reference
-URL: https://developers.fliplet.com/API/helpers/references/fields.html
+URL: https://developers.fliplet.com/API/helpers/references/fields.md
 
 # Fliplet.Helper.field() reference
 
@@ -25850,7 +25850,7 @@ field.provider.emit('event-name');
 ---
 
 # Fliplet.Helper query methods reference
-URL: https://developers.fliplet.com/API/helpers/references/query.html
+URL: https://developers.fliplet.com/API/helpers/references/query.md
 
 # Fliplet.Helper query methods reference
 
@@ -25886,7 +25886,7 @@ var instances = Fliplet.Helper.find({
 ---
 
 # Styling Helpers
-URL: https://developers.fliplet.com/API/helpers/style.html
+URL: https://developers.fliplet.com/API/helpers/style.md
 
 # Styling Helpers
 
@@ -25911,7 +25911,7 @@ The template shorthand syntax also supports both properties:
 ---
 
 # Helper templates
-URL: https://developers.fliplet.com/API/helpers/templates.html
+URL: https://developers.fliplet.com/API/helpers/templates.md
 
 # Helper templates
 
@@ -26048,7 +26048,7 @@ You can also the shorthand syntax as shown below:
 ---
 
 # Helper rich-content views
-URL: https://developers.fliplet.com/API/helpers/views.html
+URL: https://developers.fliplet.com/API/helpers/views.md
 
 # Helper rich-content views
 
@@ -26154,7 +26154,7 @@ Fliplet.Helper({
 ---
 
 # SAML2 Single Sign-On integration
-URL: https://developers.fliplet.com/API/integrations/sso-saml2.html
+URL: https://developers.fliplet.com/API/integrations/sso-saml2.md
 
 # SAML2 Single Sign-On integration
 
@@ -26294,7 +26294,7 @@ The following links might help you and your IT to configure the integration. Ple
 ---
 
 # Using Handlebars in your apps
-URL: https://developers.fliplet.com/API/libraries/handlebars.html
+URL: https://developers.fliplet.com/API/libraries/handlebars.md
 
 # Using Handlebars in your apps
 
@@ -26399,7 +26399,7 @@ Fliplet apps and widget interfaces are loaded with the following helpers.
 ---
 
 # Fliplet.LikeButton
-URL: https://developers.fliplet.com/API/like-buttons.html
+URL: https://developers.fliplet.com/API/like-buttons.md
 
 # `Fliplet.LikeButton`
 
@@ -26560,7 +26560,7 @@ btn.getTarget();
 ---
 
 # Data Source provider
-URL: https://developers.fliplet.com/API/providers/data-source.html
+URL: https://developers.fliplet.com/API/providers/data-source.md
 
 # Data Source provider
 
@@ -26654,7 +26654,7 @@ provider.emit('update-security-rules', { accessRules: accessRules });
 ---
 
 # Email provider
-URL: https://developers.fliplet.com/API/providers/email.html
+URL: https://developers.fliplet.com/API/providers/email.md
 
 # Email provider
 
@@ -26732,7 +26732,7 @@ provider.then(function(result) {
 ---
 
 # File Picker provider
-URL: https://developers.fliplet.com/API/providers/file-picker.html
+URL: https://developers.fliplet.com/API/providers/file-picker.md
 
 # File Picker provider
 
@@ -26797,7 +26797,7 @@ provider.then(function(result) {
 ---
 
 # Link Action provider
-URL: https://developers.fliplet.com/API/providers/link-action.html
+URL: https://developers.fliplet.com/API/providers/link-action.md
 
 # Link Action provider
 
@@ -26873,7 +26873,7 @@ provider.emit('widget-autosize');
 ---
 
 # V3 app analytics and event tracking
-URL: https://developers.fliplet.com/API/v3/analytics.html
+URL: https://developers.fliplet.com/API/v3/analytics.md
 
 # V3 app analytics and event tracking
 
@@ -27031,7 +27031,7 @@ window.addEventListener('scroll', function() {
 ---
 
 # V3 app bootstrap constraints
-URL: https://developers.fliplet.com/API/v3/app-bootstrap.html
+URL: https://developers.fliplet.com/API/v3/app-bootstrap.md
 
 # V3 app bootstrap constraints
 
@@ -27093,7 +27093,7 @@ V3 uses History API routing driven by the manifest at `app.settings.v3`, accesse
 ---
 
 # V3 App Settings Convention
-URL: https://developers.fliplet.com/API/v3/app-settings.html
+URL: https://developers.fliplet.com/API/v3/app-settings.md
 
 # V3 App Settings Convention
 
@@ -27243,7 +27243,7 @@ Examples:
 ---
 
 # V3 Authentication Patterns
-URL: https://developers.fliplet.com/API/v3/auth.html
+URL: https://developers.fliplet.com/API/v3/auth.md
 
 # V3 Authentication Patterns
 
@@ -27778,7 +27778,7 @@ var session = await Fliplet.User.getCachedSession();
 ---
 
 # V3 Alpine.js apps
-URL: https://developers.fliplet.com/API/v3/frameworks/alpine.html
+URL: https://developers.fliplet.com/API/v3/frameworks/alpine.md
 
 # V3 Alpine.js apps
 
@@ -27853,7 +27853,7 @@ The `:src="src"` binding updates once the promise resolves. Do not try `:src="Fl
 ---
 
 # V3 framework guide — picking and setup
-URL: https://developers.fliplet.com/API/v3/frameworks/overview.html
+URL: https://developers.fliplet.com/API/v3/frameworks/overview.md
 
 # V3 framework guide — picking and setup
 
@@ -27902,7 +27902,7 @@ After picking, call `get_fliplet_docs('v3-framework-<name>')` for the specific c
 ---
 
 # V3 React apps
-URL: https://developers.fliplet.com/API/v3/frameworks/react.html
+URL: https://developers.fliplet.com/API/v3/frameworks/react.md
 
 # V3 React apps
 
@@ -28019,7 +28019,7 @@ Then `<img src={logoSrc} />`. Calling `Fliplet.Media.authenticate` at module sco
 ---
 
 # V3 vanilla-JS apps
-URL: https://developers.fliplet.com/API/v3/frameworks/vanilla.html
+URL: https://developers.fliplet.com/API/v3/frameworks/vanilla.md
 
 # V3 vanilla-JS apps
 
@@ -28085,7 +28085,7 @@ Don't compute the URL at module load and hope it's ready — the element will ha
 ---
 
 # V3 Vue apps
-URL: https://developers.fliplet.com/API/v3/frameworks/vue.html
+URL: https://developers.fliplet.com/API/v3/frameworks/vue.md
 
 # V3 Vue apps
 
@@ -28176,7 +28176,7 @@ Then `<img :src="logoSrc">`. Using `src="{{ rawUrl }}"` directly, or computing t
 ---
 
 # V3 routing
-URL: https://developers.fliplet.com/API/v3/routing.html
+URL: https://developers.fliplet.com/API/v3/routing.md
 
 # V3 routing
 
@@ -28501,7 +28501,7 @@ Replace `navigate(...)` with the same helper used in your router (Svelte, vanill
 ---
 
 # Securing your apps
-URL: https://developers.fliplet.com/App-security.html
+URL: https://developers.fliplet.com/App-security.md
 
 # Securing your apps
 
@@ -28657,7 +28657,7 @@ The two options can also be used together:
 ---
 
 # Fliplet-approved JavaScript libraries (coding-standards edition)
-URL: https://developers.fliplet.com/approved-libraries.html
+URL: https://developers.fliplet.com/approved-libraries.md
 
 # Fliplet-approved JavaScript libraries (coding-standards edition)
 
@@ -28855,7 +28855,7 @@ const customUtility = (data) => {
 ---
 
 # Writing more readable code when using the JS APIs
-URL: https://developers.fliplet.com/Async-await.html
+URL: https://developers.fliplet.com/Async-await.md
 
 # Writing more readable code when using the JS APIs
 
@@ -28919,7 +28919,7 @@ The above works because when we detect the **await** keyword in your apps and sc
 ---
 
 # Best practice and advices when building components
-URL: https://developers.fliplet.com/Best-practises.html
+URL: https://developers.fliplet.com/Best-practises.md
 
 # Best practice and advices when building components
 
@@ -29021,7 +29021,7 @@ var html = tpl({ sample: 123 })
 ---
 
 # Building Fliplet components
-URL: https://developers.fliplet.com/Building-components.html
+URL: https://developers.fliplet.com/Building-components.md
 
 # Building Fliplet components
 
@@ -29158,7 +29158,7 @@ Therefore, to recap:
 ---
 
 # Building Fliplet app action functions
-URL: https://developers.fliplet.com/Building-functions.html
+URL: https://developers.fliplet.com/Building-functions.md
 
 # Building Fliplet app action functions
 
@@ -29275,7 +29275,7 @@ Fliplet.App.Actions.runWithResult('find-a-user', {
 ---
 
 # Building Fliplet menus
-URL: https://developers.fliplet.com/Building-menus.html
+URL: https://developers.fliplet.com/Building-menus.md
 
 # Building Fliplet menus
 
@@ -29348,7 +29348,7 @@ Each **page** in **pages** will have a **label** `String` and a **action** `JSON
 ---
 
 # Building Fliplet themes
-URL: https://developers.fliplet.com/Building-themes.html
+URL: https://developers.fliplet.com/Building-themes.md
 
 # Building Fliplet themes
 
@@ -29450,7 +29450,7 @@ When you inherit from one or more themes, all their configurations will be avail
 ---
 
 # Changelog
-URL: https://developers.fliplet.com/Changelog.html
+URL: https://developers.fliplet.com/Changelog.md
 
 # Changelog
 
@@ -29578,7 +29578,7 @@ Each week, we provide changelog notes on this page giving a summary of recent si
 ---
 
 # Cloning widgets, components, and themes from the CLI
-URL: https://developers.fliplet.com/Cloning-widgets.html
+URL: https://developers.fliplet.com/Cloning-widgets.md
 
 # Cloning widgets, components, and themes from the CLI
 
@@ -29631,7 +29631,7 @@ To publish a component on Fliplet, please refer to the [publishing](Publishing) 
 ---
 
 # Fliplet API patterns and categories
-URL: https://developers.fliplet.com/code-api-patterns.html
+URL: https://developers.fliplet.com/code-api-patterns.md
 
 # Fliplet API patterns and categories
 
@@ -29919,7 +29919,7 @@ const sendSMS = async ({ to, message }) => {
 ---
 
 # Fliplet coding and documentation standards
-URL: https://developers.fliplet.com/coding-standards.html
+URL: https://developers.fliplet.com/coding-standards.md
 
 # Fliplet coding and documentation standards
 
@@ -30753,7 +30753,7 @@ For questions or clarifications, refer to the [Fliplet Developer Documentation](
 ---
 
 # Component events
-URL: https://developers.fliplet.com/Component-events.html
+URL: https://developers.fliplet.com/Component-events.md
 
 # Component events
 
@@ -30814,7 +30814,7 @@ Fliplet.Hooks.on('componentEvent', function(event) {
 ---
 
 # Output of components
-URL: https://developers.fliplet.com/components/Build-output.html
+URL: https://developers.fliplet.com/components/Build-output.md
 
 # Output of components
 
@@ -30947,7 +30947,7 @@ Need to read more about the interface? Once you're familiar with the above docum
 ---
 
 # The component definition file
-URL: https://developers.fliplet.com/components/Definition.html
+URL: https://developers.fliplet.com/components/Definition.md
 
 # The component definition file
 
@@ -31099,7 +31099,7 @@ For page components you can also define `appAssets` that needs to be injected to
 ---
 
 # Components interfaces
-URL: https://developers.fliplet.com/components/Interface.html
+URL: https://developers.fliplet.com/components/Interface.md
 
 # Components interfaces
 
@@ -31219,7 +31219,7 @@ Once you're familiar with the above documentation on the component interface, ha
 ---
 
 # Using providers
-URL: https://developers.fliplet.com/components/Using-Providers.html
+URL: https://developers.fliplet.com/components/Using-Providers.md
 
 # Using providers
 
@@ -31339,7 +31339,7 @@ Fliplet.Widget.all([myProviderA, myProviderB, myProviderC]).then(function (resul
 ---
 
 # Context targeting
-URL: https://developers.fliplet.com/Context-targeting.html
+URL: https://developers.fliplet.com/Context-targeting.md
 
 # Context targeting
 
@@ -31518,7 +31518,7 @@ if (isTemplate) {
 ---
 
 # Contributing to developer documentation
-URL: https://developers.fliplet.com/CONTRIBUTING.html
+URL: https://developers.fliplet.com/CONTRIBUTING.md
 
 # Contributing to developer documentation
 
@@ -31586,6 +31586,7 @@ When you add a new `fliplet-*` package, follow this 10-step checklist:
    - Tokens that start with `[` (bracket-mismatch in your YAML flow list)
    - Missing `category:` or values outside the allowed enum
    - Standard frontmatter violations from `validateFrontmatter`
+   - **Broken internal cross-links** (from `validateCrossLinks` — see "Internal links" below)
 
 10. **Open the PR.** CF Pages will build a branch preview. Visit the preview URL to confirm:
     - Your doc renders with the right layout
@@ -31597,6 +31598,35 @@ When you add a new `fliplet-*` package, follow this 10-step checklist:
 The same rules apply with two adjustments:
 - Don't change `title:` casually — the V3 AI builder embeds the namespace title in its system prompt; renaming silently shifts what the agent recognises.
 - Don't reorder `capabilities[]` — the field is hashed downstream; reordering = diff churn without semantic change.
+
+## Internal links
+
+Write internal cross-links the natural way — directory-relative to the target's
+`.md`, exactly as Jekyll and the published site resolve them:
+
+- `[joins](datasources/joins)` — bare, relative to the current doc's directory
+- `[routing](../routing)` — parent-relative
+- `[guides](/Quickstart)` — root-absolute
+- A full `https://developers.fliplet.com/API/...md` URL also works
+
+`--strict` runs `validateCrossLinks`, which resolves each link the way CF Pages
+serves clean URLs (`.md`/`.html`/extensionless all map to the `.md` source) and
+**fails the build if the target file doesn't exist** — that's how link rot is
+caught at review time instead of shipping a dead link. External links (openai,
+github, `help.fliplet.com`, `api.fliplet.com`, …) and asset links (`.png`,
+`.txt`, …) are left alone.
+
+Two escape hatches for a deliberate exception (e.g. a forward-reference to a doc
+landing in a later PR):
+
+- Inline: put `<!-- lint-ignore-link -->` anywhere on the link's line.
+- Whole-target: add it to `LINK_ALLOWLIST` in `bin/build-agent-indexes.mjs`.
+
+> Note the asymmetry: AI **skills** (`src/v3/ai/skills/`, Studio repo) auto-resolve
+> relative sibling links at load time and silently drop unresolvable ones, whereas
+> these **docs** fail the build on a broken link. They differ on purpose — the
+> skills bundle is fully in memory at load, the docs validator runs statically over
+> the file tree. Don't assume one's behaviour from the other.
 
 ## Where does each thing live?
 
@@ -31627,7 +31657,7 @@ You can edit any of these manually but the next build will overwrite. The single
 ---
 
 # Custom Headers
-URL: https://developers.fliplet.com/Custom-Headers.html
+URL: https://developers.fliplet.com/Custom-Headers.md
 
 # Custom Headers
 
@@ -31780,7 +31810,7 @@ async function setMultipleHeaders() {
 ---
 
 # Custom HTML templates for Fliplet components
-URL: https://developers.fliplet.com/Custom-template-for-components.html
+URL: https://developers.fliplet.com/Custom-template-for-components.md
 
 # Custom HTML templates for Fliplet components
 
@@ -31916,7 +31946,7 @@ This is useful to find out what settings you have available in a component when 
 ---
 
 # Fliplet infrastructure data flow
-URL: https://developers.fliplet.com/Data-flow.html
+URL: https://developers.fliplet.com/Data-flow.md
 
 # Fliplet infrastructure data flow
 
@@ -31927,7 +31957,7 @@ Architecture diagram showing how data flows between Fliplet Studio, Fliplet serv
 ---
 
 # Data integration service
-URL: https://developers.fliplet.com/Data-integration-service.html
+URL: https://developers.fliplet.com/Data-integration-service.md
 
 # Data integration service
 
@@ -33107,7 +33137,7 @@ Finally, make sure that **TLS 1.2 or 1.3** is [enabled on the OS settings](https
 ---
 
 # Data Source Hooks
-URL: https://developers.fliplet.com/Data-Source-Hooks.html
+URL: https://developers.fliplet.com/Data-Source-Hooks.md
 
 # Data Source Hooks
 
@@ -33362,7 +33392,7 @@ This last example shows string interpolation being compiled with Handlebars:
 ---
 
 # Securing Fliplet data sources
-URL: https://developers.fliplet.com/Data-source-security.html
+URL: https://developers.fliplet.com/Data-source-security.md
 
 # Securing Fliplet data sources
 
@@ -34052,7 +34082,7 @@ Both methods accept the following properties:
 ---
 
 # Dependencies and assets
-URL: https://developers.fliplet.com/Dependencies-and-assets.html
+URL: https://developers.fliplet.com/Dependencies-and-assets.md
 
 # Dependencies and assets
 
@@ -34140,7 +34170,7 @@ For page components you can also define `appAssets` that needs to be injected to
 ---
 
 # Sending events between components
-URL: https://developers.fliplet.com/Event-emitter.html
+URL: https://developers.fliplet.com/Event-emitter.md
 
 # Sending events between components
 
@@ -34188,7 +34218,7 @@ Fliplet.Widget.save({ foo: 'bar' }).then(function onSave() {
 ---
 
 # Fliplet app execution flow
-URL: https://developers.fliplet.com/Execution-flow.html
+URL: https://developers.fliplet.com/Execution-flow.md
 
 # Fliplet app execution flow
 
@@ -34226,7 +34256,7 @@ As a rule of thumb, **web apps** transition and render the page as soon as possi
 ---
 
 # Securing Fliplet files and folders
-URL: https://developers.fliplet.com/File-security.html
+URL: https://developers.fliplet.com/File-security.md
 
 # Securing Fliplet files and folders
 
@@ -34741,7 +34771,7 @@ To manage access rules programmatically, see the [Media access rules API](/REST-
 ---
 
 # Fliplet-approved JavaScript libraries (reference list)
-URL: https://developers.fliplet.com/Fliplet-approved-libraries.html
+URL: https://developers.fliplet.com/Fliplet-approved-libraries.md
 
 # Fliplet-approved JavaScript libraries (reference list)
 
@@ -34814,7 +34844,7 @@ Optionally add any of the libraries to your app for additional functionality:
 ---
 
 # Fliplet SDK
-URL: https://developers.fliplet.com/Fliplet-SDK.html
+URL: https://developers.fliplet.com/Fliplet-SDK.md
 
 # Fliplet SDK
 
@@ -34858,7 +34888,7 @@ e.g. `packages=lodash,fliplet-datasources,fliplet-media`
 ---
 
 # Integrating Fliplet apps with external APIs
-URL: https://developers.fliplet.com/Integrate-with-external-API.html
+URL: https://developers.fliplet.com/Integrate-with-external-API.md
 
 # Integrating Fliplet apps with external APIs
 
@@ -34927,7 +34957,7 @@ $.ajax({
 ---
 
 # Introduction to the Fliplet developer platform
-URL: https://developers.fliplet.com/Introduction.html
+URL: https://developers.fliplet.com/Introduction.md
 
 # Introduction to the Fliplet developer platform
 
@@ -35004,7 +35034,7 @@ In the next section we'll help you installing the development tools.
 ---
 
 # JavaScript coding standards for Fliplet apps
-URL: https://developers.fliplet.com/javascript-coding-standards.html
+URL: https://developers.fliplet.com/javascript-coding-standards.md
 
 # JavaScript coding standards for Fliplet apps
 
@@ -35186,7 +35216,7 @@ const message = `Hello ${userName}, welcome to ${appName}!`;
 ---
 
 # The Fliplet JavaScript APIs
-URL: https://developers.fliplet.com/JS-APIs.html
+URL: https://developers.fliplet.com/JS-APIs.md
 
 # The Fliplet JavaScript APIs
 
@@ -35330,7 +35360,7 @@ When you're ready, move to the next section of the documentation to start buildi
 ---
 
 # fliplet-docs-mcp
-URL: https://developers.fliplet.com/mcp-worker/README.html
+URL: https://developers.fliplet.com/mcp-worker/README.md
 
 # fliplet-docs-mcp
 
@@ -35427,7 +35457,7 @@ short name for the public docs surface.
 ---
 
 # Native framework changelog
-URL: https://developers.fliplet.com/Native-framework-changelog.html
+URL: https://developers.fliplet.com/Native-framework-changelog.md
 
 # Native framework changelog
 
@@ -35745,7 +35775,7 @@ Please note that these versions have limited support for newer Fliplet features.
 ---
 
 # Fliplet open source resources
-URL: https://developers.fliplet.com/open-source.html
+URL: https://developers.fliplet.com/open-source.md
 
 # Fliplet open source resources
 
@@ -35782,7 +35812,7 @@ Remember, the best of development often comes from collaboration and the sharing
 ---
 
 # Organization audit log types
-URL: https://developers.fliplet.com/Organization-audit-log-types.html
+URL: https://developers.fliplet.com/Organization-audit-log-types.md
 
 # Organization audit log types
 
@@ -35900,7 +35930,7 @@ Reference table of every audit log type emitted for Fliplet organizations, query
 ---
 
 # Advanced features for the Android platform
-URL: https://developers.fliplet.com/Platform-Android.html
+URL: https://developers.fliplet.com/Platform-Android.md
 
 # Advanced features for the Android platform
 
@@ -35943,7 +35973,7 @@ Please ensure you avoid putting it on screens that can go back to screens you do
 ---
 
 # Advanced features for the iOS platform
-URL: https://developers.fliplet.com/Platform-iOS.html
+URL: https://developers.fliplet.com/Platform-iOS.md
 
 # Advanced features for the iOS platform
 
@@ -35980,7 +36010,7 @@ If you're using Fliplet Automated App Build system with an Apple Enterprise acco
 ---
 
 # Publishing components, themes and menus
-URL: https://developers.fliplet.com/Publishing.html
+URL: https://developers.fliplet.com/Publishing.md
 
 # Publishing components, themes and menus
 
@@ -36061,7 +36091,7 @@ fliplet publish
 ---
 
 # Fliplet CLI quickstart
-URL: https://developers.fliplet.com/Quickstart.html
+URL: https://developers.fliplet.com/Quickstart.md
 
 # Fliplet CLI quickstart
 
@@ -36153,7 +36183,7 @@ In the next section, you'll learn how to interact with our system.
 ---
 
 # Rate limiting for APIs
-URL: https://developers.fliplet.com/Rate-limiting-for-API.html
+URL: https://developers.fliplet.com/Rate-limiting-for-API.md
 
 # Rate limiting for APIs
 
@@ -36190,7 +36220,7 @@ As a rule of thumb, avoid making requests inside loops, e.g. if you are updating
 ---
 
 # Reduce your app bundle size
-URL: https://developers.fliplet.com/Reduce-app-bundle-size.html
+URL: https://developers.fliplet.com/Reduce-app-bundle-size.md
 
 # Reduce your app bundle size
 
@@ -36248,7 +36278,7 @@ The `value` field can also accept an array of values to be matched by "OR":
 ---
 
 # Fliplet REST API documentation
-URL: https://developers.fliplet.com/REST-API-Documentation.html
+URL: https://developers.fliplet.com/REST-API-Documentation.md
 
 # Fliplet REST API documentation
 
@@ -36316,7 +36346,7 @@ We'll be adding more docs for REST APIs soon, stay tuned!
 ---
 
 # Authenticating with the Fliplet REST APIs
-URL: https://developers.fliplet.com/REST-API/authenticate.html
+URL: https://developers.fliplet.com/REST-API/authenticate.md
 
 # Authenticating with the Fliplet REST APIs
 
@@ -36385,7 +36415,7 @@ All done? Jump to the [Data Sources](fliplet-datasources) documentation to start
 ---
 
 # App Analytics REST API
-URL: https://developers.fliplet.com/REST-API/fliplet-app-analytics.html
+URL: https://developers.fliplet.com/REST-API/fliplet-app-analytics.md
 
 # App Analytics REST API
 
@@ -36452,7 +36482,7 @@ Response  (Status code: 200 OK):
 ---
 
 # App Subscriptions REST API
-URL: https://developers.fliplet.com/REST-API/fliplet-app-subscriptions.html
+URL: https://developers.fliplet.com/REST-API/fliplet-app-subscriptions.md
 
 # App Subscriptions REST API
 
@@ -36502,7 +36532,7 @@ Response  (Status code: 200 OK):
 ---
 
 # Apps REST API
-URL: https://developers.fliplet.com/REST-API/fliplet-apps.html
+URL: https://developers.fliplet.com/REST-API/fliplet-apps.md
 
 # Apps REST API
 
@@ -36598,7 +36628,7 @@ curl 'https://api.fliplet.com/v1/apps/123/publish' \
 ---
 
 # Communicate REST API
-URL: https://developers.fliplet.com/REST-API/fliplet-communicate.html
+URL: https://developers.fliplet.com/REST-API/fliplet-communicate.md
 
 # Communicate REST API
 
@@ -36786,7 +36816,7 @@ Sample request body:
 ---
 
 # Data Sources REST API
-URL: https://developers.fliplet.com/REST-API/fliplet-datasources.html
+URL: https://developers.fliplet.com/REST-API/fliplet-datasources.md
 
 # Data Sources REST API
 
@@ -37688,7 +37718,7 @@ POST -> v1/data-sources/:id/versions/:id/restore
 ---
 
 # Media REST API
-URL: https://developers.fliplet.com/REST-API/fliplet-media.html
+URL: https://developers.fliplet.com/REST-API/fliplet-media.md
 
 # Media REST API
 
@@ -38113,7 +38143,7 @@ To clear app-level rules:
 ---
 
 # Notifications REST API
-URL: https://developers.fliplet.com/REST-API/fliplet-notifications.html
+URL: https://developers.fliplet.com/REST-API/fliplet-notifications.md
 
 # Notifications REST API
 
@@ -38389,7 +38419,7 @@ Response  (Status code: 200 OK):
 ---
 
 # Organizations REST API
-URL: https://developers.fliplet.com/REST-API/fliplet-organizations.html
+URL: https://developers.fliplet.com/REST-API/fliplet-organizations.md
 
 # Organizations REST API
 
@@ -38624,7 +38654,7 @@ Response status code: 200 (no body)
 ---
 
 # Testing Fliplet components
-URL: https://developers.fliplet.com/Testing-components.html
+URL: https://developers.fliplet.com/Testing-components.md
 
 # Testing Fliplet components
 
@@ -38739,7 +38769,7 @@ jobs:
 ---
 
 # Use theme settings in your custom CSS
-URL: https://developers.fliplet.com/Theme-Settings-In-CSS.html
+URL: https://developers.fliplet.com/Theme-Settings-In-CSS.md
 
 # Use theme settings in your custom CSS
 
@@ -39115,7 +39145,7 @@ Table cell padding: `$cellPadding`
 ---
 
 # Theme and appearance settings for components
-URL: https://developers.fliplet.com/Theming-appearance.html
+URL: https://developers.fliplet.com/Theming-appearance.md
 
 # Theme and appearance settings for components
 
@@ -39357,7 +39387,7 @@ foo {
 ---
 
 # UI guidelines for component output (build)
-URL: https://developers.fliplet.com/UI-guidelines-build.html
+URL: https://developers.fliplet.com/UI-guidelines-build.md
 
 # UI guidelines for component output (build)
 
@@ -39616,7 +39646,7 @@ For example:
 ---
 
 # UI guidelines for component settings (interface)
-URL: https://developers.fliplet.com/UI-guidelines-interface.html
+URL: https://developers.fliplet.com/UI-guidelines-interface.md
 
 # UI guidelines for component settings (interface)
 
@@ -39966,7 +39996,7 @@ $('.help').on('click', function () {
 ---
 
 # Upcoming and recently launched features
-URL: https://developers.fliplet.com/Upcoming.html
+URL: https://developers.fliplet.com/Upcoming.md
 
 # Upcoming and recently launched features
 
@@ -40013,7 +40043,7 @@ Tracker of Fliplet features recently shipped or in beta, linking to their develo
 ---
 
 # Fliplet URLs and IP addresses
-URL: https://developers.fliplet.com/URLs-and-IP-Addresses.html
+URL: https://developers.fliplet.com/URLs-and-IP-Addresses.md
 
 # Fliplet URLs and IP addresses
 
@@ -40186,7 +40216,7 @@ C:>nslookup -type=TXT amazonses.com | find "v=spf1"
 ---
 
 # V3 capabilities
-URL: https://developers.fliplet.com/v3/capabilities.html
+URL: https://developers.fliplet.com/v3/capabilities.md
 
 <!-- AUTO-GENERATED by bin/emitters.mjs (emitCapabilitiesIndex) — do not hand-edit. -->
 <!-- Source: frontmatter `category:` across docs/API/**/*.md catalog entries. -->
@@ -40283,7 +40313,7 @@ Every Fliplet JS API available to V3 apps, grouped by capability category. Each 
 ---
 
 # V3 JS API coverage decisions
-URL: https://developers.fliplet.com/v3/coverage-decisions.html
+URL: https://developers.fliplet.com/v3/coverage-decisions.md
 
 # V3 JS API coverage decisions
 
@@ -40432,7 +40462,7 @@ If a new surface needs a decision, add a row there first (with V3-relevance + ra
 ---
 
 # Fliplet VS Code extension
-URL: https://developers.fliplet.com/VS-Code-Extension-Setup-Usage.html
+URL: https://developers.fliplet.com/VS-Code-Extension-Setup-Usage.md
 
 # Fliplet VS Code extension
 

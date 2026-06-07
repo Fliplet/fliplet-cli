@@ -130,9 +130,16 @@ docs/**/*.md
    │     }
    │     docs/v3/capabilities.md             (auto-generated index page)
    │
-   │     Also runs validateFrontmatter + validateCapabilities in --strict
-   │     mode (CI). Capability lints enforce: non-empty/lowercase/unique/
-   │     ≤40-char `capabilities[]`; `category:` value ∈ enumerated set.
+   │     Also runs validateFrontmatter + validateCapabilities +
+   │     validateCrossLinks in --strict mode (CI). Capability lints enforce:
+   │     non-empty/lowercase/unique/≤40-char `capabilities[]`; `category:`
+   │     value ∈ enumerated set. Cross-link lint fails the build on internal
+   │     links that don't resolve to an existing `.md` (resolves ../, ./,
+   │     /-rooted, bare, .md/.html/extensionless the way CF clean-URLs do;
+   │     skips external hosts + asset extensions; escape hatch:
+   │     `<!-- lint-ignore-link -->` or LINK_ALLOWLIST). See CONTRIBUTING.md
+   │     "Internal links". NB: AI skills (Studio repo) auto-resolve relative
+   │     links and silently drop bad ones — docs hard-fail instead, by design.
    │
    ├── bundle exec jekyll build
    │     ↓
