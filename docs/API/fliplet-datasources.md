@@ -6,7 +6,7 @@ tags: [js-api, datasources]
 v3_relevant: true
 deprecated: false
 category: data
-capabilities: [data source, datasource, query, insert, update, delete, crud, records, table, database, pagination, sort, filter, subscribe, real-time records, bulk operations]
+capabilities: [data source, datasource, query, insert, update, delete, crud, records, table, database, pagination, sort, filter, subscribe, real-time records, bulk operations, join, joins, related data, combine data sources, lookup, relationship]
 ---
 # `Fliplet.DataSources`
 
@@ -140,6 +140,8 @@ const activeUsers = await connection.find({
 });
 console.log('Active company users:', activeUsers);
 ```
+
+> **Combining data from another data source?** Don't fetch a second data source and match records in JavaScript. Pass a `join` option to `find()` and the server returns the related records in a single query — see [Joining data from other data sources](#joining-data-from-other-data-sources) below and the full [joins documentation](datasources/joins).
 
 #### Query Operators Reference
 
@@ -894,7 +896,24 @@ console.log('Department statistics:', departmentStats);
 
 ### Joining Data from Other Data Sources
 
-For complex queries involving multiple data sources, see the [joins documentation](datasources/joins).
+When a screen shows records from one data source enriched with fields from another (orders with their customer's name/email, articles with their comments), use the **native server-side join** — pass a `join` option to `find()`. Keep the schema normalized: store a reference key on the child record (e.g. `CustomerEmail` on an order), not a duplicated copy of the other record's fields.
+
+```js
+// Orders, each carrying its customer's record from a separate Customers data source
+const orders = await Fliplet.DataSources.connect(611);
+const result = await orders.find({
+  join: {
+    Customer: {
+      dataSourceId: 610,                          // the related (Customers) data source
+      on: { 'data.CustomerEmail': 'data.Email' }  // childKey: parentKey
+    }
+  }
+});
+// each row now carries result[i].joins.Customer with the joined customer record
+// (the joined data sits alongside result[i].data, not inside it)
+```
+
+This is one query the server resolves — **don't** fetch every record from the second data source and match them in JavaScript; that doesn't paginate or scale. For join types (left/inner), the `on` mapping, and filtering joined data, see the full [joins documentation](datasources/joins).
 
 ### Data Source Views
 

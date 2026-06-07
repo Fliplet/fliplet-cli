@@ -11241,6 +11241,8 @@ Joins can return data in several different ways:
 - A `Count` of the matched entries.
 - A `Sum` taken by counting a number in a defined column from the matching entries.
 
+<p class="warning"><strong>Note the key names differ between request and response.</strong> You <em>send</em> join configuration under the singular <code>join</code> key, but matched entries are <em>returned</em> under the plural <code>joins</code> key on each record. This is the same whether you use the <code>Fliplet.DataSources</code> JS API or call the <a href="../../REST-API/fliplet-datasources.html">REST query endpoint</a> directly.</p>
+
 ### Array (join)
 
 This is the default return behaviour for joins, hence no parameters are required.
@@ -11285,7 +11287,7 @@ Example of the returned data:
     id: 1,
     dataSourceId: 456,
     data: { Title: 'A great blog post' },
-    join: {
+    joins: {
       Comments: [
         {
           id: 3,
@@ -11349,7 +11351,7 @@ Example of the returned data:
     id: 1,
     dataSourceId: 456,
     data: { Title: 'A great blog post' },
-    join: {
+    joins: {
       HasComments: true
     }
   },
@@ -11357,7 +11359,7 @@ Example of the returned data:
     id: 2,
     dataSourceId: 456,
     data: { Title: 'Something worth reading' },
-    join: {
+    joins: {
       HasComments: false
     }
   }
@@ -11410,7 +11412,7 @@ Example of the returned data:
     id: 1,
     dataSourceId: 456,
     data: { Title: 'A great blog post' },
-    join: {
+    joins: {
       NumberOfComments: 2
     }
   },
@@ -11418,7 +11420,7 @@ Example of the returned data:
     id: 2,
     dataSourceId: 456,
     data: { Title: 'Something worth reading' },
-    join: {
+    joins: {
       NumberOfComments: 0
     }
   }
@@ -11471,7 +11473,7 @@ Example of the returned data:
     id: 1,
     dataSourceId: 456,
     data: { Title: 'A great blog post' },
-    join: {
+    joins: {
       LikesForComments: 7
     }
   },
@@ -11479,7 +11481,7 @@ Example of the returned data:
     id: 2,
     dataSourceId: 456,
     data: { Title: 'Something worth reading' },
-    join: {
+    joins: {
       LikesForComments: 0
     }
   }
@@ -11611,6 +11613,8 @@ connection.find({
 Use the `order` parameter to define the order at which entries are returned for your join.
 
 <p class="warning"><strong>Note:</strong> this parameter can be used for attributes such as <strong>"id"</strong> and <strong>"createdAt"</strong>. If you need to order by actual data in your entry, use the <strong>"data."</strong> prefix (such as <code>data.Title</code>).</p>
+
+<p class="info">When you combine <code>order</code> with <code>limit</code>, the matched entries are ordered first, then <code>limit</code> takes the first <em>n</em> for each parent record. This is why <code>order: ['createdAt', 'DESC']</code> with <code>limit: 5</code> returns the 5 most recent matches per parent.</p>
 
 **Using async/await (recommended)**
 
@@ -14074,6 +14078,8 @@ const activeUsers = await connection.find({
 console.log('Active company users:', activeUsers);
 ```
 
+> **Combining data from another data source?** Don't fetch a second data source and match records in JavaScript. Pass a `join` option to `find()` and the server returns the related records in a single query — see [Joining data from other data sources](#joining-data-from-other-data-sources) below and the full [joins documentation](datasources/joins).
+
 #### Query Operators Reference
 
 **MongoDB-style Operators (Sift.js)**
@@ -14827,7 +14833,24 @@ console.log('Department statistics:', departmentStats);
 
 ### Joining Data from Other Data Sources
 
-For complex queries involving multiple data sources, see the [joins documentation](datasources/joins).
+When a screen shows records from one data source enriched with fields from another (orders with their customer's name/email, articles with their comments), use the **native server-side join** — pass a `join` option to `find()`. Keep the schema normalized: store a reference key on the child record (e.g. `CustomerEmail` on an order), not a duplicated copy of the other record's fields.
+
+```js
+// Orders, each carrying its customer's record from a separate Customers data source
+const orders = await Fliplet.DataSources.connect(611);
+const result = await orders.find({
+  join: {
+    Customer: {
+      dataSourceId: 610,                          // the related (Customers) data source
+      on: { 'data.CustomerEmail': 'data.Email' }  // childKey: parentKey
+    }
+  }
+});
+// each row now carries result[i].joins.Customer with the joined customer record
+// (the joined data sits alongside result[i].data, not inside it)
+```
+
+This is one query the server resolves — **don't** fetch every record from the second data source and match them in JavaScript; that doesn't paginate or scale. For join types (left/inner), the `on` mapping, and filtering joined data, see the full [joins documentation](datasources/joins).
 
 ### Data Source Views
 
@@ -37355,6 +37378,57 @@ Example using multiple operators:
   "offset": 0
 }
 ```
+
+#### Joining data from another data source
+
+Use the `join` operator to fetch related entries from other data sources in the same query. The matching entries are attached to each returned record under a `joins` property (plural). See the [Data Source joins reference](../API/datasources/joins.html) for all join options (`on`, `required`, `has`, `count`, `sum`, `where`, `attributes`, `limit`, `order`).
+
+Request body (JSON):
+
+```json
+{
+  "type": "select",
+  "join": {
+    "Comments": {
+      "dataSourceId": 123,
+      "on": {
+        "data.ID": "data.ArticleID"
+      }
+    }
+  }
+}
+```
+
+Response (Status code: 200 OK):
+
+```json
+{
+  "entries": [
+    {
+      "id": 1,
+      "dataSourceId": 456,
+      "data": {
+        "Title": "A great blog post"
+      },
+      "joins": {
+        "Comments": [
+          {
+            "id": 3,
+            "dataSourceId": 123,
+            "data": {
+              "ArticleID": 1,
+              "Comment text": "Thanks! This was worth reading.",
+              "Likes": 5
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+```
+
+<p class="warning">Note the key names differ between request and response: you send join configuration under the singular <code>join</code> key, but matched entries are returned under the plural <code>joins</code> key on each record. This is the same in the <a href="../API/datasources/joins.html"><code>Fliplet.DataSources</code> JS API</a>.</p>
 
 #### Delete Query
 

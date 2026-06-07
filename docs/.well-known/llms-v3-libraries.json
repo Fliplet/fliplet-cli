@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-06-07T11:56:46.361Z",
+  "generatedAt": "2026-06-07T14:27:14.279Z",
   "libraries": [
     {
       "package": "fliplet-analytics-spa",
@@ -152,7 +152,13 @@
         "filter",
         "subscribe",
         "real-time records",
-        "bulk operations"
+        "bulk operations",
+        "join",
+        "joins",
+        "related data",
+        "combine data sources",
+        "lookup",
+        "relationship"
       ],
       "category": "data"
     },
