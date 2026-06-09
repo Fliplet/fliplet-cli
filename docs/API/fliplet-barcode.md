@@ -10,7 +10,7 @@ capabilities: [barcode, qr code, qrcode, scan, scanner, camera scan, generate ba
 ---
 # `Fliplet.Barcode`
 
-Scan QR codes and other 1D/2D barcodes from the device camera, and generate barcode images on screen, via the `fliplet-barcode` package. Barcode scanning is only supported in native apps.
+Scan QR codes and other 1D/2D barcodes from the device camera, and generate barcode images on screen, via the `fliplet-barcode` package. Barcode scanning is available in both web and native apps.
 
 ## Install
 
@@ -22,7 +22,7 @@ Add the `fliplet-barcode` dependency to your screen or app resources.
 
 Scan a QR code or barcode.
 
-**Note**: Barcode scanning is only supported in native apps.
+**Note**: Barcode scanning is available in both web and native apps.
 
 ### Usage
 
