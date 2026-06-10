@@ -19291,7 +19291,7 @@ Update the manifest via the App Settings API (`PUT /v1/apps/:id` with `settings.
 ## Related
 
 - [V3 routing](v3/routing). Full routing contract, per-framework examples, forbidden patterns, and post-login redirect.
-- [V3 app bootstrap constraints](v3/app-bootstrap). Three constraints every V3 boot HTML must satisfy.
+- [V3 app bootstrap constraints](v3/app-bootstrap). Four constraints every V3 boot HTML must satisfy.
 - [V3 app settings convention](v3/app-settings). Where the route manifest is stored (`app.settings.v3`).
 - [Media JS APIs](fliplet-media). `Fliplet.Media.getContents` details.
 
@@ -27090,9 +27090,14 @@ URL: https://developers.fliplet.com/API/v3/app-bootstrap.md
 
 A V3 app is a single HTML boot page that hosts the whole SPA. The page can use any framework (Vue, React, Svelte, vanilla JS, etc.), but it **must** satisfy four constraints so the Fliplet runtime, dependency loader, media authentication, and native shell work correctly.
 
-Each constraint maps to a concrete platform guarantee: (1) dependencies resolve through the Fliplet asset pipeline so versioning, caching, and per-environment injection work; (2) source files are fetched with signed media requests so private apps don't leak their screens; (3) the runtime registers its globals (`Fliplet.ENV`, `Fliplet.Router`, `Fliplet.Session`, etc.) before your framework mounts; (4) the viewport is locked so native apps don't pinch-zoom or auto-zoom when users focus an input field.
+Each constraint maps to a concrete platform guarantee:
 
-<p class="warning">Skip any of these constraints and the app either fails at boot, or works in dev and breaks in production.</p>
+1. Dependencies resolve through the Fliplet asset pipeline so versioning, caching, and per-environment injection work.
+2. Source files are fetched with signed media requests so private apps don't leak their screens.
+3. The runtime registers its globals (`Fliplet.ENV`, `Fliplet.Router`, `Fliplet.Session`, etc.) before your framework mounts.
+4. The viewport is locked so native apps don't pinch-zoom or auto-zoom when users focus an input field.
+
+<p class="warning">Skip any of these constraints and the app fails at boot, works in dev but breaks in production, or is rejected by the boot-HTML lint.</p>
 
 ## 1. Fetch dependencies with `Fliplet.require.lazy`
 
@@ -27140,9 +27145,9 @@ The document `<head>` **must** contain this exact viewport meta:
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 ```
 
-On native devices the app runs in a system webview that honors `user-scalable=no`. Without it, users can pinch-zoom the app and iOS automatically zooms the page when an input field receives focus — the app feels like a website instead of an app. Web browsers ignore `user-scalable=no` for accessibility, so pinch-zoom keeps working on web; the same tag is correct on every platform. `viewport-fit=cover` lets the app draw edge-to-edge behind device notches (pair it with `env(safe-area-inset-*)` padding).
+On native devices the app runs in a system webview that honors `user-scalable=no`. Without it, users can pinch-zoom the app and iOS automatically zooms the page when an input with font-size under 16px receives focus — the app feels like a website instead of an app. Most web browsers ignore `user-scalable=no` for accessibility (iOS Safari always; Android Chrome users can force-enable zoom), so web pinch-zoom is preserved; the same tag is correct on every platform. `viewport-fit=cover` lets the app draw edge-to-edge behind device notches (pair it with `env(safe-area-inset-*)` padding).
 
-<p class="warning">Deploys are rejected when the viewport meta is missing or allows user scaling.</p>
+<p class="warning">The boot-HTML lint rejects layouts whose viewport meta is missing or allows user scaling (rule <code>viewport-not-locked</code>).</p>
 
 ## What's next: routing
 
@@ -27964,7 +27969,7 @@ After picking, call `get_fliplet_docs('v3-framework-<name>')` for the specific c
 
 ## Related
 
-- [V3 app bootstrap](../app-bootstrap) — the three boot constraints every app must satisfy regardless of framework
+- [V3 app bootstrap](../app-bootstrap) — the four boot constraints every app must satisfy regardless of framework
 - [V3 routing](../routing) — History API contract, route manifest, forbidden-pattern reference
 - [V3 authentication patterns](../auth) — session, login, protected routes
 
@@ -28605,7 +28610,7 @@ Replace `navigate(...)` with the same helper used in your router (Svelte, vanill
 ## Related
 
 - [Fliplet Router JS API](../fliplet-router). Full method reference for `Fliplet.Router` with return shapes, reason codes, and manifest shape.
-- [V3 app bootstrap constraints](app-bootstrap). The three boot-HTML fundamentals (dependencies, media fetch, init sequence). Routing defers to this doc.
+- [V3 app bootstrap constraints](app-bootstrap). The four boot-HTML fundamentals (dependencies, media fetch, init sequence, locked viewport). Routing defers to this doc.
 - [V3 app settings convention](app-settings). Where the route manifest is stored (`app.settings.v3`).
 - [Media JS APIs](../fliplet-media). `Fliplet.Media.getContents` details.
 
@@ -40460,7 +40465,7 @@ Every Fliplet JS API available to V3 apps, grouped by capability category. Each 
 
 ## Navigation
 
-- [`Fliplet Router JS API`](https://developers.fliplet.com/API/fliplet-router.html) — Fliplet.Router JS API reference for V3 apps. Covers getBasePath, getRouteManifest, getRouteConfig, and resolveRoute including return shapes, reason codes, and rejection behavior.
+- [`Fliplet Router JS API`](https://developers.fliplet.com/API/fliplet-router.html) — Fliplet.Router JS API reference for V3 apps. Covers getBasePath, isNative, getHistoryMode (platform-conditional history — path on web, hash on native), getRouteManifest, getRouteConfig, and resolveRo…
 - [`Fliplet.Navigate`](https://developers.fliplet.com/API/core/navigate.html) **(preloaded)** — Navigate between app screens, open external URLs, pass query parameters, and handle back, home, and modal navigation via Fliplet.Navigate.
 - [`Fliplet.Pages and Fliplet.Page`](https://developers.fliplet.com/API/core/screens.html) **(preloaded)** — List app screens, get the current screen's public URL, and build shareable URLs for any screen by ID.
 

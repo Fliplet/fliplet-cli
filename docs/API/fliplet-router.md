@@ -246,6 +246,6 @@ Update the manifest via the App Settings API (`PUT /v1/apps/:id` with `settings.
 ## Related
 
 - [V3 routing](v3/routing). Full routing contract, per-framework examples, forbidden patterns, and post-login redirect.
-- [V3 app bootstrap constraints](v3/app-bootstrap). Three constraints every V3 boot HTML must satisfy.
+- [V3 app bootstrap constraints](v3/app-bootstrap). Four constraints every V3 boot HTML must satisfy.
 - [V3 app settings convention](v3/app-settings). Where the route manifest is stored (`app.settings.v3`).
 - [Media JS APIs](fliplet-media). `Fliplet.Media.getContents` details.

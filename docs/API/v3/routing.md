@@ -358,6 +358,6 @@ Replace `navigate(...)` with the same helper used in your router (Svelte, vanill
 ## Related
 
 - [Fliplet Router JS API](../fliplet-router). Full method reference for `Fliplet.Router` with return shapes, reason codes, and manifest shape.
-- [V3 app bootstrap constraints](app-bootstrap). The three boot-HTML fundamentals (dependencies, media fetch, init sequence). Routing defers to this doc.
+- [V3 app bootstrap constraints](app-bootstrap). The four boot-HTML fundamentals (dependencies, media fetch, init sequence, locked viewport). Routing defers to this doc.
 - [V3 app settings convention](app-settings). Where the route manifest is stored (`app.settings.v3`).
 - [Media JS APIs](../fliplet-media). `Fliplet.Media.getContents` details.
