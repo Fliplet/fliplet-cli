@@ -110,7 +110,7 @@
 - [Fliplet.DataSources](https://developers.fliplet.com/API/fliplet-datasources.html): Connect to, query, insert, update, and delete records in Fliplet Data Sources from inside an app. All methods are promise-based.
 - [Fliplet.DataSources.Encryption](https://developers.fliplet.com/API/fliplet-encryption.html): Automatically encrypt and decrypt selected Data Source columns on-device by registering a private key and column list.
 - [Fliplet.Gamify](https://developers.fliplet.com/API/fliplet-gamify.html): Configure gamification with logs, variables, and achievements via Fliplet.Gamify; track points, milestones, and badges backed by a data source per user.
-- [Fliplet.Media](https://developers.fliplet.com/API/fliplet-media.html): Browse folders, upload and manage files, and download media to devices via the Fliplet Media namespace.
+- [Fliplet.Media](https://developers.fliplet.com/API/fliplet-media.html): Browse folders, upload and manage files, capture photos and video from the device camera, and download media via the Fliplet Media namespace.
 - [Fliplet.Notifications](https://developers.fliplet.com/API/fliplet-notifications.html): Read, send, and schedule in-app and push notifications in Fliplet apps, with support for scopes, read receipts, and badge counts.
 - [Fliplet.OAuth2 (Beta)](https://developers.fliplet.com/API/fliplet-oauth2.html): The `fliplet-oauth2` package contains helpers for standardizing requests to OAuth2 web services with a client-side integration.
 - [Fliplet.Page](https://developers.fliplet.com/API/fliplet-page.html): Utilities for interacting with the current Fliplet screen — including smooth-scrolling to an element with configurable duration and offsets.

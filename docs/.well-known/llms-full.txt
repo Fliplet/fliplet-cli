@@ -15443,6 +15443,64 @@ Please note that the following image content types are automatically resized to 
 - `image/svg+xml`: Scalable Vector Graphics (SVG)
 - `image/webp`: Web Picture format (WEBP)
 
+### Capture a photo or video from the camera
+
+`Fliplet.Media` **stores** files — it does not capture them. To let users take a photo or record a video, capture the file first, then upload it with `Fliplet.Media.Files.upload`.
+
+**Platform support:** the recommended approach below works on **both web and native** (iOS/Android) from the same code — do **not** gate it behind `Fliplet.Router.isNative()`.
+
+| Platform | How the file input behaves |
+|---|---|
+| Web (browser) | Opens the OS file picker; mobile browsers offer the camera directly |
+| Native (iOS/Android) | The same input opens the native camera / photo-library picker |
+
+```html
+<input type="file" id="photo" accept="image/*" capture="environment">
+```
+
+```js
+document.querySelector('#photo').addEventListener('change', function (event) {
+  var file = event.target.files[0];
+  if (!file) {
+    return;
+  }
+
+  var formData = new FormData();
+  formData.append('files', file);
+
+  Fliplet.Media.Files.upload({
+    data: formData,
+    folderId: 1 // optional
+  }).then(function (files) {
+    // files[0].url → the stored image/video URL
+  });
+});
+```
+
+<p class="quote"><strong>Permissions:</strong> On <strong>web</strong>, the browser prompts for camera access when the capture UI opens and requires a secure context (HTTPS) — no extra code is needed. On <strong>native</strong>, the OS prompts on first use; custom app wrappers must declare a camera usage description (iOS <code>NSCameraUsageDescription</code>).</p>
+
+**Capturing video or any file type:** change `accept` (e.g. `accept="video/*"`, `capture="user"` for the front camera, or omit `capture` to allow gallery selection). For live in-browser capture you can also use the standard `navigator.mediaDevices.getUserMedia` + `MediaRecorder` APIs, then upload the resulting blob the same way.
+
+**Native enhanced camera UI (optional).** Inside the native app only, the Cordova camera plugin exposes a richer camera/photo-library popover. It is **undefined on web**, so always guard it and fall back to the file input:
+
+```js
+if (!Fliplet.Env.is('web') && navigator.camera) {
+  navigator.camera.getPicture(onSuccess, onError, {
+    sourceType: Camera.PictureSourceType.CAMERA, // or PHOTOLIBRARY
+    destinationType: Camera.DestinationType.FILE_URI,
+    encodingType: Camera.EncodingType.JPEG,
+    mediaType: Camera.MediaType.PICTURE,
+    correctOrientation: true
+  });
+  // A FILE_URI result is a file:/content: URI — resolve it to a File before upload:
+  // window.resolveLocalFileSystemURL(uri, entry => entry.file(file => /* upload file */));
+} else {
+  document.querySelector('#photo').click(); // web / fallback: use the file input above
+}
+```
+
+<p class="quote"><strong>Note:</strong> Do <strong>not</strong> call <code>navigator.camera.getPicture()</code> without the web guard — it is native-only and throws on web. The native camera encodes images as JPEG; uploaded images are auto-resized (see the list above), and you may normalize to WebP via a canvas if you want smaller, consistent files.</p>
+
 ### Delete a file
 
 ```js

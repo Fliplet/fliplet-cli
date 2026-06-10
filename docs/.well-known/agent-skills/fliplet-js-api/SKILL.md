@@ -61,7 +61,7 @@ The Fliplet client-side JavaScript API: every Fliplet.X namespace (Storage, User
 - [Fliplet.Database](https://developers.fliplet.com/API/fliplet-database.html): Low-level helper for reading and querying JSON data from a local file as a database; used internally by Fliplet.DataSources.
 - [Fliplet.DataSources.Encryption](https://developers.fliplet.com/API/fliplet-encryption.html): Automatically encrypt and decrypt selected Data Source columns on-device by registering a private key and column list.
 - [Fliplet.Gamify](https://developers.fliplet.com/API/fliplet-gamify.html): Configure gamification with logs, variables, and achievements via Fliplet.Gamify; track points, milestones, and badges backed by a data source per user.
-- [Fliplet.Media](https://developers.fliplet.com/API/fliplet-media.html): Browse folders, upload and manage files, and download media to devices via the Fliplet Media namespace.
+- [Fliplet.Media](https://developers.fliplet.com/API/fliplet-media.html): Browse folders, upload and manage files, capture photos and video from the device camera, and download media via the Fliplet Media namespace.
 - [Fliplet.Notifications](https://developers.fliplet.com/API/fliplet-notifications.html): Read, send, and schedule in-app and push notifications in Fliplet apps, with support for scopes, read receipts, and badge counts.
 - [Fliplet.Page](https://developers.fliplet.com/API/fliplet-page.html): Utilities for interacting with the current Fliplet screen — including smooth-scrolling to an element with configurable duration and offsets.
 - [Fliplet.Payments](https://developers.fliplet.com/API/fliplet-payments.html): Accept Stripe payments and checkout in Fliplet apps via Fliplet.Payments, with a products data source and webhook-driven order tracking.

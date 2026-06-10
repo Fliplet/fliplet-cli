@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-16T15:54:05.264Z",
+  "generatedAt": "2026-06-10T21:06:10.561Z",
   "libraries": [
     {
       "package": "fliplet-app-submissions",
@@ -158,7 +158,7 @@
       "package": "fliplet-media",
       "namespace": "Fliplet.Media",
       "title": "Fliplet.Media",
-      "description": "Browse folders, upload and manage files, and download media to devices via the Fliplet Media namespace.",
+      "description": "Browse folders, upload and manage files, capture photos and video from the device camera, and download media via the Fliplet Media namespace.",
       "docUrl": "https://developers.fliplet.com/API/fliplet-media.html",
       "preloaded": false,
       "capabilities": [
@@ -170,6 +170,13 @@
         "image",
         "picture",
         "photo",
+        "camera",
+        "take photo",
+        "photo capture",
+        "capture image",
+        "scan document",
+        "video capture",
+        "record video",
         "file storage",
         "file manager",
         "attachment",
