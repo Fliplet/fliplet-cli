@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, core, navigate]
 v3_relevant: true
 deprecated: false
+category: navigation
 capabilities: [navigation, navigate, link, open screen, open url, external url, query parameter, back, home, exit app, popup, gallery, play video, log out, navigate to screen, confirm dialog, prompt dialog]
 ---
 

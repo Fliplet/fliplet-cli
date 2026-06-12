@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, core, organizations]
 v3_relevant: true
 deprecated: false
+category: identity
 capabilities: [organization, org, audit log, org settings, policies, org list, audit, compliance log]
 ---
 # `Fliplet.Organizations`
@@ -67,6 +68,27 @@ Fliplet.Organizations.Logs.get({
   console.log(response.logs)
 });
 ```
+
+---
+
+## Analytics
+
+Read organization-level analytics aggregates via `Fliplet.Organizations.Analytics.get(data)`. The function passes `data` as a POST body to the REST endpoint and resolves with the raw response — the accepted shape is determined by the REST endpoint, not by this wrapper.
+
+```js
+Fliplet.Organizations.Analytics.get({
+  type: 'screen-views',
+  appId: 123,
+  startDate: '2026-01-01',
+  endDate: '2026-12-31'
+}).then(function (response) {
+  console.log(response);
+});
+```
+
+**Endpoint:** `POST v1/organizations/:orgId/analytics`
+
+Like the Audit logs endpoint, this uses POST despite being a read operation — query parameters are sent in the JSON body rather than as URL query string.
 
 ---
 

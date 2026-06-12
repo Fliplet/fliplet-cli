@@ -13,19 +13,28 @@ import {
   parseFrontmatter,
   extractH1AndIntro,
   urlForPath,
+  urlForPathMd,
   truncate,
   emitLlmsTxt,
   emitAgentSkills,
   emitSkillMd,
   emitMcpServerCard,
   emitV3LibraryCatalog,
+  emitCapabilitiesIndex,
   deriveV3Package,
   parseListFrontmatter,
+  isV3CatalogEntry,
+  ALLOWED_CATEGORIES,
+  ALLOWED_CATEGORIES_SET,
   assignToCluster,
   validateFrontmatter,
+  validateCapabilities,
   ALLOWED_TYPES,
   CLUSTERS,
   collectDocs,
+  extractCrossLinks,
+  classifyCrossLink,
+  validateCrossLinks,
 } from '../build-agent-indexes.mjs';
 
 describe('parseFrontmatter', () => {
@@ -152,6 +161,26 @@ describe('urlForPath', () => {
       urlForPath('Data-source-security.md'),
       'https://developers.fliplet.com/Data-source-security.html',
     );
+  });
+});
+
+describe('urlForPathMd (raw .md URL for AI surfaces)', () => {
+  it('keeps the .md extension for nested paths', () => {
+    assert.equal(
+      urlForPathMd('API/datasources/joins.md'),
+      'https://developers.fliplet.com/API/datasources/joins.md',
+    );
+  });
+
+  it('maps README.md to /index.md (the published homepage sibling)', () => {
+    assert.equal(urlForPathMd('README.md'), 'https://developers.fliplet.com/index.md');
+  });
+
+  it('never emits .html (the shape web_fetch / the MCP worker reject)', () => {
+    for (const p of ['API/core/storage.md', 'Data-source-security.md', 'API/fliplet-media.md']) {
+      assert.ok(urlForPathMd(p).endsWith('.md'));
+      assert.ok(!urlForPathMd(p).includes('.html'));
+    }
   });
 });
 
@@ -321,6 +350,25 @@ describe('validateFrontmatter', () => {
     ]);
     assert.equal(errs.length, 2);
     assert.ok(errs.every((e) => e.field === 'title'));
+  });
+
+  it('flags backticks in title (renders as literal in the layout)', () => {
+    const errs = validateFrontmatter([
+      { relPath: 'a.md', fm: { ...fullyValid.fm, title: '`Fliplet.X`' } },
+      { relPath: 'b.md', fm: { ...fullyValid.fm, title: '`Fliplet.Storage` and `Fliplet.App.Storage`' } },
+    ]);
+    assert.equal(errs.length, 2);
+    assert.ok(errs.every((e) => e.field === 'title'));
+    assert.ok(errs.every((e) => e.message.includes('backticks')));
+    assert.ok(errs.every((e) => e.hint && e.hint.includes('body H1')));
+  });
+
+  it('accepts title without backticks (plain text)', () => {
+    const errs = validateFrontmatter([
+      { relPath: 'a.md', fm: { ...fullyValid.fm, title: 'Fliplet.X' } },
+      { relPath: 'b.md', fm: { ...fullyValid.fm, title: 'Fliplet.Storage and Fliplet.App.Storage' } },
+    ]);
+    assert.equal(errs.length, 0);
   });
 
   it('flags missing description', () => {
@@ -830,5 +878,486 @@ describe('emitV3LibraryCatalog', () => {
       catalog.libraries.map((l) => l.package).sort(),
       ['fliplet-a', 'fliplet-b'],
     );
+  });
+
+  it('emits category when present in frontmatter', () => {
+    const docs = [
+      makeDoc('API/fliplet-payments.md', { category: 'commerce' }),
+    ];
+    const catalog = emitV3LibraryCatalog(docs);
+    assert.equal(catalog.libraries[0].category, 'commerce');
+  });
+
+  it('omits category when frontmatter is empty', () => {
+    const docs = [makeDoc('API/fliplet-payments.md', {})];
+    const catalog = emitV3LibraryCatalog(docs);
+    assert.equal(catalog.libraries[0].category, undefined);
+  });
+});
+
+describe('isV3CatalogEntry', () => {
+  function doc(relPath, fm = {}) {
+    return { relPath, fm };
+  }
+
+  it('returns true for installable fliplet-* docs', () => {
+    assert.equal(isV3CatalogEntry(doc('API/fliplet-barcode.md')), true);
+    assert.equal(isV3CatalogEntry(doc('API/fliplet-payments.md')), true);
+  });
+
+  it('returns true for ambient core/* docs', () => {
+    assert.equal(isV3CatalogEntry(doc('API/core/storage.md')), true);
+    assert.equal(isV3CatalogEntry(doc('API/core/ai.md')), true);
+  });
+
+  it('returns false for paths outside the catalog', () => {
+    assert.equal(isV3CatalogEntry(doc('REST-API/Apps.md')), false);
+    assert.equal(isV3CatalogEntry(doc('Building-themes.md')), false);
+    assert.equal(isV3CatalogEntry(doc('API/components/forms.md')), false);
+    assert.equal(isV3CatalogEntry(doc('API/datasources/queries.md')), false);
+  });
+
+  it('returns false when frontmatter has exclude_from_v3_catalog: true', () => {
+    assert.equal(
+      isV3CatalogEntry(doc('API/fliplet-ui.md', { exclude_from_v3_catalog: 'true' })),
+      false,
+    );
+    assert.equal(
+      isV3CatalogEntry(doc('API/core/modal.md', { exclude_from_v3_catalog: 'true' })),
+      false,
+    );
+  });
+
+  it('honours the exclude flag only as the literal string "true"', () => {
+    assert.equal(
+      isV3CatalogEntry(doc('API/fliplet-a.md', { exclude_from_v3_catalog: 'false' })),
+      true,
+    );
+    assert.equal(
+      isV3CatalogEntry(doc('API/fliplet-a.md', { exclude_from_v3_catalog: '' })),
+      true,
+    );
+  });
+});
+
+describe('validateCapabilities', () => {
+  function entry(relPath, fm = {}) {
+    return { relPath, fm };
+  }
+
+  it('returns no errors for a well-formed catalog entry', () => {
+    const docs = [
+      entry('API/fliplet-payments.md', {
+        capabilities: '[stripe, checkout, subscription]',
+        category: 'commerce',
+      }),
+    ];
+    assert.deepEqual(validateCapabilities(docs), []);
+  });
+
+  it('skips docs outside the V3 catalog (no false positives)', () => {
+    const docs = [
+      entry('REST-API/Apps.md', {}),
+      entry('Building-themes.md', {}),
+      entry('API/components/forms.md', {}),
+      entry('API/fliplet-x.md', { exclude_from_v3_catalog: 'true' }),
+    ];
+    assert.deepEqual(validateCapabilities(docs), []);
+  });
+
+  it('flags missing capabilities[] on a catalog entry', () => {
+    const docs = [entry('API/fliplet-payments.md', { category: 'commerce' })];
+    const errors = validateCapabilities(docs);
+    const capError = errors.find((e) => e.field === 'capabilities');
+    assert.ok(capError);
+    assert.match(capError.message, /empty or missing/);
+    assert.ok(capError.hint);
+    assert.ok(capError.docUrl);
+  });
+
+  it('flags empty capabilities[] (e.g. `[]`)', () => {
+    const docs = [entry('API/fliplet-payments.md', { capabilities: '[]', category: 'commerce' })];
+    const errors = validateCapabilities(docs);
+    assert.ok(errors.find((e) => e.field === 'capabilities'));
+  });
+
+  it('flags non-lowercase tokens', () => {
+    const docs = [
+      entry('API/fliplet-payments.md', {
+        capabilities: '[Stripe, checkout]',
+        category: 'commerce',
+      }),
+    ];
+    const errors = validateCapabilities(docs);
+    const e = errors.find((x) => x.message.includes('Stripe'));
+    assert.ok(e);
+    assert.match(e.message, /uppercase/);
+  });
+
+  it('flags tokens >40 chars', () => {
+    const long = 'a-very-very-very-very-very-very-very-long-token';
+    const docs = [
+      entry('API/fliplet-payments.md', {
+        capabilities: `[${long}]`,
+        category: 'commerce',
+      }),
+    ];
+    const errors = validateCapabilities(docs);
+    assert.ok(errors.find((e) => e.message.includes('>40 chars')));
+  });
+
+  it('flags duplicate tokens within one entry', () => {
+    const docs = [
+      entry('API/fliplet-payments.md', {
+        capabilities: '[stripe, checkout, stripe]',
+        category: 'commerce',
+      }),
+    ];
+    const errors = validateCapabilities(docs);
+    assert.ok(errors.find((e) => e.message.includes('duplicate')));
+  });
+
+  it('warns when a token starts with `[` (bracket-mismatch footgun)', () => {
+    // `capabilities: [stripe, checkout` (missing `]`) parses as
+    // `['[stripe', 'checkout']` — the leading `[` token signals this.
+    const docs = [
+      entry('API/fliplet-payments.md', {
+        capabilities: '[stripe, checkout',
+        category: 'commerce',
+      }),
+    ];
+    const errors = validateCapabilities(docs);
+    const warn = errors.find((e) => e.message.includes('bracket-mismatch'));
+    assert.ok(warn);
+    assert.equal(warn.severity, 'warn');
+  });
+
+  it('warns when category is missing on a catalog entry', () => {
+    const docs = [
+      entry('API/fliplet-payments.md', {
+        capabilities: '[stripe, checkout]',
+      }),
+    ];
+    const errors = validateCapabilities(docs);
+    const cat = errors.find((e) => e.field === 'category');
+    assert.ok(cat);
+    assert.equal(cat.severity, 'warn');
+    assert.match(cat.message, /missing/);
+  });
+
+  it('errors when category value is not in the allowed enum', () => {
+    const docs = [
+      entry('API/fliplet-payments.md', {
+        capabilities: '[stripe]',
+        category: 'identitiy', // typo
+      }),
+    ];
+    const errors = validateCapabilities(docs);
+    const cat = errors.find((e) => e.field === 'category');
+    assert.ok(cat);
+    assert.equal(cat.severity, undefined); // hard error
+    assert.match(cat.message, /not in the allowed set/);
+  });
+
+  it('every error carries hint and docUrl', () => {
+    const docs = [
+      entry('API/fliplet-payments.md', {
+        capabilities: '[Stripe, stripe, stripe]',
+      }),
+    ];
+    const errors = validateCapabilities(docs);
+    assert.ok(errors.length > 0);
+    for (const e of errors) {
+      assert.ok(e.hint, `error on field ${e.field} missing hint`);
+      assert.ok(e.docUrl, `error on field ${e.field} missing docUrl`);
+    }
+  });
+});
+
+describe('emitCapabilitiesIndex', () => {
+  function doc(relPath, title, description, fm = {}) {
+    return {
+      relPath,
+      url: `https://developers.fliplet.com/${relPath.replace(/\.md$/, '.html')}`,
+      title,
+      description,
+      fm,
+    };
+  }
+
+  it('skips docs outside the V3 catalog', () => {
+    const docs = [
+      doc('Building-themes.md', 'Themes', 'Theme guide'),
+      doc('REST-API/Apps.md', 'Apps', 'REST'),
+    ];
+    const out = emitCapabilitiesIndex(docs);
+    assert.match(out, /No content/i.test(out) || !/Building-themes/.test(out) ? /.*/ : /unreachable/);
+    assert.ok(!out.includes('Themes — Theme guide'));
+  });
+
+  it('groups entries by category in ALLOWED_CATEGORIES order', () => {
+    const docs = [
+      doc('API/fliplet-payments.md', 'Fliplet.Payments', 'Stripe', { category: 'commerce', capabilities: '[stripe]' }),
+      doc('API/fliplet-datasources.md', 'Fliplet.DataSources', 'CRUD', { category: 'data', capabilities: '[crud]' }),
+      doc('API/core/user.md', 'Fliplet.User', 'Auth', { category: 'identity', capabilities: '[auth]' }),
+    ];
+    const out = emitCapabilitiesIndex(docs);
+    const dataIdx = out.indexOf('## Data');
+    const identityIdx = out.indexOf('## Identity');
+    const commerceIdx = out.indexOf('## Commerce');
+    assert.ok(dataIdx > 0);
+    assert.ok(identityIdx > dataIdx, 'Identity section after Data');
+    assert.ok(commerceIdx > identityIdx, 'Commerce after Identity');
+  });
+
+  it('puts uncategorised entries under an Uncategorized heading', () => {
+    const docs = [
+      doc('API/fliplet-x.md', 'Fliplet.X', 'No category here', {}),
+    ];
+    const out = emitCapabilitiesIndex(docs);
+    assert.match(out, /## Uncategorized/);
+    assert.match(out, /Fliplet\.X/);
+  });
+
+  it('marks ambient entries as preloaded', () => {
+    const docs = [
+      doc('API/core/storage.md', 'Fliplet.Storage', 'Persist', { category: 'data', capabilities: '[storage]' }),
+      doc('API/fliplet-datasources.md', 'Fliplet.DataSources', 'Query', { category: 'data', capabilities: '[crud]' }),
+    ];
+    const out = emitCapabilitiesIndex(docs);
+    assert.match(out, /Fliplet\.Storage[^—]*\*\*\(preloaded\)\*\*/);
+    // Installable should NOT have the preloaded tag
+    const dsLine = out.split('\n').find((l) => l.includes('Fliplet.DataSources'));
+    assert.ok(!dsLine.includes('preloaded'));
+  });
+
+  it('contains required frontmatter so validateFrontmatter passes on the generated file', () => {
+    const out = emitCapabilitiesIndex([]);
+    assert.match(out, /^---\n/);
+    assert.match(out, /title:/);
+    assert.match(out, /description:/);
+    assert.match(out, /type: reference/);
+    assert.match(out, /tags: \[v3, capabilities, js-api\]/);
+  });
+
+  it('produces byte-identical output across two runs (no timestamp drift)', () => {
+    const docs = [
+      doc('API/fliplet-payments.md', 'Fliplet.Payments', 'Stripe', { category: 'commerce', capabilities: '[stripe]' }),
+      doc('API/core/user.md', 'Fliplet.User', 'Auth', { category: 'identity', capabilities: '[auth]' }),
+    ];
+    const a = emitCapabilitiesIndex(docs);
+    const b = emitCapabilitiesIndex(docs);
+    assert.equal(a, b);
+  });
+
+  it('sorts entries within a category alphabetically by namespace', () => {
+    const docs = [
+      doc('API/fliplet-payments.md', 'Fliplet.Payments', 'd', { category: 'commerce', capabilities: '[a]' }),
+      doc('API/fliplet-app-submissions.md', 'Fliplet.App.Submissions', 'd', { category: 'commerce', capabilities: '[a]' }),
+    ];
+    const out = emitCapabilitiesIndex(docs);
+    const submissionsIdx = out.indexOf('Fliplet.App.Submissions');
+    const paymentsIdx = out.indexOf('Fliplet.Payments');
+    assert.ok(submissionsIdx > 0 && paymentsIdx > 0);
+    assert.ok(submissionsIdx < paymentsIdx, 'App.Submissions sorts before Payments');
+  });
+
+  it('treats unknown category values as uncategorised', () => {
+    const docs = [
+      doc('API/fliplet-x.md', 'Fliplet.X', 'd', { category: 'bogus', capabilities: '[a]' }),
+    ];
+    const out = emitCapabilitiesIndex(docs);
+    assert.match(out, /## Uncategorized/);
+  });
+});
+
+describe('ALLOWED_CATEGORIES', () => {
+  it('has exactly 13 values', () => {
+    assert.equal(ALLOWED_CATEGORIES.length, 13);
+  });
+
+  it('matches the documented enum order', () => {
+    assert.deepEqual(ALLOWED_CATEGORIES, [
+      'data',
+      'identity',
+      'communications',
+      'media',
+      'native',
+      'commerce',
+      'integration',
+      'automation',
+      'analytics',
+      'observability',
+      'framework',
+      'navigation',
+      'meta',
+    ]);
+  });
+
+  it('exposes a Set for fast lookup', () => {
+    assert.ok(ALLOWED_CATEGORIES_SET instanceof Set);
+    assert.equal(ALLOWED_CATEGORIES_SET.size, ALLOWED_CATEGORIES.length);
+    for (const c of ALLOWED_CATEGORIES) {
+      assert.ok(ALLOWED_CATEGORIES_SET.has(c));
+    }
+  });
+});
+
+describe('extractCrossLinks', () => {
+  it('captures inline links and reference definitions', () => {
+    const body = '[a](foo/bar)\n\nText [b](../baz) more.\n\n[ref]: qux/quux\n';
+    const targets = extractCrossLinks(body).map((l) => l.target);
+    assert.deepEqual(targets, ['foo/bar', '../baz', 'qux/quux']);
+  });
+
+  it('skips images', () => {
+    const targets = extractCrossLinks('![alt](pic.png) and [real](doc)').map((l) => l.target);
+    assert.deepEqual(targets, ['doc']);
+  });
+
+  it('skips links inside fenced code blocks (``` and ~~~)', () => {
+    const body = '```\n[notalink](nope)\n```\n\n[real](yes)\n\n~~~\n[also](nope2)\n~~~\n';
+    const targets = extractCrossLinks(body).map((l) => l.target);
+    assert.deepEqual(targets, ['yes']);
+  });
+
+  it('skips links inside inline-code spans', () => {
+    const targets = extractCrossLinks('Use `[x](y)` literally, but [real](z) counts.').map((l) => l.target);
+    assert.deepEqual(targets, ['z']);
+  });
+
+  it('flags the lint-ignore-link marker on the line', () => {
+    const links = extractCrossLinks('[skip](broken) <!-- lint-ignore-link -->');
+    assert.equal(links[0].ignore, true);
+  });
+
+  it('reports 1-based line numbers', () => {
+    const links = extractCrossLinks('line1\n\n[x](y)\n');
+    assert.equal(links[0].line, 3);
+  });
+});
+
+describe('classifyCrossLink', () => {
+  const from = 'API/fliplet-datasources.md'; // dir = API
+
+  it('resolves a bare directory-relative link', () => {
+    assert.deepEqual(classifyCrossLink('datasources/joins', from), { resolved: 'API/datasources/joins' });
+  });
+
+  it('resolves a ./ current-dir link', () => {
+    assert.deepEqual(classifyCrossLink('./fliplet-ui', from), { resolved: 'API/fliplet-ui' });
+  });
+
+  it('resolves a ../ parent link WITHOUT emitting literal ".."', () => {
+    const r = classifyCrossLink('../API-Documentation', from);
+    assert.deepEqual(r, { resolved: 'API-Documentation' });
+    assert.ok(!r.resolved.includes('..'));
+  });
+
+  it('resolves a deeper ../../ parent link', () => {
+    assert.deepEqual(classifyCrossLink('../../API-Documentation', 'API/v3/auth.md'), {
+      resolved: 'API-Documentation',
+    });
+  });
+
+  it('resolves a /-rooted link against the docs root', () => {
+    assert.deepEqual(classifyCrossLink('/Quickstart', from), { resolved: 'Quickstart' });
+  });
+
+  it('strips a #anchor before resolving', () => {
+    assert.deepEqual(classifyCrossLink('../routing#guards', from), { resolved: 'routing' });
+  });
+
+  it('skips a pure #anchor', () => {
+    assert.deepEqual(classifyCrossLink('#section', from), { skip: true });
+  });
+
+  it('skips foreign hosts', () => {
+    assert.deepEqual(classifyCrossLink('https://platform.openai.com/x', from), { skip: true });
+    assert.deepEqual(classifyCrossLink('https://help.fliplet.com/x', from), { skip: true });
+  });
+
+  it('resolves an absolute developers.fliplet.com link', () => {
+    assert.deepEqual(
+      classifyCrossLink('https://developers.fliplet.com/API/datasources/joins.html', from),
+      { resolved: 'API/datasources/joins.html' },
+    );
+  });
+
+  it('skips non-doc asset extensions (.txt/.png/.pdf)', () => {
+    assert.deepEqual(classifyCrossLink('../../assets/misc/cert.txt', from), { skip: true });
+    assert.deepEqual(classifyCrossLink('logo.png', from), { skip: true });
+  });
+
+  it('skips mailto: and other schemes', () => {
+    assert.deepEqual(classifyCrossLink('mailto:a@b.com', from), { skip: true });
+  });
+
+  it('flags a relative link that escapes the docs root', () => {
+    assert.deepEqual(classifyCrossLink('../../../etc/passwd.md', 'API/foo.md'), { escaped: true });
+  });
+});
+
+describe('validateCrossLinks (end-to-end on a tmp fixture)', () => {
+  const fixtureDir = join(tmpdir(), `cross-links-test-${Date.now()}`);
+  mkdirSync(join(fixtureDir, 'API', 'datasources'), { recursive: true });
+  // Valid targets on disk
+  writeFileSync(join(fixtureDir, 'README.md'), '# Home\n\nIntro.\n');
+  writeFileSync(join(fixtureDir, 'API-Documentation.md'), '# API\n\nIndex.\n');
+  writeFileSync(join(fixtureDir, 'API', 'datasources', 'joins.md'), '# Joins\n\nJoins doc.\n');
+  // A redirect-stub-style EXCLUDED file: indexing skips it, but it is a VALID link target
+  writeFileSync(join(fixtureDir, 'API', 'fliplet-core.md'), '# Core\n\nStub.\n');
+
+  function doc(relPath, body) {
+    return { relPath, body };
+  }
+
+  it('returns no errors when every internal link resolves', () => {
+    const docs = [
+      doc(
+        'API/fliplet-datasources.md',
+        '# DS\n\nSee [joins](datasources/joins) and [back](../API-Documentation).\n' +
+          'Also [core](fliplet-core) and [home](/README.md).\n' +
+          '[ext](https://platform.openai.com/x) and ![img](pic.png).\n',
+      ),
+    ];
+    assert.deepEqual(validateCrossLinks(docs, fixtureDir), []);
+  });
+
+  it('treats an EXCLUDED_FILES target (redirect stub) as valid', () => {
+    const docs = [doc('API/x.md', '[core](fliplet-core)')];
+    assert.deepEqual(validateCrossLinks(docs, fixtureDir), []);
+  });
+
+  it('resolves .html links to their .md source', () => {
+    const docs = [doc('API/x.md', '[j](datasources/joins.html)')];
+    assert.deepEqual(validateCrossLinks(docs, fixtureDir), []);
+  });
+
+  it('flags a broken link with the full error contract', () => {
+    const docs = [doc('API/x.md', '# X\n\n[bad](datasources/missing)\n')];
+    const errors = validateCrossLinks(docs, fixtureDir);
+    assert.equal(errors.length, 1);
+    const e = errors[0];
+    assert.equal(e.relPath, 'API/x.md');
+    assert.equal(e.link, 'datasources/missing');
+    assert.equal(e.resolvedTarget, 'API/datasources/missing');
+    assert.match(e.message, /not found/);
+    assert.ok(e.hint);
+    assert.equal(typeof e.line, 'number');
+  });
+
+  it('suppresses a broken link marked lint-ignore-link', () => {
+    const docs = [doc('API/x.md', '[bad](datasources/missing) <!-- lint-ignore-link -->')];
+    assert.deepEqual(validateCrossLinks(docs, fixtureDir), []);
+  });
+
+  it('does not flag links inside fenced code blocks', () => {
+    const docs = [doc('API/x.md', '```\n[bad](datasources/missing)\n```\n')];
+    assert.deepEqual(validateCrossLinks(docs, fixtureDir), []);
+  });
+
+  it('(teardown)', () => {
+    rmSync(fixtureDir, { recursive: true, force: true });
   });
 });

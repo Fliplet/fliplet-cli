@@ -26,7 +26,29 @@ import { readFileSync, writeFileSync, mkdirSync, readdirSync } from 'node:fs';
 import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { dirname, join, relative, resolve, sep } from 'node:path';
-import { shouldExclude } from './exclusions.mjs';
+import { shouldExclude, EXCLUDED_DIRS } from './exclusions.mjs';
+import {
+  ALLOWED_CATEGORIES,
+  ALLOWED_CATEGORIES_SET,
+  deriveV3Package,
+  emitCapabilitiesIndex,
+  emitV3LibraryCatalog,
+  isV3CatalogEntry,
+  parseListFrontmatter,
+} from './emitters.mjs';
+
+// Re-export from emitters.mjs to preserve the import surface used by tests
+// (bin/__tests__/build-agent-indexes.test.mjs). New code should import
+// directly from emitters.mjs.
+export {
+  ALLOWED_CATEGORIES,
+  ALLOWED_CATEGORIES_SET,
+  deriveV3Package,
+  emitCapabilitiesIndex,
+  emitV3LibraryCatalog,
+  isV3CatalogEntry,
+  parseListFrontmatter,
+};
 
 const here = dirname(fileURLToPath(import.meta.url));
 const docsRoot = resolve(here, '..');
@@ -354,6 +376,16 @@ export function urlForPath(relPath) {
   return `${BASE_URL}/${relPath.replace(/\.md$/, '.html')}`;
 }
 
+// URL of the raw Markdown sibling — what AI agents should fetch. The server-side
+// web_fetch (and the MCP worker's fetch_fliplet_doc) refuse non-Google HTML and
+// require `.md`, so every AI-consumption surface (llms.txt, llms-full.txt,
+// agent-skills, the V3 library catalog) emits `.md` URLs. The human-facing
+// capabilities page keeps `urlForPath` (.html). README publishes as `/index.md`.
+export function urlForPathMd(relPath) {
+  if (relPath === 'README.md') return `${BASE_URL}/index.md`;
+  return `${BASE_URL}/${relPath}`;
+}
+
 function skillNameForPath(relPath) {
   return relPath
     .replace(/\.md$/, '')
@@ -381,7 +413,7 @@ export function emitLlmsTxt(docs) {
     out += `\n## ${group.label}\n\n`;
     for (const doc of entries) {
       const desc = doc.description ? `: ${doc.description}` : '';
-      out += `- [${doc.title}](${doc.url})${desc}\n`;
+      out += `- [${doc.title}](${doc.urlMd || doc.url})${desc}\n`;
     }
   }
   return out;
@@ -389,7 +421,7 @@ export function emitLlmsTxt(docs) {
 
 export function emitLlmsFullTxt(docs) {
   return docs
-    .map((doc) => `# ${doc.title}\nURL: ${doc.url}\n\n${doc.body.trim()}\n`)
+    .map((doc) => `# ${doc.title}\nURL: ${doc.urlMd || doc.url}\n\n${doc.body.trim()}\n`)
     .join('\n---\n\n');
 }
 
@@ -423,7 +455,7 @@ export function emitSkillMd(cluster, docsInCluster) {
 
   if (cluster.name === 'fliplet-docs-index') {
     const fallbackDocs = docsInCluster
-      .map((d) => `- [${d.title}](${d.url})${d.description ? `: ${d.description}` : ''}`)
+      .map((d) => `- [${d.title}](${d.urlMd || d.url})${d.description ? `: ${d.description}` : ''}`)
       .join('\n');
     return (
       fm +
@@ -438,14 +470,14 @@ export function emitSkillMd(cluster, docsInCluster) {
       `These docs don't belong to a single capability cluster — they are general onboarding, conventions, or cross-cutting references. Listed here so they remain reachable via agent-skills discovery even when no specific cluster is loaded:\n\n` +
       fallbackDocs +
       `\n\n## Full site index\n\n` +
-      `If you need the complete list across every cluster, fetch [${BASE_URL}/.well-known/llms.txt](${BASE_URL}/.well-known/llms.txt). Each entry is a one-line summary; replace \`.html\` with \`.md\` on any doc URL to fetch the raw Markdown.\n\n` +
+      `If you need the complete list across every cluster, fetch [${BASE_URL}/.well-known/llms.txt](${BASE_URL}/.well-known/llms.txt). Each entry is a one-line summary; doc URLs are raw \`.md\` and can be fetched directly.\n\n` +
       `## MCP server\n\n` +
       `For tool-driven discovery, point an MCP-aware client at [${MCP_ENDPOINT}](${MCP_ENDPOINT}). The server exposes \`search_fliplet_docs\` and \`fetch_fliplet_doc\`.\n`
     );
   }
 
   const docList = docsInCluster
-    .map((d) => `- [${d.title}](${d.url})${d.description ? `: ${d.description}` : ''}`)
+    .map((d) => `- [${d.title}](${d.urlMd || d.url})${d.description ? `: ${d.description}` : ''}`)
     .join('\n');
 
   return (
@@ -455,116 +487,15 @@ export function emitSkillMd(cluster, docsInCluster) {
     `## Documentation\n\n` +
     docList +
     `\n\n## How to load full content\n\n` +
-    `Replace \`.html\` with \`.md\` on any URL above to fetch the raw Markdown source. To search across all Fliplet developer docs, use the MCP server at [${MCP_ENDPOINT}](${MCP_ENDPOINT}) (tools: \`search_fliplet_docs\`, \`fetch_fliplet_doc\`), or fetch [${BASE_URL}/.well-known/llms-full.txt](${BASE_URL}/.well-known/llms-full.txt) for the entire site as a single stream.\n`
+    `The URLs above are raw \`.md\` and can be fetched directly. To search across all Fliplet developer docs, use the MCP server at [${MCP_ENDPOINT}](${MCP_ENDPOINT}) (tools: \`search_fliplet_docs\`, \`fetch_fliplet_doc\`), or fetch [${BASE_URL}/.well-known/llms-full.txt](${BASE_URL}/.well-known/llms-full.txt) for the entire site as a single stream.\n`
   );
 }
 
-// V3 library catalog manifest. Emitted at /.well-known/llms-v3-libraries.json
-// and consumed by Studio's `searchLibraries.js` tool to drive V3 builder
-// library discovery, replacing the legacy /v1/widgets/assets fetch.
-//
-// Inclusion rules:
-//   - Installable packages: docs whose `relPath` matches `API/fliplet-*.md`.
-//     Emitted with `preloaded: false`. Package name defaults to the URL slug
-//     (`API/fliplet-barcode.md` → `fliplet-barcode`) and can be overridden
-//     via `package:` frontmatter.
-//   - Ambient (preloaded) namespaces: docs whose `relPath` matches
-//     `API/core/*.md`. Emitted with `preloaded: true` and `package:
-//     "fliplet-core"` since these APIs ship inside fliplet-core, which is
-//     bundled into every app and never needs `add_dependencies`.
-//
-// Either kind is skipped when `exclude_from_v3_catalog: true` is set in
-// frontmatter. The catalog also surfaces two optional curation fields read
-// from doc frontmatter:
-//   - `capabilities:` — bracketed list of keywords used by the consumer
-//     (Studio's `searchLibraries.js` and the V3 builder system prompt) to
-//     anchor user-described capabilities ("stripe", "checkout", "image
-//     generation") to the canonical Fliplet API. Always emitted as an
-//     array; empty when frontmatter omits it.
-//   - `notes:` — short curation note for side-effects or do-not-use caveats
-//     (e.g. fliplet-encryption modifies Fliplet.DataSources). Only emitted
-//     when present.
-const V3_INSTALLABLE_PATH_RE = /^API\/fliplet-[^/]+\.md$/;
-const V3_AMBIENT_PATH_RE = /^API\/core\/[^/]+\.md$/;
-
-export function deriveV3Package(relPath) {
-  const match = relPath.match(/^API\/(fliplet-[^/]+)\.md$/);
-  return match ? match[1] : null;
-}
-
-// Parse a YAML-style flow list (`[a, b, c]`) or a bare comma-separated
-// string into a clean array of trimmed strings. Returns [] for empty,
-// missing, or `[]` inputs. The minimal frontmatter parser upstream keeps
-// the raw value as a literal string, so this is where the list shape
-// becomes an array.
-export function parseListFrontmatter(raw) {
-  if (raw == null) return [];
-  const s = String(raw).trim();
-  if (s === '' || s === '[]') return [];
-  const body = s.startsWith('[') && s.endsWith(']') ? s.slice(1, -1) : s;
-  return body
-    .split(',')
-    .map((t) => t.trim())
-    .map((t) => {
-      if ((t.startsWith('"') && t.endsWith('"')) || (t.startsWith("'") && t.endsWith("'"))) {
-        return t.slice(1, -1);
-      }
-      return t;
-    })
-    .filter((t) => t.length > 0);
-}
-
-export function emitV3LibraryCatalog(docs) {
-  const libraries = [];
-  for (const doc of docs) {
-    const isInstallable = V3_INSTALLABLE_PATH_RE.test(doc.relPath);
-    const isAmbient = V3_AMBIENT_PATH_RE.test(doc.relPath);
-    if (!isInstallable && !isAmbient) continue;
-    const fm = doc.fm || {};
-    if (fm.exclude_from_v3_catalog === 'true') continue;
-
-    let pkg;
-    if (isInstallable) {
-      pkg = (fm.package && fm.package.trim()) || deriveV3Package(doc.relPath);
-      if (!pkg) continue;
-    } else {
-      // Ambient namespaces all ship inside fliplet-core (preloaded into
-      // every app). Studio consumers key off `preloaded` to decide whether
-      // `add_dependencies` is required, not off `package`.
-      pkg = 'fliplet-core';
-    }
-
-    const entry = {
-      package: pkg,
-      namespace: doc.title,
-      title: doc.title,
-      description: doc.description || '',
-      docUrl: doc.url,
-      preloaded: isAmbient,
-      capabilities: parseListFrontmatter(fm.capabilities),
-    };
-
-    if (fm.notes && fm.notes.trim() !== '') {
-      entry.notes = fm.notes.trim();
-    }
-
-    libraries.push(entry);
-  }
-  // Stable sort: installable first (preloaded=false), then ambient, alpha by
-  // package then namespace as a tiebreaker. Studio's renderer groups by
-  // `preloaded`; this order makes the JSON pleasant to read in diffs too.
-  libraries.sort((a, b) => {
-    if (a.preloaded !== b.preloaded) return a.preloaded ? 1 : -1;
-    const pkgCmp = (a.package || '').localeCompare(b.package || '');
-    if (pkgCmp !== 0) return pkgCmp;
-    return (a.namespace || '').localeCompare(b.namespace || '');
-  });
-  return {
-    version: 1,
-    generatedAt: new Date().toISOString(),
-    libraries,
-  };
-}
+// V3 library catalog (emitV3LibraryCatalog) and capabilities index page
+// (emitCapabilitiesIndex) emitters live in ./emitters.mjs. They share an
+// `isV3CatalogEntry(doc)` predicate so neither drifts from the other.
+// Re-exports above keep `bin/__tests__/build-agent-indexes.test.mjs`
+// working without a test-side import change.
 
 // MCP Server Card per SEP-1649
 // (https://github.com/modelcontextprotocol/modelcontextprotocol/pull/2127).
@@ -618,6 +549,7 @@ export function collectDocs(rootDir) {
     docs.push({
       relPath,
       url: urlForPath(relPath),
+      urlMd: urlForPathMd(relPath),
       title,
       description: truncate(description, 200),
       group: pickGroup(relPath),
@@ -664,6 +596,16 @@ export function validateFrontmatter(docs) {
         field: 'title',
         message: 'missing or empty `title:` in frontmatter',
       });
+    } else if (fm.title.includes('`')) {
+      // Backticks in frontmatter `title:` render as literal text in the
+      // layout (`_layouts/default.html` prints `{{ page.title }}` raw,
+      // not through markdownify). Backticks belong in the body H1 only.
+      errors.push({
+        relPath: doc.relPath,
+        field: 'title',
+        message: `\`title:\` contains backticks — they render as literal text in the page header, not as code`,
+        hint: 'Strip backticks from `title:` in frontmatter; keep them in the body H1 (`# `Fliplet.X``).',
+      });
     }
     if (!fm.description || fm.description.trim() === '') {
       errors.push({
@@ -698,6 +640,343 @@ export function validateFrontmatter(docs) {
   return errors;
 }
 
+// Strict-mode capability-field validator. Returns an array of error objects
+// (`{ relPath, field, message, hint, docUrl }`) — empty array means clean.
+//
+// Scope: only docs that pass `isV3CatalogEntry(doc)`. This is intentionally
+// different from `validateFrontmatter` (which runs on every doc): the lints
+// here enforce the catalog's invariants, and docs outside the catalog
+// (guides, REST API, etc.) don't have `capabilities:` or `category:` at all.
+//
+// Two rule families:
+//
+//   `capabilities:` (already-curated field — these lints catch authoring
+//   slips after the field was added):
+//     - empty/absent (must have at least one keyword on a catalog entry)
+//     - non-lowercase token (e.g. `Stripe` should be `stripe`)
+//     - duplicate token within one entry
+//     - token >40 chars (probably a run-on or comma left out)
+//     - WARN if a token starts with `[` — strong signal of bracket-mismatch
+//       in the YAML flow list (e.g. `capabilities: [stripe, checkout`
+//       without the closing `]`). `parseListFrontmatter` parses this
+//       silently with `[stripe` as the first token.
+//
+//   `category:` (new field — enforces the enum):
+//     - empty/absent
+//     - value not in `ALLOWED_CATEGORIES_SET`
+//
+// All errors carry a `hint` (one-liner fix) and a `docUrl` pointing to the
+// CONTRIBUTING checklist. The strict-mode runner in main() includes them
+// in the printed error message.
+const CONTRIBUTING_URL = `${BASE_URL}/CONTRIBUTING.html`;
+
+export function validateCapabilities(docs) {
+  const errors = [];
+  for (const doc of docs) {
+    if (!isV3CatalogEntry(doc)) continue;
+    const fm = doc.fm || {};
+
+    // capabilities[]
+    const capsRaw = fm.capabilities;
+    const caps = parseListFrontmatter(capsRaw);
+    if (capsRaw == null || capsRaw.trim() === '' || capsRaw.trim() === '[]' || caps.length === 0) {
+      errors.push({
+        relPath: doc.relPath,
+        field: 'capabilities',
+        message: '`capabilities:` is empty or missing on a V3 catalog entry',
+        hint: 'Add 6–12 lowercase keywords describing what this API does (e.g. `[stripe, checkout, subscription]`).',
+        docUrl: CONTRIBUTING_URL,
+      });
+    } else {
+      const seen = new Set();
+      for (const token of caps) {
+        if (token.startsWith('[')) {
+          errors.push({
+            relPath: doc.relPath,
+            field: 'capabilities',
+            message: `\`capabilities:\` token \`${token}\` starts with \`[\` — likely a bracket-mismatch in YAML`,
+            hint: 'Check that the flow list is wrapped correctly, e.g. `capabilities: [a, b, c]` (note the closing `]`).',
+            docUrl: CONTRIBUTING_URL,
+            severity: 'warn',
+          });
+        }
+        if (token !== token.toLowerCase()) {
+          errors.push({
+            relPath: doc.relPath,
+            field: 'capabilities',
+            message: `\`capabilities:\` token \`${token}\` contains uppercase characters`,
+            hint: 'Capability keywords must be lowercase (e.g. `stripe`, not `Stripe`).',
+            docUrl: CONTRIBUTING_URL,
+          });
+        }
+        if (token.length > 40) {
+          errors.push({
+            relPath: doc.relPath,
+            field: 'capabilities',
+            message: `\`capabilities:\` token is >40 chars: \`${token}\``,
+            hint: 'Keywords should be short. Check for a missing comma.',
+            docUrl: CONTRIBUTING_URL,
+          });
+        }
+        if (seen.has(token)) {
+          errors.push({
+            relPath: doc.relPath,
+            field: 'capabilities',
+            message: `\`capabilities:\` duplicate token \`${token}\``,
+            hint: 'Remove the duplicate.',
+            docUrl: CONTRIBUTING_URL,
+          });
+        }
+        seen.add(token);
+      }
+    }
+
+    // category (enforced once D3.1 backfill completes — until then, the
+    // empty/missing rule is a soft warning so CI doesn't fail before the
+    // category-backfill commit lands).
+    const cat = fm.category && fm.category.trim();
+    if (!cat) {
+      errors.push({
+        relPath: doc.relPath,
+        field: 'category',
+        message: '`category:` is missing on a V3 catalog entry',
+        hint: `Pick one of: ${ALLOWED_CATEGORIES.join(', ')}.`,
+        docUrl: CONTRIBUTING_URL,
+        severity: 'warn',
+      });
+    } else if (!ALLOWED_CATEGORIES_SET.has(cat)) {
+      errors.push({
+        relPath: doc.relPath,
+        field: 'category',
+        message: `\`category: ${cat}\` is not in the allowed set`,
+        hint: `Allowed values: ${ALLOWED_CATEGORIES.join(', ')}.`,
+        docUrl: CONTRIBUTING_URL,
+      });
+    }
+  }
+  return errors;
+}
+
+// ---------------------------------------------------------------------------
+// Cross-link validation (strict-mode link-rot detection).
+//
+// Catches internal Markdown links that don't resolve to an existing doc file,
+// without forcing any authoring convention — authors keep writing natural
+// directory-relative links. Mirrors the validateFrontmatter/validateCapabilities
+// error shape ({ relPath, link, resolvedTarget, message, hint }) and the
+// --strict gate in main().
+//
+// Design notes (verified against the live corpus):
+//   - Link shapes in docs/API+v3: bare, ./, ../ (parent), /-rooted, plus .md /
+//     .html / extensionless targets and #anchor combos. All are resolved.
+//   - External links to foreign hosts are skipped; absolute
+//     https://developers.fliplet.com links ARE resolved (catches typo'd
+//     self-links).
+//   - Targets are validated against the on-disk .md set (NOT collectDocs's
+//     published set) so redirect stubs like API/fliplet-core.md — excluded from
+//     indexing but real, linkable files — count as valid targets. Only
+//     generated/vendor/meta DIRECTORIES (EXCLUDED_DIRS) are skipped.
+//   - Extraction is fence-aware and strips inline-code spans so links inside
+//     ``` blocks or `code` aren't matched. Images (`![]()`) are skipped.
+//   - Escape hatch: `<!-- lint-ignore-link -->` anywhere on the line, plus the
+//     LINK_ALLOWLIST constant for whole-target exceptions (e.g. forward-refs).
+
+// Whole-target exceptions (e.g. a doc deliberately linking a not-yet-merged
+// page). Keep empty unless there's a real forward-reference; prefer fixing the
+// link or the inline `<!-- lint-ignore-link -->` marker.
+const LINK_ALLOWLIST = new Set([]);
+
+const CROSS_LINK_HINT =
+  'Point the link at an existing .md target: a directory-relative path ' +
+  '(e.g. `datasources/joins` from API/, or `../routing`) or a full ' +
+  'https://developers.fliplet.com/...md URL. For an intentional exception add ' +
+  '`<!-- lint-ignore-link -->` on the line or extend LINK_ALLOWLIST.';
+
+// Walk every *.md under rootDir, skipping only EXCLUDED_DIRS (generated/vendor/
+// meta). Unlike walkMarkdown this keeps EXCLUDED_FILES (redirect stubs,
+// *.deprecated.md) because those are still valid link *targets*.
+function* walkAllMarkdown(dir, rootDir = dir) {
+  let entries;
+  try {
+    entries = readdirSync(dir, { withFileTypes: true });
+  } catch {
+    return;
+  }
+  for (const entry of entries) {
+    const full = join(dir, entry.name);
+    const rel = relative(rootDir, full).split(sep).join('/');
+    if (entry.isDirectory()) {
+      if (EXCLUDED_DIRS.includes(entry.name)) continue;
+      yield* walkAllMarkdown(full, rootDir);
+    } else if (entry.isFile() && entry.name.endsWith('.md')) {
+      yield rel;
+    }
+  }
+}
+
+const INLINE_LINK_RE = /(!?)\[(?:[^\]]*)\]\(\s*([^)\s]+)(?:\s+[^)]*)?\)/g;
+
+// Extract candidate internal-link targets from a markdown body. Fence-aware
+// (skips ``` / ~~~ code blocks) and strips inline-code spans. Returns
+// { target, line, ignore }[]. Images are skipped.
+export function extractCrossLinks(body) {
+  const out = [];
+  const lines = body.split(/\r?\n/);
+  let inFence = false;
+  let fenceChar = '';
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    const fence = line.match(/^\s*(```+|~~~+)/);
+    if (fence) {
+      const ch = fence[1][0];
+      if (!inFence) {
+        inFence = true;
+        fenceChar = ch;
+      } else if (ch === fenceChar) {
+        inFence = false;
+      }
+      continue;
+    }
+    if (inFence) continue;
+    const ignore = line.includes('lint-ignore-link');
+    // Drop inline-code spans so `[x](y)` inside backticks isn't matched.
+    const stripped = line.replace(/`[^`]*`/g, '');
+    // Reference-style link definitions: `[label]: target`
+    const refDef = stripped.match(/^\s{0,3}\[[^\]]+\]:\s*(\S+)/);
+    if (refDef) {
+      out.push({ target: refDef[1], line: i + 1, ignore });
+      continue;
+    }
+    let m;
+    INLINE_LINK_RE.lastIndex = 0;
+    while ((m = INLINE_LINK_RE.exec(stripped)) !== null) {
+      if (m[1] === '!') continue; // image
+      out.push({ target: m[2], line: i + 1, ignore });
+    }
+  }
+  return out;
+}
+
+// A target is "doc-like" if its last segment is extensionless or ends in
+// .md/.html. Anything else (.txt, .png, .csv, .pdf, …) is a file asset, not a
+// doc cross-link, and is validated elsewhere (or not at all) — skip it.
+function hasNonDocExtension(p) {
+  const seg = p.split('/').pop() || '';
+  const dot = seg.lastIndexOf('.');
+  if (dot <= 0) return false; // no extension, or a dotfile
+  const ext = seg.slice(dot + 1).toLowerCase();
+  return ext !== 'md' && ext !== 'html';
+}
+
+// Collapse '.'/'..' segments. Returns null if the path escapes the root.
+function normalizeRelTarget(p) {
+  const parts = [];
+  for (const seg of p.split('/')) {
+    if (seg === '' || seg === '.') continue;
+    if (seg === '..') {
+      if (parts.length === 0) return null;
+      parts.pop();
+      continue;
+    }
+    parts.push(seg);
+  }
+  return parts.join('/');
+}
+
+// Classify a raw link target. Returns one of:
+//   { skip: true }                         — external/anchor/scheme, ignore
+//   { escaped: true }                      — relative link escaped docs root
+//   { resolved: '<repo-rel base>' }        — internal target to validate
+export function classifyCrossLink(target, fromRelPath) {
+  let t = (target || '').trim();
+  if (t.startsWith('<') && t.endsWith('>')) t = t.slice(1, -1);
+  if (!t || t.startsWith('#')) return { skip: true };
+
+  if (/^https?:\/\//i.test(t)) {
+    let u;
+    try {
+      u = new URL(t);
+    } catch {
+      return { skip: true };
+    }
+    if (u.hostname !== 'developers.fliplet.com') return { skip: true };
+    const path = u.pathname.replace(/^\/+/, '');
+    if (path === '') return { resolved: 'README.md' };
+    if (hasNonDocExtension(path)) return { skip: true };
+    return { resolved: normalizeRelTarget(path) ?? '' };
+  }
+  if (/^[a-z][a-z0-9+.-]*:/i.test(t)) return { skip: true }; // mailto:, tel:, data:, …
+
+  let path = t.replace(/[?#].*$/, ''); // strip query + anchor
+  if (!path) return { skip: true };
+  if (hasNonDocExtension(path)) return { skip: true }; // asset link, not a doc
+
+  let baseDir;
+  if (path.startsWith('/')) {
+    baseDir = '';
+    path = path.replace(/^\/+/, '');
+  } else {
+    const slash = fromRelPath.lastIndexOf('/');
+    baseDir = slash === -1 ? '' : fromRelPath.slice(0, slash);
+  }
+  const norm = normalizeRelTarget(baseDir ? `${baseDir}/${path}` : path);
+  if (norm === null) return { escaped: true };
+  if (norm === '') return { resolved: 'README.md' };
+  return { resolved: norm };
+}
+
+// Does a source .md exist for the resolved target? Mirrors how CF Pages
+// serves clean URLs: a bare/`.html` path maps back to its `.md` source.
+function crossLinkTargetExists(resolved, validSet) {
+  const candidates = [];
+  if (resolved.endsWith('.md')) {
+    candidates.push(resolved);
+  } else if (resolved.endsWith('.html')) {
+    candidates.push(resolved.replace(/\.html$/, '.md'));
+  } else {
+    candidates.push(`${resolved}.md`, `${resolved}/README.md`, `${resolved}/index.md`);
+  }
+  return candidates.some((c) => validSet.has(c));
+}
+
+// Strict-mode cross-link validator. Returns { relPath, link, resolvedTarget,
+// message, hint, line }[] — empty array means clean.
+export function validateCrossLinks(docs, rootDir) {
+  const validSet = new Set();
+  for (const rel of walkAllMarkdown(rootDir)) validSet.add(rel);
+
+  const errors = [];
+  for (const doc of docs) {
+    for (const link of extractCrossLinks(doc.body)) {
+      if (link.ignore || LINK_ALLOWLIST.has(link.target)) continue;
+      const c = classifyCrossLink(link.target, doc.relPath);
+      if (c.skip) continue;
+      if (c.escaped) {
+        errors.push({
+          relPath: doc.relPath,
+          link: link.target,
+          resolvedTarget: null,
+          message: `cross-link \`${link.target}\` escapes the docs root`,
+          hint: CROSS_LINK_HINT,
+          line: link.line,
+        });
+        continue;
+      }
+      if (!crossLinkTargetExists(c.resolved, validSet)) {
+        errors.push({
+          relPath: doc.relPath,
+          link: link.target,
+          resolvedTarget: c.resolved,
+          message: `cross-link \`${link.target}\` → \`${c.resolved}\` not found`,
+          hint: CROSS_LINK_HINT,
+          line: link.line,
+        });
+      }
+    }
+  }
+  return errors;
+}
+
 function main() {
   const strict = process.argv.includes('--strict');
   const docs = collectDocs(docsRoot);
@@ -716,6 +995,52 @@ function main() {
     if (strict) {
       console.error(
         `\n${fmErrors.length} frontmatter error${fmErrors.length === 1 ? '' : 's'} — failing build (--strict).`,
+      );
+      process.exit(1);
+    }
+  }
+
+  // Capability lints run after frontmatter validation. Scope: V3 catalog
+  // entries only (see isV3CatalogEntry). Each error carries a `hint` and
+  // a `docUrl` to the CONTRIBUTING checklist so authors know exactly how
+  // to fix.
+  const capErrors = validateCapabilities(docs);
+  const capHardErrors = capErrors.filter((e) => e.severity !== 'warn');
+  const capWarns = capErrors.filter((e) => e.severity === 'warn');
+  if (capWarns.length > 0) {
+    for (const e of capWarns) {
+      console.error(`[warn] ${e.relPath}: ${e.message}`);
+      if (e.hint) console.error(`         hint: ${e.hint}`);
+      if (e.docUrl) console.error(`         see:  ${e.docUrl}`);
+    }
+  }
+  if (capHardErrors.length > 0) {
+    const tag = strict ? '[error]' : '[warn]';
+    for (const e of capHardErrors) {
+      console.error(`${tag} ${e.relPath}: ${e.message}`);
+      if (e.hint) console.error(`         hint: ${e.hint}`);
+      if (e.docUrl) console.error(`         see:  ${e.docUrl}`);
+    }
+    if (strict) {
+      console.error(
+        `\n${capHardErrors.length} capability error${capHardErrors.length === 1 ? '' : 's'} — failing build (--strict).`,
+      );
+      process.exit(1);
+    }
+  }
+
+  // Cross-link validation: catch internal links that don't resolve to an
+  // existing doc file. Same --strict gate as the validators above.
+  const linkErrors = validateCrossLinks(docs, docsRoot);
+  if (linkErrors.length > 0) {
+    const tag = strict ? '[error]' : '[warn]';
+    for (const e of linkErrors) {
+      console.error(`${tag} ${e.relPath}:${e.line}: ${e.message}`);
+      if (e.hint) console.error(`         hint: ${e.hint}`);
+    }
+    if (strict) {
+      console.error(
+        `\n${linkErrors.length} cross-link error${linkErrors.length === 1 ? '' : 's'} — failing build (--strict).`,
       );
       process.exit(1);
     }
@@ -766,6 +1091,14 @@ function main() {
     JSON.stringify(v3Catalog, null, 2) + '\n',
   );
 
+  // Capabilities index page. Written to docs/v3/capabilities.md so Jekyll
+  // renders it like any other doc. Byte-stable (no timestamps) so two runs
+  // against identical input produce byte-identical output.
+  const v3Dir = join(docsRoot, 'v3');
+  mkdirSync(v3Dir, { recursive: true });
+  const capabilitiesPage = emitCapabilitiesIndex(docs);
+  writeFileSync(join(v3Dir, 'capabilities.md'), capabilitiesPage);
+
   console.log('Generated:');
   console.log(`  .well-known/llms.txt                 (${llmsTxt.length} bytes, ${docs.length} entries)`);
   console.log(`  .well-known/llms-full.txt            (${llmsFull.length} bytes)`);
@@ -776,6 +1109,7 @@ function main() {
   }
   console.log(`  .well-known/mcp/server-card.json     (${MCP_ENDPOINT})`);
   console.log(`  .well-known/llms-v3-libraries.json   (${v3Catalog.libraries.length} V3 librar${v3Catalog.libraries.length === 1 ? 'y' : 'ies'})`);
+  console.log(`  v3/capabilities.md                   (${capabilitiesPage.length} bytes)`);
 }
 
 // Run main() only when invoked as a script, not when imported by tests.

@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, barcode]
 v3_relevant: true
 deprecated: false
+category: media
 capabilities: [barcode, qr code, qrcode, scan, scanner, camera scan, generate barcode, ean, upc, 1d barcode, 2d barcode]
 ---
 # `Fliplet.Barcode`

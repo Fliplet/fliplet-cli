@@ -1,10 +1,11 @@
 ---
-title: "`Fliplet.Storage` and `Fliplet.App.Storage`"
+title: "Fliplet.Storage and Fliplet.App.Storage"
 description: "Persist JSON-serializable values to device or browser storage, scoped globally or to the current app."
 type: api-reference
 tags: [js-api, core, storage]
 v3_relevant: true
 deprecated: false
+category: data
 capabilities: [storage, persistence, key-value, app storage, device storage, browser storage, preferences, settings, namespaced storage, json storage, local storage]
 ---
 # `Fliplet.Storage` and `Fliplet.App.Storage`

@@ -46,6 +46,7 @@ export const EXCLUDED_DIRS = [
   '.github',
   '.well-known',
   'assets',
+  'plans',     // working planning artifacts (e.g. fliplet-native scope review) — not published docs
 ];
 
 export function shouldExclude(relPath) {

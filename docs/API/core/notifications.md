@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, core, notifications]
 v3_relevant: true
 deprecated: false
+category: communications
 capabilities: [local notification, device notification, notification permission, scheduled local notification, native notification, browser notification]
 ---
 # `Fliplet.Navigator.Notifications`
