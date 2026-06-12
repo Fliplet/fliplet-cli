@@ -1,6 +1,6 @@
 ---
 title: Fliplet.Barcode
-description: Generate QR codes and 1D/2D barcodes on screen, and scan them from the device camera, via the fliplet-barcode package.
+description: Scan QR codes and 1D/2D barcodes from the camera on web and native (attachScanner / scan) and generate barcode images, via the fliplet-barcode package.
 type: api-reference
 tags: [js-api, barcode]
 v3_relevant: true
@@ -10,19 +10,58 @@ capabilities: [barcode, qr code, qrcode, scan, scanner, camera scan, generate ba
 ---
 # `Fliplet.Barcode`
 
-Scan QR codes and other 1D/2D barcodes from the device camera, and generate barcode images on screen, via the `fliplet-barcode` package. Barcode scanning is only supported in native apps.
+Scan QR codes and other 1D/2D barcodes from the device camera, and generate barcode images on screen, via the `fliplet-barcode` package.
+
+**To add barcode scanning to a screen, use `Fliplet.Barcode.attachScanner()`.** It runs the camera inside a container you place in your own UI and behaves the same on **web and native** — this is the method to reach for when you build the scanning screen yourself (a button that opens a scanner, an embedded viewfinder, a scan-and-show-result flow). `Fliplet.Barcode.scan()` is a convenience shortcut that pops a ready-made full-screen scanner; it is documented further down, but for app screens prefer `attachScanner()`.
 
 ## Install
 
 Add the `fliplet-barcode` dependency to your screen or app resources.
 
+## Fliplet.Barcode.attachScanner()
+
+(Returns a controller object)
+
+**The recommended way to scan a barcode from a screen.** `attachScanner()` is a low-level scanner with **no built-in UI**: you provide a container element (placed and styled inside your own screen or modal) and `attachScanner()` drives the camera and decoder into it — the same idea as Fliplet's session APIs, which have no UI so you build the login screen yourself. It works the same on **web and native**, so a screen built with it runs everywhere.
+
+### Usage
+
+```js
+// 1. Put a container in your own UI: <div id="reader"></div>
+var scanner = Fliplet.Barcode.attachScanner(document.getElementById('reader'), {
+  onScan: function (result) {
+    // result.text   — the decoded value
+    // result.format — e.g. 'QR_CODE', 'CODE_128'
+    scanner.stop(); // one-shot: stop after the first scan (or keep scanning)
+  },
+  onError: function (error) {
+    // camera permission denied, no camera, or library failed to load
+  }
+});
+
+// when the user leaves the screen or closes your scanner UI:
+scanner.stop();
+```
+
+A typical "tap a button to scan" screen shows your own button, reveals the `#reader` container when tapped, calls `attachScanner()`, and displays `result.text` on screen from inside `onScan`.
+
+* **element** (HTMLElement | String) The container to render the camera into (an element or its `id`). You own its placement and styling — `attachScanner()` neither creates nor removes it.
+* **options** (Object)
+  * **onScan** (Function) Called on every successful decode with `{ text, format }`. Call `scanner.stop()` inside it for one-shot scanning.
+  * **onError** (Function) Called on a fatal start error (camera permission denied, no camera, or library load failure).
+  * **fps** (Number) Decode attempts per second. Default `10`.
+  * **qrbox** (Object | Function) Scan-box size (html5-qrcode `qrbox`). Defaults to a centred square at 70% of the smaller edge.
+* **Returns** a controller `{ stop() }`. `stop()` ends the camera, tears down the decoder (your element is left in the DOM), and returns a `Promise`.
+
+**Permissions**: on web the browser prompts for camera access when scanning starts and requires a secure context (HTTPS). On native the OS prompts on first use.
+
 ## Fliplet.Barcode.scan()
 
 (Returns `Promise`)
 
-Scan a QR code or barcode.
+Open a ready-made full-screen scanner and resolve with the result. This is a convenience shortcut for a quick, standalone scan where you do not need the scanner embedded in your own screen.
 
-**Note**: Barcode scanning is only supported in native apps.
+**When building an app screen, prefer [`Fliplet.Barcode.attachScanner()`](#fliplet-barcode-attachscanner)** above — it embeds in your own UI and behaves consistently on web and native. Reach for `scan()` only when a one-off full-screen scanner is genuinely all you need.
 
 ### Usage
 
