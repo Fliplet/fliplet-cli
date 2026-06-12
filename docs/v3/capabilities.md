@@ -86,7 +86,7 @@ Every Fliplet JS API available to V3 apps, grouped by capability category. Each 
 
 ## Navigation
 
-- [`Fliplet Router JS API`](https://developers.fliplet.com/API/fliplet-router.html) — Fliplet.Router JS API reference for V3 apps. Covers getBasePath, getRouteManifest, getRouteConfig, and resolveRoute including return shapes, reason codes, and rejection behavior.
+- [`Fliplet Router JS API`](https://developers.fliplet.com/API/fliplet-router.html) — Fliplet.Router JS API reference for V3 apps. Covers getBasePath, isNative, getHistoryMode (platform-conditional history — path on web, hash on native), getRouteManifest, getRouteConfig, and resolveRo…
 - [`Fliplet.Navigate`](https://developers.fliplet.com/API/core/navigate.html) **(preloaded)** — Navigate between app screens, open external URLs, pass query parameters, and handle back, home, and modal navigation via Fliplet.Navigate.
 - [`Fliplet.Pages and Fliplet.Page`](https://developers.fliplet.com/API/core/screens.html) **(preloaded)** — List app screens, get the current screen's public URL, and build shareable URLs for any screen by ID.
 

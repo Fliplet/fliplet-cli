@@ -47,6 +47,6 @@ After picking, call `get_fliplet_docs('v3-framework-<name>')` for the specific c
 
 ## Related
 
-- [V3 app bootstrap](../app-bootstrap) — the three boot constraints every app must satisfy regardless of framework
+- [V3 app bootstrap](../app-bootstrap) — the four boot constraints every app must satisfy regardless of framework
 - [V3 routing](../routing) — History API contract, route manifest, forbidden-pattern reference
 - [V3 authentication patterns](../auth) — session, login, protected routes

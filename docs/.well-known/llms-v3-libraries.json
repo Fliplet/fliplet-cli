@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-06-07T14:27:14.279Z",
+  "generatedAt": "2026-06-10T17:50:12.068Z",
   "libraries": [
     {
       "package": "fliplet-analytics-spa",
@@ -303,7 +303,7 @@
       "package": "fliplet-router",
       "namespace": "Fliplet Router JS API",
       "title": "Fliplet Router JS API",
-      "description": "Fliplet.Router JS API reference for V3 apps. Covers getBasePath, getRouteManifest, getRouteConfig, and resolveRoute including return shapes, reason codes, and rejection behavior.",
+      "description": "Fliplet.Router JS API reference for V3 apps. Covers getBasePath, isNative, getHistoryMode (platform-conditional history — path on web, hash on native), getRouteManifest, getRouteConfig, and resolveRo…",
       "docUrl": "https://developers.fliplet.com/API/fliplet-router.md",
       "preloaded": false,
       "capabilities": [
