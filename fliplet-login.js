@@ -25,11 +25,14 @@ const callbackUrl = `${baseUrl}/callback`;
 // New unified sign-in URL — replaces the legacy /v1/auth/third-party flow.
 // The page validates the callback URL against an allow-list (which already
 // includes http://localhost:9001/callback) and on success navigates the
-// browser to <callback>?token=XXX&user=<base64-json>.
+// browser to <callback>?token=XXX&user=<url-encoded-json>.
+//
+// No `&source=CLI`: the unified login page derives the session source from
+// `isEmbedded` (views/login.pug) and does not read `?source=`, so passing it
+// here would be a dead param that never tags the session.
 const redirectUrl = `${config.api_url}v1/auth/login`
   + `?return=callback`
-  + `&callback=${encodeURIComponent(callbackUrl)}`
-  + `&source=CLI`;
+  + `&callback=${encodeURIComponent(callbackUrl)}`;
 
 require('http').createServer(function(req, res) {
   // Route on the parsed pathname, NOT a loose `req.url.match(/.../)`. The
@@ -111,6 +114,6 @@ require('http').createServer(function(req, res) {
       return process.exit(1);
     });
   }
-}).listen(9001);
+}).listen(port);
 
 require('openurl').open(`${baseUrl}/login?${Date.now()}`);
