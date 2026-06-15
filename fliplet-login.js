@@ -1,6 +1,6 @@
 require('colors');
 
-const _ = require('lodash');
+const url = require('url');
 
 const auth = require('./lib/auth');
 const config = require('./lib/config');
@@ -20,10 +20,31 @@ ${'Press Ctrl+C to exit.'.blue}
 
 const port = 9001;
 const baseUrl = `http://localhost:${port}`;
-const redirectUrl = `${config.api_url}v1/auth/third-party?redirect=${encodeURIComponent(`${baseUrl}/callback`)}&responseType=code&source=CLI&title=Sign%20in%20to%20Authorize%20the%20Fliplet%20CLI`;
+const callbackUrl = `${baseUrl}/callback`;
+
+// New unified sign-in URL — replaces the legacy /v1/auth/third-party flow.
+// The page validates the callback URL against an allow-list (which already
+// includes http://localhost:9001/callback) and on success navigates the
+// browser to <callback>?token=XXX&user=<url-encoded-json>.
+//
+// No `&source=CLI`: the unified login page derives the session source from
+// `isEmbedded` (views/login.pug) and does not read `?source=`, so passing it
+// here would be a dead param that never tags the session.
+const redirectUrl = `${config.api_url}v1/auth/login`
+  + `?return=callback`
+  + `&callback=${encodeURIComponent(callbackUrl)}`;
 
 require('http').createServer(function(req, res) {
-  if (req.url.match(/login/)) {
+  // Route on the parsed pathname, NOT a loose `req.url.match(/.../)`. The
+  // unified callback carries the signed-in user's data in the query string
+  // (`?token=...&user=<url-encoded-json>`), so a substring match against the
+  // whole URL would misroute any user whose email or name contains "login"
+  // or "success" (e.g. john.login@acme.com, anyone named "Success") into the
+  // wrong branch — breaking their sign-in. Pathname matching is exact.
+  const parsed = url.parse(req.url, true);
+  const pathname = parsed.pathname;
+
+  if (pathname === '/login') {
     res.writeHead(302, {
       'Location': redirectUrl
     });
@@ -31,25 +52,36 @@ require('http').createServer(function(req, res) {
     return res.end();
   }
 
-  if (req.url.match(/success/)) {
+  if (pathname === '/success') {
     res.end(`<html><body style="font-size:20px;font-family:sans-serif"><p><strong>You have been logged in successfully to your Fliplet account.</strong></p><p>You may now <a href="javascript:window.close()">close</a> this window now and return to the terminal to continue the process.</p><script>setTimeout(function () { window.close(); }, ${config.env === 'local' ? 0 : 5000});</script></body></html>`);
 
     return process.exit();
   }
 
-  if (req.url.match(/callback/)) {
-    const authToken = _.last(req.url.split('auth_token='));
+  if (pathname === '/callback') {
+    // Token (and optional user payload) come from the callback query string.
+    // The unified contract delivers them as `?token=...&user=<url-encoded-json>`.
+    const authToken = parsed.query.token;
+
+    if (!authToken) {
+      console.error('No auth token received from the sign-in flow.');
+      res.writeHead(400);
+      res.end('Missing token');
+      return process.exit(1);
+    }
 
     auth.setUserForToken(authToken).then(function(user) {
       organizations.getOrganizationsList().then(function onGetOrganizations(organizations) {
         if (!organizations.length) {
-          return console.error('Your organization has not been found.');
+          console.error('Your organization has not been found.');
+          res.writeHead(400);
+          res.end('No organizations available for this account.');
+          return process.exit(1);
         }
 
-        if (organizations.length > 1) {
-          return console.error('You belong to multiple organizations.');
-        }
-
+        // For users belonging to multiple organizations, default to the
+        // first one. They can switch later via `fliplet organization <id>`
+        // (use `fliplet list-organizations` to see all available IDs).
         const userOrganization = organizations[0];
 
         config.set('organization', userOrganization);
@@ -57,20 +89,31 @@ require('http').createServer(function(req, res) {
         console.log('----------------------------------------------------------\r\n');
         console.log(`You have logged in successfully. Welcome back, ${user.fullName.yellow.underline}!`);
         console.log(`Your organization has been set to ${userOrganization.name.green.underline} (#${userOrganization.id}). Your account email is ${user.email.yellow.underline}.`);
-        console.log(`You can now develop and publish components via the ${'fliplet run'.bgBlack.red} command!
-`);
+
+        if (organizations.length > 1) {
+          console.log(`\n${'Note'.yellow}: you belong to ${organizations.length} organizations. To switch, run ${'fliplet list-organizations'.bgBlack.red} to see all of them and ${'fliplet organization <id>'.bgBlack.red} to change.`);
+        }
+
+        console.log(`\nYou can now develop and publish components via the ${'fliplet run'.bgBlack.red} command!\n`);
 
         res.writeHead(302, {
           'Location': `${baseUrl}/success?${Date.now()}`
         });
 
         return res.end();
+      }).catch(function(err) {
+        console.error('Failed to fetch organizations:', err);
+        res.writeHead(500);
+        res.end('Failed to fetch organizations');
+        return process.exit(1);
       });
     }).catch(function(err) {
       console.error(err);
-      process.exit();
+      res.writeHead(500);
+      res.end('Authentication failed');
+      return process.exit(1);
     });
   }
-}).listen(9001);
+}).listen(port);
 
 require('openurl').open(`${baseUrl}/login?${Date.now()}`);
