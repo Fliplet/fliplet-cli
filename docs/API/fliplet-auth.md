@@ -62,12 +62,12 @@ Fliplet.Auth.currentUser().then(function(user) {
     return;
   }
 
-  // user shape: { id, email, userRoleId }
+  // user shape: { id, email, userRoleId, region, legacy }
   console.log(user.email);
 });
 ```
 
-The user object returned by `currentUser()` contains a subset of the fields returned by `signIn()` — specifically the fields that persist locally between sessions: `id`, `email`, `userRoleId`. To access `firstName` and `lastName`, either store them yourself after `signIn()` resolves, or query `v1/user` with `Fliplet.Auth.getToken()`.
+The user object returned by `currentUser()` contains the fields that persist locally between sessions: `id`, `email`, `userRoleId`, `region`, and `legacy`. It does **not** include `firstName` / `lastName` (which `signIn()` returns) — to access those, either store them yourself after `signIn()` resolves, or query `v1/user` with `Fliplet.Auth.getToken()`.
 
 ### Check whether a user is signed in
 
@@ -83,7 +83,9 @@ Fliplet.Auth.isSignedIn().then(function(isSignedIn) {
 
 ### Get the user's auth token
 
-`Fliplet.Auth.getToken()` resolves to the signed-in user's auth token, or `null` when no user is signed in. Use it to authenticate custom API calls as the signed-in user.
+`Fliplet.Auth.getToken()` resolves to the signed-in user's auth token, or `null` when no user is signed in. Use it to authenticate calls to the Fliplet API as the signed-in user.
+
+<p class="warning"><strong>Only send the auth token to the Fliplet API.</strong> The token grants full access to this user's Fliplet account — treat it like a password. Never put it in the URL, log it, or send it to a third-party / non-Fliplet endpoint, as that hands the user's account to whoever receives it. To call your own backend, send a short-lived token your backend issues, not the Fliplet auth token.</p>
 
 ```js
 Fliplet.Auth.getToken().then(function(token) {
@@ -91,16 +93,6 @@ Fliplet.Auth.getToken().then(function(token) {
     throw new Error('Not signed in');
   }
 
-  return fetch('https://api.example.com/my-endpoint', {
-    headers: { 'Auth-Token': token }
-  });
-});
-```
-
-Pair with `Fliplet.API.request()` for calls to the Fliplet API:
-
-```js
-Fliplet.Auth.getToken().then(function(token) {
   return Fliplet.API.request({
     url: 'v1/user',
     headers: { 'Auth-Token': token }
@@ -109,6 +101,8 @@ Fliplet.Auth.getToken().then(function(token) {
   console.log(response.user);
 });
 ```
+
+`Fliplet.API.request()` is the recommended way to call the Fliplet API — it targets the correct API host for you and keeps the token on the Fliplet origin.
 
 ### Sign the user out
 
@@ -139,7 +133,7 @@ var unsubscribe = Fliplet.Auth.onChange(function(user) {
 unsubscribe();
 ```
 
-Useful when the user signs in or out via a different mechanism — for example, a Fliplet Login component on another screen.
+<p class="quote"><code>onChange</code> fires only for sign-ins and sign-outs performed through <code>Fliplet.Auth.signIn()</code> and <code>Fliplet.Auth.signOut()</code>. It does not currently fire for auth changes made by other mechanisms (for example a Fliplet Login component on another screen), since those don't route through this API.</p>
 
 ## Examples
 
