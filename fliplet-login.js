@@ -32,7 +32,16 @@ const redirectUrl = `${config.api_url}v1/auth/login`
   + `&source=CLI`;
 
 require('http').createServer(function(req, res) {
-  if (req.url.match(/login/)) {
+  // Route on the parsed pathname, NOT a loose `req.url.match(/.../)`. The
+  // unified callback carries the signed-in user's data in the query string
+  // (`?token=...&user=<url-encoded-json>`), so a substring match against the
+  // whole URL would misroute any user whose email or name contains "login"
+  // or "success" (e.g. john.login@acme.com, anyone named "Success") into the
+  // wrong branch — breaking their sign-in. Pathname matching is exact.
+  const parsed = url.parse(req.url, true);
+  const pathname = parsed.pathname;
+
+  if (pathname === '/login') {
     res.writeHead(302, {
       'Location': redirectUrl
     });
@@ -40,16 +49,15 @@ require('http').createServer(function(req, res) {
     return res.end();
   }
 
-  if (req.url.match(/success/)) {
+  if (pathname === '/success') {
     res.end(`<html><body style="font-size:20px;font-family:sans-serif"><p><strong>You have been logged in successfully to your Fliplet account.</strong></p><p>You may now <a href="javascript:window.close()">close</a> this window now and return to the terminal to continue the process.</p><script>setTimeout(function () { window.close(); }, ${config.env === 'local' ? 0 : 5000});</script></body></html>`);
 
     return process.exit();
   }
 
-  if (req.url.match(/callback/)) {
-    // Parse the token (and optional user payload) from the callback URL.
-    // The unified contract delivers them as `?token=...&user=<base64>`.
-    const parsed = url.parse(req.url, true);
+  if (pathname === '/callback') {
+    // Token (and optional user payload) come from the callback query string.
+    // The unified contract delivers them as `?token=...&user=<url-encoded-json>`.
     const authToken = parsed.query.token;
 
     if (!authToken) {
