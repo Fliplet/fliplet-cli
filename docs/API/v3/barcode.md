@@ -11,7 +11,7 @@ deprecated: false
 
 Scanning in a V3 app uses `Fliplet.Barcode.attachScanner()` — a UI-less scanner you drive into a container element inside your own screen. It behaves the same on **web and native**, so a screen you build with it runs everywhere a V3 app runs (slug-hosted web, the Studio preview, and the native shell). You build the scanning UI yourself, the same way you build a login screen on top of `Fliplet.Session`; the API owns only the camera and the decoder.
 
-This guide covers the recommended embedded-scanner pattern, a full worked example, the controller and options, camera permissions, and when (rarely) to fall back to the full-screen `scan()`.
+This guide covers the recommended embedded-scanner pattern, a full worked example, the controller and options, and camera permissions.
 
 ## Prerequisites
 
@@ -21,7 +21,7 @@ Add the `fliplet-barcode` package to the screen, then load it before use:
 await Fliplet.require.lazy.chain('fliplet-barcode');
 ```
 
-`attachScanner()`, `scan()`, `show()`, and `encode()` all live on `Fliplet.Barcode` once the package is loaded. For the full method and option reference, see the [`Fliplet.Barcode` API reference](../fliplet-barcode.md).
+`attachScanner()`, `show()`, and `encode()` all live on `Fliplet.Barcode` once the package is loaded. For the full method and option reference, see the [`Fliplet.Barcode` API reference](../fliplet-barcode.md).
 
 ## The recommended pattern: attachScanner()
 
@@ -142,10 +142,6 @@ Handle a denied permission in `onError` — show the user how to re-enable the c
 
 To render a QR code or barcode image (rather than scan one), use `Fliplet.Barcode.show()` or `Fliplet.Barcode.encode()`. Both work on web and native. See the [`Fliplet.Barcode` API reference](../fliplet-barcode.md) for the format and styling options.
 
-## When to use scan() instead
-
-`Fliplet.Barcode.scan()` opens a ready-made full-screen scanner and resolves with the result. It is a **native-only** convenience for a quick, standalone scan where you don't need the scanner embedded in your screen. Prefer `attachScanner()` for anything you build into a screen — it embeds in your own UI and works on web as well as native.
-
 ## Patterns — DO and DON'T
 
 **DO**
@@ -157,10 +153,10 @@ To render a QR code or barcode image (rather than scan one), use `Fliplet.Barcod
 
 **DON'T**
 
-- Don't reach for `scan()` for an in-screen scanner — it's a full-screen native overlay with no web path.
 - Don't leave the scanner running after navigation — a live camera drains battery and blocks other capture.
+- Don't add a separate "scanner" package or a custom camera/getUserMedia stack — `attachScanner()` is the supported cross-platform scanner.
 
 ## Related
 
-- [`Fliplet.Barcode` API reference](../fliplet-barcode.md) — full method and option reference (`attachScanner`, `scan`, `show`, `encode`).
+- [`Fliplet.Barcode` API reference](../fliplet-barcode.md) — full method and option reference for the `fliplet-barcode` package.
 - [V3 routing](./routing.md) — base-path and navigation patterns for the screen that hosts your scanner.
