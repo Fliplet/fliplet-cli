@@ -20,7 +20,7 @@ ${'Press Ctrl+C to exit.'.blue}
 
 const port = 9001;
 const baseUrl = `http://localhost:${port}`;
-const redirectUrl = `${config.api_url}v1/auth/third-party?redirect=${encodeURIComponent(`${baseUrl}/callback`)}&responseType=code&source=CLI&title=Sign%20in%20to%20Authorize%20the%20Fliplet%20CLI`;
+const redirectUrl = `${config.api_url}v1/auth/login?return=callback&callback=${encodeURIComponent(`${baseUrl}/callback`)}&source=CLI`;
 
 require('http').createServer(function(req, res) {
   if (req.url.match(/login/)) {
@@ -38,7 +38,8 @@ require('http').createServer(function(req, res) {
   }
 
   if (req.url.match(/callback/)) {
-    const authToken = _.last(req.url.split('auth_token='));
+    const urlParams = new URLSearchParams(req.url.split('?')[1] || '');
+    const authToken = urlParams.get('token');
 
     auth.setUserForToken(authToken).then(function(user) {
       organizations.getOrganizationsList().then(function onGetOrganizations(organizations) {
