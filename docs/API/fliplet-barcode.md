@@ -3,10 +3,9 @@ title: Fliplet.Barcode
 description: Scan QR codes and 1D/2D barcodes from the camera on web and native (attachScanner / scan) and generate barcode images, via the fliplet-barcode package.
 type: api-reference
 tags: [js-api, barcode]
-v3_relevant: true
+v3_relevant: false
 deprecated: false
-category: media
-capabilities: [barcode, qr code, qrcode, scan, scanner, camera scan, generate barcode, ean, upc, 1d barcode, 2d barcode]
+exclude_from_v3_catalog: true
 ---
 # `Fliplet.Barcode`
 

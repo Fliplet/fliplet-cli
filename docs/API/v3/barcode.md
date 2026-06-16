@@ -5,6 +5,10 @@ type: guide
 tags: [js-api, v3, barcode]
 v3_relevant: true
 deprecated: false
+package: fliplet-barcode
+namespace: Fliplet.Barcode
+category: media
+capabilities: [barcode, qr code, qrcode, scan, scanner, camera scan, generate barcode, ean, upc, 1d barcode, 2d barcode]
 ---
 
 # V3 barcode scanning

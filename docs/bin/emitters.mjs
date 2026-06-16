@@ -9,12 +9,20 @@
 //
 // Stdlib only — no npm deps. Imported by build-agent-indexes.mjs.
 
-// V3 catalog membership is determined by two path patterns plus the
+// V3 catalog membership is determined by the path patterns below plus the
 // `exclude_from_v3_catalog: true` frontmatter opt-out. Keep these regexes
 // private to this module — the predicate `isV3CatalogEntry` is the public
 // contract.
 const V3_INSTALLABLE_PATH_RE = /^API\/fliplet-[^/]+\.md$/;
 const V3_AMBIENT_PATH_RE = /^API\/core\/[^/]+\.md$/;
+// A V3-specific capability doc under API/v3/ becomes the catalog entry for its
+// package ONLY when it declares `package:` in frontmatter. This lets an
+// installable package ship a dedicated V3 doc (e.g. API/v3/barcode.md leading
+// with the cross-platform primitive) as the canonical catalog entry, while the
+// shared API/fliplet-<name>.md reference opts out via `exclude_from_v3_catalog`.
+// The `package:` gate keeps the general V3 guides (routing, auth, frameworks/)
+// out of the catalog — they describe patterns, not a single package.
+const V3_GUIDE_PATH_RE = /^API\/v3\/[^/]+\.md$/;
 
 // Allowed values for the `category:` frontmatter field. Documented in
 // docs/CLAUDE.md as the canonical schema. Each catalog entry picks exactly
@@ -52,22 +60,25 @@ export const ALLOWED_CATEGORIES_SET = new Set(ALLOWED_CATEGORIES);
 // must use this — drift between them is a real bug (page would show entries
 // the agent doesn't know about, or vice versa).
 //
-// A doc is a V3 catalog entry when:
-//   - its path matches `API/fliplet-*.md` (installable) OR
-//     `API/core/*.md` (ambient, preloaded via fliplet-core), AND
-//   - its frontmatter does NOT set `exclude_from_v3_catalog: true`.
+// A doc is a V3 catalog entry when its frontmatter does NOT set
+// `exclude_from_v3_catalog: true`, AND its path matches one of:
+//   - `API/fliplet-*.md` (installable), OR
+//   - `API/core/*.md` (ambient, preloaded via fliplet-core), OR
+//   - `API/v3/*.md` that declares `package:` (a package's dedicated V3 doc;
+//     the `package:` gate keeps the pattern guides — routing/auth/frameworks —
+//     out, since they describe patterns rather than one package).
 //
 // Note: this is DIFFERENT from `shouldExclude(path)` in exclusions.mjs.
 // `shouldExclude` skips a path from indexing entirely (redirect stubs,
 // `_site/`, etc.); `isV3CatalogEntry` decides catalog membership for docs
 // that ARE indexed. Conflating them mis-fires lints across all docs.
 export function isV3CatalogEntry(doc) {
-  const isInstallable = V3_INSTALLABLE_PATH_RE.test(doc.relPath);
-  const isAmbient = V3_AMBIENT_PATH_RE.test(doc.relPath);
-  if (!isInstallable && !isAmbient) return false;
   const fm = doc.fm || {};
   if (fm.exclude_from_v3_catalog === 'true') return false;
-  return true;
+  const isInstallable = V3_INSTALLABLE_PATH_RE.test(doc.relPath);
+  const isAmbient = V3_AMBIENT_PATH_RE.test(doc.relPath);
+  const isV3Guide = V3_GUIDE_PATH_RE.test(doc.relPath) && !!(fm.package && String(fm.package).trim());
+  return isInstallable || isAmbient || isV3Guide;
 }
 
 export function deriveV3Package(relPath) {
@@ -127,9 +138,15 @@ export function emitV3LibraryCatalog(docs) {
       pkg = 'fliplet-core';
     }
 
+    // For most docs the title IS the JS namespace (e.g. "Fliplet.Barcode"). A
+    // dedicated V3 doc is titled as a guide ("V3 barcode scanning"), so it can
+    // declare the actual global via `namespace:` — the builder's registry shows
+    // `package → namespace`, so this must be the real global, not the doc title.
+    const namespace = (fm.namespace && fm.namespace.trim()) || doc.title;
+
     const entry = {
       package: pkg,
-      namespace: doc.title,
+      namespace,
       title: doc.title,
       description: doc.description || '',
       // AI-consumption surface: emit the raw .md URL (Studio's V3 builder fetches
@@ -184,7 +201,7 @@ export function emitCapabilitiesIndex(docs) {
     const category = fm.category && fm.category.trim();
     const isAmbient = V3_AMBIENT_PATH_RE.test(doc.relPath);
     const item = {
-      namespace: doc.title,
+      namespace: (fm.namespace && fm.namespace.trim()) || doc.title,
       description: doc.description || '',
       url: doc.url,
       preloaded: isAmbient,
