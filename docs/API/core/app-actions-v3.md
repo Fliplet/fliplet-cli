@@ -1115,7 +1115,7 @@ Each snapshot stores the full action configuration at that point in time:
 
 ### List version history
 
-Returns the snapshots for an action, most recent first. The list payload is a lightweight **summary** — the heavy fields (`code`, `dependencies`, `assets`) are omitted to keep responses small. Fetch a single version to get the full snapshot.
+Returns the snapshots for an action, most recent first. The list payload is a lightweight **summary** — only the fields listed in the table below are included; all other fields (`code`, `dependencies`, `assets`, `timezone`, `triggers`, `functions`, `widgetInstanceIds`, `masterTaskId`, `productionTaskId`, `actionVersion`) are omitted. Fetch a single version to get the full snapshot.
 
 ```
 GET /v3/apps/:appId/actions/:actionId/versions
