@@ -24,6 +24,7 @@ Release notes for the Fliplet iOS and Android native frameworks — rebuild your
       <h4>Android</h4>
       <p>Current release: <u>6.4.4</u></p>
       <p>Target API level: 36</p>
+      <p>Minimum supported SDK: 29 (Android 10)</p>
     </div>
   </div>
 </section>

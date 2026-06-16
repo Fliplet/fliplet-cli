@@ -186,6 +186,8 @@ Joins can return data in several different ways:
 - A `Count` of the matched entries.
 - A `Sum` taken by counting a number in a defined column from the matching entries.
 
+<p class="warning"><strong>Note the key names differ between request and response.</strong> You <em>send</em> join configuration under the singular <code>join</code> key, but matched entries are <em>returned</em> under the plural <code>joins</code> key on each record. This is the same whether you use the <code>Fliplet.DataSources</code> JS API or call the <a href="../../REST-API/fliplet-datasources.html">REST query endpoint</a> directly.</p>
+
 ### Array (join)
 
 This is the default return behaviour for joins, hence no parameters are required.
@@ -230,7 +232,7 @@ Example of the returned data:
     id: 1,
     dataSourceId: 456,
     data: { Title: 'A great blog post' },
-    join: {
+    joins: {
       Comments: [
         {
           id: 3,
@@ -294,7 +296,7 @@ Example of the returned data:
     id: 1,
     dataSourceId: 456,
     data: { Title: 'A great blog post' },
-    join: {
+    joins: {
       HasComments: true
     }
   },
@@ -302,7 +304,7 @@ Example of the returned data:
     id: 2,
     dataSourceId: 456,
     data: { Title: 'Something worth reading' },
-    join: {
+    joins: {
       HasComments: false
     }
   }
@@ -355,7 +357,7 @@ Example of the returned data:
     id: 1,
     dataSourceId: 456,
     data: { Title: 'A great blog post' },
-    join: {
+    joins: {
       NumberOfComments: 2
     }
   },
@@ -363,7 +365,7 @@ Example of the returned data:
     id: 2,
     dataSourceId: 456,
     data: { Title: 'Something worth reading' },
-    join: {
+    joins: {
       NumberOfComments: 0
     }
   }
@@ -416,7 +418,7 @@ Example of the returned data:
     id: 1,
     dataSourceId: 456,
     data: { Title: 'A great blog post' },
-    join: {
+    joins: {
       LikesForComments: 7
     }
   },
@@ -424,7 +426,7 @@ Example of the returned data:
     id: 2,
     dataSourceId: 456,
     data: { Title: 'Something worth reading' },
-    join: {
+    joins: {
       LikesForComments: 0
     }
   }
@@ -556,6 +558,8 @@ connection.find({
 Use the `order` parameter to define the order at which entries are returned for your join.
 
 <p class="warning"><strong>Note:</strong> this parameter can be used for attributes such as <strong>"id"</strong> and <strong>"createdAt"</strong>. If you need to order by actual data in your entry, use the <strong>"data."</strong> prefix (such as <code>data.Title</code>).</p>
+
+<p class="info">When you combine <code>order</code> with <code>limit</code>, the matched entries are ordered first, then <code>limit</code> takes the first <em>n</em> for each parent record. This is why <code>order: ['createdAt', 'DESC']</code> with <code>limit: 5</code> returns the 5 most recent matches per parent.</p>
 
 **Using async/await (recommended)**
 

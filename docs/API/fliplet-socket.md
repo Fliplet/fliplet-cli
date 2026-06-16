@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, socket, websocket, realtime, events]
 v3_relevant: true
 deprecated: false
+category: communications
 capabilities: [websocket, socket, real-time, realtime, live updates, presence, broadcast, room, event stream, server push, live data, socket.io]
 ---
 # `Fliplet.Socket`

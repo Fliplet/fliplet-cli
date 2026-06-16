@@ -1,13 +1,29 @@
 {
   "version": 1,
-  "generatedAt": "2026-05-16T15:54:05.264Z",
+  "generatedAt": "2026-06-10T17:50:12.068Z",
   "libraries": [
+    {
+      "package": "fliplet-analytics-spa",
+      "namespace": "fliplet-analytics-spa",
+      "title": "fliplet-analytics-spa",
+      "description": "Auto page-view tracker for V3 SPA apps. Hooks the History API so every client-side route change emits a pageView — no app code required.",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-analytics-spa.md",
+      "preloaded": false,
+      "capabilities": [
+        "page view tracking",
+        "spa route tracking",
+        "history api",
+        "automatic analytics",
+        "route name resolution"
+      ],
+      "category": "analytics"
+    },
     {
       "package": "fliplet-app-submissions",
       "namespace": "Fliplet.App.Submissions",
       "title": "Fliplet.App.Submissions",
       "description": "Read App Store and Google Play submission metadata for the current Fliplet app — version, status, build numbers — via the fliplet-app-submissions package.",
-      "docUrl": "https://developers.fliplet.com/API/fliplet-app-submissions.html",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-app-submissions.md",
       "preloaded": false,
       "capabilities": [
         "app store",
@@ -19,14 +35,15 @@
         "app status",
         "native build",
         "app review"
-      ]
+      ],
+      "category": "commerce"
     },
     {
       "package": "fliplet-audio",
       "namespace": "Fliplet.Media.Audio",
       "title": "Fliplet.Media.Audio",
       "description": "Play, pause, stop, and seek audio files on device or from a URL in Fliplet apps via the Audio namespace.",
-      "docUrl": "https://developers.fliplet.com/API/fliplet-audio.html",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-audio.md",
       "preloaded": false,
       "capabilities": [
         "audio",
@@ -38,14 +55,15 @@
         "mp3",
         "streaming audio",
         "audio playback"
-      ]
+      ],
+      "category": "media"
     },
     {
       "package": "fliplet-barcode",
       "namespace": "Fliplet.Barcode",
       "title": "Fliplet.Barcode",
       "description": "Generate QR codes and 1D/2D barcodes on screen, and scan them from the device camera, via the fliplet-barcode package.",
-      "docUrl": "https://developers.fliplet.com/API/fliplet-barcode.html",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-barcode.md",
       "preloaded": false,
       "capabilities": [
         "barcode",
@@ -59,14 +77,15 @@
         "upc",
         "1d barcode",
         "2d barcode"
-      ]
+      ],
+      "category": "media"
     },
     {
       "package": "fliplet-chat",
       "namespace": "Fliplet.Chat",
       "title": "Fliplet.Chat",
       "description": "Build one-to-one, group, and public-channel chat features. Fliplet.Chat owns the conversations and messages data sources internally — supply only the contacts list (who can chat with whom).",
-      "docUrl": "https://developers.fliplet.com/API/fliplet-chat.html",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-chat.md",
       "preloaded": false,
       "capabilities": [
         "chat",
@@ -83,6 +102,7 @@
         "typing indicator",
         "message history"
       ],
+      "category": "communications",
       "notes": "Owns the conversations and messages data sources internally — never propose `Conversations`, `Messages`, `Typing Status`, or similar data sources of your own. The only data source you design is the `contacts` list passed to `Fliplet.Chat.connect()` (who can chat with whom)."
     },
     {
@@ -90,7 +110,7 @@
       "namespace": "Fliplet.Communicate",
       "title": "Fliplet.Communicate",
       "description": "Send email, SMS, push notifications, and share URLs from a Fliplet app using a single Communicate namespace.",
-      "docUrl": "https://developers.fliplet.com/API/fliplet-communicate.html",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-communicate.md",
       "preloaded": false,
       "capabilities": [
         "email",
@@ -106,14 +126,15 @@
         "mailgun",
         "compose email",
         "mailto"
-      ]
+      ],
+      "category": "communications"
     },
     {
       "package": "fliplet-datasources",
       "namespace": "Fliplet.DataSources",
       "title": "Fliplet.DataSources",
       "description": "Connect to, query, insert, update, and delete records in Fliplet Data Sources from inside an app. All methods are promise-based.",
-      "docUrl": "https://developers.fliplet.com/API/fliplet-datasources.html",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-datasources.md",
       "preloaded": false,
       "capabilities": [
         "data source",
@@ -131,15 +152,22 @@
         "filter",
         "subscribe",
         "real-time records",
-        "bulk operations"
-      ]
+        "bulk operations",
+        "join",
+        "joins",
+        "related data",
+        "combine data sources",
+        "lookup",
+        "relationship"
+      ],
+      "category": "data"
     },
     {
       "package": "fliplet-encryption",
       "namespace": "Fliplet.DataSources.Encryption",
       "title": "Fliplet.DataSources.Encryption",
       "description": "Automatically encrypt and decrypt selected Data Source columns on-device by registering a private key and column list.",
-      "docUrl": "https://developers.fliplet.com/API/fliplet-encryption.html",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-encryption.md",
       "preloaded": false,
       "capabilities": [
         "encrypt",
@@ -152,14 +180,35 @@
         "on-device encryption",
         "pgp"
       ],
+      "category": "data",
       "notes": "Installing this package transparently encrypts and decrypts the configured columns on every Fliplet.DataSources find/insert/update call — only install when you intend to encrypt, otherwise it will silently alter data-source operations."
+    },
+    {
+      "package": "fliplet-error-tracking",
+      "namespace": "fliplet-error-tracking",
+      "title": "fliplet-error-tracking",
+      "description": "Auto-loading runtime that captures JavaScript exceptions and unhandled promise rejections and batches them to Fliplet.App.Logs.",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-error-tracking.md",
+      "preloaded": false,
+      "capabilities": [
+        "error tracking",
+        "error capture",
+        "exception monitoring",
+        "unhandled rejection",
+        "promise error",
+        "debugging",
+        "observability",
+        "crash reporting",
+        "app logs"
+      ],
+      "category": "observability"
     },
     {
       "package": "fliplet-media",
       "namespace": "Fliplet.Media",
       "title": "Fliplet.Media",
       "description": "Browse folders, upload and manage files, and download media to devices via the Fliplet Media namespace.",
-      "docUrl": "https://developers.fliplet.com/API/fliplet-media.html",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-media.md",
       "preloaded": false,
       "capabilities": [
         "file",
@@ -175,14 +224,41 @@
         "attachment",
         "browse files",
         "search files"
-      ]
+      ],
+      "category": "media"
+    },
+    {
+      "package": "fliplet-native",
+      "namespace": "Fliplet.Native",
+      "title": "Fliplet.Native",
+      "description": "Cordova-bridge APIs for native Fliplet apps — app management, updates, downloads, locale, notifications, status bar, and lifecycle interactions.",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-native.md",
+      "preloaded": false,
+      "capabilities": [
+        "native bridge",
+        "cordova",
+        "ios",
+        "android",
+        "app updates",
+        "app management",
+        "status bar",
+        "push notifications",
+        "downloads",
+        "file system",
+        "screen orientation",
+        "local notifications",
+        "deep links",
+        "organization switch"
+      ],
+      "category": "native",
+      "notes": "Native-wrapper-only. Feature-detect via Fliplet.Env.get('platform') === 'native' before calling. Calls are no-ops or throw on web."
     },
     {
       "package": "fliplet-notifications",
       "namespace": "Fliplet.Notifications",
       "title": "Fliplet.Notifications",
       "description": "Read, send, and schedule in-app and push notifications in Fliplet apps, with support for scopes, read receipts, and badge counts.",
-      "docUrl": "https://developers.fliplet.com/API/fliplet-notifications.html",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-notifications.md",
       "preloaded": false,
       "capabilities": [
         "notification",
@@ -193,14 +269,15 @@
         "read receipt",
         "notifications inbox",
         "broadcast notification"
-      ]
+      ],
+      "category": "communications"
     },
     {
       "package": "fliplet-payments",
       "namespace": "Fliplet.Payments",
       "title": "Fliplet.Payments",
       "description": "Accept Stripe payments and checkout in Fliplet apps via Fliplet.Payments, with a products data source and webhook-driven order tracking.",
-      "docUrl": "https://developers.fliplet.com/API/fliplet-payments.html",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-payments.md",
       "preloaded": false,
       "capabilities": [
         "payments",
@@ -219,14 +296,58 @@
         "product",
         "cart",
         "donation"
-      ]
+      ],
+      "category": "commerce"
+    },
+    {
+      "package": "fliplet-router",
+      "namespace": "Fliplet Router JS API",
+      "title": "Fliplet Router JS API",
+      "description": "Fliplet.Router JS API reference for V3 apps. Covers getBasePath, isNative, getHistoryMode (platform-conditional history — path on web, hash on native), getRouteManifest, getRouteConfig, and resolveRo…",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-router.md",
+      "preloaded": false,
+      "capabilities": [
+        "spa routing",
+        "route manifest",
+        "screen navigation",
+        "base path",
+        "access guard",
+        "history api",
+        "vue router",
+        "react router",
+        "svelte",
+        "private screens",
+        "media acl",
+        "authentication redirect"
+      ],
+      "category": "navigation",
+      "notes": "Auto-loaded on V3 apps at boot. Depends on fliplet-core (Fliplet.Env, Fliplet.User) and fliplet-media (Fliplet.Media.getContents). Do not call Fliplet.Media.getContents directly for screen fetches — resolveRoute already does this and returns content in result.content."
+    },
+    {
+      "package": "fliplet-runtime",
+      "namespace": "fliplet-runtime",
+      "title": "fliplet-runtime",
+      "description": "V3 SPA bootstrap that wires Fliplet.Env, Registry, Studio, Navigator, and Locale into the global Fliplet object and manages the page-ready lifecycle.",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-runtime.md",
+      "preloaded": false,
+      "capabilities": [
+        "bootstrap",
+        "spa",
+        "lifecycle",
+        "locale",
+        "i18n",
+        "dependency loading",
+        "ready promise",
+        "studio bridge"
+      ],
+      "category": "framework"
     },
     {
       "package": "fliplet-security",
       "namespace": "Fliplet.Security",
       "title": "Fliplet.Security",
       "description": "Persist a per-app structured object to encrypted device storage via the fliplet-security package — for app-local secrets, device tokens, and per-user preferences. Distinct from fliplet-encryption (Da…",
-      "docUrl": "https://developers.fliplet.com/API/fliplet-security.html",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-security.md",
       "preloaded": false,
       "capabilities": [
         "encrypted device storage",
@@ -237,14 +358,32 @@
         "per-user storage",
         "app secret",
         "sensitive value storage"
-      ]
+      ],
+      "category": "identity"
+    },
+    {
+      "package": "fliplet-service-worker",
+      "namespace": "fliplet-service-worker",
+      "title": "fliplet-service-worker",
+      "description": "Background service worker that receives web push notifications, displays them, and marks them read — automatically registered by fliplet-core on web.",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-service-worker.md",
+      "preloaded": false,
+      "capabilities": [
+        "push notifications",
+        "web push",
+        "background notifications",
+        "notification display",
+        "mark as read"
+      ],
+      "category": "framework",
+      "notes": "Runs in the service-worker context, not the app context. No callable JS API. Behavior is automatic once registered."
     },
     {
       "package": "fliplet-session",
       "namespace": "Fliplet.Session",
       "title": "Fliplet.Session",
       "description": "Read, write, and clear the current user session — including cached offline sessions — for authentication state in Fliplet apps.",
-      "docUrl": "https://developers.fliplet.com/API/fliplet-session.html",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-session.md",
       "preloaded": false,
       "capabilities": [
         "session",
@@ -256,14 +395,15 @@
         "passport",
         "sso session",
         "connected account"
-      ]
+      ],
+      "category": "identity"
     },
     {
       "package": "fliplet-socket",
       "namespace": "Fliplet.Socket",
       "title": "Fliplet.Socket",
       "description": "Real-time WebSocket connection to the Fliplet API with auto-authentication, server URL discovery, and dev/prod transport fallback via the fliplet-socket package.",
-      "docUrl": "https://developers.fliplet.com/API/fliplet-socket.html",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-socket.md",
       "preloaded": false,
       "capabilities": [
         "websocket",
@@ -278,14 +418,15 @@
         "server push",
         "live data",
         "socket.io"
-      ]
+      ],
+      "category": "communications"
     },
     {
       "package": "fliplet-tokens",
       "namespace": "Fliplet.App.Tokens",
       "title": "Fliplet.App.Tokens",
       "description": "Read the list of API tokens that authorise external services and backend integrations to call Fliplet APIs on behalf of an app.",
-      "docUrl": "https://developers.fliplet.com/API/fliplet-tokens.html",
+      "docUrl": "https://developers.fliplet.com/API/fliplet-tokens.md",
       "preloaded": false,
       "capabilities": [
         "api token",
@@ -297,53 +438,15 @@
         "bearer token",
         "external service token",
         "app token"
-      ]
-    },
-    {
-      "package": "fliplet-core",
-      "namespace": "`Fliplet.Pages` and `Fliplet.Page`",
-      "title": "`Fliplet.Pages` and `Fliplet.Page`",
-      "description": "List app screens, get the current screen's public URL, and build shareable URLs for any screen by ID.",
-      "docUrl": "https://developers.fliplet.com/API/core/screens.html",
-      "preloaded": true,
-      "capabilities": [
-        "screen",
-        "page",
-        "list screens",
-        "current screen",
-        "screen url",
-        "share screen",
-        "screen id",
-        "public screen url"
-      ]
-    },
-    {
-      "package": "fliplet-core",
-      "namespace": "`Fliplet.Storage` and `Fliplet.App.Storage`",
-      "title": "`Fliplet.Storage` and `Fliplet.App.Storage`",
-      "description": "Persist JSON-serializable values to device or browser storage, scoped globally or to the current app.",
-      "docUrl": "https://developers.fliplet.com/API/core/storage.html",
-      "preloaded": true,
-      "capabilities": [
-        "storage",
-        "persistence",
-        "key-value",
-        "app storage",
-        "device storage",
-        "browser storage",
-        "preferences",
-        "settings",
-        "namespaced storage",
-        "json storage",
-        "local storage"
-      ]
+      ],
+      "category": "integration"
     },
     {
       "package": "fliplet-core",
       "namespace": "App Actions V3",
       "title": "App Actions V3",
       "description": "Write and run JavaScript code directly on the server or client to perform automations, scheduled tasks and on-demand operations.",
-      "docUrl": "https://developers.fliplet.com/API/core/app-actions-v3.html",
+      "docUrl": "https://developers.fliplet.com/API/core/app-actions-v3.md",
       "preloaded": true,
       "capabilities": [
         "app action",
@@ -357,14 +460,15 @@
         "background job",
         "action trigger",
         "webhook handler"
-      ]
+      ],
+      "category": "automation"
     },
     {
       "package": "fliplet-core",
       "namespace": "Fliplet common functions",
       "title": "Fliplet common functions",
       "description": "Utility helpers on the global `Fliplet` object: `Fliplet.compile()` for templating and `Fliplet.guid()` for unique IDs.",
-      "docUrl": "https://developers.fliplet.com/API/core/misc.html",
+      "docUrl": "https://developers.fliplet.com/API/core/misc.md",
       "preloaded": true,
       "capabilities": [
         "compile",
@@ -376,14 +480,15 @@
         "unique id",
         "string templating",
         "generate id"
-      ]
+      ],
+      "category": "meta"
     },
     {
       "package": "fliplet-core",
       "namespace": "Fliplet.AI",
       "title": "Fliplet.AI",
       "description": "Build AI features with `Fliplet.AI` — chat, completions, streaming, image generation, transcription, and embeddings via OpenAI or Google Gemini proxies.",
-      "docUrl": "https://developers.fliplet.com/API/core/ai.html",
+      "docUrl": "https://developers.fliplet.com/API/core/ai.md",
       "preloaded": true,
       "capabilities": [
         "ai",
@@ -401,14 +506,15 @@
         "vision",
         "multimodal",
         "ai assistant"
-      ]
+      ],
+      "category": "automation"
     },
     {
       "package": "fliplet-core",
       "namespace": "Fliplet.Analytics",
       "title": "Fliplet.Analytics",
       "description": "Enable, disable, and check analytics tracking, and record custom app events and page views from JavaScript.",
-      "docUrl": "https://developers.fliplet.com/API/core/analytics.html",
+      "docUrl": "https://developers.fliplet.com/API/core/analytics.md",
       "preloaded": true,
       "capabilities": [
         "analytics",
@@ -418,14 +524,15 @@
         "app analytics",
         "system analytics",
         "event tracking"
-      ]
+      ],
+      "category": "analytics"
     },
     {
       "package": "fliplet-core",
       "namespace": "Fliplet.API.request()",
       "title": "Fliplet.API.request()",
       "description": "Make authenticated HTTP requests to Fliplet APIs with automatic URL construction, caching, offline queueing, and error handling.",
-      "docUrl": "https://developers.fliplet.com/API/core/api.html",
+      "docUrl": "https://developers.fliplet.com/API/core/api.md",
       "preloaded": true,
       "capabilities": [
         "api request",
@@ -435,14 +542,15 @@
         "offline queue",
         "request cache",
         "fliplet api"
-      ]
+      ],
+      "category": "integration"
     },
     {
       "package": "fliplet-core",
       "namespace": "Fliplet.App",
       "title": "Fliplet.App",
       "description": "Retrieve the current app's public slug, build shareable screen URLs, and access app-level settings from JavaScript.",
-      "docUrl": "https://developers.fliplet.com/API/core/app.html",
+      "docUrl": "https://developers.fliplet.com/API/core/app.md",
       "preloaded": true,
       "capabilities": [
         "app slug",
@@ -455,14 +563,15 @@
         "device orientation",
         "app metadata",
         "app config"
-      ]
+      ],
+      "category": "meta"
     },
     {
       "package": "fliplet-core",
       "namespace": "Fliplet.Apps",
       "title": "Fliplet.Apps",
       "description": "List the Fliplet apps the current user can access, and filter between legacy V1 and modern V2 apps.",
-      "docUrl": "https://developers.fliplet.com/API/core/apps.html",
+      "docUrl": "https://developers.fliplet.com/API/core/apps.md",
       "preloaded": true,
       "capabilities": [
         "app list",
@@ -471,14 +580,15 @@
         "v2 apps",
         "available apps",
         "accessible apps"
-      ]
+      ],
+      "category": "meta"
     },
     {
       "package": "fliplet-core",
       "namespace": "Fliplet.Cache",
       "title": "Fliplet.Cache",
       "description": "Run async operations once and memoize their results, with optional expiry and background refresh.",
-      "docUrl": "https://developers.fliplet.com/API/core/cache.html",
+      "docUrl": "https://developers.fliplet.com/API/core/cache.md",
       "preloaded": true,
       "capabilities": [
         "cache",
@@ -489,14 +599,15 @@
         "background refresh",
         "deduplicate",
         "cached promise"
-      ]
+      ],
+      "category": "data"
     },
     {
       "package": "fliplet-core",
       "namespace": "Fliplet.Encode",
       "title": "Fliplet.Encode",
       "description": "Encode strings as base64 and double-encode URL query parameters safely for transport.",
-      "docUrl": "https://developers.fliplet.com/API/core/encode.html",
+      "docUrl": "https://developers.fliplet.com/API/core/encode.md",
       "preloaded": true,
       "capabilities": [
         "base64",
@@ -506,14 +617,15 @@
         "decode",
         "base64 encode",
         "double encode"
-      ]
+      ],
+      "category": "meta"
     },
     {
       "package": "fliplet-core",
       "namespace": "Fliplet.Env",
       "title": "Fliplet.Env",
       "description": "Read environment variables such as `appId`, `appName`, `mode`, and `apiUrl` from the current runtime.",
-      "docUrl": "https://developers.fliplet.com/API/core/environment.html",
+      "docUrl": "https://developers.fliplet.com/API/core/environment.md",
       "preloaded": true,
       "capabilities": [
         "environment",
@@ -525,14 +637,15 @@
         "current app",
         "viewer mode",
         "preview mode"
-      ]
+      ],
+      "category": "framework"
     },
     {
       "package": "fliplet-core",
       "namespace": "Fliplet.Hooks",
       "title": "Fliplet.Hooks",
       "description": "Register callbacks that run before or after key app events (e.g. form submit), with sync or async Promise handlers.",
-      "docUrl": "https://developers.fliplet.com/API/core/hooks.html",
+      "docUrl": "https://developers.fliplet.com/API/core/hooks.md",
       "preloaded": true,
       "capabilities": [
         "hook",
@@ -543,14 +656,15 @@
         "before save",
         "form submit hook",
         "async hook"
-      ]
+      ],
+      "category": "automation"
     },
     {
       "package": "fliplet-core",
       "namespace": "Fliplet.Locale",
       "title": "Fliplet.Locale",
       "description": "Translate strings and format dates and numbers in Fliplet components via Fliplet.Locale, the T() shorthand, and translation.json files using i18next.",
-      "docUrl": "https://developers.fliplet.com/API/core/localization.html",
+      "docUrl": "https://developers.fliplet.com/API/core/localization.md",
       "preloaded": true,
       "capabilities": [
         "localization",
@@ -563,14 +677,15 @@
         "i18next",
         "multilingual",
         "internationalization"
-      ]
+      ],
+      "category": "framework"
     },
     {
       "package": "fliplet-core",
       "namespace": "Fliplet.Navigate",
       "title": "Fliplet.Navigate",
       "description": "Navigate between app screens, open external URLs, pass query parameters, and handle back, home, and modal navigation via Fliplet.Navigate.",
-      "docUrl": "https://developers.fliplet.com/API/core/navigate.html",
+      "docUrl": "https://developers.fliplet.com/API/core/navigate.md",
       "preloaded": true,
       "capabilities": [
         "navigation",
@@ -590,14 +705,15 @@
         "navigate to screen",
         "confirm dialog",
         "prompt dialog"
-      ]
+      ],
+      "category": "navigation"
     },
     {
       "package": "fliplet-core",
       "namespace": "Fliplet.Navigator",
       "title": "Fliplet.Navigator",
       "description": "Detect online/offline state, listen for connectivity changes, and wait for the device to be ready.",
-      "docUrl": "https://developers.fliplet.com/API/core/navigator.html",
+      "docUrl": "https://developers.fliplet.com/API/core/navigator.md",
       "preloaded": true,
       "capabilities": [
         "online",
@@ -608,14 +724,15 @@
         "network change",
         "online status",
         "offline detection"
-      ]
+      ],
+      "category": "native"
     },
     {
       "package": "fliplet-core",
       "namespace": "Fliplet.Navigator.Notifications",
       "title": "Fliplet.Navigator.Notifications",
       "description": "Check notification support, request permission, and send local device notifications from JavaScript.",
-      "docUrl": "https://developers.fliplet.com/API/core/notifications.html",
+      "docUrl": "https://developers.fliplet.com/API/core/notifications.md",
       "preloaded": true,
       "capabilities": [
         "local notification",
@@ -624,14 +741,15 @@
         "scheduled local notification",
         "native notification",
         "browser notification"
-      ]
+      ],
+      "category": "communications"
     },
     {
       "package": "fliplet-core",
       "namespace": "Fliplet.Organizations",
       "title": "Fliplet.Organizations",
       "description": "List the current user's organizations and fetch audit logs with filters for type, date range, app, and session.",
-      "docUrl": "https://developers.fliplet.com/API/core/organizations.html",
+      "docUrl": "https://developers.fliplet.com/API/core/organizations.md",
       "preloaded": true,
       "capabilities": [
         "organization",
@@ -642,14 +760,34 @@
         "org list",
         "audit",
         "compliance log"
-      ]
+      ],
+      "category": "identity"
+    },
+    {
+      "package": "fliplet-core",
+      "namespace": "Fliplet.Pages and Fliplet.Page",
+      "title": "Fliplet.Pages and Fliplet.Page",
+      "description": "List app screens, get the current screen's public URL, and build shareable URLs for any screen by ID.",
+      "docUrl": "https://developers.fliplet.com/API/core/screens.md",
+      "preloaded": true,
+      "capabilities": [
+        "screen",
+        "page",
+        "list screens",
+        "current screen",
+        "screen url",
+        "share screen",
+        "screen id",
+        "public screen url"
+      ],
+      "category": "navigation"
     },
     {
       "package": "fliplet-core",
       "namespace": "Fliplet.parseError()",
       "title": "Fliplet.parseError()",
       "description": "Turn any error response or object into a human-readable message by scanning common error properties.",
-      "docUrl": "https://developers.fliplet.com/API/core/error.html",
+      "docUrl": "https://developers.fliplet.com/API/core/error.md",
       "preloaded": true,
       "capabilities": [
         "error",
@@ -658,14 +796,15 @@
         "human-readable error",
         "error handling",
         "error response"
-      ]
+      ],
+      "category": "meta"
     },
     {
       "package": "fliplet-core",
       "namespace": "Fliplet.Profile",
       "title": "Fliplet.Profile",
       "description": "Read and write namespaced user profile attributes (email, name, company, phone) and fetch the device UUID.",
-      "docUrl": "https://developers.fliplet.com/API/core/profile.html",
+      "docUrl": "https://developers.fliplet.com/API/core/profile.md",
       "preloaded": true,
       "capabilities": [
         "profile",
@@ -678,14 +817,15 @@
         "user attribute",
         "profile attribute",
         "namespaced profile"
-      ]
+      ],
+      "category": "identity"
     },
     {
       "package": "fliplet-core",
       "namespace": "Fliplet.Registry",
       "title": "Fliplet.Registry",
       "description": "Store and retrieve runtime values and functions by key so components can share state and helpers.",
-      "docUrl": "https://developers.fliplet.com/API/core/registry.html",
+      "docUrl": "https://developers.fliplet.com/API/core/registry.md",
       "preloaded": true,
       "capabilities": [
         "registry",
@@ -695,14 +835,55 @@
         "global helpers",
         "function registry",
         "runtime key-value"
-      ]
+      ],
+      "category": "framework"
+    },
+    {
+      "package": "fliplet-core",
+      "namespace": "Fliplet.require",
+      "title": "Fliplet.require",
+      "description": "Load scripts and stylesheets on demand, and resolve lazy dependencies registered in the app bundle.",
+      "docUrl": "https://developers.fliplet.com/API/core/require.md",
+      "preloaded": true,
+      "capabilities": [
+        "dynamic import",
+        "lazy load",
+        "script loader",
+        "stylesheet loader",
+        "dependency resolution",
+        "module loader",
+        "cdn"
+      ],
+      "category": "framework"
+    },
+    {
+      "package": "fliplet-core",
+      "namespace": "Fliplet.Storage and Fliplet.App.Storage",
+      "title": "Fliplet.Storage and Fliplet.App.Storage",
+      "description": "Persist JSON-serializable values to device or browser storage, scoped globally or to the current app.",
+      "docUrl": "https://developers.fliplet.com/API/core/storage.md",
+      "preloaded": true,
+      "capabilities": [
+        "storage",
+        "persistence",
+        "key-value",
+        "app storage",
+        "device storage",
+        "browser storage",
+        "preferences",
+        "settings",
+        "namespaced storage",
+        "json storage",
+        "local storage"
+      ],
+      "category": "data"
     },
     {
       "package": "fliplet-core",
       "namespace": "Fliplet.Studio",
       "title": "Fliplet.Studio",
       "description": "Emit events to Fliplet Studio and listen for events from it when building widget interfaces.",
-      "docUrl": "https://developers.fliplet.com/API/core/studio.html",
+      "docUrl": "https://developers.fliplet.com/API/core/studio.md",
       "preloaded": true,
       "capabilities": [
         "studio events",
@@ -712,14 +893,15 @@
         "listen to studio events",
         "message studio",
         "studio bridge"
-      ]
+      ],
+      "category": "framework"
     },
     {
       "package": "fliplet-core",
       "namespace": "Fliplet.User",
       "title": "Fliplet.User",
       "description": "Get and set the current user's auth token, profile details, and preferences, and sign the user out.",
-      "docUrl": "https://developers.fliplet.com/API/core/user.html",
+      "docUrl": "https://developers.fliplet.com/API/core/user.md",
       "preloaded": true,
       "capabilities": [
         "user",
@@ -732,14 +914,15 @@
         "user profile",
         "login",
         "authentication"
-      ]
+      ],
+      "category": "identity"
     },
     {
       "package": "fliplet-core",
       "namespace": "Fliplet.User.Biometrics",
       "title": "Fliplet.User.Biometrics",
       "description": "Check biometric availability and verify users with Face ID, Touch ID, or fingerprint inside native Fliplet apps.",
-      "docUrl": "https://developers.fliplet.com/API/core/biometrics.html",
+      "docUrl": "https://developers.fliplet.com/API/core/biometrics.md",
       "preloaded": true,
       "capabilities": [
         "biometrics",
@@ -750,14 +933,15 @@
         "native auth",
         "device authentication",
         "biometric verify"
-      ]
+      ],
+      "category": "identity"
     },
     {
       "package": "fliplet-core",
       "namespace": "Fliplet.Widget",
       "title": "Fliplet.Widget",
       "description": "Access widget instance IDs, settings, and data, and coordinate save and ready events between widget and interface.",
-      "docUrl": "https://developers.fliplet.com/API/core/widget.html",
+      "docUrl": "https://developers.fliplet.com/API/core/widget.md",
       "preloaded": true,
       "capabilities": [
         "widget",
@@ -769,7 +953,8 @@
         "widget interface",
         "namespaced widget",
         "component instance"
-      ]
+      ],
+      "category": "framework"
     }
   ]
 }

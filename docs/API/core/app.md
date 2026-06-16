@@ -5,6 +5,7 @@ type: api-reference
 tags: [js-api, core, app]
 v3_relevant: true
 deprecated: false
+category: meta
 capabilities: [app slug, public url, app settings, app logs, screen url, share url, preview mode, device orientation, app metadata, app config]
 ---
 # `Fliplet.App`
@@ -52,7 +53,25 @@ var locales = Fliplet.App.Locales.get();
 
 ---
 
+### Get the default locale for the current app
+
+`Fliplet.App.Locales.getDefault()` returns the first element from `Fliplet.App.Locales.get()`, which is the locale that Fliplet Studio designates as the primary locale.
+
+```js
+var defaultLocale = Fliplet.App.Locales.getDefault();
+// e.g. "en"
+```
+
+---
+
 ## Settings
+
+| Method | Returns | Description |
+|---|---|---|
+| `Fliplet.App.Settings.getAll()` | `Object` | Returns all settings for the current app |
+| `Fliplet.App.Settings.get(key)` | `*` | Returns the value of a single setting |
+| `Fliplet.App.Settings.set(data)` | `Promise` | Saves or updates one or more settings |
+| `Fliplet.App.Settings.unset(keys)` | `Promise` | Deletes one or more settings by key name |
 
 ### Get the current app settings
 
@@ -90,6 +109,12 @@ Fliplet.App.Settings.unset(['foo', 'hello']).then(function () {
 
 ---
 
+### Development-mode caveat
+
+When `Fliplet.Env.get('development') === true` (i.e. the app is running inside Fliplet Viewer or Studio), `set()` and `unset()` skip the network call entirely and mutate `window.ENV.appSettings` directly. The returned promise resolves immediately. This means settings changes made in preview are not persisted to the server.
+
+---
+
 ## Logs
 
 ### Get the logs for an app
@@ -116,6 +141,191 @@ Fliplet.App.Logs.create({
 
 ---
 
+### Create a batch of logs for an app
+
+`Fliplet.App.Logs.createBatch(data)` posts multiple log entries in a single request and returns the created log records.
+
+**Parameters:**
+
+| Name | Type | Description |
+|---|---|---|
+| `data.logs` | `Array<{type: String, data: Object}>` | Array of log objects to create |
+| `data.async` | `Boolean` | When `true`, the server processes the batch asynchronously |
+
+**Returns:** `Promise<Array>` — the created log records.
+
+```js
+Fliplet.App.Logs.createBatch({
+  logs: [
+    { type: 'jobs', data: { result: 'ok' } },
+    { type: 'jobs', data: { result: 'skipped' } }
+  ],
+  async: false
+}).then(function (logs) {
+  // logs<Array>
+});
+```
+
+---
+
+## Releases
+
+### Get the releases for the current app
+
+`Fliplet.App.Releases.get()` returns the releases array from the current app record. It delegates to `Fliplet.App.get()`, which fetches `GET /v1/apps/:appId` on first call and caches the result for the lifetime of the page.
+
+**Returns:** `Promise<Array>` — the app's releases.
+
+```js
+Fliplet.App.Releases.get().then(function (releases) {
+  // releases<Array>
+  console.log(releases);
+});
+```
+
+---
+
+## Analytics
+
+The `Fliplet.App.Analytics` namespace tracks page views and custom events. All data is sent to the app logs endpoint and is subject to the global tracking toggle (`Fliplet.Analytics.isTrackingEnabled()`). Calls made inside an App Actions runtime (where `user.type === 'taskToken'`) are silently skipped.
+
+### Session management
+
+```js
+// Initialise (or resume) the current analytics session.
+// Returns a Promise<String> containing the session UUID.
+// Sessions expire after 30 minutes of inactivity.
+Fliplet.App.Analytics.Session.init().then(function (sessionId) {
+  console.log(sessionId);
+});
+
+// Reset the current session so the next track() call starts a new one.
+Fliplet.App.Analytics.Session.reset();
+```
+
+---
+
+### User tracking opt-in / opt-out
+
+When user tracking is disabled, the user's email address is not attached to analytics events. The setting is in-memory only and resets on page load.
+
+```js
+Fliplet.App.Analytics.enableUserTracking();
+Fliplet.App.Analytics.disableUserTracking();
+
+Fliplet.App.Analytics.isUserTrackingEnabled().then(function (enabled) {
+  // enabled<Boolean>
+});
+```
+
+---
+
+### Track a page view or event
+
+`track(type, data, options)` is the low-level tracking method. Use the convenience helpers `pageView()` and `event()` in most cases.
+
+**Parameters:**
+
+| Name | Type | Description |
+|---|---|---|
+| `type` | `String` | Must be `'pageView'` or `'event'` |
+| `data` | `Object` | Payload attached to the log entry. The runtime enriches it with `_platform`, `_os`, `_analyticsSessionId`, `_pageId`, `_pageTitle`, and `_deviceTrackingId`. |
+| `options.enqueue` | `Boolean` | When `true`, the event is placed directly in the offline queue without attempting an immediate network send. |
+
+```js
+Fliplet.App.Analytics.track('event', {
+  category: 'button',
+  action: 'click',
+  label: 'Submit'
+});
+```
+
+---
+
+### Track an event
+
+```js
+Fliplet.App.Analytics.event({
+  category: 'video',
+  action: 'play',
+  label: 'Intro video'
+});
+```
+
+---
+
+### Track a page view
+
+```js
+// Object form
+Fliplet.App.Analytics.pageView({ _pageTitle: 'Home' });
+
+// String shorthand — automatically wrapped as { _pageTitle: data }
+Fliplet.App.Analytics.pageView('Home');
+```
+
+---
+
+### Retrieve analytics logs
+
+`get(query, options)` delegates to `Fliplet.App.Logs.get` and pre-filters to analytics log types only.
+
+```js
+Fliplet.App.Analytics.get({
+  where: { 'data._pageTitle': 'Home' }
+}).then(function (logs) {
+  // logs<Array>
+});
+```
+
+---
+
+### Count analytics events
+
+```js
+Fliplet.App.Analytics.count({
+  where: { type: { $like: '%pageView%' } }
+}).then(function (total) {
+  // total<Number>
+});
+```
+
+---
+
+### Aggregate analytics data
+
+`Fliplet.App.Analytics.Aggregate.get(options)` posts a grouping/sum specification to `POST /v1/apps/:appId/analytics` and returns the first value from the response object. Pass `includeCount: true` to receive the full response instead.
+
+If `options.authToken` is provided it is forwarded as the `Auth-token` request header and then deleted from the payload before the request is sent.
+
+```js
+Fliplet.App.Analytics.Aggregate.get({
+  groupBy: '_pageTitle',
+  sum: 'count',
+  includeCount: true
+}).then(function (response) {
+  console.log(response);
+});
+```
+
+`Aggregate.count(options)` wraps `Aggregate.get` with `count: true`. The `options.column` field is required.
+
+```js
+Fliplet.App.Analytics.Aggregate.count({
+  column: '_pageTitle'
+}).then(function (result) {
+  console.log(result);
+});
+```
+
+---
+
+### Offline queue behaviour
+
+When a non-429 network error occurs, the event is pushed to `Fliplet.App.Storage` under the key `flAnalyticsQueue` and replayed in FIFO order the next time a tracking call succeeds. Pass `options.enqueue = true` to bypass the send attempt entirely and write directly to the queue (useful when you know the device is offline).
+
+---
+
 ## Tokens
 
 ### Get the Tokens for an app
@@ -125,6 +335,25 @@ Fliplet.App.Tokens.get(options).then(function (tokens) {
   // tokens<Array>
 });
 ```
+
+---
+
+## Push notification subscriptions
+
+### Get the push notification subscriptions for the current app
+
+`Fliplet.App.Subscriptions.get()` returns the list of device push subscriptions registered for the current app.
+
+**Returns:** `Promise<Array>` — the app's push notification subscriptions.
+
+```js
+Fliplet.App.Subscriptions.get().then(function (subscriptions) {
+  // subscriptions<Array>
+  console.log(subscriptions);
+});
+```
+
+<p class="info">This method covers the <strong>read</strong> side of push subscriptions. Sending push notifications is handled by a separate server-side API.</p>
 
 ---
 
@@ -149,6 +378,10 @@ Fliplet.App.Orientation.lock(orientation)
 ```
 
 * `orientation` (String) `portrait` or `landscape`. If called with no parameters, the app orientation from the settings will be used.
+
+**Notes:**
+- Devices where either the screen width or height is less than 640 px are treated as phones and always forced to `'portrait'`, regardless of the value passed to `lock()`.
+- Passing `'all'` to `lock()` delegates to `unlock()` internally — it does not lock to a specific orientation, it releases any existing lock.
 
 <p class="warning">This feature is only available on <strong>native apps</strong>. Web apps will simply ignore this setting.</p>
 

@@ -544,6 +544,57 @@ Example using multiple operators:
 }
 ```
 
+#### Joining data from another data source
+
+Use the `join` operator to fetch related entries from other data sources in the same query. The matching entries are attached to each returned record under a `joins` property (plural). See the [Data Source joins reference](../API/datasources/joins.html) for all join options (`on`, `required`, `has`, `count`, `sum`, `where`, `attributes`, `limit`, `order`).
+
+Request body (JSON):
+
+```json
+{
+  "type": "select",
+  "join": {
+    "Comments": {
+      "dataSourceId": 123,
+      "on": {
+        "data.ID": "data.ArticleID"
+      }
+    }
+  }
+}
+```
+
+Response (Status code: 200 OK):
+
+```json
+{
+  "entries": [
+    {
+      "id": 1,
+      "dataSourceId": 456,
+      "data": {
+        "Title": "A great blog post"
+      },
+      "joins": {
+        "Comments": [
+          {
+            "id": 3,
+            "dataSourceId": 123,
+            "data": {
+              "ArticleID": 1,
+              "Comment text": "Thanks! This was worth reading.",
+              "Likes": 5
+            }
+          }
+        ]
+      }
+    }
+  ]
+}
+```
+
+<p class="warning">Note the key names differ between request and response: you send join configuration under the singular <code>join</code> key, but matched entries are returned under the plural <code>joins</code> key on each record. This is the same in the <a href="../API/datasources/joins.html"><code>Fliplet.DataSources</code> JS API</a>.</p>
+
 #### Delete Query
 
 You can delete multiple entries matching specific criteria using the query endpoint with `type: "delete"`.
