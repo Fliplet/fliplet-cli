@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-06-16T15:02:19.622Z",
+  "generatedAt": "2026-06-17T07:06:07.819Z",
   "libraries": [
     {
       "package": "fliplet-analytics-spa",
@@ -61,8 +61,8 @@
     {
       "package": "fliplet-barcode",
       "namespace": "Fliplet.Barcode",
-      "title": "V3 barcode scanning",
-      "description": "How to scan QR codes and barcodes in V3 apps with Fliplet.Barcode.attachScanner() — a UI-less scanner you embed in your own screen that works on web and native.",
+      "title": "V3 barcodes",
+      "description": "Scan and generate QR codes and barcodes in V3 apps with Fliplet.Barcode — attachScanner() to scan (web + native) and show()/encode() to render barcode images.",
       "docUrl": "https://developers.fliplet.com/API/v3/barcode.md",
       "preloaded": false,
       "capabilities": [
