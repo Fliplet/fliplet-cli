@@ -1,6 +1,6 @@
 ---
 title: "V3 barcodes"
-description: Scan and generate QR codes and barcodes in V3 apps with Fliplet.Barcode — attachScanner() to scan (web + native) and show()/encode() to render barcode images.
+description: Scan and generate QR codes and barcodes in V3 apps with Fliplet.Barcode — attachScanner() to scan (web + native) and encode() to render barcode images.
 type: guide
 tags: [js-api, v3, barcode]
 v3_relevant: true
@@ -13,7 +13,7 @@ capabilities: [barcode, qr code, qrcode, scan, scanner, camera scan, generate ba
 
 # V3 barcodes
 
-The `fliplet-barcode` package does two things in a V3 app, both the same on **web and native**: it **scans** QR codes and barcodes with `Fliplet.Barcode.attachScanner()`, and it **generates** QR code and barcode images with `Fliplet.Barcode.show()` / `Fliplet.Barcode.encode()`.
+The `fliplet-barcode` package does two things in a V3 app, both the same on **web and native**: it **scans** QR codes and barcodes with `Fliplet.Barcode.attachScanner()`, and it **generates** QR code and barcode images with `Fliplet.Barcode.encode()`.
 
 Scanning uses `attachScanner()` — a UI-less scanner you drive into a container element inside your own screen. It runs everywhere a V3 app runs (slug-hosted web, the Studio preview, and the native shell). You build the scanning UI yourself, the same way you build a login screen on top of `Fliplet.Session`; the API owns only the camera and the decoder.
 
@@ -27,7 +27,7 @@ Add the `fliplet-barcode` package to the screen, then load it before use:
 await Fliplet.require.lazy.chain('fliplet-barcode');
 ```
 
-Once the package is loaded, `Fliplet.Barcode` exposes three methods, all of which work the same on **web and native**: `attachScanner()` (scan, documented below), and `show()` / `encode()` (generate a QR code or barcode image, documented under [Generating barcodes](#generating-barcodes)).
+Once the package is loaded, `Fliplet.Barcode` exposes two methods, both of which work the same on **web and native**: `attachScanner()` (scan, documented below) and `encode()` (generate a QR code or barcode image, documented under [Generating barcodes](#generating-barcodes)).
 
 ## The recommended pattern: attachScanner()
 
@@ -146,25 +146,23 @@ Handle a denied permission in `onError` — show the user how to re-enable the c
 
 ## Generating barcodes
 
-To render a QR code or barcode image (rather than scan one), use `Fliplet.Barcode.show()` or `Fliplet.Barcode.encode()`. Both work on web and native, and both default to a QR code unless you pass a different `format`. Use `show()` when you want Fliplet to display the result for you; use `encode()` when you want the raw image to place in your own UI (for example, into an `<img>` `src`, or to save with `Fliplet.Media`).
+To render a QR code or barcode image, use `Fliplet.Barcode.encode()`. It works on web and native, returns the image as a Base64 string, and defaults to a QR code unless you pass a different `format`. You place the returned image in your own UI — the same "you own the UI" model as `attachScanner()` — for example into an `<img>` `src`, or save it with `Fliplet.Media`.
 
-### Fliplet.Barcode.show()
+### Fliplet.Barcode.encode()
 
-Encode text into a QR code or barcode and display it on screen. Returns a `Promise` that resolves with the encoded Base64 string.
+Encode text into a QR code or barcode and resolve with the image as a Base64 string.
 
 ```js
 await Fliplet.require.lazy.chain('fliplet-barcode');
 
 // QR code (default)
-Fliplet.Barcode.show('https://example.com');
+Fliplet.Barcode.encode('https://example.com').then(function (data) {
+  document.getElementById('qr').src = data; // <img id="qr">
+});
 
 // Barcode with options
-Fliplet.Barcode.show('5012345678900', {
-  format: 'ean13',
-  title: 'Product code',
-  message: 'Scan at checkout'
-}).then(function (data) {
-  // data — Base64 string of the rendered image
+Fliplet.Barcode.encode('5012345678900', { format: 'ean13' }).then(function (data) {
+  document.getElementById('code').src = data;
 });
 ```
 
@@ -173,33 +171,11 @@ Fliplet.Barcode.show('5012345678900', {
   * **format** (String) — `qr` (**default**), or `barcode` (encodes as `code128`), or a specific symbology: `code39`, `code128`, `code128A`, `code128B`, `code128C`, `ean13`, `ean8`, `ean5`, `ean2`, `upc`, `upce`, `itf14`, `itf`, `msi`, `msi10`, `msi11`, `msi1010`, `msi1110`, `pharmacode`, `codabar`, `genericbarcode`.
   * **color** (String) — foreground color, keyword (`green`) or hex (`#00ff00`). **Default** `#000000`.
   * **background** (String) — background color, keyword or hex. **Default** `#ffffff`.
-  * **title** (String) — optional title shown to the user.
-  * **message** (String) — optional message shown to the user.
-  * **height** (Number) — **barcode only.** Height of the barcode image. **Default** `150`.
-  * **lineWidth** (Number) — **barcode only.** Width of a single bar; larger values produce a wider image. **Default** `2`.
-
-### Fliplet.Barcode.encode()
-
-Encode text into a QR code or barcode and resolve with the image as a Base64 string — without displaying anything. Use this when you want to place the image yourself.
-
-```js
-await Fliplet.require.lazy.chain('fliplet-barcode');
-
-Fliplet.Barcode.encode('https://example.com').then(function (data) {
-  document.getElementById('qr').src = data; // <img id="qr">
-});
-```
-
-* **text** (String) — the value to encode.
-* **options** (Object)
-  * **format** (String) — same values as `show()` above (`qr` is the **default**).
-  * **color** (String) — foreground color. **Default** `#000000`.
-  * **background** (String) — background color. **Default** `#ffffff`.
   * **width** (Number) — **QR code only.** Width of the QR image. **Default** `600`. (Barcode width is driven by the text length and `lineWidth`.)
   * **height** (Number) — height of the image. **Default** `600` for QR, `150` for barcode.
-  * **lineWidth** (Number) — **barcode only.** Width of a single bar. **Default** `2`.
+  * **lineWidth** (Number) — **barcode only.** Width of a single bar; larger values produce a wider image. **Default** `2`.
 
-> **Tip:** QR codes are always 1:1, so they scale cleanly. Prefer a QR code unless a linear barcode is specifically required; for barcodes, tune `height` and `lineWidth` to the length of the encoded text.
+> **Tip:** QR codes are always 1:1, so they scale cleanly. Prefer a QR code unless a linear barcode is specifically required; for barcodes, tune `height` and `lineWidth` to the length of the encoded text. `encode()` returns the raw image and renders no UI of its own — display it however your screen needs.
 
 ## Patterns — DO and DON'T
 
