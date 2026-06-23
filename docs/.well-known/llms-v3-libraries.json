@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-06-10T17:50:12.068Z",
+  "generatedAt": "2026-06-17T10:20:55.308Z",
   "libraries": [
     {
       "package": "fliplet-analytics-spa",
@@ -61,9 +61,9 @@
     {
       "package": "fliplet-barcode",
       "namespace": "Fliplet.Barcode",
-      "title": "Fliplet.Barcode",
-      "description": "Generate QR codes and 1D/2D barcodes on screen, and scan them from the device camera, via the fliplet-barcode package.",
-      "docUrl": "https://developers.fliplet.com/API/fliplet-barcode.md",
+      "title": "V3 barcodes",
+      "description": "Scan and generate QR codes and barcodes in V3 apps with Fliplet.Barcode — attachScanner() to scan (web + native) and encode() to render barcode images.",
+      "docUrl": "https://developers.fliplet.com/API/v3/barcode.md",
       "preloaded": false,
       "capabilities": [
         "barcode",

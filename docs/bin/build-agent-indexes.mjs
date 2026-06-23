@@ -757,6 +757,41 @@ export function validateCapabilities(docs) {
   return errors;
 }
 
+// One catalog entry per package. A package's dedicated V3 doc
+// (API/v3/<name>.md with `package:`) is meant to REPLACE its shared
+// API/fliplet-<name>.md reference as the catalog entry — and the shared doc
+// must then opt out via `exclude_from_v3_catalog: true`. If both stay in the
+// catalog, the V3 builder gets two conflicting `docUrl`s for one package and
+// may read the wrong (e.g. native-only) version. This lint is the tripwire:
+// it fails the build when any package resolves to >1 catalog doc, so a
+// forgotten opt-out can't silently ship the wrong version.
+export function validateCatalogUniqueness(docs) {
+  const errors = [];
+  const byPackage = new Map();
+  for (const doc of docs) {
+    if (!isV3CatalogEntry(doc)) continue;
+    const fm = doc.fm || {};
+    const pkg = (fm.package && String(fm.package).trim()) || deriveV3Package(doc.relPath);
+    if (!pkg) continue;
+    if (!byPackage.has(pkg)) byPackage.set(pkg, []);
+    byPackage.get(pkg).push(doc.relPath);
+  }
+  for (const [pkg, paths] of byPackage) {
+    if (paths.length > 1) {
+      for (const p of paths) {
+        errors.push({
+          relPath: p,
+          field: 'package',
+          message: `package \`${pkg}\` resolves to ${paths.length} V3 catalog entries: ${paths.join(', ')}`,
+          hint: 'A package needs exactly one catalog doc. If a dedicated API/v3/ doc is the V3 entry, mark the shared API/fliplet-*.md with `exclude_from_v3_catalog: true`.',
+          docUrl: CONTRIBUTING_URL,
+        });
+      }
+    }
+  }
+  return errors;
+}
+
 // ---------------------------------------------------------------------------
 // Cross-link validation (strict-mode link-rot detection).
 //
@@ -1024,6 +1059,24 @@ function main() {
     if (strict) {
       console.error(
         `\n${capHardErrors.length} capability error${capHardErrors.length === 1 ? '' : 's'} — failing build (--strict).`,
+      );
+      process.exit(1);
+    }
+  }
+
+  // Catalog uniqueness: exactly one V3 catalog doc per package. Same --strict
+  // gate. Guards the "shared ref opts out, V3 doc takes over" handoff so a
+  // forgotten `exclude_from_v3_catalog` can't ship two docUrls for one package.
+  const dupErrors = validateCatalogUniqueness(docs);
+  if (dupErrors.length > 0) {
+    const tag = strict ? '[error]' : '[warn]';
+    for (const e of dupErrors) {
+      console.error(`${tag} ${e.relPath}: ${e.message}`);
+      if (e.hint) console.error(`         hint: ${e.hint}`);
+    }
+    if (strict) {
+      console.error(
+        `\n${dupErrors.length} catalog-uniqueness error${dupErrors.length === 1 ? '' : 's'} — failing build (--strict).`,
       );
       process.exit(1);
     }

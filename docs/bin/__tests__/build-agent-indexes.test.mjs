@@ -29,6 +29,7 @@ import {
   assignToCluster,
   validateFrontmatter,
   validateCapabilities,
+  validateCatalogUniqueness,
   ALLOWED_TYPES,
   CLUSTERS,
   collectDocs,
@@ -740,6 +741,25 @@ describe('emitV3LibraryCatalog', () => {
     assert.equal(catalog.libraries[0].package, 'fliplet-barcode');
   });
 
+  it('includes an API/v3/*.md package doc and honours the namespace override', () => {
+    const docs = [
+      makeDoc(
+        'API/v3/barcode.md',
+        { package: 'fliplet-barcode', namespace: 'Fliplet.Barcode', category: 'media' },
+        'V3 barcode scanning',
+        'Scan on web + native',
+      ),
+    ];
+    const catalog = emitV3LibraryCatalog(docs);
+    assert.equal(catalog.libraries.length, 1);
+    assert.equal(catalog.libraries[0].package, 'fliplet-barcode');
+    // namespace comes from frontmatter, NOT the guide-style title
+    assert.equal(catalog.libraries[0].namespace, 'Fliplet.Barcode');
+    assert.equal(catalog.libraries[0].title, 'V3 barcode scanning');
+    assert.equal(catalog.libraries[0].preloaded, false);
+    assert.equal(catalog.libraries[0].docUrl, 'https://developers.fliplet.com/API/v3/barcode.html');
+  });
+
   it('excludes docs not matching the installable or ambient path patterns', () => {
     const docs = [
       makeDoc('Building-themes.md', {}, 'Themes'),
@@ -937,6 +957,47 @@ describe('isV3CatalogEntry', () => {
       isV3CatalogEntry(doc('API/fliplet-a.md', { exclude_from_v3_catalog: '' })),
       true,
     );
+  });
+
+  it('includes API/v3/*.md only when it declares a package', () => {
+    assert.equal(isV3CatalogEntry(doc('API/v3/barcode.md', { package: 'fliplet-barcode' })), true);
+    // general V3 guides (no package) describe patterns, not a package — stay out
+    assert.equal(isV3CatalogEntry(doc('API/v3/routing.md')), false);
+    assert.equal(isV3CatalogEntry(doc('API/v3/auth.md', { package: '' })), false);
+  });
+
+  it('respects exclude_from_v3_catalog on an API/v3 package doc', () => {
+    assert.equal(
+      isV3CatalogEntry(doc('API/v3/barcode.md', { package: 'fliplet-barcode', exclude_from_v3_catalog: 'true' })),
+      false,
+    );
+  });
+
+  it('ignores nested API/v3 subdirs (e.g. frameworks/) regardless of package', () => {
+    assert.equal(isV3CatalogEntry(doc('API/v3/frameworks/vue.md', { package: 'x' })), false);
+  });
+});
+
+describe('validateCatalogUniqueness', () => {
+  function doc(relPath, fm = {}) {
+    return { relPath, fm };
+  }
+
+  it('flags a package that resolves to two catalog docs', () => {
+    const errors = validateCatalogUniqueness([
+      doc('API/fliplet-barcode.md', { package: 'fliplet-barcode', category: 'media', capabilities: '[barcode]' }),
+      doc('API/v3/barcode.md', { package: 'fliplet-barcode', category: 'media', capabilities: '[barcode]' }),
+    ]);
+    assert.equal(errors.length, 2);
+    assert.match(errors[0].message, /resolves to 2 V3 catalog entries/);
+  });
+
+  it('passes when the shared reference opts out (one catalog doc per package)', () => {
+    const errors = validateCatalogUniqueness([
+      doc('API/fliplet-barcode.md', { exclude_from_v3_catalog: 'true' }),
+      doc('API/v3/barcode.md', { package: 'fliplet-barcode', category: 'media', capabilities: '[barcode]' }),
+    ]);
+    assert.equal(errors.length, 0);
   });
 });
 

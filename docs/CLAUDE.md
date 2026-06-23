@@ -94,6 +94,34 @@ none.
 the V3 design system replaces, meta/overview docs, deprecated namespaces,
 or docs that aren't a Fliplet API per se.
 
+### Dedicated V3 capability docs (the V3-version pattern)
+
+When an API behaves differently enough on V3 that the builder needs V3-specific
+guidance, give the package its own doc at **`API/v3/<name>.md`** and make *that*
+the catalog entry — don't steer the shared reference. This is the pattern used by
+`fliplet-barcode` (and `app-actions` before it):
+
+1. **The V3 doc** (`API/v3/<name>.md`) declares the catalog fields —
+   `package:`, `category:`, `capabilities:`, and `namespace:` (the real JS
+   global, since the doc's title is a guide title like "V3 barcode scanning",
+   not `Fliplet.Barcode`). A doc under `API/v3/` becomes a catalog entry **only**
+   when it declares `package:`, so the general V3 guides (routing, auth,
+   frameworks) stay out.
+2. **The shared reference** (`API/fliplet-<name>.md`) is set
+   `v3_relevant: false` **and** `exclude_from_v3_catalog: true`, so the catalog,
+   capabilities index, and Studio registry all derive the V3 doc's URL — no
+   hand-set URLs, no Studio-side override.
+3. **Content rule:** the V3 doc contains **only the recommended cross-platform
+   primitive**. Remove native-only or alternative methods entirely (don't just
+   de-emphasize them) — the builder reads this as its sole source for the
+   package and will pick whatever runnable method it sees, so an unwanted method
+   in the doc becomes unwanted code. Keep those methods in the shared reference.
+
+`build-agent-indexes.mjs` enforces **one catalog doc per package**
+(`validateCatalogUniqueness`, `--strict`) — forgetting the
+`exclude_from_v3_catalog` opt-out fails the build rather than silently shipping
+two `docUrl`s for one package.
+
 ## Exclusion list — do not index, do not polish
 
 These files are handled at the server or build layer and must never be
