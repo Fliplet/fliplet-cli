@@ -323,7 +323,7 @@ formData.append('Office', 'San Francisco');
 formData.append('Avatar', newAvatarFile);
 
 const updatedUser = await connection.update(456, formData, {
-  mediaFolderId: 789
+  folderId: 789
 });
 console.log('Updated user with new avatar:', updatedUser);
 ```
@@ -382,11 +382,11 @@ if (users.length > 0) {
 
 // Complete example: Remove multiple users matching criteria
 const connection = await Fliplet.DataSources.connectByName("Users");
-const deletedCount = await connection.query({
+const deletedEntries = await connection.query({
   type: 'delete',
   where: { Status: 'Inactive' }
 });
-console.log(`Removed ${deletedCount} inactive users`);
+console.log('Removed inactive users:', deletedEntries);
 ```
 
 ---
@@ -667,17 +667,17 @@ const connection = await Fliplet.DataSources.connectByName("Users");
 const subscription = connection.subscribe({
   events: ['insert', 'update', 'delete'] // Which events to listen for
 }, (changes) => {
-  if (changes.inserted.length) {
+  if (changes.inserted?.length) {
     console.log('New users added:', changes.inserted);
     // Update your UI to show new users
   }
   
-  if (changes.updated.length) {
+  if (changes.updated?.length) {
     console.log('Users updated:', changes.updated);
     // Update your UI to reflect changes
   }
   
-  if (changes.deleted.length) {
+  if (changes.deleted?.length) {
     console.log('Users deleted:', changes.deleted);
     // Remove users from your UI
   }
@@ -1224,21 +1224,21 @@ const setupRealTimeUpdates = (connection, cursor) => {
   }, (changes) => {
     const { inserted, updated, deleted } = changes;
     
-    if (inserted.length) {
+    if (inserted?.length) {
       console.log(`\n🆕 ${inserted.length} new user(s) added:`);
       inserted.forEach(user => {
         console.log(`  + ${user.data.Name} (${user.data.Email})`);
       });
     }
     
-    if (updated.length) {
+    if (updated?.length) {
       console.log(`\n✏️  ${updated.length} user(s) updated:`);
       updated.forEach(user => {
         console.log(`  ~ ${user.data.Name} (${user.data.Email})`);
       });
     }
     
-    if (deleted.length) {
+    if (deleted?.length) {
       console.log(`\n🗑️  ${deleted.length} user(s) deleted`);
     }
 

@@ -708,7 +708,7 @@ Request body:
 }
 ```
 
-Response  (Status code: 201 Created):
+Response  (Status code: 200 OK):
 
 ```json
 {
@@ -740,7 +740,7 @@ Request body:
 }
 ```
 
-Response  (Status code: 201 Created):
+Response  (Status code: 200 OK):
 
 ```json
 {
@@ -823,7 +823,7 @@ Content-Type: image/jpeg
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 ```
 
-Sample response (Status code: 201 Created):
+Sample response (Status code: 200 OK):
 
 ```json
 {

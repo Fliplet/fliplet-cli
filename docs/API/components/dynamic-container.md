@@ -32,7 +32,7 @@ The following JS APIs are available in a screen once a **Dynamic container** com
 
 ## Retrieve an instance
 
-Since you can have many dynamic containers in a screen, we provide a handy function to grab a specific instance by its name or the first one available in the page when no input parameter is given.
+Since you can have many dynamic containers in a screen, we provide a handy function to grab a specific instance by its id or the first one available in the page when no input parameter is given.
 
 ### `Fliplet.DynamicContainer.get()`
 
@@ -45,8 +45,8 @@ Fliplet.DynamicContainer.get()
     // Use container to perform various actions
   });
 
-// Gets the first dynamic container instance named 'foo'
-Fliplet.DynamicContainer.get('foo')
+// Gets the dynamic container instance with id 123
+Fliplet.DynamicContainer.get(123)
   .then(function (container) {
     // Use container to perform various actions
   });
@@ -67,40 +67,6 @@ Fliplet.DynamicContainer.getAll().then(function (containers) {
 ---
 
 ## Instance methods
-
-### `container.load()`
-
-Use the `load` function to populate the dynamic container context with an array or an object:
-
-```js
-Fliplet.DynamicContainer.get().then(function (container) {
-  container.load(function () {
-    return [
-      { Name: 'Bob' },
-      { Name: 'Alice' }
-    ];
-  });
-});
-```
-
-You can also return a `Promise` if you're loading the data asynchronously. In the following example we are populating a container with entries from a Fliplet data source:
-
-```js
-Fliplet.DynamicContainer.get().then(function (container) {
-  container.load(function () {
-    return Fliplet.DataSources.connect(123).then(function (connection) {
-      return connection.findWithCursor({
-        where: { Office: 'London' },
-        limit: 10
-      });
-    });
-  });
-});
-```
-
-Note that we used the [findWithCursor](/API/fliplet-datasources#fetch-all-records-from-a-data-source) method instead of `find` to let the system manage pagination when the data is displayed in a list repeater.
-
-For more details, check the JS API documentation for the [findWithCursor](/API/fliplet-datasources#fetch-all-records-from-a-data-source) method.
 
 ### `container.connection()`
 

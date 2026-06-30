@@ -66,9 +66,11 @@ Fliplet.Content({dataSourceId: 2}).then(function (content) {
 ```js
 Fliplet.Content({dataSourceId: 2}).then(function (content) {
   content.query({
-    content: {
-      pageId: 3282,
-      dataSourceEntryId: 5234,
+    where: {
+      content: {
+        pageId: 3282,
+        dataSourceEntryId: 5234,
+      }
     }
   }).then(function(rows){
     rows; // returns all the data source entries related to the specified content

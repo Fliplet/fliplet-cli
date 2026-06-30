@@ -37,14 +37,14 @@ The CSV JS API uses [Papa Parse](https://www.papaparse.com/) as the underlying e
 ```js
 // Specifying a collection of entries
 Fliplet.CSV.encode([
-  { 'Column 1', 'foo', 'Column 2': 'bar' },
-  { 'Column 1', 'abc', 'Column 2': 'def' }
+  { 'Column 1': 'foo', 'Column 2': 'bar' },
+  { 'Column 1': 'abc', 'Column 2': 'def' }
 ]);
 
 // Pick specific columns from a collection of entries
 Fliplet.CSV.encode([
-  { 'Column 1', 'foo', 'Column 2': 'bar', 'Column 3': 'baz' },
-  { 'Column 1', 'abc', 'Column 2': 'def', 'Column 3': 'ghi' }
+  { 'Column 1': 'foo', 'Column 2': 'bar', 'Column 3': 'baz' },
+  { 'Column 1': 'abc', 'Column 2': 'def', 'Column 3': 'ghi' }
 ], {
   columns: ['Column 3', 'Column 1'] // Show only the specified columns, in given order
 });

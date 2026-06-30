@@ -210,6 +210,7 @@ When `resolveRoute` resolves with `allowed: false`, the `reason` property indica
 | `reason` | Triggered when | `redirectTo` | `status` |
 |---|---|---|---|
 | `unknown-route` | The path doesn't match any manifest entry, or the matched entry has no `fileId`. | `manifest.authRedirect` | Not set |
+| `no-session` | The route is not `public` and there's no signed-in session to authorize it. | `manifest.authRedirect` | Not set |
 | `media-denied` | The server returned `401` or `403` when fetching the screen source. | `manifest.authRedirect` | `401` or `403` |
 
 <p class="warning">The manifest's <code>public: true</code> flag is advisory. It just lets the client skip a known-401 round trip. Flipping <code>public: true</code> in the manifest without updating the media file's access rule grants no access; the server still returns 401 and <code>resolveRoute</code> resolves with <code>reason: 'media-denied'</code>.</p>

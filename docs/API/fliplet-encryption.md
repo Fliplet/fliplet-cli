@@ -101,8 +101,8 @@ Fliplet.DataSources.Encryption().setRuntimeKey('foo');
 Use the `getKey` JS API to fetch the encryption key from the current session or the device storage:
 
 ```js
-Fliplet.DataSources.Encryption().getKey().then(function (obj) {
-  // obj.key
+Fliplet.DataSources.Encryption().getKey().then(function (key) {
+  // key is the encryption key
 });
 ```
 

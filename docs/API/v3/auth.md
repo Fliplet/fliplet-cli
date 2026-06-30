@@ -418,8 +418,8 @@ export default {
         var where = {};
         where[EMAIL_COLUMN] = this.email;
 
-        // Server generates a code, stores it on the entry, and sends it via email.
-        // Returns 204 regardless of whether the email exists (no information leak).
+        // On success the server generates a code, stores it on the entry, sends it
+        // via email, and returns 204. Invalid or missing input returns an error.
         await ds.sendValidation({
           type: 'email',
           where: where
@@ -444,6 +444,8 @@ export default {
         await ds.validate({
           type: 'email',
           where: {
+            // The match column (email/identifier) is required alongside the code.
+            [EMAIL_COLUMN]: this.email,
             code: this.code
           },
           requiresPasswordReset: true
@@ -495,8 +497,8 @@ export default {
 
 | Step | Client calls | Server does |
 |---|---|---|
-| Send code | `dataSource.sendValidation({ type: 'email', where: { Email: '...' } })` | Generates code, stores on entry, sends email. Returns 204 (no info leak). |
-| Verify code | `dataSource.validate({ type: 'email', where: { code: '...' }, requiresPasswordReset: true })` | Validates code, checks expiry (24h default), creates temporary session. |
+| Send code | `dataSource.sendValidation({ type: 'email', where: { Email: '...' } })` | On success, generates code, stores on entry, sends email, returns 204. |
+| Verify code | `dataSource.validate({ type: 'email', where: { Email: '...', code: '...' }, requiresPasswordReset: true })` | Validates code, checks expiry (24h default), creates temporary session. |
 | Reset password | `Fliplet.Session.updateUserPassword({ newPassword, passwordColumn })` | Updates password column on data source entry, logs out user. |
 
 This is the same flow the V2 login widget uses. All security-critical operations (code generation, validation, password storage) happen server-side.

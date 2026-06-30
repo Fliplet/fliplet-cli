@@ -34,7 +34,7 @@ Fliplet.OAuth2(service).api(path)
 ```js
 Fliplet.OAuth2.configure('github', {
   authUrl: 'http://github.com/login/oauth/authorize', // from OAuth2 service provider
-  grantType: 'implicit', // as supported by OAuth2 service provider
+  grantType: 'token', // as supported by OAuth2 service provider
   grantUrl: 'https://github.com/login/oauth/access_token', // from OAuth2 service provider
   baseUrl: 'https://api.github.com/', // from OAuth2 service provider
   clientId: 'uztcbv3bwtkxmmej1lxv', // from OAuth2 service provider
@@ -83,7 +83,7 @@ Cross-Origin Request Sharing (CORS) sometimes needs to be configured with the se
 
 ### `Fliplet.OAuth2.configure()`
 
-(Returns **`null`**)
+(Returns the `Fliplet.OAuth2` instance when configuring a service, or the requested service configuration(s) when called to read)
 
 Configure an OAuth2 service or multiple OAuth2 services.
 

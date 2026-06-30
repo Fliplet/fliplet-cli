@@ -39,11 +39,11 @@ Fliplet.UI.Actions(options)
         - (Function) If a function is provided, the function will be run with the 0-based index of the label as the first parameter.
     - **cancel** (Boolean or String) Unless this is `false` or an empty string, a cancel button will be added at the bottom with the provided string used as the button label. (**Default**: `Cancel`)
 
-## Properties
+## Resolution
 
-The toast instance returned in the promise resolving function will contain the following properties.
+The returned Promise resolves with the following value.
 
-  - **data** (Object) A data object containing the configuration fro the Toast notification.
+  - (Number) The 0-based index of the chosen label, or `undefined` if the user cancels.
 
 ## Examples
 
