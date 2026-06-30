@@ -649,7 +649,7 @@ Use `Fliplet.App.V3.Actions.create()` to create a V3 action. This always creates
 
 ### Return value
 
-Returns a Promise that resolves to `{ action: <action object> }`. See [Action object structure](#action-object-structure) for the full shape.
+Returns a Promise that resolves to the created **action object** directly (not wrapped in `{ action }`). See [Action object structure](#action-object-structure) for the full shape.
 
 ### Frequency (cron expression)
 
@@ -713,11 +713,11 @@ var result = await Fliplet.App.V3.Actions.create({
   dependencies: ['fliplet-datasources']
 });
 
-// result.action — the created action object
-// result.action.id — use this ID to publish, update, or delete the action
+// result — the created action object (returned directly, not wrapped)
+// result.id — use this ID to publish, update, or delete the action
 
 // IMPORTANT: You must publish the action for the schedule to be active in production:
-// await Fliplet.App.V3.Actions.publish(result.action.id);
+// await Fliplet.App.V3.Actions.publish(result.id);
 ```
 
 ### Create an on-demand (manual) action
@@ -745,8 +745,8 @@ var result = await Fliplet.App.V3.Actions.create({
   dependencies: ['fliplet-datasources']
 });
 
-// result.action — the created action object
-// result.action.id — use this ID to run, publish, update, or delete
+// result — the created action object (returned directly, not wrapped)
+// result.id — use this ID to run, publish, update, or delete
 ```
 
 The `description` parameter is optional — actions can be created without it, in which case `description` is `null` on the returned action object.
@@ -793,7 +793,7 @@ var result = await Fliplet.App.V3.Actions.create({
   dependencies: ['fliplet-datasources']
 });
 
-// result.action — the created action object
+// result — the created action object (returned directly, not wrapped)
 // The action fires when a new entry is created in data source 177
 // IMPORTANT: You must publish the action for the log trigger to be active in production
 ```
@@ -833,7 +833,7 @@ var result = await Fliplet.App.V3.Actions.create({
   ]
 });
 
-// result.action — the created action object
+// result — the created action object (returned directly, not wrapped)
 // The action fires in the user's browser when screen 77 is visited
 ```
 
@@ -940,7 +940,7 @@ console.log('Has more:', result.pagination.hasMore);
 
 ### Action object structure
 
-Every API method that returns an action (`get`, `getById`, `create`, `update`, `publish`) uses this structure:
+Every API method that returns an action uses this structure for the action object itself. The methods differ only in how the object is wrapped: `getById`, `create`, and `update` resolve to the action object **directly**; `get` returns it inside the `actions` array; `publish` returns it under an `action` property.
 
 ```json
 {
@@ -993,13 +993,13 @@ Every API method that returns an action (`get`, `getById`, `create`, `update`, `
 Use `Fliplet.App.V3.Actions.getById()` to retrieve a single V3 action by its ID.
 
 - **Parameters:** `id` (Number) — The action ID
-- **Returns:** Promise resolving to `{ action: <action object> }`
+- **Returns:** Promise resolving to the **action object** directly (not wrapped in `{ action }`)
 
 ```js
 var result = await Fliplet.App.V3.Actions.getById(12345);
-// result.action — the action object (see Action object structure above)
-console.log(result.action.name);   // 'confirm-booking'
-console.log(result.action.active); // true
+// result — the action object (see Action object structure above)
+console.log(result.name);   // 'confirm-booking'
+console.log(result.active); // true
 ```
 
 ## Update an action
@@ -1009,7 +1009,7 @@ Use `Fliplet.App.V3.Actions.update()` to update any property of the **master** a
 - **Parameters:**
   - `id` (Number) — The action ID (must be the master action, not the production version)
   - `data` (Object) — Object with properties to update
-- **Returns:** Promise resolving to `{ action: <updated action object> }`
+- **Returns:** Promise resolving to the updated **action object** directly (not wrapped in `{ action }`)
 
 <p class="warning">You can <strong>not</strong> update a published (production) action directly. Update the master action and call <code>publish()</code> again to push changes to production.</p>
 
@@ -1024,7 +1024,7 @@ var result = await Fliplet.App.V3.Actions.update(12345, {
   triggers: [{ trigger: 'manual' }],
   dependencies: []
 });
-// result.action — the updated action object
+// result — the updated action object (returned directly, not wrapped)
 // If this action is published, you must call publish() again to push the changes to production
 ```
 
@@ -1511,9 +1511,9 @@ All error responses follow this format:
 | Method | Parameters | Returns | Description |
 |--------|------------|---------|-------------|
 | `Fliplet.App.V3.Actions.get(options)` | `{ limit, offset }` | `{ actions, pagination }` | List actions with pagination |
-| `Fliplet.App.V3.Actions.getById(id)` | `id` (Number) | `{ action }` | Get a single action by ID |
-| `Fliplet.App.V3.Actions.create(data)` | See [Create parameters](#parameters) | `{ action }` | Create a new master action |
-| `Fliplet.App.V3.Actions.update(id, data)` | `id` (Number), `data` (Object) | `{ action }` | Update a master action |
+| `Fliplet.App.V3.Actions.getById(id)` | `id` (Number) | `action` (object) | Get a single action by ID |
+| `Fliplet.App.V3.Actions.create(data)` | See [Create parameters](#parameters) | `action` (object) | Create a new master action |
+| `Fliplet.App.V3.Actions.update(id, data)` | `id` (Number), `data` (Object) | `action` (object) | Update a master action |
 | `Fliplet.App.V3.Actions.remove(id)` | `id` (Number) | void | Delete an action (master + production) |
 | `Fliplet.App.V3.Actions.run(nameOrId, payload)` | `nameOrId` (String/Number), `payload` (Object) | Promise<void> | Queue action for execution, no return value |
 | `Fliplet.App.V3.Actions.runWithResult(nameOrId, payload)` | `nameOrId` (String/Number), `payload` (Object) | Return value of `execute()` | Run action and wait for result |
