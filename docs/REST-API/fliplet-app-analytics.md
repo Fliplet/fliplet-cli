@@ -14,7 +14,7 @@ The App Analytics REST API lets you read your app's analytics data.
 
 ## Endpoints
 
-### Get a list of users subscribed to your app for push notifications
+### Get a list of analytics sessions for your app
 
 #### `GET v1/apps/:id/analytics/sessions`
 

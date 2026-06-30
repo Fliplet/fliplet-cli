@@ -57,9 +57,9 @@ The typeahead instance supports the following methods.
 
 ### `.get()`
 
-(Returns `String`)
+(Returns `Array`)
 
-Gets the value of the typeahead field.
+Gets the selected value(s) of the typeahead field as an array of selected item values.
 
 ```js
 instance.get()

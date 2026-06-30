@@ -362,7 +362,7 @@ Notifications can be removed through the following method. Note that push notifi
 
 ```js
 // remove a notification by id
-notification.remove(1).then(function () {
+instance.remove(1).then(function () {
 
 })
 ```
@@ -464,7 +464,7 @@ instance.update(1, {
 })
 
 // remove a notification by id
-notification.remove(1)
+instance.remove(1)
 
 // subscribe to notifications
 // each message contains id, createdAt, updatedAt, data, isUpdate, isDeleted, isFirstBatch

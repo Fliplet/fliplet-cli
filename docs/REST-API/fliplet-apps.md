@@ -81,7 +81,7 @@ curl 'https://api.fliplet.com/v1/apps/123/publish' \
   --compressed
 ```
 
-**Sample response** (Status code *200*):
+**Sample response** (Status code *201*):
 
 ```json
 {

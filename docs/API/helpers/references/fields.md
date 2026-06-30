@@ -36,7 +36,7 @@ field.get();
 var field = Fliplet.Helper.field('items');
 var item = field.get(0);
 
-item.get();
+item.field('name').get();
 ```
 
 ### Get the value of a specific field for a list item in a list field

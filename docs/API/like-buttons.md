@@ -1,12 +1,12 @@
 ---
-title: Fliplet.LikeButton
+title: LikeButton
 description: "Embed a one-tap like button on any screen element, backed by a Data Source that records likes per content ID."
 type: api-reference
 tags: [js-api, like, buttons]
 v3_relevant: true
 deprecated: false
 ---
-# `Fliplet.LikeButton`
+# `LikeButton`
 
 Embed a one-tap like button on any screen element, backed by a Data Source that records likes per content ID.
 

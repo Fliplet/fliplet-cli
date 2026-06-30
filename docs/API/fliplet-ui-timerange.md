@@ -106,7 +106,7 @@ instance.change(fn)
 Gets the time range instance from a node or jQuery object.
 
 ```js
-Fliplet.UI.DatePicker.get(el)
+Fliplet.UI.TimeRange.get(el)
 ```
 
   - **el** (`String|Node|jQuery`) Selector or node for the target element

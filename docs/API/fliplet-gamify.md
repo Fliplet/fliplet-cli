@@ -51,7 +51,7 @@ Achievements are used to track specific milestones that users have reached. They
 
 ## Usage
 
-To start setting up gamification logic for your app, add `fliplet-like:0.1` to your app/page dependencies.
+To start setting up gamification logic for your app, add `fliplet-gamify:0.1` to your app/page dependencies.
 
 Users must be logged in to use game engine and store game data.
 

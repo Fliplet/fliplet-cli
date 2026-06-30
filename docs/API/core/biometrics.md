@@ -20,9 +20,10 @@ Use the `Fliplet.User.Biometrics.isAvailable()` method to check whether biometri
 
 The available types are:
 
-- `face` iOS and Android
-- `finger` Android only
-- `touch` iOS only
+- `face` all platforms
+- `finger` Android up to SDK 9
+- `biometric` Android from SDK 9 upwards
+- `touch` iOS
 
 ```js
 Fliplet.User.Biometrics.isAvailable().then(function (type) {

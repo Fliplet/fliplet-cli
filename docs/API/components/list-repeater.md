@@ -54,8 +54,7 @@ The `container` instance variable above is a `Vue` compatible instance with the 
 
 - `direction`: `vertical` or `horizontal`
 - `rows`: `Array` from the parent context
-- `el`: DOM Element
-- `template`: the list row template
+- `element`: DOM Element
 
 ---
 

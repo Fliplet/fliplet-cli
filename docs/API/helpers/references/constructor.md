@@ -47,7 +47,7 @@ Fliplet.Helper({
    ready: Function,
    beforeSave: Function
  },
- views: Object,
+ views: Array,
  childOf: Array
 });
 ```
@@ -217,7 +217,7 @@ Fliplet.Helper({
     </tr>
     <tr>
       <td><code>views</code></td>
-      <td><code>Object</code></td>
+      <td><code>Array</code></td>
       <td>optional</td>
       <td>
         <a href="/API/helpers/views">The list of rich content views</a>.</td>

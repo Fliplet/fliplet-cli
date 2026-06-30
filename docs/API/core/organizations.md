@@ -97,7 +97,7 @@ Like the Audit logs endpoint, this uses POST despite being a read operation — 
 ### Get the current organization settings
 
 ```js
-Fliplet.Organization.Settings.getAll()
+Fliplet.Organizations.Settings.getAll()
   .then(function (settings) {
     // Your code
   });
@@ -106,7 +106,7 @@ Fliplet.Organization.Settings.getAll()
 ### Extend the current settings
 
 ```js
-Fliplet.Organization.Settings.set({
+Fliplet.Organizations.Settings.set({
   user: 'foo',
   _password: 'bar' // Settings with an underscore prefix "_" will be encrypted
 })
@@ -118,7 +118,7 @@ Fliplet.Organization.Settings.set({
 ### Get a setting
 
 ```js
-Fliplet.Organization.Settings.get('foo')
+Fliplet.Organizations.Settings.get('foo')
   .then(function (value) {
     // Your code
   })
@@ -127,7 +127,7 @@ Fliplet.Organization.Settings.get('foo')
 ### Check if a setting is set
 
 ```js
-Fliplet.Organization.Settings.isSet('_password')
+Fliplet.Organizations.Settings.isSet('_password')
   .then(function(isSet) {
     if (isSet) {
       // Your code
@@ -138,7 +138,7 @@ Fliplet.Organization.Settings.isSet('_password')
 ### Unset a setting
 
 ```js
-Fliplet.Organization.Settings.unset(['user','_password'])
+Fliplet.Organizations.Settings.unset(['user','_password'])
   .then(function (currentSettings) {
     // Your code
   })

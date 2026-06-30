@@ -55,12 +55,15 @@ Fliplet.RecordContainer.get('foo')
   });
 ```
 
-The `container` instance variable above is a `Vue` compatible instance with the following properties available:
+The `container` instance variable above has the following properties available:
 
-- `direction`: `vertical` or `horizontal`
-- `rows`: `Array` from the parent context
-- `el`: DOM Element
-- `template`: the list row template
+- `element`: DOM Element
+- `id`: the component instance id
+- `name`: the component instance name
+- `entry`: the data source entry loaded by the container
+- `data`: the component instance data
+- `dataSourceId`: the data source id used for the connection
+- `parent`: the parent context
 
 ---
 
@@ -86,11 +89,11 @@ Attributes returned in the `options` object:
 
 - `container`: the container element
 - `entry`: the data source entry
-- `vm`: the Vue instance of the widget
+- `instance`: the record container instance
 
 ```js
 Fliplet.Hooks.on('recordContainerDataRetrieved', function(options) {
-  // options contains "container", "entry" and "vm"
+  // options contains "container", "entry" and "instance"
 });
 ```
 
@@ -104,7 +107,7 @@ Attributes returned in the `options` object:
 
 - `container`: the container element
 - `connection`: the data source connection
-- `vm`: the Vue instance of the widget
+- `instance`: the record container instance
 - `dataSourceId`: the data source id used for the connection
 - `dataSourceEntryId`: the data source entry id to be loaded
 

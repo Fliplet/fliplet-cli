@@ -208,11 +208,8 @@ Fliplet.UI.Table emits various events that you can listen to:
 | Event | Detail | Description |
 |-------|--------|-------------|
 | `selection:change` | `{ selected: Array, deselected: Array, source: String }` | Fired when row selection changes. Source can be 'row-click', 'checkbox', or 'api' |
-| `row:click` | `{ data: Object }` | Fired when a row is clicked |
-| `sort:change` | `{ field: String, direction: String }` | Fired when sort column/direction changes |
 | `column:resize` | `{ column: Object, width: String }` | Fired when a column is resized by dragging |
-| `search` | `{ query: String, data: Array }` | Fired when search query changes |
-| `page:change` | `{ page: Number }` | Fired when current page changes |
+| `search:change` | `{ term: String, data: Array }` | Fired when search query changes |
 | `expand:start` | `{ row: Object, rowEl: Element }` | Fired when row expansion starts (before content is loaded) |
 | `expand:complete` | `{ row: Object, rowEl: Element, contentEl: Element }` | Fired when row expansion completes successfully |
 | `expand:error` | `{ row: Object, rowEl: Element, error: Error }` | Fired when row expansion fails |
@@ -383,12 +380,8 @@ table.on('selection:change', function(detail) {
   console.log('Source:', detail.source);
 });
 
-table.on('sort:change', function(detail) {
-  console.log('Sort changed:', detail.field, detail.direction);
-});
-
-table.on('search', function(detail) {
-  console.log('Search query:', detail.query);
+table.on('search:change', function(detail) {
+  console.log('Search term:', detail.term);
   console.log('Filtered data:', detail.data);
 });
 

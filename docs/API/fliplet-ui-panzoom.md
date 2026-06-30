@@ -141,7 +141,7 @@ var marker = Fliplet.UI.PanZoom.Markers.create($('.marker-selector'), {
 The `marker` instance variable above makes available the following instance methods.
 
 ### Get the current marker options
-`marker.vars()`
+`marker.vars`
 
 ### Update the marker options
 `marker.update(options, forceUpdate)`

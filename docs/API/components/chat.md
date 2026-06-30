@@ -334,7 +334,7 @@ const guid = _.get(conversation, 'definition.metadata.guid');
 As an example, you can use the metadata to store the ID of a record in a data source that is related to the conversation and use it to find the conversation later on:
 
 ```js
-const conversations = await conversations.get();
+const conversations = await chat.conversations();
 
 const myConversation = _.find(conversations, c => _.get(c, 'definition.metadata.guid') === 'running-team'));
 ```

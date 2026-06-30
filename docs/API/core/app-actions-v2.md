@@ -113,7 +113,7 @@ The following example creates an action that is triggered when a log entry is cr
 ```js
 Fliplet.App.Actions.create({
   name: 'send-email-on-error',
-  environment:'server'
+  environment:'server',
   triggers: [
     {
       trigger: 'log',

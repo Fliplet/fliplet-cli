@@ -37,8 +37,8 @@ Each auto `pageView` payload includes:
 
 | Field | Example | Notes |
 | --- | --- | --- |
-| `_pageTitle` | `/orders/:id` | Matched route pattern from the V3 manifest; falls back to raw path if no pattern matches. |
-| `_route` | `/orders/:id` | Same as `_pageTitle`, reserved for future payload enrichment. |
+| `_pageTitle` | `"Order"` | The route's `name` if set, otherwise the matched route pattern (which falls back to the raw path if no pattern matches). |
+| `_route` | `/orders/:id` | The matched route pattern (falls back to the raw path if no pattern matches). |
 | `_routeRaw` | `/orders/123?ref=email#top` | Actual URL including query and hash. |
 | `_routeParams` | `{ id: "123" }` | Params extracted from the pattern. |
 | `_routeName` | `"Order"` | `name` from the manifest route entry (if set). |

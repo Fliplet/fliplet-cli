@@ -34,7 +34,7 @@ Fliplet.Helper({
   name: 'profile',
   supportsDynamicContext: true,
   render: {
-    ready() => {
+    ready: function() {
       // Get the connection object from the parent component
       this.parent.connection().then((connection) => {
         // Find all entries in the data source

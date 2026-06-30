@@ -1334,7 +1334,7 @@ const guid = _.get(conversation, 'definition.metadata.guid');
 As an example, you can use the metadata to store the ID of a record in a data source that is related to the conversation and use it to find the conversation later on:
 
 ```js
-const conversations = await conversations.get();
+const conversations = await chat.conversations();
 
 const myConversation = _.find(conversations, c => _.get(c, 'definition.metadata.guid') === 'running-team'));
 ```
@@ -1594,7 +1594,7 @@ The following JS APIs are available in a screen once a **Dynamic container** com
 
 ## Retrieve an instance
 
-Since you can have many dynamic containers in a screen, we provide a handy function to grab a specific instance by its name or the first one available in the page when no input parameter is given.
+Since you can have many dynamic containers in a screen, we provide a handy function to grab a specific instance by its id or the first one available in the page when no input parameter is given.
 
 ### `Fliplet.DynamicContainer.get()`
 
@@ -1607,8 +1607,8 @@ Fliplet.DynamicContainer.get()
     // Use container to perform various actions
   });
 
-// Gets the first dynamic container instance named 'foo'
-Fliplet.DynamicContainer.get('foo')
+// Gets the dynamic container instance with id 123
+Fliplet.DynamicContainer.get(123)
   .then(function (container) {
     // Use container to perform various actions
   });
@@ -1629,40 +1629,6 @@ Fliplet.DynamicContainer.getAll().then(function (containers) {
 ---
 
 ## Instance methods
-
-### `container.load()`
-
-Use the `load` function to populate the dynamic container context with an array or an object:
-
-```js
-Fliplet.DynamicContainer.get().then(function (container) {
-  container.load(function () {
-    return [
-      { Name: 'Bob' },
-      { Name: 'Alice' }
-    ];
-  });
-});
-```
-
-You can also return a `Promise` if you're loading the data asynchronously. In the following example we are populating a container with entries from a Fliplet data source:
-
-```js
-Fliplet.DynamicContainer.get().then(function (container) {
-  container.load(function () {
-    return Fliplet.DataSources.connect(123).then(function (connection) {
-      return connection.findWithCursor({
-        where: { Office: 'London' },
-        limit: 10
-      });
-    });
-  });
-});
-```
-
-Note that we used the [findWithCursor](/API/fliplet-datasources#fetch-all-records-from-a-data-source) method instead of `find` to let the system manage pagination when the data is displayed in a list repeater.
-
-For more details, check the JS API documentation for the [findWithCursor](/API/fliplet-datasources#fetch-all-records-from-a-data-source) method.
 
 ### `container.connection()`
 
@@ -3522,8 +3488,7 @@ The `container` instance variable above is a `Vue` compatible instance with the 
 
 - `direction`: `vertical` or `horizontal`
 - `rows`: `Array` from the parent context
-- `el`: DOM Element
-- `template`: the list row template
+- `element`: DOM Element
 
 ---
 
@@ -3889,12 +3854,15 @@ Fliplet.RecordContainer.get('foo')
   });
 ```
 
-The `container` instance variable above is a `Vue` compatible instance with the following properties available:
+The `container` instance variable above has the following properties available:
 
-- `direction`: `vertical` or `horizontal`
-- `rows`: `Array` from the parent context
-- `el`: DOM Element
-- `template`: the list row template
+- `element`: DOM Element
+- `id`: the component instance id
+- `name`: the component instance name
+- `entry`: the data source entry loaded by the container
+- `data`: the component instance data
+- `dataSourceId`: the data source id used for the connection
+- `parent`: the parent context
 
 ---
 
@@ -3920,11 +3888,11 @@ Attributes returned in the `options` object:
 
 - `container`: the container element
 - `entry`: the data source entry
-- `vm`: the Vue instance of the widget
+- `instance`: the record container instance
 
 ```js
 Fliplet.Hooks.on('recordContainerDataRetrieved', function(options) {
-  // options contains "container", "entry" and "vm"
+  // options contains "container", "entry" and "instance"
 });
 ```
 
@@ -3938,7 +3906,7 @@ Attributes returned in the `options` object:
 
 - `container`: the container element
 - `connection`: the data source connection
-- `vm`: the Vue instance of the widget
+- `instance`: the record container instance
 - `dataSourceId`: the data source id used for the connection
 - `dataSourceEntryId`: the data source entry id to be loaded
 
@@ -5632,7 +5600,7 @@ The following example creates an action that is triggered when a log entry is cr
 ```js
 Fliplet.App.Actions.create({
   name: 'send-email-on-error',
-  environment:'server'
+  environment:'server',
   triggers: [
     {
       trigger: 'log',
@@ -6242,6 +6210,7 @@ Write and run JavaScript code directly on the server or client to perform automa
 8. Scheduled app actions only run the **published (production)** version of an action. On-demand actions run the version from the same environment they are fired from (e.g., Fliplet Viewer runs the master version, live apps run the production version).
 9. An action must have `active` set to `true` to be executed. Inactive actions do **not** run regardless of whether they are on-demand, scheduled, or triggered by events.
 10. If a scheduled action fails, the error is logged and the execution is skipped. Scheduled actions do **not** retry on failure — they wait for the next cron tick.
+11. Every **create**, **update**, and **restore** snapshots the action's configuration to a **version history**. Up to **100** versions are retained per action; older snapshots are pruned automatically. Snapshotting is best-effort and never blocks the create/update response. See [Version history](#version-history).
 
 ### Execution environments
 
@@ -6845,7 +6814,7 @@ Use `Fliplet.App.V3.Actions.create()` to create a V3 action. This always creates
 
 ### Return value
 
-Returns a Promise that resolves to `{ action: <action object> }`. See [Action object structure](#action-object-structure) for the full shape.
+Returns a Promise that resolves to the created **action object** directly (not wrapped in `{ action }`). See [Action object structure](#action-object-structure) for the full shape.
 
 ### Frequency (cron expression)
 
@@ -6909,11 +6878,11 @@ var result = await Fliplet.App.V3.Actions.create({
   dependencies: ['fliplet-datasources']
 });
 
-// result.action — the created action object
-// result.action.id — use this ID to publish, update, or delete the action
+// result — the created action object (returned directly, not wrapped)
+// result.id — use this ID to publish, update, or delete the action
 
 // IMPORTANT: You must publish the action for the schedule to be active in production:
-// await Fliplet.App.V3.Actions.publish(result.action.id);
+// await Fliplet.App.V3.Actions.publish(result.id);
 ```
 
 ### Create an on-demand (manual) action
@@ -6941,8 +6910,8 @@ var result = await Fliplet.App.V3.Actions.create({
   dependencies: ['fliplet-datasources']
 });
 
-// result.action — the created action object
-// result.action.id — use this ID to run, publish, update, or delete
+// result — the created action object (returned directly, not wrapped)
+// result.id — use this ID to run, publish, update, or delete
 ```
 
 The `description` parameter is optional — actions can be created without it, in which case `description` is `null` on the returned action object.
@@ -6989,7 +6958,7 @@ var result = await Fliplet.App.V3.Actions.create({
   dependencies: ['fliplet-datasources']
 });
 
-// result.action — the created action object
+// result — the created action object (returned directly, not wrapped)
 // The action fires when a new entry is created in data source 177
 // IMPORTANT: You must publish the action for the log trigger to be active in production
 ```
@@ -7029,7 +6998,7 @@ var result = await Fliplet.App.V3.Actions.create({
   ]
 });
 
-// result.action — the created action object
+// result — the created action object (returned directly, not wrapped)
 // The action fires in the user's browser when screen 77 is visited
 ```
 
@@ -7136,7 +7105,7 @@ console.log('Has more:', result.pagination.hasMore);
 
 ### Action object structure
 
-Every API method that returns an action (`get`, `getById`, `create`, `update`, `publish`) uses this structure:
+Every API method that returns an action uses this structure for the action object itself. The methods differ only in how the object is wrapped: `getById`, `create`, and `update` resolve to the action object **directly**; `get` returns it inside the `actions` array; `publish` returns it under an `action` property.
 
 ```json
 {
@@ -7189,13 +7158,13 @@ Every API method that returns an action (`get`, `getById`, `create`, `update`, `
 Use `Fliplet.App.V3.Actions.getById()` to retrieve a single V3 action by its ID.
 
 - **Parameters:** `id` (Number) — The action ID
-- **Returns:** Promise resolving to `{ action: <action object> }`
+- **Returns:** Promise resolving to the **action object** directly (not wrapped in `{ action }`)
 
 ```js
 var result = await Fliplet.App.V3.Actions.getById(12345);
-// result.action — the action object (see Action object structure above)
-console.log(result.action.name);   // 'confirm-booking'
-console.log(result.action.active); // true
+// result — the action object (see Action object structure above)
+console.log(result.name);   // 'confirm-booking'
+console.log(result.active); // true
 ```
 
 ## Update an action
@@ -7205,7 +7174,7 @@ Use `Fliplet.App.V3.Actions.update()` to update any property of the **master** a
 - **Parameters:**
   - `id` (Number) — The action ID (must be the master action, not the production version)
   - `data` (Object) — Object with properties to update
-- **Returns:** Promise resolving to `{ action: <updated action object> }`
+- **Returns:** Promise resolving to the updated **action object** directly (not wrapped in `{ action }`)
 
 <p class="warning">You can <strong>not</strong> update a published (production) action directly. Update the master action and call <code>publish()</code> again to push changes to production.</p>
 
@@ -7220,7 +7189,7 @@ var result = await Fliplet.App.V3.Actions.update(12345, {
   triggers: [{ trigger: 'manual' }],
   dependencies: []
 });
-// result.action — the updated action object
+// result — the updated action object (returned directly, not wrapped)
 // If this action is published, you must call publish() again to push the changes to production
 ```
 
@@ -7275,6 +7244,204 @@ await Fliplet.App.V3.Actions.unpublish(12345);
 // The action no longer runs in live apps
 // The master version still exists and can be edited and republished
 ```
+
+## Version history
+
+Every time a V3 action is **created**, **updated**, or **restored**, the platform stores a snapshot of its configuration in a version history. This lets you browse how an action changed over time and roll back to an earlier configuration.
+
+Version history is accessed through the REST API. Call the endpoints directly, or from app code via [`Fliplet.API.request()`](https://developers.fliplet.com/API/core/api.html). All examples below use `Fliplet.API.request()`.
+
+The endpoints are served from your region's API host, the same hosts used elsewhere:
+
+- `EU` `https://api.fliplet.com`
+- `US` `https://us.api.fliplet.com`
+- `CA` `https://ca.api.fliplet.com`
+
+All three endpoints require **editor** permissions on the **master** app, and the action must be a V3 action.
+
+### How snapshots are created
+
+| When | `action` value on the snapshot |
+|------|--------------------------------|
+| `create()` | `create` |
+| `update()` | `update` |
+| `restore` (before applying the old config) | `pre-restore` |
+
+- Snapshots are taken **after** the create/update succeeds. If snapshotting itself fails, the error is logged to the platform's error tracking but the API still returns success — versioning never blocks a write.
+- A maximum of **100** snapshots are kept per action. When a new snapshot pushes the count over 100, the **oldest** snapshots are pruned.
+- Restoring an action first takes a `pre-restore` snapshot of the current configuration, so a restore is itself undo-able (restore the `pre-restore` version to get back to where you were).
+- Deleting an action cascades to its version history — all snapshots for that action are removed.
+
+### What a snapshot contains
+
+Each snapshot stores the full action configuration at that point in time:
+
+`name`, `description`, `active`, `frequency`, `timezone`, `triggers`, `environment`, `code`, `actionVersion`, `dependencies`, `assets`, plus the internal `functions`, `widgetInstanceIds`, `masterTaskId`, and `productionTaskId` fields. For V3 actions, `functions` and `widgetInstanceIds` are empty. The snapshot also records the `action` reason (`create`, `update`, or `pre-restore`).
+
+### List version history
+
+Returns the snapshots for an action, most recent first. The list payload is a lightweight **summary** — only the fields listed in the table below are included; all other fields (`code`, `dependencies`, `assets`, `timezone`, `triggers`, `functions`, `widgetInstanceIds`, `masterTaskId`, `productionTaskId`, `actionVersion`) are omitted. Fetch a single version to get the full snapshot.
+
+```
+GET /v3/apps/:appId/actions/:actionId/versions
+```
+
+**Query parameters:**
+
+| Parameter | Type | Required | Default | Description |
+|-----------|------|----------|---------|-------------|
+| `limit` | Number | No | 50 | Maximum number of versions to return (max 100) |
+| `offset` | Number | No | 0 | Number of versions to skip (for pagination) |
+
+**Summary fields returned per version:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | Number | Unique version ID. Use this with the get/restore endpoints |
+| `createdAt` | String (ISO 8601) | When the snapshot was taken |
+| `userId` | Number or null | ID of the user who triggered the snapshot |
+| `user` | Object or null | `{ id, firstName, lastName, email }` of that user, when available |
+| `action` | String | Reason for the snapshot: `create`, `update`, or `pre-restore` |
+| `name` | String | Action name at the time of the snapshot |
+| `description` | String or null | Description at the time of the snapshot |
+| `active` | Boolean | Whether the action was active |
+| `environment` | String | `server`, `client`, or `any` |
+| `frequency` | String or null | Cron expression, if scheduled |
+
+```js
+var response = await Fliplet.API.request({
+  url: 'v3/apps/' + appId + '/actions/' + actionId + '/versions',
+  method: 'GET'
+});
+// response.status — "VERSIONS_LISTED"
+// response.versions — array of version summaries (most recent first)
+// response.pagination — { limit, offset, total, hasMore }
+
+response.versions.forEach(function (version) {
+  console.log(version.id, version.action, version.createdAt);
+});
+```
+
+Example response:
+
+```json
+{
+  "status": "VERSIONS_LISTED",
+  "versions": [
+    {
+      "id": 5012,
+      "createdAt": "2026-05-21T13:07:15.000Z",
+      "userId": 409996,
+      "user": { "id": 409996, "firstName": "Nick", "lastName": "Smith", "email": "nick@company.com" },
+      "action": "update",
+      "name": "confirm-booking",
+      "description": "Marks a booking as confirmed and notifies the customer",
+      "active": true,
+      "environment": "server",
+      "frequency": null
+    }
+  ],
+  "pagination": { "limit": 50, "offset": 0, "total": 12, "hasMore": false }
+}
+```
+
+### Get a single version
+
+Returns the **full** snapshot for one version, including `code`, `dependencies`, and `assets`.
+
+```
+GET /v3/apps/:appId/actions/:actionId/versions/:versionId
+```
+
+```js
+var response = await Fliplet.API.request({
+  url: 'v3/apps/' + appId + '/actions/' + actionId + '/versions/' + versionId,
+  method: 'GET'
+});
+// response.status — "VERSION_RETRIEVED"
+// response.version.data — the full configuration snapshot
+```
+
+Example response:
+
+```json
+{
+  "status": "VERSION_RETRIEVED",
+  "version": {
+    "id": 5012,
+    "createdAt": "2026-05-21T13:07:15.000Z",
+    "userId": 409996,
+    "user": { "id": 409996, "firstName": "Nick", "lastName": "Smith", "email": "nick@company.com" },
+    "data": {
+      "action": "update",
+      "name": "confirm-booking",
+      "description": "Marks a booking as confirmed and notifies the customer",
+      "active": true,
+      "frequency": null,
+      "timezone": null,
+      "functions": [],
+      "triggers": [{ "trigger": "manual" }],
+      "assets": [
+        {
+          "name": "fliplet-datasources",
+          "url": "https://cdn.fliplet.com/assets/fliplet-datasources/1.0/datasources.js",
+          "path": "assets/fliplet-datasources/1.0/datasources.js"
+        }
+      ],
+      "environment": "server",
+      "widgetInstanceIds": [],
+      "masterTaskId": null,
+      "productionTaskId": null,
+      "code": "async function execute(context) { return { success: true }; }",
+      "actionVersion": "v3",
+      "dependencies": ["fliplet-datasources"]
+    }
+  }
+}
+```
+
+<p class="warning">A <code>versionId</code> that does not exist for this action returns a <code>404</code> with status <code>VERSION_NOT_FOUND</code>.</p>
+
+### Restore a version
+
+Overwrites the action's current configuration with the configuration captured in a given snapshot.
+
+```
+POST /v3/apps/:appId/actions/:actionId/versions/:versionId/restore
+```
+
+The restore:
+
+- Takes a `pre-restore` snapshot of the current configuration first, so the restore can itself be undone.
+- Restores every field from the snapshot **except** `masterTaskId` and `productionTaskId` (those describe the action's identity and publish state, not its config).
+- Re-applies the cron schedule if the restored configuration has a `frequency` and is `active`.
+- Writes an `appAction.v3.restore` audit log carrying both `restoredFromVersionId` and `preRestoreVersionId`.
+
+```js
+var response = await Fliplet.API.request({
+  url: 'v3/apps/' + appId + '/actions/' + actionId + '/versions/' + versionId + '/restore',
+  method: 'POST'
+});
+// response.status — "ACTION_RESTORED"
+// response.action — the action object after the restore
+// response.restoredFromVersionId — the version that was restored
+// response.preRestoreVersionId — the snapshot of the state right before this restore
+```
+
+Example response:
+
+```json
+{
+  "status": "ACTION_RESTORED",
+  "action": { "id": 12345, "name": "confirm-booking", "active": true, "environment": "server", "isPublished": false },
+  "restoredFromVersionId": 5012,
+  "preRestoreVersionId": 5040
+}
+```
+
+<p class="warning">You can <strong>not</strong> restore a published (production) action. Restoring returns a <code>403</code> with status <code>CANNOT_RESTORE_PRODUCTION</code> — restore the <strong>master</strong> action and republish instead.</p>
+
+<p class="warning">If the snapshot's <code>name</code> now collides with a different action in the same app, the restore returns a <code>409</code> with status <code>NAME_ALREADY_EXISTS</code>. Rename or remove the conflicting action first.</p>
 
 ## Get the logs for an action
 
@@ -7482,22 +7649,25 @@ All error responses follow this format:
 |--------|-------------|
 | `ACTION_NOT_FOUND` | No action found with the given ID or name |
 | `ACTION_NOT_V3` | Action exists but is not a V3 action (it is a legacy V2 action) |
+| `VERSION_NOT_FOUND` | No version found with the given ID for this action |
 | `CANNOT_UPDATE_PRODUCTION` | Cannot update a published action directly — update the master and republish |
 | `CANNOT_DELETE_PRODUCTION` | Cannot delete a production action directly — delete the master action instead |
+| `CANNOT_RESTORE_PRODUCTION` | Cannot restore a published (production) action directly — restore the master action and republish |
 | `CLIENT_ACTION_NOT_RUNNABLE` | Client-only actions cannot be run on the server via `run()` or `runWithResult()` |
 | `ACTION_INACTIVE` | Cannot run an inactive action — set `active: true` first |
 | `APP_NOT_PUBLISHED` | App must be published before publishing an action |
 | `ACTION_NOT_PUBLISHED` | Action is not published (attempting to unpublish an action that is not published) |
 | `EXECUTION_FAILED` | Action execution failed (runtime error in the `execute()` function) |
 | `PUBLISH_FAILED` | Failed to publish action |
+| `RESTORE_FAILED` | Failed to restore the action to the requested version |
 
 ## Rate limits
 
 | Operation | Limit |
 |-----------|-------|
-| CRUD operations (`get`, `getById`, `create`, `update`, `remove`) | 60 requests per 60 seconds |
+| CRUD operations (`get`, `getById`, `create`, `update`, `remove`) and version reads (list / get versions) | 60 requests per 60 seconds |
 | Run action (`run`, `runWithResult`) | 30 requests per 60 seconds |
-| Publish / Unpublish | 10 requests per 60 seconds |
+| Publish / Unpublish / Restore version | 10 requests per 60 seconds |
 
 <p class="warning">Rate limits are per app, not per action. Exceeding the limit results in a <code>429</code> HTTP status code.</p>
 
@@ -7506,9 +7676,9 @@ All error responses follow this format:
 | Method | Parameters | Returns | Description |
 |--------|------------|---------|-------------|
 | `Fliplet.App.V3.Actions.get(options)` | `{ limit, offset }` | `{ actions, pagination }` | List actions with pagination |
-| `Fliplet.App.V3.Actions.getById(id)` | `id` (Number) | `{ action }` | Get a single action by ID |
-| `Fliplet.App.V3.Actions.create(data)` | See [Create parameters](#parameters) | `{ action }` | Create a new master action |
-| `Fliplet.App.V3.Actions.update(id, data)` | `id` (Number), `data` (Object) | `{ action }` | Update a master action |
+| `Fliplet.App.V3.Actions.getById(id)` | `id` (Number) | `action` (object) | Get a single action by ID |
+| `Fliplet.App.V3.Actions.create(data)` | See [Create parameters](#parameters) | `action` (object) | Create a new master action |
+| `Fliplet.App.V3.Actions.update(id, data)` | `id` (Number), `data` (Object) | `action` (object) | Update a master action |
 | `Fliplet.App.V3.Actions.remove(id)` | `id` (Number) | void | Delete an action (master + production) |
 | `Fliplet.App.V3.Actions.run(nameOrId, payload)` | `nameOrId` (String/Number), `payload` (Object) | Promise<void> | Queue action for execution, no return value |
 | `Fliplet.App.V3.Actions.runWithResult(nameOrId, payload)` | `nameOrId` (String/Number), `payload` (Object) | Return value of `execute()` | Run action and wait for result |
@@ -8395,9 +8565,10 @@ Use the `Fliplet.User.Biometrics.isAvailable()` method to check whether biometri
 
 The available types are:
 
-- `face` iOS and Android
-- `finger` Android only
-- `touch` iOS only
+- `face` all platforms
+- `finger` Android up to SDK 9
+- `biometric` Android from SDK 9 upwards
+- `touch` iOS
 
 ```js
 Fliplet.User.Biometrics.isAvailable().then(function (type) {
@@ -9911,7 +10082,7 @@ Like the Audit logs endpoint, this uses POST despite being a read operation — 
 ### Get the current organization settings
 
 ```js
-Fliplet.Organization.Settings.getAll()
+Fliplet.Organizations.Settings.getAll()
   .then(function (settings) {
     // Your code
   });
@@ -9920,7 +10091,7 @@ Fliplet.Organization.Settings.getAll()
 ### Extend the current settings
 
 ```js
-Fliplet.Organization.Settings.set({
+Fliplet.Organizations.Settings.set({
   user: 'foo',
   _password: 'bar' // Settings with an underscore prefix "_" will be encrypted
 })
@@ -9932,7 +10103,7 @@ Fliplet.Organization.Settings.set({
 ### Get a setting
 
 ```js
-Fliplet.Organization.Settings.get('foo')
+Fliplet.Organizations.Settings.get('foo')
   .then(function (value) {
     // Your code
   })
@@ -9941,7 +10112,7 @@ Fliplet.Organization.Settings.get('foo')
 ### Check if a setting is set
 
 ```js
-Fliplet.Organization.Settings.isSet('_password')
+Fliplet.Organizations.Settings.isSet('_password')
   .then(function(isSet) {
     if (isSet) {
       // Your code
@@ -9952,7 +10123,7 @@ Fliplet.Organization.Settings.isSet('_password')
 ### Unset a setting
 
 ```js
-Fliplet.Organization.Settings.unset(['user','_password'])
+Fliplet.Organizations.Settings.unset(['user','_password'])
   .then(function (currentSettings) {
     // Your code
   })
@@ -13726,9 +13897,11 @@ Fliplet.Content({dataSourceId: 2}).then(function (content) {
 ```js
 Fliplet.Content({dataSourceId: 2}).then(function (content) {
   content.query({
-    content: {
-      pageId: 3282,
-      dataSourceEntryId: 5234,
+    where: {
+      content: {
+        pageId: 3282,
+        dataSourceEntryId: 5234,
+      }
     }
   }).then(function(rows){
     rows; // returns all the data source entries related to the specified content
@@ -13858,14 +14031,14 @@ The CSV JS API uses [Papa Parse](https://www.papaparse.com/) as the underlying e
 ```js
 // Specifying a collection of entries
 Fliplet.CSV.encode([
-  { 'Column 1', 'foo', 'Column 2': 'bar' },
-  { 'Column 1', 'abc', 'Column 2': 'def' }
+  { 'Column 1': 'foo', 'Column 2': 'bar' },
+  { 'Column 1': 'abc', 'Column 2': 'def' }
 ]);
 
 // Pick specific columns from a collection of entries
 Fliplet.CSV.encode([
-  { 'Column 1', 'foo', 'Column 2': 'bar', 'Column 3': 'baz' },
-  { 'Column 1', 'abc', 'Column 2': 'def', 'Column 3': 'ghi' }
+  { 'Column 1': 'foo', 'Column 2': 'bar', 'Column 3': 'baz' },
+  { 'Column 1': 'abc', 'Column 2': 'def', 'Column 3': 'ghi' }
 ], {
   columns: ['Column 3', 'Column 1'] // Show only the specified columns, in given order
 });
@@ -14299,7 +14472,7 @@ formData.append('Office', 'San Francisco');
 formData.append('Avatar', newAvatarFile);
 
 const updatedUser = await connection.update(456, formData, {
-  mediaFolderId: 789
+  folderId: 789
 });
 console.log('Updated user with new avatar:', updatedUser);
 ```
@@ -14358,11 +14531,11 @@ if (users.length > 0) {
 
 // Complete example: Remove multiple users matching criteria
 const connection = await Fliplet.DataSources.connectByName("Users");
-const deletedCount = await connection.query({
+const deletedEntries = await connection.query({
   type: 'delete',
   where: { Status: 'Inactive' }
 });
-console.log(`Removed ${deletedCount} inactive users`);
+console.log('Removed inactive users:', deletedEntries);
 ```
 
 ---
@@ -14643,17 +14816,17 @@ const connection = await Fliplet.DataSources.connectByName("Users");
 const subscription = connection.subscribe({
   events: ['insert', 'update', 'delete'] // Which events to listen for
 }, (changes) => {
-  if (changes.inserted.length) {
+  if (changes.inserted?.length) {
     console.log('New users added:', changes.inserted);
     // Update your UI to show new users
   }
   
-  if (changes.updated.length) {
+  if (changes.updated?.length) {
     console.log('Users updated:', changes.updated);
     // Update your UI to reflect changes
   }
   
-  if (changes.deleted.length) {
+  if (changes.deleted?.length) {
     console.log('Users deleted:', changes.deleted);
     // Remove users from your UI
   }
@@ -15200,21 +15373,21 @@ const setupRealTimeUpdates = (connection, cursor) => {
   }, (changes) => {
     const { inserted, updated, deleted } = changes;
     
-    if (inserted.length) {
+    if (inserted?.length) {
       console.log(`\n🆕 ${inserted.length} new user(s) added:`);
       inserted.forEach(user => {
         console.log(`  + ${user.data.Name} (${user.data.Email})`);
       });
     }
     
-    if (updated.length) {
+    if (updated?.length) {
       console.log(`\n✏️  ${updated.length} user(s) updated:`);
       updated.forEach(user => {
         console.log(`  ~ ${user.data.Name} (${user.data.Email})`);
       });
     }
     
-    if (deleted.length) {
+    if (deleted?.length) {
       console.log(`\n🗑️  ${deleted.length} user(s) deleted`);
     }
 
@@ -15892,8 +16065,8 @@ Fliplet.DataSources.Encryption().setRuntimeKey('foo');
 Use the `getKey` JS API to fetch the encryption key from the current session or the device storage:
 
 ```js
-Fliplet.DataSources.Encryption().getKey().then(function (obj) {
-  // obj.key
+Fliplet.DataSources.Encryption().getKey().then(function (key) {
+  // key is the encryption key
 });
 ```
 
@@ -16199,7 +16372,7 @@ Achievements are used to track specific milestones that users have reached. They
 
 ## Usage
 
-To start setting up gamification logic for your app, add `fliplet-like:0.1` to your app/page dependencies.
+To start setting up gamification logic for your app, add `fliplet-gamify:0.1` to your app/page dependencies.
 
 Users must be logged in to use game engine and store game data.
 
@@ -18267,7 +18440,7 @@ Notifications can be removed through the following method. Note that push notifi
 
 ```js
 // remove a notification by id
-notification.remove(1).then(function () {
+instance.remove(1).then(function () {
 
 })
 ```
@@ -18369,7 +18542,7 @@ instance.update(1, {
 })
 
 // remove a notification by id
-notification.remove(1)
+instance.remove(1)
 
 // subscribe to notifications
 // each message contains id, createdAt, updatedAt, data, isUpdate, isDeleted, isFirstBatch
@@ -18489,7 +18662,7 @@ Fliplet.OAuth2(service).api(path)
 ```js
 Fliplet.OAuth2.configure('github', {
   authUrl: 'http://github.com/login/oauth/authorize', // from OAuth2 service provider
-  grantType: 'implicit', // as supported by OAuth2 service provider
+  grantType: 'token', // as supported by OAuth2 service provider
   grantUrl: 'https://github.com/login/oauth/access_token', // from OAuth2 service provider
   baseUrl: 'https://api.github.com/', // from OAuth2 service provider
   clientId: 'uztcbv3bwtkxmmej1lxv', // from OAuth2 service provider
@@ -18538,7 +18711,7 @@ Cross-Origin Request Sharing (CORS) sometimes needs to be configured with the se
 
 ### `Fliplet.OAuth2.configure()`
 
-(Returns **`null`**)
+(Returns the `Fliplet.OAuth2` instance when configuring a service, or the requested service configuration(s) when called to read)
 
 Configure an OAuth2 service or multiple OAuth2 services.
 
@@ -18753,7 +18926,7 @@ Fliplet.Payments.Configuration.update({
   // result.webhookUrl must be configured on your payment provider,
   // see the next section of the docs here below.
   // Here's an example of what the URL looks like:
-  // https://api.fliplet.com/v1/billing/apps/webhook/8a85a2edc3f3a774ac06f
+  // https://api.fliplet.com/v1/billing/webhook/apps/8a85a2edc3f3a774ac06f
 
 });
 ```
@@ -18768,7 +18941,7 @@ The previous JS API (`Fliplet.Payments.Configuration.update`) returns a `webhook
 
 1. Go to the [Developers > Webhooks](https://dashboard.stripe.com/webhooks) section in Stripe
 2. Click `Add endpoint`
-3. Add the value you got from `webhookUrl` in the `Endpoint URL` field. The value has a format similar to this URL: `https://api.fliplet.com/v1/billing/apps/webhook/8a85a2edc3f3a774ac06f`
+3. Add the value you got from `webhookUrl` in the `Endpoint URL` field. The value has a format similar to this URL: `https://api.fliplet.com/v1/billing/webhook/apps/8a85a2edc3f3a774ac06f`
 4. Choose the following events to be sent:
     - `customer.subscription.updated`
     - `customer.subscription.deleted`
@@ -19294,6 +19467,7 @@ When `resolveRoute` resolves with `allowed: false`, the `reason` property indica
 | `reason` | Triggered when | `redirectTo` | `status` |
 |---|---|---|---|
 | `unknown-route` | The path doesn't match any manifest entry, or the matched entry has no `fileId`. | `manifest.authRedirect` | Not set |
+| `no-session` | The route is not `public` and there's no signed-in session to authorize it. | `manifest.authRedirect` | Not set |
 | `media-denied` | The server returned `401` or `403` when fetching the screen source. | `manifest.authRedirect` | `401` or `403` |
 
 <p class="warning">The manifest's <code>public: true</code> flag is advisory. It just lets the client skip a known-401 round trip. Flipping <code>public: true</code> in the manifest without updating the media file's access rule grants no access; the server still returns 401 and <code>resolveRoute</code> resolves with <code>reason: 'media-denied'</code>.</p>
@@ -20658,11 +20832,8 @@ Fliplet.UI.Table emits various events that you can listen to:
 | Event | Detail | Description |
 |-------|--------|-------------|
 | `selection:change` | `{ selected: Array, deselected: Array, source: String }` | Fired when row selection changes. Source can be 'row-click', 'checkbox', or 'api' |
-| `row:click` | `{ data: Object }` | Fired when a row is clicked |
-| `sort:change` | `{ field: String, direction: String }` | Fired when sort column/direction changes |
 | `column:resize` | `{ column: Object, width: String }` | Fired when a column is resized by dragging |
-| `search` | `{ query: String, data: Array }` | Fired when search query changes |
-| `page:change` | `{ page: Number }` | Fired when current page changes |
+| `search:change` | `{ term: String, data: Array }` | Fired when search query changes |
 | `expand:start` | `{ row: Object, rowEl: Element }` | Fired when row expansion starts (before content is loaded) |
 | `expand:complete` | `{ row: Object, rowEl: Element, contentEl: Element }` | Fired when row expansion completes successfully |
 | `expand:error` | `{ row: Object, rowEl: Element, error: Error }` | Fired when row expansion fails |
@@ -20833,12 +21004,8 @@ table.on('selection:change', function(detail) {
   console.log('Source:', detail.source);
 });
 
-table.on('sort:change', function(detail) {
-  console.log('Sort changed:', detail.field, detail.direction);
-});
-
-table.on('search', function(detail) {
-  console.log('Search query:', detail.query);
+table.on('search:change', function(detail) {
+  console.log('Search term:', detail.term);
   console.log('Filtered data:', detail.data);
 });
 
@@ -21592,11 +21759,11 @@ Fliplet.UI.Actions(options)
         - (Function) If a function is provided, the function will be run with the 0-based index of the label as the first parameter.
     - **cancel** (Boolean or String) Unless this is `false` or an empty string, a cancel button will be added at the bottom with the provided string used as the button label. (**Default**: `Cancel`)
 
-## Properties
+## Resolution
 
-The toast instance returned in the promise resolving function will contain the following properties.
+The returned Promise resolves with the following value.
 
-  - **data** (Object) A data object containing the configuration fro the Toast notification.
+  - (Number) The 0-based index of the chosen label, or `undefined` if the user cancels.
 
 ## Examples
 
@@ -22743,7 +22910,7 @@ var marker = Fliplet.UI.PanZoom.Markers.create($('.marker-selector'), {
 The `marker` instance variable above makes available the following instance methods.
 
 ### Get the current marker options
-`marker.vars()`
+`marker.vars`
 
 ### Update the marker options
 `marker.update(options, forceUpdate)`
@@ -23089,7 +23256,7 @@ instance.change(fn)
 Gets the time range instance from a node or jQuery object.
 
 ```js
-Fliplet.UI.DatePicker.get(el)
+Fliplet.UI.TimeRange.get(el)
 ```
 
   - **el** (`String|Node|jQuery`) Selector or node for the target element
@@ -23387,9 +23554,9 @@ The typeahead instance supports the following methods.
 
 ### `.get()`
 
-(Returns `String`)
+(Returns `Array`)
 
-Gets the value of the typeahead field.
+Gets the selected value(s) of the typeahead field as an array of selected item values.
 
 ```js
 instance.get()
@@ -23676,7 +23843,7 @@ Fliplet.Helper({
   name: 'profile',
   supportsDynamicContext: true,
   render: {
-    ready() => {
+    ready: function() {
       // Get the connection object from the parent component
       this.parent.connection().then((connection) => {
         // Find all entries in the data source
@@ -25578,7 +25745,7 @@ Fliplet.Helper({
    ready: Function,
    beforeSave: Function
  },
- views: Object,
+ views: Array,
  childOf: Array
 });
 ```
@@ -25748,7 +25915,7 @@ Fliplet.Helper({
     </tr>
     <tr>
       <td><code>views</code></td>
-      <td><code>Object</code></td>
+      <td><code>Array</code></td>
       <td>optional</td>
       <td>
         <a href="/API/helpers/views">The list of rich content views</a>.</td>
@@ -25887,7 +26054,7 @@ field.get();
 var field = Fliplet.Helper.field('items');
 var item = field.get(0);
 
-item.get();
+item.field('name').get();
 ```
 
 ### Get the value of a specific field for a list item in a list field
@@ -26490,10 +26657,10 @@ Fliplet apps and widget interfaces are loaded with the following helpers.
 
 ---
 
-# Fliplet.LikeButton
+# LikeButton
 URL: https://developers.fliplet.com/API/like-buttons.md
 
-# `Fliplet.LikeButton`
+# `LikeButton`
 
 Embed a one-tap like button on any screen element, backed by a Data Source that records likes per content ID.
 
@@ -26997,8 +27164,8 @@ Each auto `pageView` payload includes:
 
 | Field | Example | Notes |
 | --- | --- | --- |
-| `_pageTitle` | `/orders/:id` | Matched route pattern from the V3 manifest; falls back to raw path if no pattern matches. |
-| `_route` | `/orders/:id` | Same as `_pageTitle`, reserved for future payload enrichment. |
+| `_pageTitle` | `"Order"` | The route's `name` if set, otherwise the matched route pattern (which falls back to the raw path if no pattern matches). |
+| `_route` | `/orders/:id` | The matched route pattern (falls back to the raw path if no pattern matches). |
 | `_routeRaw` | `/orders/123?ref=email#top` | Actual URL including query and hash. |
 | `_routeParams` | `{ id: "123" }` | Params extracted from the pattern. |
 | `_routeName` | `"Order"` | `name` from the manifest route entry (if set). |
@@ -27765,8 +27932,8 @@ export default {
         var where = {};
         where[EMAIL_COLUMN] = this.email;
 
-        // Server generates a code, stores it on the entry, and sends it via email.
-        // Returns 204 regardless of whether the email exists (no information leak).
+        // On success the server generates a code, stores it on the entry, sends it
+        // via email, and returns 204. Invalid or missing input returns an error.
         await ds.sendValidation({
           type: 'email',
           where: where
@@ -27791,6 +27958,8 @@ export default {
         await ds.validate({
           type: 'email',
           where: {
+            // The match column (email/identifier) is required alongside the code.
+            [EMAIL_COLUMN]: this.email,
             code: this.code
           },
           requiresPasswordReset: true
@@ -27842,8 +28011,8 @@ export default {
 
 | Step | Client calls | Server does |
 |---|---|---|
-| Send code | `dataSource.sendValidation({ type: 'email', where: { Email: '...' } })` | Generates code, stores on entry, sends email. Returns 204 (no info leak). |
-| Verify code | `dataSource.validate({ type: 'email', where: { code: '...' }, requiresPasswordReset: true })` | Validates code, checks expiry (24h default), creates temporary session. |
+| Send code | `dataSource.sendValidation({ type: 'email', where: { Email: '...' } })` | On success, generates code, stores on entry, sends email, returns 204. |
+| Verify code | `dataSource.validate({ type: 'email', where: { Email: '...', code: '...' }, requiresPasswordReset: true })` | Validates code, checks expiry (24h default), creates temporary session. |
 | Reset password | `Fliplet.Session.updateUserPassword({ newPassword, passwordColumn })` | Updates password column on data source entry, logs out user. |
 
 This is the same flow the V2 login widget uses. All security-critical operations (code generation, validation, password storage) happen server-side.
@@ -36769,7 +36938,7 @@ The App Analytics REST API lets you read your app's analytics data.
 
 ## Endpoints
 
-### Get a list of users subscribed to your app for push notifications
+### Get a list of analytics sessions for your app
 
 #### `GET v1/apps/:id/analytics/sessions`
 
@@ -36953,7 +37122,7 @@ curl 'https://api.fliplet.com/v1/apps/123/publish' \
   --compressed
 ```
 
-**Sample response** (Status code *200*):
+**Sample response** (Status code *201*):
 
 ```json
 {
@@ -37864,7 +38033,7 @@ Request body:
 }
 ```
 
-Response  (Status code: 201 Created):
+Response  (Status code: 200 OK):
 
 ```json
 {
@@ -37896,7 +38065,7 @@ Request body:
 }
 ```
 
-Response  (Status code: 201 Created):
+Response  (Status code: 200 OK):
 
 ```json
 {
@@ -37979,7 +38148,7 @@ Content-Type: image/jpeg
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 ```
 
-Sample response (Status code: 201 Created):
+Sample response (Status code: 200 OK):
 
 ```json
 {
@@ -40646,7 +40815,7 @@ Every Fliplet JS API available to V3 apps, grouped by capability category. Each 
 
 ## Media
 
-- [`Fliplet.Barcode`](https://developers.fliplet.com/API/v3/barcode.html) — Scan and generate QR codes and barcodes in V3 apps with Fliplet.Barcode — attachScanner() to scan (web + native) and show()/encode() to render barcode images.
+- [`Fliplet.Barcode`](https://developers.fliplet.com/API/v3/barcode.html) — Scan and generate QR codes and barcodes in V3 apps with Fliplet.Barcode — attachScanner() to scan (web + native) and encode() to render barcode images.
 - [`Fliplet.Media`](https://developers.fliplet.com/API/fliplet-media.html) — Browse folders, upload and manage files, and download media to devices via the Fliplet Media namespace.
 - [`Fliplet.Media.Audio`](https://developers.fliplet.com/API/fliplet-audio.html) — Play, pause, stop, and seek audio files on device or from a URL in Fliplet apps via the Audio namespace.
 
