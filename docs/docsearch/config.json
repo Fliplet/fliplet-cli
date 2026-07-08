@@ -20,6 +20,8 @@
       "page_rank": 1
     }
   ],
+  "sitemap_urls": ["https://developers.fliplet.com/sitemap.xml"],
+  "stop_urls": ["/404", "/plans/", "/disable-analytics"],
   "custom_settings": {
     "synonyms": [
       ["DIS", "Data Integration Service", "Agent"],
