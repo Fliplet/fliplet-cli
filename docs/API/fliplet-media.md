@@ -3,14 +3,13 @@ title: Fliplet.Media
 description: "Browse folders, upload and manage files, and download media to devices via the Fliplet Media namespace."
 type: api-reference
 tags: [js-api, media]
-v3_relevant: true
+v3_relevant: false
 deprecated: false
-category: media
-capabilities: [file, folder, upload, download, media, image, picture, photo, file storage, file manager, attachment, browse files, search files]
+exclude_from_v3_catalog: true
 ---
 # `Fliplet.Media`
 
-Browse folders, upload and manage files, and download media to devices via the Fliplet Media namespace.
+Browse folders, upload and manage files, and download media to devices via the Fliplet Media namespace. Capturing or uploading a photo in a V3 app? See the [V3 media guide](./v3/media.md).
 
 ---
 
