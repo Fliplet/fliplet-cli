@@ -36120,8 +36120,8 @@ Release notes for the Fliplet iOS and Android native frameworks — rebuild your
   <div class="bl two">
     <div>
       <h4>Android</h4>
-      <p>Current release: <u>6.4.7</u></p>
-      <p>Target API level: 37</p>
+      <p>Current release: <u>6.4.4</u></p>
+      <p>Target API level: 36</p>
       <p>Minimum supported SDK: 29 (Android 10)</p>
     </div>
   </div>
@@ -36131,10 +36131,6 @@ Release notes for the Fliplet iOS and Android native frameworks — rebuild your
 ---
 
 ## Supported versions
-
-### Version 6.4.7 (July 16, 2026)
-
-- **Android**: The target SDK has now been set to 37 (Android 17)
 
 ### Version 6.4.6 (February 09, 2026)
 
