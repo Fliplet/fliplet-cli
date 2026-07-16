@@ -27,7 +27,7 @@ await Fliplet.require.lazy.chain('fliplet-media');
 
 ## Capturing a photo: Fliplet.Media.capture()
 
-`Fliplet.Media.capture()` resolves with the chosen image as an **optimized WebP `File`** — downscaled to `maxWidth`/`maxHeight` and re-encoded to keep uploads small, so you don't ship a multi-megapixel original over the wire. It works the same on web and native — on native it drives the device camera or photo library; on web it opens the file picker (hinting the camera when you ask for one). You never touch the platform camera APIs yourself, the same way you build a login screen on top of `Fliplet.Session`.
+`Fliplet.Media.capture()` resolves with the chosen image as an **optimized WebP file** — downscaled to `maxWidth`/`maxHeight` and re-encoded to keep uploads small, so you don't ship a multi-megapixel original over the wire. On web this is a real `File`; on native it's a `Blob` with `.name`/`.type` set instead (the platform's file bridge doesn't support constructing a real `File` there) — either way it works directly with `Files.upload()` (below) and `URL.createObjectURL()`. It works the same on web and native — on native it drives the device camera or photo library; on web it opens the file picker (hinting the camera when you ask for one). You never touch the platform camera APIs yourself, the same way you build a login screen on top of `Fliplet.Session`.
 
 ```js
 await Fliplet.require.lazy.chain('fliplet-media');
@@ -53,7 +53,7 @@ const picked = await Fliplet.Media.capture({ source: 'library' }); // straight t
 * **options.maxWidth** (Number) — longest-edge width cap in px; the image is scaled down to fit and never upscaled. **Default** `2048`.
 * **options.maxHeight** (Number) — longest-edge height cap in px. **Default** `2048`.
 
-It resolves with an optimized WebP `File` and rejects if the user cancels or no camera is available — handle the rejection so the screen doesn't hang.
+It resolves with an optimized WebP file (a `File` on web, a `Blob` on native) and rejects if the user cancels or no camera is available — handle the rejection so the screen doesn't hang.
 
 > **Photos only.** `capture()` takes still images. To collect audio or video, let the user **upload an existing file** with `Files.upload()` (below) — there is no audio/video *recording* API.
 
