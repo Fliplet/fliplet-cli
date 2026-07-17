@@ -17,6 +17,7 @@ Release notes for the Fliplet iOS and Android native frameworks — rebuild your
       <h4>iOS</h4>
       <p>Current release: <u>6.4.6</u></p>
       <p>Target SDK version: 17</p>
+      <p>Minimum supported version: iOS 17</p>
     </div>
   </div>
   <div class="bl two">
