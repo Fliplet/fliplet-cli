@@ -40,7 +40,7 @@ Every Fliplet JS API available to V3 apps, grouped by capability category. Each 
 ## Media
 
 - [`Fliplet.Barcode`](https://developers.fliplet.com/API/v3/barcode.html) — Scan and generate QR codes and barcodes in V3 apps with Fliplet.Barcode — attachScanner() to scan (web + native) and encode() to render barcode images.
-- [`Fliplet.Media`](https://developers.fliplet.com/API/v3/media.html) — Capture or select a photo and upload files in V3 apps with Fliplet.Media — capture() to take or pick a photo (web + native) and Files.upload() to store it and get a URL back.
+- [`Fliplet.Media`](https://developers.fliplet.com/API/v3/media.html) — Upload files and display stored images in V3 apps with Fliplet.Media — Files.upload() to store a file and get a URL back, plus server-side resizing and format conversion.
 - [`Fliplet.Media.Audio`](https://developers.fliplet.com/API/fliplet-audio.html) — Play, pause, stop, and seek audio files on device or from a URL in Fliplet apps via the Audio namespace.
 
 ## Native
