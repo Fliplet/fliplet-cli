@@ -28658,9 +28658,9 @@ URL: https://developers.fliplet.com/API/v3/media.md
 
 # V3 media
 
-The `fliplet-media` package **stores files** in a V3 app with `Fliplet.Media.Files.upload()` and gives you back a URL you display in your own screen. It works the same on **web and native**.
+The `fliplet-media` package does two things in a V3 app, both the same on **web and native**: it **captures or selects a photo** with `Fliplet.Media.capture()`, and it **stores files** with `Fliplet.Media.Files.upload()`. `capture()` only *acquires* an image — you then `upload()` it to get back a URL you display in your own screen. The two steps are separate on purpose: capture the image, decide what to do with it, then store it.
 
-This guide covers letting the user pick a file or photo, uploading it, displaying a stored image, and the full pick → upload → display flow.
+This guide covers capturing a photo, uploading any file, displaying a stored image, and the full capture → upload → display flow.
 
 ## Prerequisites
 
@@ -28670,39 +28670,43 @@ Add the `fliplet-media` package to the screen, then load it before use:
 await Fliplet.require.lazy.chain('fliplet-media');
 ```
 
-## Letting the user pick a file or photo
+## Capturing a photo: Fliplet.Media.capture()
 
-Use a standard file input — it works on web and inside native apps, with no platform-specific code:
+`Fliplet.Media.capture()` resolves with the chosen image as a `File`, downscaled to `maxWidth`/`maxHeight` so you don't ship a multi-megapixel original over the wire. It works the same on web and native — on native it drives the device camera or photo library; on web it opens the file picker (hinting the camera when you ask for one). You never touch the platform camera APIs yourself, the same way you build a login screen on top of `Fliplet.Session`.
 
-```html
-<input type="file" id="picker" accept="image/*">
-```
+You don't need to care what the image is encoded as — hand the result to `Files.upload()` and Fliplet handles the rest.
 
 ```js
-document.getElementById('picker').addEventListener('change', function (event) {
-  const file = event.target.files[0];
+await Fliplet.require.lazy.chain('fliplet-media');
 
-  if (!file) {
-    return; // user cancelled
-  }
+// Let the user choose camera or library (the default)
+const file = await Fliplet.Media.capture();
 
-  // Preview it locally before uploading
-  document.getElementById('preview').src = URL.createObjectURL(file); // <img id="preview">
-});
+// Preview it locally before uploading
+document.getElementById('preview').src = URL.createObjectURL(file); // <img id="preview">
 ```
 
-To hint the camera instead of the photo library on mobile, add the `capture` attribute:
+Force a specific source instead of prompting:
 
-```html
-<!-- Opens the rear camera on mobile; desktop browsers ignore it and show the file picker -->
-<input type="file" accept="image/*" capture="environment">
+```js
+const photo = await Fliplet.Media.capture({ source: 'camera' });   // straight to the camera
+const picked = await Fliplet.Media.capture({ source: 'library' }); // straight to the gallery
 ```
 
-> **Photos and files only.** There is no audio/video *recording* API — let users **upload an existing file** with `Files.upload()` instead.
+`capture(options)` accepts:
+
+* **options.source** (String) — `'ask'` (**default**, lets the user choose), `'camera'`, or `'library'`. On native, `'ask'` shows the OS chooser; on web the browser decides, and `'camera'` hints the rear camera on mobile.
+* **options.quality** (Number) — image quality `0`–`100`. **Default** `80`.
+* **options.maxWidth** (Number) — longest-edge width cap in px; the image is scaled down to fit and never upscaled. **Default** `2048`.
+* **options.maxHeight** (Number) — longest-edge height cap in px. **Default** `2048`.
+
+It resolves with a `File` and rejects if the user cancels or no camera is available — handle the rejection so the screen doesn't hang.
+
+> **Photos only.** `capture()` takes still images. To collect audio or video, let the user **upload an existing file** with `Files.upload()` (below) — there is no audio/video *recording* API.
 
 ## Uploading a file: Fliplet.Media.Files.upload()
 
-`Fliplet.Media.Files.upload()` stores a `File` or `Blob` (from an `<input type="file">`, or anywhere else) and resolves with the created media files. Send it as `FormData`:
+`Fliplet.Media.Files.upload()` stores a `File` or `Blob` (from `capture()`, an `<input type="file">`, or anywhere else) and resolves with the created media files. Send it as `FormData`:
 
 ```js
 const data = new FormData();
@@ -28739,23 +28743,23 @@ If your organization has media encryption enabled, wrap the URL with `Fliplet.Me
 document.getElementById('photo').src = Fliplet.Media.authenticate(uploaded.url);
 ```
 
-## Full example: pick → upload → display
+## Full example: capture → upload → display
 
 ```js
 await Fliplet.require.lazy.chain('fliplet-media');
 
-const img = document.getElementById('photo');    // <img id="photo">
-const picker = document.getElementById('picker'); // <input type="file" id="picker" accept="image/*">
+const img = document.getElementById('photo'); // <img id="photo">
 
-picker.addEventListener('change', async function (event) {
-  const file = event.target.files[0];
+document.getElementById('add-photo').addEventListener('click', async function () {
+  let file;
 
-  if (!file) {
-    return; // user cancelled — leave the screen as-is
+  try {
+    file = await Fliplet.Media.capture({ source: 'ask' });
+  } catch (err) {
+    return; // user cancelled or no camera — leave the screen as-is
   }
 
   const data = new FormData();
-
   data.append('file', file, file.name);
 
   const files = await Fliplet.Media.Files.upload({ data: data });
@@ -28768,18 +28772,18 @@ picker.addEventListener('change', async function (event) {
 
 **DO**
 
-- Let the user pick a file with a standard `<input type="file">`, then store it with `Fliplet.Media.Files.upload()`.
-- Handle the empty-selection case (the user cancelled the picker) so the screen doesn't hang.
+- Capture with `Fliplet.Media.capture()`, then store the returned `File` with `Fliplet.Media.Files.upload()`.
+- Handle the `capture()` rejection (cancel / no camera) with a user-facing fallback.
 - Display uploaded images via `uploaded.url`, resizing with `getContents()` and authenticating with `Fliplet.Media.authenticate()` when needed.
 
 **DON'T**
 
-- Don't call `navigator.camera.getPicture()` or `getUserMedia()` directly — that's native-only (or web-only) and won't run cross-platform. A standard `<input type="file" accept="image/*">` works on both.
-- Don't expect audio/video **recording** — let users **upload** existing audio/video files with `Files.upload()`.
+- Don't call `navigator.camera.getPicture()` or `getUserMedia()` directly — that's native-only (or web-only) and won't run cross-platform. `Fliplet.Media.capture()` is the supported cross-platform primitive.
+- Don't expect audio/video **recording** — `capture()` is for photos. Let users **upload** existing audio/video files with `Files.upload()`.
 
 ## Related
 
-- [V3 routing](./routing.md) — base-path and navigation patterns for the screen that hosts your upload UI.
+- [V3 routing](./routing.md) — base-path and navigation patterns for the screen that hosts your capture UI.
 
 ---
 
@@ -40947,7 +40951,7 @@ Every Fliplet JS API available to V3 apps, grouped by capability category. Each 
 ## Media
 
 - [`Fliplet.Barcode`](https://developers.fliplet.com/API/v3/barcode.html) — Scan and generate QR codes and barcodes in V3 apps with Fliplet.Barcode — attachScanner() to scan (web + native) and encode() to render barcode images.
-- [`Fliplet.Media`](https://developers.fliplet.com/API/v3/media.html) — Capture or select a photo and upload files in V3 apps with Fliplet.Media — capture() to take or pick a photo (web + native) and Files.upload() to store it and get a URL back.
+- [`Fliplet.Media`](https://developers.fliplet.com/API/v3/media.html) — Upload files and display stored images in V3 apps with Fliplet.Media — Files.upload() to store a file and get a URL back, plus server-side resizing and format conversion.
 - [`Fliplet.Media.Audio`](https://developers.fliplet.com/API/fliplet-audio.html) — Play, pause, stop, and seek audio files on device or from a URL in Fliplet apps via the Audio namespace.
 
 ## Native

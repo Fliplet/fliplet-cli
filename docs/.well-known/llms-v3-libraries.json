@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-07-20T14:11:15.787Z",
+  "generatedAt": "2026-07-21T15:50:23.792Z",
   "libraries": [
     {
       "package": "fliplet-analytics-spa",
@@ -207,19 +207,22 @@
       "package": "fliplet-media",
       "namespace": "Fliplet.Media",
       "title": "V3 media",
-      "description": "Upload files and display stored images in V3 apps with Fliplet.Media — Files.upload() to store a file and get a URL back, plus server-side resizing and format conversion.",
+      "description": "Capture or select a photo and upload files in V3 apps with Fliplet.Media — capture() to take or pick a photo (web + native) and Files.upload() to store it and get a URL back.",
       "docUrl": "https://developers.fliplet.com/API/v3/media.md",
       "preloaded": false,
       "capabilities": [
+        "capture photo",
+        "take photo",
+        "camera",
+        "photo",
+        "image",
+        "photo library",
+        "gallery",
         "upload file",
         "file upload",
         "attachment",
         "media",
-        "store file",
-        "image",
-        "photo",
-        "display image",
-        "resize image"
+        "store file"
       ],
       "category": "media"
     },
