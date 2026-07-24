@@ -207,6 +207,31 @@ This endpoint accepts a `size` query parameter (which defaults to `large` when i
 - `320>240` image will be resized (keeping the scale ratio) to ensure the smallest dimension is equal to the given size on each axis
 - `320!320` image dimensions will both be resized to be equal to the target size. This resize may result in a **stretched image if the source image is not a square**.
 
+#### Convert image format and quality
+
+In addition to (or instead of) `size`, the endpoint accepts a `format` query parameter to convert the image on the fly, and an optional `quality` parameter to control encoder quality.
+
+| Parameter | Allowed values | Notes |
+|---|---|---|
+| `format` | `jpg`, `webp` | Output format. When omitted, the original encoding is preserved (PNG stays PNG, WebP stays WebP, others fall back to JPEG when resizing). |
+| `quality` | `1`–`100` | Encoder quality. Defaults to `88` for `jpg` and `80` for `webp`. Only meaningful when `format` is set. |
+
+Examples:
+
+```
+v1/media/files/123/contents?format=webp&quality=75
+v1/media/files/123/contents?size=large&format=jpg
+v1/media/files/123/contents?size=medium&format=webp
+```
+
+The endpoint returns `400 Bad Request` in any of these cases:
+
+- `format` is set to a value other than `jpg` or `webp`
+- `quality` is provided without `format`
+- `quality` is not an integer between `1` and `100`
+
+Transformed variants are cached on S3 under a key that combines `size`, `format`, and `quality`, so different combinations of these parameters generate independent derivatives and do not overwrite each other. Requests that pass `size` only continue to hit any pre-existing legacy cache entries.
+
 Note that this endpoint is meant to be called directly from the client since the file is streamed back to the requester.
 
 ---
