@@ -137,7 +137,7 @@ Fliplet.API.request({
 // a third-party service — see the warning below.
 Fliplet.API.request({
   url: 'v1/apps/123',
-  apiUrl: 'https://api-eu.fliplet.com/',
+  apiUrl: 'https://api.fliplet.com/',
   method: 'GET'
 }).then(function(response) {
   console.log('App data:', response.app);
