@@ -36,7 +36,7 @@ Fliplet.API.request(options)
 | `headers` | Object | `{}` | Additional headers to include with the request. |
 | `cache` | Boolean | `false` | Whether to cache the response for identical requests. |
 | `required` | Boolean | `false` | If true, failed requests will be queued for retry when connection is restored. |
-| `apiUrl` | String | Auto-detected | Custom API URL to use instead of the default. |
+| `apiUrl` | String | Auto-detected | Override the host for another **Fliplet-owned** API (e.g. a regional deployment). Fliplet's `Auth-token`/`Authorization` headers are still attached regardless of this override — never point it at a third-party host (see warning below). |
 | `contentType` | String | Auto-set | Content type header. Automatically set to 'application/json' for object data. |
 | `processData` | Boolean | Auto-set | Whether jQuery should process the data. Set to false for JSON requests. |
 
@@ -128,17 +128,30 @@ Fliplet.API.request({
 });
 ```
 
-#### Using Custom API URL
+#### Using a Custom Fliplet API Host
 
 ```js
+// apiUrl only overrides the host — Fliplet's own Auth-token/Authorization
+// headers are still attached regardless of this value. Use it only for
+// another Fliplet-owned API host (e.g. a regional deployment), never for
+// a third-party service — see the warning below.
 Fliplet.API.request({
-  url: 'v1/external-service/data',
-  apiUrl: 'https://custom-api.example.com/',
+  url: 'v1/apps/123',
+  apiUrl: 'https://api.fliplet.com/',
   method: 'GET'
 }).then(function(response) {
-  console.log('External data:', response);
+  console.log('App data:', response.app);
 });
 ```
+
+> **Warning — do not use for third-party APIs.** `Fliplet.API.request()` always attaches the current user's Fliplet `Auth-token`/`Authorization` headers, even when `apiUrl` points at a different host. Pointing `apiUrl` at a third-party service (Swoogo, OpenWeatherMap, a customer's own REST API, etc.) leaks the user's Fliplet session credentials to that host on every request. For third-party calls, use native `fetch()` with the full absolute endpoint URL and the third party's own credentials instead:
+>
+> ```js
+> const response = await fetch('https://api.example.com/v1/resource', {
+>   method: 'GET',
+>   headers: { Authorization: `Bearer ${thirdPartyApiKey}` }
+> });
+> ```
 
 ### Authentication
 
@@ -146,6 +159,7 @@ All requests are automatically authenticated using:
 - **Auth-token** header with the current user's authentication token
 - **Authorization** header with Bearer token (when btoa is available)
 - Automatic token refresh when the session expires
+- These headers are attached unconditionally, including when `apiUrl` overrides the host — see the warning above
 
 ### Automatic Headers
 
