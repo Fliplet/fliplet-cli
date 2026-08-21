@@ -4915,7 +4915,9 @@ async function stopAndTranscribe() {
       setStatus('Transcription complete.');
     }
   } catch (error) {
-    if (!cancelled || error.name !== 'AbortError') {
+    if (cancelled && error.name === 'AbortError') {
+      setStatus('Transcription cancelled.');
+    } else {
       showError(error);
     }
   } finally {
