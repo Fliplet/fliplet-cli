@@ -429,10 +429,37 @@ All operators of the [Data Source "find" JS API](https://developers.fliplet.com/
 - [aggregate](https://developers.fliplet.com/API/fliplet-datasources.html#run-aggregation-queries) - Run aggregation queries
 - [join](https://developers.fliplet.com/API/datasources/joins.html) - Join data from multiple data sources
 - [attributes](https://developers.fliplet.com/API/fliplet-datasources.html#filter-the-columns-returned-when-finding-records) - Select specific columns
-- [order](https://developers.fliplet.com/API/fliplet-datasources.html#sort--order-the-results) - Sort results
+- [order](https://developers.fliplet.com/API/fliplet-datasources.html#sorting-and-ordering) - Sort results (see the rules below)
 - [limit](https://developers.fliplet.com/API/fliplet-datasources.html#fetch-records-with-pagination) - Limit number of results
 - [offset](https://developers.fliplet.com/API/fliplet-datasources.html#fetch-records-with-pagination) - Skip records for pagination
 - [includePagination](https://developers.fliplet.com/API/fliplet-datasources.html#pagination-and-performance) - Include pagination metadata
+
+#### The `order` parameter
+
+`order` is validated before the query runs; a value that breaks the shape or column rules below returns `400 Bad Request`.
+
+| Rule | What it means |
+|---|---|
+| **Shape** — `order` is an array of arrays | Each sort is its own `[column, direction]` pair, so the value is `"order": [["data.Name", "ASC"]]`. A flat `"order": ["data.Name", "ASC"]` is rejected. |
+| **Column** — five columns may appear unprefixed | Only `id`, `order`, `createdAt`, `deletedAt`, `updatedAt` are accepted without a prefix. |
+| **Column** — every other column needs the `data.` prefix | Anything declared on the data source is an entry column, so it is written `data.<ColumnName>` — `data.Name`, not `Name`. |
+| **Column** — the name after `data.` is verbatim | It must reproduce the declared column exactly, spaces included — `data.Start Time UTC`. Never replace a space with a dot, camel-case it, or truncate at it. |
+| **Direction** — write `"ASC"` or `"DESC"` | A convention, not a validated rule: any other value fails as a database error — still a `400` response, but carrying the database's message instead of the `Invalid order column name` validation error. Always send a literal direction; never build it from user input. Omitting the direction defaults to `"ASC"`. |
+
+<p class="warning"><strong>A flat array fails with a confusing error.</strong> A flat <code>"order": ["createdAt", "DESC"]</code> makes the API read the string one character at a time, so the response is <code>Invalid order column name: c</code> — a single letter that appears nowhere in your request. A one-character column name in the error almost always means the shape is flat and needs an extra pair of brackets. The remaining ways to produce one are rare: a genuinely one-character unprefixed column, or a prefixed one-character name that is not a letter, digit, space, underscore or hyphen, such as <code>"order": [["data.@", "ASC"]]</code>.</p>
+
+<p class="info">Never add the <code>data.</code> prefix to <code>where</code> keys or <code>attributes</code> entries: both are applied inside the entry's <code>data</code> object, so they take entry column names <em>unprefixed</em>. Options that address the raw entry row <em>do</em> use the prefix, just like <code>order</code> — the keys and values of a join's <code>on</code> mapping (<code>"on": { "data.CustomerEmail": "data.Email" }</code>) and the field paths in an <code>aggregate</code> pipeline (<code>"$data.Department"</code>). Omitting it there raises no error; the join silently matches nothing.</p>
+
+<p class="info">The <code>order</code> nested inside a <code>join</code> definition is a <em>different</em> parameter with a different shape — a single flat <code>[column, direction]</code> pair. See the <a href="../API/datasources/joins.html">joins reference</a>.</p>
+
+Request body sorting by a multi-word entry column and then by creation date:
+
+```json
+{
+  "type": "select",
+  "order": [["data.Start Time UTC", "DESC"], ["createdAt", "DESC"]]
+}
+```
 
 #### Basic Query Example
 

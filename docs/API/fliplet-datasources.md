@@ -115,7 +115,7 @@ const seniorEngineers = await connection.find({
     Department: { $in: ['Engineering', 'Design'] },
     Status: 'Active'
   },
-  order: [['Name', 'ASC']],
+  order: [['data.Name', 'ASC']],
   limit: 50
 });
 console.log('Senior engineers in London:', seniorEngineers);
@@ -539,7 +539,7 @@ const connection = await Fliplet.DataSources.connectByName("Users");
 const page1 = await connection.find({
   limit: 10,
   offset: 0,
-  order: [['Name', 'ASC']]
+  order: [['data.Name', 'ASC']]
 });
 console.log('Page 1 users:', page1);
 
@@ -547,7 +547,7 @@ console.log('Page 1 users:', page1);
 const page2 = await connection.find({
   limit: 10,
   offset: 10,
-  order: [['Name', 'ASC']]
+  order: [['data.Name', 'ASC']]
 });
 console.log('Page 2 users:', page2);
 
@@ -557,7 +557,7 @@ const result = await connection.find({
   limit: 10,
   offset: 0,
   includePagination: true,
-  order: [['Name', 'ASC']]
+  order: [['data.Name', 'ASC']]
 });
 
 console.log(`Users: ${result.entries.length}`);
@@ -579,7 +579,7 @@ const connection = await Fliplet.DataSources.connectByName("Users");
 const cursor = await connection.findWithCursor({
   where: { Status: 'Active' },
   limit: 5,
-  order: [['Name', 'ASC']]
+  order: [['data.Name', 'ASC']]
 });
 
 console.log(`Page ${cursor.currentPage + 1} users:`, cursor);
@@ -626,16 +626,61 @@ console.log('Page 3 users:', page3);
 **Syntax:** Use `order` array in find options  
 **When to use:** When you need specific sorting
 
+### The `order` contract
+
+`order` is validated by the API before the query runs. A value that breaks the
+shape or column rules below is rejected with `400 Bad Request` — the query does
+not fall back to the default sorting.
+
+| Rule | What it means |
+|---|---|
+| **Shape** — `order` is an array of arrays | Each sort is its own `[column, direction]` pair, so the value is `order: [['data.Name', 'ASC']]`. A flat `order: ['data.Name', 'ASC']` is rejected. |
+| **Column** — five columns may appear unprefixed | Only `id`, `order`, `createdAt`, `deletedAt`, `updatedAt` are accepted without a prefix. |
+| **Column** — every other column needs the `data.` prefix | Anything you added to the data source is an entry column, so it is written `data.<ColumnName>` — `data.Name`, not `Name`. |
+| **Column** — the name after `data.` is verbatim | It must reproduce the declared column exactly, **spaces included** — `data.Start Time UTC`. Never replace a space with a dot, camel-case it, or truncate at it. |
+| **Direction** — write `'ASC'` or `'DESC'` | A convention, not a validated rule: any other value fails as a database error — still returned as a `400`, but carrying the database's message instead of the `Invalid order column name` validation error. Always write the direction as a literal in your code; never build it from user input. Omitting the direction defaults to `'ASC'`. |
+
+<p class="warning"><strong>Flat arrays fail with a confusing error.</strong> A flat <code>order: ['createdAt', 'DESC']</code> makes the API read the string one character at a time, so the response is <code>Invalid order column name: c</code> — a single letter that appears nowhere in your request. A one-character column name in the error almost always means the shape is flat and needs an extra pair of brackets. The remaining ways to produce one are rare: an unprefixed one-character column name such as <code>order: [['N', 'ASC']]</code>, which is rejected for the missing <code>data.</code> prefix rather than for its shape, or a prefixed one-character name that is not a letter, digit, space, underscore or hyphen, such as <code>order: [['data.@', 'ASC']]</code>.</p>
+
+<p class="info"><strong>Never add the <code>data.</code> prefix to <code>where</code> keys or <code>attributes</code> entries.</strong> Both are applied inside the entry's <code>data</code> object, so they take entry column names <em>unprefixed</em> — <code>where: { Name: 'John' }</code> and <code>attributes: ['Name', 'Email']</code> are correct, and adding <code>data.</code> to them breaks the query. Options that address the raw entry row instead <em>do</em> use the prefix, just like <code>order</code>: the keys and values of a join's <code>on</code> mapping (<code>on: { 'data.CustomerEmail': 'data.Email' }</code>) and the field paths in an <code>aggregate</code> pipeline (<code>'$data.Department'</code>). Omitting the prefix there raises no error — the join silently matches nothing (every record comes back with an empty <code>joins</code> entry, or drops out of the results entirely on a <code>required</code> join) and the aggregation reads undefined values.</p>
+
+<p class="info">Confirm the column names against the data source's declared columns before sorting. On a data source that declares its columns, an entry column it does not declare fails with <code>Column '&lt;name&gt;' does not exists</code>, and a top-level column that is not declared (such as <code>data.createdAt</code>) fails the same way — <code>createdAt</code> belongs in the unprefixed list, not behind the prefix. On a data source with no declared columns the check is skipped, so an unknown column sorts silently on NULLs instead of erroring.</p>
+
+Sort by creation date, newest first:
+
 ```js
-// Complete example: Sort users by creation date (newest first)
 const connection = await Fliplet.DataSources.connectByName("Users");
 const recentUsers = await connection.find({
-  order: [['createdAt', 'DESC']],
+  order: [['createdAt', 'DESC']],  // 'createdAt' is one of the five unprefixed columns
   limit: 10
 });
 console.log('Most recent users:', recentUsers);
+```
 
-// Complete example: Sort by multiple columns
+Sort by an entry column:
+
+```js
+const connection = await Fliplet.DataSources.connectByName("Users");
+const usersByName = await connection.find({
+  order: [['data.Name', 'ASC']]  // 'Name' is an entry column, so it needs the 'data.' prefix
+});
+console.log('Users sorted by name:', usersByName);
+```
+
+Sort by a column whose name contains spaces:
+
+```js
+const connection = await Fliplet.DataSources.connectByName("Sessions");
+const sessions = await connection.find({
+  // The data source declares a column called: Start Time UTC
+  order: [['data.Start Time UTC', 'DESC']]  // spaces are kept exactly as declared
+});
+console.log('Most recent sessions:', sessions);
+```
+
+Sort by multiple columns:
+
+```js
 const connection = await Fliplet.DataSources.connectByName("Users");
 const sortedUsers = await connection.find({
   order: [
@@ -649,6 +694,27 @@ console.log('Users sorted by department then name:', sortedUsers);
 // - Fliplet columns: 'id', 'order', 'createdAt', 'deletedAt', 'updatedAt'
 // - Entry columns: 'data.ColumnName'
 // - Sort directions: 'ASC' (ascending), 'DESC' (descending)
+```
+
+### Common mistakes
+
+```js
+// WRONG: flat array — rejected with "Invalid order column name: c"
+order: ['createdAt', 'DESC']
+// RIGHT
+order: [['createdAt', 'DESC']]
+
+// WRONG: entry column without the prefix — rejected with "Invalid order column name: Name"
+order: [['Name', 'ASC']]
+// RIGHT
+order: [['data.Name', 'ASC']]
+
+// WRONG: space rewritten as a dot — the API reads the column as "Start"
+order: [['data.Start.Time.UTC', 'DESC']]
+// WRONG: space truncated — the API reads the column as "Start"
+order: [['data.Start', 'DESC']]
+// RIGHT: the declared column name, verbatim
+order: [['data.Start Time UTC', 'DESC']]
 ```
 
 ---

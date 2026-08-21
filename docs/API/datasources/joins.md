@@ -557,7 +557,9 @@ connection.find({
 
 Use the `order` parameter to define the order at which entries are returned for your join.
 
-<p class="warning"><strong>Note:</strong> this parameter can be used for attributes such as <strong>"id"</strong> and <strong>"createdAt"</strong>. If you need to order by actual data in your entry, use the <strong>"data."</strong> prefix (such as <code>data.Title</code>).</p>
+<p class="warning"><strong>The join <code>order</code> is a single flat pair, not an array of arrays.</strong> Write it as <code>order: ['createdAt', 'DESC']</code> — one <code>[column, direction]</code> pair, sorting the matched entries in memory after they are fetched. A bare string is accepted too and is read as ascending, so <code>order: 'createdAt'</code> behaves like <code>order: ['createdAt', 'ASC']</code>. This shape applies <strong>only</strong> inside a join definition. The top-level <code>order</code> on <code>find()</code> is a different parameter with a different shape: it is an array of arrays, <code>order: [['data.Name', 'ASC']]</code>. Do not copy either shape into the other — see <a href="../fliplet-datasources.html#sorting-and-ordering">Sorting and Ordering</a>.</p>
+
+<p class="warning"><strong>Note:</strong> this parameter can be used for attributes such as <strong>"id"</strong> and <strong>"createdAt"</strong>. If you need to order by actual data in your entry, use the <strong>"data."</strong> prefix (such as <code>data.Title</code>), reproducing the column name verbatim including any spaces (such as <code>data.Start Time UTC</code>).</p>
 
 <p class="info">When you combine <code>order</code> with <code>limit</code>, the matched entries are ordered first, then <code>limit</code> takes the first <em>n</em> for each parent record. This is why <code>order: ['createdAt', 'DESC']</code> with <code>limit: 5</code> returns the 5 most recent matches per parent.</p>
 
@@ -572,6 +574,7 @@ const result = await connection.find({
         'data.ID': 'data.ArticleID'
       },
       // only fetch the 5 most recent comments, combining order and limit
+      // note: inside a join, order is a single flat [column, direction] pair
       order: ['createdAt', 'DESC'],
       limit: 5
     }
@@ -590,6 +593,7 @@ connection.find({
         'data.ID': 'data.ArticleID'
       },
       // only fetch the 5 most recent comments, combining order and limit
+      // note: inside a join, order is a single flat [column, direction] pair
       order: ['createdAt', 'DESC'],
       limit: 5
     }
