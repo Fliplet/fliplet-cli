@@ -115,7 +115,7 @@ const seniorEngineers = await connection.find({
     Department: { $in: ['Engineering', 'Design'] },
     Status: 'Active'
   },
-  order: [['Name', 'ASC']],
+  order: [['data.Name', 'ASC']],
   limit: 50
 });
 console.log('Senior engineers in London:', seniorEngineers);
@@ -539,7 +539,7 @@ const connection = await Fliplet.DataSources.connectByName("Users");
 const page1 = await connection.find({
   limit: 10,
   offset: 0,
-  order: [['Name', 'ASC']]
+  order: [['data.Name', 'ASC']]
 });
 console.log('Page 1 users:', page1);
 
@@ -547,7 +547,7 @@ console.log('Page 1 users:', page1);
 const page2 = await connection.find({
   limit: 10,
   offset: 10,
-  order: [['Name', 'ASC']]
+  order: [['data.Name', 'ASC']]
 });
 console.log('Page 2 users:', page2);
 
@@ -557,7 +557,7 @@ const result = await connection.find({
   limit: 10,
   offset: 0,
   includePagination: true,
-  order: [['Name', 'ASC']]
+  order: [['data.Name', 'ASC']]
 });
 
 console.log(`Users: ${result.entries.length}`);
@@ -579,7 +579,7 @@ const connection = await Fliplet.DataSources.connectByName("Users");
 const cursor = await connection.findWithCursor({
   where: { Status: 'Active' },
   limit: 5,
-  order: [['Name', 'ASC']]
+  order: [['data.Name', 'ASC']]
 });
 
 console.log(`Page ${cursor.currentPage + 1} users:`, cursor);
@@ -626,14 +626,47 @@ console.log('Page 3 users:', page3);
 **Syntax:** Use `order` array in find options  
 **When to use:** When you need specific sorting
 
+### The `order` contract
+
+`order` is validated by the API before the query runs. A value that breaks any of
+the four rules below is rejected with `400 Bad Request` — the query does not fall
+back to the default sorting.
+
+| Rule | What it means |
+|---|---|
+| `order` is an array of arrays | Each sort is its own `[column, direction]` pair, so the value is `order: [['data.Name', 'ASC']]`. A flat `order: ['data.Name', 'ASC']` is rejected. |
+| Five columns may appear unprefixed | Only `id`, `order`, `createdAt`, `deletedAt`, `updatedAt` are accepted without a prefix. |
+| Every other column needs the `data.` prefix | Anything you added to the data source is an entry column, so it is written `data.<ColumnName>` — `data.Name`, not `Name`. |
+| The name after `data.` is verbatim | It must reproduce the declared column exactly, **spaces included** — `data.Start Time UTC`. Never replace a space with a dot, camel-case it, or truncate at it. |
+| Direction is `'ASC'` or `'DESC'` | Omitting the direction defaults to `'ASC'`. |
+
+<p class="warning"><strong>Flat arrays fail with a confusing error.</strong> A flat <code>order: ['createdAt', 'DESC']</code> makes the API read the string one character at a time, so the response is <code>Invalid order column name: c</code> — a single letter that appears nowhere in your request. If you see a one-character column name in the error, the shape is flat and needs an extra pair of brackets.</p>
+
+<p class="info">Confirm the column names against the data source's declared columns before sorting. An entry column the data source does not declare fails with <code>Column '&lt;name&gt;' does not exists</code>, and a top-level column that the data source does not declare (such as <code>data.createdAt</code>) fails the same way — <code>createdAt</code> belongs in the unprefixed list, not behind the prefix.</p>
+
 ```js
 // Complete example: Sort users by creation date (newest first)
 const connection = await Fliplet.DataSources.connectByName("Users");
 const recentUsers = await connection.find({
-  order: [['createdAt', 'DESC']],
+  order: [['createdAt', 'DESC']],  // 'createdAt' is one of the five unprefixed columns
   limit: 10
 });
 console.log('Most recent users:', recentUsers);
+
+// Complete example: Sort by an entry column
+const connection = await Fliplet.DataSources.connectByName("Users");
+const usersByName = await connection.find({
+  order: [['data.Name', 'ASC']]  // 'Name' is an entry column, so it needs the 'data.' prefix
+});
+console.log('Users sorted by name:', usersByName);
+
+// Complete example: Sort by a column whose name contains spaces
+const connection = await Fliplet.DataSources.connectByName("Sessions");
+const sessions = await connection.find({
+  // The data source declares a column called: Start Time UTC
+  order: [['data.Start Time UTC', 'DESC']]  // spaces are kept exactly as declared
+});
+console.log('Most recent sessions:', sessions);
 
 // Complete example: Sort by multiple columns
 const connection = await Fliplet.DataSources.connectByName("Users");
@@ -649,6 +682,27 @@ console.log('Users sorted by department then name:', sortedUsers);
 // - Fliplet columns: 'id', 'order', 'createdAt', 'deletedAt', 'updatedAt'
 // - Entry columns: 'data.ColumnName'
 // - Sort directions: 'ASC' (ascending), 'DESC' (descending)
+```
+
+### Common mistakes
+
+```js
+// WRONG: flat array — rejected with "Invalid order column name: c"
+order: ['createdAt', 'DESC']
+// RIGHT
+order: [['createdAt', 'DESC']]
+
+// WRONG: entry column without the prefix — rejected with "Invalid order column name: Name"
+order: [['Name', 'ASC']]
+// RIGHT
+order: [['data.Name', 'ASC']]
+
+// WRONG: space rewritten as a dot — the API reads the column as "Start"
+order: [['data.Start.Time.UTC', 'DESC']]
+// WRONG: space truncated — the API reads the column as "Start"
+order: [['data.Start', 'DESC']]
+// RIGHT: the declared column name, verbatim
+order: [['data.Start Time UTC', 'DESC']]
 ```
 
 ---

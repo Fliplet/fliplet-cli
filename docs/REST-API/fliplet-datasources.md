@@ -429,10 +429,33 @@ All operators of the [Data Source "find" JS API](https://developers.fliplet.com/
 - [aggregate](https://developers.fliplet.com/API/fliplet-datasources.html#run-aggregation-queries) - Run aggregation queries
 - [join](https://developers.fliplet.com/API/datasources/joins.html) - Join data from multiple data sources
 - [attributes](https://developers.fliplet.com/API/fliplet-datasources.html#filter-the-columns-returned-when-finding-records) - Select specific columns
-- [order](https://developers.fliplet.com/API/fliplet-datasources.html#sort--order-the-results) - Sort results
+- [order](https://developers.fliplet.com/API/fliplet-datasources.html#sorting-and-ordering) - Sort results (see the rules below)
 - [limit](https://developers.fliplet.com/API/fliplet-datasources.html#fetch-records-with-pagination) - Limit number of results
 - [offset](https://developers.fliplet.com/API/fliplet-datasources.html#fetch-records-with-pagination) - Skip records for pagination
 - [includePagination](https://developers.fliplet.com/API/fliplet-datasources.html#pagination-and-performance) - Include pagination metadata
+
+#### The `order` parameter
+
+`order` is validated before the query runs; a value that breaks any of these rules returns `400 Bad Request`.
+
+| Rule | What it means |
+|---|---|
+| `order` is an array of arrays | Each sort is its own `[column, direction]` pair, so the value is `"order": [["data.Name", "ASC"]]`. A flat `"order": ["data.Name", "ASC"]` is rejected. |
+| Five columns may appear unprefixed | Only `id`, `order`, `createdAt`, `deletedAt`, `updatedAt` are accepted without a prefix. |
+| Every other column needs the `data.` prefix | Anything declared on the data source is an entry column, so it is written `data.<ColumnName>` — `data.Name`, not `Name`. |
+| The name after `data.` is verbatim | It must reproduce the declared column exactly, spaces included — `data.Start Time UTC`. Never replace a space with a dot, camel-case it, or truncate at it. |
+| Direction is `"ASC"` or `"DESC"` | Omitting the direction defaults to `"ASC"`. |
+
+<p class="warning"><strong>A flat array fails with a confusing error.</strong> A flat <code>"order": ["createdAt", "DESC"]</code> makes the API read the string one character at a time, so the response is <code>Invalid order column name: c</code> — a single letter that appears nowhere in your request. A one-character column name in the error always means the shape is flat and needs an extra pair of brackets.</p>
+
+<p class="info">The <code>order</code> nested inside a <code>join</code> definition is a <em>different</em> parameter with a different shape — a single flat <code>[column, direction]</code> pair. See the <a href="../API/datasources/joins.html">joins reference</a>.</p>
+
+```json
+{
+  "type": "select",
+  "order": [["data.Start Time UTC", "DESC"], ["createdAt", "DESC"]]
+}
+```
 
 #### Basic Query Example
 

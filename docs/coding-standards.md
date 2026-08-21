@@ -547,7 +547,8 @@ const optimizedQuery = await connection.find({
   },
   attributes: ['Name', 'Email'], // Limit returned fields
   limit: 50,
-  order: [['Name', 'ASC']]
+  // order is an array of arrays; entry columns need the 'data.' prefix, verbatim including spaces
+  order: [['data.Name', 'ASC']]
 });
 
 // Pagination
