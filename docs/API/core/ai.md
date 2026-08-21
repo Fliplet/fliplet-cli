@@ -381,7 +381,7 @@ These methods are called directly on the `Fliplet.AI` namespace (e.g., `Fliplet.
 |-------------------------|--------------------------------------------------------------------------------|-----------------------------------------------|-----------------|
 | createCompletion()    | Creates a text completion based on a prompt or a series of messages.           | options (Object)                            | Promise<Object> |
 | generateImage()       | Generates an image from a text prompt.                                         | options (Object)                            | Promise<Object> |
-| transcribeAudio()     | Transcribes an audio file.                                                     | file (File), options (Object, optional) | Promise<Object> |
+| transcribeAudio()     | Transcribes browser-recorded or uploaded audio.                                | audio (Blob or File), options (Object, optional) | `Promise<TranscriptionResponseObject>` |
 | createEmbedding()     | Creates an embedding vector for input text.                                    | options (Object)                            | Promise<Object> |
 
 ### `Fliplet.AI.createCompletion()`
@@ -711,90 +711,351 @@ generateAnImage();
 
 ### `Fliplet.AI.transcribeAudio()`
 
-`Fliplet.AI.transcribeAudio(file: File, options?: TranscribeAudioOptions): Promise<TranscriptionResponseObject>`
+`Fliplet.AI.transcribeAudio(audio: Blob | File, options?: TranscribeAudioOptions): Promise<TranscriptionResponseObject>`
 
-Transcribes an audio file into text.
+Transcribes an uploaded `File` or the `Blob` produced by a browser `MediaRecorder`. The API posts to the current app only; it does not expose the organisation-scoped Studio route.
 
 **Parameters:**
 
-| Parameter | Type                        | Optional | Default Value | Description                                                                                                                                                                                                                               |
-|-----------|-----------------------------|----------|---------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| file    | File                      | No       |               | The audio File object to transcribe. Supported formats: flac, mp3, mp4, mpeg, mpga, m4a, ogg, wav, webm.                                                                                                             |
-| options | TranscribeAudioOptions    | Yes      | {}          | An optional object containing additional parameters for the transcription. See [OpenAI Audio Transcription API](https://platform.openai.com/docs/api-reference/audio/createTranscription) for available options. |
+| Parameter | Type | Optional | Default value | Description |
+|-----------|------|----------|---------------|-------------|
+| audio | Blob or File | No | — | Audio with a supported MIME type. A named `File` remains supported. |
+| options | TranscribeAudioOptions | Yes | `{}` | Upload metadata, cancellation, and the operation deadline. |
 
-**`TranscribeAudioOptions` Object Properties (Common):**
+**`TranscribeAudioOptions` properties:**
 
-| Parameter     | Type     | Optional | Default Value    | Description                                                                                                                                          |
-|---------------|----------|----------|------------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
-| model       | String | Yes      | 'whisper-1'    | ID of the model to use (e.g., 'whisper-1').                                                                                                          |
-| prompt      | String | Yes      |                  | An optional text to guide the model's style or continue a previous audio segment.                                                                    |
-| response_format | String | Yes  | 'json'         | The format of the transcript output (e.g., 'json', 'text', 'srt', 'verbose_json', 'vtt'). Fliplet's wrapper might default or standardize this. |
-| language    | String | Yes      |                  | The language of the input audio in [ISO-639-1 format](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) (e.g., 'en', 'es').                   |
-| temperature | Number | Yes      | 0              | Sampling temperature (0-1). Higher values increase randomness.                                                                                         |
+| Property | Type | Optional | Default value | Description |
+|----------|------|----------|---------------|-------------|
+| filename | String | Yes | The `File.name`, then a MIME-derived name | Non-blank multipart filename. It overrides a `File` name. |
+| signal | AbortSignal | Yes | — | Cancels the browser-side request. |
+| timeout | Number | Yes | `120000` | Positive, finite end-to-end deadline in milliseconds. It covers readiness, authentication refresh, and every request attempt. |
+
+The server accepts these base MIME types: `audio/webm`, `audio/mp4`, `audio/mpeg`, `audio/wav`, and `audio/ogg`. Codec parameters are accepted because the server validates the base MIME type: for example, `audio/webm;codecs=opus` is valid. The server limits uploads to 25 MB.
+
+When `filename` is omitted, the wrapper uses the `File` name when one exists. For a plain `Blob`, it derives `audio.webm`, `audio.mp4`, `audio.mp3`, `audio.wav`, or `audio.ogg` from those base MIME types. It falls back to `audio.webm` for an empty or unsupported MIME type, but the MIME type remains authoritative and the server returns `415` for unsupported audio.
+
+`model`, `prompt`, `language`, `response_format`, `temperature`, and other provider-specific transcription options are not supported by this method. Do not pass them: they are not sent to the transcription provider.
 
 **Returns:**
 
-A `Promise` that resolves to a `TranscriptionResponseObject`. The primary content is usually the transcribed text. Refer to the OpenAI documentation for the [transcription object](https://platform.openai.com/docs/api-reference/audio/object) structure, which varies based on the chosen `response_format`.
-
-
-**Example:**
+A `Promise` that resolves to a `TranscriptionResponseObject` with the transcript in `text`.
 
 ```javascript
 /**
- * @typedef {Object} TranscribeAudioOptions
- * @property {string} [model='whisper-1']
- * @property {string} [prompt]
- * @property {string} [response_format='json']
- * @property {string} [language]
- * @property {number} [temperature=0]
- * // ... other OpenAI transcription options
- */
-
-/**
  * @typedef {Object} TranscriptionResponseObject
  * @property {string} text - The transcribed text.
- * // Potentially other fields for verbose formats
  */
+```
 
-async function transcribeSampleAudio() {
-  try {
-    // Creating a dummy File object for browser environments.
-    // In a real scenario, this would come from an <input type="file"> or other source.
-    const arrayBuffer = new Uint8Array([/* some dummy audio data */]).buffer;
-    const filename = 'test_audio.mp3';
-    const mimeType = 'audio/mp3';
-    const audioFile = new File([arrayBuffer], filename, { type: mimeType });
+### Browser recording example
 
-    if (audioFile.size === 0) {
-        console.warn("Dummy audio file is empty. Transcription will likely fail or return empty. This is for demonstration structure.");
-    }
-    
-    const transcriptionOptions = {
-        language: 'en', // Optional: specify language
-        response_format: 'json' // Optional: specify format
-    };
+Add these controls to an app screen, then add the script below. The app owns the recording UI, device choice, duration, and where to insert the returned text; `Fliplet.AI` only uploads audio for transcription.
 
-    console.log('Input File for transcribeAudio:', audioFile.name, 'Options:', transcriptionOptions);
-    // This example will likely not work without actual audio data and backend integration.
-    // It demonstrates the API call structure.
-    const result = await Fliplet.AI.transcribeAudio(audioFile, transcriptionOptions);
-    console.log('transcribeAudio Response:', result);
-    if (result && result.text) {
-      console.log('Transcription:', result.text);
-    }
-  } catch (error) {
-    console.error('Error transcribing audio:', error);
-    // Common errors: Invalid file format, file too large, network issue.
+```html
+<button id="dictation-record" type="button">Start recording</button>
+<button id="dictation-cancel" type="button" disabled>Cancel</button>
+<p id="dictation-status" role="status"></p>
+<pre id="dictation-transcript"></pre>
+```
+
+```javascript
+const recordButton = document.getElementById('dictation-record');
+const cancelButton = document.getElementById('dictation-cancel');
+const statusElement = document.getElementById('dictation-status');
+const transcriptElement = document.getElementById('dictation-transcript');
+const allowedMimeTypes = ['audio/webm', 'audio/mp4', 'audio/mpeg', 'audio/wav', 'audio/ogg'];
+const recorderMimeTypes = [
+  'audio/webm;codecs=opus',
+  'audio/mp4;codecs=mp4a.40.2',
+  'audio/mp4'
+];
+const filenameByMimeType = {
+  'audio/webm': 'dictation.webm',
+  'audio/mp4': 'dictation.mp4',
+  'audio/mpeg': 'dictation.mp3',
+  'audio/wav': 'dictation.wav',
+  'audio/ogg': 'dictation.ogg'
+};
+const maxRecordingMs = 60000;
+
+let stream;
+let recorder;
+let chunks = [];
+let phase = 'idle';
+let cancelled = false;
+let stopPromise;
+let recordingTimer;
+let abortController;
+
+function baseMimeType(mimeType) {
+  return (mimeType || '').split(';', 1)[0].trim().toLowerCase();
+}
+
+function setStatus(message) {
+  statusElement.textContent = message;
+}
+
+function clearRecordingTimer() {
+  window.clearTimeout(recordingTimer);
+  recordingTimer = undefined;
+}
+
+function releaseMicrophone() {
+  if (stream) {
+    stream.getTracks().forEach(function(track) {
+      track.stop();
+    });
+  }
+
+  stream = undefined;
+}
+
+function updateControls() {
+  recordButton.disabled = phase !== 'idle' && phase !== 'recording';
+  recordButton.textContent = phase === 'recording' ? 'Stop and transcribe' : 'Start recording';
+  cancelButton.disabled = phase === 'idle';
+}
+
+function recorderOptions() {
+  if (!MediaRecorder.isTypeSupported) {
+    return undefined;
+  }
+
+  const mimeType = recorderMimeTypes.find(function(candidate) {
+    return MediaRecorder.isTypeSupported(candidate);
+  });
+
+  return mimeType ? { mimeType: mimeType } : undefined;
+}
+
+function recordedBlob() {
+  const mimeType = baseMimeType(recorder.mimeType || (chunks[0] && chunks[0].type));
+
+  return new Blob(chunks, { type: mimeType });
+}
+
+function stopRecorder() {
+  if (stopPromise) {
+    return stopPromise;
+  }
+
+  if (!recorder) {
+    return Promise.reject(new Error('There is no recorder to stop.'));
+  }
+
+  if (recorder.state === 'inactive') {
+    return Promise.resolve(recordedBlob());
+  }
+
+  stopPromise = new Promise(function(resolve, reject) {
+    recorder.addEventListener('stop', function() {
+      resolve(recordedBlob());
+    }, { once: true });
+    recorder.addEventListener('error', function(event) {
+      reject(event.error || new Error('The recorder failed.'));
+    }, { once: true });
+    recorder.stop(); // Flushes the final dataavailable chunk before stop.
+  });
+
+  return stopPromise;
+}
+
+function reset() {
+  clearRecordingTimer();
+  releaseMicrophone();
+  recorder = undefined;
+  chunks = [];
+  stopPromise = undefined;
+  abortController = undefined;
+  phase = 'idle';
+  updateControls();
+}
+
+function showError(error) {
+  if (error.name === 'NotAllowedError') {
+    setStatus('Microphone permission was denied.');
+  } else if (error.name === 'NotFoundError') {
+    setStatus('No microphone is available.');
+  } else if (error.name === 'NotReadableError') {
+    setStatus('The microphone is already in use or cannot be read.');
+  } else if (error.name === 'AbortError') {
+    setStatus('Transcription cancelled.');
+  } else if (error.name === 'TimeoutError') {
+    setStatus('Transcription timed out after two minutes.');
+  } else if (error.name === 'TypeError') {
+    setStatus('Invalid audio or transcription options.');
+  } else if (error.status === 400) {
+    setStatus('The audio upload was invalid.');
+  } else if (error.status === 401 || error.status === 403) {
+    setStatus('You are not allowed to transcribe audio in this app.');
+  } else if (error.status === 402) {
+    setStatus('This organisation has insufficient AI credits.');
+  } else if (error.status === 413) {
+    setStatus('The audio file is larger than 25 MB.');
+  } else if (error.status === 415) {
+    setStatus('This browser produced an unsupported audio format.');
+  } else if (error.status === 429) {
+    setStatus('Too many transcription requests. Wait and try again.');
+  } else if (error.message) {
+    setStatus(error.message);
+  } else {
+    setStatus('The transcription request failed. Check the connection and try again.');
   }
 }
-// transcribeSampleAudio(); // Call this if you have a way to provide a real audio file
-console.info("transcribeSampleAudio() example is commented out as it requires a real audio File object.");
 
-// Simple File creation example:
-// const myBlob = new Blob(["dummy content for a text file"], { type: "text/plain" });
-// const myFile = new File([myBlob], "example.txt", { type: "text/plain" });
-// For audio, the Blob would contain actual audio data.
+async function startRecording() {
+  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder) {
+    setStatus('This browser cannot record audio.');
+    return;
+  }
+
+  cancelled = false;
+  phase = 'preparing';
+  transcriptElement.textContent = '';
+  setStatus('Requesting microphone permission…');
+  updateControls();
+
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+    if (cancelled) {
+      setStatus('Recording cancelled.');
+      reset();
+      return;
+    }
+
+    const options = recorderOptions();
+
+    // If no preferred MIME type is supported, let the browser choose one.
+    recorder = options ? new MediaRecorder(stream, options) : new MediaRecorder(stream);
+    chunks = [];
+    recorder.addEventListener('dataavailable', function(event) {
+      if (event.data && event.data.size > 0) {
+        chunks.push(event.data);
+      }
+    });
+    recorder.addEventListener('error', function(event) {
+      // stopRecorder() owns errors once stopping starts. During active
+      // recording there is no stop promise to clean up the microphone.
+      if (phase === 'recording') {
+        showError(event.error || new Error('The recorder failed.'));
+        reset();
+      }
+    });
+    recorder.start();
+    phase = 'recording';
+    recordingTimer = window.setTimeout(stopAndTranscribe, maxRecordingMs);
+    setStatus('Recording. It will stop after one minute.');
+  } catch (error) {
+    showError(error);
+    reset();
+  }
+
+  updateControls();
+}
+
+async function stopAndTranscribe() {
+  if (phase !== 'recording') {
+    return;
+  }
+
+  phase = 'stopping';
+  clearRecordingTimer();
+  updateControls();
+
+  try {
+    const audio = await stopRecorder();
+
+    // The completed Blob no longer needs the microphone. Do not hold it open
+    // while a transcription request can take up to two minutes.
+    releaseMicrophone();
+
+    if (cancelled) {
+      setStatus('Recording cancelled.');
+      return;
+    }
+
+    const mimeType = baseMimeType(audio.type);
+    if (!allowedMimeTypes.includes(mimeType)) {
+      throw new Error('The recorder produced an unsupported MIME type: ' + (mimeType || 'none'));
+    }
+
+    phase = 'transcribing';
+    abortController = typeof AbortController === 'function' ? new AbortController() : undefined;
+    const options = {
+      filename: filenameByMimeType[mimeType],
+      timeout: 120000
+    };
+
+    if (abortController) {
+      options.signal = abortController.signal;
+    }
+
+    setStatus('Transcribing…');
+    updateControls();
+    const result = await Fliplet.AI.transcribeAudio(audio, options);
+
+    // A browser without AbortController cannot stop the upload. Ignore its late result.
+    if (!cancelled) {
+      transcriptElement.textContent = result.text;
+      setStatus('Transcription complete.');
+    }
+  } catch (error) {
+    if (!cancelled || error.name !== 'AbortError') {
+      showError(error);
+    }
+  } finally {
+    reset();
+  }
+}
+
+async function cancelDictation() {
+  cancelled = true;
+  clearRecordingTimer();
+
+  if (phase === 'preparing') {
+    setStatus('Cancelling microphone request…');
+    return;
+  }
+
+  if (phase === 'recording' || phase === 'stopping') {
+    setStatus('Cancelling recording…');
+
+    if (phase === 'recording') {
+      stopAndTranscribe();
+    }
+
+    return;
+  }
+
+  if (phase === 'transcribing') {
+    if (abortController) {
+      abortController.abort();
+      setStatus('Cancelling transcription…');
+    } else {
+      setStatus('Upload cannot be aborted in this browser; its result will be ignored.');
+    }
+  }
+}
+
+recordButton.addEventListener('click', function() {
+  if (phase === 'recording') {
+    stopAndTranscribe();
+  } else if (phase === 'idle') {
+    startRecording();
+  }
+});
+cancelButton.addEventListener('click', cancelDictation);
+updateControls();
 ```
+
+The example intentionally does not copy Studio's dictation UI or controller. Cancelling an active browser request stops the upload and prevents a late transcript from updating the app, but it does not guarantee cancellation of provider work or reversal of credits once server processing has started.
+
+### Errors and limits
+
+Invalid `audio`, `options`, `filename`, `signal`, or `timeout` values reject with `TypeError` before a request begins. A caller cancellation rejects with `name: 'AbortError'` and `code: 'ABORT_ERR'`. The client deadline rejects with `name: 'TimeoutError'` and `code: 'ETIMEDOUT'`.
+
+The server can also return HTTP `400` (invalid request), `401` (not authenticated), `402` (insufficient AI credits), `403` (not permitted), `413` (audio exceeds 25 MB), `415` (unsupported MIME type), or `429` (rate limited). Treat other failures as transport or server errors and allow the user to retry.
 
 ### `Fliplet.AI.createEmbedding()`
 
