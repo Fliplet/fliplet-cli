@@ -436,19 +436,23 @@ All operators of the [Data Source "find" JS API](https://developers.fliplet.com/
 
 #### The `order` parameter
 
-`order` is validated before the query runs; a value that breaks any of these rules returns `400 Bad Request`.
+`order` is validated before the query runs; a value that breaks the shape or column rules below returns `400 Bad Request`.
 
 | Rule | What it means |
 |---|---|
-| `order` is an array of arrays | Each sort is its own `[column, direction]` pair, so the value is `"order": [["data.Name", "ASC"]]`. A flat `"order": ["data.Name", "ASC"]` is rejected. |
-| Five columns may appear unprefixed | Only `id`, `order`, `createdAt`, `deletedAt`, `updatedAt` are accepted without a prefix. |
-| Every other column needs the `data.` prefix | Anything declared on the data source is an entry column, so it is written `data.<ColumnName>` — `data.Name`, not `Name`. |
-| The name after `data.` is verbatim | It must reproduce the declared column exactly, spaces included — `data.Start Time UTC`. Never replace a space with a dot, camel-case it, or truncate at it. |
-| Direction is `"ASC"` or `"DESC"` | Omitting the direction defaults to `"ASC"`. |
+| **Shape** — `order` is an array of arrays | Each sort is its own `[column, direction]` pair, so the value is `"order": [["data.Name", "ASC"]]`. A flat `"order": ["data.Name", "ASC"]` is rejected. |
+| **Column** — five columns may appear unprefixed | Only `id`, `order`, `createdAt`, `deletedAt`, `updatedAt` are accepted without a prefix. |
+| **Column** — every other column needs the `data.` prefix | Anything declared on the data source is an entry column, so it is written `data.<ColumnName>` — `data.Name`, not `Name`. |
+| **Column** — the name after `data.` is verbatim | It must reproduce the declared column exactly, spaces included — `data.Start Time UTC`. Never replace a space with a dot, camel-case it, or truncate at it. |
+| **Direction** — write `"ASC"` or `"DESC"` | A convention, not a validated rule: the direction is passed through to the database as written, so a value outside these two surfaces as a database error rather than a `400`. Omitting the direction defaults to `"ASC"`. |
 
-<p class="warning"><strong>A flat array fails with a confusing error.</strong> A flat <code>"order": ["createdAt", "DESC"]</code> makes the API read the string one character at a time, so the response is <code>Invalid order column name: c</code> — a single letter that appears nowhere in your request. A one-character column name in the error always means the shape is flat and needs an extra pair of brackets.</p>
+<p class="warning"><strong>A flat array fails with a confusing error.</strong> A flat <code>"order": ["createdAt", "DESC"]</code> makes the API read the string one character at a time, so the response is <code>Invalid order column name: c</code> — a single letter that appears nowhere in your request. A one-character column name in the error almost always means the shape is flat and needs an extra pair of brackets; the only other way to produce one is sorting by a genuinely one-character unprefixed column.</p>
+
+<p class="info">The <code>data.</code> prefix is specific to <code>order</code>. <code>where</code> and <code>attributes</code> take entry column names <em>unprefixed</em>, so do not generalize the prefix to them.</p>
 
 <p class="info">The <code>order</code> nested inside a <code>join</code> definition is a <em>different</em> parameter with a different shape — a single flat <code>[column, direction]</code> pair. See the <a href="../API/datasources/joins.html">joins reference</a>.</p>
+
+Request body sorting by a multi-word entry column and then by creation date:
 
 ```json
 {

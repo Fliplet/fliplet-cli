@@ -628,47 +628,59 @@ console.log('Page 3 users:', page3);
 
 ### The `order` contract
 
-`order` is validated by the API before the query runs. A value that breaks any of
-the four rules below is rejected with `400 Bad Request` — the query does not fall
-back to the default sorting.
+`order` is validated by the API before the query runs. A value that breaks the
+shape or column rules below is rejected with `400 Bad Request` — the query does
+not fall back to the default sorting.
 
 | Rule | What it means |
 |---|---|
-| `order` is an array of arrays | Each sort is its own `[column, direction]` pair, so the value is `order: [['data.Name', 'ASC']]`. A flat `order: ['data.Name', 'ASC']` is rejected. |
-| Five columns may appear unprefixed | Only `id`, `order`, `createdAt`, `deletedAt`, `updatedAt` are accepted without a prefix. |
-| Every other column needs the `data.` prefix | Anything you added to the data source is an entry column, so it is written `data.<ColumnName>` — `data.Name`, not `Name`. |
-| The name after `data.` is verbatim | It must reproduce the declared column exactly, **spaces included** — `data.Start Time UTC`. Never replace a space with a dot, camel-case it, or truncate at it. |
-| Direction is `'ASC'` or `'DESC'` | Omitting the direction defaults to `'ASC'`. |
+| **Shape** — `order` is an array of arrays | Each sort is its own `[column, direction]` pair, so the value is `order: [['data.Name', 'ASC']]`. A flat `order: ['data.Name', 'ASC']` is rejected. |
+| **Column** — five columns may appear unprefixed | Only `id`, `order`, `createdAt`, `deletedAt`, `updatedAt` are accepted without a prefix. |
+| **Column** — every other column needs the `data.` prefix | Anything you added to the data source is an entry column, so it is written `data.<ColumnName>` — `data.Name`, not `Name`. |
+| **Column** — the name after `data.` is verbatim | It must reproduce the declared column exactly, **spaces included** — `data.Start Time UTC`. Never replace a space with a dot, camel-case it, or truncate at it. |
+| **Direction** — write `'ASC'` or `'DESC'` | A convention, not a validated rule: the direction is passed through to the database as written, so a value outside these two surfaces as a database error rather than a `400`. Omitting the direction defaults to `'ASC'`. |
 
-<p class="warning"><strong>Flat arrays fail with a confusing error.</strong> A flat <code>order: ['createdAt', 'DESC']</code> makes the API read the string one character at a time, so the response is <code>Invalid order column name: c</code> — a single letter that appears nowhere in your request. If you see a one-character column name in the error, the shape is flat and needs an extra pair of brackets.</p>
+<p class="warning"><strong>Flat arrays fail with a confusing error.</strong> A flat <code>order: ['createdAt', 'DESC']</code> makes the API read the string one character at a time, so the response is <code>Invalid order column name: c</code> — a single letter that appears nowhere in your request. A one-character column name in the error almost always means the shape is flat and needs an extra pair of brackets; the only other way to produce one is an unprefixed one-character column name, such as <code>order: [['N', 'ASC']]</code>, which is rejected for the missing <code>data.</code> prefix rather than for its shape.</p>
 
-<p class="info">Confirm the column names against the data source's declared columns before sorting. An entry column the data source does not declare fails with <code>Column '&lt;name&gt;' does not exists</code>, and a top-level column that the data source does not declare (such as <code>data.createdAt</code>) fails the same way — <code>createdAt</code> belongs in the unprefixed list, not behind the prefix.</p>
+<p class="info"><strong>The <code>data.</code> prefix is specific to <code>order</code>.</strong> <code>where</code> and <code>attributes</code> take entry column names <em>unprefixed</em> — <code>where: { Name: 'John' }</code> and <code>attributes: ['Name', 'Email']</code> are correct, and adding <code>data.</code> to them breaks the query. Do not generalize the prefix beyond <code>order</code>.</p>
+
+<p class="info">Confirm the column names against the data source's declared columns before sorting. On a data source that declares its columns, an entry column it does not declare fails with <code>Column '&lt;name&gt;' does not exists</code>, and a top-level column that is not declared (such as <code>data.createdAt</code>) fails the same way — <code>createdAt</code> belongs in the unprefixed list, not behind the prefix. On a data source with no declared columns the check is skipped, so an unknown column sorts silently on NULLs instead of erroring.</p>
+
+Sort by creation date, newest first:
 
 ```js
-// Complete example: Sort users by creation date (newest first)
 const connection = await Fliplet.DataSources.connectByName("Users");
 const recentUsers = await connection.find({
   order: [['createdAt', 'DESC']],  // 'createdAt' is one of the five unprefixed columns
   limit: 10
 });
 console.log('Most recent users:', recentUsers);
+```
 
-// Complete example: Sort by an entry column
+Sort by an entry column:
+
+```js
 const connection = await Fliplet.DataSources.connectByName("Users");
 const usersByName = await connection.find({
   order: [['data.Name', 'ASC']]  // 'Name' is an entry column, so it needs the 'data.' prefix
 });
 console.log('Users sorted by name:', usersByName);
+```
 
-// Complete example: Sort by a column whose name contains spaces
+Sort by a column whose name contains spaces:
+
+```js
 const connection = await Fliplet.DataSources.connectByName("Sessions");
 const sessions = await connection.find({
   // The data source declares a column called: Start Time UTC
   order: [['data.Start Time UTC', 'DESC']]  // spaces are kept exactly as declared
 });
 console.log('Most recent sessions:', sessions);
+```
 
-// Complete example: Sort by multiple columns
+Sort by multiple columns:
+
+```js
 const connection = await Fliplet.DataSources.connectByName("Users");
 const sortedUsers = await connection.find({
   order: [
