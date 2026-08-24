@@ -24,6 +24,8 @@ Each constraint maps to a concrete platform guarantee:
 
 Any registered Fliplet dependency (Vue, React, Vue Router, etc.) **must** be loaded with `Fliplet.require.lazy(name)`. Never use `<script>` tags, `import`, or raw CDN URLs. These bypass the Fliplet asset pipeline and break versioning, caching, and dependency resolution.
 
+Declaring the dependency on the page is a prerequisite, not an alternative: `Fliplet.require.lazy(name)` resolves only names present in `window.ENV.dependencies.lazy`, which the engine populates from the page's declared dependencies. A name that was never declared rejects at runtime (lint rule `undeclared-lazy-name`).
+
 ```js
 Fliplet.require.lazy('vue').then(function() {
   // the 'vue' global is now available
@@ -69,6 +71,21 @@ The document `<head>` **must** contain this exact viewport meta:
 On native devices the app runs in a system webview that honors `user-scalable=no`. Without it, users can pinch-zoom the app and iOS automatically zooms the page when an input with font-size under 16px receives focus — the app feels like a website instead of an app. Most web browsers ignore `user-scalable=no` for accessibility (iOS Safari always; Android Chrome users can force-enable zoom), so web pinch-zoom is preserved; the same tag is correct on every platform. `viewport-fit=cover` lets the app draw edge-to-edge behind device notches (pair it with `env(safe-area-inset-*)` padding).
 
 <p class="warning">The boot-HTML lint rejects layouts whose viewport meta is missing or allows user scaling (rule <code>viewport-not-locked</code>).</p>
+
+## Forbidden patterns
+
+The Fliplet Studio AI builder lints every boot HTML it generates and reports the patterns below; hand-authored apps must avoid them too. Each violation carries a `ruleId` matching a row here.
+
+Every rule carries a **severity**, which is the deploy contract rather than a hint about how bad the pattern is. A `block` rule is a guaranteed runtime break, so the AI builder refuses the save — the screen does not deploy until the violation is fixed. A `warn` rule deploys: the save succeeds and the violation comes back as a warning alongside it. Warnings are still wrong and should be fixed; they just don't hold up the deploy.
+
+| `ruleId` | What's forbidden | What to do instead | Severity |
+|---|---|---|---|
+| `duplicate-fliplet-require` | A bare `Fliplet.require(...)` call in the boot HTML, typically over the page's `window.ENV.dependencies.js` list | Delete the call. The engine already injects the page's dependencies at render time, so calling it again loads every dependency twice and throws `SyntaxError: Identifier 'Utils' has already been declared`. To load one dependency on demand, use `Fliplet.require.lazy(name)` for CDN libraries or `Fliplet.require.lazy.chain(name)` for registered Fliplet packages. | `block` |
+| `undeclared-lazy-name` | `Fliplet.require.lazy('name')` (or `.lazy.chain('name')`) where `name` is not a declared page dependency | Declare the dependency on the page first — the lazy registry is built from the page's declared dependencies, so an undeclared name rejects at runtime. In the AI builder that means calling `add_dependencies({ name: 'name', latest: '<cdn-url>', lazy: true })` before the boot HTML uses it; registered Fliplet packages are declared by plain name and loaded with `Fliplet.require.lazy.chain('name')`. | `block` |
+| `get-contents-as-module-default-access` | `<id>.default(...)` on an identifier assigned from `await Fliplet.Media.getContentsAsModule(...)` | Drop the `.default`. The helper is CommonJS-shaped and resolves to the exported value directly, so `.default` is `undefined` and the component never mounts. Call `<id>(...)`, or pass `<id>` straight to your framework's mount function. | `block` |
+| `font-awesome-not-available` | `<i class="fa fa-…">` — Font Awesome is not available in the app runtime, so the icon renders as an invisible 0x0 element | Use a Lucide icon instead: `<i data-lucide="icon-name"></i>` plus a `lucide.createIcons()` call once the markup is in the DOM. | `warn` |
+
+The routing rules (`hash-change-event`, `window-location-hash`, `create-web-hash-history`, `unguarded-web-history`, `react-browser-router`, `hash-router-react`, `hash-href`, `path-dispatcher`) are documented with the same columns in [Forbidden patterns](routing#forbidden-patterns) on the V3 routing page.
 
 ## What's next: routing
 

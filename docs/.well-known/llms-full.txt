@@ -27323,6 +27323,8 @@ Each constraint maps to a concrete platform guarantee:
 
 Any registered Fliplet dependency (Vue, React, Vue Router, etc.) **must** be loaded with `Fliplet.require.lazy(name)`. Never use `<script>` tags, `import`, or raw CDN URLs. These bypass the Fliplet asset pipeline and break versioning, caching, and dependency resolution.
 
+Declaring the dependency on the page is a prerequisite, not an alternative: `Fliplet.require.lazy(name)` resolves only names present in `window.ENV.dependencies.lazy`, which the engine populates from the page's declared dependencies. A name that was never declared rejects at runtime (lint rule `undeclared-lazy-name`).
+
 ```js
 Fliplet.require.lazy('vue').then(function() {
   // the 'vue' global is now available
@@ -27368,6 +27370,21 @@ The document `<head>` **must** contain this exact viewport meta:
 On native devices the app runs in a system webview that honors `user-scalable=no`. Without it, users can pinch-zoom the app and iOS automatically zooms the page when an input with font-size under 16px receives focus — the app feels like a website instead of an app. Most web browsers ignore `user-scalable=no` for accessibility (iOS Safari always; Android Chrome users can force-enable zoom), so web pinch-zoom is preserved; the same tag is correct on every platform. `viewport-fit=cover` lets the app draw edge-to-edge behind device notches (pair it with `env(safe-area-inset-*)` padding).
 
 <p class="warning">The boot-HTML lint rejects layouts whose viewport meta is missing or allows user scaling (rule <code>viewport-not-locked</code>).</p>
+
+## Forbidden patterns
+
+The Fliplet Studio AI builder lints every boot HTML it generates and reports the patterns below; hand-authored apps must avoid them too. Each violation carries a `ruleId` matching a row here.
+
+Every rule carries a **severity**, which is the deploy contract rather than a hint about how bad the pattern is. A `block` rule is a guaranteed runtime break, so the AI builder refuses the save — the screen does not deploy until the violation is fixed. A `warn` rule deploys: the save succeeds and the violation comes back as a warning alongside it. Warnings are still wrong and should be fixed; they just don't hold up the deploy.
+
+| `ruleId` | What's forbidden | What to do instead | Severity |
+|---|---|---|---|
+| `duplicate-fliplet-require` | A bare `Fliplet.require(...)` call in the boot HTML, typically over the page's `window.ENV.dependencies.js` list | Delete the call. The engine already injects the page's dependencies at render time, so calling it again loads every dependency twice and throws `SyntaxError: Identifier 'Utils' has already been declared`. To load one dependency on demand, use `Fliplet.require.lazy(name)` for CDN libraries or `Fliplet.require.lazy.chain(name)` for registered Fliplet packages. | `block` |
+| `undeclared-lazy-name` | `Fliplet.require.lazy('name')` (or `.lazy.chain('name')`) where `name` is not a declared page dependency | Declare the dependency on the page first — the lazy registry is built from the page's declared dependencies, so an undeclared name rejects at runtime. In the AI builder that means calling `add_dependencies({ name: 'name', latest: '<cdn-url>', lazy: true })` before the boot HTML uses it; registered Fliplet packages are declared by plain name and loaded with `Fliplet.require.lazy.chain('name')`. | `block` |
+| `get-contents-as-module-default-access` | `<id>.default(...)` on an identifier assigned from `await Fliplet.Media.getContentsAsModule(...)` | Drop the `.default`. The helper is CommonJS-shaped and resolves to the exported value directly, so `.default` is `undefined` and the component never mounts. Call `<id>(...)`, or pass `<id>` straight to your framework's mount function. | `block` |
+| `font-awesome-not-available` | `<i class="fa fa-…">` — Font Awesome is not available in the app runtime, so the icon renders as an invisible 0x0 element | Use a Lucide icon instead: `<i data-lucide="icon-name"></i>` plus a `lucide.createIcons()` call once the markup is in the DOM. | `warn` |
+
+The routing rules (`hash-change-event`, `window-location-hash`, `create-web-hash-history`, `unguarded-web-history`, `react-browser-router`, `hash-router-react`, `hash-href`, `path-dispatcher`) are documented with the same columns in [Forbidden patterns](routing#forbidden-patterns) on the V3 routing page.
 
 ## What's next: routing
 
@@ -28851,18 +28868,22 @@ Four requirements:
 
 These patterns break V3 apps on at least one hosting context (slug-hosted web, preview iframe, or native). Treat them as hard constraints. The Fliplet Studio AI builder enforces them with an automated lint on generated boot HTML (each violation carries a `ruleId` matching the rows below); hand-authored apps must follow the same rules.
 
+Every rule carries a **severity**, which is the deploy contract rather than a hint about how bad the pattern is. A `block` rule is a guaranteed runtime break, so the AI builder refuses the save — the screen does not deploy until the violation is fixed. A `warn` rule deploys: the save succeeds and the violation comes back as a warning alongside it. Warnings are still wrong on at least one platform and should be fixed; they just don't hold up the deploy.
+
 The hash rows are **platform-conditional**: hash navigation is *required* on native, so the lint suppresses them when the boot HTML branches on `Fliplet.Router.isNative()` / `getHistoryMode()`. Unguarded, they fire — because hash mode on web (or path mode on native) is wrong. The two React rows fire **unconditionally**: `createHashRouter` is correct for React on every platform, so neither `createBrowserRouter` nor the `<HashRouter>` component is ever right in a V3 app.
 
-| `ruleId` | What's forbidden (unguarded) | What to do instead |
-|---|---|---|
-| `hash-change-event` | `window.addEventListener('hashchange', …)` or `window.onhashchange = …` with no platform guard | On web, use `popstate` with `history.pushState`. On native, `hashchange` is the correct event — branch on `Fliplet.Router.isNative()` so the listener matches the navigation mechanism (`popstate` on web, `hashchange` on native). |
-| `window-location-hash` | Reading or writing `window.location.hash` / `location.hash` with no platform guard | On web, navigate with `history.pushState(state, '', Fliplet.Router.getBasePath() + path)` and read the current path from `location.pathname` after stripping the base. On native, `location.hash` is required (path `pushState` is blocked on `file:`). Branch on `Fliplet.Router.isNative()`. |
-| `create-web-hash-history` | `VueRouter.createWebHashHistory(…)` used unconditionally | Make it platform-conditional: `Fliplet.Router.isNative() ? VueRouter.createWebHashHistory() : VueRouter.createWebHistory(Fliplet.Router.getBasePath())`. |
-| `unguarded-web-history` | `VueRouter.createWebHistory(…)` with no platform guard anywhere in the document | Same branch as above — unguarded path history throws a `file:` `SecurityError` on native. Gate the history backend on `Fliplet.Router.isNative()`. |
-| `react-browser-router` | `createBrowserRouter(…)` (React Router) | `ReactRouterDOM.createHashRouter(routes)` (no basename). It renders correctly in the preview iframe and works on native unchanged — React needs no platform branch. |
-| `hash-router-react` | `HashRouter` component (React Router) | Use the `createHashRouter(routes)` data-router form, not the `<HashRouter>` component. |
-| `hash-href` | `href="#/..."` or `href='#/...'` in markup with no platform guard | Render real paths (`href="/home"`) and intercept clicks to call your router, which picks the URL shape per platform (path on web, hash on native). |
-| `path-dispatcher` | 3+ `if (location.pathname === '/…')` branches, or `switch (location.pathname) { case '/…': … }`, used as a hand-rolled router | Build your framework's router from `Fliplet.Router.getRouteManifest()`. Each framework's wiring is in [Framework examples](#framework-examples) below. Single-branch guards like `if (location.pathname === '/login') return;` are fine — the lint only fires on dispatcher-shaped chains. |
+| `ruleId` | What's forbidden (unguarded) | What to do instead | Severity |
+|---|---|---|---|
+| `hash-change-event` | `window.addEventListener('hashchange', …)` or `window.onhashchange = …` with no platform guard | On web, use `popstate` with `history.pushState`. On native, `hashchange` is the correct event — branch on `Fliplet.Router.isNative()` so the listener matches the navigation mechanism (`popstate` on web, `hashchange` on native). | `warn` |
+| `window-location-hash` | Reading or writing `window.location.hash` / `location.hash` with no platform guard | On web, navigate with `history.pushState(state, '', Fliplet.Router.getBasePath() + path)` and read the current path from `location.pathname` after stripping the base. On native, `location.hash` is required (path `pushState` is blocked on `file:`). Branch on `Fliplet.Router.isNative()`. | `warn` |
+| `create-web-hash-history` | `VueRouter.createWebHashHistory(…)` used unconditionally | Make it platform-conditional: `Fliplet.Router.isNative() ? VueRouter.createWebHashHistory() : VueRouter.createWebHistory(Fliplet.Router.getBasePath())`. | `warn` |
+| `unguarded-web-history` | `VueRouter.createWebHistory(…)` with no platform guard anywhere in the document | Same branch as above — unguarded path history throws a `file:` `SecurityError` on native. Gate the history backend on `Fliplet.Router.isNative()`. | `warn` |
+| `react-browser-router` | `createBrowserRouter(…)` (React Router) | `ReactRouterDOM.createHashRouter(routes)` (no basename). It renders correctly in the preview iframe and works on native unchanged — React needs no platform branch. | `block` |
+| `hash-router-react` | `HashRouter` component (React Router) | Use the `createHashRouter(routes)` data-router form, not the `<HashRouter>` component. | `warn` |
+| `hash-href` | `href="#/..."` or `href='#/...'` in markup with no platform guard | Render real paths (`href="/home"`) and intercept clicks to call your router, which picks the URL shape per platform (path on web, hash on native). | `warn` |
+| `path-dispatcher` | 3+ `if (location.pathname === '/…')` branches, or `switch (location.pathname) { case '/…': … }`, used as a hand-rolled router | Build your framework's router from `Fliplet.Router.getRouteManifest()`. Each framework's wiring is in [Framework examples](#framework-examples) below. Single-branch guards like `if (location.pathname === '/login') return;` are fine — the lint only fires on dispatcher-shaped chains. | `warn` |
+
+The rows above cover routing only. The same lint enforces four non-routing boot-HTML rules — `duplicate-fliplet-require`, `undeclared-lazy-name`, `get-contents-as-module-default-access` and `font-awesome-not-available`. If your `ruleId` isn't in the table above, its row is in [Forbidden patterns](app-bootstrap#forbidden-patterns) on the V3 app bootstrap page.
 
 These rules are the ones Fliplet can detect automatically from the boot HTML. Additional anti-patterns (hand-rolled `SCREENS` maps, pathname reads without base-stripping, double-fetching media) live in the [Common pitfalls](#common-pitfalls) section below. They aren't detected statically but are equally wrong.
 
