@@ -104,8 +104,10 @@ const dataSourceOperations = {
     const records = await connection.find({
       where: criteria,
       // order is an array of arrays. Only id, order, createdAt, deletedAt and
-      // updatedAt may appear unprefixed; every other column is written
-      // data.<ColumnName>, verbatim including spaces (e.g. 'data.Start Time UTC').
+      // updatedAt may appear unprefixed, and they must be — 'data.createdAt'
+      // names a column the data source does not declare. Every other column is
+      // written data.<ColumnName>, verbatim including spaces
+      // (e.g. 'data.Start Time UTC').
       // See https://developers.fliplet.com/API/fliplet-datasources.html#sorting-and-ordering
       order: [['createdAt', 'DESC']]
     });

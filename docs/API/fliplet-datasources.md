@@ -635,7 +635,7 @@ not fall back to the default sorting.
 | Rule | What it means |
 |---|---|
 | **Shape** — `order` is an array of arrays | Each sort is its own `[column, direction]` pair, so the value is `order: [['data.Name', 'ASC']]`. A flat `order: ['data.Name', 'ASC']` is rejected. |
-| **Column** — five columns may appear unprefixed | Only `id`, `order`, `createdAt`, `deletedAt`, `updatedAt` are accepted without a prefix. |
+| **Column** — five columns may appear unprefixed, and must be | Only `id`, `order`, `createdAt`, `deletedAt`, `updatedAt` are accepted without a prefix, and prefixing one names a column the data source does not declare — write `createdAt`, never `data.createdAt`. |
 | **Column** — every other column needs the `data.` prefix | Anything you added to the data source is an entry column, so it is written `data.<ColumnName>` — `data.Name`, not `Name`. |
 | **Column** — the name after `data.` is verbatim | It must reproduce the declared column exactly, **spaces included** — `data.Start Time UTC`. Never replace a space with a dot, camel-case it, or truncate at it. |
 | **Direction** — write `'ASC'` or `'DESC'` | A convention, not a validated rule: any other value fails as a database error — still returned as a `400`, but carrying the database's message instead of the `Invalid order column name` validation error. Always write the direction as a literal in your code; never build it from user input. Omitting the direction defaults to `'ASC'`. |
