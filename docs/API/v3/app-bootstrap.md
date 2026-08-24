@@ -18,7 +18,7 @@ Each constraint maps to a concrete platform guarantee:
 3. The runtime registers its globals (`Fliplet.ENV`, `Fliplet.Router`, `Fliplet.Session`, etc.) before your framework mounts.
 4. The viewport is locked so native apps don't pinch-zoom or auto-zoom when users focus an input field.
 
-<p class="warning">Skip any of these constraints and the app fails at boot, works in dev but breaks in production, or is rejected by the boot-HTML lint.</p>
+<p class="warning">Skip any of these constraints and the app fails at boot, or works in dev but breaks in production. Constraints 1 and 2 are also enforced by the boot-HTML lint.</p>
 
 ## 1. Fetch dependencies with `Fliplet.require.lazy`
 
