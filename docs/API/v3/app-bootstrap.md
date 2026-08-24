@@ -70,7 +70,7 @@ The document `<head>` **must** contain this exact viewport meta:
 
 On native devices the app runs in a system webview that honors `user-scalable=no`. Without it, users can pinch-zoom the app and iOS automatically zooms the page when an input with font-size under 16px receives focus — the app feels like a website instead of an app. Most web browsers ignore `user-scalable=no` for accessibility (iOS Safari always; Android Chrome users can force-enable zoom), so web pinch-zoom is preserved; the same tag is correct on every platform. `viewport-fit=cover` lets the app draw edge-to-edge behind device notches (pair it with `env(safe-area-inset-*)` padding).
 
-<p class="warning">The boot-HTML lint rejects layouts whose viewport meta is missing or allows user scaling.</p>
+<p class="warning">A layout whose viewport meta is missing or allows user scaling does not satisfy this constraint — add the tag exactly as shown above.</p>
 
 ## Forbidden patterns
 
