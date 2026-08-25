@@ -653,53 +653,100 @@ console.log('Users sorted by department then name:', sortedUsers);
 
 ---
 
-## Real-time Data Subscriptions
+## Subscribing to Data Source Changes
 
-**Purpose:** Listen to real-time updates on data source changes  
+**Purpose:** Keep a screen up to date when other people change the data  
 **Syntax:** `connection.subscribe(options, callback)`  
 **Returns:** `Subscription`  
-**When to use:** Building collaborative or live-updating interfaces
+**When to use:** Screens that stay open while the data changes underneath them
+
+### How updates arrive
+
+Changes reach the screen within about 30 seconds rather than the instant they
+happen. Fliplet checks the data source for you on a repeating timer and calls
+your callback with whatever changed since the last check.
+
+Design around that delay. If something has to appear the moment it is created,
+a subscription is not the right tool.
+
+### What a subscription costs your app
+
+Every screen that subscribes does its own checking, and keeps checking for as
+long as it stays open:
+
+- **It adds up with people, not with data.** 200 people with the screen open
+  means the data source is read around 400 times a minute, whether or not
+  anything has changed.
+- **An empty data source costs the same as a busy one.** The check still runs;
+  there is simply nothing to report.
+- **It carries on in the background.** A screen left open in a background tab
+  keeps checking overnight, on every device that left it open.
+
+Those reads count toward your app's data source usage, so a subscription left
+running unnecessarily is one of the easier ways to build up usage without
+noticing it.
+
+The two rules below keep that under control. Follow both on any screen that
+stays open.
+
+### 1. Pause while the screen is hidden
+
+A subscription keeps running when someone switches to another app or tab.
+Cleaning up when the screen is destroyed is not enough on its own — people
+move away from a screen far more often than they close it, so without this the
+checks continue all night for everyone who left it open.
 
 ```js
-// Complete example: Real-time user updates
 const connection = await Fliplet.DataSources.connectByName("Users");
 
 const subscription = connection.subscribe({
-  events: ['insert', 'update', 'delete'] // Which events to listen for
+  events: ['insert', 'update', 'delete']
 }, (changes) => {
-  if (changes.inserted?.length) {
-    console.log('New users added:', changes.inserted);
-    // Update your UI to show new users
+  if (changes.inserted && changes.inserted.length) {
+    // Add the new rows to your UI
   }
-  
-  if (changes.updated?.length) {
-    console.log('Users updated:', changes.updated);
-    // Update your UI to reflect changes
+
+  if (changes.updated && changes.updated.length) {
+    // Refresh the rows that changed
   }
-  
-  if (changes.deleted?.length) {
-    console.log('Users deleted:', changes.deleted);
-    // Remove users from your UI
+
+  if (changes.deleted && changes.deleted.length) {
+    // Remove the rows that went away
   }
 });
 
-// Subscription management
-console.log('Subscription status:', subscription.status()); // 'active' or 'paused'
+function onVisibilityChange() {
+  if (document.hidden) {
+    if (subscription.status() === 'active') {
+      subscription.pause();
+    }
+  } else if (subscription.status() === 'paused') {
+    subscription.resume();
+  }
+}
 
-// Pause subscription temporarily
-subscription.pause();
-console.log('Subscription paused');
+document.addEventListener('visibilitychange', onVisibilityChange);
 
-// Resume subscription
-subscription.resume();
-console.log('Subscription resumed');
-
-// Clean up - always unsubscribe when done
-setTimeout(() => {
-  subscription.unsubscribe();
-  console.log('Subscription ended');
-}, 30000); // Unsubscribe after 30 seconds
+// On teardown, remove the listener AND end the subscription.
+document.removeEventListener('visibilitychange', onVisibilityChange);
+subscription.unsubscribe();
 ```
+
+`pause()` stops the checking, so nothing is read while the screen is hidden.
+`resume()` catches up straight away, so anything that changed in the meantime
+still reaches the screen. Check `status()` before switching, as shown above:
+calling `resume()` on a subscription that is already running has no effect.
+
+### 2. Never add a timer of your own on top
+
+Adding a `setInterval` that calls `find()` as a safety net, in case the
+subscription misses something, is the most common mistake here. The
+subscription already re-reads the data source on every check, so a second
+timer repeats work that has just been done and doubles what the screen costs
+without covering anything extra.
+
+If updates are not coming through, the cause is in your callback or in the
+`events` you asked for. A second timer hides that rather than fixing it.
 
 ---
 
@@ -1217,8 +1264,11 @@ const goToPage = async (cursor, pageNumber) => {
   return updatedCursor;
 };
 
-// Setup real-time updates
-const setupRealTimeUpdates = (connection, cursor) => {
+// Subscribe to updates.
+// This keeps checking for as long as the screen is open — see "Subscribing to
+// Data Source Changes" above. On a real screen, also pause it while the screen
+// is hidden; that is left out here to keep the pagination example readable.
+const subscribeToUpdates = (connection, cursor) => {
   const subscription = connection.subscribe({
     events: ['insert', 'update', 'delete']
   }, (changes) => {
@@ -1273,8 +1323,8 @@ const demonstrateDirectory = async () => {
   // Display initial page
   displayCurrentPage(cursor);
   
-  // Setup real-time updates
-  const subscription = setupRealTimeUpdates(connection, cursor);
+  // Subscribe to updates
+  const subscription = subscribeToUpdates(connection, cursor);
   
   // Simulate navigation after delays
   setTimeout(async () => {
