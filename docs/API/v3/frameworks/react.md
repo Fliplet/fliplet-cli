@@ -103,7 +103,7 @@ Then `<img src={logoSrc} />`. Calling `Fliplet.Media.authenticate` at module sco
 - DO use `ReactRouterDOM.createHashRouter(routes)` (no basename) — it works in the preview iframe and on native unchanged.
 - DO resolve `Fliplet.Media.authenticate` inside `useEffect` and store in state.
 - DON'T ship raw JSX — it will always throw on first deploy.
-- DON'T use `createBrowserRouter` or the `<HashRouter>` component — both are rejected by lint; use the `createHashRouter` data-router form.
+- DON'T use `createBrowserRouter` or the `<HashRouter>` component — the lint blocks the deploy on `createBrowserRouter` and warns on `<HashRouter>`; use the `createHashRouter` data-router form.
 - DON'T use `.tsx` or TypeScript — no transpiler available.
 - DON'T use CSS Modules or `import './styles.css'` — no bundler.
 - DON'T render with `innerHTML`, `outerHTML`, `insertAdjacentHTML`, or `element.append(htmlString)` inside screen files. If you wrote `el.innerHTML = ...` in a component, you wrote a templating engine — not React — and you introduced an XSS surface on every future edit.
