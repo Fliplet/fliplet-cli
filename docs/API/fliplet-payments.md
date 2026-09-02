@@ -6,7 +6,7 @@ tags: [js-api, payments]
 v3_relevant: true
 deprecated: false
 category: commerce
-capabilities: [payments, stripe, checkout, subscription, recurring billing, billing, refund, webhook, price id, customer portal, payment intent, ecommerce, order, product, cart, donation]
+capabilities: [payments, stripe, checkout, subscription, recurring billing, billing, refund, webhook, price id, customer portal, payment intent, ecommerce, order, product, cart, donation, payment fulfilment, client_reference_id, checkout.session.completed, purchase token]
 ---
 
 # `Fliplet.Payments`
@@ -33,6 +33,11 @@ Adding payments to your apps has the following four requirements:
 2. You have created a Stripe account and configured the Fliplet webhook URL on their dashboard.
 3. A **Data Source** is created with a specific structure to manage the list of products you want the app users to be able to buy.
 4. **Custom code** is added in your app screen to let users buy the products and complete the **checkout process** using our simple JS APIs.
+
+Optionally, an app can also configure **payment fulfilment** so Fliplet records a
+completed payment onto one of your data source rows from the Stripe webhook, rather
+than relying on the buyer's browser returning to your app. See
+[Recording a payment when the buyer's browser does not come back](#recording-a-payment-when-the-buyers-browser-does-not-come-back).
 
 ---
 
@@ -87,9 +92,18 @@ The previous JS API (`Fliplet.Payments.Configuration.update`) returns a `webhook
 2. Click `Add endpoint`
 3. Add the value you got from `webhookUrl` in the `Endpoint URL` field. The value has a format similar to this URL: `https://api.fliplet.com/v1/billing/webhook/apps/8a85a2edc3f3a774ac06f`
 4. Choose the following events to be sent:
+    - `checkout.session.completed`
+    - `checkout.session.async_payment_succeeded`
     - `customer.subscription.updated`
     - `customer.subscription.deleted`
     - `customer.subscription.created`
+
+The two `checkout.session` events are what let Fliplet record a completed payment on
+its own, without depending on the buyer's browser coming back to your app. Enable both:
+`completed` covers the ordinary card path, and `async_payment_succeeded` is the
+settlement of a delayed payment method, which can arrive minutes or days later. An
+endpoint subscribed only to the `customer.subscription` events will never record a
+one-off checkout.
 
 ![Stripe webhook](../assets/img/stripe-webhook.png)
 
@@ -181,18 +195,223 @@ Fliplet.Payments.Products.get().then(function (products) {
           quantity: 2
         }
       ]
-    }).then(function onCheckoutCompleted(response) {
+    }).then(function onCheckoutCompleted(session) {
       // The checkout session has been completed.
       // The user was successfully charged for the product.
-
-      // response.transactionDetails
+      //
+      // Resolves with the checkout session: id, currency, customer,
+      // customer_details and customer_email.
+      console.log(session.id);
     }, function onCheckoutFailed(err) {
-      // The checkout session has been canceled
-      // or could not be completed
+      // The checkout did not complete. See "Telling a failed payment
+      // from an unfinished one" below before showing this to a buyer.
     });
   });
 });
 ```
+
+---
+
+## Recording a payment when the buyer's browser does not come back
+
+Everything in the example above runs in the buyer's browser. If that browser closes,
+loses its connection, or is put to sleep by the phone before Stripe's confirmation is
+handled, the payment succeeds in Stripe while your app never learns about it. The
+buyer is charged, their order stays pending, and nothing you can write in the page
+fixes it — the code that would react is in the page that has gone away.
+
+Fliplet can record these payments for you from the Stripe webhook instead. Configure
+`paymentFulfilment` on the app and Fliplet will mark the row itself when Stripe
+confirms the payment.
+
+`paymentFulfilment` is an **app setting**, and it takes this shape:
+
+```js
+{
+  "paymentFulfilment": {
+    "dataSourceId": 123456,
+    "statusColumn": "Payment Status",
+    "paidValue": "Paid",
+
+    // Optional columns, filled only where the row leaves them blank
+    "sessionColumn": "Stripe Session ID",
+    "paymentIntentColumn": "Stripe Payment Intent ID",
+    "customerColumn": "Stripe Customer ID",
+
+    // Required guards -- a target missing either will not fulfil
+    "expectedCurrency": "eur",
+    "minimumAmountTotal": 100,
+
+    // Runs the data source's own update hooks for the recorded payment
+    "runUpdateHooks": true
+  }
+}
+```
+
+`expectedCurrency` and `minimumAmountTotal` (in the currency's smallest unit) are
+mandatory. They ensure a session cannot mark a row paid unless it actually collected
+the money you expected, so a cheap or wrong-currency session cannot fulfil an
+expensive order.
+
+---
+
+### What the data source has to satisfy
+
+The data source you point at must belong to the app doing the checkout — its own ID,
+its master, or its published copy. Fliplet will not write into a data source owned by
+an unrelated app, even one in the same organization. `statusColumn` must also be a
+real column on that data source.
+
+Both of these fail **silently from the app's point of view**: the payment is not
+recorded, no error reaches your screens, and the row is left exactly as it was. If
+payments stop being recorded after a change, check these before anything else.
+
+This matters most when an app is **copied**. The copy inherits `paymentFulfilment`
+verbatim, still pointing at the original app's data source, so nothing is recorded
+until you repoint `dataSourceId` at the copy's own data source. Checkout fails too, and
+that one is not silent: the row named by `client_reference_id` does not exist in the
+configured data source, so the ownership check refuses it with a `403`.
+
+---
+
+### Setting it on the app
+
+Save it like any other app setting, as a Studio user with edit rights on the app:
+
+```js
+// Run once, as a logged in Studio user
+Fliplet.App.Settings.set({
+  paymentFulfilment: {
+    dataSourceId: 123456,
+    statusColumn: 'Payment Status',
+    paidValue: 'Paid',
+    sessionColumn: 'Stripe Session ID',
+    paymentIntentColumn: 'Stripe Payment Intent ID',
+    customerColumn: 'Stripe Customer ID',
+    expectedCurrency: 'eur',
+    minimumAmountTotal: 100,
+    runUpdateHooks: true
+  }
+}).then(function () {
+  // Saved. The next completed checkout will be recorded.
+});
+```
+
+or over the RESTful API:
+
+```
+POST v1/apps/:appId/settings
+```
+
+```json
+{ "paymentFulfilment": { "dataSourceId": 123456, "statusColumn": "Payment Status", "paidValue": "Paid" } }
+```
+
+Both merge into the app's existing settings rather than replacing them, so other
+settings are left alone.
+
+Three things decide whether the value you save is the one that takes effect:
+
+**It must be the master app.** The endpoint rejects a published app, so run this
+against the app you edit in Studio.
+
+**Do not run it from Studio preview or Fliplet Viewer.** When
+`Fliplet.Env.get('development') === true`, `Fliplet.App.Settings.set()` skips the
+network call and mutates `window.ENV.appSettings` in memory — the promise resolves,
+nothing is saved, and it looks like it worked. Run it on the live app, or use the
+RESTful API.
+
+**Republish after changing it.** A published app carries its own copy of the setting,
+and that copy takes precedence over the master's. Editing the master without
+republishing leaves the published app serving the older value.
+
+To check what an app is really using, read it back with
+`Fliplet.App.Settings.get('paymentFulfilment')` on the app you are testing.
+
+Which row gets marked is taken from `client_reference_id` on the checkout session, so
+your checkout call must set it:
+
+```js
+Fliplet.Payments.Checkout.create({
+  mode: 'payment',
+  line_items: lineItems,
+  client_reference_id: entryId.toString()
+});
+```
+
+---
+
+### Proving the buyer owns the row
+
+`client_reference_id` arrives from the browser, and entry IDs are sequential and
+guessable. Fliplet therefore checks, before creating the session, that the caller is
+entitled to the row they named — otherwise a buyer could pay against someone else's
+order and have it fulfilled on their behalf.
+
+The check passes in either of two ways.
+
+**By the data source's access rules.** If your buyers sign in to the app, and the
+rules allow that user to update their own row, nothing further is needed.
+
+**By a per-row token.** Apps whose buyers have no account cannot satisfy any rule —
+with no identity there is nothing for `loggedIn` or a user rule to match. For those
+apps, name a column holding a per-row secret the buyer already has, such as a
+registration UUID or order reference:
+
+```js
+{
+  "paymentFulfilment": {
+    // ...
+    "ownershipTokenColumn": "Registration Unique ID"
+  }
+}
+```
+
+and present that value when creating the session:
+
+```js
+Fliplet.Payments.Checkout.create({
+  mode: 'payment',
+  line_items: lineItems,
+  client_reference_id: entryId.toString(),
+  flPurchaseToken: registrationUniqueId
+});
+```
+
+The stored value must be at least 16 characters — a short or blank column authorises
+nothing, or every row with an empty token would be claimable. `flPurchaseToken` is
+removed from the payload before it is forwarded to Stripe, so the secret is never
+handed to a third party. A `Fl-Purchase-Token` request header is accepted too, for
+callers that can set one.
+
+If neither route succeeds the checkout is refused with a `403`, and the buyer is never
+sent to Stripe.
+
+> **Enabling `paymentFulfilment` on an existing app turns this check on for the first
+> time.** If your app has an `ownershipTokenColumn` but its screens do not yet send
+> `flPurchaseToken`, and its access rules do not grant the buyer an update, every
+> checkout will start failing. Ship the token first, then enable fulfilment.
+
+---
+
+### Telling a failed payment from an unfinished one
+
+When a checkout does not complete, the rejection carries one of two reasons, and they
+mean different things:
+
+- `app.payments.error.paymentIncomplete` — Stripe told us this checkout ended without
+  a payment. A verdict.
+- `app.payments.error.paymentPending` — we stopped watching before Stripe committed
+  either way. The absence of a verdict; the payment may still succeed.
+
+Treat them differently. Telling a buyer their card was not charged while the charge is
+still in flight is how a second charge happens. On `paymentPending`, tell the buyer the
+payment is still being confirmed and that they should not pay again — if the payment
+does go through, the webhook records it.
+
+Note also that a blocked pop-up surfaces as `paymentIncomplete`, because no Stripe page
+ever opened. If buyers report this without having seen a payment form, check the
+browser's pop-up blocker before looking at the payment itself.
 
 ---
 
