@@ -224,7 +224,7 @@ Fliplet can record these payments for you from the Stripe webhook instead. Confi
 `paymentFulfilment` on the app and Fliplet will mark the row itself when Stripe
 confirms the payment.
 
-Set it on the **master app** (the app you edit in Studio, not a published copy):
+`paymentFulfilment` is an **app setting**, and it takes this shape:
 
 ```js
 {
@@ -252,6 +252,62 @@ Set it on the **master app** (the app you edit in Studio, not a published copy):
 mandatory. They ensure a session cannot mark a row paid unless it actually collected
 the money you expected, so a cheap or wrong-currency session cannot fulfil an
 expensive order.
+
+---
+
+### Setting it on the app
+
+Save it like any other app setting, as a Studio user with edit rights on the app:
+
+```js
+// Run once, as a logged in Studio user
+Fliplet.App.Settings.set({
+  paymentFulfilment: {
+    dataSourceId: 123456,
+    statusColumn: 'Payment Status',
+    paidValue: 'Paid',
+    sessionColumn: 'Stripe Session ID',
+    paymentIntentColumn: 'Stripe Payment Intent ID',
+    customerColumn: 'Stripe Customer ID',
+    expectedCurrency: 'eur',
+    minimumAmountTotal: 100,
+    runUpdateHooks: true
+  }
+}).then(function () {
+  // Saved. The next completed checkout will be recorded.
+});
+```
+
+or over the RESTful API:
+
+```
+POST v1/apps/:appId/settings
+```
+
+```json
+{ "paymentFulfilment": { "dataSourceId": 123456, "statusColumn": "Payment Status", "paidValue": "Paid" } }
+```
+
+Both merge into the app's existing settings rather than replacing them, so other
+settings are left alone.
+
+Three things decide whether the value you save is the one that takes effect:
+
+**It must be the master app.** The endpoint rejects a published app, so run this
+against the app you edit in Studio.
+
+**Do not run it from Studio preview or Fliplet Viewer.** When
+`Fliplet.Env.get('development') === true`, `Fliplet.App.Settings.set()` skips the
+network call and mutates `window.ENV.appSettings` in memory — the promise resolves,
+nothing is saved, and it looks like it worked. Run it on the live app, or use the
+RESTful API.
+
+**Republish after changing it.** A published app carries its own copy of the setting,
+and that copy takes precedence over the master's. Editing the master without
+republishing leaves the published app serving the older value.
+
+To check what an app is really using, read it back with
+`Fliplet.App.Settings.get('paymentFulfilment')` on the app you are testing.
 
 Which row gets marked is taken from `client_reference_id` on the checkout session, so
 your checkout call must set it:
