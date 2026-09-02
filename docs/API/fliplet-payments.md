@@ -274,29 +274,6 @@ configured data source, so the ownership check refuses it with a `403`.
 
 ---
 
-### Running your data source hooks
-
-`runUpdateHooks: true` runs the data source's own `update` hooks for the recorded
-payment, so your app can react to a payment it would otherwise never have seen. Two
-things are worth checking before you turn it on.
-
-**A hook scoped to `triggers` will not run.** This path identifies itself as
-`webhook`. A hook that declares `triggers` only fires when the current source appears
-in that list, and hooks created by components are commonly scoped to a widget ID,
-which a webhook can never match. Leave the hook untriggered, or add `webhook` to its
-`triggers` explicitly. A hook skipped this way is silent — it simply never runs.
-
-**Check you are not sending the same thing twice.** On the happy path the buyer's
-browser also writes to the row a few seconds later. A hook with `conditions` is skipped
-on that second write, because the value it tests did not change; an unconditioned hook
-runs on both. Separately, if your screens already send a confirmation after payment, a
-hook that also sends one produces two: the two paths cannot see each other, so neither
-can tell that the other has already sent. Prefer a single sender that decides from the
-row itself — for example a column recording when the message went out — over two
-senders that each look correct in isolation.
-
----
-
 ### Setting it on the app
 
 Save it like any other app setting, as a Studio user with edit rights on the app:
