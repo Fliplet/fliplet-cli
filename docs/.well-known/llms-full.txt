@@ -4004,7 +4004,7 @@ console.log('AI Instance Created:', conversation);
 
 ## Using Gemini Models
 
-In addition to OpenAI models, the Fliplet AI JS API now supports direct proxy integration with Google's Gemini models. To use a Gemini model, specify `aiProvider: 'gemini'` and the `model` ID (e.g., `'gemini-1.5-flash'`) in your `Fliplet.AI.createCompletion(options)` request.
+To use Gemini, provide a supported Gemini `model` ID (for example, `'gemini-2.5-flash'`) to `Fliplet.AI.createCompletion(options)`.
 
 This will route your request directly to the Gemini API, allowing you to leverage its full capabilities, including function calling. When using the Gemini provider, your payload must conform to the Gemini API's request body structure. For instance, instead of `messages`, you will use the `contents` property, and you can include other Gemini-specific parameters like `tools`.
 
@@ -4017,7 +4017,6 @@ For more detailed information about Google's Gemini models, their capabilities, 
 Fliplet.AI.createCompletion({
   // For a list of available models, see: https://ai.google.dev/gemini-api/docs/models
   model: 'gemini-2.5-flash',
-  aiProvider: 'gemini',
   contents: [
     { role: 'user', parts: [{ text: 'What is the weather in London' }] }
   ],
@@ -4281,51 +4280,54 @@ For single-turn tasks where conversation history is not needed between requests,
     console.log('Task 2 Result:', result2.choices[0].message.content);
     ```
 
-2.  **Low-level `Fliplet.AI.createCompletion()`:** For direct access to OpenAI completion parameters without implicit conversation management. See [Static API Methods](#static-api-methods).
+2.  **Low-level `Fliplet.AI.createCompletion()`:** For direct access to model-specific completion parameters without implicit conversation management. See [Static API Methods](#static-api-methods).
 
 ---
 
 ## Static API Methods
 
-These methods are called directly on the `Fliplet.AI` namespace (e.g., `Fliplet.AI.createCompletion()`) and are generally used for single-turn tasks or when more control over the OpenAI API parameters is required without instance-based conversation history.
+These methods are called directly on the `Fliplet.AI` namespace (e.g., `Fliplet.AI.createCompletion()`) and are generally used for single-turn tasks or when more control over model-specific parameters is required without instance-based conversation history.
 
 **Static Method Summary:**
 
 | Method                  | Description                                                                    | Key Parameters (see details below)            | Returns         |
 |-------------------------|--------------------------------------------------------------------------------|-----------------------------------------------|-----------------|
-| createCompletion()    | Creates a text completion based on a prompt or a series of messages.           | options (Object)                            | Promise<Object> |
+| createCompletion()    | Creates a text completion from an OpenAI `prompt`, OpenAI `messages`, or Gemini `contents`. | options (Object)                            | Promise<Object> |
 | generateImage()       | Generates an image from a text prompt.                                         | options (Object)                            | Promise<Object> |
 | transcribeAudio()     | Transcribes browser-recorded or uploaded audio.                                | audio (Blob or File), options (Object, optional) | `Promise<TranscriptionResponseObject>` |
 | createEmbedding()     | Creates an embedding vector for input text.                                    | options (Object)                            | Promise<Object> |
 
 ### `Fliplet.AI.createCompletion()`
 
-`Fliplet.AI.createCompletion(options: CompletionOptions): Promise<CompletionResponseObject>`
+`Fliplet.AI.createCompletion(options: CompletionOptions): Promise<Object>`
 
-This low-level method provides direct access to OpenAI's completion capabilities, supporting both traditional prompt-based completions (e.g., with `text-davinci-003`) and chat-based completions (e.g., with `gpt-3.5-turbo`).
+This low-level method sends the payload shape required by the selected model. It supports OpenAI prompt completions, OpenAI chat messages, and Gemini `contents` requests.
 
 **`CompletionOptions` Object Properties:**
 
-You can use most parameters available in the [OpenAI Completions API reference](https://platform.openai.com/docs/api-reference/completions/create) (for `prompt`-based calls) or the [OpenAI Chat Completions API reference](https://platform.openai.com/docs/api-reference/chat/create) (for `messages`-based calls).
+For OpenAI requests, use parameters from the [OpenAI Completions API reference](https://platform.openai.com/docs/api-reference/completions/create) with `prompt` or the [OpenAI Chat Completions API reference](https://platform.openai.com/docs/api-reference/chat/create) with `messages`. For Gemini requests, use the Gemini `contents` format shown in [Using Gemini Models](#using-gemini-models).
 
 **Key `CompletionOptions` include:**
 
 | Parameter     | Type                        | Optional | Default        | Description                                                                                                                                                                                             |
 |---------------|-----------------------------|----------|----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| model       | String                    | Yes      | See below      | ID of the model to use. For chat models (using messages), defaults to 'gpt-3.5-turbo'. For older completion models (using prompt), a model like 'text-davinci-003' must be specified.           |
-| messages    | Array<MessageObject>      | Yes      | undefined    | An array of message objects (see [Conversation Message Structure](#conversation-message-structure)) for chat-based completions. Use this for models like gpt-3.5-turbo.                                |
-| prompt      | String or Array<String> | Yes      | undefined    | The prompt(s) to generate completions for. Use this for older completion models like text-davinci-003.                                                                                                |
-| temperature | Number                    | Yes      | 1 (OpenAI)   | Sampling temperature (0-2).                                                                                                                                                                               |
-| stream      | Boolean                   | Yes      | false        | If true, enables streaming. See [Streaming with createCompletion()](#streaming-with-createcompletion).                                                                                                |
-| ...           | ...                         | Yes      | ...            | Other valid OpenAI completion parameters (e.g., `top_p`, `n`, `stop`, `presence_penalty`, `frequency_penalty`).                                                                                           |
+| model       | String                    | Yes      | See below      | Supported model ID. OpenAI chat requests default to `gpt-3.5-turbo` when `messages` is present. Prompt and Gemini requests should specify a model.           |
+| messages    | `Array<MessageObject>`      | Yes      | undefined    | OpenAI chat messages. See [Conversation Message Structure](#conversation-message-structure).                                |
+| prompt      | `String` or `Array<String>` | Yes      | undefined    | OpenAI prompt-completion input. Use this for models such as `text-davinci-003`.                                                                                                |
+| contents    | `Array<GeminiContent>` | Yes | undefined | Gemini request contents. See [Using Gemini Models](#using-gemini-models). |
+| temperature | Number                    | Yes      | Model dependent   | Sampling temperature when supported by the selected model.                                                                                                                                                                               |
+| stream      | Boolean                   | Yes      | false        | If true, enables streaming when supported by the selected model. See [Streaming with createCompletion()](#streaming-with-createcompletion).                                                                                                |
+| ...           | ...                         | Yes      | ...            | Other parameters supported by the selected model's request format.                                                                                           |
 
 **Important:**
-*   You must provide *either* `messages` (for chat models) *or* `prompt` (for older text completion models), but not both.
-*   If `model` is not provided when using `messages`, it defaults to `'gpt-3.5-turbo'`.
+*   For OpenAI models, provide `messages` for chat requests or `prompt` for prompt-completion requests. Do not provide both.
+*   For Gemini models, provide `contents` in Gemini's request format instead of OpenAI `messages` or `prompt`.
+*   OpenAI prompt, OpenAI chat, and Gemini requests return their respective model-family response shapes. The Gemini `contents` example above returns a Gemini response, while OpenAI chat responses use `choices[0].message.content` and prompt-completion responses use `choices[0].text`.
+*   If `model` is not provided when using OpenAI `messages`, it defaults to `'gpt-3.5-turbo'`.
 
 **Returns:**
 
-A `Promise` that resolves to a `CompletionResponseObject`. The structure depends on whether it's a chat completion or a standard completion, generally following OpenAI's response format. Refer to the OpenAI documentation for the detailed structure of the [completion object](https://platform.openai.com/docs/api-reference/completions/object) or [chat completion object](https://platform.openai.com/docs/api-reference/chat/object).
+A `Promise` whose response shape depends on the selected model and payload. OpenAI prompt requests follow the [completion object](https://platform.openai.com/docs/api-reference/completions/object) shape, OpenAI chat requests follow the [chat completion object](https://platform.openai.com/docs/api-reference/chat/object) shape, and Gemini `contents` requests return Gemini's response shape.
 
 
 **Example (Chat Completion):**
@@ -4514,7 +4516,7 @@ To stream responses from `Fliplet.AI.createCompletion()`, set the `stream: true`
 **Callbacks:**
 
 *   `onChunkCallback(data: StreamChunkObject)`: Called for each partial message delta. The `StreamChunkObject` structure is similar to that described in [Streaming with `ask()`](#streaming-with-ask) (for chat models) or specific to the model if it's a non-chat streaming model. Refer to OpenAI documentation for the [chat completion chunk object](https://platform.openai.com/docs/api-reference/chat/streaming#object) or other model-specific streaming objects.
-*   `onCompleteCallback(finalResponse?: CompletionResponseObject)`: Called when all chunks are received.
+*   `onCompleteCallback(finalResponse?: Object)`: Called when all chunks are received. Its shape depends on the selected model.
 *   `onErrorCallback(error: Error)`: Called on error.
 
 **Example (Streaming with `createCompletion` for a chat model):**
@@ -4627,7 +4629,7 @@ generateAnImage();
 
 `Fliplet.AI.transcribeAudio(audio: Blob | File, options?: TranscribeAudioOptions): Promise<TranscriptionResponseObject>`
 
-Transcribes an uploaded `File` or the `Blob` produced by a browser `MediaRecorder`. The API posts to the current app only; it does not expose the organisation-scoped Studio route.
+Transcribes an uploaded `File` or the `Blob` produced by a browser `MediaRecorder`. The API posts to the current app only; it does not expose the organization-scoped Studio route.
 
 **Parameters:**
 
@@ -4642,17 +4644,20 @@ Transcribes an uploaded `File` or the `Blob` produced by a browser `MediaRecorde
 |----------|------|----------|---------------|-------------|
 | filename | String | Yes | The `File.name`, then a MIME-derived name | Non-blank multipart filename. It overrides a `File` name. |
 | signal | AbortSignal | Yes | — | Cancels the browser-side request. |
-| timeout | Number | Yes | `120000` | Positive, finite end-to-end deadline in milliseconds. It covers readiness, authentication refresh, and every request attempt. |
+| timeout | Number | Yes | `120000` | Caller’s maximum wait deadline in milliseconds. It covers readiness, automatic authentication refresh, upload, retry, and waiting for a response. See [Errors and limits](#errors-and-limits) for provider-handoff semantics. |
+| model | String | Yes | `gpt-4o-mini-transcribe` | One of `gpt-4o-mini-transcribe`, `gpt-4o-transcribe`, or `whisper-1`. |
 
-The server accepts these base MIME types: `audio/webm`, `audio/mp4`, `audio/mpeg`, `audio/wav`, and `audio/ogg`. Codec parameters are accepted because the server validates the base MIME type: for example, `audio/webm;codecs=opus` is valid. The server limits uploads to 25 MB.
+An own optional property with the value `undefined` behaves as if it were omitted. This applies to `filename`, `signal`, `timeout`, and `model`. `null` and other invalid values reject with `TypeError`.
+
+The server accepts these base MIME types: `audio/webm`, `audio/mp4`, `audio/mpeg`, `audio/wav`, and `audio/ogg`. MIME parameters are accepted because the server validates the base MIME type: for example, `audio/webm;codecs=opus` is valid. The maximum audio-file size is 25 MiB (`25 × 1024 × 1024` bytes), inclusive. A file one byte larger returns HTTP `413`.
 
 When `filename` is omitted, the wrapper uses the `File` name when one exists. For a plain `Blob`, it derives `audio.webm`, `audio.mp4`, `audio.mp3`, `audio.wav`, or `audio.ogg` from those base MIME types. It falls back to `audio.webm` for an empty or unsupported MIME type, but the MIME type remains authoritative and the server returns `415` for unsupported audio.
 
-`model`, `prompt`, `language`, `response_format`, `temperature`, and other provider-specific transcription options are not supported by this method. Do not pass them: they are not sent to the transcription provider.
+The `model` option selects a supported transcription model. Model selection affects AI credit usage: `gpt-4o-transcribe` uses more credits for the same audio duration than the default `gpt-4o-mini-transcribe` and `whisper-1`. `prompt`, `language`, `response_format`, `temperature`, and other provider-specific transcription options are not supported by this method and are not sent to the transcription provider.
 
 **Returns:**
 
-A `Promise` that resolves to a `TranscriptionResponseObject` with the transcript in `text`.
+A `Promise` that resolves to exactly a `TranscriptionResponseObject` with the transcript in `text`.
 
 ```javascript
 /**
@@ -4803,9 +4808,9 @@ function showError(error) {
   } else if (error.status === 401 || error.status === 403) {
     setStatus('You are not allowed to transcribe audio in this app.');
   } else if (error.status === 402) {
-    setStatus('This organisation has insufficient AI credits.');
+    setStatus('This organization has insufficient AI credits.');
   } else if (error.status === 413) {
-    setStatus('The audio file is larger than 25 MB.');
+    setStatus('The audio file is larger than 25 MiB.');
   } else if (error.status === 415) {
     setStatus('This browser produced an unsupported audio format.');
   } else if (error.status === 429) {
@@ -4898,6 +4903,7 @@ async function stopAndTranscribe() {
     abortController = typeof AbortController === 'function' ? new AbortController() : undefined;
     const options = {
       filename: filenameByMimeType[mimeType],
+      model: 'gpt-4o-mini-transcribe', // The default transcription model.
       timeout: 120000
     };
 
@@ -4965,13 +4971,15 @@ cancelButton.addEventListener('click', cancelDictation);
 updateControls();
 ```
 
-The example intentionally does not copy Studio's dictation UI or controller. Cancelling an active browser request stops the upload and prevents a late transcript from updating the app, but it does not guarantee cancellation of provider work or reversal of credits once server processing has started.
+The example intentionally does not copy Studio's dictation UI or controller. Before provider handoff, cancellation stops processing, so no provider call or charge occurs. After handoff, cancellation stops the caller waiting for a result. Fliplet lets the provider request continue; if it completes successfully, usage is metered and the organization may be charged.
 
 ### Errors and limits
 
-Invalid `audio`, `options`, `filename`, `signal`, or `timeout` values reject with `TypeError` before a request begins. A caller cancellation rejects with `name: 'AbortError'` and `code: 'ABORT_ERR'`. The client deadline rejects with `name: 'TimeoutError'` and `code: 'ETIMEDOUT'`.
+Invalid `audio`, `options`, `filename`, `signal`, `timeout`, or `model` values reject with `TypeError` before a request begins. A caller cancellation rejects with `name: 'AbortError'` and `code: 'ABORT_ERR'`. The client deadline rejects with `name: 'TimeoutError'` and `code: 'ETIMEDOUT'`.
 
-The server can also return HTTP `400` (invalid request), `401` (not authenticated), `402` (insufficient AI credits), `403` (not permitted), `413` (audio exceeds 25 MB), `415` (unsupported MIME type), or `429` (rate limited). Treat other failures as transport or server errors and allow the user to retry.
+The 120-second timeout has the same provider-handoff boundary as cancellation. Before handoff, it stops processing. After handoff, it stops the caller waiting while Fliplet lets an already-started provider request continue. If that request completes successfully, usage is metered and the organization may be charged.
+
+The server can also return HTTP `400` (invalid request), `401` (not authenticated), `402` (insufficient AI credits), `403` (not permitted), `413` (audio exceeds 25 MiB), `415` (unsupported MIME type), or `429` (rate limited). Treat other failures as transport or server errors and allow the user to retry.
 
 ### `Fliplet.AI.createEmbedding()`
 
