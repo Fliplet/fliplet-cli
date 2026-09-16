@@ -781,7 +781,7 @@ const filenameByMimeType = {
   'audio/wav': 'dictation.wav',
   'audio/ogg': 'dictation.ogg'
 };
-const maxRecordingMs = 60000;
+const maxRecordingMs = 5 * 60 * 1000; // Example UI cap; choose a duration appropriate to the app.
 
 let stream;
 let recorder;
@@ -950,7 +950,7 @@ async function startRecording() {
     recorder.start();
     phase = 'recording';
     recordingTimer = window.setTimeout(stopAndTranscribe, maxRecordingMs);
-    setStatus('Recording. It will stop after one minute.');
+    setStatus('Recording. It will stop after five minutes.');
   } catch (error) {
     showError(error);
     reset();
