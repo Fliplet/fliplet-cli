@@ -1,12 +1,12 @@
 ---
 title: App Actions V3
-description: "Write and run JavaScript code directly on the server or client to perform automations, scheduled tasks and on-demand operations."
+description: "Run JavaScript actions, schedule automations, and call external APIs server-side using private and protected app settings."
 type: api-reference
 tags: [js-api, core, app, actions]
 v3_relevant: true
 deprecated: false
 category: automation
-capabilities: [app action, server function, cloud function, automation, scheduled task, cron, on-demand task, server-side javascript, background job, action trigger, webhook handler]
+capabilities: [app action, server function, cloud function, automation, scheduled task, cron, on-demand task, server-side javascript, background job, action trigger, webhook handler, api integration, protected settings, http request]
 ---
 
 # App Actions V3
@@ -15,7 +15,35 @@ Write and run JavaScript code directly on the server or client to perform automa
 
 ![How it works](/assets/img/app-actions.png)
 
-## What's new in V3
+**Contents**
+
+- [Action features](#action-features)
+- [Sample use cases](#sample-use-cases)
+- [Data models and key concepts](#data-models-and-key-concepts)
+- [Writing action code](#writing-action-code)
+- [Dependencies](#dependencies)
+- [Action triggers](#action-triggers)
+- [Create an action](#create-an-action)
+- [Run an on-demand action](#run-an-on-demand-action)
+- [Server API integrations](#server-api-integrations)
+- [Get the list of app actions](#get-the-list-of-app-actions)
+- [Get a single action](#get-a-single-action)
+- [Update an action](#update-an-action)
+- [Temporarily deactivate an action](#temporarily-deactivate-an-action)
+- [Delete an action](#delete-an-action)
+- [Publish an action](#publish-an-action)
+- [Unpublish an action](#unpublish-an-action)
+- [Version history](#version-history)
+- [Get the logs for an action](#get-the-logs-for-an-action)
+- [Error responses](#error-responses)
+- [Rate limits](#rate-limits)
+- [JS API methods summary](#js-api-methods-summary)
+- [Debug an action](#debug-an-action)
+- [Troubleshooting](#troubleshooting)
+
+<a id="whats-new-in-v3"></a>
+
+## Action features
 
 - **Code-based**: Write raw JavaScript instead of configuring visual function pipelines
 - **Flexible execution**: Run on server, client, or both (`any`)
@@ -35,13 +63,13 @@ Write and run JavaScript code directly on the server or client to perform automa
 
 ## Data models and key concepts
 
-1. A V3 app action consists of a unique `name`, JavaScript `code` defining an `execute(context)` function, and optional `description`, `frequency`, `timezone`, `environment`, `triggers` and `dependencies`.
+1. A V3 app action consists of a unique `name`, JavaScript `code` defining an `execute(context)` function, and optional `description`, `frequency`, `timezone`, `environment`, `triggers`, `dependencies` and `integrationOrigins`.
 2. An app action can be created as **scheduled** (when using the `frequency` parameter) or to be run **on-demand**.
 3. An app action runs on the server when `environment` is set to `server` or `any`.
 4. An app action runs on the client side when `environment` is set to `client` or `any`.
-5. App action execution time limits depend on environment: **120 seconds** for server-side (`server`) and **30 seconds** for client-side V3 (`client`). When the limit is exceeded, the action is killed and a timeout error is returned and saved in the logs.
+5. App action execution time limits depend on environment: **60 seconds** for server-side (`server`) and **30 seconds** for client-side V3 (`client`). Server execution is stopped when its deadline expires. The client checks its 30-second limit after the action returns; this does not interrupt running JavaScript.
 6. On-demand actions accept a `payload` object that is serialized to JSON and sent to the execution backend. The effective maximum payload size is constrained by the transport layer used to invoke the action (in practice, this is typically limited by the maximum URL/query-string length when the payload is sent as a URL-encoded query parameter). Keep payloads small; for larger inputs, store data elsewhere (e.g., a data source or file) and pass a reference (IDs/keys) instead.
-7. The result sent from an on-demand app action is **limited to 6MB**.
+7. A server action’s serialized invocation and result are each limited to **5 MiB** (5 × 1,048,576 bytes). Invocation size includes settings and other execution data, not just the caller’s payload.
 8. Scheduled app actions only run the **published (production)** version of an action. On-demand actions run the version from the same environment they are fired from (e.g., Fliplet Viewer runs the master version, live apps run the production version).
 9. An action must have `active` set to `true` to be executed. Inactive actions do **not** run regardless of whether they are on-demand, scheduled, or triggered by events.
 10. If a scheduled action fails, the error is logged and the execution is skipped. Scheduled actions do **not** retry on failure — they wait for the next cron tick.
@@ -51,11 +79,13 @@ Write and run JavaScript code directly on the server or client to perform automa
 
 | Environment | Description | Allowed triggers |
 |-------------|-------------|------------------|
-| `server`    | Executes on server via Lambda/Puppeteer | `schedule`, `log`, `manual` |
+| `server`    | Executes on the server | `schedule`, `log`, `manual` |
 | `client`    | Executes in user's browser | `analytics`, `manual` |
 | `any`       | Can execute on both server and client | All triggers |
 
 <p class="warning">The <code>analytics</code> trigger can <strong>only</strong> run in the <code>client</code> or <code>any</code> environment. Setting it on a <code>server</code> environment returns a <code>TRIGGER_NOT_ALLOWED</code> error. The <code>schedule</code> and <code>log</code> triggers can <strong>only</strong> run in the <code>server</code> or <code>any</code> environment.</p>
+
+Only `server` actions receive private (`_`) and protected (`__`) app settings and can use `Fliplet.App.V3.Actions.request()`. An `any` action does not receive those settings, even when it runs on the server. See [Server integrations](#server-api-integrations).
 
 ### Master vs production lifecycle
 
@@ -431,6 +461,8 @@ If the code uses multiple Fliplet APIs, include all corresponding packages. For 
 
 For external libraries, you can use any URL from the [Fliplet approved libraries](https://developers.fliplet.com/Fliplet-approved-libraries#fliplet-approved-libraries) list in the `dependencies` array.
 
+`Fliplet.App.Settings` and `Fliplet.App.V3.Actions.request()` are part of core; these methods need no additional dependency.
+
 ## Action triggers
 
 An action can be triggered by a system event or manually. Configure triggers using the `triggers` property, which accepts an array of trigger configuration objects.
@@ -644,6 +676,7 @@ Use `Fliplet.App.V3.Actions.create()` to create a V3 action. This always creates
 | `environment` | String | No | `"server"` | Execution environment: `"server"`, `"client"`, or `"any"` |
 | `triggers` | Array | No | `[]` | Array of trigger configuration objects |
 | `dependencies` | Array | No | `[]` | Array of Fliplet package names (strings) or external URLs (strings) |
+| `integrationOrigins` | Array of strings | No | `[]` | Up to 20 HTTPS origins permitted for `request()`. Nonempty only for `server` actions. See [Server integrations](#server-api-integrations). |
 | `frequency` | String | No | `null` | Cron expression for scheduled execution (e.g., `"0 5 * * *"`) |
 | `timezone` | String | No | `null` | IANA timezone name (e.g., `"America/New_York"`). See [full list](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones) |
 
@@ -867,12 +900,12 @@ await Fliplet.App.V3.Actions.run('confirm-booking', {
 
 ### `runWithResult(nameOrId, payload)` — wait for result
 
-Executes the action and waits for it to complete. Returns the value from the `execute()` function.
+Executes the action and waits for completion. **Server execution** resolves to `{ success: true, data: <execute return value> }`. **Client execution** resolves directly to the return value of `execute()`. Choose `environment: 'server'` for integrations so the caller has one predictable result shape.
 
 - **Parameters:**
   - `nameOrId` (String or Number) — The action name or numeric ID
   - `payload` (Optional Object) — Data to pass as `context.payload`.
-- **Returns:** Promise that resolves with the return value of the `execute()` function. The result is limited to 6MB.
+- **Returns:** Promise with the environment-specific result described above. Server execution failure rejects the promise; the REST endpoint responds with HTTP 500 and `{ status: "EXECUTION_FAILED", error: "Server action execution failed." }`. An action returning `{ success: false }` is still a completed execution: inspect `result.data.success` for that business outcome.
 
 ```js
 // Run and get the result
@@ -880,9 +913,9 @@ var result = await Fliplet.App.V3.Actions.runWithResult('confirm-booking', {
   entryId: 123,
   name: 'Nick'
 });
-// result is exactly what execute() returned
-// e.g., { success: true }
-if (result.success) {
+// confirm-booking is a server action.
+// result: { success: true, data: { success: true } }
+if (result.success && result.data && result.data.success) {
   // Booking confirmed
 }
 
@@ -890,13 +923,168 @@ if (result.success) {
 var result = await Fliplet.App.V3.Actions.runWithResult(12345, {
   entryId: 123
 });
-// result is the return value of execute()
+// result.data is the return value of execute() for this server action.
 ```
 
 <p class="quote">Rate limiting: the run action endpoint is limited to <strong>30 requests per minute</strong>. Contact the Fliplet team for more details.</p>
 
 <p class="quote">Payload size limit: the input payload is serialized to JSON and sent to the execution backend. The effective maximum size is constrained by the transport/infrastructure (commonly the maximum URL/query-string length if the payload is passed as a URL-encoded query parameter). Keep payloads small and pass references (IDs/keys) for large inputs.
-The result is limited to <strong>6MB</strong>.</p>
+The serialized server invocation and result are each limited to <strong>5 MiB</strong>.</p>
+
+## Server API integrations
+
+Use an action with `environment: 'server'` to read private or protected app settings and make authenticated HTTPS requests. Use `Fliplet.App.Settings.get(key)` synchronously inside `execute()`; an absent key returns `undefined`. For example, `Fliplet.App.Settings.get('__providerApiKey')` reads the exact stored key. See [App settings](../v3/app-settings.md) for storing credentials, checking their presence and deleting them.
+
+Private/protected settings come from the owning master app at the start of each execution, including executions of published actions. Credential rotation therefore affects subsequent executions without republishing the action. An already-running action keeps its original values. These settings are not included in the caller's payload, browser app bundle or compiled HTML.
+
+Only trusted editors should author these actions: action code can read and deliberately return a credential. Write-only settings APIs do not hide credentials from an authorized code author. Do not return settings, authorization headers, raw provider error bodies or other secrets. Validate caller input and enforce the app's existing access rules before returning restricted data or performing writes; an origin allowlist does not authorize the caller. Task tokens can execute permitted actions but cannot author, edit, restore or publish their code.
+
+### Configure provider origins
+
+Set `integrationOrigins` when creating or updating the action:
+
+```js
+await Fliplet.App.V3.Actions.update(actionId, {
+  environment: 'server',
+  integrationOrigins: ['https://api.example.com']
+});
+```
+
+Replace the example origin with your provider's actual HTTPS origin. An origin consists of scheme, hostname and optional port; do not include credentials, a path other than `/`, query parameters or fragments. Names are normalized and duplicates removed. Wildcard subdomains are not supported. The list accepts at most 20 entries and defaults to `[]`, which permits no integration requests. Settings access does not require a nonempty origin list.
+
+The destination must resolve to a permitted public address. Private, loopback, link-local and platform-internal addresses are rejected. Every request and followed redirect is checked. A configured origin does not make an otherwise prohibited address accessible.
+
+### `request(options)` — HTTPS from a server action
+
+`Fliplet.App.V3.Actions.request(options)` is available inside server-only action execution. It returns a Promise resolving to `{ status, headers, body }`: `status` is the HTTP status number, `headers` is an object of response header strings, and `body` is decoded UTF-8 text. Parse JSON explicitly with `JSON.parse(response.body)`.
+
+| Option | Type | Default | Description |
+|--------|------|---------|-------------|
+| `url` | String | Required | Full HTTPS URL on a configured origin; no URL credentials |
+| `method` | String | `GET` | `GET`, `HEAD`, `POST`, `PUT`, `PATCH`, `DELETE` or `OPTIONS` |
+| `headers` | Object | `{}` | Header names mapped to string values, for example `Authorization` and `Accept` |
+| `body` | String | Omitted | UTF-8 request body; use `JSON.stringify()` for JSON and set `Content-Type`. Not allowed for `GET` or `HEAD` |
+| `timeoutMs` | Number | `10000` | Positive timeout up to `30000` milliseconds, capped by the remaining action deadline |
+
+HTTP error statuses such as 401, 403, 429 and 500 resolve normally: inspect `response.status`. Policy, transport and resource-limit failures reject the promise. Requests have no automatic retry. Same-origin redirects are followed for `GET` and `HEAD`, up to five redirects; cross-origin redirects reject. Redirect responses for other methods are returned without being followed.
+
+Use provider authentication explicitly, for example an `Authorization` header read from a protected setting. Fliplet authentication is not forwarded to the provider. `Cookie`, `Host`, `Content-Length`, `Referer`, `Source`, `Auth-token*`, `X-Fliplet-*`, `Proxy-*` and connection-control headers are prohibited. There is no provider cookie jar, and response `Set-Cookie` headers are not returned.
+
+Use `Actions.request()` for third-party requests, rather than `Fliplet.API.request()`, which authenticates requests to Fliplet. `integrationOrigins` controls this integration request method; it is not a general allowlist for every browser network API.
+
+Only UTF-8 text responses are supported: `text/*`, JSON, XML, JavaScript, form-encoded data and media types ending in `+json` or `+xml`. A nonempty response with a missing or unsupported content type is rejected. Binary downloads and streaming are not supported. Gzip, deflate and Brotli responses are decoded before limits are applied.
+
+| Limit | Value |
+|-------|-------|
+| Request body | 1 MiB |
+| Decoded response body | 5 MiB per response |
+| Decoded response data across one action | 20 MiB |
+| Concurrent requests | 4; excess calls reject rather than queue |
+| Requests per action | 100, including followed redirects |
+| Server action deadline | 60 seconds, including setup and requests |
+| Serialized server invocation and result | 5 MiB each |
+
+Paginate large APIs and keep each run within these limits. An oversized response ends the action's HTTP client, so catching that error does not allow more requests in that execution.
+
+| Rejection `error.code` | Meaning |
+|------------------------|---------|
+| `POLICY` | Invalid options, disallowed origin/address/header, or prohibited redirect |
+| `LIMIT` | Request, response, concurrency or invocation budget exceeded |
+| `TIMEOUT` | Request timeout or action deadline reached |
+| `UNSUPPORTED` | Unsupported content encoding, content type or non-UTF-8 response |
+| `TRANSPORT` | Network/TLS or response decoding failure |
+| `INTEGRATION_UNAVAILABLE` | Called outside the server integration execution environment |
+
+These codes can be handled inside the action. An uncaught error produces a safe execution failure for the caller; arbitrary action/provider exception text is not returned by the run endpoint.
+
+### Worked example: check a provider connection
+
+This example makes a read-only request to an endpoint returning JSON and returns only the connection outcome. Before running it, choose a documented, non-sensitive provider health endpoint that supports bearer authentication. This template assumes its successful JSON response is `{ "status": "ok" }`; adapt the response check to the provider’s documented contract. Replace `https://api.example.com/health` and its origin with that provider's actual values. Restrict the action to callers allowed by your app's access rules. A saved credential alone does not prove the connection works.
+
+**1. Store the credential from a trusted editor context.** The helper below accepts a value supplied by your editor's secure input. Do not put a literal credential in source code, app screens, action payloads or chat. `appId` must identify the same master app targeted by the action SDK in this editor context. The settings endpoint merges the supplied keys and does not echo the protected value.
+
+```js
+async function saveProviderCredential(appId, credential) {
+  if (typeof credential !== 'string' || !credential.trim()) {
+    throw new Error('Enter a provider API key.');
+  }
+
+  await Fliplet.API.request({
+    url: 'v1/apps/' + appId + '/settings/',
+    method: 'POST',
+    data: { __providerApiKey: credential }
+  });
+}
+// Call saveProviderCredential(appId, valueFromSecureEditorInput)
+// from the editor's save handler, then clear that input.
+```
+
+**2. Create the action in that same editor context.** The action reads the credential at execution time. Core includes the settings and request APIs, so `dependencies: []` is sufficient here.
+
+```js
+var action = await Fliplet.App.V3.Actions.create({
+  name: 'check-provider-connection',
+  description: 'Checks the provider with a read-only request',
+  active: true,
+  environment: 'server',
+  triggers: [{ trigger: 'manual' }],
+  integrationOrigins: ['https://api.example.com'],
+  dependencies: [],
+  code: `async function execute(context) {
+    const credential = Fliplet.App.Settings.get('__providerApiKey');
+    if (typeof credential !== 'string' || !credential.trim()) {
+      return { success: false, error: 'NOT_CONFIGURED' };
+    }
+
+    try {
+      const response = await Fliplet.App.V3.Actions.request({
+        url: 'https://api.example.com/health',
+        method: 'GET',
+        headers: {
+          Authorization: 'Bearer ' + credential,
+          Accept: 'application/json'
+        }
+      });
+
+      if (response.status < 200 || response.status >= 300) {
+        return { success: false, error: 'PROVIDER_HTTP_ERROR', status: response.status };
+      }
+
+      // Check the endpoint's documented JSON contract without returning its body.
+      try {
+        const data = JSON.parse(response.body);
+        if (!data || data.status !== 'ok') {
+          return { success: false, error: 'INVALID_PROVIDER_RESPONSE' };
+        }
+      } catch (error) {
+        return { success: false, error: 'INVALID_PROVIDER_RESPONSE' };
+      }
+      return { success: true, connected: true };
+    } catch (error) {
+      return { success: false, error: 'PROVIDER_REQUEST_FAILED' };
+    }
+  }`
+});
+```
+
+**3. Run and inspect the result.** An outer successful execution can contain an unsuccessful connection result.
+
+```js
+try {
+  var execution = await Fliplet.App.V3.Actions.runWithResult(action.id, {});
+  var outcome = execution && execution.success === true && execution.data;
+
+  if (outcome && outcome.success === true && outcome.connected === true) {
+    console.log('Provider connection verified.');
+  } else {
+    console.log('Connection not verified:', outcome && outcome.error);
+  }
+} catch (error) {
+  console.log('Server action execution failed; connection not verified.');
+}
+```
+
+Verify the configured endpoint and credential produce `execution.data.connected === true`. A missing credential should return `NOT_CONFIGURED`; a provider 401 should return `PROVIDER_HTTP_ERROR`, not mark the connection as verified. A transport failure should return `PROVIDER_REQUEST_FAILED`. If the run itself rejects, execution was not completed successfully. Test in the master app first, then publish the action after the app is published. Production execution reads the same master credential; publishing does not embed it in the app.
 
 ## Get the list of app actions
 
@@ -952,6 +1140,7 @@ Every API method that returns an action uses this structure for the action objec
   "active": true,
   "environment": "server",
   "actionVersion": "v3",
+  "integrationOrigins": [],
   "triggers": [{"trigger": "manual"}],
   "dependencies": ["fliplet-datasources"],
   "assets": [
@@ -981,6 +1170,7 @@ Every API method that returns an action uses this structure for the action objec
 | `actionVersion` | String | Always `"v3"` for V3 actions |
 | `triggers` | Array | Array of trigger configuration objects |
 | `dependencies` | Array | Array of dependency package names or URLs as provided during creation |
+| `integrationOrigins` | Array of strings | Allowed HTTPS origins for integration requests; defaults to `[]` |
 | `assets` | Array | Resolved asset URLs for each dependency (read-only, populated by the system). Each asset has `name` (String), `url` (String), and `path` (String) |
 | `frequency` | String or null | Cron expression if scheduled, otherwise `null` |
 | `timezone` | String or null | IANA timezone name if set, otherwise `null` |
@@ -1004,7 +1194,7 @@ console.log(result.active); // true
 
 ## Update an action
 
-Use `Fliplet.App.V3.Actions.update()` to update any property of the **master** action. You can update `name`, `code`, `description`, `active`, `environment`, `triggers`, `dependencies`, `frequency`, and `timezone`. Include only the properties you want to change — omitted properties remain unchanged. Pass `description: null` (or an empty string) to clear an existing description.
+Use `Fliplet.App.V3.Actions.update()` to update any property of the **master** action. You can update `name`, `code`, `description`, `active`, `environment`, `triggers`, `dependencies`, `integrationOrigins`, `frequency`, and `timezone`. Include only the properties you want to change — omitted properties remain unchanged. Pass `description: null` (or an empty string) to clear an existing description.
 
 - **Parameters:**
   - `id` (Number) — The action ID (must be the master action, not the production version)
@@ -1027,6 +1217,8 @@ var result = await Fliplet.App.V3.Actions.update(12345, {
 // result — the updated action object (returned directly, not wrapped)
 // If this action is published, you must call publish() again to push the changes to production
 ```
+
+Pass `integrationOrigins: []` to remove all permitted provider origins. Before changing a server action to `client` or `any`, clear its origins in the same update. Origin changes apply to the master action; republish to update the production action.
 
 ## Temporarily deactivate an action
 
@@ -1111,11 +1303,11 @@ All three endpoints require **editor** permissions on the **master** app, and th
 
 Each snapshot stores the full action configuration at that point in time:
 
-`name`, `description`, `active`, `frequency`, `timezone`, `triggers`, `environment`, `code`, `actionVersion`, `dependencies`, `assets`, plus the internal `functions`, `widgetInstanceIds`, `masterTaskId`, and `productionTaskId` fields. For V3 actions, `functions` and `widgetInstanceIds` are empty. The snapshot also records the `action` reason (`create`, `update`, or `pre-restore`).
+`name`, `description`, `active`, `frequency`, `timezone`, `triggers`, `environment`, `code`, `actionVersion`, `dependencies`, `integrationOrigins`, `assets`, plus the internal `functions`, `widgetInstanceIds`, `masterTaskId`, and `productionTaskId` fields. For V3 actions, `functions` and `widgetInstanceIds` are empty. The snapshot also records the `action` reason (`create`, `update`, or `pre-restore`).
 
 ### List version history
 
-Returns the snapshots for an action, most recent first. The list payload is a lightweight **summary** — only the fields listed in the table below are included; all other fields (`code`, `dependencies`, `assets`, `timezone`, `triggers`, `functions`, `widgetInstanceIds`, `masterTaskId`, `productionTaskId`, `actionVersion`) are omitted. Fetch a single version to get the full snapshot.
+Returns the snapshots for an action, most recent first. The list payload is a lightweight **summary** — only the fields listed in the table below are included; all other fields (`code`, `dependencies`, `integrationOrigins`, `assets`, `timezone`, `triggers`, `functions`, `widgetInstanceIds`, `masterTaskId`, `productionTaskId`, `actionVersion`) are omitted. Fetch a single version to get the full snapshot.
 
 ```
 GET /v3/apps/:appId/actions/:actionId/versions
@@ -1229,7 +1421,8 @@ Example response:
       "productionTaskId": null,
       "code": "async function execute(context) { return { success: true }; }",
       "actionVersion": "v3",
-      "dependencies": ["fliplet-datasources"]
+      "dependencies": ["fliplet-datasources"],
+      "integrationOrigins": []
     }
   }
 }
@@ -1249,6 +1442,7 @@ The restore:
 
 - Takes a `pre-restore` snapshot of the current configuration first, so the restore can itself be undone.
 - Restores every field from the snapshot **except** `masterTaskId` and `productionTaskId` (those describe the action's identity and publish state, not its config).
+- Restores `integrationOrigins`; restoring an older snapshot without this field clears the list. Settings values are not part of action snapshots.
 - Re-applies the cron schedule if the restored configuration has a `frequency` and is `active`.
 - Writes an `appAction.v3.restore` audit log carrying both `restoredFromVersionId` and `preRestoreVersionId`.
 
@@ -1311,18 +1505,18 @@ Each log entry has this structure:
 | `createdAt` | String (ISO 8601) | Timestamp when the action execution finished |
 | `data` | Object | Execution details (see below) |
 
-The `data` object contains:
+The fields below describe server-only actions (`environment: 'server'`). Their logs omit payloads, returned data and arbitrary exception details because those values can contain credentials. Client and `any` action logs may retain payload/result data; do not put credentials in them. Server console output is not forwarded to platform logs.
 
-| Field | Type | Present | Description |
-|-------|------|---------|-------------|
-| `mode` | String | Always | `"scheduled"` for schedule-triggered runs, `"on-demand"` for manual/log/analytics-triggered runs |
-| `runOn` | String | Always | `"server"` or `"client"` |
-| `taskId` | Number | Always | The action ID that was executed |
-| `payload` | Object | Always | The payload that was passed to the action. Empty `{}` for scheduled actions. For log triggers, contains the `{ trigger, log }` object. |
-| `duration` | Number | Always | Execution time in milliseconds |
-| `actionVersion` | String | Always | Always `"v3"` |
-| `result` | Object | On success (on-demand only) | `{ data: <return value of execute()>, success: true }`. Not present for successful scheduled runs. |
-| `error` | Object | On failure only | Error details: `{ name: "ErrorType", message: "description", stack: "..." }` |
+| Field | Type | Description |
+|-------|------|-------------|
+| `mode` | String | `"scheduled"` for scheduled/event invocation; `"on-demand"` for the run endpoint |
+| `runOn` | String | `"server"` |
+| `taskId` | Number | Executed action ID |
+| `duration` | Number | Execution duration in milliseconds |
+| `actionVersion` | String | `"v3"` |
+| `executionSuccess` | Boolean | Whether execution completed without a runtime failure |
+| `returnedSuccess` | Boolean or null | The action's returned `success` boolean, if present; otherwise `null` |
+| `error` | Object | Failure only: `{ "code": "INTEGRATION_EXECUTION_FAILED" }` |
 
 ### Example: successful on-demand log entry
 
@@ -1335,13 +1529,10 @@ The `data` object contains:
     "mode": "on-demand",
     "runOn": "server",
     "taskId": 130059,
-    "payload": { "userId": 42, "testKey": "testValue" },
     "duration": 666,
     "actionVersion": "v3",
-    "result": {
-      "data": { "type": "manual", "success": true },
-      "success": true
-    }
+    "executionSuccess": true,
+    "returnedSuccess": true
   }
 }
 ```
@@ -1358,12 +1549,12 @@ The `data` object contains:
     "runOn": "server",
     "taskId": 130057,
     "duration": 747,
-    "actionVersion": "v3"
+    "actionVersion": "v3",
+    "executionSuccess": true,
+    "returnedSuccess": null
   }
 }
 ```
-
-<p class="info">Successful scheduled log entries do <strong>not</strong> include a <code>result</code> property, even if the <code>execute()</code> function returns a value.</p>
 
 ### Example: failed action log entry
 
@@ -1376,23 +1567,11 @@ The `data` object contains:
     "mode": "on-demand",
     "runOn": "server",
     "taskId": 130058,
-    "payload": {},
     "duration": 493,
     "actionVersion": "v3",
-    "error": {
-      "name": "ReferenceError",
-      "message": "myVariable is not defined",
-      "stack": "ReferenceError: myVariable is not defined\n    at execute ..."
-    },
-    "result": {
-      "error": {
-        "name": "ReferenceError",
-        "message": "myVariable is not defined",
-        "stack": "ReferenceError: myVariable is not defined\n    at execute ..."
-      },
-      "success": false,
-      "errorObject": {}
-    }
+    "executionSuccess": false,
+    "returnedSuccess": null,
+    "error": { "code": "INTEGRATION_EXECUTION_FAILED" }
   }
 }
 ```
@@ -1411,7 +1590,7 @@ response.logs.forEach(function (log) {
   console.log(log.data.duration); // execution time in ms
 
   if (log.type === 'app.task.failed') {
-    console.error('Action', log.data.taskId, 'failed:', log.data.error.message);
+    console.error('Action', log.data.taskId, 'failed:', log.data.error && (log.data.error.code || log.data.error.message));
   }
 });
 
@@ -1446,7 +1625,7 @@ console.log(response.logs); // only successful log entries
 
 ## Error responses
 
-All error responses follow this format:
+REST API error responses follow this format (the JavaScript `request()` rejection codes are documented under [Server integrations](#server-api-integrations)):
 
 ```json
 {
@@ -1477,6 +1656,7 @@ All error responses follow this format:
 | `TRIGGER_TYPE_INVALID` | Invalid trigger type (must be `"manual"`, `"schedule"`, `"log"`, or `"analytics"`) |
 | `TRIGGER_NOT_ALLOWED` | Trigger not allowed for the given environment (e.g., `analytics` on `server`, or `schedule` on `client`) |
 | `DEPENDENCIES_INVALID` | Invalid dependencies format (must be an array of strings) |
+| `INTEGRATION_ORIGINS_INVALID` | Invalid HTTPS origin list, more than 20 entries, or a nonempty list on a non-server action |
 
 ### Operational errors
 
@@ -1516,14 +1696,15 @@ All error responses follow this format:
 | `Fliplet.App.V3.Actions.update(id, data)` | `id` (Number), `data` (Object) | `action` (object) | Update a master action |
 | `Fliplet.App.V3.Actions.remove(id)` | `id` (Number) | void | Delete an action (master + production) |
 | `Fliplet.App.V3.Actions.run(nameOrId, payload)` | `nameOrId` (String/Number), `payload` (Object) | Promise<void> | Queue action for execution, no return value |
-| `Fliplet.App.V3.Actions.runWithResult(nameOrId, payload)` | `nameOrId` (String/Number), `payload` (Object) | Return value of `execute()` | Run action and wait for result |
+| `Fliplet.App.V3.Actions.runWithResult(nameOrId, payload)` | `nameOrId` (String/Number), `payload` (Object) | Server: `{ success: true, data }`; client: return value of `execute()` | Run action and wait for result |
 | `Fliplet.App.V3.Actions.publish(id)` | `id` (Number) | `{ action }` | Publish master to production |
 | `Fliplet.App.V3.Actions.unpublish(id)` | `id` (Number) | void | Remove from production |
+| `Fliplet.App.V3.Actions.request(options)` | `{ url, method, headers, body, timeoutMs }` | `{ status, headers, body }` | Make an HTTPS request inside a server-only action |
 | `Fliplet.App.V3.Actions.getLogs(options)` | `{ id, where, limit, offset }` | `{ count, logs }` | Get execution logs |
 
 ## Debug an action
 
-You can debug an action in your browser. To debug app actions, open a browser tab on the action compile endpoint:
+You can inspect compiled action code in your browser. This page does not receive private/protected settings or the server HTTP transport. Calling `request()` there rejects with `INTEGRATION_UNAVAILABLE`; test integrations by invoking the server action. To inspect compiled code, open:
 - `URL` <strong>GET</strong> /v3/apps/:appId/actions/:actionId/compile?html
 
 Below are the URLs for different regions
@@ -1535,7 +1716,8 @@ Below are the URLs for different regions
 - Open the browser DevTools by pressing the `F12` key
 - Go to Source tab and from the pages find the relevant function JS file
 - Put the Debug point in the code you want to debug
-- Go to the console and type `Fliplet.App.V3.Actions.runWithResult('action-name', {})` to execute the action with an optional payload
+- For code that does not require server settings or HTTP transport, call `Fliplet.App.V3.Actions.execute()` in this compiled page to reach local breakpoints.
+- To test the actual server integration, use `runWithResult('action-name', {})` from the app or its authenticated editor context. This runs remotely; local browser breakpoints do not pause that execution.
 
 ## Troubleshooting
 

@@ -60,7 +60,7 @@ Every Fliplet JS API available to V3 apps, grouped by capability category. Each 
 
 ## Automation
 
-- [`App Actions V3`](https://developers.fliplet.com/API/core/app-actions-v3.html) **(preloaded)** — Write and run JavaScript code directly on the server or client to perform automations, scheduled tasks and on-demand operations.
+- [`App Actions V3`](https://developers.fliplet.com/API/core/app-actions-v3.html) **(preloaded)** — Run JavaScript actions, schedule automations, and call external APIs server-side using private and protected app settings.
 - [`Fliplet.AI`](https://developers.fliplet.com/API/core/ai.html) **(preloaded)** — Build AI features with `Fliplet.AI` — chat, completions, streaming, image generation, transcription, and embeddings via OpenAI or Google Gemini proxies.
 - [`Fliplet.Hooks`](https://developers.fliplet.com/API/core/hooks.html) **(preloaded)** — Register callbacks that run before or after key app events (e.g. form submit), with sync or async Promise handlers.
 
