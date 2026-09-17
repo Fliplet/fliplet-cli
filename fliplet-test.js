@@ -126,7 +126,12 @@ const runner = async function run() {
         ? `v1/widget-instances/${widgetInstance.id}/interface`
         : `v1/apps/${app.id}/pages/${page.id}/preview`;
 
-      const url = `${config.api_url}${uri}?auth_token=${authToken}`;
+      const url = `${config.api_url}${uri}`;
+
+      // DEV-1231: send the token as a header rather than on the query string.
+      // A navigation cannot carry request headers by itself, but Puppeteer can
+      // attach them to every request the page makes.
+      await global.page.setExtraHTTPHeaders({ 'Auth-token': authToken });
 
       await global.page.goto(url);
     };
