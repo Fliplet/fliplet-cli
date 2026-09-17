@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-03T21:44:55.240Z",
+  "generatedAt": "2026-09-16T20:53:22.476Z",
   "libraries": [
     {
       "package": "fliplet-analytics-spa",
@@ -444,7 +444,7 @@
       "package": "fliplet-core",
       "namespace": "App Actions V3",
       "title": "App Actions V3",
-      "description": "Write and run JavaScript code directly on the server or client to perform automations, scheduled tasks and on-demand operations.",
+      "description": "Run JavaScript actions, schedule automations, and call external APIs server-side using private and protected app settings.",
       "docUrl": "https://developers.fliplet.com/API/core/app-actions-v3.md",
       "preloaded": true,
       "capabilities": [
@@ -458,7 +458,10 @@
         "server-side javascript",
         "background job",
         "action trigger",
-        "webhook handler"
+        "webhook handler",
+        "api integration",
+        "protected settings",
+        "http request"
       ],
       "category": "automation"
     },

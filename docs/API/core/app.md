@@ -66,10 +66,12 @@ var defaultLocale = Fliplet.App.Locales.getDefault();
 
 ## Settings
 
+`get()` and `getAll()` are synchronous reads. App screens receive public settings only. V3 actions declared `environment: 'server'` also receive editor-private (`_`) and protected (`__`) settings; `client` and `any` actions do not. See [app setting visibility and credential management](../v3/app-settings.md) for storage, presence checks, and access rules.
+
 | Method | Returns | Description |
 |---|---|---|
-| `Fliplet.App.Settings.getAll()` | `Object` | Returns all settings for the current app |
-| `Fliplet.App.Settings.get(key)` | `*` | Returns the value of a single setting |
+| `Fliplet.App.Settings.getAll()` | `Object` | Returns settings available to the current execution environment |
+| `Fliplet.App.Settings.get(key)` | `*` | Returns the available value, or `undefined` if absent |
 | `Fliplet.App.Settings.set(data)` | `Promise` | Saves or updates one or more settings |
 | `Fliplet.App.Settings.unset(keys)` | `Promise` | Deletes one or more settings by key name |
 
