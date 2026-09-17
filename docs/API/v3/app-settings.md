@@ -42,7 +42,7 @@ App screens read their available settings through `Fliplet.App.Settings.get(key)
 
 An action declared `environment: 'server'` receives settings from the app's current development (master) app for each invocation. This also applies when the action itself is published. Replacing or deleting a credential affects subsequent invocations without republishing the action; an invocation already running keeps its initial settings.
 
-Actions declared `client` or `any` do not receive private or protected settings, including when an `any` action is invoked on the server. Opening an action's compiled HTML in a browser does not provide protected values. See [App Actions V3](../core/app-actions-v3.md) for execution and integration requests.
+Actions declared `client` or `any` do not receive private or protected values through `Fliplet.App.Settings.get()` or `getAll()`, including when an `any` action is invoked on the server. This does not change permissions on separate REST endpoints. Opening an action's compiled HTML in a browser does not provide protected values. See [App Actions V3](../core/app-actions-v3.md) for execution and integration requests.
 
 Protected values are omitted from ordinary app responses and app-version snapshots. Restoring an app version preserves its current protected settings rather than restoring old credentials. Cloning an app does not provision credentials for the clone; configure them separately.
 
@@ -94,6 +94,8 @@ async function saveProviderCredential(appId, credential) {
 ```
 
 The response contains app configuration with protected values omitted; it does not echo the credential. Verify presence using the status endpoint below. `PUT /v1/apps/:appId` does not update app settings. Use `POST /v1/apps/:appId/settings/` for settings writes.
+
+Writing a legacy `_aiartifact_providerKey` name stores the value as `__aiartifact_providerKey` and removes the legacy copy in the same update. If both names are supplied with different values, the entire request fails with HTTP 400; matching values are accepted. This conversion only applies to the `_aiartifact_` prefix.
 
 Omitting a key preserves it. Explicitly writing `''` or `null` is a write and makes its status unconfigured. To implement a “leave blank to keep existing” form, omit that key from the request; use an explicit delete action to remove it.
 

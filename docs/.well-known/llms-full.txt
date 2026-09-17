@@ -7355,7 +7355,7 @@ Executes the action and waits for completion. **Server execution** resolves to `
 - **Parameters:**
   - `nameOrId` (String or Number) — The action name or numeric ID
   - `payload` (Optional Object) — Data to pass as `context.payload`.
-- **Returns:** Promise with the environment-specific result described above. Server execution failure rejects the promise; the REST endpoint responds with HTTP 500 and `{ status: "EXECUTION_FAILED", error: "Server action execution failed." }`. An action returning `{ success: false }` is still a completed execution: inspect `result.data.success` for that business outcome.
+- **Returns:** Promise with the environment-specific result described above. Server execution failure rejects the promise; the REST endpoint responds with HTTP 500, status `EXECUTION_FAILED`, and a fixed safe error message. Recognized failures explain the category, such as timeout or blocked request; otherwise the message is `Server action execution failed.` See [execution failures](#execution-failures). An action returning `{ success: false }` is still a completed execution: inspect `result.data.success` for that business outcome.
 
 ```js
 // Run and get the result
@@ -7445,7 +7445,7 @@ Paginate large APIs and keep each run within these limits. An oversized response
 | `TRANSPORT` | Network/TLS or response decoding failure |
 | `INTEGRATION_UNAVAILABLE` | Called outside the server integration execution environment |
 
-These codes can be handled inside the action. An uncaught error produces a safe execution failure for the caller; arbitrary action/provider exception text is not returned by the run endpoint.
+These codes can be handled inside the action. An uncaught error produces a safe execution failure for the caller. Recognized categories retain a fixed message and log code; arbitrary action/provider exception text is not returned by the run endpoint. See [execution failures](#execution-failures).
 
 ### Worked example: check a provider connection
 
@@ -7955,7 +7955,7 @@ Each log entry has this structure:
 | `createdAt` | String (ISO 8601) | Timestamp when the action execution finished |
 | `data` | Object | Execution details (see below) |
 
-The fields below describe server-only actions (`environment: 'server'`). Their logs omit payloads, returned data and arbitrary exception details because those values can contain credentials. Client and `any` action logs may retain payload/result data; do not put credentials in them. Server console output is not forwarded to platform logs.
+The fields below describe server-only actions (`environment: 'server'`). Their logs omit payloads, returned data and arbitrary exception details because those values can contain credentials. For `any` actions run on the server, payloads and successful results may be retained; failed runner results are omitted and exception messages are replaced with fixed safe messages. Do not put credentials in payloads or return values. Server console output is not forwarded to platform logs.
 
 | Field | Type | Description |
 |-------|------|-------------|
@@ -7966,7 +7966,7 @@ The fields below describe server-only actions (`environment: 'server'`). Their l
 | `actionVersion` | String | `"v3"` |
 | `executionSuccess` | Boolean | Whether execution completed without a runtime failure |
 | `returnedSuccess` | Boolean or null | The action's returned `success` boolean, if present; otherwise `null` |
-| `error` | Object | Failure only: `{ "code": "INTEGRATION_EXECUTION_FAILED" }` |
+| `error` | Object | Failure only: `{ "code": "EXECUTION_FAILED", "message": "Server action execution failed." }`, or a recognized code and fixed message listed under [execution failures](#execution-failures) |
 
 ### Example: successful on-demand log entry
 
@@ -8021,7 +8021,7 @@ The fields below describe server-only actions (`environment: 'server'`). Their l
     "actionVersion": "v3",
     "executionSuccess": false,
     "returnedSuccess": null,
-    "error": { "code": "INTEGRATION_EXECUTION_FAILED" }
+    "error": { "code": "EXECUTION_FAILED", "message": "Server action execution failed." }
   }
 }
 ```
@@ -8083,6 +8083,25 @@ REST API error responses follow this format (the JavaScript `request()` rejectio
   "error": "Human-readable error message"
 }
 ```
+
+### Execution failures
+
+For server execution, `runWithResult()` rejects when execution fails. The REST response has HTTP 500 and status `EXECUTION_FAILED`; its `error` is a fixed message from the table below. Execution logs store the corresponding `error.code` and `error.message`. Arbitrary exception text and stacks are omitted because they may contain credentials. This applies to both `server` and `any` actions executed on the server.
+
+| Log `error.code` | Fixed message |
+|---|---|
+| `TIMEOUT` | The action or its provider request timed out. Check the provider and reduce the work per action. |
+| `LIMIT` | The action exceeded a data or request limit. Reduce the payload, response size or number of requests. |
+| `POLICY` | The action or provider request was blocked by the execution policy. Check the HTTPS origins and request options. |
+| `TRANSPORT` | The provider request could not be completed. Check provider availability and connectivity. |
+| `UNSUPPORTED` | The provider response format is unsupported. Request a UTF-8 text or JSON response. |
+| `ACTION_OWNERSHIP_INVALID` | The action could not be linked to its owning app. Check the app and action configuration. |
+| `INTEGRATION_ORIGINS_INVALID` | The provider origins are invalid. Configure at most 20 HTTPS origins on a server-only action. |
+| `INTEGRATION_PAYLOAD_TOO_LARGE` | The action invocation or result exceeds 5 MiB. Reduce its size. |
+| `LOCAL_ACTION_EXECUTION_UNAVAILABLE` | Server action execution is unavailable in the local environment. |
+| `EXECUTION_FAILED` | Server action execution failed. |
+
+A successful `run()` submission means execution started; it does not confirm completion. Check the execution logs for its eventual outcome. Returning `{ success: false, error: 'NOT_CONFIGURED' }` from action code is a completed execution with a business-level failure, not an exception: the caller receives that returned data. Keep such returned errors deliberately safe and specific.
 
 ### Validation errors
 
@@ -27995,7 +28014,7 @@ App screens read their available settings through `Fliplet.App.Settings.get(key)
 
 An action declared `environment: 'server'` receives settings from the app's current development (master) app for each invocation. This also applies when the action itself is published. Replacing or deleting a credential affects subsequent invocations without republishing the action; an invocation already running keeps its initial settings.
 
-Actions declared `client` or `any` do not receive private or protected settings, including when an `any` action is invoked on the server. Opening an action's compiled HTML in a browser does not provide protected values. See [App Actions V3](../core/app-actions-v3.md) for execution and integration requests.
+Actions declared `client` or `any` do not receive private or protected values through `Fliplet.App.Settings.get()` or `getAll()`, including when an `any` action is invoked on the server. This does not change permissions on separate REST endpoints. Opening an action's compiled HTML in a browser does not provide protected values. See [App Actions V3](../core/app-actions-v3.md) for execution and integration requests.
 
 Protected values are omitted from ordinary app responses and app-version snapshots. Restoring an app version preserves its current protected settings rather than restoring old credentials. Cloning an app does not provision credentials for the clone; configure them separately.
 
@@ -28047,6 +28066,8 @@ async function saveProviderCredential(appId, credential) {
 ```
 
 The response contains app configuration with protected values omitted; it does not echo the credential. Verify presence using the status endpoint below. `PUT /v1/apps/:appId` does not update app settings. Use `POST /v1/apps/:appId/settings/` for settings writes.
+
+Writing a legacy `_aiartifact_providerKey` name stores the value as `__aiartifact_providerKey` and removes the legacy copy in the same update. If both names are supplied with different values, the entire request fails with HTTP 400; matching values are accepted. This conversion only applies to the `_aiartifact_` prefix.
 
 Omitting a key preserves it. Explicitly writing `''` or `null` is a write and makes its status unconfigured. To implement a “leave blank to keep existing” form, omit that key from the request; use an explicit delete action to remove it.
 
@@ -41630,7 +41651,7 @@ Every Fliplet JS API available to V3 apps, grouped by capability category. Each 
 
 ## Automation
 
-- [`App Actions V3`](https://developers.fliplet.com/API/core/app-actions-v3.html) **(preloaded)** — Write and run JavaScript code directly on the server or client to perform automations, scheduled tasks and on-demand operations.
+- [`App Actions V3`](https://developers.fliplet.com/API/core/app-actions-v3.html) **(preloaded)** — Run JavaScript actions, schedule automations, and call external APIs server-side using private and protected app settings.
 - [`Fliplet.AI`](https://developers.fliplet.com/API/core/ai.html) **(preloaded)** — Build AI features with `Fliplet.AI` — chat, completions, streaming, image generation, transcription, and embeddings via OpenAI or Google Gemini proxies.
 - [`Fliplet.Hooks`](https://developers.fliplet.com/API/core/hooks.html) **(preloaded)** — Register callbacks that run before or after key app events (e.g. form submit), with sync or async Promise handlers.
 
