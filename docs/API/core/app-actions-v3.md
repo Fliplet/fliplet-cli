@@ -95,7 +95,7 @@ async function execute(context) {
 | Return value | Should return a value/object (available via `runWithResult`) |
 | Dependencies | Code using Fliplet APIs must include corresponding dependencies |
 
-<p class="warning">The function must be named <code>execute</code>. Any other name causes a <code>CODE_VALIDATION_FAILED</code> error. The function does <strong>not</strong> receive any parameters beyond <code>context</code> — all input data is inside <code>context.payload</code>.</p>
+<p class="warning">The function must be named <code>execute</code>. Any other name causes a <code>CODE_VALIDATION_FAILED</code> error. The function does <strong>not</strong> receive any parameters beyond <code>context</code> — input data is inside <code>context.payload</code> and, for <code>server</code> actions, private app settings are inside <code>context.settings</code>.</p>
 
 <p class="warning">Do <strong>not</strong> use Handlebars <code>{% raw %}{{ }}{% endraw %}</code> syntax in action code. Handlebars expressions are not evaluated inside app actions and will cause unexpected behavior or errors. Use JavaScript template literals (<code>${}</code>) with backtick strings instead. For example: <code>{% raw %}`Hello ${context.payload.name}`{% endraw %}</code></p>
 
@@ -125,7 +125,14 @@ const execute = async function(context) {
 
 ### Context object
 
-The `context` parameter is an object with a single property: `payload`. The `context` object does **not** contain any other properties — no `appId`, no `userId`, no `environment`. All input data comes through `context.payload`.
+The `context` parameter is an object with exactly two properties: `payload` and `settings`.
+
+| Property | Type | Description |
+|----------|------|-------------|
+| `context.payload` | Object | Input data for this run. `{}` when no data is passed. The contents differ by trigger type — see the breakdown below. |
+| `context.settings` | Object | The app's private settings (top-level app settings whose key starts with `_`). Populated **only** when the action's `environment` is `server`. Always `{}` for `client` and `any` actions. See [`context.settings`](#contextsettings-server-actions-only). |
+
+The `context` object does **not** contain any other properties — no `appId`, no `userId`, no `environment`. All input data comes through `context.payload`; `context.settings` carries configuration and credentials, never input data.
 
 The contents of `context.payload` differ by trigger type. See the detailed breakdown below.
 
@@ -244,6 +251,67 @@ async function execute(context) {
   const platform = context.payload.data._platform;     // 'web'
 
   return { screenTitle: screenTitle, screenId: screenId };
+}
+```
+
+#### `context.settings` (server actions only)
+
+`context.settings` gives a server action read access to the app's private settings, so a credential such as a third-party API key is stored on the app instead of being hardcoded in the action code. See [V3 app settings convention](../v3/app-settings) for how settings are named and saved.
+
+- **Server only.** Only actions with `environment: 'server'` receive values. `client` and `any` actions always get `context.settings = {}` — for `any` actions this applies both when they run on the server and when they run on the device.
+- **Underscore keys only.** It contains every **top-level** app setting whose key starts with `_` — both `_private` and `__protected` keys. Public settings (no underscore) are not included. Nested keys starting with `_` are not special.
+- **Master app values.** Values are always read from the **master** app, including when the published (production) app runs the action. There is no separate production copy of these values.
+- **Fresh on every run.** Values are read from the database each time the action runs. A rotated value applies to the next run without republishing the app or the action.
+- **100 KB limit.** If the app's underscore settings exceed 100 KB in total (serialized as JSON), **every** server action of that app fails with the error `Private app settings exceed the 100 KB limit for server actions` until the settings are reduced.
+- **Read defensively.** Start with `const settings = context.settings || {};` and handle a missing value — the setting may not be configured yet.
+
+<p class="warning"><strong>Never let a setting value leave the action.</strong> Never return it, never log it (<code>console.*</code>), never put it in a thrown or returned error message, and never put it in a URL or query string — send it in a request header or body instead. Return values and error messages are stored in the app action logs and returned to the caller of <code>runWithResult()</code>; console output and every request URL are captured in the server runner logs.</p>
+
+<p class="warning">Server actions run in a headless browser, so <code>fetch</code> from a server action is a cross-origin browser request. Provider APIs that do not allow cross-origin browser requests (CORS) reject it. Server-side HTTP requests without this restriction are not available yet.</p>
+
+Store credentials under a `__` (protected) key. Protected keys are write-only over HTTP: nobody can read them back, not Studio editors and not API tokens. `_` (private) keys are readable by Studio editors.
+
+Example: read a credential, send it in a request header, return early when it is not configured, and return nothing that contains the value.
+
+```js
+// Action environment must be 'server'. No dependencies required.
+// App setting used (saved on the master app): __mailProvider = { apiKey: '...' }
+async function execute(context) {
+  const settings = context.settings || {};
+  const mailProvider = settings.__mailProvider || {};
+  const apiKey = mailProvider.apiKey;
+
+  if (!apiKey) {
+    // Not configured (or the action is not a server action): stop here
+    return { sent: false, error: 'MAIL_PROVIDER_NOT_CONFIGURED' };
+  }
+
+  let response;
+
+  try {
+    response = await fetch('https://api.example.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        // Credentials go in a header (or the body), never in the URL
+        Authorization: `Bearer ${apiKey}`,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        to: context.payload.email,
+        subject: 'Your booking is confirmed'
+      })
+    });
+  } catch (error) {
+    // Network or CORS failure. Return a fixed code — do not rethrow,
+    // log or return anything built from the request or the settings.
+    return { sent: false, error: 'MAIL_PROVIDER_REQUEST_FAILED' };
+  }
+
+  if (!response.ok) {
+    return { sent: false, error: 'MAIL_PROVIDER_REJECTED', status: response.status };
+  }
+
+  return { sent: true };
 }
 ```
 
