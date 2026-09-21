@@ -271,8 +271,8 @@ async function execute(context) {
 
 A credential reaches `context.settings` from one of two sources:
 
-- **Fliplet AI Builder secure panel field.** A panel field of type `secure` with a `secure` destination is saved by Studio as the app setting `_aiartifact_<settingKey>` and read as `context.settings._aiartifact_<settingKey>`. For example, `settingKey: 'mailApiKey'` is read as `context.settings._aiartifact_mailApiKey`. The setting holds the value the user entered in the field. These are `_` (private) keys: Studio editors of the app can read them over the API.
-- **Setting written through the REST API.** A developer saving app settings directly can use any `_` (private) key, or a `__` (protected) key such as `__mailProvider`.
+- **Fliplet AI Builder secure panel field.** A panel field of type `secure` with a `secure` destination is saved by Studio as the app setting `_aiartifact_<settingKey>` and read as `context.settings._aiartifact_<settingKey>`. For example, `settingKey: 'mailApiKey'` is read as `context.settings._aiartifact_mailApiKey`. The setting holds the value the user entered in the field. These are `_` (private) keys: Studio editors of the app can read them over the API. Use a simple alphanumeric `settingKey`: Studio replaces every character outside `a-zA-Z0-9_.-` with `_`, so a key containing a space, `@` or `/` is stored under a different name, and a key containing `-` or `.` needs bracket access, for example `settings['_aiartifact_mail-api-key']`.
+- **Setting written through the REST API.** A developer saving app settings with `POST /v1/apps/:id/settings` (keys flat in the body) can use any `_` (private) key, or a `__` (protected) key such as `__mailProvider`. See [Saving settings](../v3/app-settings#saving-settings).
 
 Protected (`__`) keys are write-only over HTTP: nobody can read them back, not Studio editors and not API tokens. They are read the same way, for example `const apiKey = (settings.__mailProvider || {}).apiKey;`.
 
