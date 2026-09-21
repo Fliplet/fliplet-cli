@@ -83,18 +83,24 @@ A V3 app action with `environment: 'server'` receives every top-level app settin
 ```js
 async function execute(context) {
   const settings = context.settings || {};
-  const mailProvider = settings.__mailProvider || {};
 
-  if (!mailProvider.apiKey) {
+  // Saved by a Fliplet AI Builder secure panel field (settingKey: 'mailApiKey')
+  const apiKey = settings._aiartifact_mailApiKey;
+
+  // Or, for a protected key saved through the REST API:
+  // const apiKey = (settings.__mailProvider || {}).apiKey;
+
+  if (!apiKey) {
     return { sent: false, error: 'MAIL_PROVIDER_NOT_CONFIGURED' };
   }
 
-  // Send mailProvider.apiKey in a request header or body.
+  // Send apiKey in a request header or body.
   // Never return it, log it, throw it or put it in a URL.
   return { configured: true };
 }
 ```
 
+- A Fliplet AI Builder panel field of type `secure` with a `secure` destination is saved by Studio as `_aiartifact_<settingKey>` and read as `context.settings._aiartifact_<settingKey>`. These are `_` (private) keys: Studio editors of the app can read them over the API.
 - Values always come from the **master** app and are read fresh on every run. Published apps read the master's values; a rotated value applies to the next run without republishing.
 - `client` and `any` actions always get `context.settings = {}`.
 - If the underscore settings exceed 100 KB in total, every server action of the app fails until they are reduced.
@@ -198,7 +204,9 @@ Use `_` prefix for settings that:
 - Are only needed by Studio UI, backend processing or server app actions, not by the running app
 - Would be a security risk if exposed in client-side JavaScript
 
-Use `__` prefix instead when Studio editors do not need to read the value back — for example an API key that only a server app action uses.
+Credentials collected by a Fliplet AI Builder secure panel field are always saved as `_aiartifact_<settingKey>` keys. They are private, not protected: Studio editors of the app can read them over the API, and server app actions read them via `context.settings`.
+
+When saving settings through the REST API, use `__` prefix instead when Studio editors do not need to read the value back — for example an API key that only a server app action uses.
 
 Examples:
 - `_saml2.idpCertificate` — X.509 certificate for SAML signature verification
