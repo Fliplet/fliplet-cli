@@ -27981,7 +27981,7 @@ var certificate = settings._saml2 && settings._saml2.idpCertificate;
 
 ### Saving Settings
 
-Settings are saved with `POST /v1/apps/:id/settings`. The setting keys go **flat in the request body** — they are not nested under a `settings` property.
+Settings are saved with `POST /v1/apps/:id/settings`, on the **master** app id. The setting keys go **flat in the request body** — they are not nested under a `settings` property.
 
 The endpoint performs a **shallow merge**: top-level keys in your request overwrite existing keys with the same name, keys you don't include are preserved, and nested objects are replaced entirely rather than deep-merged.
 
@@ -28010,11 +28010,11 @@ await Fliplet.API.request({
 // Always send the complete object for each top-level key.
 ```
 
-<p class="warning"><code>PUT /v1/apps/:id</code> does <strong>not</strong> write app settings. It only updates <code>name</code>, <code>startingPageId</code>, <code>hooks</code>, <code>isTemplate</code>, <code>dependencies</code> and <code>icon</code>. Sending <code>settings</code> to it returns <code>200</code> and stores nothing, so a server action reading the value afterwards sees it as not configured, with no error anywhere.</p>
+<p class="warning"><code>PUT /v1/apps/:id</code> does <strong>not</strong> write app settings. It only updates <code>name</code>, <code>startingPageId</code>, <code>hooks</code>, <code>isTemplate</code>, <code>dependencies</code> and <code>icon</code>, plus <code>isSystemTemplate</code> and <code>isHidden</code> for admins. Sending <code>settings</code> to it returns <code>200</code> and stores nothing, so a server action reading the value afterwards sees it as not configured, with no error anywhere.</p>
 
 ### Removing Settings
 
-Delete settings keys with `DELETE /v1/apps/:id/settings`, passing an array of top-level key names as `keys`. There is no way to delete a nested property — write the complete parent object instead.
+Delete settings keys with `DELETE /v1/apps/:id/settings`, on the **master** app id, passing an array of top-level key names as `keys`. There is no way to delete a nested property — write the complete parent object instead.
 
 ```
 DELETE /v1/apps/:id/settings
