@@ -4379,21 +4379,22 @@ Fliplet.AI.createCompletion(completionParams)
 
 `Fliplet.AI.generateImage(options: GenerateImageOptions): Promise<ImageResponseObject>`
 
-Generates an original image based on a text prompt using OpenAI's image generation models.
+Generates an original image based on a text prompt. Fliplet currently defaults to `gpt-image-2` when `model` is omitted. GPT image models return base64 image data in `data[0].b64_json`; they do not return a hosted image URL.
 
 **`GenerateImageOptions` Object Properties:**
 (Based on [OpenAI Create Image API](https://platform.openai.com/docs/api-reference/images/create))
 
-| Parameter        | Type     | Optional | Default Value | Description                                                                                                |
-|------------------|----------|----------|---------------|------------------------------------------------------------------------------------------------------------|
-| prompt         | String | No       |               | A text description of the desired image(s). Maximum length 1000 characters.                                |
-| n              | Number | Yes      | 1           | The number of images to generate. Must be between 1 and 10.                                                |
-| size           | String | Yes      | '1024x1024' | The size of the generated images. Must be one of '256x256', '512x512', or '1024x1024'.                 |
-| response_format| String | Yes      | 'url'       | The format in which the generated images are returned. Must be one of 'url' or 'b64_json'.               |
-| model          | String | Yes      | gpt-image-1.5 | The model to use for image generation (e.g. gpt-image-1.5, dall-e-3). |
-| quality        | String | Yes      | standard    | The quality of the image. 'standard' or 'hd'.                                       |
-| style          | String | Yes      | vivid       | The style of the generated images. 'vivid' or 'natural'.                            |
-| user           | String | Yes      |               | A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.       |
+| Parameter | Type | Optional | Default Value | Description |
+|-----------|------|----------|---------------|-------------|
+| prompt | String | No | | A text description of the desired image(s). |
+| model | String | Yes | `gpt-image-2` | The image model. Fliplet maps legacy `dall-e-2` and `dall-e-3` model IDs to `gpt-image-2`. |
+| n | Number | Yes | 1 | Number of images to generate, subject to the selected model's limits. |
+| size | String | Yes | Model dependent | For `gpt-image-2`, use a supported resolution such as `1024x1024`, or `auto`. |
+| quality | String | Yes | Model dependent | For `gpt-image-2`, use `low`, `medium`, `high`, or `auto`. |
+| output_format | String | Yes | `png` | For GPT image models, use `png`, `jpeg`, or `webp`. |
+| user | String | Yes | | An identifier for your app's end user. |
+
+Fliplet removes `response_format` and `style` before sending requests for GPT image models. Do not use them to request a URL or a style. Store the returned base64 data as an app asset if users need a persistent image.
 
 
 **Returns:**
@@ -4407,19 +4408,17 @@ A `Promise` that resolves to an `ImageResponseObject`. Refer to the OpenAI docum
 /**
  * @typedef {Object} GenerateImageOptions
  * @property {string} prompt - Text description of the image.
- * @property {number} [n=1] - Number of images (1-10).
- * @property {'256x256'|'512x512'|'1024x1024'} [size='1024x1024'] - Image size.
- * @property {'url'|'b64_json'} [response_format='url'] - Response format.
- * @property {string} [model='gpt-image-1.5'] - Model to use.
- * @property {'standard'|'hd'} [quality='standard'] - Image quality.
- * @property {'vivid'|'natural'} [style='vivid'] - Image style.
+ * @property {number} [n=1] - Number of images.
+ * @property {string} [size] - Model-supported image size.
+ * @property {string} [model='gpt-image-2'] - Model to use.
+ * @property {'low'|'medium'|'high'|'auto'} [quality] - GPT image quality.
+ * @property {'png'|'jpeg'|'webp'} [output_format] - GPT image format.
  * @property {string} [user] - End-user identifier.
  */
 
 /**
  * @typedef {Object} ImageData
- * @property {string} [url] - URL of the image if response_format is 'url'.
- * @property {string} [b64_json] - Base64 JSON string if response_format is 'b64_json'.
+ * @property {string} b64_json - Base64-encoded image from a GPT image model.
  */
 
 /**
@@ -4434,18 +4433,13 @@ async function generateAnImage() {
       prompt: "A futuristic cityscape at sunset, digital art",
       n: 1,
       size: "1024x1024",
-      response_format: "url", // or 'b64_json'
-      model: "gpt-image-1.5"
+      model: "gpt-image-2"
     };
     console.log('Input for generateImage:', params);
     const result = await Fliplet.AI.generateImage(params);
     console.log('generateImage Response:', result);
-    if (result.data && result.data.length > 0) {
-      if (params.response_format === 'url') {
-        console.log('Image URL:', result.data[0].url);
-      } else {
-        console.log('Image B64 JSON starts with:', result.data[0].b64_json.substring(0, 30) + '...');
-      }
+    if (result.data && result.data.length > 0 && result.data[0].b64_json) {
+      console.log('Image B64 JSON starts with:', result.data[0].b64_json.substring(0, 30) + '...');
     }
   } catch (error) {
     console.error('Error generating image:', error);
