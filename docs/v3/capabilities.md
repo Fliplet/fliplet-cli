@@ -32,9 +32,9 @@ Every Fliplet JS API available to V3 apps, grouped by capability category. Each 
 ## Communications
 
 - [`Fliplet.Chat`](https://developers.fliplet.com/API/fliplet-chat.html) — Build one-to-one, group, and public-channel chat features. Fliplet.Chat owns the conversations and messages data sources internally — supply only the contacts list (who can chat with whom).
-- [`Fliplet.Communicate`](https://developers.fliplet.com/API/fliplet-communicate.html) — Send email, SMS, push notifications, and share URLs from a Fliplet app using a single Communicate namespace.
+- [`Fliplet.Communicate`](https://developers.fliplet.com/API/v3/communicate.html) — Send email and SMS from V3 apps through authorized server-side App Actions.
 - [`Fliplet.Navigator.Notifications`](https://developers.fliplet.com/API/core/notifications.html) **(preloaded)** — Check notification support, request permission, and send local device notifications from JavaScript.
-- [`Fliplet.Notifications`](https://developers.fliplet.com/API/fliplet-notifications.html) — Read, send, and schedule in-app and push notifications in Fliplet apps, with support for scopes, read receipts, and badge counts.
+- [`Fliplet.Notifications`](https://developers.fliplet.com/API/v3/notifications.html) — Send in-app and push notifications from V3 apps through authorized server-side App Actions.
 - [`Fliplet.Socket`](https://developers.fliplet.com/API/fliplet-socket.html) — Real-time WebSocket connection to the Fliplet API with auto-authentication, server URL discovery, and dev/prod transport fallback via the fliplet-socket package.
 
 ## Media

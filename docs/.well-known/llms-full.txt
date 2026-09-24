@@ -4695,7 +4695,7 @@ const filenameByMimeType = {
   'audio/wav': 'dictation.wav',
   'audio/ogg': 'dictation.ogg'
 };
-const maxRecordingMs = 60000;
+const maxRecordingMs = 5 * 60 * 1000; // Example UI cap; choose a duration appropriate to the app.
 
 let stream;
 let recorder;
@@ -4864,7 +4864,7 @@ async function startRecording() {
     recorder.start();
     phase = 'recording';
     recordingTimer = window.setTimeout(stopAndTranscribe, maxRecordingMs);
-    setStatus('Recording. It will stop after one minute.');
+    setStatus('Recording. It will stop after five minutes.');
   } catch (error) {
     showError(error);
     reset();
@@ -6797,49 +6797,76 @@ async function execute(context) {
 // Requires dependency: fliplet-datasources
 ```
 
-### Example: send an email
+### Send communications from a server Action
+
+For new V3 features, let browser code invoke a server Action. The server Action must verify the caller and the requested operation, then derive recipients and message content from server-side data. An Action's `context.payload` is supplied by the caller and is **not** proof of identity or permission. Do not accept arbitrary email addresses, phone numbers, notification scopes, or a `sendToAll` flag from the browser.
+
+For example, a booking manager may send a confirmation only for an assigned, confirmed booking. In this example, Data Source `157` contains authenticated users with a `Role` column, and Data Source `158` contains bookings with `ManagerId`, `Status`, and `CustomerEmail` columns. Replace those IDs and column names with your app's schema. The user Data Source must be the one used for login, and its write rules must prevent users from changing their role. Booking write rules must prevent users from changing the manager, status, or recipient to gain permission to send.
 
 ```js
-async function execute(context) {
-  var recipientEmail = 'nick@company.com'; // replace with your recipient email
-  var recipientName = 'Nick';              // replace with your recipient name
+var action = await Fliplet.App.V3.Actions.create({
+  name: 'send-booking-confirmation',
+  active: true,
+  environment: 'server',
+  triggers: [{ trigger: 'manual' }],
+  dependencies: ['fliplet-session', 'fliplet-datasources', 'fliplet-communicate'],
+  code: `async function execute(context) {
+    try {
+      // The server runner forwards the invoking app user's session.
+      const session = await Fliplet.Session.get();
+      const login = session && session.entries && session.entries.dataSource;
+      const managerId = Number(login && login.id);
 
-  await Fliplet.Communicate.sendEmail({
-    to: [{ email: recipientEmail, name: recipientName, type: 'to' }],
-    subject: 'Your booking is confirmed',
-    from_name: 'Booking System',
-    html: '<h1>Booking Confirmed</h1><p>Hi ' + recipientName + ', your booking has been confirmed.</p>'
-  });
-
-  return { success: true, sentTo: recipientEmail };
-}
-// Requires dependency: fliplet-communicate
-```
-
-### Example: send a push notification
-
-```js
-async function execute(context) {
-  // Send a push notification to all subscribed users
-  var notification = await Fliplet.Notifications.insert({
-    status: 'published',
-    data: {
-      title: 'Daily Update',
-      message: 'Your daily report is ready to view.',
-      navigate: { action: 'screen', page: 54321 } // replace 54321 with your screen ID
-    },
-    pushNotification: {
-      payload: {
-        title: 'Daily Update',
-        body: 'Your daily report is ready to view.'
+      if (!login || Number(login.dataSourceId) !== 157 ||
+          !Number.isSafeInteger(managerId) || managerId <= 0) {
+        return { success: false, error: 'NOT_PERMITTED' };
       }
-    }
-  });
 
-  return { success: true, notificationId: notification.id };
-}
-// Requires dependency: fliplet-notifications
+      // Refresh the caller's role from the login Data Source.
+      const users = await Fliplet.DataSources.connect(157);
+      const manager = await users.findById(managerId);
+      if (!manager || manager.data.Role !== 'Manager') {
+        return { success: false, error: 'NOT_PERMITTED' };
+      }
+
+      const bookingId = Number(context.payload && context.payload.bookingId);
+      if (!Number.isSafeInteger(bookingId) || bookingId <= 0) {
+        return { success: false, error: 'INVALID_BOOKING' };
+      }
+
+      const bookings = await Fliplet.DataSources.connect(158);
+      const booking = await bookings.findById(bookingId);
+      if (!booking || booking.data.Status !== 'Confirmed' ||
+          Number(booking.data.ManagerId) !== managerId ||
+          !booking.data.CustomerEmail) {
+        return { success: false, error: 'NOT_PERMITTED' };
+      }
+
+      await Fliplet.Communicate.sendEmail({
+        to: [{ email: booking.data.CustomerEmail, type: 'to' }],
+        subject: 'Your booking is confirmed',
+        from_name: 'Booking System',
+        html: '<p>Your booking is confirmed.</p>'
+      });
+
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: 'SEND_FAILED' };
+    }
+  }`
+});
+
+// After the app is published, publish this Action for live app users:
+// await Fliplet.App.V3.Actions.publish(action.id);
 ```
+
+The browser passes only a booking ID. It does not select the recipient or message:
+
+```js
+await Fliplet.App.V3.Actions.run('send-booking-confirmation', { bookingId: 123 });
+```
+
+The same boundary applies to SMS and in-app or push notifications: check the caller and operation, load the allowed phone number or notification audience from protected server-side records, then call `Fliplet.Communicate.sendSMS()` or `insert()` on a `Fliplet.Notifications.init()` instance inside the server Action. A broadcast requires its own explicit authorization. Do not move direct sends into an Action without these checks. Existing V3 browser sends continue to work during migration; a V3-wide block is planned for a later release.
 
 ## Dependencies
 
@@ -6860,6 +6887,7 @@ dependencies: [
 | Package | Required when using | Description | API Reference |
 |---------|---------------------|-------------|---------------|
 | `fliplet-datasources` | `Fliplet.DataSources` | Data Sources API — connect, find, insert, update, remove entries | [Data Sources JS API](https://developers.fliplet.com/API/fliplet-datasources.html) |
+| `fliplet-session` | `Fliplet.Session` | Session API — check the invoking app user's login state | [Session JS API](https://developers.fliplet.com/API/fliplet-session.html) |
 | `fliplet-media` | `Fliplet.Media` | Media API — upload, retrieve, and manage media files | [Media JS API](https://developers.fliplet.com/API/fliplet-media.html) |
 | `fliplet-communicate` | `Fliplet.Communicate` | Communication API — send emails, push notifications, SMS | [Communicate JS API](https://developers.fliplet.com/API/fliplet-communicate.html) |
 | `fliplet-barcode` | `Fliplet.Barcode` | Barcode API — generate and scan barcodes | [Barcode JS API](https://developers.fliplet.com/API/fliplet-barcode.html) |
@@ -6869,6 +6897,8 @@ dependencies: [
 | `fliplet-notifications` | `Fliplet.Notifications` | Notifications API — manage and send push notifications | [Notifications JS API](https://developers.fliplet.com/API/fliplet-notifications.html) |
 
 ### Quick reference: key method signatures
+
+The send calls below belong inside server Actions **after** authorization and recipient selection, as in [the example above](#send-communications-from-a-server-action).
 
 **`fliplet-datasources`** — [Full API reference](https://developers.fliplet.com/API/fliplet-datasources.html)
 
@@ -6889,7 +6919,7 @@ await connection.commit({ entries: arrayOfObjects }); // bulk replace all entrie
 ```js
 // Send email
 await Fliplet.Communicate.sendEmail({
-  to: [{ email: 'user@example.com', name: 'User', type: 'to' }],
+  to: [{ email: permittedRecipientEmail, type: 'to' }],
   subject: 'Subject line',
   from_name: 'Sender Name',
   html: '<p>Email body HTML</p>'
@@ -6897,27 +6927,22 @@ await Fliplet.Communicate.sendEmail({
 
 // Send SMS
 await Fliplet.Communicate.sendSMS({
-  data: { to: '+123456789', body: 'Message text' }
-});
-
-// Send push notification (only app publishers/editors can send)
-await Fliplet.Communicate.sendPushNotification(appId, {
-  title: 'Notification title',
-  body: 'Notification message',
-  sandbox: false // true = only Fliplet Viewer users (testing)
+  data: { to: permittedRecipientPhone, body: 'Message text' }
 });
 ```
 
 **`fliplet-notifications`** — [Full API reference](https://developers.fliplet.com/API/fliplet-notifications.html)
 
 ```js
-// Send a push notification to all users subscribed to the app
-var notification = await Fliplet.Notifications.insert({
+// Send only to an audience selected after the server Action's checks
+var notifications = Fliplet.Notifications.init();
+var notification = await notifications.insert({
   status: 'published',
+  scope: { Email: permittedRecipientEmail },
   data: {
     title: 'Booking Reminder',
     message: 'You have a booking scheduled for today.',
-    navigate: { action: 'screen', page: 54321 } // replace 54321 with your screen ID
+    navigate: { action: 'v3-route', path: '/bookings' } // use a route in this app's manifest
   },
   pushNotification: {
     payload: {
@@ -6942,6 +6967,7 @@ await Fliplet.Media.Files.upload({ folderId: folderId, file: fileBlob });
 When writing action code, **match each `Fliplet.*` namespace used in the `execute` function to its corresponding package** and include it in the `dependencies` array:
 
 - Code uses `Fliplet.DataSources` → add `fliplet-datasources`
+- Code uses `Fliplet.Session` → add `fliplet-session`
 - Code uses `Fliplet.Communicate` → add `fliplet-communicate`
 - Code uses `Fliplet.Media` → add `fliplet-media`
 - Code uses `Fliplet.Barcode` → add `fliplet-barcode`
@@ -13811,6 +13837,8 @@ URL: https://developers.fliplet.com/API/fliplet-communicate.md
 
 Send email, SMS, push notifications, and share URLs from a Fliplet app using a single Communicate namespace.
 
+**V3 app guidance:** Do not build new browser features that call `sendEmail()`, `batchSendEmail()`, `sendSMS()`, or `batchSendSMS()` directly using an app token. Those sends let the caller choose the message and recipients without feature-specific authorization. Have browser code invoke a [server-side App Action](core/app-actions-v3#send-communications-from-a-server-action) that checks the caller and permitted recipients before sending. `sendPushNotification()` already requires app publisher or editor access; it is not an ordinary app-user send path. Existing direct sends continue to work during migration; a V3-wide block on direct app-token sends is planned for a later release. The examples below remain available for V2 apps and for appropriately authorized server-side use. Device email composition and URL sharing are unaffected. See [V3 communications guidance](v3/communicate).
+
 ## Send an email
 
 Use our APIs to send an email to one or more recipients. Note that this feature is rate limited and improper use will result in your account being flagged for suspension.
@@ -18567,6 +18595,8 @@ URL: https://developers.fliplet.com/API/fliplet-notifications.md
 # `Fliplet.Notifications`
 
 Read, send, and schedule in-app and push notifications in Fliplet apps, with support for scopes, read receipts, and badge counts.
+
+**V3 app guidance:** Do not create, publish, or schedule in-app or push notifications directly from browser code using an app token. Direct sends are an unprotected pattern for new V3 features: any app user able to call them may be able to select recipients or broadcast. Have browser code invoke a [server-side App Action](core/app-actions-v3#send-communications-from-a-server-action) that checks the caller and permitted recipients before sending. Existing direct sends continue to work during migration; a V3-wide block is planned for a later release. The send examples below remain available for V2 apps and for appropriately authorized server-side use. Reading notifications, marking them as read, and managing the device's push subscription are unaffected. See [V3 notifications guidance](v3/notifications).
 
 When dealing with app notifications, there's a few things you should keep in mind:
 
@@ -28815,6 +28845,19 @@ Fliplet.Barcode.encode('5012345678900', { format: 'ean13' }).then(function (data
 
 ---
 
+# V3 communications
+URL: https://developers.fliplet.com/API/v3/communicate.md
+
+# V3 communications
+
+For new V3 features, send email and SMS inside a server-side App Action. Browser code may invoke that Action, but must not call the app-token send REST or JS APIs directly. The Action decides whether the caller may perform the operation and derives permitted recipients from trusted server data. For in-app and push notifications, see [V3 notifications](notifications).
+
+See [Send communications from a server Action](../core/app-actions-v3#send-communications-from-a-server-action) for a complete example with a manual trigger, verified caller, and recipient lookup. Add `fliplet-communicate` to the Action's dependencies when it uses `Fliplet.Communicate`.
+
+Direct browser email and SMS sends still work in existing V3 apps during migration; they lack feature-specific authorization and a V3-wide block is planned for a later release. `Fliplet.Communicate.sendPushNotification()` already requires app publisher or editor access. This guidance does not affect composing an email on the device or sharing a URL. The [shared Communicate API reference](../fliplet-communicate) retains those methods and the V2 send examples.
+
+---
+
 # V3 Alpine.js apps
 URL: https://developers.fliplet.com/API/v3/frameworks/alpine.md
 
@@ -29355,6 +29398,19 @@ document.getElementById('add-photo').addEventListener('click', async function ()
 ## Related
 
 - [V3 routing](./routing.md) — base-path and navigation patterns for the screen that hosts your capture UI.
+
+---
+
+# V3 notifications
+URL: https://developers.fliplet.com/API/v3/notifications.md
+
+# V3 notifications
+
+For new V3 features, create, publish, and schedule in-app or push notifications inside a server-side App Action. Browser code may invoke that Action, but must not use app-token REST or JS APIs to send directly. The Action checks whether the caller may send and selects the permitted audience; never accept an arbitrary recipient or broadcast scope from the browser.
+
+See [Send communications from a server Action](../core/app-actions-v3#send-communications-from-a-server-action) for the caller and recipient checks. Apply the same checks before using `Fliplet.Notifications` to send. Add `fliplet-notifications` to the Action's dependencies.
+
+Direct browser sends still work in existing V3 apps during migration; they are an unprotected pattern for new V3 features and a V3-wide block is planned for a later release. Reading notifications, marking them as read, and managing the device's push subscription are unaffected. The [shared Notifications API reference](../fliplet-notifications) retains these methods and the V2 send examples.
 
 ---
 
@@ -37865,7 +37921,7 @@ URL: https://developers.fliplet.com/REST-API/fliplet-communicate.md
 
 The Communicate REST API lets external integrations send emails and SMS from a Fliplet app, subject to per-account rate limits.
 
-<p class="warning"><strong>Note:</strong> This RESTful API is intended to be used by 3rd party software such as external integrations. <strong>If you're using this in a Fliplet App, please use the <a href="/API/fliplet-communicate">Communicate JS APIs</a> instead.</strong></p>
+<p class="warning"><strong>Note:</strong> This RESTful API is intended for external integrations. In a V2 Fliplet app, use the <a href="/API/fliplet-communicate">Communicate JS APIs</a>. For new V3 app features, invoke a <a href="/API/core/app-actions-v3#send-communications-from-a-server-action">server-side App Action</a> from browser code; the Action must check the caller and recipients before sending. Direct app-token REST or JS sends from a V3 browser are an unprotected pattern. Existing direct sends continue to work during migration; a V3-wide block is planned for a later release.</p>
 
 ## Authentication
 
@@ -39458,7 +39514,7 @@ URL: https://developers.fliplet.com/REST-API/fliplet-notifications.md
 
 The Notifications REST API lets external integrations create, schedule, and publish in-app and push notifications to Fliplet app users.
 
-<p class="warning"><strong>Note:</strong> This RESTful API is intended to be used by 3rd party software such as external integrations. <strong>If you're using this in a Fliplet App, please use the <a href="/API/fliplet-notifications">Notifications JS APIs</a> instead.</strong></p>
+<p class="warning"><strong>Note:</strong> This RESTful API is intended for external integrations. In a V2 Fliplet app, use the <a href="/API/fliplet-notifications">Notifications JS APIs</a>. For new V3 app features, invoke a <a href="/API/core/app-actions-v3#send-communications-from-a-server-action">server-side App Action</a> from browser code; the Action must check the caller and recipients before sending. Direct app-token REST or JS sends from a V3 browser are an unprotected pattern. Existing direct sends continue to work during migration; a V3-wide block is planned for a later release.</p>
 
 ## Authentication
 
@@ -41553,9 +41609,9 @@ Every Fliplet JS API available to V3 apps, grouped by capability category. Each 
 ## Communications
 
 - [`Fliplet.Chat`](https://developers.fliplet.com/API/fliplet-chat.html) — Build one-to-one, group, and public-channel chat features. Fliplet.Chat owns the conversations and messages data sources internally — supply only the contacts list (who can chat with whom).
-- [`Fliplet.Communicate`](https://developers.fliplet.com/API/fliplet-communicate.html) — Send email, SMS, push notifications, and share URLs from a Fliplet app using a single Communicate namespace.
+- [`Fliplet.Communicate`](https://developers.fliplet.com/API/v3/communicate.html) — Send email and SMS from V3 apps through authorized server-side App Actions.
 - [`Fliplet.Navigator.Notifications`](https://developers.fliplet.com/API/core/notifications.html) **(preloaded)** — Check notification support, request permission, and send local device notifications from JavaScript.
-- [`Fliplet.Notifications`](https://developers.fliplet.com/API/fliplet-notifications.html) — Read, send, and schedule in-app and push notifications in Fliplet apps, with support for scopes, read receipts, and badge counts.
+- [`Fliplet.Notifications`](https://developers.fliplet.com/API/v3/notifications.html) — Send in-app and push notifications from V3 apps through authorized server-side App Actions.
 - [`Fliplet.Socket`](https://developers.fliplet.com/API/fliplet-socket.html) — Real-time WebSocket connection to the Fliplet API with auto-authentication, server URL discovery, and dev/prod transport fallback via the fliplet-socket package.
 
 ## Media
