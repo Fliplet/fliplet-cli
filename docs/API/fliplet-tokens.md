@@ -13,7 +13,7 @@ capabilities: [api token, access token, backend integration, server-to-server, m
 
 Read the list of **API tokens** an app has issued to external services and backend integrations. Each token represents a non-human "app user" account with scoped access (viewer role, by default) that lets a trusted backend system, webhook, or third-party integration authenticate against the Fliplet API on behalf of the app.
 
-This package is a thin client over the `v1/apps/{appId}/tokens` REST endpoint and exposes a single global, `Fliplet.App.Tokens`. Use it when an app or admin screen needs to display, audit, or correlate the tokens that have been provisioned for backend integrations.
+This package is a thin client over the `v1/apps/{appId}/tokens` REST endpoint and exposes a single global, `Fliplet.App.Tokens`. Use it on an admin screen, where the signed-in user is a Studio editor or publisher of the app, to display, audit, or correlate the tokens that have been provisioned for backend integrations.
 
 > **Note:** Creating and deleting tokens is performed in **Fliplet Studio** (App Settings → Security → API tokens) or directly via the REST API. The client library is intentionally read-only.
 
@@ -26,6 +26,8 @@ Add the `fliplet-tokens` dependency to your screen or app resources. The package
 (Returns `Promise<Array>`)
 
 Fetch the list of tokens issued for an app. Wraps `GET v1/apps/{appId}/tokens` and resolves with the `appTokens` array from the response body.
+
+> **Access:** the caller must be a Studio user with the **editor** or **publisher** role on the app. An app's own token cannot read the token list. See [Access and security](#access-and-security).
 
 ### Usage
 
@@ -49,7 +51,7 @@ const tokens = await Fliplet.App.Tokens.get();
 * **options** (Object, optional) Configuration for the request.
   * **appId** (Number) The app id to read tokens for. Defaults to `Fliplet.Env.get('appId')`. Throws `Error: appId is required` when neither is set.
   * **query** (Object) Query string parameters forwarded to the REST endpoint. The endpoint accepts:
-    * **type** (String) Filter by token type. Defaults to `appToken`. Pass `integrationToken` to read integration-only tokens.
+    * **type** (String) Filter by token type. Defaults to `appToken`. Pass `integrationToken` to read integration-only tokens. Any other value is rejected with `400`.
     * **order** (String) Field to order results by. Defaults to `firstName`.
     * **direction** (String) `ASC` or `DESC`. Defaults to `ASC`.
 
@@ -115,13 +117,17 @@ fetch('https://api.fliplet.com/v1/data-sources/1234/data', {
 ```
 
 ```bash
-curl https://api.fliplet.com/v1/apps/$APP_ID/tokens \
+curl https://api.fliplet.com/v1/data-sources/1234/data \
   -H "Auth-token: $FLIPLET_APP_TOKEN"
 ```
 
+A token cannot be used to manage tokens. Listing, creating, and deleting tokens requires a Studio editor or publisher, as described below.
+
 ## Access and security
 
-* **Authentication required.** The underlying `v1/apps/{appId}/tokens` endpoint requires an authenticated request — typically a Studio user session or a token that already has access to the app. Calling `Fliplet.App.Tokens.get()` from a public, unauthenticated screen will fail.
+* **Editor or publisher access required.** The underlying `v1/apps/{appId}/tokens` endpoint only answers Studio users who hold the **editor** or **publisher** role on the app. App tokens and integration tokens, users signed in through a data source login, and Studio users with the viewer or tester role receive `403`. Calling `Fliplet.App.Tokens.get()` from a public, unauthenticated screen fails with `401`.
+* **Inside a published app** the call only succeeds when the person has signed in through the Fliplet login component with a Studio account that is an editor or publisher of the app.
+* **Use the master app ID for direct REST calls.** Roles are checked against the master app, so call the endpoint with the app ID shown in Studio rather than the published app ID.
 * **Rate limited.** The endpoint is brute-force rate-limited under the `appTokens` rate-limit bucket. Avoid polling it from end-user screens.
 * **Treat `auth_token` as a secret.** The value functions as a long-lived password for the app. Surface it only in trusted admin contexts (e.g. a Studio settings screen visible to logged-in admins) and never log, embed, or persist it in client storage that other users can read.
 * **Token creation and deletion are not exposed in this client library.** Use Fliplet Studio or `POST` / `DELETE v1/apps/{appId}/tokens` directly. Both write endpoints additionally enforce the `appSecurity.tokenManagement` plan feature when working with `integrationToken` records.
