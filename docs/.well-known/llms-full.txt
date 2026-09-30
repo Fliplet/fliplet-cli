@@ -19358,6 +19358,11 @@ settlement of a delayed payment method, which can arrive minutes or days later. 
 endpoint subscribed only to the `customer.subscription` events will never record a
 one-off checkout.
 
+Fliplet does not act on `checkout.session.async_payment_failed`. If a delayed payment
+method fails after your screens have already marked a row as paid, that row is not
+reverted. Check this before you offer delayed methods such as SEPA Direct Debit or
+Klarna, and handle failed settlements yourself.
+
 ![Stripe webhook](../assets/img/stripe-webhook.png)
 
 
@@ -19477,6 +19482,12 @@ Fliplet can record these payments for you from the Stripe webhook instead. Confi
 `paymentFulfilment` on the app and Fliplet will mark the row itself when Stripe
 confirms the payment.
 
+This only covers checkout sessions created with `Fliplet.Payments.Checkout.create()`.
+Fliplet marks each of those sessions when it creates them, and the webhook ignores any
+session without that mark, including ones that set `client_reference_id`. Sessions
+from Stripe Payment Links, the Stripe Dashboard or another integration are never
+recorded.
+
 `paymentFulfilment` is an **app setting**, and it takes this shape:
 
 ```js
@@ -19495,16 +19506,38 @@ confirms the payment.
     "expectedCurrency": "eur",
     "minimumAmountTotal": 100,
 
-    // Runs the data source's own update hooks for the recorded payment
-    "runUpdateHooks": true
+    // Runs the data source's own update hooks for the recorded payment.
+    // Off by default -- read "Update hooks" below before turning it on.
+    "runUpdateHooks": false
   }
 }
 ```
 
 `expectedCurrency` and `minimumAmountTotal` (in the currency's smallest unit) are
-mandatory. They ensure a session cannot mark a row paid unless it actually collected
-the money you expected, so a cheap or wrong-currency session cannot fulfil an
-expensive order.
+mandatory. A session in another currency, or one that collected less than
+`minimumAmountTotal`, will not mark a row paid.
+
+`minimumAmountTotal` is **one minimum for the whole app**. Fliplet does not compare
+the amount charged with the price of the particular row being paid for. If your app
+sells more than one price, a checkout for the cheaper item can mark a row for the more
+expensive one as paid, as long as it clears the minimum. Set `minimumAmountTotal` to
+your lowest genuine price, and do not rely on it to protect higher-priced rows. Those
+need their own check that the amount paid matches the row.
+
+---
+
+### Update hooks
+
+When `runUpdateHooks` is `true`, the webhook's write fires the data source's update
+hooks, such as confirmation emails or workflow calls. Your screens usually write the
+same row when the buyer returns from Stripe, and that write fires the same hooks. An
+update hook with no condition therefore runs twice: two confirmation emails, or a
+workflow called twice.
+
+Before turning `runUpdateHooks` on, check every update hook on the data source. Each
+one should fire only on the change it cares about, for example when `Payment Status`
+becomes `Paid`, and be safe to run twice. Decide whether the webhook or your screens
+send the confirmation, not both.
 
 ---
 
@@ -19542,8 +19575,7 @@ Fliplet.App.Settings.set({
     paymentIntentColumn: 'Stripe Payment Intent ID',
     customerColumn: 'Stripe Customer ID',
     expectedCurrency: 'eur',
-    minimumAmountTotal: 100,
-    runUpdateHooks: true
+    minimumAmountTotal: 100
   }
 }).then(function () {
   // Saved. The next completed checkout will be recorded.
@@ -19557,11 +19589,13 @@ POST v1/apps/:appId/settings
 ```
 
 ```json
-{ "paymentFulfilment": { "dataSourceId": 123456, "statusColumn": "Payment Status", "paidValue": "Paid" } }
+{ "paymentFulfilment": { "dataSourceId": 123456, "statusColumn": "Payment Status", "paidValue": "Paid", "expectedCurrency": "eur", "minimumAmountTotal": 100 } }
 ```
 
-Both merge into the app's existing settings rather than replacing them, so other
-settings are left alone.
+Both merge into the app's existing settings **at the top level only**: other settings
+are left alone, but `paymentFulfilment` itself is replaced as a whole. Always send the
+complete object. Sending only the fields you want to change deletes the rest, and a
+value without `expectedCurrency` and `minimumAmountTotal` stops fulfilment working.
 
 Three things decide whether the value you save is the one that takes effect:
 
@@ -19631,8 +19665,8 @@ Fliplet.Payments.Checkout.create({
 });
 ```
 
-The stored value must be at least 16 characters — a short or blank column authorises
-nothing, or every row with an empty token would be claimable. `flPurchaseToken` is
+The stored value must be at least 16 bytes long (16 characters for plain ASCII values
+such as UUIDs). A short or blank column authorises nothing, or every row with an empty token would be claimable. `flPurchaseToken` is
 removed from the payload before it is forwarded to Stripe, so the secret is never
 handed to a third party. A `Fl-Purchase-Token` request header is accepted too, for
 callers that can set one.
