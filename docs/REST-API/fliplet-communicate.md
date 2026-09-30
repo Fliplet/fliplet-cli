@@ -10,7 +10,7 @@ deprecated: false
 
 The Communicate REST API lets external integrations send emails and SMS from a Fliplet app, subject to per-account rate limits.
 
-<p class="warning"><strong>Note:</strong> This RESTful API is intended to be used by 3rd party software such as external integrations. <strong>If you're using this in a Fliplet App, please use the <a href="/API/fliplet-communicate">Communicate JS APIs</a> instead.</strong></p>
+<p class="warning"><strong>Note:</strong> This RESTful API is intended for external integrations. In a V2 Fliplet app, use the <a href="/API/fliplet-communicate">Communicate JS APIs</a>. For new V3 app features, invoke a <a href="/API/core/app-actions-v3#send-communications-from-a-server-action">server-side App Action</a> from browser code; the Action must check the caller and recipients before sending. Direct app-token REST or JS sends from a V3 browser are an unprotected pattern. Existing direct sends continue to work during migration; a V3-wide block is planned for a later release.</p>
 
 ## Authentication
 

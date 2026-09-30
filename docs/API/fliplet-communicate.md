@@ -3,14 +3,17 @@ title: Fliplet.Communicate
 description: "Send email, SMS, push notifications, and share URLs from a Fliplet app using a single Communicate namespace."
 type: api-reference
 tags: [js-api, communicate]
-v3_relevant: true
+v3_relevant: false
 deprecated: false
+exclude_from_v3_catalog: true
 category: communications
 capabilities: [email, send email, sms, send sms, batch email, batch sms, share url, share link, sendgrid, twilio, mailgun, compose email, mailto]
 ---
 # `Fliplet.Communicate`
 
 Send email, SMS, push notifications, and share URLs from a Fliplet app using a single Communicate namespace.
+
+**V3 app guidance:** Do not build new browser features that call `sendEmail()`, `batchSendEmail()`, `sendSMS()`, or `batchSendSMS()` directly using an app token. Those sends let the caller choose the message and recipients without feature-specific authorization. Have browser code invoke a [server-side App Action](core/app-actions-v3#send-communications-from-a-server-action) that checks the caller and permitted recipients before sending. `sendPushNotification()` already requires app publisher or editor access; it is not an ordinary app-user send path. Existing direct sends continue to work during migration; a V3-wide block on direct app-token sends is planned for a later release. The examples below remain available for V2 apps and for appropriately authorized server-side use. Device email composition and URL sharing are unaffected. See [V3 communications guidance](v3/communicate).
 
 ## Send an email
 

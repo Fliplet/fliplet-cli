@@ -347,49 +347,76 @@ async function execute(context) {
 // Requires dependency: fliplet-datasources
 ```
 
-### Example: send an email
+### Send communications from a server Action
+
+For new V3 features, let browser code invoke a server Action. The server Action must verify the caller and the requested operation, then derive recipients and message content from server-side data. An Action's `context.payload` is supplied by the caller and is **not** proof of identity or permission. Do not accept arbitrary email addresses, phone numbers, notification scopes, or a `sendToAll` flag from the browser.
+
+For example, a booking manager may send a confirmation only for an assigned, confirmed booking. In this example, Data Source `157` contains authenticated users with a `Role` column, and Data Source `158` contains bookings with `ManagerId`, `Status`, and `CustomerEmail` columns. Replace those IDs and column names with your app's schema. The user Data Source must be the one used for login, and its write rules must prevent users from changing their role. Booking write rules must prevent users from changing the manager, status, or recipient to gain permission to send.
 
 ```js
-async function execute(context) {
-  var recipientEmail = 'nick@company.com'; // replace with your recipient email
-  var recipientName = 'Nick';              // replace with your recipient name
+var action = await Fliplet.App.V3.Actions.create({
+  name: 'send-booking-confirmation',
+  active: true,
+  environment: 'server',
+  triggers: [{ trigger: 'manual' }],
+  dependencies: ['fliplet-session', 'fliplet-datasources', 'fliplet-communicate'],
+  code: `async function execute(context) {
+    try {
+      // The server runner forwards the invoking app user's session.
+      const session = await Fliplet.Session.get();
+      const login = session && session.entries && session.entries.dataSource;
+      const managerId = Number(login && login.id);
 
-  await Fliplet.Communicate.sendEmail({
-    to: [{ email: recipientEmail, name: recipientName, type: 'to' }],
-    subject: 'Your booking is confirmed',
-    from_name: 'Booking System',
-    html: '<h1>Booking Confirmed</h1><p>Hi ' + recipientName + ', your booking has been confirmed.</p>'
-  });
-
-  return { success: true, sentTo: recipientEmail };
-}
-// Requires dependency: fliplet-communicate
-```
-
-### Example: send a push notification
-
-```js
-async function execute(context) {
-  // Send a push notification to all subscribed users
-  var notification = await Fliplet.Notifications.insert({
-    status: 'published',
-    data: {
-      title: 'Daily Update',
-      message: 'Your daily report is ready to view.',
-      navigate: { action: 'screen', page: 54321 } // replace 54321 with your screen ID
-    },
-    pushNotification: {
-      payload: {
-        title: 'Daily Update',
-        body: 'Your daily report is ready to view.'
+      if (!login || Number(login.dataSourceId) !== 157 ||
+          !Number.isSafeInteger(managerId) || managerId <= 0) {
+        return { success: false, error: 'NOT_PERMITTED' };
       }
-    }
-  });
 
-  return { success: true, notificationId: notification.id };
-}
-// Requires dependency: fliplet-notifications
+      // Refresh the caller's role from the login Data Source.
+      const users = await Fliplet.DataSources.connect(157);
+      const manager = await users.findById(managerId);
+      if (!manager || manager.data.Role !== 'Manager') {
+        return { success: false, error: 'NOT_PERMITTED' };
+      }
+
+      const bookingId = Number(context.payload && context.payload.bookingId);
+      if (!Number.isSafeInteger(bookingId) || bookingId <= 0) {
+        return { success: false, error: 'INVALID_BOOKING' };
+      }
+
+      const bookings = await Fliplet.DataSources.connect(158);
+      const booking = await bookings.findById(bookingId);
+      if (!booking || booking.data.Status !== 'Confirmed' ||
+          Number(booking.data.ManagerId) !== managerId ||
+          !booking.data.CustomerEmail) {
+        return { success: false, error: 'NOT_PERMITTED' };
+      }
+
+      await Fliplet.Communicate.sendEmail({
+        to: [{ email: booking.data.CustomerEmail, type: 'to' }],
+        subject: 'Your booking is confirmed',
+        from_name: 'Booking System',
+        html: '<p>Your booking is confirmed.</p>'
+      });
+
+      return { success: true };
+    } catch (error) {
+      return { success: false, error: 'SEND_FAILED' };
+    }
+  }`
+});
+
+// After the app is published, publish this Action for live app users:
+// await Fliplet.App.V3.Actions.publish(action.id);
 ```
+
+The browser passes only a booking ID. It does not select the recipient or message:
+
+```js
+await Fliplet.App.V3.Actions.run('send-booking-confirmation', { bookingId: 123 });
+```
+
+The same boundary applies to SMS and in-app or push notifications: check the caller and operation, load the allowed phone number or notification audience from protected server-side records, then call `Fliplet.Communicate.sendSMS()` or `insert()` on a `Fliplet.Notifications.init()` instance inside the server Action. A broadcast requires its own explicit authorization. Do not move direct sends into an Action without these checks. Existing V3 browser sends continue to work during migration; a V3-wide block is planned for a later release.
 
 ## Dependencies
 
@@ -410,6 +437,7 @@ dependencies: [
 | Package | Required when using | Description | API Reference |
 |---------|---------------------|-------------|---------------|
 | `fliplet-datasources` | `Fliplet.DataSources` | Data Sources API — connect, find, insert, update, remove entries | [Data Sources JS API](https://developers.fliplet.com/API/fliplet-datasources.html) |
+| `fliplet-session` | `Fliplet.Session` | Session API — check the invoking app user's login state | [Session JS API](https://developers.fliplet.com/API/fliplet-session.html) |
 | `fliplet-media` | `Fliplet.Media` | Media API — upload, retrieve, and manage media files | [Media JS API](https://developers.fliplet.com/API/fliplet-media.html) |
 | `fliplet-communicate` | `Fliplet.Communicate` | Communication API — send emails, push notifications, SMS | [Communicate JS API](https://developers.fliplet.com/API/fliplet-communicate.html) |
 | `fliplet-barcode` | `Fliplet.Barcode` | Barcode API — generate and scan barcodes | [Barcode JS API](https://developers.fliplet.com/API/fliplet-barcode.html) |
@@ -419,6 +447,8 @@ dependencies: [
 | `fliplet-notifications` | `Fliplet.Notifications` | Notifications API — manage and send push notifications | [Notifications JS API](https://developers.fliplet.com/API/fliplet-notifications.html) |
 
 ### Quick reference: key method signatures
+
+The send calls below belong inside server Actions **after** authorization and recipient selection, as in [the example above](#send-communications-from-a-server-action).
 
 **`fliplet-datasources`** — [Full API reference](https://developers.fliplet.com/API/fliplet-datasources.html)
 
@@ -439,7 +469,7 @@ await connection.commit({ entries: arrayOfObjects }); // bulk replace all entrie
 ```js
 // Send email
 await Fliplet.Communicate.sendEmail({
-  to: [{ email: 'user@example.com', name: 'User', type: 'to' }],
+  to: [{ email: permittedRecipientEmail, type: 'to' }],
   subject: 'Subject line',
   from_name: 'Sender Name',
   html: '<p>Email body HTML</p>'
@@ -447,27 +477,22 @@ await Fliplet.Communicate.sendEmail({
 
 // Send SMS
 await Fliplet.Communicate.sendSMS({
-  data: { to: '+123456789', body: 'Message text' }
-});
-
-// Send push notification (only app publishers/editors can send)
-await Fliplet.Communicate.sendPushNotification(appId, {
-  title: 'Notification title',
-  body: 'Notification message',
-  sandbox: false // true = only Fliplet Viewer users (testing)
+  data: { to: permittedRecipientPhone, body: 'Message text' }
 });
 ```
 
 **`fliplet-notifications`** — [Full API reference](https://developers.fliplet.com/API/fliplet-notifications.html)
 
 ```js
-// Send a push notification to all users subscribed to the app
-var notification = await Fliplet.Notifications.insert({
+// Send only to an audience selected after the server Action's checks
+var notifications = Fliplet.Notifications.init();
+var notification = await notifications.insert({
   status: 'published',
+  scope: { Email: permittedRecipientEmail },
   data: {
     title: 'Booking Reminder',
     message: 'You have a booking scheduled for today.',
-    navigate: { action: 'screen', page: 54321 } // replace 54321 with your screen ID
+    navigate: { action: 'v3-route', path: '/bookings' } // use a route in this app's manifest
   },
   pushNotification: {
     payload: {
@@ -492,6 +517,7 @@ await Fliplet.Media.Files.upload({ folderId: folderId, file: fileBlob });
 When writing action code, **match each `Fliplet.*` namespace used in the `execute` function to its corresponding package** and include it in the `dependencies` array:
 
 - Code uses `Fliplet.DataSources` → add `fliplet-datasources`
+- Code uses `Fliplet.Session` → add `fliplet-session`
 - Code uses `Fliplet.Communicate` → add `fliplet-communicate`
 - Code uses `Fliplet.Media` → add `fliplet-media`
 - Code uses `Fliplet.Barcode` → add `fliplet-barcode`

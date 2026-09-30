@@ -3,14 +3,17 @@ title: Fliplet.Notifications
 description: "Read, send, and schedule in-app and push notifications in Fliplet apps, with support for scopes, read receipts, and badge counts."
 type: api-reference
 tags: [js-api, notifications]
-v3_relevant: true
+v3_relevant: false
 deprecated: false
+exclude_from_v3_catalog: true
 category: communications
 capabilities: [notification, push notification, in-app notification, scheduled notification, badge count, read receipt, notifications inbox, broadcast notification]
 ---
 # `Fliplet.Notifications`
 
 Read, send, and schedule in-app and push notifications in Fliplet apps, with support for scopes, read receipts, and badge counts.
+
+**V3 app guidance:** Do not create, publish, or schedule in-app or push notifications directly from browser code using an app token. Direct sends are an unprotected pattern for new V3 features: any app user able to call them may be able to select recipients or broadcast. Have browser code invoke a [server-side App Action](core/app-actions-v3#send-communications-from-a-server-action) that checks the caller and permitted recipients before sending. Existing direct sends continue to work during migration; a V3-wide block is planned for a later release. The send examples below remain available for V2 apps and for appropriately authorized server-side use. Reading notifications, marking them as read, and managing the device's push subscription are unaffected. See [V3 notifications guidance](v3/notifications).
 
 When dealing with app notifications, there's a few things you should keep in mind:
 
