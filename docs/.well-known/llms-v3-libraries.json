@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-03T21:44:55.240Z",
+  "generatedAt": "2026-10-01T12:00:21.685Z",
   "libraries": [
     {
       "package": "fliplet-analytics-spa",
@@ -294,7 +294,11 @@
         "order",
         "product",
         "cart",
-        "donation"
+        "donation",
+        "payment fulfilment",
+        "client_reference_id",
+        "checkout.session.completed",
+        "purchase token"
       ],
       "category": "commerce"
     },
