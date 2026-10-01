@@ -19624,10 +19624,13 @@ send the confirmation, not both.
 
 ### What the data source has to satisfy
 
-The data source you point at must belong to the app doing the checkout — its own ID,
-its master, or its published copy. Fliplet will not write into a data source owned by
-an unrelated app, even one in the same organization. `statusColumn` must also be a
-real column on that data source.
+The data source you point at must belong to the **master app**, the one you edit in
+Studio. Fliplet will not write into a data source owned by any other app, including
+the app's own published copy or an unrelated app in the same organization.
+`statusColumn` must also be a real column on that data source. Fliplet only checks
+this when the data source has a column list. If the list is empty, a misspelled
+`statusColumn` is not caught: the value is written under that misspelled key and the
+real status column stays unchanged.
 
 Both of these fail **silently from the app's point of view**: the payment is not
 recorded, no error reaches your screens, and the row is left exactly as it was. If
@@ -19643,58 +19646,59 @@ configured data source, so the ownership check refuses it with a `403`.
 
 ### Setting it on the app
 
-Save it like any other app setting, as a Studio user with edit rights on the app:
-
-```js
-// Run once, as a logged in Studio user
-Fliplet.App.Settings.set({
-  paymentFulfilment: {
-    dataSourceId: 123456,
-    statusColumn: 'Payment Status',
-    paidValue: 'Paid',
-    sessionColumn: 'Stripe Session ID',
-    paymentIntentColumn: 'Stripe Payment Intent ID',
-    customerColumn: 'Stripe Customer ID',
-    expectedCurrency: 'eur',
-    minimumAmountTotal: 100
-  }
-}).then(function () {
-  // Saved. The next completed checkout will be recorded.
-});
-```
-
-or over the RESTful API:
+Save it with the RESTful API, against the **master app's ID** (the app you edit in
+Studio), authenticated as a Studio user with edit rights on that app. See
+[Saving settings](v3/app-settings#saving-settings) for how to make the request.
 
 ```
-POST v1/apps/:appId/settings
+POST v1/apps/:masterAppId/settings
 ```
 
 ```json
-{ "paymentFulfilment": { "dataSourceId": 123456, "statusColumn": "Payment Status", "paidValue": "Paid", "expectedCurrency": "eur", "minimumAmountTotal": 100 } }
+{
+  "paymentFulfilment": {
+    "dataSourceId": 123456,
+    "statusColumn": "Payment Status",
+    "paidValue": "Paid",
+    "sessionColumn": "Stripe Session ID",
+    "paymentIntentColumn": "Stripe Payment Intent ID",
+    "customerColumn": "Stripe Customer ID",
+    "expectedCurrency": "eur",
+    "minimumAmountTotal": 100
+  }
+}
 ```
 
-Both merge into the app's existing settings **at the top level only**: other settings
-are left alone, but `paymentFulfilment` itself is replaced as a whole. Always send the
-complete object. Sending only the fields you want to change deletes the rest, and a
-value without `expectedCurrency` and `minimumAmountTotal` stops fulfilment working.
+The endpoint returns a `403` for a published app's ID, so always use the master's.
 
-Three things decide whether the value you save is the one that takes effect:
+The request merges into the app's existing settings **at the top level only**: other
+settings are left alone, but `paymentFulfilment` itself is replaced as a whole. Always
+send the complete object. Sending only the fields you want to change deletes the rest,
+and a value without `expectedCurrency` and `minimumAmountTotal` stops fulfilment
+working.
 
-**It must be the master app.** The endpoint rejects a published app, so run this
-against the app you edit in Studio.
+<p class="warning">Do not use <code>Fliplet.App.Settings.set()</code> for this. It saves to whichever app the code is running in. In a published app that is the published copy, which the endpoint refuses with a <code>403</code>. In Studio preview and Fliplet Viewer it makes no request at all: it only changes the settings held in the page, the promise resolves, and nothing is saved.</p>
 
-**Do not run it from Studio preview or Fliplet Viewer.** When
-`Fliplet.Env.get('development') === true`, `Fliplet.App.Settings.set()` skips the
-network call and mutates `window.ENV.appSettings` in memory — the promise resolves,
-nothing is saved, and it looks like it worked. Run it on the live app, or use the
-RESTful API.
+#### Which copy of the setting is used
 
-**Republish after changing it.** A published app carries its own copy of the setting,
-and that copy takes precedence over the master's. Editing the master without
-republishing leaves the published app serving the older value.
+Checkout and the webhook do not read the setting from the same app:
 
-To check what an app is really using, read it back with
-`Fliplet.App.Settings.get('paymentFulfilment')` on the app you are testing.
+- **Checkout** (the ownership check, `ownershipTokenColumn`, and the data source the
+  session is tied to) uses the **published app's** copy, which it receives when you
+  publish.
+- **The webhook** (the guards, `statusColumn`, `paidValue`, the optional columns and
+  `runUpdateHooks`) always uses the **master app's** copy. Changes to those fields
+  apply to the next payment, without republishing.
+
+The two copies must name the same `dataSourceId`. Each session is tied to the data
+source the published app named at checkout, and the webhook ignores a session whose
+data source does not match the master's. If you change `dataSourceId` on the master and
+do not republish, every payment is **silently not recorded**. **Republish whenever you
+change `paymentFulfilment`**, so both copies stay the same.
+
+`Fliplet.App.Settings.get('paymentFulfilment')` in the published app shows the
+checkout copy, not the one the webhook uses. To see the webhook's copy, read the master
+app's settings with `GET v1/apps/:masterAppId/settings`.
 
 Which row gets marked is taken from `client_reference_id` on the checkout session, so
 your checkout call must set it:
@@ -19747,8 +19751,8 @@ Fliplet.Payments.Checkout.create({
 ```
 
 The stored value must be at least 16 bytes long (16 characters for plain ASCII values
-such as UUIDs). A short or blank column authorises nothing, or every row with an empty token would be claimable. `flPurchaseToken` is
-removed from the payload before it is forwarded to Stripe, so the secret is never
+such as UUIDs). A short or blank column authorises nothing, or every row with an empty
+token would be claimable. `flPurchaseToken` is removed from the payload before it is forwarded to Stripe, so the secret is never
 handed to a third party. A `Fl-Purchase-Token` request header is accepted too, for
 callers that can set one.
 
