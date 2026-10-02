@@ -6715,9 +6715,9 @@ async function execute(context) {
 - **100 KB limit.** If the app's underscore settings exceed 100 KB in total (serialized as JSON), **every** server action of that app fails with the error `Private app settings exceed the 100 KB limit for server actions` until the settings are reduced.
 - **Read defensively.** Start with `const settings = context.settings || {};` and handle a missing value — the setting may not be configured yet.
 
-<p class="warning"><strong>Never let a setting value leave the action.</strong> Never return it, never log it (<code>console.*</code>), never put it in a thrown or returned error message, and never put it in a URL or query string — send it in a request header or body instead. Return values and error messages are stored in the app action logs and returned to the caller of <code>runWithResult()</code>; console output and every request URL are captured in the server runner logs. A provider that only accepts its key in the URL query string can not be called without breaking this rule.</p>
+<p class="warning"><strong>Never let a setting value leave the action.</strong> Never return it, never log it (<code>console.*</code>), never put it in a thrown or returned error message, and never put it in a URL or query string — send it in a request header or body instead. Return values and error messages are stored in the app action logs and returned to the caller of <code>runWithResult()</code>; console output and the URL of every <code>fetch</code> or XHR request are captured in the server runner logs. A provider that only accepts its key in the URL query string must be called with <a href="#flipletappv3actionsrequest-server-actions-only"><code>Fliplet.App.V3.Actions.request()</code></a>, which is the one request the runner does not log.</p>
 
-<p class="warning">Server actions run in a headless browser, so <code>fetch</code> from a server action is a cross-origin browser request. Provider APIs that do not allow cross-origin browser requests (CORS) reject it. Server-side HTTP requests without this restriction are not available yet.</p>
+<p class="warning">Server actions run in a headless browser, so <code>fetch</code> from a server action is a cross-origin browser request. Provider APIs that do not allow cross-origin browser requests (CORS) reject it. Call third-party provider APIs with <a href="#flipletappv3actionsrequest-server-actions-only"><code>Fliplet.App.V3.Actions.request()</code></a> instead.</p>
 
 A credential reaches `context.settings` from one of two sources:
 
@@ -6726,7 +6726,7 @@ A credential reaches `context.settings` from one of two sources:
 
 Protected (`__`) keys are write-only over HTTP: nobody can read them back, not Studio editors and not API tokens. They are read the same way, for example `const apiKey = (settings.__mailProvider || {}).apiKey;`.
 
-Example: read a credential, send it in a request header, return early when it is not configured, and return nothing that contains the value.
+Example: read a credential, send it in a request header with `Fliplet.App.V3.Actions.request()`, return early when it is not configured, and return nothing that contains the value.
 
 ```js
 // Action environment must be 'server'. No dependencies required.
@@ -6744,31 +6744,79 @@ async function execute(context) {
   let response;
 
   try {
-    response = await fetch('https://api.example.com/v1/messages', {
+    // The server runner makes this request, so the provider does not
+    // need to allow cross-origin browser requests (CORS)
+    response = await Fliplet.App.V3.Actions.request({
+      url: 'https://api.example.com/v1/messages',
       method: 'POST',
       headers: {
-        // Credentials go in a header (or the body), never in the URL
-        Authorization: `Bearer ${apiKey}`,
-        'Content-Type': 'application/json'
+        // Credentials go in a header (or the body)
+        Authorization: `Bearer ${apiKey}`
       },
-      body: JSON.stringify({
+      // An object body is sent as JSON
+      body: {
         to: context.payload.email,
         subject: 'Your booking is confirmed'
-      })
+      }
     });
   } catch (error) {
-    // Network or CORS failure. Return a fixed code — do not rethrow,
-    // log or return anything built from the request or the settings.
-    return { sent: false, error: 'MAIL_PROVIDER_REQUEST_FAILED' };
+    // Timeout, network failure or refused destination. Return a fixed
+    // code — do not rethrow, log or return anything built from the
+    // request or the settings. error.code is safe to return.
+    return { sent: false, error: 'MAIL_PROVIDER_REQUEST_FAILED', code: error.code };
   }
 
-  if (!response.ok) {
+  if (response.status < 200 || response.status >= 300) {
     return { sent: false, error: 'MAIL_PROVIDER_REJECTED', status: response.status };
   }
 
   return { sent: true };
 }
 ```
+
+#### `Fliplet.App.V3.Actions.request()` (server actions only)
+
+`Fliplet.App.V3.Actions.request()` makes an HTTPS request from the server runner instead of from the headless browser the action runs in. Browser cross-origin rules (CORS) do not apply to it, so it reaches provider APIs that reject `fetch`. The request leaves from the same static IP address as every other server action request, so provider keys restricted to an allow-listed IP keep working.
+
+```js
+const response = await Fliplet.App.V3.Actions.request({
+  url: 'https://api.example.com/v1/lists',  // String — required, https only
+  method: 'GET',                            // String — GET (default), HEAD, POST, PUT, PATCH or DELETE
+  headers: { Authorization: 'Bearer ...' }, // Object — optional
+  body: { name: 'Newsletter' },             // String or Object — optional; an object is sent as JSON
+  timeoutMs: 30000                          // Number — optional; default 30000, maximum 50000
+});
+
+// response structure:
+{
+  "status": 200,                                     // Number — HTTP status code
+  "headers": { "content-type": "application/json" }, // Object — response headers, lower-case names
+  "body": "{\"lists\":[]}"                            // String — response body as text
+}
+```
+
+- **Server only.** It works only in actions with `environment: 'server'`. In a `client` action, or an `any` action running on the device, it rejects immediately with the code `UNAVAILABLE`.
+- **Any HTTP status resolves.** A `404` or `500` from the provider resolves with that `status`; check it yourself. The promise rejects only when no response was received.
+- **The body is text.** Use `JSON.parse(response.body)` for a JSON response. Binary responses are not supported.
+- **HTTPS only, public destinations only.** Private, loopback and link-local addresses are refused, including when a public hostname resolves or redirects to one.
+- **Limits.** 30 seconds by default (50 at most) for the whole request including redirects, 5 MB for the response body and for the request body, and 5 redirects.
+- **Redirects to another host drop every request header**, so a credential is never forwarded to a host you did not name. Call the final URL directly if the provider needs the header there.
+- **Not logged.** The URL, headers and body are never written to the runner logs. This is the only request that may carry a key in the URL query string.
+
+A failed request rejects with an `Error` that has a `code`:
+
+| `code` | Meaning |
+|---|---|
+| `UNAVAILABLE` | Not running as a server action |
+| `INVALID_REQUEST` | Missing or malformed `url`, unsupported `method`, or request body over 5 MB |
+| `INSECURE_URL` | The URL, or a redirect, is not `https` |
+| `BLOCKED_ADDRESS` | The destination is a private, loopback or link-local address |
+| `TIMEOUT` | No complete response within `timeoutMs` |
+| `TOO_LARGE` | Response body over 5 MB |
+| `TOO_MANY_REDIRECTS` | More than 5 redirects |
+| `NETWORK_ERROR` | DNS, connection or TLS failure |
+
+The error `message` never contains the URL, headers or body, so `error.code` and `error.message` are safe to return.
 
 ### Example: simple action
 
@@ -22339,7 +22387,7 @@ URL: https://developers.fliplet.com/API/fliplet-tokens.md
 
 Read the list of **API tokens** an app has issued to external services and backend integrations. Each token represents a non-human "app user" account with scoped access (viewer role, by default) that lets a trusted backend system, webhook, or third-party integration authenticate against the Fliplet API on behalf of the app.
 
-This package is a thin client over the `v1/apps/{appId}/tokens` REST endpoint and exposes a single global, `Fliplet.App.Tokens`. Use it when an app or admin screen needs to display, audit, or correlate the tokens that have been provisioned for backend integrations.
+This package is a thin client over the `v1/apps/{appId}/tokens` REST endpoint and exposes a single global, `Fliplet.App.Tokens`. Use it on an admin screen, where the signed-in user is a Studio editor or publisher of the app, to display, audit, or correlate the tokens that have been provisioned for backend integrations.
 
 > **Note:** Creating and deleting tokens is performed in **Fliplet Studio** (App Settings → Security → API tokens) or directly via the REST API. The client library is intentionally read-only.
 
@@ -22352,6 +22400,8 @@ Add the `fliplet-tokens` dependency to your screen or app resources. The package
 (Returns `Promise<Array>`)
 
 Fetch the list of tokens issued for an app. Wraps `GET v1/apps/{appId}/tokens` and resolves with the `appTokens` array from the response body.
+
+> **Access:** the caller must be a Studio user with the **editor** or **publisher** role on the app. An app's own token cannot read the token list. See [Access and security](#access-and-security).
 
 ### Usage
 
@@ -22375,7 +22425,7 @@ const tokens = await Fliplet.App.Tokens.get();
 * **options** (Object, optional) Configuration for the request.
   * **appId** (Number) The app id to read tokens for. Defaults to `Fliplet.Env.get('appId')`. Throws `Error: appId is required` when neither is set.
   * **query** (Object) Query string parameters forwarded to the REST endpoint. The endpoint accepts:
-    * **type** (String) Filter by token type. Defaults to `appToken`. Pass `integrationToken` to read integration-only tokens.
+    * **type** (String) Filter by token type. Defaults to `appToken`. Pass `integrationToken` to read integration-only tokens. Any other value is rejected with `400`.
     * **order** (String) Field to order results by. Defaults to `firstName`.
     * **direction** (String) `ASC` or `DESC`. Defaults to `ASC`.
 
@@ -22441,13 +22491,17 @@ fetch('https://api.fliplet.com/v1/data-sources/1234/data', {
 ```
 
 ```bash
-curl https://api.fliplet.com/v1/apps/$APP_ID/tokens \
+curl https://api.fliplet.com/v1/data-sources/1234/data \
   -H "Auth-token: $FLIPLET_APP_TOKEN"
 ```
 
+A token cannot be used to manage tokens. Listing, creating, and deleting tokens requires a Studio editor or publisher, as described below.
+
 ## Access and security
 
-* **Authentication required.** The underlying `v1/apps/{appId}/tokens` endpoint requires an authenticated request — typically a Studio user session or a token that already has access to the app. Calling `Fliplet.App.Tokens.get()` from a public, unauthenticated screen will fail.
+* **Editor or publisher access required.** The underlying `v1/apps/{appId}/tokens` endpoint only answers Studio users who hold the **editor** or **publisher** role on the app. App tokens and integration tokens, users signed in through a data source login, and Studio users with the viewer or tester role receive `403`. Calling `Fliplet.App.Tokens.get()` from a public, unauthenticated screen fails with `401`.
+* **Inside a published app** the call only succeeds when the person has signed in through the Fliplet login component with a Studio account that is an editor or publisher of the app.
+* **Use the master app ID for direct REST calls.** Roles are checked against the master app, so call the endpoint with the app ID shown in Studio rather than the published app ID.
 * **Rate limited.** The endpoint is brute-force rate-limited under the `appTokens` rate-limit bucket. Avoid polling it from end-user screens.
 * **Treat `auth_token` as a secret.** The value functions as a long-lived password for the app. Surface it only in trusted admin contexts (e.g. a Studio settings screen visible to logged-in admins) and never log, embed, or persist it in client storage that other users can read.
 * **Token creation and deletion are not exposed in this client library.** Use Fliplet Studio or `POST` / `DELETE v1/apps/{appId}/tokens` directly. Both write endpoints additionally enforce the `appSecurity.tokenManagement` plan feature when working with `integrationToken` records.
@@ -28194,8 +28248,8 @@ async function execute(context) {
     return { sent: false, error: 'MAIL_PROVIDER_NOT_CONFIGURED' };
   }
 
-  // Send apiKey in a request header or body.
-  // Never return it, log it, throw it or put it in a URL.
+  // Send apiKey in a request header or body with
+  // Fliplet.App.V3.Actions.request(). Never return it, log it or throw it.
   return { configured: true };
 }
 ```
@@ -28205,6 +28259,8 @@ async function execute(context) {
 - Values always come from the **master** app and are read fresh on every run. Published apps read the master's values; a rotated value applies to the next run without republishing.
 - `client` and `any` actions always get `context.settings = {}`.
 - If the underscore settings exceed 100 KB in total, every server action of the app fails until they are reduced.
+
+- Call the provider with [`Fliplet.App.V3.Actions.request()`](../core/app-actions-v3#flipletappv3actionsrequest-server-actions-only). Server actions run in a headless browser, so a plain `fetch` is rejected by provider APIs that do not allow cross-origin browser requests (CORS).
 
 See [`context.settings` in App Actions V3](../core/app-actions-v3#contextsettings-server-actions-only) for the complete example, the limits and the rules for keeping values out of logs and responses.
 
