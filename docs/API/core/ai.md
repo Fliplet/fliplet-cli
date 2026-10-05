@@ -1,18 +1,20 @@
 ---
 title: Fliplet.AI
-description: "Build AI features with `Fliplet.AI` — chat, completions, streaming, image generation, transcription, and embeddings via OpenAI or Google Gemini proxies."
+description: "Build chat, streaming, image generation, transcription and embeddings with Fliplet.AI. Includes model IDs and JavaScript and REST fallback defaults."
 type: api-reference
 tags: [js-api, core]
 v3_relevant: true
 deprecated: false
 category: automation
-capabilities: [ai, llm, openai, gemini, gpt, chat completion, image generation, dall-e, transcription, whisper, embeddings, streaming completion, vision, multimodal, ai assistant]
+capabilities: [ai, llm, openai, gemini, gpt, chatbot, chat completion, image generation, dall-e, transcription, whisper, embeddings, streaming completion, vision, multimodal, ai assistant]
 ---
 # `Fliplet.AI`
 
 Build AI features with `Fliplet.AI` — chat, completions, streaming, image generation, transcription, and embeddings via OpenAI (GPT, o-series) or Google Gemini proxies.
 
-These APIs empower your apps with OpenAI models such as `GPT 3.5` to do things like:
+`Fliplet.AI` is available in Fliplet apps without a customer-supplied OpenAI or Gemini API key. For a multi-turn chatbot, keep both user and assistant messages in app state and pass them to `Fliplet.AI.createCompletion({ model, messages })`. The `Fliplet.AI(options).ask()` instance keeps only the messages passed to `ask()`; it does not append model replies to its history.
+
+These APIs let your apps:
 
 - Draft an email or other piece of writing
 - Write JavaScript or JSON code
@@ -26,11 +28,11 @@ These APIs empower your apps with OpenAI models such as `GPT 3.5` to do things l
 
 ## Table of Contents
 
+- [Model selection and fallback defaults](#model-selection-and-fallback-defaults)
+- [Model catalog](#model-catalog)
 - [Initialization](#initialization)
 - [Using Gemini Models](#using-gemini-models)
 - [Instance Methods](#instance-methods)
-  - [`ask()`](#ask)
-  - [Streaming with `ask()`](#streaming-with-ask)
 - [Multi-turn conversation (chat)](#multi-turn-conversation-chat)
 - [Single-turn tasks](#single-turn-tasks)
 - [Static API Methods](#static-api-methods)
@@ -45,6 +47,125 @@ These APIs empower your apps with OpenAI models such as `GPT 3.5` to do things l
 
 ---
 
+## Model selection and fallback defaults
+
+Specify `model` for every AI feature. An explicit selection lets the app use the most suitable model for its task and pins the requested model ID instead of inheriting Fliplet's fallback. Fallbacks apply when the field is omitted; they are not recommendations for new features and do not automatically select the latest model.
+
+Pinning an alias such as `gpt-6.1-sol` pins that ID, but the provider can change the version behind the alias. Where the provider offers a compatible dated snapshot, selecting its exact ID also pins that version. An explicit ID does not prevent a provider retiring the model. Fliplet remaps the legacy image IDs described below.
+
+The following defaults reflect the JavaScript wrapper and REST handlers. JavaScript inserts its own completion fallback before making the REST request, so that request does not inherit the REST completion default.
+
+| Operation | JavaScript fallback when `model` is omitted | Direct app REST fallback when `model` is omitted |
+|---|---|---|
+| Chat: `Fliplet.AI()` / `ask()` and `createCompletion({ messages })`; `POST /v1/apps/:app/ai/completions` | `gpt-3.5-turbo` | `gpt-4o-mini` |
+| Responses: `createCompletion({ input, useResponses: true })`; same REST endpoint | `gpt-3.5-turbo` (incompatible with Responses; specify a compatible model) | `gpt-4o-mini` |
+| Legacy non-streaming prompt: `createCompletion({ prompt })`; same REST endpoint | `gpt-3.5-turbo` (not a legacy prompt model) | `gpt-3.5-turbo-instruct` (retired) |
+| Images: `generateImage()`; `POST /v1/apps/:app/ai/image` | `gpt-image-2` through the REST handler | `gpt-image-2` |
+| Audio transcription: `transcribeAudio()`; `POST /v1/apps/:app/ai/audio` | `gpt-4o-mini-transcribe` through the REST handler | `gpt-4o-mini-transcribe` |
+| Embeddings: `createEmbedding()`; `POST /v1/apps/:app/ai/embeddings` | `text-embedding-ada-002` through the REST handler | `text-embedding-ada-002` |
+
+Gemini requests require an explicit Gemini model ID and a Gemini payload. OpenAI retired `gpt-3.5-turbo-instruct` on September 28, 2026; new text features use `messages` or Responses `input` instead of the legacy `prompt` format. `gpt-3.5-turbo` is scheduled for retirement on October 23, 2026. See [OpenAI deprecations](https://developers.openai.com/api/docs/deprecations).
+
+The models in code examples illustrate the API format. They are not a universal recommendation; select a compatible model from the catalog for the feature being built.
+
+## Model catalog
+
+The tables list every model ID with a configured Fliplet AI credit tier. They distinguish configured models from retired entries retained in configuration. Configuration and provider routing do not guarantee that a model remains available from its provider, or that every model supports every request format. Check the linked provider reference for endpoint compatibility and parameters before using a model.
+
+OpenAI text models use `createCompletion()` or `POST /v1/apps/:app/ai/completions`. Chat Completions uses `messages`; Responses uses `input` and `useResponses: true`. Models marked Responses require that format. Other models must use a format supported by their individual [OpenAI model reference](https://developers.openai.com/api/docs/models). Credit tiers describe Fliplet billing categories, not a ranking of model suitability.
+
+### OpenAI text models
+
+| Model ID | Fliplet credit tier | Availability or request-format note |
+|---|---|---|
+| `gpt-6-luna` | Economy | Chat Completions or Responses. |
+| `gpt-6.1-sol` | Advanced | Chat Completions or Responses. |
+| `gpt-6-sol` | Advanced | Chat Completions or Responses. |
+| `gpt-6-astra` | Flagship | Chat Completions or Responses. |
+| `gpt-5.6-luna` | Economy | Chat Completions or Responses. |
+| `gpt-5.6-terra` | Advanced | Chat Completions or Responses. |
+| `gpt-5.6-sol` | Premium | Chat Completions or Responses. |
+| `gpt-5.5-pro` | Flagship | Responses format. |
+| `gpt-5.5` | Premium | Chat Completions or Responses. |
+| `gpt-5.4-pro` | Flagship | Responses format. |
+| `gpt-5.4` | Advanced | Chat Completions or Responses. |
+| `gpt-5.4-mini` | Standard | Chat Completions or Responses. |
+| `gpt-5.4-nano` | Standard | Chat Completions or Responses. Retirement scheduled for April 1, 2027. |
+| `gpt-5.3-codex` | Standard | Responses format. Retirement scheduled for April 1, 2027. |
+| `gpt-5.2-pro` | Premium | Responses format. |
+| `gpt-5.2` | Advanced | Chat Completions or Responses. |
+| `gpt-5.1` | Advanced | Chat Completions or Responses. Retirement scheduled for April 1, 2027. |
+| `gpt-5-pro` | Premium | Responses format. Deprecated; see the snapshot retirement notice below. |
+| `gpt-5` | Advanced | Chat Completions or Responses. Deprecated; see the snapshot retirement notice below. |
+| `gpt-5-mini` | Standard | Chat Completions or Responses. Deprecated; see the snapshot retirement notice below. |
+| `gpt-5-nano` | Standard | Chat Completions or Responses. Deprecated; see the snapshot retirement notice below. |
+| `gpt-4o` | Advanced | Chat Completions or Responses. |
+| `gpt-4o-mini` | Standard | Chat Completions or Responses. |
+| `gpt-4.1` | Advanced | Chat Completions or Responses. |
+| `gpt-4.1-mini` | Standard | Chat Completions or Responses. |
+
+GPT-5, GPT-5 Mini, GPT-5 Nano and GPT-5 Pro are deprecated. Their dated snapshots are scheduled for retirement on December 11, 2026; check the [OpenAI deprecation list](https://developers.openai.com/api/docs/deprecations) for exact affected IDs.
+
+### Gemini text models
+
+Gemini text models use `createCompletion({ model, contents })` or the app REST completion endpoint with `contents`. Use the [Gemini model reference](https://ai.google.dev/gemini-api/docs/models) for payloads and capabilities.
+
+| Model ID | Fliplet credit tier | Availability note |
+|---|---|---|
+| `gemini-3.5-flash` | Advanced | See provider model reference. |
+| `gemini-3.1-flash-lite` | Standard | See provider model reference. |
+| `gemini-2.5-pro` | Advanced | Provider restricts access to accounts with prior active usage. |
+| `gemini-2.5-flash` | Standard | Provider restricts access to accounts with prior active usage. |
+| `gemini-2.5-flash-lite` | Standard | Provider restricts access to accounts with prior active usage. |
+| `gemini-2.0-flash-thinking` | Standard | Historical configuration entry; no current provider model with this ID. Do not select. |
+| `gemini-2.0-flash` | Standard | Legacy 2.0 family retired June 1, 2026; do not select. |
+| `gemini-1.5-pro` | Advanced | Retired September 29, 2025; do not select. |
+| `gemini-1.5-flash-8b` | Standard | Retired September 29, 2025; do not select. |
+| `gemini-1.5-flash` | Standard | Retired September 29, 2025; do not select. |
+
+See the [Gemini changelog](https://ai.google.dev/gemini-api/docs/changelog) and [Gemini deprecations](https://ai.google.dev/gemini-api/docs/deprecations) for retirement and access restrictions.
+
+### Image models
+
+OpenAI image models use `generateImage()` or `POST /v1/apps/:app/ai/image`. Gemini image IDs are also configured, but Gemini-specific payload compatibility must be checked against the [Gemini image-generation reference](https://ai.google.dev/gemini-api/docs/image-generation). `createCompletion({ model, contents, generationConfig })` accepts the Gemini request format; Gemini responses have a different shape from OpenAI image responses.
+
+| Model ID | Fliplet credit tier | Availability note |
+|---|---|---|
+| `gpt-image-2` | Flagship | OpenAI image model; image fallback. |
+| `gemini-2.5-flash-image` | Standard | Retired October 2, 2026; do not select. |
+| `gemini-3.1-flash-image` | Advanced | See provider image reference. |
+| `gemini-3-pro-image` | Premium | See provider image reference. |
+
+`dall-e-2` and `dall-e-3` are legacy IDs. Fliplet replaces either ID with `gpt-image-2`, so specifying a DALL-E ID does not pin the requested model.
+
+### Transcription models
+
+`transcribeAudio()` and `POST /v1/apps/:app/ai/audio` accept only the three IDs below. Newer provider transcription IDs are not accepted by these Fliplet methods until Fliplet adds support.
+
+| Model ID | Fliplet credit tier | Availability note |
+|---|---|---|
+| `gpt-4o-mini-transcribe` | Standard | Retirement scheduled for February 26, 2027. |
+| `gpt-4o-transcribe` | Premium | Retirement scheduled for February 26, 2027. |
+| `whisper-1` | Standard | Retirement scheduled for February 26, 2027. |
+
+### Embedding models
+
+Embedding models use `createEmbedding()` or `POST /v1/apps/:app/ai/embeddings`. See the [OpenAI embedding reference](https://developers.openai.com/api/docs/guides/embeddings) for input limits and dimensions.
+
+| Model ID | Fliplet credit tier |
+|---|---|
+| `text-embedding-3-small` | Standard |
+| `text-embedding-3-large` | Premium |
+| `text-embedding-ada-002` | Premium |
+
+Keep the same embedding model and dimensions when comparing stored vectors with new queries. Changing models can require regenerating stored embeddings.
+
+### Historical IDs and additional provider models
+
+The JavaScript `AVAILABLE_MODELS` metadata is not a complete availability catalog or a validation list. In addition to IDs above, it retains `gpt-3.5-turbo`, `text-davinci-003`, `gpt-4`, `gpt-4-turbo`, `o1`, `o1-mini`, `o3` and `o3-mini`. Do not infer availability from that metadata. `text-davinci-003` and `o1-mini` are retired. `gpt-3.5-turbo`, `gpt-4`, `gpt-4-turbo`, `o1` and `o3-mini` are scheduled for retirement on October 23, 2026. `o3` is deprecated; its `o3-2025-04-16` snapshot is scheduled for retirement on December 11, 2026.
+
+The completion proxy also routes additional model IDs and provider snapshots that are not named in Fliplet's credit configuration. Successful routing alone does not establish current provider access, endpoint compatibility or a configured model-specific credit tier. New features should start from the configured catalog above and use current provider documentation to confirm compatibility.
+
 ## Initialization
 
 The `Fliplet.AI(options?: AIInstanceOptions)` function is used to initialize an instance of the AI APIs.
@@ -55,7 +176,7 @@ It optionally accepts an `options` object as its first argument, which can conta
 
 | Parameter     | Type           | Optional | Default Value     | Description                                                                                                                                                           |
 |---------------|----------------|----------|-------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| model       | String       | Yes      | 'gpt-3.5-turbo' | ID of the model to use. See the [model endpoint compatibility](https://platform.openai.com/docs/models/model-endpoint-compatibility) table for details.           |
+| model       | String       | Yes      | 'gpt-3.5-turbo' | Explicit model ID; see the [model catalog](#model-catalog). The default is a fallback, not a recommendation.           |
 | temperature | Number       | Yes      | 1               | What sampling temperature to use, between 0 and 2. Higher values (e.g., 0.8) make output more random; lower values (e.g., 0.2) make it more focused and deterministic. |
 | n           | Number       | Yes      | 1               | How many chat completion choices to generate for each input message.                                                                                                    |
 | stop        | String or Array | Yes      | null            | Up to 4 sequences where the API will stop generating further tokens (e.g., ["\n"]).                                                                             |
@@ -79,8 +200,7 @@ It optionally accepts an `options` object as its first argument, which can conta
  * @returns {AIInstance} An instance of the AI API.
  */
 const conversation = Fliplet.AI({
-  temperature: 0.8,
-  model: 'gpt-4'
+  model: 'gpt-6.1-sol'
 });
 
 console.log('AI Instance Created:', conversation);
@@ -90,9 +210,9 @@ console.log('AI Instance Created:', conversation);
 
 ## Using Gemini Models
 
-To use Gemini, provide a supported Gemini `model` ID (for example, `'gemini-2.5-flash'`) to `Fliplet.AI.createCompletion(options)`.
+To use Gemini, provide a supported Gemini `model` ID (for example, `'gemini-3.5-flash'`) to `Fliplet.AI.createCompletion(options)`.
 
-This will route your request directly to the Gemini API, allowing you to leverage its full capabilities, including function calling. When using the Gemini provider, your payload must conform to the Gemini API's request body structure. For instance, instead of `messages`, you will use the `contents` property, and you can include other Gemini-specific parameters like `tools`.
+This will route your request directly to the Gemini API, using the Gemini request format, including function declarations where the selected model supports them. When using the Gemini provider, your payload must conform to the Gemini API's request body structure. For instance, instead of `messages`, you will use the `contents` property, and you can include other Gemini-specific parameters like `tools`.
 
 For more detailed information about Google's Gemini models, their capabilities, and the latest model IDs, please refer to the official Gemini API documentation: [https://ai.google.dev/gemini-api/docs/models](https://ai.google.dev/gemini-api/docs/models).
 
@@ -101,8 +221,8 @@ For more detailed information about Google's Gemini models, their capabilities, 
 ```javascript
 // Example of a call to the Gemini API via Fliplet's proxy
 Fliplet.AI.createCompletion({
-  // For a list of available models, see: https://ai.google.dev/gemini-api/docs/models
-  model: 'gemini-2.5-flash',
+  // Select a configured model from the Model catalog above.
+  model: 'gemini-3.5-flash',
   contents: [
     { role: 'user', parts: [{ text: 'What is the weather in London' }] }
   ],
@@ -138,216 +258,45 @@ When using Gemini models, ensure that all parameters are compatible with how the
 
 ## Instance Methods
 
-The instance object returned from `Fliplet.AI()` exposes the following methods.
-
-**Instance Method Summary:**
-
-| Method   | Description                                      | Parameters                                        | Returns         |
-|----------|--------------------------------------------------|---------------------------------------------------|-----------------|
-| ask()  | Sends a message to the AI model in the current conversation. | message (String), roleOrOptions (String or AskOptions) | Promise<Object> |
-
-### ask()
-
-`instance.ask(message: String, roleOrOptions?: String or AskOptions): Promise<AskResponseObject>`
-
-The `ask` instance function sends a message to the AI model within the context of the current conversation.
-
-**Parameters:**
-
-| Parameter        | Type                        | Optional | Default Value | Description                                                                                                                               |
-|------------------|-----------------------------|----------|---------------|-------------------------------------------------------------------------------------------------------------------------------------------|
-| message        | String                    | No       |               | The text message prompt to send to the AI.                                                                                                |
-| roleOrOptions  | String or AskOptions   | Yes      | 'user'      | Can be a String specifying the author's role ('user', 'system', 'assistant') or an AskOptions object. Defaults to 'user' role. |
-
-**`AskOptions` Object Properties:**
-
-| Parameter | Type      | Optional | Default Value | Description                                                                      |
-|-----------|-----------|----------|---------------|----------------------------------------------------------------------------------|
-| role    | String  | Yes      | 'user'      | The role of the author of this message ('user', 'system', 'assistant').     |
-| stream  | Boolean | Yes      | false       | If true, enables streaming for this specific ask call. See [Streaming with ask()](#streaming-with-ask). |
-
-**Returns:**
-
-A `Promise` that resolves to an `AskResponseObject`.
-
-**`AskResponseObject` Structure (Non-Streaming):**
-
-The response object typically contains the AI's reply. The primary content of the AI's response is usually found in `response.choices[0].message.content`. Refer to the OpenAI documentation for the detailed structure of the [chat completion object](https://platform.openai.com/docs/api-reference/chat/object).
-
-**Example (Non-Streaming):**
+`Fliplet.AI(options)` returns an instance with `ask(message, role?, modelOverride?)` and a `messages` array. `role` is a string such as `'user'` or `'system'`; `modelOverride` is an optional model ID. Each `ask()` call appends the submitted message to `messages`, then sends those messages to the completion API. The instance does **not** append the model's reply. Use `Fliplet.AI.createCompletion()` with app-managed history for a chatbot.
 
 ```javascript
-/**
- * @typedef {Object} AskOptions
- * @property {string} [role='user'] - The role of the author.
- * @property {boolean} [stream=false] - Whether to stream the response.
- */
-
-/**
- * @typedef {Object} MessageObject
- * @property {string} role - The role of the message author (e.g., 'user', 'assistant', 'system').
- * @property {string} content - The content of the message.
- */
-
-/**
- * @typedef {Object} ChoiceObject
- * @property {number} index - The index of the choice.
- * @property {MessageObject} message - The message object.
- * @property {string} finish_reason - The reason the model stopped generating tokens.
- */
-
-/**
- * @typedef {Object} UsageObject
- * @property {number} prompt_tokens - Tokens in the prompt.
- * @property {number} completion_tokens - Tokens in the completion.
- * @property {number} total_tokens - Total tokens.
- */
-
-/**
- * @typedef {Object} AskResponseObject
- * @property {string} id - Unique ID for the completion.
- * @property {string} object - Object type.
- * @property {number} created - Timestamp of creation.
- * @property {string} model - Model used.
- * @property {ChoiceObject[]} choices - Array of completion choices.
- * @property {UsageObject} usage - Token usage statistics.
- */
-
-async function getSimpleAnswer() {
-  try {
-    const conversation = Fliplet.AI();
-    console.log('Input message:', 'What are the top trends for 2023?');
-    const response = await conversation.ask('What are the top trends for 2023?');
-    console.log('AI Response Object:', response);
-    if (response.choices && response.choices.length > 0) {
-      console.log('AI Answer:', response.choices[0].message.content);
-    }
-  } catch (error) {
-    console.error('Error asking AI:', error);
-  }
-}
-
-getSimpleAnswer();
+const conversation = Fliplet.AI({ model: 'gpt-6.1-sol' });
+const response = await conversation.ask('Summarize this note.');
+const answer = response.choices[0].message.content;
 ```
 
-### Streaming with `ask()`
-
-To stream the response from an `ask()` call, you can either:
-1.  Initialize the `Fliplet.AI` instance with `stream: true`.
-2.  Pass `stream: true` within the `AskOptions` object to a specific `ask()` call.
-
-When streaming is enabled for an `ask()` call, the method returns a special streamable object with `.stream()`, `.then()`, and `.catch()` methods.
-
-`instance.ask(message, { stream: true }).stream(onChunkCallback).then(onCompleteCallback).catch(onErrorCallback)`
-
-**Callbacks:**
-
-*   `onChunkCallback(data: StreamChunkObject)`: A function called multiple times as partial message deltas are received.
-    *   **`StreamChunkObject` Structure:** The `delta` object within each chunk contains the new piece of information. For content, this is `delta.content`. The first chunk might contain `delta.role`. The `finish_reason` will be non-null in the final chunk. Refer to OpenAI documentation for the [chat completion chunk object](https://platform.openai.com/docs/api-reference/chat/streaming#object) structure.
-*   `onCompleteCallback(finalResponse?: AskResponseObject)`: Called once all messages (chunks) are received. The `finalResponse` argument may contain the fully assembled message or usage statistics, depending on the API's implementation.
-*   `onErrorCallback(error: Error)`: Called if an error occurs during the streaming process.
-
-**Example (Streaming with `ask()`):**
-
-```javascript
-const aiInstance = Fliplet.AI({ temperature: 1 }); // Or Fliplet.AI({ temperature: 1, stream: true });
-
-console.log('Input message for streaming:', 'Give me a 20-word sentence about space.');
-
-aiInstance.ask('Give me a 20-word sentence about space.', { stream: true })
-  .stream(function onChunk(chunk) {
-    // Log the raw chunk or process chunk.choices[0].delta.content
-    console.log('Stream Chunk:', chunk);
-    if (chunk.choices && chunk.choices[0].delta && chunk.choices[0].delta.content) {
-      // Append chunk.choices[0].delta.content to your UI or a variable
-      // For this example, we just log it:
-      // process.stdout.write(chunk.choices[0].delta.content); // For Node.js like environment
-    }
-  })
-  .then(function onComplete(finalResponse) {
-    console.log('\nStream Complete. Final response object (if available):', finalResponse);
-    // finalResponse might be the full assembled message or just a confirmation
-    // depending on the exact API design for streaming completion.
-  })
-  .catch(function onError(error) {
-    console.error('\nStream Error:', error);
-  });
-```
-**Note on `stream: true` in constructor vs. `ask` options:**
-If `Fliplet.AI({ stream: true })` is used, all subsequent `ask()` calls on that instance will default to streaming and return the streamable object. You can potentially override this for a specific call by passing `{ stream: false }` if the API supports it, though this behavior should be verified. The example above uses `{ stream: true }` in the `ask` options for clarity.
+For streaming on an instance, set `stream: true` in the **constructor**: `Fliplet.AI({ model: 'gpt-6.1-sol', stream: true }).ask(message).stream(onChunk)`. This requires the `fliplet-socket` dependency. The second argument to `ask()` is a role string, not an options object; `ask(message, { stream: true })` does not enable streaming.
 
 ---
 
 ## Multi-turn conversation (chat)
 
-A multi-turn conversation involves maintaining the context of previous messages. Chat models take a series of messages as input and return a model-generated message as output. The `Fliplet.AI()` instance manages this conversation history automatically.
-
-**Conversation Message Structure:**
-
-Each message in the conversation history (accessible via `conversation.messages`) is an object:
+Keep `{ role, content }` messages, including model replies, in app state. Send the relevant history on each turn. This lets follow-up questions refer to earlier answers. Persist the messages only if the app needs conversations to survive reloads, and apply the app's normal access rules to stored content.
 
 ```javascript
-{
-  role: 'user' | 'assistant' | 'system', // The role of the message author
-  content: 'The text of the message.'    // The content of the message
-}
-```
+const history = [{ role: 'system', content: 'You are a helpful assistant.' }];
 
-**Example Scenario:**
+async function sendMessage(userText) {
+  const next = [...history, { role: 'user', content: userText }];
+  const result = await Fliplet.AI.createCompletion({
+    model: 'gpt-6.1-sol',
+    messages: next
+  });
+  const answer = result && result.choices && result.choices[0] &&
+    result.choices[0].message && result.choices[0].message.content;
 
-```javascript
-async function runConversation() {
-  // Create a conversation instance
-  // The temperature option controls "creativity"
-  const conversation = Fliplet.AI({ temperature: 1 });
-  console.log('Initial AI Instance:', conversation);
-
-  try {
-    // Set the system's behavior
-    console.log('System instruction:', 'You are a helpful tech consultant.');
-    const firstResponse = await conversation.ask('You are a helpful tech consultant.', 'system');
-    console.log('AI response to system instruction:', firstResponse.choices[0].message.content);
-
-    // Send a user message
-    console.log('User question 1:', 'What are the top tech trends for 2024?');
-    const secondResponse = await conversation.ask('What are the top tech trends for 2024?');
-    console.log('AI answer 1:', secondResponse.choices[0].message.content);
-
-    // Send a follow-up user message
-    console.log('User question 2:', 'Write a longer summary for the first trend you mentioned.');
-    const thirdResponse = await conversation.ask('Write a longer summary for the first trend you mentioned.');
-    console.log('AI answer 2:', thirdResponse.choices[0].message.content);
-
-    // Access the conversation transcript
-    console.log('\nConversation Transcript:');
-    conversation.messages.forEach(function (message, index) {
-      console.log(`Message ${index + 1}: Role: ${message.role}, Content: "${message.content}"`);
-    });
-    // Example of what conversation.messages might look like:
-    // [
-    //   { role: 'system', content: 'You are a helpful tech consultant.' },
-    //   { role: 'assistant', content: "Okay, I'm ready to help with your tech questions!" },
-    //   { role: 'user', content: 'What are the top tech trends for 2024?' },
-    //   { role: 'assistant', content: 'Some top trends include AI advancements, cybersecurity focus, and sustainable tech...' },
-    //   { role: 'user', content: 'Write a longer summary for the first trend you mentioned.' },
-    //   { role: 'assistant', content: 'Certainly, regarding AI advancements in 2024, we are seeing...' }
-    // ]
-
-
-  } catch (error) {
-    console.error('Error during conversation:', error);
+  if (typeof answer !== 'string' || !answer.trim()) {
+    throw new Error('The assistant did not return a reply.');
   }
-}
 
-runConversation();
+  history.push({ role: 'user', content: userText });
+  history.push({ role: 'assistant', content: answer });
+  return answer;
+}
 ```
 
-**Key Concepts:**
-
-*   **System Message:** Sets the assistant's behavior (e.g., "You are a helpful tech consultant."). Typically the first message.
-*   **User Messages:** Instructions or questions from the end-user or developer.
-*   **Assistant Messages:** Prior responses from the AI, stored to maintain context.
-*   **Context Management:** The `conversation` instance automatically includes relevant history. If a conversation exceeds the model's token limit, it needs to be managed (e.g., summarized or truncated by the developer, though `Fliplet.AI` might have internal handling for this).
+Handle loading, errors, and an empty response in the app UI. Keep the user's draft for retry if the call fails. If the conversation grows beyond the model's context limit, trim or summarize older messages deliberately; the API does not manage that history for the app.
 
 ---
 
@@ -358,27 +307,27 @@ For single-turn tasks where conversation history is not needed between requests,
 1.  **New `Fliplet.AI()` instance per task:** Each `Fliplet.AI()` creates a separate conversation.
     ```javascript
     // Task 1
-    const result1 = await Fliplet.AI().ask('Act as a JS developer. Write a function to multiply two numbers.');
+    const result1 = await Fliplet.AI({ model: 'gpt-6.1-sol' }).ask('Act as a JS developer. Write a function to multiply two numbers.');
     console.log('Task 1 Result:', result1.choices[0].message.content);
 
     // Task 2 (different context)
-    const result2 = await Fliplet.AI({ temperature: 0.5 }).ask('Act as a marketer. Write a welcome email.');
+    const result2 = await Fliplet.AI({ model: 'gpt-6.1-sol' }).ask('Act as a marketer. Write a welcome email.');
     console.log('Task 2 Result:', result2.choices[0].message.content);
     ```
 
-2.  **Low-level `Fliplet.AI.createCompletion()`:** For direct access to model-specific completion parameters without implicit conversation management. See [Static API Methods](#static-api-methods).
+2.  **`Fliplet.AI.createCompletion()`:** For direct access to model-specific completion parameters with explicit message history. See [Static API Methods](#static-api-methods).
 
 ---
 
 ## Static API Methods
 
-These methods are called directly on the `Fliplet.AI` namespace (e.g., `Fliplet.AI.createCompletion()`) and are generally used for single-turn tasks or when more control over model-specific parameters is required without instance-based conversation history.
+These methods are called directly on the `Fliplet.AI` namespace (e.g., `Fliplet.AI.createCompletion()`). Use `createCompletion()` for both single-turn tasks and multi-turn chat when the app manages message history.
 
 **Static Method Summary:**
 
 | Method                  | Description                                                                    | Key Parameters (see details below)            | Returns         |
 |-------------------------|--------------------------------------------------------------------------------|-----------------------------------------------|-----------------|
-| createCompletion()    | Creates a text completion from an OpenAI `prompt`, OpenAI `messages`, or Gemini `contents`. | options (Object)                            | Promise<Object> |
+| createCompletion()    | Creates text from OpenAI `messages`, Responses `input` or Gemini `contents`. | options (Object)                            | Promise<Object> |
 | generateImage()       | Generates an image from a text prompt.                                         | options (Object)                            | Promise<Object> |
 | transcribeAudio()     | Transcribes browser-recorded or uploaded audio.                                | audio (Blob or File), options (Object, optional) | `Promise<TranscriptionResponseObject>` |
 | createEmbedding()     | Creates an embedding vector for input text.                                    | options (Object)                            | Promise<Object> |
@@ -387,29 +336,29 @@ These methods are called directly on the `Fliplet.AI` namespace (e.g., `Fliplet.
 
 `Fliplet.AI.createCompletion(options: CompletionOptions): Promise<Object>`
 
-This low-level method sends the payload shape required by the selected model. It supports OpenAI prompt completions, OpenAI chat messages, and Gemini `contents` requests.
+This low-level method sends the payload shape required by the selected model. It supports OpenAI chat messages, Responses `input` and Gemini `contents` requests. The legacy OpenAI `prompt` route remains in the API, but its provider model has retired; use chat or Responses for new features.
 
 **`CompletionOptions` Object Properties:**
 
-For OpenAI requests, use parameters from the [OpenAI Completions API reference](https://platform.openai.com/docs/api-reference/completions/create) with `prompt` or the [OpenAI Chat Completions API reference](https://platform.openai.com/docs/api-reference/chat/create) with `messages`. For Gemini requests, use the Gemini `contents` format shown in [Using Gemini Models](#using-gemini-models).
+For OpenAI requests, use the [Chat Completions API reference](https://platform.openai.com/docs/api-reference/chat/create) with `messages` or the [Responses API reference](https://platform.openai.com/docs/api-reference/responses/create) with `input` and `useResponses: true`. For Gemini requests, use the Gemini `contents` format shown in [Using Gemini Models](#using-gemini-models).
 
 **Key `CompletionOptions` include:**
 
 | Parameter     | Type                        | Optional | Default        | Description                                                                                                                                                                                             |
 |---------------|-----------------------------|----------|----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| model       | String                    | Yes      | See below      | Supported model ID. OpenAI chat requests default to `gpt-3.5-turbo` when `messages` is present. Prompt and Gemini requests should specify a model.           |
-| messages    | `Array<MessageObject>`      | Yes      | undefined    | OpenAI chat messages. See [Conversation Message Structure](#conversation-message-structure).                                |
-| prompt      | `String` or `Array<String>` | Yes      | undefined    | OpenAI prompt-completion input. Use this for models such as `text-davinci-003`.                                                                                                |
+| model       | String                    | Yes      | See below      | Explicit model ID from the [model catalog](#model-catalog). If omitted, the JavaScript wrapper inserts `gpt-3.5-turbo` for every completion payload; see [fallback defaults](#model-selection-and-fallback-defaults).           |
+| messages    | `Array<MessageObject>`      | Yes      | undefined    | OpenAI chat messages. See [Multi-turn conversation (chat)](#multi-turn-conversation-chat).                                |
+| prompt      | `String` or `Array<String>` | Yes      | undefined    | Legacy OpenAI prompt-completion input. Its provider model is retired; use `messages` or Responses `input` for new features.                                                                                                |
 | contents    | `Array<GeminiContent>` | Yes | undefined | Gemini request contents. See [Using Gemini Models](#using-gemini-models). |
 | temperature | Number                    | Yes      | Model dependent   | Sampling temperature when supported by the selected model.                                                                                                                                                                               |
 | stream      | Boolean                   | Yes      | false        | If true, enables streaming when supported by the selected model. See [Streaming with createCompletion()](#streaming-with-createcompletion).                                                                                                |
 | ...           | ...                         | Yes      | ...            | Other parameters supported by the selected model's request format.                                                                                           |
 
 **Important:**
-*   For OpenAI models, provide `messages` for chat requests or `prompt` for prompt-completion requests. Do not provide both.
+*   For OpenAI models, provide `messages` for Chat Completions or `input` with `useResponses: true` for Responses. The legacy `prompt` format is retained for existing integrations; its provider model has retired.
 *   For Gemini models, provide `contents` in Gemini's request format instead of OpenAI `messages` or `prompt`.
 *   OpenAI prompt, OpenAI chat, and Gemini requests return their respective model-family response shapes. The Gemini `contents` example above returns a Gemini response, while OpenAI chat responses use `choices[0].message.content` and prompt-completion responses use `choices[0].text`.
-*   If `model` is not provided when using OpenAI `messages`, it defaults to `'gpt-3.5-turbo'`.
+*   Specify `model` for chat, Responses and Gemini requests. The JavaScript fallback is not a recommendation and is incompatible with Responses and legacy OpenAI prompt requests.
 
 **Returns:**
 
@@ -434,21 +383,11 @@ A `Promise` whose response shape depends on the selected model and payload. Open
  * // ... other OpenAI chat parameters
  */
 
-/**
- * @typedef {Object} CompletionOptionsPrompt
- * @property {string} model - Model ID (e.g., 'text-davinci-003'). Required.
- * @property {string|string[]} prompt - Prompt string(s).
- * @property {number} [temperature=1]
- * @property {boolean} [stream=false]
- * // ... other OpenAI completion parameters
- */
-
 async function runChatCompletion() {
   try {
     const params = {
-      // model: 'gpt-3.5-turbo', // Defaults to 'gpt-3.5-turbo' if messages is present
-      messages: [{ role: 'user', content: 'Hello, AI!' }],
-      temperature: 0.7
+      model: 'gpt-6.1-sol', // Explicit selection; this example is not a universal recommendation.
+      messages: [{ role: 'user', content: 'Hello, AI!' }]
     };
     console.log('Input for createCompletion (chat):', params);
     const result = await Fliplet.AI.createCompletion(params);
@@ -461,29 +400,6 @@ async function runChatCompletion() {
   }
 }
 runChatCompletion();
-```
-
-**Example (Prompt-based Completion):**
-
-```javascript
-async function runPromptCompletion() {
-  try {
-    const params = {
-      model: 'text-davinci-003', // Required for prompt-based
-      prompt: 'Say this is a test for text-davinci-003.',
-      temperature: 0
-    };
-    console.log('Input for createCompletion (prompt):', params);
-    const result = await Fliplet.AI.createCompletion(params);
-    console.log('createCompletion Response (prompt):', result);
-    if (result.choices && result.choices.length > 0) {
-      console.log('AI Reply:', result.choices[0].text);
-    }
-  } catch (error) {
-    console.error('Error in createCompletion (prompt):', error);
-  }
-}
-runPromptCompletion();
 ```
 
 ### Using the Responses API
@@ -521,9 +437,8 @@ The `Fliplet.AI.createCompletion()` method supports OpenAI's newer [Responses AP
 async function useResponsesEndpoint() {
   try {
     const params = {
-      model: 'gpt-4o',
+      model: 'gpt-6.1-sol',
       input: 'Explain the concept of quantum computing in simple terms.', // Use 'input' instead of 'messages'
-      temperature: 0.7,
       useResponses: true // Route to /v1/responses endpoint
     };
     console.log('Input for createCompletion (responses endpoint):', params);
@@ -547,13 +462,12 @@ useResponsesEndpoint();
 async function useResponsesEndpointWithMessages() {
   try {
     const params = {
-      model: 'gpt-4o',
+      model: 'gpt-6.1-sol',
       // Input can also be an array of messages for conversation context
       input: [
         { role: 'system', content: 'You are a helpful assistant specializing in quantum physics.' },
         { role: 'user', content: 'Explain the concept of quantum computing in simple terms.' }
       ],
-      temperature: 0.7,
       useResponses: true
     };
     console.log('Input for createCompletion (responses endpoint with array):', params);
@@ -575,9 +489,8 @@ useResponsesEndpointWithMessages();
 async function useChatCompletionsEndpoint() {
   try {
     const params = {
-      model: 'gpt-4',
+      model: 'gpt-6.1-sol',
       messages: [{ role: 'user', content: 'Explain the concept of quantum computing in simple terms.' }],
-      temperature: 0.7,
       useResponses: false // Or omit this parameter - defaults to /v1/chat/completions
     };
     console.log('Input for createCompletion (chat completions endpoint):', params);
@@ -595,13 +508,13 @@ useChatCompletionsEndpoint();
 
 ### Streaming with `createCompletion()`
 
-To stream responses from `Fliplet.AI.createCompletion()`, set the `stream: true` property in the `options` object. This returns a special streamable object with `.stream()`, `.then()`, and `.catch()` methods, similar to [Streaming with `ask()`](#streaming-with-ask).
+To stream responses from `Fliplet.AI.createCompletion()`, set the `stream: true` property in the `options` object. This requires the `fliplet-socket` dependency and returns a streamable object with `.stream()`, `.then()`, and `.catch()` methods. Collect the chunks yourself; the completion callback does not provide an assembled reply.
 
 `Fliplet.AI.createCompletion({ ...options, stream: true }).stream(onChunkCallback).then(onCompleteCallback).catch(onErrorCallback)`
 
 **Callbacks:**
 
-*   `onChunkCallback(data: StreamChunkObject)`: Called for each partial message delta. The `StreamChunkObject` structure is similar to that described in [Streaming with `ask()`](#streaming-with-ask) (for chat models) or specific to the model if it's a non-chat streaming model. Refer to OpenAI documentation for the [chat completion chunk object](https://platform.openai.com/docs/api-reference/chat/streaming#object) or other model-specific streaming objects.
+*   `onChunkCallback(data: StreamChunkObject)`: Called for each partial message delta. For chat models, read `chunk.choices[0].delta.content` when present. Refer to OpenAI documentation for the [chat completion chunk object](https://platform.openai.com/docs/api-reference/chat/streaming#object) or other model-specific streaming objects.
 *   `onCompleteCallback(finalResponse?: Object)`: Called when all chunks are received. Its shape depends on the selected model.
 *   `onErrorCallback(error: Error)`: Called on error.
 
@@ -609,10 +522,9 @@ To stream responses from `Fliplet.AI.createCompletion()`, set the `stream: true`
 
 ```javascript
 const completionParams = {
-  model: 'gpt-4-0125-preview', // or any chat model
+  model: 'gpt-6.1-sol', // Example model; select one appropriate to the feature.
   messages: [{ role: 'user', content: 'Write me a short poem about coding.' }],
-  stream: true,
-  temperature: 0.8
+  stream: true
 };
 
 console.log('Input for streaming createCompletion:', completionParams);
@@ -636,21 +548,22 @@ Fliplet.AI.createCompletion(completionParams)
 
 `Fliplet.AI.generateImage(options: GenerateImageOptions): Promise<ImageResponseObject>`
 
-Generates an original image based on a text prompt using OpenAI's image generation models.
+Generates an original image based on a text prompt. Fliplet currently defaults to `gpt-image-2` when `model` is omitted. GPT image models return base64 image data in `data[0].b64_json`; they do not return a hosted image URL.
 
 **`GenerateImageOptions` Object Properties:**
 (Based on [OpenAI Create Image API](https://platform.openai.com/docs/api-reference/images/create))
 
-| Parameter        | Type     | Optional | Default Value | Description                                                                                                |
-|------------------|----------|----------|---------------|------------------------------------------------------------------------------------------------------------|
-| prompt         | String | No       |               | A text description of the desired image(s). Maximum length 1000 characters.                                |
-| n              | Number | Yes      | 1           | The number of images to generate. Must be between 1 and 10.                                                |
-| size           | String | Yes      | '1024x1024' | The size of the generated images. Must be one of '256x256', '512x512', or '1024x1024'.                 |
-| response_format| String | Yes      | 'url'       | The format in which the generated images are returned. Must be one of 'url' or 'b64_json'.               |
-| model          | String | Yes      | gpt-image-1.5 | The model to use for image generation (e.g. gpt-image-1.5, dall-e-3). |
-| quality        | String | Yes      | standard    | The quality of the image. 'standard' or 'hd'.                                       |
-| style          | String | Yes      | vivid       | The style of the generated images. 'vivid' or 'natural'.                            |
-| user           | String | Yes      |               | A unique identifier representing your end-user, which can help OpenAI to monitor and detect abuse.       |
+| Parameter | Type | Optional | Default Value | Description |
+|-----------|------|----------|---------------|-------------|
+| prompt | String | No | | A text description of the desired image(s). |
+| model | String | Yes | `gpt-image-2` | The image model. Fliplet maps legacy `dall-e-2` and `dall-e-3` model IDs to `gpt-image-2`. |
+| n | Number | Yes | 1 | Number of images to generate, subject to the selected model's limits. |
+| size | String | Yes | Model dependent | For `gpt-image-2`, use a supported resolution such as `1024x1024`, or `auto`. |
+| quality | String | Yes | Model dependent | For `gpt-image-2`, use `low`, `medium`, `high`, or `auto`. |
+| output_format | String | Yes | `png` | For GPT image models, use `png`, `jpeg`, or `webp`. |
+| user | String | Yes | | An identifier for your app's end user. |
+
+Fliplet removes `response_format` and `style` before sending requests for GPT image models. Do not use them to request a URL or a style. Store the returned base64 data as an app asset if users need a persistent image.
 
 
 **Returns:**
@@ -664,19 +577,17 @@ A `Promise` that resolves to an `ImageResponseObject`. Refer to the OpenAI docum
 /**
  * @typedef {Object} GenerateImageOptions
  * @property {string} prompt - Text description of the image.
- * @property {number} [n=1] - Number of images (1-10).
- * @property {'256x256'|'512x512'|'1024x1024'} [size='1024x1024'] - Image size.
- * @property {'url'|'b64_json'} [response_format='url'] - Response format.
- * @property {string} [model='gpt-image-1.5'] - Model to use.
- * @property {'standard'|'hd'} [quality='standard'] - Image quality.
- * @property {'vivid'|'natural'} [style='vivid'] - Image style.
+ * @property {number} [n=1] - Number of images.
+ * @property {string} [size] - Model-supported image size.
+ * @property {string} [model='gpt-image-2'] - Model to use.
+ * @property {'low'|'medium'|'high'|'auto'} [quality] - GPT image quality.
+ * @property {'png'|'jpeg'|'webp'} [output_format] - GPT image format.
  * @property {string} [user] - End-user identifier.
  */
 
 /**
  * @typedef {Object} ImageData
- * @property {string} [url] - URL of the image if response_format is 'url'.
- * @property {string} [b64_json] - Base64 JSON string if response_format is 'b64_json'.
+ * @property {string} b64_json - Base64-encoded image from a GPT image model.
  */
 
 /**
@@ -691,18 +602,13 @@ async function generateAnImage() {
       prompt: "A futuristic cityscape at sunset, digital art",
       n: 1,
       size: "1024x1024",
-      response_format: "url", // or 'b64_json'
-      model: "gpt-image-1.5"
+      model: "gpt-image-2"
     };
     console.log('Input for generateImage:', params);
     const result = await Fliplet.AI.generateImage(params);
     console.log('generateImage Response:', result);
-    if (result.data && result.data.length > 0) {
-      if (params.response_format === 'url') {
-        console.log('Image URL:', result.data[0].url);
-      } else {
-        console.log('Image B64 JSON starts with:', result.data[0].b64_json.substring(0, 30) + '...');
-      }
+    if (result.data && result.data.length > 0 && result.data[0].b64_json) {
+      console.log('Image B64 JSON starts with:', result.data[0].b64_json.substring(0, 30) + '...');
     }
   } catch (error) {
     console.error('Error generating image:', error);
@@ -989,7 +895,7 @@ async function stopAndTranscribe() {
     abortController = typeof AbortController === 'function' ? new AbortController() : undefined;
     const options = {
       filename: filenameByMimeType[mimeType],
-      model: 'gpt-4o-mini-transcribe', // The default transcription model.
+      model: 'gpt-4o-mini-transcribe', // Explicit example selection; see the transcription model catalog.
       timeout: 120000
     };
 
@@ -1079,7 +985,7 @@ Creates an embedding vector (a list of floating-point numbers) representing the 
 | Parameter | Type                        | Optional | Default Value             | Description                                                                                                                                                                                              |
 |-----------|-----------------------------|----------|---------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | input   | String or Array<String> | No       |                           | Input text to embed, encoded as a string or an array of strings (for multiple inputs in one request). Each input must not exceed the model's max input tokens (e.g., 8191 for text-embedding-ada-002). |
-| model   | String                    | No       | 'text-embedding-ada-002' (usually) | ID of the embedding model to use (e.g., 'text-embedding-ada-002', 'text-embedding-3-small', 'text-embedding-3-large'). **Must be specified.**                                                                    |
+| model   | String                    | Yes       | `text-embedding-ada-002` | Explicit embedding model ID from the [model catalog](#model-catalog). If omitted, the REST handler uses this fallback.                                                                    |
 | encoding_format | String          | Yes      | 'float'                  | The format to return the embeddings in. Can be float or base64.                                                                                                                                      |
 | dimensions | Number                 | Yes      | Model dependent           | The number of dimensions the resulting output embedding should have. Only supported in text-embedding-3 and later models.                                                                             |
 | user    | String                    | Yes      |                           | A unique identifier representing your end-user.                                                                                                                                                        |
@@ -1095,7 +1001,7 @@ A `Promise` that resolves to an `EmbeddingResponseObject`. Refer to the OpenAI d
 /**
  * @typedef {Object} CreateEmbeddingOptions
  * @property {string|string[]} input - Text or array of texts to embed.
- * @property {string} model - Embedding model ID (e.g., 'text-embedding-ada-002').
+ * @property {string} [model='text-embedding-ada-002'] - Embedding fallback; specify the intended model.
  * @property {'float'|'base64'} [encoding_format='float'] - Embedding return format.
  * @property {number} [dimensions] - Output embedding dimensions (for newer models).
  * @property {string} [user] - End-user identifier.
@@ -1127,7 +1033,7 @@ async function generateEmbedding() {
   try {
     const params = {
       input: "The food was delicious and the waiter was very attentive.",
-      model: "text-embedding-ada-002" // Example: ensure you use a valid, available model
+      model: "text-embedding-3-small" // Example model; keep the same model for stored vectors and queries.
       // encoding_format: 'float', // Default
     };
     console.log('Input for createEmbedding:', params);
@@ -1173,13 +1079,13 @@ All API methods (`ask()`, `createCompletion()`, etc.) return Promises. Errors ca
 *   **Rate Limit Errors:** As described above, often an HTTP 429 error.
 *   **Network Errors:** Connectivity issues between the client and the server.
 *   **Input Validation Errors:** If required parameters are missing or invalid (though some may be caught by client-side checks within the Fliplet API wrapper itself).
-*   **Authentication/Authorization Errors:** If the API key is invalid or lacks permissions (usually handled by Fliplet's infrastructure).
+*   **Authentication/Authorization Errors:** If the caller is not authenticated or lacks permission to use AI in the app.
 
 **Example of Basic Error Handling:**
 
 ```javascript
 async function performAIAction() {
-  const conversation = Fliplet.AI();
+  const conversation = Fliplet.AI({ model: 'gpt-6.1-sol' });
   try {
     console.log('Attempting AI action...');
     const response = await conversation.ask("This is a test prompt.");
