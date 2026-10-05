@@ -10,15 +10,13 @@ deprecated: false
 
 Use these app-scoped endpoints to generate text or images, transcribe audio and create embeddings through Fliplet. Requests use a Fliplet token and the selected provider's payload format; a customer provider key is not required.
 
-<!-- PUBLICATION GATE: Source contract checked at API 45cf2d72581e878b55dfd47c351819e63d66fbd9. Do not publish until external-token runtime checks cover intended draft/production app, unrelated app, absent/invalid credentials and explicit development parameter. Remove this note only after recording those results. -->
-
 <a id="authentication-and-app-access"></a>
 
 ## Before your first request
 
 Use the API host for the app's region: `https://api.fliplet.com` (EU), `https://us.api.fliplet.com` (US) or `https://ca.api.fliplet.com` (CA). Follow [REST authentication](/REST-API/authenticate) to obtain and scope a token. Send the raw token in `Auth-token` and request JSON with `Accept: application/json`.
 
-Credential administration and runtime access are separate. Creating a token requires the appropriate app editor/publisher access; it does not establish that every token can call these endpoints against every draft or production app. Use the app ID and token allowed by the app's access configuration. Do not add `development` to bypass runtime access checks.
+For an app API token created in Studio, use the published app's `productionAppId`, available through the [Apps reference](/REST-API/fliplet-apps). This token does not authorize AI calls to the working draft. Creating and managing the token requires app editor or publisher access; the token itself has app-scoped runtime access. An unrelated or inaccessible app returns `404`. Do not include a `development` parameter: app AI routes reject it with `400`, regardless of its value.
 
 Calls require app access, available AI credits and a compatible model. Explicitly select a [configured model](/API/core/ai/models); omitted models use the [direct REST fallbacks](/API/core/ai/models#fallback-defaults), which differ from JavaScript completions. Model availability also depends on the provider.
 
@@ -192,7 +190,7 @@ Use `Accept: application/json`. The AI handlers' JSON errors include `message` a
 { "message": "Missing audio file" }
 ```
 
-Common statuses include `400` for invalid request/provider failure, `401` for invalid or missing authentication, `403` for denied access, `402` for insufficient credit capacity and `429` for rate limiting. Transcription also uses `413` and `415` as described above. Actual authentication statuses and envelopes depend on the token/app context.
+Common statuses include `400` for invalid request/provider failure, `401` for invalid or missing authentication, `403` for denied access, `402` for insufficient credit capacity and `429` for rate limiting. Transcription also uses `413` and `415` as described above. Missing or invalid tokens return `401`. An app token targeting an unrelated app or a working draft returns `404` with a `message` describing unavailable access. Responses from other token types depend on their app permissions.
 
 All operations share app AI rate limiting. V2 apps also have per-app plan quotas; V3 apps bypass those quotas and use V3 credits. See [rate limiting](/API/core/ai#rate-limiting). V3 credit metering does not mean requests are unlimited.
 

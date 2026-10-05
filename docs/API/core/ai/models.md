@@ -14,14 +14,7 @@ Use a compatible model requested by the user. Otherwise select for the task, bud
 
 ## Contents
 
-- [OpenAI text](#openai-text-models)
-- [Gemini text](#gemini-text-models)
-- [Images](#image-models)
-- [Transcription](#transcription-models)
-- [Embeddings](#embedding-models)
-- [Pinning and changes](#pinning-and-changes)
-- [Fallback defaults](#fallback-defaults)
-- [Deprecated and retired models](#deprecated-and-retired-models)
+[OpenAI text](#openai-text-models) · [Gemini text](#gemini-text-models) · [Images](#image-models) · [Transcription](#transcription-models) · [Embeddings](#embedding-models) · [Pinning and changes](#pinning-and-changes) · [Fallback defaults](#fallback-defaults) · [Deprecated and retired models](#deprecated-and-retired-models)
 
 ## Model catalog
 

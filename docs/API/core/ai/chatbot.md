@@ -12,12 +12,7 @@ Build a conversation in which an AI model generates replies using `Fliplet.AI`. 
 
 ## Contents
 
-- [Before you start](#before-you-start)
-- [Build a conversation](#build-a-conversation)
-- [Choose the request format](#choose-the-request-format)
-- [Stream a reply](#stream-a-reply)
-- [Optional storage and app data](#optional-storage-and-app-data)
-- [Verify and troubleshoot](#verify-and-troubleshoot)
+[Before you start](#before-you-start) · [Build a conversation](#build-a-conversation) · [Choose the request format](#choose-the-request-format) · [Stream a reply](#stream-a-reply) · [Optional storage and app data](#optional-storage-and-app-data) · [Verify and troubleshoot](#verify-and-troubleshoot)
 
 ## Before you start
 

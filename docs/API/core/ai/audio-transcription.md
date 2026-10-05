@@ -12,12 +12,7 @@ Transcribe an audio file or a browser recording with `Fliplet.AI.transcribeAudio
 
 ## Contents
 
-- [Before you start](#before-you-start)
-- [Upload an audio file](#upload-an-audio-file)
-- [Record audio](#record-audio)
-- [Complete recording and upload example](#complete-recording-and-upload-example)
-- [Cancellation, timeout and retry](#cancellation-timeout-and-retry)
-- [Verify and troubleshoot](#verify-and-troubleshoot)
+[Before you start](#before-you-start) · [Upload an audio file](#upload-an-audio-file) · [Record audio](#record-audio) · [Complete recording and upload example](#complete-recording-and-upload-example) · [Cancellation, timeout and retry](#cancellation-timeout-and-retry) · [Verify and troubleshoot](#verify-and-troubleshoot)
 
 ## Before you start
 

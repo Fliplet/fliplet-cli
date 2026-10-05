@@ -14,14 +14,7 @@ Generate text and images, transcribe audio and create embeddings through Fliplet
 
 ## Table of contents
 
-- [Choose a method](#choose-a-method)
-- [Choose a model](#choose-a-model)
-- [First request](#first-request)
-- [API reference](#api-reference)
-- [Rate limiting](#rate-limiting)
-- [Error handling](#error-handling)
-- [Related guides](#related-guides)
-- [Model catalog](#model-catalog)
+[Choose a method](#choose-a-method) · [Choose a model](#choose-a-model) · [First request](#first-request) · [API reference](#api-reference) · [Rate limiting](#rate-limiting) · [Error handling](#error-handling) · [Related guides](#related-guides) · [Model catalog](#model-catalog)
 
 ## Choose a method
 
