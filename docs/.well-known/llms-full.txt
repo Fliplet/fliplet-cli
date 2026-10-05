@@ -3984,39 +3984,39 @@ The models in code examples illustrate the API format. They are not a universal 
 
 ## Model catalog
 
-The tables list every model ID with a configured Fliplet AI credit tier. They distinguish configured models from retired entries retained in configuration. Configuration and provider routing do not guarantee that a model remains available from its provider, or that every model supports every request format. Check the linked provider reference for endpoint compatibility and parameters before using a model.
+The tables list model IDs configured by Fliplet, including retired entries marked below. Configuration and provider routing do not guarantee that a model remains available from its provider, or that every model supports every request format. Check the linked provider reference for endpoint compatibility and parameters before using a model.
 
-OpenAI text models use `createCompletion()` or `POST /v1/apps/:app/ai/completions`. Chat Completions uses `messages`; Responses uses `input` and `useResponses: true`. Models marked Responses require that format. Other models must use a format supported by their individual [OpenAI model reference](https://developers.openai.com/api/docs/models). Credit tiers describe Fliplet billing categories, not a ranking of model suitability.
+OpenAI text models use `createCompletion()` or `POST /v1/apps/:app/ai/completions`. Chat Completions uses `messages`; Responses uses `input` and `useResponses: true`. Models marked Responses require that format. Other models must use a format supported by their individual [OpenAI model reference](https://developers.openai.com/api/docs/models).
 
 ### OpenAI text models
 
-| Model ID | Fliplet credit tier | Availability or request-format note |
-|---|---|---|
-| `gpt-6-luna` | Economy | Chat Completions or Responses. |
-| `gpt-6.1-sol` | Advanced | Chat Completions or Responses. |
-| `gpt-6-sol` | Advanced | Chat Completions or Responses. |
-| `gpt-6-astra` | Flagship | Chat Completions or Responses. |
-| `gpt-5.6-luna` | Economy | Chat Completions or Responses. |
-| `gpt-5.6-terra` | Advanced | Chat Completions or Responses. |
-| `gpt-5.6-sol` | Premium | Chat Completions or Responses. |
-| `gpt-5.5-pro` | Flagship | Responses format. |
-| `gpt-5.5` | Premium | Chat Completions or Responses. |
-| `gpt-5.4-pro` | Flagship | Responses format. |
-| `gpt-5.4` | Advanced | Chat Completions or Responses. |
-| `gpt-5.4-mini` | Standard | Chat Completions or Responses. |
-| `gpt-5.4-nano` | Standard | Chat Completions or Responses. Retirement scheduled for April 1, 2027. |
-| `gpt-5.3-codex` | Standard | Responses format. Retirement scheduled for April 1, 2027. |
-| `gpt-5.2-pro` | Premium | Responses format. |
-| `gpt-5.2` | Advanced | Chat Completions or Responses. |
-| `gpt-5.1` | Advanced | Chat Completions or Responses. Retirement scheduled for April 1, 2027. |
-| `gpt-5-pro` | Premium | Responses format. Deprecated; see the snapshot retirement notice below. |
-| `gpt-5` | Advanced | Chat Completions or Responses. Deprecated; see the snapshot retirement notice below. |
-| `gpt-5-mini` | Standard | Chat Completions or Responses. Deprecated; see the snapshot retirement notice below. |
-| `gpt-5-nano` | Standard | Chat Completions or Responses. Deprecated; see the snapshot retirement notice below. |
-| `gpt-4o` | Advanced | Chat Completions or Responses. |
-| `gpt-4o-mini` | Standard | Chat Completions or Responses. |
-| `gpt-4.1` | Advanced | Chat Completions or Responses. |
-| `gpt-4.1-mini` | Standard | Chat Completions or Responses. |
+| Model ID | Availability or request-format note |
+| --- | --- |
+| `gpt-6-luna` | Chat Completions or Responses. |
+| `gpt-6.1-sol` | Chat Completions or Responses. |
+| `gpt-6-sol` | Chat Completions or Responses. |
+| `gpt-6-astra` | Chat Completions or Responses. |
+| `gpt-5.6-luna` | Chat Completions or Responses. |
+| `gpt-5.6-terra` | Chat Completions or Responses. |
+| `gpt-5.6-sol` | Chat Completions or Responses. |
+| `gpt-5.5-pro` | Responses format. |
+| `gpt-5.5` | Chat Completions or Responses. |
+| `gpt-5.4-pro` | Responses format. |
+| `gpt-5.4` | Chat Completions or Responses. |
+| `gpt-5.4-mini` | Chat Completions or Responses. |
+| `gpt-5.4-nano` | Chat Completions or Responses. Retirement scheduled for April 1, 2027. |
+| `gpt-5.3-codex` | Responses format. Retirement scheduled for April 1, 2027. |
+| `gpt-5.2-pro` | Responses format. |
+| `gpt-5.2` | Chat Completions or Responses. |
+| `gpt-5.1` | Chat Completions or Responses. Retirement scheduled for April 1, 2027. |
+| `gpt-5-pro` | Responses format. Deprecated; see the snapshot retirement notice below. |
+| `gpt-5` | Chat Completions or Responses. Deprecated; see the snapshot retirement notice below. |
+| `gpt-5-mini` | Chat Completions or Responses. Deprecated; see the snapshot retirement notice below. |
+| `gpt-5-nano` | Chat Completions or Responses. Deprecated; see the snapshot retirement notice below. |
+| `gpt-4o` | Chat Completions or Responses. |
+| `gpt-4o-mini` | Chat Completions or Responses. |
+| `gpt-4.1` | Chat Completions or Responses. |
+| `gpt-4.1-mini` | Chat Completions or Responses. |
 
 GPT-5, GPT-5 Mini, GPT-5 Nano and GPT-5 Pro are deprecated. Their dated snapshots are scheduled for retirement on December 11, 2026; check the [OpenAI deprecation list](https://developers.openai.com/api/docs/deprecations) for exact affected IDs.
 
@@ -4024,18 +4024,18 @@ GPT-5, GPT-5 Mini, GPT-5 Nano and GPT-5 Pro are deprecated. Their dated snapshot
 
 Gemini text models use `createCompletion({ model, contents })` or the app REST completion endpoint with `contents`. Use the [Gemini model reference](https://ai.google.dev/gemini-api/docs/models) for payloads and capabilities.
 
-| Model ID | Fliplet credit tier | Availability note |
-|---|---|---|
-| `gemini-3.5-flash` | Advanced | See provider model reference. |
-| `gemini-3.1-flash-lite` | Standard | See provider model reference. |
-| `gemini-2.5-pro` | Advanced | Provider restricts access to accounts with prior active usage. |
-| `gemini-2.5-flash` | Standard | Provider restricts access to accounts with prior active usage. |
-| `gemini-2.5-flash-lite` | Standard | Provider restricts access to accounts with prior active usage. |
-| `gemini-2.0-flash-thinking` | Standard | Historical configuration entry; no current provider model with this ID. Do not select. |
-| `gemini-2.0-flash` | Standard | Legacy 2.0 family retired June 1, 2026; do not select. |
-| `gemini-1.5-pro` | Advanced | Retired September 29, 2025; do not select. |
-| `gemini-1.5-flash-8b` | Standard | Retired September 29, 2025; do not select. |
-| `gemini-1.5-flash` | Standard | Retired September 29, 2025; do not select. |
+| Model ID | Availability note |
+| --- | --- |
+| `gemini-3.5-flash` | See provider model reference. |
+| `gemini-3.1-flash-lite` | See provider model reference. |
+| `gemini-2.5-pro` | Provider restricts access to accounts with prior active usage. |
+| `gemini-2.5-flash` | Provider restricts access to accounts with prior active usage. |
+| `gemini-2.5-flash-lite` | Provider restricts access to accounts with prior active usage. |
+| `gemini-2.0-flash-thinking` | Historical configuration entry; no current provider model with this ID. Do not select. |
+| `gemini-2.0-flash` | Legacy 2.0 family retired June 1, 2026; do not select. |
+| `gemini-1.5-pro` | Retired September 29, 2025; do not select. |
+| `gemini-1.5-flash-8b` | Retired September 29, 2025; do not select. |
+| `gemini-1.5-flash` | Retired September 29, 2025; do not select. |
 
 See the [Gemini changelog](https://ai.google.dev/gemini-api/docs/changelog) and [Gemini deprecations](https://ai.google.dev/gemini-api/docs/deprecations) for retirement and access restrictions.
 
@@ -4043,12 +4043,12 @@ See the [Gemini changelog](https://ai.google.dev/gemini-api/docs/changelog) and 
 
 OpenAI image models use `generateImage()` or `POST /v1/apps/:app/ai/image`. Gemini image IDs are also configured, but Gemini-specific payload compatibility must be checked against the [Gemini image-generation reference](https://ai.google.dev/gemini-api/docs/image-generation). `createCompletion({ model, contents, generationConfig })` accepts the Gemini request format; Gemini responses have a different shape from OpenAI image responses.
 
-| Model ID | Fliplet credit tier | Availability note |
-|---|---|---|
-| `gpt-image-2` | Flagship | OpenAI image model; image fallback. |
-| `gemini-2.5-flash-image` | Standard | Retired October 2, 2026; do not select. |
-| `gemini-3.1-flash-image` | Advanced | See provider image reference. |
-| `gemini-3-pro-image` | Premium | See provider image reference. |
+| Model ID | Availability note |
+| --- | --- |
+| `gpt-image-2` | OpenAI image model; image fallback. |
+| `gemini-2.5-flash-image` | Retired October 2, 2026; do not select. |
+| `gemini-3.1-flash-image` | See provider image reference. |
+| `gemini-3-pro-image` | See provider image reference. |
 
 `dall-e-2` and `dall-e-3` are legacy IDs. Fliplet replaces either ID with `gpt-image-2`, so specifying a DALL-E ID does not pin the requested model.
 
@@ -4056,21 +4056,19 @@ OpenAI image models use `generateImage()` or `POST /v1/apps/:app/ai/image`. Gemi
 
 `transcribeAudio()` and `POST /v1/apps/:app/ai/audio` accept only the three IDs below. Newer provider transcription IDs are not accepted by these Fliplet methods until Fliplet adds support.
 
-| Model ID | Fliplet credit tier | Availability note |
-|---|---|---|
-| `gpt-4o-mini-transcribe` | Standard | Retirement scheduled for February 26, 2027. |
-| `gpt-4o-transcribe` | Premium | Retirement scheduled for February 26, 2027. |
-| `whisper-1` | Standard | Retirement scheduled for February 26, 2027. |
+| Model ID | Availability note |
+| --- | --- |
+| `gpt-4o-mini-transcribe` | Retirement scheduled for February 26, 2027. |
+| `gpt-4o-transcribe` | Retirement scheduled for February 26, 2027. |
+| `whisper-1` | Retirement scheduled for February 26, 2027. |
 
 ### Embedding models
 
 Embedding models use `createEmbedding()` or `POST /v1/apps/:app/ai/embeddings`. See the [OpenAI embedding reference](https://developers.openai.com/api/docs/guides/embeddings) for input limits and dimensions.
 
-| Model ID | Fliplet credit tier |
-|---|---|
-| `text-embedding-3-small` | Standard |
-| `text-embedding-3-large` | Premium |
-| `text-embedding-ada-002` | Premium |
+- `text-embedding-3-small`
+- `text-embedding-3-large`
+- `text-embedding-ada-002`
 
 Keep the same embedding model and dimensions when comparing stored vectors with new queries. Changing models can require regenerating stored embeddings.
 
@@ -4078,7 +4076,7 @@ Keep the same embedding model and dimensions when comparing stored vectors with 
 
 The JavaScript `AVAILABLE_MODELS` metadata is not a complete availability catalog or a validation list. In addition to IDs above, it retains `gpt-3.5-turbo`, `text-davinci-003`, `gpt-4`, `gpt-4-turbo`, `o1`, `o1-mini`, `o3` and `o3-mini`. Do not infer availability from that metadata. `text-davinci-003` and `o1-mini` are retired. `gpt-3.5-turbo`, `gpt-4`, `gpt-4-turbo`, `o1` and `o3-mini` are scheduled for retirement on October 23, 2026. `o3` is deprecated; its `o3-2025-04-16` snapshot is scheduled for retirement on December 11, 2026.
 
-The completion proxy also routes additional model IDs and provider snapshots that are not named in Fliplet's credit configuration. Successful routing alone does not establish current provider access, endpoint compatibility or a configured model-specific credit tier. New features should start from the configured catalog above and use current provider documentation to confirm compatibility.
+The completion proxy also routes additional model IDs and provider snapshots that are not listed in the catalog above. Successful routing alone does not establish current provider access or endpoint compatibility. New features should start from the configured catalog above and use current provider documentation to confirm compatibility.
 
 ## Initialization
 
