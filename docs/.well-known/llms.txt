@@ -4,7 +4,7 @@
 
 ## Fliplet Core JavaScript APIs
 
-- [Fliplet.AI](https://developers.fliplet.com/API/core/ai.md): Build AI features with `Fliplet.AI` — chat, completions, streaming, image generation, transcription, and embeddings via OpenAI or Google Gemini proxies.
+- [Fliplet.AI](https://developers.fliplet.com/API/core/ai.md): Build chat, streaming, image generation, transcription and embeddings with Fliplet.AI. Includes model IDs and JavaScript and REST fallback defaults.
 - [Fliplet.Analytics](https://developers.fliplet.com/API/core/analytics.md): Enable, disable, and check analytics tracking, and record custom app events and page views from JavaScript.
 - [Fliplet.API.request()](https://developers.fliplet.com/API/core/api.md): Make authenticated HTTP requests to Fliplet APIs with automatic URL construction, caching, offline queueing, and error handling.
 - [App Actions V2 (deprecated)](https://developers.fliplet.com/API/core/app-actions-v2.md): Deprecated App Actions V2 — configure a pipeline of functions that runs on-device or in the cloud, ad hoc or on a schedule. Migrate to V3 App Actions.

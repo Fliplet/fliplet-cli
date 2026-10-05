@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-09-24T15:12:08.142Z",
+  "generatedAt": "2026-10-05T16:38:11.481Z",
   "libraries": [
     {
       "package": "fliplet-analytics-spa",
@@ -294,7 +294,11 @@
         "order",
         "product",
         "cart",
-        "donation"
+        "donation",
+        "payment fulfilment",
+        "client_reference_id",
+        "checkout.session.completed",
+        "purchase token"
       ],
       "category": "commerce"
     },
@@ -486,7 +490,7 @@
       "package": "fliplet-core",
       "namespace": "Fliplet.AI",
       "title": "Fliplet.AI",
-      "description": "Build AI features with `Fliplet.AI` — chat, completions, streaming, image generation, transcription, and embeddings via OpenAI or Google Gemini proxies.",
+      "description": "Build chat, streaming, image generation, transcription and embeddings with Fliplet.AI. Includes model IDs and JavaScript and REST fallback defaults.",
       "docUrl": "https://developers.fliplet.com/API/core/ai.md",
       "preloaded": true,
       "capabilities": [
