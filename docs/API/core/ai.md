@@ -313,16 +313,16 @@ For OpenAI requests, use the [Chat Completions API reference](https://platform.o
 
 **Key `CompletionOptions` include:**
 
-| Parameter     | Type                        | Optional | Default        | Description                                                                                                                                                                                             |
-|---------------|-----------------------------|----------|----------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| model       | String                    | Yes      | [Omission fallback](#fallback-defaults) | Explicit model ID from the [model catalog](#model-catalog). If omitted, the JavaScript wrapper inserts `gpt-3.5-turbo` for every completion payload; see [fallback defaults](#fallback-defaults).           |
-| input | String or Array<Object> | Yes | undefined | OpenAI Responses input; required for Responses requests. Set `useResponses: true`. |
-| useResponses | Boolean | Yes | false | Routes OpenAI requests to the Responses endpoint. Use only with a compatible OpenAI model and `input`. |
-| messages    | `Array<MessageObject>`      | Yes      | undefined    | OpenAI chat messages. See [Multi-turn conversation (chat)](#multi-turn-conversation-chat).                                |
-| prompt      | `String` or `Array<String>` | Yes      | undefined    | Legacy OpenAI prompt-completion input. Its provider model is retired; use `messages` or Responses `input` for new features.                                                                                                |
-| contents    | `Array<GeminiContent>` | Yes | undefined | Gemini request contents. See [Using Gemini Models](#using-gemini-models). |
-| temperature | Number                    | Yes      | Model dependent   | Sampling temperature when supported by the selected model.                                                                                                                                                                               |
-| stream      | Boolean                   | Yes      | false        | If true, enables streaming when supported by the selected model. See [Streaming with createCompletion()](#streaming-with-createcompletion).                                                                                                |
+| Parameter | Type | Description |
+| --- | --- | --- |
+| model | String | Specify a compatible model ID from the [model catalog](#model-catalog). Technically optional; omitting it uses the [JavaScript fallback](#fallback-defaults). |
+| messages | `Array<MessageObject>` | Required for OpenAI Chat Completions. Keep user and assistant messages in the history; see [Multi-turn conversation (chat)](#multi-turn-conversation-chat). |
+| input | String or `Array<Object>` | Required for OpenAI Responses requests. Set `useResponses: true`. |
+| useResponses | Boolean | Optional; defaults to `false`. Set `true` to route a compatible OpenAI model and `input` to the Responses endpoint. |
+| contents | `Array<GeminiContent>` | Required for Gemini requests. See [Using Gemini Models](#using-gemini-models). |
+| temperature | Number | Optional; default and supported values depend on the selected model. Controls sampling when supported. |
+| stream | Boolean | Optional; defaults to `false`. Set `true` to enable streaming when supported by the model. See [Streaming with createCompletion()](#streaming-with-createcompletion). |
+| prompt | String or `Array<String>` | Legacy OpenAI prompt-completion input. Its provider model is retired; use `messages` or Responses `input` for new features. |
 
 #### Additional request parameters
 
