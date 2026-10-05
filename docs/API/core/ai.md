@@ -317,8 +317,8 @@ For OpenAI requests, use the [Chat Completions API reference](https://platform.o
 | --- | --- | --- |
 | model | String | Specify a compatible model ID from the [model catalog](#model-catalog). Technically optional; omitting it uses the [JavaScript fallback](#fallback-defaults). |
 | messages | `Array<MessageObject>` | Required for OpenAI Chat Completions. Keep user and assistant messages in the history; see [Multi-turn conversation (chat)](#multi-turn-conversation-chat). |
-| input | String or `Array<Object>` | Required for OpenAI Responses requests. Set `useResponses: true`. |
-| useResponses | Boolean | Optional; defaults to `false`. Set `true` to route a compatible OpenAI model and `input` to the Responses endpoint. |
+| input | String or `Array<Object>` | Text or message input for OpenAI Responses requests. Set `useResponses: true`. |
+| useResponses | Boolean | Optional; defaults to `false`. Set `true` to route a compatible OpenAI model to the Responses endpoint. |
 | contents | `Array<GeminiContent>` | Required for Gemini requests. See [Using Gemini Models](#using-gemini-models). |
 | temperature | Number | Optional; default and supported values depend on the selected model. Controls sampling when supported. |
 | stream | Boolean | Optional; defaults to `false`. Set `true` to enable streaming when supported by the model. See [Streaming with createCompletion()](#streaming-with-createcompletion). |
