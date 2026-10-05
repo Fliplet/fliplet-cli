@@ -93,7 +93,6 @@ Here's a short list of requested features that are coming up on our platform in 
   </a>
   <a class="bl two" href="/API/core/ai">
     <div>
-      <span class="pin">Open beta</span>
       <h4>AI</h4>
       <p>Learn how to use and integrate AI (Artificial Intellicence) capabilities to your apps.</p>
       <button>Browse documentation &rarr;</button>
