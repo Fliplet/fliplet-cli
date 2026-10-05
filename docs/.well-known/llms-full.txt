@@ -4009,16 +4009,16 @@ OpenAI text models use `createCompletion()` or `POST /v1/apps/:app/ai/completion
 | `gpt-5.2-pro` | Premium | Responses format. |
 | `gpt-5.2` | Advanced | Chat Completions or Responses. |
 | `gpt-5.1` | Advanced | Chat Completions or Responses. Retirement scheduled for April 1, 2027. |
-| `gpt-5-pro` | Premium | Responses format. |
-| `gpt-5` | Advanced | Chat Completions or Responses. |
-| `gpt-5-mini` | Standard | Chat Completions or Responses. |
-| `gpt-5-nano` | Standard | Chat Completions or Responses. |
+| `gpt-5-pro` | Premium | Responses format. Deprecated; see the snapshot retirement notice below. |
+| `gpt-5` | Advanced | Chat Completions or Responses. Deprecated; see the snapshot retirement notice below. |
+| `gpt-5-mini` | Standard | Chat Completions or Responses. Deprecated; see the snapshot retirement notice below. |
+| `gpt-5-nano` | Standard | Chat Completions or Responses. Deprecated; see the snapshot retirement notice below. |
 | `gpt-4o` | Advanced | Chat Completions or Responses. |
 | `gpt-4o-mini` | Standard | Chat Completions or Responses. |
 | `gpt-4.1` | Advanced | Chat Completions or Responses. |
 | `gpt-4.1-mini` | Standard | Chat Completions or Responses. |
 
-Dated GPT-5, GPT-5 Mini, GPT-5 Nano and GPT-5 Pro snapshots are scheduled for retirement on December 11, 2026. This is a snapshot-specific notice; check the [OpenAI deprecation list](https://developers.openai.com/api/docs/deprecations) for exact affected IDs.
+GPT-5, GPT-5 Mini, GPT-5 Nano and GPT-5 Pro are deprecated. Their dated snapshots are scheduled for retirement on December 11, 2026; check the [OpenAI deprecation list](https://developers.openai.com/api/docs/deprecations) for exact affected IDs.
 
 ### Gemini text models
 
