@@ -80,6 +80,7 @@ Index of Fliplet's JavaScript APIs (Core, Data Sources, Media, UI, Communicate) 
 
 These JS APIs falls into the most common category and almost all apps, components and themes use at least one of them. All apps include `fliplet-core` by default, and any other can easily be included on your app screens via Fliplet Studio.
 
+  - [AI](API/core/ai) (preloaded in `fliplet-core`)
   - [Audio](API/fliplet-audio) (`fliplet-audio`)
   - [Audio Player](API/fliplet-audio-player) (`fliplet-audio-player`)
   - [Barcode](API/fliplet-barcode) (`fliplet-barcode`)

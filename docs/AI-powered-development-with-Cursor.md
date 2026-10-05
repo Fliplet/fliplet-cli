@@ -10,6 +10,8 @@ deprecated: false
 
 How to install and use the Fliplet VS Code extension inside Cursor to generate, refactor, and debug Fliplet app code with AI assistance.
 
+To add model-generated behavior inside a running Fliplet app, use [Fliplet.AI](/API/core/ai) and its [model catalog](/API/core/ai/models). This page covers AI assistance while writing code in Cursor.
+
 ## Empowering Development with AI
 
 ### Using Cursor with Fliplet Extension

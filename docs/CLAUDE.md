@@ -122,6 +122,16 @@ the catalog entry — don't steer the shared reference. This is the pattern used
 `exclude_from_v3_catalog` opt-out fails the build rather than silently shipping
 two `docUrl`s for one package.
 
+## AI documentation ownership
+
+- `API/core/ai.md` owns the `Fliplet.AI` JavaScript method contracts and is the sole preloaded AI namespace catalog entry.
+- `API/core/ai/models.md` owns complete model lists, request-format compatibility, fallback values and retirement information. Guides link here and use explicit illustrative IDs; do not copy model catalogs into guides.
+- `API/core/ai/chatbot.md` owns conversation state, reply rendering and streaming workflows.
+- `API/core/ai/audio-transcription.md` owns upload, microphone capture, final chunks, cleanup, retry and transcript insertion.
+- `REST-API/fliplet-ai.md` owns the app AI REST contracts. Verify external token and app access before publishing it or its inbound links.
+
+Nested AI pages have their own frontmatter and raw Markdown siblings. Keep namespace/catalog fields on the main reference only. Preserve moved public fragments in that reference with links to the corresponding destination sections. During a compatible documentation rollout, keep any temporary main-page catalog or workflow copies aligned until the deployed consumers fetch the split pages.
+
 ## Exclusion list — do not index, do not polish
 
 These files are handled at the server or build layer and must never be

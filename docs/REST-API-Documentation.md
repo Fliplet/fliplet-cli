@@ -23,6 +23,13 @@ All our APIs require your client to authenticate when accessing the endpoints. P
 
 ## Using our APIs
 
+### App AI
+
+Generate text and images, transcribe audio and create embeddings for a Fliplet app. Select a compatible model from the shared [AI model catalog](/API/core/ai/models).
+
+[View the app AI REST reference »](REST-API/fliplet-ai)
+{: .buttons}
+
 ### Data Sources
 
 Read and write data to our virtual tables and enhance your Fliplet apps. This is often used to integrate your list of contacts (e.g. from Azure Directory) with Fliplet.

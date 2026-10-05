@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-05T16:38:11.481Z",
+  "generatedAt": "2026-10-05T21:39:10.839Z",
   "libraries": [
     {
       "package": "fliplet-analytics-spa",
@@ -490,7 +490,7 @@
       "package": "fliplet-core",
       "namespace": "Fliplet.AI",
       "title": "Fliplet.AI",
-      "description": "Build chat, streaming, image generation, transcription and embeddings with Fliplet.AI. Includes model IDs and JavaScript and REST fallback defaults.",
+      "description": "Generate text and images, transcribe audio and create embeddings with Fliplet.AI. Covers request formats, streaming, models and limits.",
       "docUrl": "https://developers.fliplet.com/API/core/ai.md",
       "preloaded": true,
       "capabilities": [
