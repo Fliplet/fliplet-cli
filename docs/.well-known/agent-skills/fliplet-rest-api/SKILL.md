@@ -1,17 +1,18 @@
 ---
 name: fliplet-rest-api
-description: Server-side REST API for managing organizations, apps, users, data sources, files, and screens from your own backend.
+description: REST API for app AI calls and managing organizations, apps, users, data sources, files and screens from your own backend.
 ---
 
 # Fliplet REST API
 
-Server-side REST API for managing organizations, apps, users, data sources, files, and screens from your own backend.
+REST API for app AI calls and managing organizations, apps, users, data sources, files and screens from your own backend.
 
 ## Documentation
 
 - [Rate limiting for APIs](https://developers.fliplet.com/Rate-limiting-for-API.md): Fliplet rate-limits Data Source, Communicate, audit-log, AI, and App Action APIs per user; back off on 429 responses and batch writes via the commit endpoint.
 - [Fliplet REST API documentation](https://developers.fliplet.com/REST-API-Documentation.md): Index of Fliplet REST endpoints for Data Sources, Media, Notifications, Apps, and more — intended for third-party integrations.
 - [Authenticating with the Fliplet REST APIs](https://developers.fliplet.com/REST-API/authenticate.md): Authenticate Fliplet REST API requests via Auth-token header, Authorization Bearer (base64), query string, or cookie against EU, US, or CA endpoints.
+- [Fliplet app AI REST API](https://developers.fliplet.com/REST-API/fliplet-ai.md): Make app-scoped Fliplet AI requests for text, images, transcription and embeddings using the format required by the selected model.
 - [App Analytics REST API](https://developers.fliplet.com/REST-API/fliplet-app-analytics.md): The App Analytics REST API lets you read your app's analytics data.
 - [App Subscriptions REST API](https://developers.fliplet.com/REST-API/fliplet-app-subscriptions.md): The App Subscriptions REST API lets you read and manage your app's users subscribed via push notifications.
 - [Apps REST API](https://developers.fliplet.com/REST-API/fliplet-apps.md): The Apps REST API lets external integrations list, read, create, update, and delete Fliplet apps that the auth token has access to.

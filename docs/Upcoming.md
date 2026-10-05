@@ -15,7 +15,7 @@ Tracker of Fliplet features recently shipped or in beta, linking to their develo
   <a class="bl two" href="/API/core/ai">
     <div>
       <h4>AI</h4>
-      <p>Learn how to use and integrate AI (Artificial Intellicence) capabilities to your apps.</p>
+      <p>Generate text and images, transcribe audio and create embeddings with Fliplet.AI.</p>
       <button>Browse documentation &rarr;</button>
     </div>
   </a>

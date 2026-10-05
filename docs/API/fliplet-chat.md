@@ -15,6 +15,8 @@ Build chat features (one-to-one conversations, group chats, and public channels)
 
 The chat is a thin wrapper over the Fliplet Data Sources APIs: each conversation is backed by a data source, messages are entries in that data source, and the contacts list is a data source you nominate when you connect. All methods return Promises.
 
+For model-generated replies, use the [AI chatbot guide](/API/core/ai/chatbot). `Fliplet.Chat` manages messaging between participants.
+
 ## Install
 
 Add the `fliplet-chat` dependency to your screen or app resources. In V3 apps, add it via Studio's library picker — required dependencies (`fliplet-datasources`, `fliplet-utils`) are pulled in automatically.

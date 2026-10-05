@@ -14,7 +14,7 @@ Before loading this fallback skill, check whether one of the following matches y
 - `fliplet-data-sources` — Data sources JavaScript API and security model: query, insert, update, delete records; row-level security; file storage; data-source hooks.
 - `fliplet-app-actions` — Build server-side automations that run on a schedule or in response to events. Covers App Actions v1, v2, and v3 APIs.
 - `fliplet-helpers-framework` — Build helpers — reusable Vue-based interface components with editable interface fields, hooks, methods, libraries, and templates.
-- `fliplet-rest-api` — Server-side REST API for managing organizations, apps, users, data sources, files, and screens from your own backend.
+- `fliplet-rest-api` — REST API for app AI calls and managing organizations, apps, users, data sources, files and screens from your own backend.
 - `fliplet-components-framework` — Build custom components (widgets) that ship inside Fliplet apps: component definitions, lifecycle, events, dependencies, providers, custom templates, testing.
 - `fliplet-themes-framework` — Build custom themes that control app appearance: color palettes, typography, theme settings exposed in the editor, CSS overrides.
 - `fliplet-menus-framework` — Build custom menus that ship inside Fliplet apps to navigate between screens.

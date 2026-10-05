@@ -94,7 +94,7 @@ Here's a short list of requested features that are coming up on our platform in 
   <a class="bl two" href="/API/core/ai">
     <div>
       <h4>AI</h4>
-      <p>Learn how to use and integrate AI (Artificial Intellicence) capabilities to your apps.</p>
+      <p>Generate text and images, transcribe audio and create embeddings with Fliplet.AI.</p>
       <button>Browse documentation &rarr;</button>
     </div>
   </a>
