@@ -12,7 +12,12 @@ Transcribe an audio file or a browser recording with `Fliplet.AI.transcribeAudio
 
 ## Contents
 
-[Before you start](#before-you-start) · [Upload an audio file](#upload-an-audio-file) · [Record audio](#record-audio) · [Complete recording and upload example](#complete-recording-and-upload-example) · [Cancellation, timeout and retry](#cancellation-timeout-and-retry) · [Verify and troubleshoot](#verify-and-troubleshoot)
+- [Before you start](#before-you-start)
+- [Upload an audio file](#upload-an-audio-file)
+- [Record audio](#record-audio)
+- [Complete recording and upload example](#complete-recording-and-upload-example)
+- [Cancellation, timeout and retry](#cancellation-timeout-and-retry)
+- [Verify and troubleshoot](#verify-and-troubleshoot)
 
 ## Before you start
 
@@ -326,3 +331,10 @@ Test these behaviors in the actual app and target browsers:
 - Check secure-context and microphone behavior on your supported desktop and mobile browsers, including Safari and iOS if used by your audience.
 
 For permission, credits, MIME and size errors, consult the [method error reference](/API/core/ai#errors-and-limits). Resolve access or credits before retrying; for rate limits, wait before retrying. A recorder MIME type being supported does not guarantee that every file with that MIME type contains valid decodable audio.
+
+## Related documentation
+
+- [Fliplet.AI JavaScript reference](/API/core/ai)
+- [AI models available through Fliplet](/API/core/ai/models)
+- [Build an AI chatbot](/API/core/ai/chatbot)
+- [App AI REST API](/REST-API/fliplet-ai)

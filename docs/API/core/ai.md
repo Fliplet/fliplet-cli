@@ -14,7 +14,14 @@ Generate text and images, transcribe audio and create embeddings through Fliplet
 
 ## Table of contents
 
-[Choose a method](#choose-a-method) · [Choose a model](#choose-a-model) · [First request](#first-request) · [API reference](#api-reference) · [Rate limiting](#rate-limiting) · [Error handling](#error-handling) · [Related guides](#related-guides) · [Model catalog](#model-catalog)
+- [Choose a method](#choose-a-method)
+- [Choose a model](#choose-a-model)
+- [First request](#first-request)
+- [API reference](#api-reference)
+- [Rate limiting](#rate-limiting)
+- [Error handling](#error-handling)
+- [Model catalog](#model-catalog)
+- [Related guides](#related-guides)
 
 ## Choose a method
 
@@ -429,13 +436,6 @@ Plan quotas are counted for the app, using its master app ID where applicable. A
 Catch asynchronous failures with `try...catch` or `.catch()`. Completion setup can also throw synchronously, including a missing streaming dependency or invalid `ask()` message. Provider request failures may return `400` even when the underlying provider error has another code. Preserve the error payload for diagnosis; do not assume every failure has the same JavaScript shape.
 
 Show a useful error and retain the user's input. Validate the expected response shape before treating a request as successful. Retry transient connection or rate-limit failures with a delay; correct invalid payloads, unavailable models, access or credit problems before retrying. A timed-out request is not proof that no provider work or charge occurred.
-
-## Related guides
-
-- [AI models available through Fliplet](/API/core/ai/models): configured IDs, provider facts, fallback defaults and retirement notices.
-- [Build an AI chatbot](/API/core/ai/chatbot): conversation state, send/retry controls and streaming.
-- [Record or upload audio](/API/core/ai/audio-transcription): file selection, microphone capture and transcript insertion.
-- [App AI REST API](/REST-API/fliplet-ai): external requests and authentication.
 
 ## Model catalog
 
@@ -952,3 +952,10 @@ OpenAI announced deprecation of GPT-5.1, GPT-5.3-Codex and GPT-5.4-Nano on Octob
 The JavaScript `AVAILABLE_MODELS` metadata is not a complete availability catalog or a validation list. In addition to IDs above, it retains `gpt-3.5-turbo`, `text-davinci-003`, `gpt-4`, `gpt-4-turbo`, `o1`, `o1-mini`, `o3` and `o3-mini`. Do not infer availability from that metadata. `text-davinci-003` and `o1-mini` are retired. `gpt-3.5-turbo`, `gpt-4`, `gpt-4-turbo`, `o1` and `o3-mini` are scheduled for retirement on October 23, 2026. `o3` is deprecated; its `o3-2025-04-16` snapshot is scheduled for retirement on December 11, 2026.
 
 The completion proxy also routes additional model IDs and provider snapshots that are not listed in the catalog above. Successful routing alone does not establish current provider access or endpoint compatibility. New features should start from the configured catalog above and use current provider documentation to confirm compatibility.
+
+## Related guides
+
+- [AI models available through Fliplet](/API/core/ai/models): configured IDs, provider facts, fallback defaults and retirement notices.
+- [Build an AI chatbot](/API/core/ai/chatbot): conversation state, send/retry controls and streaming.
+- [Record or upload audio](/API/core/ai/audio-transcription): file selection, microphone capture and transcript insertion.
+- [App AI REST API](/REST-API/fliplet-ai): external requests and authentication.
