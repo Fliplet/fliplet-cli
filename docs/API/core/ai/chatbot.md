@@ -27,7 +27,9 @@ Build a conversation in which an AI model generates replies using `Fliplet.AI`. 
 
 Choose and specify a compatible [text model](/API/core/ai/models#openai-text-models). The IDs in this guide are illustrative selections, not recommendations for every chatbot. Preserve a supported model requested by the user and use its request format. For conversations between people, use [Fliplet.Chat](/API/fliplet-chat).
 
-For interactive conversations, writing assistants and explanation panels, show text as it arrives when the selected model supports streaming. Render paragraphs, lists, emphasis, code and links when that suits the content and audience. Preserve explicit plain-text or non-streaming requirements; background tasks and structured JSON need their own output handling.
+For interactive conversations, writing assistants and explanation panels, show text as it arrives when the selected model supports streaming. Preserve explicit plain-text or non-streaming requirements; background tasks and structured JSON need their own output handling.
+
+For reader-facing replies, present paragraphs, lists, emphasis, code and links as readable structure suited to the audience. Safely render Markdown when present unless the user or output contract requires plain text. Do not invent a plain-text-only instruction to avoid formatting the response.
 
 ### Example resources
 
@@ -222,7 +224,9 @@ function mountAIChat() {
 const disposeAIChat = mountAIChat();
 ```
 
-The conversation is readable without announcing every chunk to a screen reader: the separate status reports waiting, completion or failure. Updates follow the bottom while the reader is there and preserve their position when they scroll back. Adapt the controls and styles to your app's design and audience. On SPA route changes or framework unmount, call `disposeAIChat()`; `pagehide` alone does not cover SPA navigation.
+The conversation is readable without announcing every chunk to a screen reader: the separate status reports waiting, completion or failure. Updates follow the bottom while the reader is there and preserve their position when they scroll back. Adapt the controls and styles to your app's design and audience.
+
+In Vue, keep callbacks connected to [reactive state](/API/v3/frameworks/vue#updating-reactive-state-asynchronously); mutating an original object after inserting it into component state does not trigger a display update. On SPA route changes or framework unmount, call `disposeAIChat()`; `pagehide` alone does not cover SPA navigation.
 
 <span id="conversation-history"></span>
 
