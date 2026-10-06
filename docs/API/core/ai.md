@@ -258,7 +258,7 @@ async function streamReply() {
       const delta = choice && choice.delta && choice.delta.content;
       if (typeof delta === 'string') {
         text += delta;
-        console.log(text); // Use textContent for text displayed in the app.
+        console.log(text); // textContent is a safe plain-text display option.
       }
     });
     const completion = await request;
@@ -272,7 +272,7 @@ async function streamReply() {
 streamReply();
 ```
 
-To cancel, retain the request and call `await request.cancel()`, or use `Fliplet.AI.cancel(request.guid)`. Cancellation asks Fliplet to abort the active provider stream. A cancellation acknowledgement may report that the signal was broadcast; it is not proof that no generation or charge occurred. Keep partial text visibly interrupted and handle failure/retry in the app. The [chatbot guide](/API/core/ai/chatbot#stream-a-reply) covers UI state.
+To cancel, retain the request and call `await request.cancel()`, or use `Fliplet.AI.cancel(request.guid)`. Cancellation asks Fliplet to abort the active provider stream. A cancellation acknowledgement may report that the signal was broadcast; it is not proof that no generation or charge occurred. Keep partial text visibly interrupted and handle failure/retry in the app. The [chatbot guide](/API/core/ai/chatbot#build-a-conversation) covers progressive display, safe formatting and UI state.
 
 ### `Fliplet.AI.generateImage()`
 
@@ -543,6 +543,8 @@ Keep the same embedding model and dimensions when comparing stored vectors with 
 The text examples below select a model explicitly. See the API reference for [image generation](#flipletaigenerateimage), [audio recording and transcription](#flipletaitranscribeaudio), and [embeddings](#flipletaicreateembedding).
 
 ### Multi-turn conversation (chat)
+
+This buffered example illustrates request history. For an interactive UI with progressive replies and safe formatting, use the [chatbot guide](/API/core/ai/chatbot#build-a-conversation).
 
 Keep `{ role, content }` messages, including model replies, in app state. Send the relevant history on each turn. This lets follow-up questions refer to earlier answers. Persist the messages only if the app needs conversations to survive reloads, and apply the app's normal access rules to stored content.
 
