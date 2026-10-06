@@ -347,10 +347,11 @@ const response = await Fliplet.App.V3.Actions.request({
 
 - **Server only.** It works only in actions with `environment: 'server'`. In a `client` action, or an `any` action running on the device, it rejects immediately with the code `UNAVAILABLE`.
 - **Any HTTP status resolves.** A `404` or `500` from the provider resolves with that `status`; check it yourself. The promise rejects only when no response was received.
-- **The body is text.** Use `JSON.parse(response.body)` for a JSON response. Binary responses are not supported.
+- **The body is text.** Use `JSON.parse(response.body)` for a JSON response. The body is always decoded as UTF-8, so binary responses and responses in another character encoding are not supported. A response compressed with gzip, deflate or Brotli is decompressed for you.
 - **HTTPS only, public destinations only.** Private, loopback and link-local addresses are refused, including when a public hostname resolves or redirects to one.
-- **Limits.** 30 seconds by default (50 at most) for the whole request including redirects, 5 MB for the response body and for the request body, and 5 redirects.
+- **Limits.** 30 seconds by default (50 at most) for the whole request including redirects, 5 MB for the response body (after decompression) and for the request body, and 5 redirects.
 - **Redirects to another host drop every request header**, so a credential is never forwarded to a host you did not name. Call the final URL directly if the provider needs the header there.
+- **A redirect that would resend the request body to another host is not followed.** This applies to a `307` or `308` redirect of a request that has a `body`. The request resolves with that `3xx` status and its `location` header, and nothing is sent to the new host.
 - **Not logged.** The URL, headers and body are never written to the runner logs. This is the only request that may carry a key in the URL query string.
 
 A failed request rejects with an `Error` that has a `code`:
