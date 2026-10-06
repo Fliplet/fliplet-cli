@@ -5,7 +5,7 @@
   "description": "Internal scripts and tests for the Fliplet developer docs site. Jekyll does the rendering.",
   "type": "module",
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "scripts": {
     "build:agent-indexes": "node bin/build-agent-indexes.mjs",
@@ -13,5 +13,10 @@
     "check:docs": "node bin/build-agent-indexes.mjs --strict",
     "check:v3-catalog": "node bin/check-v3-catalog-drift.mjs",
     "test:unit": "node --test bin/__tests__/*.test.mjs"
+  },
+  "devDependencies": {
+    "dompurify": "3.4.16",
+    "jsdom": "26.1.0",
+    "marked": "18.1.0"
   }
 }
