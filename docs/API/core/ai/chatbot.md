@@ -35,7 +35,7 @@ For reader-facing replies, present paragraphs, lists, emphasis, code and links a
 
 Reuse an existing suitable renderer in your app framework. The plain JavaScript example below uses [Marked](https://marked.js.org/) to parse Markdown and [DOMPurify](https://github.com/cure53/DOMPurify) to sanitize the result. Marked alone does not sanitize HTML. These libraries are separate app resources; Studio's own renderer is not preloaded in your app.
 
-For a V3 screen, declare these dependencies in its app resources. The registered `fliplet-socket` package enables Fliplet socket streaming. The two named CDN resources load on demand using `Fliplet.require.lazy()` in the example:
+For a V3 screen, declare these dependencies in its app resources. The registered `fliplet-socket` package enables Fliplet socket streaming and loads at app boot because it is declared eager below. Run the example after Fliplet is ready. The two named CDN resources load on demand using `Fliplet.require.lazy()` in the example:
 
 ```json
 [
@@ -306,7 +306,13 @@ async function requestReply(model, messages, onText) {
 
 For a Responses-only non-streaming model, send `input` with `useResponses: true` and extract message content with `type: 'output_text'` from `result.output`; see [Responses](/API/core/ai#using-the-responses-api). For Gemini, use `contents` and extract non-thought text parts from `result.candidates[0].content.parts`; see [Gemini](/API/core/ai#using-gemini-models). Preserve the guard, pending/error state and raw history when adapting either format.
 
-For explicitly plain-text replies, replace the parser/sanitizer lines in `paint()` with `run.assistant.body.textContent = run.reply`, set that body's `white-space: pre-wrap`, and remove the Markdown resources and `ensureRenderer()` call. Keep streaming if appropriate. Never display model output through unsanitized `innerHTML`.
+For explicitly plain-text replies, replace the parser/sanitizer lines in `paint()` with `run.assistant.body.textContent = run.reply`, set that body's `white-space: pre-wrap`, and remove only the Markdown resources and their loading. In this example, `ensureRenderer()` loads only Markdown libraries, so its call can be removed. If your adapted loader also loads streaming dependencies, retain that part: a plain-text stream still needs `fliplet-socket`. Keep streaming if appropriate. Never display model output through unsanitized `innerHTML`.
+
+The example's eager `fliplet-socket` dependency loads at app boot and is ready after Fliplet initialization. If your app instead declares that registered package as lazy, await its full dependency chain inside `submit()`'s `try` block before calling `requestReply()`. Keep the existing error/retry handling if loading fails:
+
+```js
+await Fliplet.require.lazy.chain('fliplet-socket');
+```
 
 ## Optional storage and app data
 

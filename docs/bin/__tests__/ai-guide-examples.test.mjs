@@ -114,6 +114,109 @@ it('interactive example shows delayed chunks before completion and finalizes the
   b.dom.window.close();
 });
 
+// Apply the guide's plain-text substitutions to its complete example. Socket
+// loading is independent of the renderer and stays inside the existing try/catch.
+function plainTextChat({ lazySocket = true } = {}) {
+  let code = scripts('chatbot')[0];
+  const start = code.indexOf('    // Parse the entire accumulated text:');
+  const end = code.indexOf('    if (follow) conversation.scrollTop', start);
+  assert.ok(start >= 0 && end > start);
+  code = code.slice(0, start) +
+    "    run.assistant.body.textContent = run.reply;\n    run.assistant.body.style.whiteSpace = 'pre-wrap';\n" + code.slice(end);
+  const loaderStart = code.indexOf('  async function ensureRenderer()');
+  const loaderEnd = code.indexOf('  function stop()', loaderStart);
+  assert.ok(loaderStart >= 0 && loaderEnd > loaderStart);
+  code = code.slice(0, loaderStart) + code.slice(loaderEnd);
+  const socketAwait = scripts('chatbot')[4].trim(); // Documented lazy registered-package adaptation.
+  assert.ok(code.includes('      await ensureRenderer();'));
+  return code.replace('      await ensureRenderer();', lazySocket ? `      ${socketAwait}` : '');
+}
+
+it('plain-text lazy socket adaptation waits for readiness and displays two pending updates', async () => {
+  const b = chatBrowser();
+  delete b.window.marked;
+  delete b.window.DOMPurify;
+  const ready = deferred();
+  const first = streamRequest();
+  const requests = [];
+  let loads = 0;
+  b.window.Fliplet.require.lazy.chain = async name => {
+    assert.equal(name, 'fliplet-socket');
+    loads++;
+    await ready.promise;
+    b.window.Fliplet.Socket = {};
+  };
+  b.window.Fliplet.AI.createCompletion = options => {
+    // Match the SDK's synchronous transport dependency guard.
+    if (options.stream && typeof b.window.Fliplet.Socket === 'undefined') {
+      throw Error('fliplet-socket is required, please add the dependency to this screen or app');
+    }
+    requests.push(options);
+    return first.request;
+  };
+  vm.runInContext(plainTextChat(), b.context);
+  b.submit('Plain text, please');
+  await flush();
+  assert.equal(loads, 1);
+  assert.equal(requests.length, 0);
+  assert.equal(b.element('ai-chat-send').disabled, true);
+  ready.resolve();
+  await flush();
+  assert.equal(requests.length, 1);
+  const bubble = b.element('ai-chat-messages').children[1];
+  const body = bubble.children[1];
+  first.chunk('Literal **text**');
+  assert.equal(body.textContent, 'Literal **text**');
+  await flush(); // Request completion is still pending.
+  first.chunk('\n- <script> remains text');
+  assert.equal(body.textContent, 'Literal **text**\n- <script> remains text');
+  assert.equal(body.children.length, 0);
+  assert.equal(body.style.whiteSpace, 'pre-wrap');
+  assert.equal(b.element('ai-chat-send').disabled, true);
+  first.resolve();
+  await flush();
+  assert.equal(b.element('ai-chat-messages').children[1], bubble);
+  assert.equal(b.element('ai-chat-messages').children.length, 2);
+  const second = streamRequest();
+  b.window.Fliplet.AI.createCompletion = options => { requests.push(options); return second.request; };
+  b.submit('Continue');
+  await flush();
+  assert.equal(requests[1].messages[1].content, 'Literal **text**\n- <script> remains text');
+  assert.equal(requests[1].messages.length, 3);
+  second.chunk('Follow-up'); second.resolve(); await flush();
+  b.window.close();
+});
+
+it('omitting lazy socket loading reproduces the synchronous dependency error without losing retry input', async () => {
+  const b = chatBrowser();
+  let calls = 0;
+  b.window.Fliplet.AI.createCompletion = options => {
+    calls++;
+    if (options.stream && typeof b.window.Fliplet.Socket === 'undefined') {
+      throw Error('fliplet-socket is required, please add the dependency to this screen or app');
+    }
+    return request.request;
+  };
+  const request = streamRequest();
+  vm.runInContext(plainTextChat({ lazySocket: false }), b.context);
+  b.submit('Keep this draft');
+  await flush();
+  assert.equal(calls, 1);
+  assert.match(b.element('ai-chat-status').textContent, /fliplet-socket is required.*retry/);
+  assert.equal(b.element('ai-chat-draft').value, 'Keep this draft');
+  assert.equal(b.element('ai-chat-send').disabled, false);
+  const bubble = b.element('ai-chat-messages').children[1];
+  // Once transport readiness is restored, explicit retry reuses the failed turn.
+  b.window.Fliplet.Socket = {};
+  b.submit(); await flush();
+  request.chunk('Recovered plain text'); request.resolve(); await flush();
+  assert.equal(calls, 2);
+  assert.equal(b.element('ai-chat-messages').children[1], bubble);
+  assert.equal(b.element('ai-chat-messages').children.length, 2);
+  assert.equal(b.element('ai-chat-draft').value, '');
+  b.window.close();
+});
+
 it('real parser/sanitizer renders Markdown and keeps hostile HTML and link targets inert', async () => {
   const b = chatBrowser();
   const request = await startChat(b);
