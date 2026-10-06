@@ -14,8 +14,8 @@ Generate text and images, transcribe audio and create embeddings through Fliplet
 
 ## Table of contents
 
-- [Choose a method](#choose-a-method)
-- [Choose a model](#choose-a-model)
+- [AI methods](#ai-methods)
+- [AI models](#ai-models)
 - [First request](#first-request)
 - [API reference](#api-reference)
 - [Rate limiting](#rate-limiting)
@@ -23,7 +23,9 @@ Generate text and images, transcribe audio and create embeddings through Fliplet
 - [Model catalog](#model-catalog)
 - [Related guides](#related-guides)
 
-## Choose a method
+<a id="choose-a-method"></a>
+
+## AI methods
 
 | Feature | Method | Model category |
 | --- | --- | --- |
@@ -37,7 +39,9 @@ For messages between people, use [Fliplet.Chat](/API/fliplet-chat). The [chatbot
 
 <a id="model-selection-and-fallback-defaults"></a>
 
-## Choose a model
+<a id="choose-a-model"></a>
+
+## AI models
 
 Specify a compatible `model` ID from [AI models available through Fliplet](/API/core/ai/models). Honor a supported user-selected model; otherwise choose for the task's capabilities and cost constraints. Catalog order and example IDs are not a suitability ranking. Omitting `model` uses a [fallback](#fallback-defaults), including incompatible fallbacks for some text formats.
 
