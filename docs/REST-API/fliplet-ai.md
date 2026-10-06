@@ -10,6 +10,8 @@ deprecated: false
 
 Use these app-scoped endpoints to generate text or images, transcribe audio and create embeddings through Fliplet. Requests use a Fliplet token and the selected provider's payload format; a customer provider key is not required.
 
+These endpoints run models through Fliplet’s server API and require an internet connection. They do not provide an on-device model or offline inference.
+
 ## Contents
 
 - [Before your first request](#before-your-first-request)

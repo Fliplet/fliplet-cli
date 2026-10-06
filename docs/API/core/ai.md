@@ -12,6 +12,8 @@ capabilities: [ai, llm, openai, gemini, gpt, chatbot, chat completion, image gen
 
 Generate text and images, transcribe audio and create embeddings through Fliplet. `Fliplet.AI` is preloaded in apps and uses Fliplet access and AI credits without a customer-supplied OpenAI or Gemini key.
 
+`Fliplet.AI` runs models through Fliplet’s server API and requires an internet connection. It does not provide an on-device model or offline inference.
+
 ## Table of contents
 
 - [AI methods](#ai-methods)
