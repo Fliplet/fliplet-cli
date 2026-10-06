@@ -95,8 +95,8 @@ async function execute(context) {
     return { sent: false, error: 'MAIL_PROVIDER_NOT_CONFIGURED' };
   }
 
-  // Send apiKey in a request header or body.
-  // Never return it, log it, throw it or put it in a URL.
+  // Send apiKey in a request header or body with
+  // Fliplet.App.V3.Actions.request(). Never return it, log it or throw it.
   return { configured: true };
 }
 ```
@@ -106,6 +106,8 @@ async function execute(context) {
 - Values always come from the **master** app and are read fresh on every run. Published apps read the master's values; a rotated value applies to the next run without republishing.
 - `client` and `any` actions always get `context.settings = {}`.
 - If the underscore settings exceed 100 KB in total, every server action of the app fails until they are reduced.
+
+- Call the provider with [`Fliplet.App.V3.Actions.request()`](../core/app-actions-v3#flipletappv3actionsrequest-server-actions-only). Server actions run in a headless browser, so a plain `fetch` is rejected by provider APIs that do not allow cross-origin browser requests (CORS).
 
 See [`context.settings` in App Actions V3](../core/app-actions-v3#contextsettings-server-actions-only) for the complete example, the limits and the rules for keeping values out of logs and responses.
 

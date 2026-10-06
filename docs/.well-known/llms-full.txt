@@ -7209,9 +7209,9 @@ async function execute(context) {
 - **100 KB limit.** If the app's underscore settings exceed 100 KB in total (serialized as JSON), **every** server action of that app fails with the error `Private app settings exceed the 100 KB limit for server actions` until the settings are reduced.
 - **Read defensively.** Start with `const settings = context.settings || {};` and handle a missing value — the setting may not be configured yet.
 
-<p class="warning"><strong>Never let a setting value leave the action.</strong> Never return it, never log it (<code>console.*</code>), never put it in a thrown or returned error message, and never put it in a URL or query string — send it in a request header or body instead. Return values and error messages are stored in the app action logs and returned to the caller of <code>runWithResult()</code>; console output and every request URL are captured in the server runner logs. A provider that only accepts its key in the URL query string can not be called without breaking this rule.</p>
+<p class="warning"><strong>Never let a setting value leave the action.</strong> Never return it, never log it (<code>console.*</code>), never put it in a thrown or returned error message, and never put it in a URL or query string — send it in a request header or body instead. Return values and error messages are stored in the app action logs and returned to the caller of <code>runWithResult()</code>; console output and the URL of every <code>fetch</code> or XHR request are captured in the server runner logs. A provider that only accepts its key in the URL query string must be called with <a href="#flipletappv3actionsrequest-server-actions-only"><code>Fliplet.App.V3.Actions.request()</code></a>, which is the one request the runner does not log.</p>
 
-<p class="warning">Server actions run in a headless browser, so <code>fetch</code> from a server action is a cross-origin browser request. Provider APIs that do not allow cross-origin browser requests (CORS) reject it. Server-side HTTP requests without this restriction are not available yet.</p>
+<p class="warning">Server actions run in a headless browser, so <code>fetch</code> from a server action is a cross-origin browser request. Provider APIs that do not allow cross-origin browser requests (CORS) reject it. Call third-party provider APIs with <a href="#flipletappv3actionsrequest-server-actions-only"><code>Fliplet.App.V3.Actions.request()</code></a> instead.</p>
 
 A credential reaches `context.settings` from one of two sources:
 
@@ -7220,7 +7220,7 @@ A credential reaches `context.settings` from one of two sources:
 
 Protected (`__`) keys are write-only over HTTP: nobody can read them back, not Studio editors and not API tokens. They are read the same way, for example `const apiKey = (settings.__mailProvider || {}).apiKey;`.
 
-Example: read a credential, send it in a request header, return early when it is not configured, and return nothing that contains the value.
+Example: read a credential, send it in a request header with `Fliplet.App.V3.Actions.request()`, return early when it is not configured, and return nothing that contains the value.
 
 ```js
 // Action environment must be 'server'. No dependencies required.
@@ -7238,31 +7238,80 @@ async function execute(context) {
   let response;
 
   try {
-    response = await fetch('https://api.example.com/v1/messages', {
+    // The server runner makes this request, so the provider does not
+    // need to allow cross-origin browser requests (CORS)
+    response = await Fliplet.App.V3.Actions.request({
+      url: 'https://api.example.com/v1/messages',
       method: 'POST',
       headers: {
-        // Credentials go in a header (or the body), never in the URL
-        Authorization: `Bearer ${apiKey}`,
-        'Content-Type': 'application/json'
+        // Credentials go in a header (or the body)
+        Authorization: `Bearer ${apiKey}`
       },
-      body: JSON.stringify({
+      // An object body is sent as JSON
+      body: {
         to: context.payload.email,
         subject: 'Your booking is confirmed'
-      })
+      }
     });
   } catch (error) {
-    // Network or CORS failure. Return a fixed code — do not rethrow,
-    // log or return anything built from the request or the settings.
-    return { sent: false, error: 'MAIL_PROVIDER_REQUEST_FAILED' };
+    // Timeout, network failure or refused destination. Return a fixed
+    // code — do not rethrow, log or return anything built from the
+    // request or the settings. error.code is safe to return.
+    return { sent: false, error: 'MAIL_PROVIDER_REQUEST_FAILED', code: error.code };
   }
 
-  if (!response.ok) {
+  if (response.status < 200 || response.status >= 300) {
     return { sent: false, error: 'MAIL_PROVIDER_REJECTED', status: response.status };
   }
 
   return { sent: true };
 }
 ```
+
+#### `Fliplet.App.V3.Actions.request()` (server actions only)
+
+`Fliplet.App.V3.Actions.request()` makes an HTTPS request from the server runner instead of from the headless browser the action runs in. Browser cross-origin rules (CORS) do not apply to it, so it reaches provider APIs that reject `fetch`. The request leaves from the same static IP address as every other server action request, so provider keys restricted to an allow-listed IP keep working.
+
+```js
+const response = await Fliplet.App.V3.Actions.request({
+  url: 'https://api.example.com/v1/lists',  // String — required, https only
+  method: 'GET',                            // String — GET (default), HEAD, POST, PUT, PATCH or DELETE
+  headers: { Authorization: 'Bearer ...' }, // Object — optional
+  body: { name: 'Newsletter' },             // String or Object — optional; an object is sent as JSON
+  timeoutMs: 30000                          // Number — optional; default 30000, maximum 50000
+});
+
+// response structure:
+{
+  "status": 200,                                     // Number — HTTP status code
+  "headers": { "content-type": "application/json" }, // Object — response headers, lower-case names
+  "body": "{\"lists\":[]}"                            // String — response body as text
+}
+```
+
+- **Server only.** It works only in actions with `environment: 'server'`. In a `client` action, or an `any` action running on the device, it rejects immediately with the code `UNAVAILABLE`.
+- **Any HTTP status resolves.** A `404` or `500` from the provider resolves with that `status`; check it yourself. The promise rejects only when no response was received.
+- **The body is text.** Use `JSON.parse(response.body)` for a JSON response. The body is always decoded as UTF-8, so binary responses and responses in another character encoding are not supported. A response compressed with gzip, deflate or Brotli is decompressed for you.
+- **HTTPS only, public destinations only.** Private, loopback and link-local addresses are refused, including when a public hostname resolves or redirects to one.
+- **Limits.** 30 seconds by default (50 at most) for the whole request including redirects, 5 MB for the response body (after decompression) and for the request body, and 5 redirects.
+- **Redirects to another host drop every request header**, so a credential is never forwarded to a host you did not name. Call the final URL directly if the provider needs the header there.
+- **A redirect that would resend the request body to another host is not followed.** This applies to a `307` or `308` redirect of a request that has a `body`. The request resolves with that `3xx` status and its `location` header, and nothing is sent to the new host.
+- **Not logged.** The URL, headers and body are never written to the runner logs. This is the only request that may carry a key in the URL query string.
+
+A failed request rejects with an `Error` that has a `code`:
+
+| `code` | Meaning |
+|---|---|
+| `UNAVAILABLE` | Not running as a server action |
+| `INVALID_REQUEST` | Missing or malformed `url`, unsupported `method`, or request body over 5 MB |
+| `INSECURE_URL` | The URL, or a redirect, is not `https` |
+| `BLOCKED_ADDRESS` | The destination is a private, loopback or link-local address |
+| `TIMEOUT` | No complete response within `timeoutMs` |
+| `TOO_LARGE` | Response body over 5 MB |
+| `TOO_MANY_REDIRECTS` | More than 5 redirects |
+| `NETWORK_ERROR` | DNS, connection or TLS failure |
+
+The error `message` never contains the URL, headers or body, so `error.code` and `error.message` are safe to return.
 
 ### Example: simple action
 
@@ -28696,8 +28745,8 @@ async function execute(context) {
     return { sent: false, error: 'MAIL_PROVIDER_NOT_CONFIGURED' };
   }
 
-  // Send apiKey in a request header or body.
-  // Never return it, log it, throw it or put it in a URL.
+  // Send apiKey in a request header or body with
+  // Fliplet.App.V3.Actions.request(). Never return it, log it or throw it.
   return { configured: true };
 }
 ```
@@ -28707,6 +28756,8 @@ async function execute(context) {
 - Values always come from the **master** app and are read fresh on every run. Published apps read the master's values; a rotated value applies to the next run without republishing.
 - `client` and `any` actions always get `context.settings = {}`.
 - If the underscore settings exceed 100 KB in total, every server action of the app fails until they are reduced.
+
+- Call the provider with [`Fliplet.App.V3.Actions.request()`](../core/app-actions-v3#flipletappv3actionsrequest-server-actions-only). Server actions run in a headless browser, so a plain `fetch` is rejected by provider APIs that do not allow cross-origin browser requests (CORS).
 
 See [`context.settings` in App Actions V3](../core/app-actions-v3#contextsettings-server-actions-only) for the complete example, the limits and the rules for keeping values out of logs and responses.
 
