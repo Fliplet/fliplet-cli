@@ -1,6 +1,6 @@
 ---
 title: "V3 Vue apps"
-description: Constraints for building V3 apps in Vue 3. Covers the runtime-compiler vs runtime-only build choice, the .vue single-file-component tradeoff without a loader, and the platform-conditional Vue Router history wiring (createWebHistory + base path on web, createWebHashHistory on native, branched on Fliplet.Router.isNative).
+description: "Build Vue 3 apps in V3 with the browser compiler, reactive asynchronous state, platform-aware routing and authenticated media."
 type: guide
 tags: [js-api, v3, framework, vue]
 v3_relevant: true
@@ -71,6 +71,54 @@ async mounted() {
 ```
 
 Then `<img :src="logoSrc">`. Using `src="{{ rawUrl }}"` directly, or computing the authenticated URL at module scope, leaves the image broken until the template re-renders.
+
+## Updating reactive state asynchronously
+
+Update the reactive state used by the template when processing asynchronous results, progress events or streamed text. In Vue 3, inserting a plain object into a reactive array does not make that original object reactive. Retrieve the item from the array before keeping it in a callback; otherwise its mutations may appear only when another state change causes a render. See Vue's [reactive proxy behavior](https://vuejs.org/guide/essentials/reactivity-fundamentals.html#reactive-proxy-vs-original).
+
+After loading Vue as described above, add `<div id="async-results"></div>` to the screen and run this example. `demoUpdates` simulates two delayed text updates before completion; replace it with your asynchronous source while keeping its updates directed to reactive state.
+
+{% raw %}
+```js
+function demoUpdates(onText) {
+  return new Promise(function(resolve) {
+    setTimeout(function() { onText('First update. '); }, 100);
+    setTimeout(function() { onText('Second update.'); }, 200);
+    setTimeout(resolve, 300);
+  });
+}
+
+const resultsScreen = Vue.createApp({
+  data: function() { return { results: [], nextResultId: 1 }; },
+  template: '<ol><li v-for="result in results" :key="result.id">' +
+    '<p>{{ result.text }}</p><small>{{ result.status }}</small></li></ol>',
+  methods: {
+    createResult: function() {
+      const rawResult = { id: this.nextResultId++, text: '', status: 'pending' };
+      this.results.push(rawResult);
+      // Return the reactive item, not rawResult, to the asynchronous callback.
+      return this.results[this.results.length - 1];
+    },
+    beginUpdates: async function(receiveUpdates) {
+      const result = this.createResult();
+      try {
+        await receiveUpdates(function(text) { result.text += text; });
+        result.status = 'complete';
+      } catch (error) {
+        result.status = 'interrupted';
+      }
+      return result;
+    }
+  }
+}).mount('#async-results');
+
+resultsScreen.beginUpdates(demoUpdates);
+```
+{% endraw %}
+
+The first update appears while the operation is pending, the second extends the same item, and completion changes that item's status. In the Composition API, retrieve an inserted item through `results.value[index]` for a normal array `ref`, or through the array returned by `reactive()`. Keep using that proxy rather than the original object.
+
+Vue batches DOM updates. Use `await this.$nextTick()` (Options API) or `await Vue.nextTick()` when you need to inspect or scroll the updated DOM. Calling `nextTick()` after mutating a non-reactive original object does not schedule a render. Test updates after the initial pending item has rendered so an earlier scheduled render cannot hide the mistake. Apply your screen's unmount/cancellation handling to stop late updates after disposal.
 
 ## Common errors
 
