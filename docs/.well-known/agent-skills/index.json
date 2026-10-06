@@ -41,14 +41,14 @@
     {
       "name": "fliplet-rest-api",
       "title": "Fliplet REST API",
-      "description": "Server-side REST API for managing organizations, apps, users, data sources, files, and screens from your own backend.",
+      "description": "REST API for app AI calls and managing organizations, apps, users, data sources, files and screens from your own backend.",
       "url": "https://developers.fliplet.com/.well-known/agent-skills/fliplet-rest-api/SKILL.md",
       "landingUrl": "https://developers.fliplet.com/REST-API-Documentation.html",
       "tags": [
         "rest-api",
         "server-side"
       ],
-      "sha256": "437370382448243dc036eef2a2628fa805d7f2de4e6f8c8625011e66aed34fde"
+      "sha256": "15c5b8fc8c2f30c5bc1622f881e8544e072125b85a3f397d82d02e18d0eb84fb"
     },
     {
       "name": "fliplet-components-framework",
@@ -130,7 +130,7 @@
       "tags": [
         "js-api"
       ],
-      "sha256": "666092886f9387056475989c165b8c196fb114891d84c3360e9f695d6db120f0"
+      "sha256": "a79c96a283828fb498141bc898c0db93f5ea77b73a2ae18491db2e54bab2776e"
     },
     {
       "name": "fliplet-docs-index",
@@ -143,7 +143,7 @@
         "index",
         "fallback"
       ],
-      "sha256": "01c1b831f67f9a60772498769ecfdc565ccfd023ac87faaff6a86db718490695"
+      "sha256": "ff1f800a7b6589b79d79c02ac64bf821a30c094f34bbb051a29b45216b7c3f00"
     }
   ]
 }

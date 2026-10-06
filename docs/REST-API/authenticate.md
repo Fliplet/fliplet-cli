@@ -12,9 +12,9 @@ Authenticate Fliplet REST API requests via the `Auth-token` header, an `Authoriz
 
 All requests must be made via ​**SSL​** to the above HTTPS-only endpoint.
 
-All our APIs uses **​RESTful​ web services** which supports both **JSON** and url-encoded parameters as body of POST requests.
+Use the request format documented for each endpoint. Many endpoints accept JSON or URL-encoded bodies; others use multipart form data for file uploads. For example, [AI audio transcription](/REST-API/fliplet-ai#audio-transcription) requires a multipart audio file.
 
-The request **body size ​limit​** on all endpoints is set to **1​ GB​**, which is then a hard limit for uploaded files.
+The shared JSON and URL-encoded body limit is configured as `1000mb`, but endpoint-specific limits still apply. This is not a universal file-upload allowance. AI audio transcription limits each audio file to 25 MiB; check the target endpoint before uploading.
 
 **All requests must contain the API authentication token** in the request headers ​or​ as a GET parameter. Alternatively, it can also be sent as a cookie, although sending it in the headers is preferred for security.
 
@@ -51,7 +51,9 @@ If the provided token has been revoked, an error message will be returned as fol
 
 ## How to create an authentication token
 
-1. Login to Fliplet Studio with your account
+To create, list or revoke app API tokens, your Studio account needs editor or publisher access to the app. These token-management permissions do not establish the resulting token's permission to call every runtime endpoint. The app token or integration token is checked against the target app and the requested operation; task tokens cannot manage app API tokens.
+
+1. Log in to Fliplet Studio with an account that can edit or publish the app
 2. Edit the app you want to have API access to
 3. Go to ‘App Settings’
 4. Go to ‘API tokens’ tab of app settings
@@ -59,7 +61,7 @@ If the provided token has been revoked, an error message will be returned as fol
 
 Note: The token does not expire, but can be revoked at any time should you want to (e.g. when unauthorized access is found or your token has been compromised).
 
-<p class="quote">Some API endpoints may require you to use the app's production ID for extra added security, since API tokens don't have access to the working draft apps you see in Studio. You can grab the production app's ID by heading to the <strong>https://api.fliplet.com/v1/apps/</strong> endpoint and verify the value for the <code>productionAppId</code> for the apps you have access to</p>
+Use the app ID and token type required by the target endpoint. Some integrations require the production app ID rather than the working draft ID; inspect the app's `productionAppId` in the [Apps reference](/REST-API/fliplet-apps). Do not assume token creation grants draft access or that an endpoint's development option bypasses authentication or authorization. The [app AI reference](/REST-API/fliplet-ai#authentication-and-app-access) describes its access boundary.
 
 Please note that you may need to set up appropriate Data Source [security rules](/Data-source-security) on the API token for the Data Sources you are reading or writing data to.
 

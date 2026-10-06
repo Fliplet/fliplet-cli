@@ -4,7 +4,10 @@
 
 ## Fliplet Core JavaScript APIs
 
-- [Fliplet.AI](https://developers.fliplet.com/API/core/ai.md): Build AI features with `Fliplet.AI` — chat, completions, streaming, image generation, transcription, and embeddings via OpenAI or Google Gemini proxies.
+- [Fliplet.AI](https://developers.fliplet.com/API/core/ai.md): Generate text and images, transcribe audio and create embeddings with Fliplet.AI. Covers request formats, streaming, models and limits.
+- [Record or upload audio for transcription](https://developers.fliplet.com/API/core/ai/audio-transcription.md): Upload or record audio with Fliplet.AI, retain audio for retry and let users review a transcript before inserting it into their text.
+- [Build an AI chatbot](https://developers.fliplet.com/API/core/ai/chatbot.md): Build a model-generated conversation with explicit model selection, message history, streaming and recoverable errors.
+- [AI models available through Fliplet](https://developers.fliplet.com/API/core/ai/models.md): Choose compatible AI model IDs, compare verified provider facts and understand Fliplet fallbacks, pinning and retirement notices.
 - [Fliplet.Analytics](https://developers.fliplet.com/API/core/analytics.md): Enable, disable, and check analytics tracking, and record custom app events and page views from JavaScript.
 - [Fliplet.API.request()](https://developers.fliplet.com/API/core/api.md): Make authenticated HTTP requests to Fliplet APIs with automatic URL construction, caching, offline queueing, and error handling.
 - [App Actions V2 (deprecated)](https://developers.fliplet.com/API/core/app-actions-v2.md): Deprecated App Actions V2 — configure a pipeline of functions that runs on-device or in the cloud, ad hoc or on a schedule. Migrate to V3 App Actions.
@@ -161,6 +164,7 @@
 ## REST APIs
 
 - [Authenticating with the Fliplet REST APIs](https://developers.fliplet.com/REST-API/authenticate.md): Authenticate Fliplet REST API requests via Auth-token header, Authorization Bearer (base64), query string, or cookie against EU, US, or CA endpoints.
+- [Fliplet app AI REST API](https://developers.fliplet.com/REST-API/fliplet-ai.md): Make app-scoped Fliplet AI requests for text, images, transcription and embeddings using the format required by the selected model.
 - [App Analytics REST API](https://developers.fliplet.com/REST-API/fliplet-app-analytics.md): The App Analytics REST API lets you read your app's analytics data.
 - [App Subscriptions REST API](https://developers.fliplet.com/REST-API/fliplet-app-subscriptions.md): The App Subscriptions REST API lets you read and manage your app's users subscribed via push notifications.
 - [Apps REST API](https://developers.fliplet.com/REST-API/fliplet-apps.md): The Apps REST API lets external integrations list, read, create, update, and delete Fliplet apps that the auth token has access to.

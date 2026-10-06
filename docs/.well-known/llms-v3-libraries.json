@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-02T16:09:31.109Z",
+  "generatedAt": "2026-10-05T21:39:10.839Z",
   "libraries": [
     {
       "package": "fliplet-analytics-spa",
@@ -490,7 +490,7 @@
       "package": "fliplet-core",
       "namespace": "Fliplet.AI",
       "title": "Fliplet.AI",
-      "description": "Build AI features with `Fliplet.AI` — chat, completions, streaming, image generation, transcription, and embeddings via OpenAI or Google Gemini proxies.",
+      "description": "Generate text and images, transcribe audio and create embeddings with Fliplet.AI. Covers request formats, streaming, models and limits.",
       "docUrl": "https://developers.fliplet.com/API/core/ai.md",
       "preloaded": true,
       "capabilities": [
@@ -499,6 +499,7 @@
         "openai",
         "gemini",
         "gpt",
+        "chatbot",
         "chat completion",
         "image generation",
         "dall-e",

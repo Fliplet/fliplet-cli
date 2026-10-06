@@ -133,7 +133,7 @@ export const CLUSTERS = [
     name: 'fliplet-rest-api',
     title: 'Fliplet REST API',
     description:
-      'Server-side REST API for managing organizations, apps, users, data sources, files, and screens from your own backend.',
+      'REST API for app AI calls and managing organizations, apps, users, data sources, files and screens from your own backend.',
     landingUrl: `${BASE_URL}/REST-API-Documentation.html`,
     tags: ['rest-api', 'server-side'],
     match: (p) =>
