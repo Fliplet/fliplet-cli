@@ -12,7 +12,12 @@ Build a conversation in which an AI model generates replies using `Fliplet.AI`. 
 
 ## Contents
 
-[Before you start](#before-you-start) · [Build a conversation](#build-a-conversation) · [Choose the request format](#choose-the-request-format) · [Stream a reply](#stream-a-reply) · [Optional storage and app data](#optional-storage-and-app-data) · [Verify and troubleshoot](#verify-and-troubleshoot)
+- [Before you start](#before-you-start)
+- [Build a conversation](#build-a-conversation)
+- [Choose the request format](#choose-the-request-format)
+- [Stream a reply](#stream-a-reply)
+- [Optional storage and app data](#optional-storage-and-app-data)
+- [Verify and troubleshoot](#verify-and-troubleshoot)
 
 ## Before you start
 
@@ -234,3 +239,10 @@ Check the requested behavior in your app:
 - If storage is requested, reload, switch users and test owner and unrelated-user access, including expired or absent login.
 
 For access, credits and rate-limit errors, use the [error reference](/API/core/ai#shared-access-and-errors). A request that returns tool calls, a refusal or no text needs behavior appropriate to that response; this text-only example treats it as a recoverable failure. Do not automatically retry credit or permission errors. Allow an explicit retry after the issue is resolved.
+
+## Related documentation
+
+- [Fliplet.AI JavaScript reference](/API/core/ai)
+- [AI models available through Fliplet](/API/core/ai/models)
+- [Record or upload audio](/API/core/ai/audio-transcription)
+- [App AI REST API](/REST-API/fliplet-ai)

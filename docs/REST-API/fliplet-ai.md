@@ -10,6 +10,18 @@ deprecated: false
 
 Use these app-scoped endpoints to generate text or images, transcribe audio and create embeddings through Fliplet. Requests use a Fliplet token and the selected provider's payload format; a customer provider key is not required.
 
+## Contents
+
+- [Before your first request](#before-your-first-request)
+- [Operations](#operations)
+- [Completions](#completions)
+- [Images](#images)
+- [Audio transcription](#audio-transcription)
+- [Embeddings](#embeddings)
+- [Errors, limits and retries](#errors-limits-and-retries)
+- [Streaming boundary](#streaming-boundary)
+- [Related documentation](#related-documentation)
+
 <a id="authentication-and-app-access"></a>
 
 ## Before your first request

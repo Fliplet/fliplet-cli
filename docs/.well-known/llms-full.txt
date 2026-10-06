@@ -3930,9 +3930,18 @@ Generate text and images, transcribe audio and create embeddings through Fliplet
 
 ## Table of contents
 
-[Choose a method](#choose-a-method) · [Choose a model](#choose-a-model) · [First request](#first-request) · [API reference](#api-reference) · [Rate limiting](#rate-limiting) · [Error handling](#error-handling) · [Related guides](#related-guides) · [Model catalog](#model-catalog)
+- [AI methods](#ai-methods)
+- [AI models](#ai-models)
+- [First request](#first-request)
+- [API reference](#api-reference)
+- [Rate limiting](#rate-limiting)
+- [Error handling](#error-handling)
+- [Model catalog](#model-catalog)
+- [Related guides](#related-guides)
 
-## Choose a method
+<a id="choose-a-method"></a>
+
+## AI methods
 
 | Feature | Method | Model category |
 | --- | --- | --- |
@@ -3946,7 +3955,9 @@ For messages between people, use [Fliplet.Chat](/API/fliplet-chat). The [chatbot
 
 <a id="model-selection-and-fallback-defaults"></a>
 
-## Choose a model
+<a id="choose-a-model"></a>
+
+## AI models
 
 Specify a compatible `model` ID from [AI models available through Fliplet](/API/core/ai/models). Honor a supported user-selected model; otherwise choose for the task's capabilities and cost constraints. Catalog order and example IDs are not a suitability ranking. Omitting `model` uses a [fallback](#fallback-defaults), including incompatible fallbacks for some text formats.
 
@@ -4345,13 +4356,6 @@ Plan quotas are counted for the app, using its master app ID where applicable. A
 Catch asynchronous failures with `try...catch` or `.catch()`. Completion setup can also throw synchronously, including a missing streaming dependency or invalid `ask()` message. Provider request failures may return `400` even when the underlying provider error has another code. Preserve the error payload for diagnosis; do not assume every failure has the same JavaScript shape.
 
 Show a useful error and retain the user's input. Validate the expected response shape before treating a request as successful. Retry transient connection or rate-limit failures with a delay; correct invalid payloads, unavailable models, access or credit problems before retrying. A timed-out request is not proof that no provider work or charge occurred.
-
-## Related guides
-
-- [AI models available through Fliplet](/API/core/ai/models): configured IDs, provider facts, fallback defaults and retirement notices.
-- [Build an AI chatbot](/API/core/ai/chatbot): conversation state, send/retry controls and streaming.
-- [Record or upload audio](/API/core/ai/audio-transcription): file selection, microphone capture and transcript insertion.
-- [App AI REST API](/REST-API/fliplet-ai): external requests and authentication.
 
 ## Model catalog
 
@@ -4869,6 +4873,13 @@ The JavaScript `AVAILABLE_MODELS` metadata is not a complete availability catalo
 
 The completion proxy also routes additional model IDs and provider snapshots that are not listed in the catalog above. Successful routing alone does not establish current provider access or endpoint compatibility. New features should start from the configured catalog above and use current provider documentation to confirm compatibility.
 
+## Related guides
+
+- [AI models available through Fliplet](/API/core/ai/models): configured IDs, provider facts, fallback defaults and retirement notices.
+- [Build an AI chatbot](/API/core/ai/chatbot): conversation state, send/retry controls and streaming.
+- [Record or upload audio](/API/core/ai/audio-transcription): file selection, microphone capture and transcript insertion.
+- [App AI REST API](/REST-API/fliplet-ai): external requests and authentication.
+
 ---
 
 # Record or upload audio for transcription
@@ -4880,7 +4891,12 @@ Transcribe an audio file or a browser recording with `Fliplet.AI.transcribeAudio
 
 ## Contents
 
-[Before you start](#before-you-start) · [Upload an audio file](#upload-an-audio-file) · [Record audio](#record-audio) · [Complete recording and upload example](#complete-recording-and-upload-example) · [Cancellation, timeout and retry](#cancellation-timeout-and-retry) · [Verify and troubleshoot](#verify-and-troubleshoot)
+- [Before you start](#before-you-start)
+- [Upload an audio file](#upload-an-audio-file)
+- [Record audio](#record-audio)
+- [Complete recording and upload example](#complete-recording-and-upload-example)
+- [Cancellation, timeout and retry](#cancellation-timeout-and-retry)
+- [Verify and troubleshoot](#verify-and-troubleshoot)
 
 ## Before you start
 
@@ -5195,6 +5211,13 @@ Test these behaviors in the actual app and target browsers:
 
 For permission, credits, MIME and size errors, consult the [method error reference](/API/core/ai#errors-and-limits). Resolve access or credits before retrying; for rate limits, wait before retrying. A recorder MIME type being supported does not guarantee that every file with that MIME type contains valid decodable audio.
 
+## Related documentation
+
+- [Fliplet.AI JavaScript reference](/API/core/ai)
+- [AI models available through Fliplet](/API/core/ai/models)
+- [Build an AI chatbot](/API/core/ai/chatbot)
+- [App AI REST API](/REST-API/fliplet-ai)
+
 ---
 
 # Build an AI chatbot
@@ -5206,7 +5229,12 @@ Build a conversation in which an AI model generates replies using `Fliplet.AI`. 
 
 ## Contents
 
-[Before you start](#before-you-start) · [Build a conversation](#build-a-conversation) · [Choose the request format](#choose-the-request-format) · [Stream a reply](#stream-a-reply) · [Optional storage and app data](#optional-storage-and-app-data) · [Verify and troubleshoot](#verify-and-troubleshoot)
+- [Before you start](#before-you-start)
+- [Build a conversation](#build-a-conversation)
+- [Choose the request format](#choose-the-request-format)
+- [Stream a reply](#stream-a-reply)
+- [Optional storage and app data](#optional-storage-and-app-data)
+- [Verify and troubleshoot](#verify-and-troubleshoot)
 
 ## Before you start
 
@@ -5429,6 +5457,13 @@ Check the requested behavior in your app:
 
 For access, credits and rate-limit errors, use the [error reference](/API/core/ai#shared-access-and-errors). A request that returns tool calls, a refusal or no text needs behavior appropriate to that response; this text-only example treats it as a recoverable failure. Do not automatically retry credit or permission errors. Allow an explicit retry after the issue is resolved.
 
+## Related documentation
+
+- [Fliplet.AI JavaScript reference](/API/core/ai)
+- [AI models available through Fliplet](/API/core/ai/models)
+- [Record or upload audio](/API/core/ai/audio-transcription)
+- [App AI REST API](/REST-API/fliplet-ai)
+
 ---
 
 # AI models available through Fliplet
@@ -5442,7 +5477,14 @@ Use a compatible model requested by the user. Otherwise select for the task, bud
 
 ## Contents
 
-[OpenAI text](#openai-text-models) · [Gemini text](#gemini-text-models) · [Images](#image-models) · [Transcription](#transcription-models) · [Embeddings](#embedding-models) · [Pinning and changes](#pinning-and-changes) · [Fallback defaults](#fallback-defaults) · [Deprecated and retired models](#deprecated-and-retired-models)
+- [OpenAI text](#openai-text-models)
+- [Gemini text](#gemini-text-models)
+- [Images](#image-models)
+- [Transcription](#transcription-models)
+- [Embeddings](#embedding-models)
+- [Pinning and changes](#pinning-and-changes)
+- [Fallback defaults](#fallback-defaults)
+- [Deprecated and retired models](#deprecated-and-retired-models)
 
 ## Model catalog
 
@@ -5603,6 +5645,13 @@ OpenAI announced deprecation of GPT-5.1, GPT-5.3-Codex and GPT-5.4-Nano on Octob
 The JavaScript `AVAILABLE_MODELS` metadata is not a complete availability catalog or a validation list. In addition to IDs above, it retains `gpt-3.5-turbo`, `text-davinci-003`, `gpt-4`, `gpt-4-turbo`, `o1`, `o1-mini`, `o3` and `o3-mini`. Do not infer availability from that metadata. `text-davinci-003` and `o1-mini` are retired. `gpt-3.5-turbo`, `gpt-4`, `gpt-4-turbo`, `o1` and `o3-mini` are scheduled for retirement on October 23, 2026. `o3` is deprecated; its `o3-2025-04-16` snapshot is scheduled for retirement on December 11, 2026.
 
 The completion proxy also routes additional model IDs and provider snapshots that are not listed in the catalog above. Successful routing alone does not establish current provider access or endpoint compatibility. New features should start from the configured catalog above and use current provider documentation to confirm compatibility.
+
+## Related documentation
+
+- [Fliplet.AI JavaScript reference](/API/core/ai)
+- [Build an AI chatbot](/API/core/ai/chatbot)
+- [Record or upload audio](/API/core/ai/audio-transcription)
+- [App AI REST API](/REST-API/fliplet-ai)
 
 ---
 
@@ -38419,6 +38468,18 @@ URL: https://developers.fliplet.com/REST-API/fliplet-ai.md
 # Fliplet app AI REST API
 
 Use these app-scoped endpoints to generate text or images, transcribe audio and create embeddings through Fliplet. Requests use a Fliplet token and the selected provider's payload format; a customer provider key is not required.
+
+## Contents
+
+- [Before your first request](#before-your-first-request)
+- [Operations](#operations)
+- [Completions](#completions)
+- [Images](#images)
+- [Audio transcription](#audio-transcription)
+- [Embeddings](#embeddings)
+- [Errors, limits and retries](#errors-limits-and-retries)
+- [Streaming boundary](#streaming-boundary)
+- [Related documentation](#related-documentation)
 
 <a id="authentication-and-app-access"></a>
 

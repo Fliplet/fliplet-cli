@@ -14,7 +14,14 @@ Use a compatible model requested by the user. Otherwise select for the task, bud
 
 ## Contents
 
-[OpenAI text](#openai-text-models) · [Gemini text](#gemini-text-models) · [Images](#image-models) · [Transcription](#transcription-models) · [Embeddings](#embedding-models) · [Pinning and changes](#pinning-and-changes) · [Fallback defaults](#fallback-defaults) · [Deprecated and retired models](#deprecated-and-retired-models)
+- [OpenAI text](#openai-text-models)
+- [Gemini text](#gemini-text-models)
+- [Images](#image-models)
+- [Transcription](#transcription-models)
+- [Embeddings](#embedding-models)
+- [Pinning and changes](#pinning-and-changes)
+- [Fallback defaults](#fallback-defaults)
+- [Deprecated and retired models](#deprecated-and-retired-models)
 
 ## Model catalog
 
@@ -175,3 +182,10 @@ OpenAI announced deprecation of GPT-5.1, GPT-5.3-Codex and GPT-5.4-Nano on Octob
 The JavaScript `AVAILABLE_MODELS` metadata is not a complete availability catalog or a validation list. In addition to IDs above, it retains `gpt-3.5-turbo`, `text-davinci-003`, `gpt-4`, `gpt-4-turbo`, `o1`, `o1-mini`, `o3` and `o3-mini`. Do not infer availability from that metadata. `text-davinci-003` and `o1-mini` are retired. `gpt-3.5-turbo`, `gpt-4`, `gpt-4-turbo`, `o1` and `o3-mini` are scheduled for retirement on October 23, 2026. `o3` is deprecated; its `o3-2025-04-16` snapshot is scheduled for retirement on December 11, 2026.
 
 The completion proxy also routes additional model IDs and provider snapshots that are not listed in the catalog above. Successful routing alone does not establish current provider access or endpoint compatibility. New features should start from the configured catalog above and use current provider documentation to confirm compatibility.
+
+## Related documentation
+
+- [Fliplet.AI JavaScript reference](/API/core/ai)
+- [Build an AI chatbot](/API/core/ai/chatbot)
+- [Record or upload audio](/API/core/ai/audio-transcription)
+- [App AI REST API](/REST-API/fliplet-ai)
