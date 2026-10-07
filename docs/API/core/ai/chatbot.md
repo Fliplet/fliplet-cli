@@ -49,7 +49,11 @@ For other app setups, add `fliplet-socket` through [dependencies and assets](/De
 
 ## Build a conversation
 
-Add this HTML and CSS to your screen, then run the JavaScript after the controls exist and Fliplet is ready. This framework-agnostic example uses Chat Completions. It displays the user's turn immediately, updates one assistant message during streaming and stores both raw text turns only after success.
+Add this HTML and CSS to your screen, then run the JavaScript after the controls exist and Fliplet is ready. This vanilla JavaScript browser example uses Chat Completions and updates DOM elements directly. It displays the user's turn immediately, updates one assistant message during streaming and stores both raw text turns only after success.
+
+When adapting it to a framework, use that framework's state and rendering mechanisms. For Vue, follow [asynchronous reactive-state updates](/API/v3/frameworks/vue#updating-reactive-state-asynchronously) so callbacks update the reactive state read by the template.
+
+Call the returned `disposeAIChat()` from your framework's unmount or route cleanup hook. The example also handles `pagehide`, which alone does not cover SPA navigation.
 
 ```html
 <ol id="ai-chat-messages" aria-label="Conversation" aria-live="off" tabindex="0"></ol>
@@ -226,9 +230,7 @@ const disposeAIChat = mountAIChat();
 
 The conversation is readable without announcing every chunk to a screen reader: the separate status reports waiting, completion or failure. Updates follow the bottom while the reader is there and preserve their position when they scroll back. Adapt the controls and styles to your app's design and audience.
 
-In Vue, keep callbacks connected to [reactive state](/API/v3/frameworks/vue#updating-reactive-state-asynchronously); mutating an original object after inserting it into component state does not trigger a display update. On SPA route changes or framework unmount, call `disposeAIChat()`; `pagehide` alone does not cover SPA navigation.
-
-<span id="conversation-history"></span>
+## Conversation history
 
 History contains raw `{ role, content }` messages, not the HTML used for display. Failed or stopped replies remain visibly interrupted and are excluded from successful history. Retrying an unchanged draft reuses the failed display turn and adds the successful user/assistant pair once. A changed draft starts a separate display turn.
 
@@ -236,7 +238,7 @@ Send a message, then ask about the reply. The next request includes the successf
 
 ## Choose the request format
 
-Replace `requestReply(model, messages, onText)` in the complete example with the appropriate adapter below and set `model` to your supported selection. These adapters convert this guide's raw text history and deliver text to the same progressive renderer. Images, tool calls and tool results require the provider-specific structures in the [reference](/API/core/ai).
+Replace `requestReply(model, messages, onText)` in the [complete browser example](#build-a-conversation) with the appropriate adapter below and set `model` to your supported selection. These adapters convert this guide's raw text history and deliver text to the same progressive renderer. Images, tool calls and tool results require the provider-specific structures in the [reference](/API/core/ai).
 
 ### Gemini conversation
 
@@ -292,7 +294,7 @@ Cancellation is asynchronous. Keep the send guard active until the request settl
 
 ## Non-streaming and plain-text replies
 
-If the user requests a supported non-streaming model, preserve that choice and show a pending state while waiting. For Chat Completions, replace `requestReply` with this adapter. It renders the completed reply through the same safe renderer; the Stop button stays disabled because this buffered Promise has no cancellation method.
+If the user requests a supported non-streaming model, preserve that choice and show a pending state while waiting. For Chat Completions, replace `requestReply` in the [complete browser example](#build-a-conversation) with this adapter. It renders the completed reply through the same safe renderer; the Stop button stays disabled because this buffered Promise has no cancellation method.
 
 ```js
 async function requestReply(model, messages, onText) {
@@ -306,7 +308,7 @@ async function requestReply(model, messages, onText) {
 
 For a Responses-only non-streaming model, send `input` with `useResponses: true` and extract message content with `type: 'output_text'` from `result.output`; see [Responses](/API/core/ai#using-the-responses-api). For Gemini, use `contents` and extract non-thought text parts from `result.candidates[0].content.parts`; see [Gemini](/API/core/ai#using-gemini-models). Preserve the guard, pending/error state and raw history when adapting either format.
 
-For explicitly plain-text replies, replace the parser/sanitizer lines in `paint()` with `run.assistant.body.textContent = run.reply`, set that body's `white-space: pre-wrap`, and remove only the Markdown resources and their loading. In this example, `ensureRenderer()` loads only Markdown libraries, so its call can be removed. If your adapted loader also loads streaming dependencies, retain that part: a plain-text stream still needs `fliplet-socket`. Keep streaming if appropriate. Never display model output through unsanitized `innerHTML`.
+For explicitly plain-text replies in the [complete browser example](#build-a-conversation), replace the parser/sanitizer lines in `paint()` with `run.assistant.body.textContent = run.reply`, set that body's `white-space: pre-wrap`, and remove only the Markdown resources and their loading. In this example, `ensureRenderer()` loads only Markdown libraries, so its call can be removed. If your adapted loader also loads streaming dependencies, retain that part: a plain-text stream still needs `fliplet-socket`. Keep streaming if appropriate. Never display model output through unsanitized `innerHTML`.
 
 The example's eager `fliplet-socket` dependency loads at app boot and is ready after Fliplet initialization. If your app instead declares that registered package as lazy, await its full dependency chain inside `submit()`'s `try` block before calling `requestReply()`. Keep the existing error/retry handling if loading fails:
 

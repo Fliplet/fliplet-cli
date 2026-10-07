@@ -27,9 +27,9 @@ Use a compatible model requested by the user. Otherwise select for the task, bud
 
 The tables list model IDs configured by Fliplet. Deprecated and retired entries appear in [Deprecated and retired models](#deprecated-and-retired-models). Configuration and provider routing do not guarantee that a model remains available from its provider, or that every model supports every request format. Check the linked provider reference for endpoint compatibility and parameters before using a model.
 
-OpenAI text models use [createCompletion()](/API/core/ai#flipletaicreatecompletion) or [POST /v1/apps/:app/ai/completions](/REST-API/fliplet-ai#completions). Chat Completions uses `messages`; Responses uses `input` and `useResponses: true`. Models marked Responses require that format. Other models must use a format supported by their individual [OpenAI model reference](https://developers.openai.com/api/docs/models).
-
 ### OpenAI text models
+
+OpenAI text models use [createCompletion()](/API/core/ai#flipletaicreatecompletion) or [POST /v1/apps/:app/ai/completions](/REST-API/fliplet-ai#completions). Chat Completions uses `messages`; Responses uses `input` and `useResponses: true`. Models marked Responses require that format. Other models must use a format supported by their individual [OpenAI model reference](https://developers.openai.com/api/docs/models).
 
 Numbered GPT models are ordered by version (highest first), then Astra, Sol, Terra and Luna within a version, and Pro, normal, Mini and Nano within a model family. This order helps you find models; it does not determine which is most suitable for your task. The 4o family is listed separately.
 
@@ -59,6 +59,7 @@ Numbered GPT models are ordered by version (highest first), then Astra, Sol, Ter
 | `gpt-4o` | Chat Completions or Responses. |
 | `gpt-4o-mini` | Chat Completions or Responses. |
 
+#### OpenAI capability and cost facts
 
 Provider selection facts for text-only requests:
 
