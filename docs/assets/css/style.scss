@@ -378,6 +378,20 @@ h6 {
   }
 }
 
+.section-nav ul.namespace-pages {
+  margin: 4px 0 0 12px;
+  padding-left: 8px;
+  border-left: 1px solid #ddd;
+
+  li {
+    padding: 2px 0;
+  }
+
+  a {
+    font-size: 13px;
+  }
+}
+
 #app {
   padding-top: $header-height;
 }
