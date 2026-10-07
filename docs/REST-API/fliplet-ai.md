@@ -53,6 +53,8 @@ For code running inside an app, use [Fliplet.AI](/API/core/ai), which supplies t
 
 Use exactly one input format with an explicit compatible `model`. Non-streaming success returns the provider JSON directly, without a Fliplet response wrapper.
 
+This endpoint does not return an SSE stream. With `stream: true`, HTTP acknowledges the request and Fliplet sockets deliver the generated content; see the [streaming boundary](#streaming-boundary). The external examples below use non-streaming requests.
+
 | Format | Required fields | Plain text in the response |
 | --- | --- | --- |
 | OpenAI Chat Completions | `model`, `messages` | `choices[0].message.content` |

@@ -45,7 +45,9 @@ The five-minute capture cap in the example is an app choice, not a Fliplet platf
 
 ## Complete recording and upload example
 
-Add these controls to your screen and run the script after they exist. This example combines the recording workflow with file upload and retry. It displays an editable transcript separately; **Insert transcript** appends it to the text currently in the Notes field. A failed or cancelled operation leaves existing typed text intact.
+Add these controls to your screen and run the script after they exist. This vanilla JavaScript browser example combines the recording workflow with file upload and retry, updating DOM controls directly. It displays an editable transcript separately; **Insert transcript** appends it to the text currently in the Notes field. A failed or cancelled operation leaves existing typed text intact.
+
+When adapting this example to a framework, use its state, bindings and screen-disposal hook. Vue apps should follow [asynchronous reactive-state updates](/API/v3/frameworks/vue#updating-reactive-state-asynchronously). Preserve microphone cleanup on disposal; browser page lifecycle events alone do not cover SPA navigation.
 
 ```html
 <label for="dictation-file">Audio file</label>
@@ -307,7 +309,7 @@ window.addEventListener('pagehide', function() {
 updateControls();
 ```
 
-Use your framework's screen-disposal hook as well as appropriate page lifecycle events when adapting this example. Block the affected form's Save or Send while capture, finalization or transcription is pending. Keep typing and editing available wherever they do not conflict with the operation. This example does not submit Notes automatically.
+Block the affected form's Save or Send while capture, finalization or transcription is pending. Keep typing and editing available wherever they do not conflict with the operation. This example does not submit Notes automatically.
 
 ## Cancellation, timeout and retry
 

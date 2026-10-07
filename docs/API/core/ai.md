@@ -20,9 +20,19 @@ Generate text and images, transcribe audio and create embeddings through Fliplet
 - [AI models](#ai-models)
 - [First request](#first-request)
 - [API reference](#api-reference)
+  - [Initialization](#initialization)
+  - [Instance methods](#instance-methods)
+  - [Completions](#flipletaicreatecompletion)
+  - [Streaming](#streaming-with-createcompletion)
+  - [Images](#flipletaigenerateimage)
+  - [Transcription](#flipletaitranscribeaudio)
+  - [Embeddings](#flipletaicreateembedding)
 - [Rate limiting](#rate-limiting)
 - [Error handling](#error-handling)
+- [Usage examples](#usage-examples)
 - [Model catalog](#model-catalog)
+- [Fallback defaults](#fallback-defaults)
+- [Deprecated and retired models](#deprecated-and-retired-models)
 - [Related guides](#related-guides)
 
 <a id="choose-a-method"></a>
@@ -138,9 +148,14 @@ For streaming, set `stream: true` in the constructor and attach `.stream(onChunk
 
 ### `Fliplet.AI.createCompletion()`
 
-`Fliplet.AI.createCompletion(options: Object): Promise<Object>`
+`Fliplet.AI.createCompletion(options: Object): Promise`
 
-Send the payload required by the selected model. Non-streaming calls resolve to the provider's response object. With `stream: true`, the returned Promise also exposes `.stream()`, `.cancel()` and `.guid`; see [streaming](#streaming-with-createcompletion).
+Send the payload required by the selected model. The return value depends on `stream`:
+
+| Mode | Returned request | Resolved value |
+| --- | --- | --- |
+| Buffered (`stream` omitted or `false`) | Promise | The provider response object for the selected format. |
+| Streaming (`stream: true`) | Promise with `.stream(onChunk)`, `.cancel()` and `.guid` | `undefined` on normal completion, or `{ cancelled: true }` on cancellation. Accumulate reply text from callbacks; see the [streaming contract](#streaming-with-createcompletion). |
 
 | Field | Type | Required or behavior |
 | --- | --- | --- |
@@ -160,7 +175,7 @@ Use `messages: [{ role, content }]` and read `choices[0].message.content` for a 
 
 The [first request](#first-request) is a complete Chat Completions example. See [OpenAI's Chat Completions reference](https://platform.openai.com/docs/api-reference/chat/create) for message content, supported roles and model-specific fields.
 
-### Using the Responses API
+#### Using the Responses API
 
 Set `useResponses: true` and provide `input`. The returned JSON contains typed `output` items, not a `choices` array. Extract text from message content with `type: 'output_text'`; other output items can contain reasoning, tool calls or refusals.
 
@@ -193,7 +208,7 @@ summarizeWithResponses();
 
 For app-managed conversation context, `input` can also be an array such as `[{ role: 'user', content: 'Hello' }, { role: 'assistant', content: 'Hello! How can I help?' }, { role: 'user', content: 'Suggest a meeting agenda.' }]`. Preserve model-required tool items when using tools. Do not assume every Responses provider feature, including retrieval, background execution or provider-stored conversations, has a matching Fliplet integration. See the [Responses schema](https://platform.openai.com/docs/api-reference/responses/create) and [chatbot guide](/API/core/ai/chatbot).
 
-### Using Gemini models
+#### Using Gemini models
 
 Use `createCompletion({ model, contents })`. `contents` uses `{ role, parts }`; for a text request, each part is `{ text }`. Read `candidates[0].content.parts` and collect its text parts.
 
@@ -234,7 +249,11 @@ Fliplet consumes `useResponses` for OpenAI routing and `stream` for Gemini routi
 
 ### Streaming with `createCompletion()`
 
+#### Dependency and transport
+
 Streaming requires the `fliplet-socket` dependency on the app or screen. If it is missing, `createCompletion()` throws synchronously. Fliplet sends the completion request over HTTP and delivers provider chunks through Fliplet sockets; the browser does not receive an SSE response from the app endpoint.
+
+#### Chunk payloads
 
 Register `.stream(onChunk)` immediately. The callback receives nonterminal payloads, including keepalive events. Ignore chunks without the expected content. Build the displayed reply in app state:
 
@@ -244,7 +263,17 @@ Register `.stream(onChunk)` immediately. The callback receives nonterminal paylo
 | Responses | `chunk.delta` when `chunk.type === 'response.output_text.delta'` |
 | Gemini | Text parts of `chunk.candidates[0].content.parts` |
 
+#### Completion and cancellation
+
 Normal completion resolves the Promise with `undefined`. Cancellation resolves it with `{ cancelled: true }` after the socket cancellation event. The completion callback does not receive the assembled answer, including for Responses. Errors reject with the socket error payload, which need not be an `Error` instance.
+
+To cancel, retain the request and call `await request.cancel()`, or use `Fliplet.AI.cancel(request.guid)`. Cancellation asks Fliplet to abort the active provider stream. A cancellation acknowledgement may report that the signal was broadcast; it is not proof that no generation or charge occurred. Keep partial text visibly interrupted and handle failure/retry in the app. The [chatbot guide](/API/core/ai/chatbot#build-a-conversation) covers progressive display, safe formatting and UI state.
+
+#### Console streaming example
+
+This plain JavaScript example uses Chat Completions and logs accumulated text as chunks arrive. It demonstrates the API lifecycle; it has no on-screen renderer. Load `fliplet-socket` and run after Fliplet is ready.
+
+For an on-screen reply, use the [chatbot rendering workflow](/API/core/ai/chatbot#build-a-conversation). Framework callbacks must update the state used by their renderer; Vue apps should follow [asynchronous reactive-state updates](/API/v3/frameworks/vue#updating-reactive-state-asynchronously).
 
 ```javascript
 async function streamReply() {
@@ -260,7 +289,7 @@ async function streamReply() {
       const delta = choice && choice.delta && choice.delta.content;
       if (typeof delta === 'string') {
         text += delta;
-        console.log(text); // textContent is a safe plain-text display option.
+        console.log(text); // Incremental console output, before the request settles.
       }
     });
     const completion = await request;
@@ -274,7 +303,7 @@ async function streamReply() {
 streamReply();
 ```
 
-To cancel, retain the request and call `await request.cancel()`, or use `Fliplet.AI.cancel(request.guid)`. Cancellation asks Fliplet to abort the active provider stream. A cancellation acknowledgement may report that the signal was broadcast; it is not proof that no generation or charge occurred. Keep partial text visibly interrupted and handle failure/retry in the app. The [chatbot guide](/API/core/ai/chatbot#build-a-conversation) covers progressive display, safe formatting and UI state.
+The console shows growing text while the request is pending, then logs the completed accumulated reply. `await request` supplies completion status, not that text.
 
 ### `Fliplet.AI.generateImage()`
 
@@ -443,103 +472,6 @@ Catch asynchronous failures with `try...catch` or `.catch()`. Completion setup c
 
 Show a useful error and retain the user's input. Validate the expected response shape before treating a request as successful. Retry transient connection or rate-limit failures with a delay; correct invalid payloads, unavailable models, access or credit problems before retrying. A timed-out request is not proof that no provider work or charge occurred.
 
-## Model catalog
-
-The tables list model IDs configured by Fliplet. Deprecated and retired entries appear in [Deprecated and retired models](#deprecated-and-retired-models). Configuration and provider routing do not guarantee that a model remains available from its provider, or that every model supports every request format. Check the linked provider reference for endpoint compatibility and parameters before using a model.
-
-OpenAI text models use [createCompletion()](/API/core/ai#flipletaicreatecompletion) or [POST /v1/apps/:app/ai/completions](/REST-API/fliplet-ai#completions). Chat Completions uses `messages`; Responses uses `input` and `useResponses: true`. Models marked Responses require that format. Other models must use a format supported by their individual [OpenAI model reference](https://developers.openai.com/api/docs/models).
-
-### OpenAI text models
-
-Numbered GPT models are ordered by version (highest first), then Astra, Sol, Terra and Luna within a version, and Pro, normal, Mini and Nano within a model family. This order helps you find models; it does not determine which is most suitable for your task. The 4o family is listed separately.
-
-| Model ID | Availability or request-format note |
-| --- | --- |
-| `gpt-6.1-sol` | Chat Completions or Responses. |
-| `gpt-6-astra` | Chat Completions or Responses. |
-| `gpt-6-sol` | Chat Completions or Responses. |
-| `gpt-6-luna` | Chat Completions or Responses. |
-| `gpt-5.6-sol` | Chat Completions or Responses. |
-| `gpt-5.6-terra` | Chat Completions or Responses. |
-| `gpt-5.6-luna` | Chat Completions or Responses. |
-| `gpt-5.5-pro` | Responses format; provider does not support streaming. |
-| `gpt-5.5` | Chat Completions or Responses. |
-| `gpt-5.4-pro` | Responses format. |
-| `gpt-5.4` | Chat Completions or Responses. |
-| `gpt-5.4-mini` | Chat Completions or Responses. |
-| `gpt-5.2-pro` | Responses format. |
-| `gpt-5.2` | Chat Completions or Responses. |
-| `gpt-4.1` | Chat Completions or Responses. |
-| `gpt-4.1-mini` | Chat Completions or Responses. |
-
-#### GPT-4o family
-
-| Model ID | Availability or request-format note |
-| --- | --- |
-| `gpt-4o` | Chat Completions or Responses. |
-| `gpt-4o-mini` | Chat Completions or Responses. |
-
-
-Provider selection facts for text-only requests:
-
-- OpenAI positions [GPT-6 Astra](https://developers.openai.com/api/docs/models/gpt-6-astra) for complex reasoning and coding; Standard text input/output rates are $10/$50 per million tokens.
-- [GPT-6.1 Sol](https://developers.openai.com/api/docs/models/gpt-6.1-sol) balances capability and cost; Standard text input/output rates are $2/$10 per million tokens. Chat Completions supports text generation without tool calling; use Responses for tools.
-- [GPT-6 Luna](https://developers.openai.com/api/docs/models/gpt-6-luna) targets focused, high-volume workloads; Standard text input/output rates are $0.10/$0.50 per million tokens. For Chat Completions function calling, the provider requires `reasoning_effort: 'none'`; Responses uses its own reasoning settings.
-
-These three models accept text and image input and produce text output. Their provider context window is 1,050,000 tokens; prompts above 272,000 input tokens have different pricing. The 272,000-token warning in Fliplet Chat Completions does not truncate or reject input. The rates above describe provider costs, not Fliplet charges, and exclude caching, regional premiums and tools. They are facts for a selection decision, not comparative benchmark results. See [OpenAI pricing](https://developers.openai.com/api/docs/pricing) for conditions. Capability and cost comparisons for other configured models are not summarized here; preserve a supported user pin and verify the model-specific reference before changing it.
-
-### Gemini text models
-
-Gemini text models use [createCompletion({ model, contents })](/API/core/ai#using-gemini-models) or the [app REST completion endpoint](/REST-API/fliplet-ai#completions) with `contents`. Use the [Gemini model reference](https://ai.google.dev/gemini-api/docs/models) for payloads and capabilities.
-
-| Model ID | Availability note |
-| --- | --- |
-| `gemini-3.5-flash` | See provider model reference. |
-| `gemini-3.1-flash-lite` | Earliest announced shutdown May 7, 2027; check provider notice before migration. |
-| `gemini-2.5-pro` | Provider restricts access to accounts with prior active usage. |
-| `gemini-2.5-flash` | Provider restricts access to accounts with prior active usage. |
-| `gemini-2.5-flash-lite` | Provider restricts access to accounts with prior active usage. |
-
-For lightweight extraction and high-frequency text tasks, Google describes [Gemini 3.1 Flash-Lite](https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite) as a low-latency, cost-effective model with text, image, video, audio and PDF inputs and text output. [Gemini 3.5 Flash](https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash) supports multi-step reasoning and coding workflows. These are provider capabilities; a required upload, tool execution or media flow still needs a verified Fliplet integration. See [Gemini pricing](https://ai.google.dev/gemini-api/docs/pricing) for provider costs.
-
-See the [Gemini changelog](https://ai.google.dev/gemini-api/docs/changelog) and [Gemini deprecations](https://ai.google.dev/gemini-api/docs/deprecations) for retirement and access restrictions.
-
-### Image models
-
-OpenAI image models use [generateImage()](/API/core/ai#flipletaigenerateimage) or [POST /v1/apps/:app/ai/image](/REST-API/fliplet-ai#images). Gemini image IDs are also configured, but use `createCompletion()` with Gemini `contents` and `generationConfig`, as shown in the [Fliplet Gemini image example](/API/core/ai#gemini-image-generation) and [provider image reference](https://ai.google.dev/gemini-api/docs/image-generation). Read image data from `candidates[0].content.parts` entries with `inlineData`. OpenAI image response handling does not apply.
-
-| Model ID | Availability note |
-| --- | --- |
-| `gpt-image-2` | OpenAI image model. |
-| `gemini-3.1-flash-image` | See provider image reference. |
-| `gemini-3-pro-image` | See provider image reference. |
-
-`dall-e-2` and `dall-e-3` are legacy IDs. Fliplet replaces either ID with `gpt-image-2`, so specifying a DALL-E ID does not pin the requested model.
-
-### Transcription models
-
-[transcribeAudio()](/API/core/ai#flipletaitranscribeaudio) and [POST /v1/apps/:app/ai/audio](/REST-API/fliplet-ai#audio-transcription) accept only the three IDs below. Newer provider transcription IDs are not accepted by these Fliplet methods until Fliplet adds support.
-
-| Model ID | Availability note |
-| --- | --- |
-| `gpt-4o-mini-transcribe` | Deprecated; retirement scheduled for February 26, 2027. |
-| `gpt-4o-transcribe` | Deprecated; retirement scheduled for February 26, 2027. |
-| `whisper-1` | Deprecated; retirement scheduled for February 26, 2027. |
-
-All three accepted transcription models have announced retirement dates. Provider replacements are not yet accepted by Fliplet's transcription allowlist. See [OpenAI deprecations](https://developers.openai.com/api/docs/deprecations) and test the app's [upload/recording workflow](/API/core/ai/audio-transcription) before changing its model.
-
-### Embedding models
-
-Embedding models use [createEmbedding()](/API/core/ai#flipletaicreateembedding) or [POST /v1/apps/:app/ai/embeddings](/REST-API/fliplet-ai#embeddings). See the [OpenAI embedding reference](https://developers.openai.com/api/docs/guides/embeddings) for input limits and dimensions.
-
-- `text-embedding-3-small`
-- `text-embedding-3-large`
-- `text-embedding-ada-002`
-
-OpenAI Standard embedding rates are $0.02 per million input tokens for [text-embedding-3-small](https://developers.openai.com/api/docs/models/text-embedding-3-small) and $0.13 for [text-embedding-3-large](https://developers.openai.com/api/docs/models/text-embedding-3-large). These are provider rates, not Fliplet charges. Their default vector dimensions are 1,536 and 3,072 respectively; `dimensions` can reduce the output length.
-
-Keep the same embedding model and dimensions when comparing stored vectors with new queries. Changing models can require regenerating stored embeddings.
-
 ## Usage examples
 
 The text examples below select a model explicitly. See the API reference for [image generation](#flipletaigenerateimage), [audio recording and transcription](#flipletaitranscribeaudio), and [embeddings](#flipletaicreateembedding).
@@ -598,368 +530,59 @@ For single-turn tasks where conversation history is not needed between requests,
 
 ### Browser recording example
 
-Add these controls to an app screen, then add the script below. The app owns the recording UI, device choice, duration, and where to insert the returned text; `Fliplet.AI` only uploads audio for transcription.
+For microphone capture, final audio chunks, cleanup and transcription, use the complete [recording and upload example](/API/core/ai/audio-transcription#complete-recording-and-upload-example). The [method reference](#flipletaitranscribeaudio) shows the call for an existing Blob or File.
 
-```html
-<button id="dictation-record" type="button">Start recording</button>
-<button id="dictation-cancel" type="button" disabled>Cancel</button>
-<p id="dictation-status" role="status"></p>
-<pre id="dictation-transcript"></pre>
-```
+## Model catalog
 
-```javascript
-const recordButton = document.getElementById('dictation-record');
-const cancelButton = document.getElementById('dictation-cancel');
-const statusElement = document.getElementById('dictation-status');
-const transcriptElement = document.getElementById('dictation-transcript');
-const allowedMimeTypes = ['audio/webm', 'audio/mp4', 'audio/mpeg', 'audio/wav', 'audio/ogg'];
-const recorderMimeTypes = [
-  'audio/webm;codecs=opus',
-  'audio/mp4;codecs=mp4a.40.2',
-  'audio/mp4'
-];
-const filenameByMimeType = {
-  'audio/webm': 'dictation.webm',
-  'audio/mp4': 'dictation.mp4',
-  'audio/mpeg': 'dictation.mp3',
-  'audio/wav': 'dictation.wav',
-  'audio/ogg': 'dictation.ogg'
-};
-const maxRecordingMs = 5 * 60 * 1000; // Example UI cap; choose a duration appropriate to the app.
+[AI models available through Fliplet](/API/core/ai/models) owns the configured IDs, compatibility, provider facts and retirement notices. Select a model compatible with the method and request format.
 
-let stream;
-let recorder;
-let chunks = [];
-let phase = 'idle';
-let cancelled = false;
-let stopPromise;
-let recordingTimer;
-let abortController;
+### OpenAI text models
 
-function baseMimeType(mimeType) {
-  return (mimeType || '').split(';', 1)[0].trim().toLowerCase();
-}
+See [OpenAI text models](/API/core/ai/models#openai-text-models) for IDs and request-format compatibility.
 
-function setStatus(message) {
-  statusElement.textContent = message;
-}
+#### GPT-4o family
 
-function clearRecordingTimer() {
-  window.clearTimeout(recordingTimer);
-  recordingTimer = undefined;
-}
+The [OpenAI catalog](/API/core/ai/models#gpt-4o-family) includes the GPT-4o family.
 
-function releaseMicrophone() {
-  if (stream) {
-    stream.getTracks().forEach(function(track) {
-      track.stop();
-    });
-  }
+### Gemini text models
 
-  stream = undefined;
-}
+See [Gemini text models](/API/core/ai/models#gemini-text-models). These use Gemini `contents` and response handling.
 
-function updateControls() {
-  recordButton.disabled = phase !== 'idle' && phase !== 'recording';
-  recordButton.textContent = phase === 'recording' ? 'Stop and transcribe' : 'Start recording';
-  cancelButton.disabled = phase === 'idle';
-}
+### Image models
 
-function recorderOptions() {
-  if (!MediaRecorder.isTypeSupported) {
-    return undefined;
-  }
+See [image models and legacy ID remapping](/API/core/ai/models#image-models), including the different OpenAI and Gemini method paths.
 
-  const mimeType = recorderMimeTypes.find(function(candidate) {
-    return MediaRecorder.isTypeSupported(candidate);
-  });
+### Transcription models
 
-  return mimeType ? { mimeType: mimeType } : undefined;
-}
+See [accepted transcription models](/API/core/ai/models#transcription-models) and their availability notices.
 
-function recordedBlob() {
-  const mimeType = baseMimeType(recorder.mimeType || (chunks[0] && chunks[0].type));
+### Embedding models
 
-  return new Blob(chunks, { type: mimeType });
-}
-
-function stopRecorder() {
-  if (stopPromise) {
-    return stopPromise;
-  }
-
-  if (!recorder) {
-    return Promise.reject(new Error('There is no recorder to stop.'));
-  }
-
-  if (recorder.state === 'inactive') {
-    return Promise.resolve(recordedBlob());
-  }
-
-  stopPromise = new Promise(function(resolve, reject) {
-    recorder.addEventListener('stop', function() {
-      resolve(recordedBlob());
-    }, { once: true });
-    recorder.addEventListener('error', function(event) {
-      reject(event.error || new Error('The recorder failed.'));
-    }, { once: true });
-    recorder.stop(); // Flushes the final dataavailable chunk before stop.
-  });
-
-  return stopPromise;
-}
-
-function reset() {
-  clearRecordingTimer();
-  releaseMicrophone();
-  recorder = undefined;
-  chunks = [];
-  stopPromise = undefined;
-  abortController = undefined;
-  phase = 'idle';
-  updateControls();
-}
-
-function showError(error) {
-  if (error.name === 'NotAllowedError') {
-    setStatus('Microphone permission was denied.');
-  } else if (error.name === 'NotFoundError') {
-    setStatus('No microphone is available.');
-  } else if (error.name === 'NotReadableError') {
-    setStatus('The microphone is already in use or cannot be read.');
-  } else if (error.name === 'AbortError') {
-    setStatus('Transcription cancelled.');
-  } else if (error.name === 'TimeoutError') {
-    setStatus('Transcription timed out after two minutes.');
-  } else if (error.name === 'TypeError') {
-    setStatus('Invalid audio or transcription options.');
-  } else if (error.status === 400) {
-    setStatus('The audio upload was invalid.');
-  } else if (error.status === 401 || error.status === 403) {
-    setStatus('You are not allowed to transcribe audio in this app.');
-  } else if (error.status === 402) {
-    setStatus('This organization has insufficient AI credits.');
-  } else if (error.status === 413) {
-    setStatus('The audio file is larger than 25 MiB.');
-  } else if (error.status === 415) {
-    setStatus('This browser produced an unsupported audio format.');
-  } else if (error.status === 429) {
-    setStatus('Too many transcription requests. Wait and try again.');
-  } else if (error.message) {
-    setStatus(error.message);
-  } else {
-    setStatus('The transcription request failed. Check the connection and try again.');
-  }
-}
-
-async function startRecording() {
-  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder) {
-    setStatus('This browser cannot record audio.');
-    return;
-  }
-
-  cancelled = false;
-  phase = 'preparing';
-  transcriptElement.textContent = '';
-  setStatus('Requesting microphone permission…');
-  updateControls();
-
-  try {
-    stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-
-    if (cancelled) {
-      setStatus('Recording cancelled.');
-      reset();
-      return;
-    }
-
-    const options = recorderOptions();
-
-    // If no preferred MIME type is supported, let the browser choose one.
-    recorder = options ? new MediaRecorder(stream, options) : new MediaRecorder(stream);
-    chunks = [];
-    recorder.addEventListener('dataavailable', function(event) {
-      if (event.data && event.data.size > 0) {
-        chunks.push(event.data);
-      }
-    });
-    recorder.addEventListener('error', function(event) {
-      // stopRecorder() owns errors once stopping starts. During active
-      // recording there is no stop promise to clean up the microphone.
-      if (phase === 'recording') {
-        showError(event.error || new Error('The recorder failed.'));
-        reset();
-      }
-    });
-    recorder.start();
-    phase = 'recording';
-    recordingTimer = window.setTimeout(stopAndTranscribe, maxRecordingMs);
-    setStatus('Recording. It will stop after five minutes.');
-  } catch (error) {
-    showError(error);
-    reset();
-  }
-
-  updateControls();
-}
-
-async function stopAndTranscribe() {
-  if (phase !== 'recording') {
-    return;
-  }
-
-  phase = 'stopping';
-  clearRecordingTimer();
-  updateControls();
-
-  try {
-    const audio = await stopRecorder();
-
-    // The completed Blob no longer needs the microphone. Do not hold it open
-    // while a transcription request can take up to two minutes.
-    releaseMicrophone();
-
-    if (cancelled) {
-      setStatus('Recording cancelled.');
-      return;
-    }
-
-    const mimeType = baseMimeType(audio.type);
-    if (!allowedMimeTypes.includes(mimeType)) {
-      throw new Error('The recorder produced an unsupported MIME type: ' + (mimeType || 'none'));
-    }
-
-    phase = 'transcribing';
-    abortController = typeof AbortController === 'function' ? new AbortController() : undefined;
-    const options = {
-      filename: filenameByMimeType[mimeType],
-      model: 'gpt-4o-mini-transcribe', // Explicit example selection; see the transcription model catalog.
-      timeout: 120000
-    };
-
-    if (abortController) {
-      options.signal = abortController.signal;
-    }
-
-    setStatus('Transcribing…');
-    updateControls();
-    const result = await Fliplet.AI.transcribeAudio(audio, options);
-
-    // A browser without AbortController cannot stop the upload. Ignore its late result.
-    if (!cancelled) {
-      transcriptElement.textContent = result.text;
-      setStatus('Transcription complete.');
-    }
-  } catch (error) {
-    if (cancelled && error.name === 'AbortError') {
-      setStatus('Transcription cancelled.');
-    } else {
-      showError(error);
-    }
-  } finally {
-    reset();
-  }
-}
-
-async function cancelDictation() {
-  cancelled = true;
-  clearRecordingTimer();
-
-  if (phase === 'preparing') {
-    setStatus('Cancelling microphone request…');
-    return;
-  }
-
-  if (phase === 'recording' || phase === 'stopping') {
-    setStatus('Cancelling recording…');
-
-    if (phase === 'recording') {
-      stopAndTranscribe();
-    }
-
-    return;
-  }
-
-  if (phase === 'transcribing') {
-    if (abortController) {
-      abortController.abort();
-      setStatus('Cancelling transcription…');
-    } else {
-      setStatus('Upload cannot be aborted in this browser; its result will be ignored.');
-    }
-  }
-}
-
-recordButton.addEventListener('click', function() {
-  if (phase === 'recording') {
-    stopAndTranscribe();
-  } else if (phase === 'idle') {
-    startRecording();
-  }
-});
-cancelButton.addEventListener('click', cancelDictation);
-updateControls();
-```
-
-Before provider handoff, cancellation stops processing, so no provider call or charge occurs. After handoff, cancellation stops the caller waiting for a result. Fliplet lets the provider request continue; if it completes successfully, usage is metered and the organization may be charged.
-
+See [embedding models and vector compatibility](/API/core/ai/models#embedding-models).
 
 ## Fallback defaults
 
-These defaults apply only when `model` is omitted. They are not recommendations for new features.
-
-The following defaults reflect the JavaScript wrapper and REST handlers. JavaScript inserts its own completion fallback before making the REST request, so that request does not inherit the REST completion default.
-
-| Operation | JavaScript fallback when `model` is omitted | Direct app REST fallback when `model` is omitted |
-|---|---|---|
-| Chat: `Fliplet.AI()` / `ask()` and `createCompletion({ messages })`; `POST /v1/apps/:app/ai/completions` | `gpt-3.5-turbo` | `gpt-4o-mini` |
-| Responses: `createCompletion({ input, useResponses: true })`; same REST endpoint | `gpt-3.5-turbo` (incompatible with Responses; specify a compatible model) | `gpt-4o-mini` |
-| Legacy non-streaming prompt: `createCompletion({ prompt })`; same REST endpoint | `gpt-3.5-turbo` (not a legacy prompt model) | `gpt-3.5-turbo-instruct` (retired) |
-| Images: `generateImage()`; `POST /v1/apps/:app/ai/image` | `gpt-image-2` through the REST handler | `gpt-image-2` |
-| Audio transcription: `transcribeAudio()`; `POST /v1/apps/:app/ai/audio` | `gpt-4o-mini-transcribe` through the REST handler | `gpt-4o-mini-transcribe` |
-| Embeddings: `createEmbedding()`; `POST /v1/apps/:app/ai/embeddings` | `text-embedding-ada-002` through the REST handler | `text-embedding-ada-002` |
-
-Gemini requests require an explicit Gemini model ID and a Gemini payload. OpenAI retired `gpt-3.5-turbo-instruct` on September 28, 2026; new text features use `messages` or Responses `input` instead of the legacy `prompt` format. `gpt-3.5-turbo` is scheduled for retirement on October 23, 2026. See [OpenAI deprecations](https://developers.openai.com/api/docs/deprecations).
+Omitting `model` uses a fallback, not a suitability recommendation. The [fallback table](/API/core/ai/models#fallback-defaults) gives the JavaScript and direct REST values; JavaScript completions insert their own fallback before calling REST.
 
 ## Deprecated and retired models
 
-These IDs remain listed in Fliplet configuration or historical JavaScript metadata; their presence does not establish provider availability. Do not select them for new features. Check the provider notices for affected IDs and retirement dates. Transcription IDs remain in their category because they are the only IDs accepted by Fliplet, with deprecation clearly marked.
+See [deprecated and retired models](/API/core/ai/models#deprecated-and-retired-models) before selecting or migrating a model. A historical configuration entry does not establish provider availability.
 
 ### Deprecated OpenAI text models
 
-| Model ID | Availability or request-format note |
-| --- | --- |
-| `gpt-5.4-nano` | Deprecated; retirement April 1, 2027. Chat Completions or Responses. |
-| `gpt-5.3-codex` | Deprecated; retirement April 1, 2027. Responses format. |
-| `gpt-5.1` | Deprecated; retirement April 1, 2027. Chat Completions or Responses. |
-| `gpt-5-pro` | Responses format. Deprecated; see the snapshot retirement notice below. |
-| `gpt-5` | Chat Completions or Responses. Deprecated; see the snapshot retirement notice below. |
-| `gpt-5-mini` | Chat Completions or Responses. Deprecated; see the snapshot retirement notice below. |
-| `gpt-5-nano` | Chat Completions or Responses. Deprecated; see the snapshot retirement notice below. |
-
-OpenAI announced deprecation of GPT-5.1, GPT-5.3-Codex and GPT-5.4-Nano on October 1, 2026. GPT-5, GPT-5 Mini, GPT-5 Nano and GPT-5 Pro are also deprecated. The affected dated snapshots of GPT-5, GPT-5 Mini, GPT-5 Nano and GPT-5 Pro are scheduled for retirement on December 11, 2026; check the [OpenAI deprecation list](https://developers.openai.com/api/docs/deprecations) for exact affected IDs.
+See [OpenAI retirement notices](/API/core/ai/models#deprecated-openai-text-models).
 
 ### Historical Gemini text models
 
-| Model ID | Availability note |
-| --- | --- |
-| `gemini-2.0-flash-thinking` | Historical configuration entry; no current provider model with this ID. Do not select. |
-| `gemini-2.0-flash` | Legacy 2.0 family retired June 1, 2026; do not select. |
-| `gemini-1.5-pro` | Retired September 29, 2025; do not select. |
-| `gemini-1.5-flash-8b` | Retired September 29, 2025; do not select. |
-| `gemini-1.5-flash` | Retired September 29, 2025; do not select. |
+See [historical Gemini IDs](/API/core/ai/models#historical-gemini-text-models).
 
 ### Retired image models
 
-| Model ID | Availability note |
-| --- | --- |
-| `gemini-2.5-flash-image` | Retired October 2, 2026; do not select. |
+See [retired image IDs](/API/core/ai/models#retired-image-models).
 
 ### Historical IDs and additional provider models
 
-The JavaScript `AVAILABLE_MODELS` metadata is not a complete availability catalog or a validation list. In addition to IDs above, it retains `gpt-3.5-turbo`, `text-davinci-003`, `gpt-4`, `gpt-4-turbo`, `o1`, `o1-mini`, `o3` and `o3-mini`. Do not infer availability from that metadata. `text-davinci-003` and `o1-mini` are retired. `gpt-3.5-turbo`, `gpt-4`, `gpt-4-turbo`, `o1` and `o3-mini` are scheduled for retirement on October 23, 2026. `o3` is deprecated; its `o3-2025-04-16` snapshot is scheduled for retirement on December 11, 2026.
-
-The completion proxy also routes additional model IDs and provider snapshots that are not listed in the catalog above. Successful routing alone does not establish current provider access or endpoint compatibility. New features should start from the configured catalog above and use current provider documentation to confirm compatibility.
+See [JavaScript metadata and additional provider IDs](/API/core/ai/models#historical-ids-and-additional-provider-models). Exported metadata and successful proxy routing do not establish provider availability.
 
 ## Related guides
 
