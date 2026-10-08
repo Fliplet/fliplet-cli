@@ -72,3 +72,39 @@ it('security JSON and JavaScript fences parse and templates survive Liquid raw b
   }
   assert.ok(blocks >= 15, 'example fences must actually be exercised');
 });
+
+it('membership script denies missing or blank email before privileged lookup', async () => {
+  const body = readFileSync(join(source, 'API/datasources/security-rules.md'), 'utf8');
+  const script = [...body.matchAll(/```js\n([\s\S]*?)```/g)]
+    .map(match => match[1]).find(code => code.includes("DataSources('Reading Groups')"));
+  assert.ok(script);
+  const AsyncFunction = Object.getPrototypeOf(async function() {}).constructor;
+  const run = new AsyncFunction('user', 'session', 'type', 'DataSources', script);
+  let lookups = 0;
+  const DataSources = name => {
+    assert.equal(name, 'Reading Groups');
+    return { findOne: async options => {
+      lookups++;
+      assert.deepEqual(options.where, { Email: 'ada@example.org', Group: 'Curators' });
+      return { Email: 'ada@example.org', Group: 'Curators' };
+    } };
+  };
+  for (const user of [undefined, {}, { Email: null }, { Email: 7 }, { Email: '' }, { Email: '   ' }]) {
+    assert.deepEqual(await run(user, { dataSourceId: 731 }, 'select', DataSources), { granted: false });
+  }
+  assert.equal(lookups, 0);
+  assert.deepEqual(await run({ Email: 'ada@example.org' }, { dataSourceId: 731 }, 'select', DataSources), { granted: true });
+  assert.equal(lookups, 1);
+});
+
+it('compatibility links describe the actual replacement scopes', () => {
+  const entry = readFileSync(join(source, paths[0]), 'utf8');
+  assert.match(entry, /\[Replacement: owner-scoped single-record profiles\]\(API\/datasources\/security-examples\.md#editable-profiles\)/);
+  assert.match(entry, /\[Replacement: owner-filtered read illustration\]\(API\/datasources\/security-examples\.md#private-sketches\)/);
+  assert.ok(entry.includes('not department/manager access or complete source privacy'));
+  const examples = readFileSync(join(source, 'API/datasources/security-examples.md'), 'utf8');
+  const section = examples.slice(examples.indexOf('<a id="private-sketches">'), examples.indexOf('## Editable profiles'));
+  const policy = JSON.parse(section.match(/```json\n(\[\s*\{\s*"type"[\s\S]*?)```/)[1]);
+  assert.deepEqual(policy[0].type, ['select']);
+  assert.ok(section.includes('does not prove every commit request is denied'));
+});

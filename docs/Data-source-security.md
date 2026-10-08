@@ -15,7 +15,7 @@ Protect app data with server-evaluated access rules, then test the allowed and d
 
 1. Open **App Data** in Fliplet Studio, select the data source and open **Access Rules**.
 2. Define the actors, operations and fields that need protection. Start with an explicit empty rules array (`[]`) for a source that should deny app access until configured. Missing or null rules retain legacy unrestricted access.
-3. Choose a [complete security example](API/datasources/security-examples.md) and adapt its data shape and login-source binding. Save the rules, then read back the configuration.
+3. Choose a [security example with explicit scope](API/datasources/security-examples.md) and adapt its data shape and login-source binding. Save the rules, then read back the configuration.
 4. Test both allowed and denied operations with [Enforce security enabled in preview](API/datasources/testing-security.md). Confirm persisted results using a fresh read.
 
 A minimal public read-only policy is:
@@ -33,7 +33,7 @@ Use this only for data intended for anonymous readers. It grants no insert, upda
 | Task | Guide |
 |---|---|
 | Understand rule order, identity, requirements and endpoint differences | [Security rule reference](API/datasources/security-rules.md) |
-| Configure public, shared, private, profile or role/state data | [Security examples](API/datasources/security-examples.md) |
+| Explore public, shared, owner-filtered reads, profile or role/state examples | [Security examples](API/datasources/security-examples.md) |
 | Prove allowed and denied app behavior | [Authenticated preview testing](API/datasources/testing-security.md) |
 | Connect, query or write through JavaScript | [Fliplet.DataSources reference](API/fliplet-datasources.md) |
 | Configure authentication or hooks | [App authentication](API/v3/auth.md), [Session API](API/fliplet-session.md) and [Data source hooks](Data-Source-Hooks.md) |
@@ -68,11 +68,11 @@ These destinations retain links to the previous sections of this guide.
 
 <a id="example-role-based-access-with-protected-fields"></a>
 
-[Example role based access with protected fields](API/datasources/security-examples.md#editable-profiles)
+[Replacement: owner-scoped single-record profiles](API/datasources/security-examples.md#editable-profiles). This example demonstrates enabled-owner edits and single-write filtering, not the former role/protected-field policy.
 
 <a id="example-department-scoped-access"></a>
 
-[Example department scoped access](API/datasources/security-examples.md#private-sketches)
+[Replacement: owner-filtered read illustration](API/datasources/security-examples.md#private-sketches). This illustrates individual owner reads, not department/manager access or complete source privacy.
 
 <a id="data-requirements-and-query-validation"></a>
 

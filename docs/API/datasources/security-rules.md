@@ -93,18 +93,24 @@ String requirements check **key presence**, not a nonempty value or type. For ex
 | Bulk/commit insert | Keys in every submitted data object | Every submitted data object |
 | Bulk/commit update | Keys in every submitted data object | Every loaded stored row; no stored context means the condition cannot grant |
 | Single `removeById()` | Stored record keys | Stored record values |
-| Query writes | Depends on the request's query and operation checks | Query admission and affected-record checks differ; do not infer access from a single-record test |
+| Query admission | Submitted `where` keys, evaluated as `select` | Submitted `where`, evaluated as `select` |
+| Query update, affected-record check | Submitted update-data keys | Stored row |
+| Query delete, affected-record check | Stored record keys | Stored record values |
 | Commit delete | Existing data for the requested IDs | Existing data for the requested IDs |
 
 A query read requirement checks the client's filter; it does not inject a filter. Send the appropriate `where` clause. `findOne({ where: ... })` follows the query route, whereas `findById(id)` follows the record route and cannot be assumed equivalent. Additional source permissions can reject either route.
 
+Query writes first require a `select` grant for the submitted `where`. In the inspected supported behavior, each affected row then undergoes an operation check: updates check string requirements against submitted update-data keys and object requirements against the stored row; deletes check stored data. Update persistence omits the affected row's matched-rule exclusions from the proposed data. `include` is not a write whitelist, and source permissions are additional gates. Verify affected-row enforcement on the tested deployment: compatibility settings can skip that check, so local source inspection alone does not prove production enforcement.
+
 ### Requirement operators
+
+This select-only illustration compares the submitted read filter or stored record to the caller. On updates, the same object condition would authorize the **stored** owner's row without prohibiting a proposed change to `OwnerEmail`. See the explicitly limited [single-record profile example](security-examples.md#editable-profiles) before configuring updates; its exclusions do not protect bulk/commit writes.
 
 {% raw %}
 ```json
 [
   {
-    "type": ["select", "update"],
+    "type": ["select"],
     "allow": { "loggedIn": true, "dataSourceId": 731 },
     "require": [{ "OwnerEmail": { "equals": "{{user.[Email]}}" } }]
   }
@@ -118,9 +124,15 @@ A query read requirement checks the client's filter; it does not inject a filter
 | `notequals` | Inequality comparison; it is not an existence or nonempty check. |
 | `contains` | Substring comparison; query validation recognizes direct strings and relevant `$eq`, `$like`, `$iLike` or equality `$filters` values. |
 
-Only these three object operators are supported. They are separate from [query operators](query-operators.md). On updates the example authorizes the stored owner's row, but it does **not** prohibit changing `OwnerEmail`. The [examples guide](security-examples.md) shows that limitation beside the write.
+Only these three object operators are supported. They are separate from [query operators](query-operators.md).
 
 ## Column restrictions
+
+When the read-filtering helpers run, source-level `definition.include`/`definition.exclude` lists are unioned with the matching rule's corresponding lists. A rule include list is not an exclusive whitelist, and an empty rule include does not define a whitelist. For example, source include `PrivateNotes`, rule include `PublicName, Badge` and source exclude `Badge` leave `PrivateNotes, PublicName`: exclusions win.
+
+The inspected query/record read routes invoke each helper when the matching rule has the corresponding **nonempty** list. Do not infer that a source list alone is always applied by those routes. These helpers filter read responses; they do not establish write-persistence restrictions.
+
+Successful write authorization does not itself prove that returned rows or columns satisfy read restrictions. The inspected `commit()` response can return source entries without owner-select filtering or rule column filtering; hash redaction is separate. Source permissions and caller-supplied response options also affect this path. Test response isolation independently before choosing a writable policy for private data; setting `returnEntries: false` in cooperative clients does not enforce that option on other callers.
 
 Column restrictions do not have a uniform write contract:
 
@@ -129,7 +141,7 @@ Column restrictions do not have a uniform write contract:
 | Select query/record response | Removes excluded data columns | Restricts returned data columns after exclusion; a field removed by `exclude` is not restored by `include` |
 | Single insert/update | Removes submitted excluded fields before persistence; this is filtering, not necessarily a rejected request | Does not reliably filter the persisted single-write payload |
 | Bulk append/replace/commit | Does not filter each persisted entry | Does not filter each persisted entry |
-| Query update | Has separate affected-record filtering behavior | Do not assume single-write or bulk behavior |
+| Query update | Omits matched exclusions from affected-row update data when operation checks run | Not a write whitelist |
 
 A single update that submits an excluded privilege field can resolve successfully while leaving that field unchanged. It is incorrect to describe that outcome as an authorization error. Do not use an `exclude` policy to promise protection on bulk/commit writes. Leave strict app-session writes unavailable until an implemented trusted write path has been verified. Script input selection can substitute `body.where` for proposed data, so a script that checks `query` is not automatically a complete payload validator.
 
@@ -166,8 +178,11 @@ Assigning `query.OwnerEmail` or `query.UpdatedAt` does not establish a persisted
 
 `DataSources(idOrName).find(options)` and `.findOne(options)` perform server-side reads without applying the target source's access rules. A lookup may therefore expose fields ordinary app users cannot read. Use it only for the minimum policy decision, and do not return its contents to clients.
 
+Before using this script, create **Reading Groups** with `Email` and `Group` columns and membership rows. The signed-in identity must have a nonempty string `Email`; column names alone do not enforce that type. The script validates its presence without normalizing or rewriting it.
+
 ```js
-if (!user || !session || session.dataSourceId !== 731 || type !== 'select') {
+if (!user || !session || session.dataSourceId !== 731 || type !== 'select'
+    || typeof user.Email !== 'string' || user.Email.trim().length === 0) {
   return { granted: false };
 }
 const membership = await DataSources('Reading Groups').findOne({

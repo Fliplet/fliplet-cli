@@ -1,6 +1,6 @@
 ---
 title: Data source security examples
-description: "Pair public, shared, private, profile and role-based access rules with data shapes and allowed and denied SDK operations."
+description: "Pair public, shared, owner-filtered read, profile and role-based examples with data shapes and allowed and denied SDK operations."
 type: guide
 tags: [js-api, datasources, security]
 v3_relevant: true
@@ -103,9 +103,11 @@ console.log(rows.map(entry => entry.data));
 
 Denied tests: sign out and call `find()` or `insert()`; sign in through another login source and repeat. As Ada, submit `insert({ Message: 'Missing venue' })`, or update/delete a seeded notice. Each must reject and leave no forbidden persisted effect. The string requirements check presence only: `Venue: null` is not a nonempty validation failure under this policy.
 
-## Private sketches
+<a id="private-sketches"></a>
 
-**Goal:** An enabled member reads, creates and deletes sketches scoped to their email. This example deliberately grants no updates, keeping ownership immutable through the app operations it permits.
+## Owner-filtered read illustration
+
+**Goal:** Demonstrate an enabled member's owner-filtered query read and stored-owner record read.
 
 Create **Composition Sketches** with columns `OwnerEmail` and `Title`. Seed:
 
@@ -116,13 +118,15 @@ Create **Composition Sketches** with columns `OwnerEmail` and `Title`. Seed:
 ]
 ```
 
-Save:
+This illustrates the named read checks, not complete source privacy. Write/bulk response routes and actual source permissions require independent verification before using the source for private data. A select-only rule array does not prove every commit request is denied or its response isolated. Do not rely on UI availability, cooperative response options or evaluator-only tests to establish privacy.
+
+Save this select-only illustration:
 
 {% raw %}
 ```json
 [
   {
-    "type": ["select", "insert", "delete"],
+    "type": ["select"],
     "allow": { "dataSourceId": 731, "user": { "Enabled": true } },
     "require": [{ "OwnerEmail": { "equals": "{{user.[Email]}}" } }]
   }
@@ -130,18 +134,27 @@ Save:
 ```
 {% endraw %}
 
-Allowed as Ada:
+Allowed as Ada after signing in through Members:
 
 ```js
 const sketches = await Fliplet.DataSources.connectByName('Composition Sketches', { offline: false });
 const mine = await sketches.find({ where: { OwnerEmail: 'ada@example.org' } });
 console.log(mine.map(entry => entry.data.Title)); // ['Morning motif']
-await sketches.insert({ OwnerEmail: 'ada@example.org', Title: 'Second motif' });
 ```
 
-Use the fixture ID from Studio to test `removeById(adaSketchId)` on Ada's disposable row; the stored owner grants deletion. Denied as Ada: `find()` without an owner filter, `find({ where: { OwnerEmail: 'lin@example.org' } })`, inserting Lin's email or deleting Lin's fixture ID. Anonymous callers, a wrong-source login and `Enabled: false` must also be denied. No update is granted, even on Ada's own row.
+Copy Ada's current fixture ID from Studio and call this function as Ada to check the record-read path:
 
-The query rule validates `where`; it does not add an owner filter for you. A record read with `findById(id)` instead evaluates the stored row. Repeat both paths when the app uses both. This textual email comparison is case-insensitive; use normalized unique identities and do not assume case-sensitive ownership.
+```js
+async function readOwnSketch(adaSketchId) {
+  const sketches = await Fliplet.DataSources.connectByName('Composition Sketches', { offline: false });
+  const own = await sketches.findById(adaSketchId);
+  console.log(own.data.Title); // 'Morning motif'
+}
+```
+
+Denied read tests as Ada: `find()` without an owner filter, `find({ where: { OwnerEmail: 'lin@example.org' } })` and `findById(linSketchId)` using Lin's actual fixture ID. Anonymous callers, a wrong-source login and `Enabled: false` must also be denied on these read paths.
+
+The query rule validates `where`; it does not add an owner filter. `findById(id)` instead evaluates the stored row. This textual email comparison is case-insensitive; use normalized unique identities and do not assume case-sensitive ownership. Before asserting private deployment safety, verify commit and other response-bearing routes are actually unavailable or appropriately isolated under the source's real permissions, including their returned rows and columns. See [adversarial response tests](testing-security.md#check-write-responses).
 
 ## Editable profiles
 

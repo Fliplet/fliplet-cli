@@ -11,7 +11,7 @@ Data sources JavaScript API and security model: query, insert, update, delete re
 
 - [Data Source joins](https://developers.fliplet.com/API/datasources/joins.md): Fetch related rows from multiple data sources in a single query using named joins, like SQL joins.
 - [Data Sources query operators](https://developers.fliplet.com/API/datasources/query-operators.md): Filter Data Source queries with MongoDB/Sift operators ($eq, $gt, $in, $regex, $and, $or) inside connection.find() where clauses.
-- [Data source security examples](https://developers.fliplet.com/API/datasources/security-examples.md): Pair public, shared, private, profile and role-based access rules with data shapes and allowed and denied SDK operations.
+- [Data source security examples](https://developers.fliplet.com/API/datasources/security-examples.md): Pair public, shared, owner-filtered read, profile and role-based examples with data shapes and allowed and denied SDK operations.
 - [Data source security rule reference](https://developers.fliplet.com/API/datasources/security-rules.md): Access rule evaluation, trusted identity, requirement targets, column restrictions and custom script behavior.
 - [Testing data source security in preview](https://developers.fliplet.com/API/datasources/testing-security.md): Verify allowed and denied data source operations as authenticated app users with Studio preview security enforcement enabled.
 - [Data Source views](https://developers.fliplet.com/API/datasources/views.md): Define named, session-aware filters on a data source so each user or group sees only the rows that apply to them.

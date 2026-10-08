@@ -11,7 +11,7 @@
         "js-api",
         "security"
       ],
-      "sha256": "7a7765e27d4c2ac92a7bc35897860f4c9c25d2128b426fbccbc5dc886ea07efb"
+      "sha256": "94c8d56f5b7073025d2e1ec79eaaea4624abfc8095e95530755185c2b9651a49"
     },
     {
       "name": "fliplet-app-actions",
