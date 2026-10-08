@@ -103,7 +103,7 @@ Object update requirements evaluate stored rows. They do not validate every prop
 
 `connection.removeById(id, { ack? })` deletes one entry. A missing/falsy ID throws synchronously. An online missing entry rejects with HTTP 404; authorization and source permission failures can reject with HTTP 400.
 
-Online success resolves `{}`. With native reconciliation enabled by `ack` or the connection, the result can instead be the removed local entry. Development sample mode resolves without a value. No `connection.remove()` method is provided by the online connection; the [native collection API](offline-database.md) is separate.
+Online success resolves `{}`. With native reconciliation enabled by `ack` or the connection, the result can instead be the removed local entry. This requires native database support to remain active; `ack: true` does not override an `offline: false` connection. Development sample mode resolves without a value. No `connection.remove()` method is provided by the online connection; the [native collection API](offline-database.md) is separate.
 
 ## Writes selected by a query
 
