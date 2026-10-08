@@ -16,7 +16,7 @@ Every Fliplet JS API available to V3 apps, grouped by capability category. Each 
 ## Data
 
 - [`Fliplet.Cache`](https://developers.fliplet.com/API/core/cache.html) **(preloaded)** — Run async operations once and memoize their results, with optional expiry and background refresh.
-- [`Fliplet.DataSources`](https://developers.fliplet.com/API/fliplet-datasources.html) — Connect to, query, insert, update, and delete records in Fliplet Data Sources from inside an app. All methods are promise-based.
+- [`Fliplet.DataSources`](https://developers.fliplet.com/API/fliplet-datasources.html) — Connect to Fliplet data sources and find references for queries, writes, subscriptions, native storage and source management.
 - [`Fliplet.DataSources.Encryption`](https://developers.fliplet.com/API/fliplet-encryption.html) — Automatically encrypt and decrypt selected Data Source columns on-device by registering a private key and column list.
 - [`Fliplet.Storage and Fliplet.App.Storage`](https://developers.fliplet.com/API/core/storage.html) **(preloaded)** — Persist JSON-serializable values to device or browser storage, scoped globally or to the current app.
 
