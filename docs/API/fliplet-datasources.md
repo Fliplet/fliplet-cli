@@ -12,6 +12,12 @@ capabilities: [data source, datasource, query, insert, update, delete, crud, rec
 
 Connect to, query, insert, update, and delete records in Fliplet Data Sources from inside an app. All methods are promise-based.
 
+## Security and verification
+
+Configure [data source access rules](../Data-source-security.md) before exposing private data. Use the [rule reference](datasources/security-rules.md), [complete policy examples](datasources/security-examples.md) and [authenticated preview tests](datasources/testing-security.md) alongside this method reference.
+
+Query reads (`find`/`findOne`) and record reads (`findById`) evaluate different requirement targets. Object update requirements check stored rows, not proposed values. Single and bulk writes have different column restrictions; a successful administrative request or cached/offline result does not establish app-user authorization.
+
 ## ⚠️ Important: All API Calls Are Asynchronous
 
 **All Fliplet Data Sources API methods return Promises and must be chained using `.then()` or used with `async/await`.**
@@ -953,7 +959,8 @@ const newDataSource = await Fliplet.DataSources.create({
     }
   ],
   
-  // Set permissions
+  // Public sample data only: grants every app user all four operations.
+  // Use a scoped policy from the security guide for private data.
   accessRules: [
     { type: ['select', 'insert', 'update', 'delete'], allow: 'all' }
   ]

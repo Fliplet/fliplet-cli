@@ -3928,15 +3928,27 @@ URL: https://developers.fliplet.com/API/core/ai.md
 
 Generate text and images, transcribe audio and create embeddings through Fliplet. `Fliplet.AI` is preloaded in apps and uses Fliplet access and AI credits without a customer-supplied OpenAI or Gemini key.
 
+`Fliplet.AI` runs models through Fliplet’s server API and requires an internet connection. It does not provide an on-device model or offline inference.
+
 ## Table of contents
 
 - [AI methods](#ai-methods)
 - [AI models](#ai-models)
 - [First request](#first-request)
 - [API reference](#api-reference)
+  - [Initialization](#initialization)
+  - [Instance methods](#instance-methods)
+  - [Completions](#flipletaicreatecompletion)
+  - [Streaming](#streaming-with-createcompletion)
+  - [Images](#flipletaigenerateimage)
+  - [Transcription](#flipletaitranscribeaudio)
+  - [Embeddings](#flipletaicreateembedding)
 - [Rate limiting](#rate-limiting)
 - [Error handling](#error-handling)
+- [Usage examples](#usage-examples)
 - [Model catalog](#model-catalog)
+- [Fallback defaults](#fallback-defaults)
+- [Deprecated and retired models](#deprecated-and-retired-models)
 - [Related guides](#related-guides)
 
 <a id="choose-a-method"></a>
@@ -4052,9 +4064,14 @@ For streaming, set `stream: true` in the constructor and attach `.stream(onChunk
 
 ### `Fliplet.AI.createCompletion()`
 
-`Fliplet.AI.createCompletion(options: Object): Promise<Object>`
+`Fliplet.AI.createCompletion(options: Object): Promise`
 
-Send the payload required by the selected model. Non-streaming calls resolve to the provider's response object. With `stream: true`, the returned Promise also exposes `.stream()`, `.cancel()` and `.guid`; see [streaming](#streaming-with-createcompletion).
+Send the payload required by the selected model. The return value depends on `stream`:
+
+| Mode | Returned request | Resolved value |
+| --- | --- | --- |
+| Buffered (`stream` omitted or `false`) | Promise | The provider response object for the selected format. |
+| Streaming (`stream: true`) | Promise with `.stream(onChunk)`, `.cancel()` and `.guid` | `undefined` on normal completion, or `{ cancelled: true }` on cancellation. Accumulate reply text from callbacks; see the [streaming contract](#streaming-with-createcompletion). |
 
 | Field | Type | Required or behavior |
 | --- | --- | --- |
@@ -4074,7 +4091,7 @@ Use `messages: [{ role, content }]` and read `choices[0].message.content` for a 
 
 The [first request](#first-request) is a complete Chat Completions example. See [OpenAI's Chat Completions reference](https://platform.openai.com/docs/api-reference/chat/create) for message content, supported roles and model-specific fields.
 
-### Using the Responses API
+#### Using the Responses API
 
 Set `useResponses: true` and provide `input`. The returned JSON contains typed `output` items, not a `choices` array. Extract text from message content with `type: 'output_text'`; other output items can contain reasoning, tool calls or refusals.
 
@@ -4107,7 +4124,7 @@ summarizeWithResponses();
 
 For app-managed conversation context, `input` can also be an array such as `[{ role: 'user', content: 'Hello' }, { role: 'assistant', content: 'Hello! How can I help?' }, { role: 'user', content: 'Suggest a meeting agenda.' }]`. Preserve model-required tool items when using tools. Do not assume every Responses provider feature, including retrieval, background execution or provider-stored conversations, has a matching Fliplet integration. See the [Responses schema](https://platform.openai.com/docs/api-reference/responses/create) and [chatbot guide](/API/core/ai/chatbot).
 
-### Using Gemini models
+#### Using Gemini models
 
 Use `createCompletion({ model, contents })`. `contents` uses `{ role, parts }`; for a text request, each part is `{ text }`. Read `candidates[0].content.parts` and collect its text parts.
 
@@ -4148,7 +4165,11 @@ Fliplet consumes `useResponses` for OpenAI routing and `stream` for Gemini routi
 
 ### Streaming with `createCompletion()`
 
+#### Dependency and transport
+
 Streaming requires the `fliplet-socket` dependency on the app or screen. If it is missing, `createCompletion()` throws synchronously. Fliplet sends the completion request over HTTP and delivers provider chunks through Fliplet sockets; the browser does not receive an SSE response from the app endpoint.
+
+#### Chunk payloads
 
 Register `.stream(onChunk)` immediately. The callback receives nonterminal payloads, including keepalive events. Ignore chunks without the expected content. Build the displayed reply in app state:
 
@@ -4158,7 +4179,17 @@ Register `.stream(onChunk)` immediately. The callback receives nonterminal paylo
 | Responses | `chunk.delta` when `chunk.type === 'response.output_text.delta'` |
 | Gemini | Text parts of `chunk.candidates[0].content.parts` |
 
+#### Completion and cancellation
+
 Normal completion resolves the Promise with `undefined`. Cancellation resolves it with `{ cancelled: true }` after the socket cancellation event. The completion callback does not receive the assembled answer, including for Responses. Errors reject with the socket error payload, which need not be an `Error` instance.
+
+To cancel, retain the request and call `await request.cancel()`, or use `Fliplet.AI.cancel(request.guid)`. Cancellation asks Fliplet to abort the active provider stream. A cancellation acknowledgement may report that the signal was broadcast; it is not proof that no generation or charge occurred. Keep partial text visibly interrupted and handle failure/retry in the app. The [chatbot guide](/API/core/ai/chatbot#build-a-conversation) covers progressive display, safe formatting and UI state.
+
+#### Console streaming example
+
+This plain JavaScript example uses Chat Completions and logs accumulated text as chunks arrive. It demonstrates the API lifecycle; it has no on-screen renderer. Load `fliplet-socket` and run after Fliplet is ready.
+
+For an on-screen reply, use the [chatbot rendering workflow](/API/core/ai/chatbot#build-a-conversation). Framework callbacks must update the state used by their renderer; Vue apps should follow [asynchronous reactive-state updates](/API/v3/frameworks/vue#updating-reactive-state-asynchronously).
 
 ```javascript
 async function streamReply() {
@@ -4174,7 +4205,7 @@ async function streamReply() {
       const delta = choice && choice.delta && choice.delta.content;
       if (typeof delta === 'string') {
         text += delta;
-        console.log(text); // textContent is a safe plain-text display option.
+        console.log(text); // Incremental console output, before the request settles.
       }
     });
     const completion = await request;
@@ -4188,7 +4219,7 @@ async function streamReply() {
 streamReply();
 ```
 
-To cancel, retain the request and call `await request.cancel()`, or use `Fliplet.AI.cancel(request.guid)`. Cancellation asks Fliplet to abort the active provider stream. A cancellation acknowledgement may report that the signal was broadcast; it is not proof that no generation or charge occurred. Keep partial text visibly interrupted and handle failure/retry in the app. The [chatbot guide](/API/core/ai/chatbot#build-a-conversation) covers progressive display, safe formatting and UI state.
+The console shows growing text while the request is pending, then logs the completed accumulated reply. `await request` supplies completion status, not that text.
 
 ### `Fliplet.AI.generateImage()`
 
@@ -4357,103 +4388,6 @@ Catch asynchronous failures with `try...catch` or `.catch()`. Completion setup c
 
 Show a useful error and retain the user's input. Validate the expected response shape before treating a request as successful. Retry transient connection or rate-limit failures with a delay; correct invalid payloads, unavailable models, access or credit problems before retrying. A timed-out request is not proof that no provider work or charge occurred.
 
-## Model catalog
-
-The tables list model IDs configured by Fliplet. Deprecated and retired entries appear in [Deprecated and retired models](#deprecated-and-retired-models). Configuration and provider routing do not guarantee that a model remains available from its provider, or that every model supports every request format. Check the linked provider reference for endpoint compatibility and parameters before using a model.
-
-OpenAI text models use [createCompletion()](/API/core/ai#flipletaicreatecompletion) or [POST /v1/apps/:app/ai/completions](/REST-API/fliplet-ai#completions). Chat Completions uses `messages`; Responses uses `input` and `useResponses: true`. Models marked Responses require that format. Other models must use a format supported by their individual [OpenAI model reference](https://developers.openai.com/api/docs/models).
-
-### OpenAI text models
-
-Numbered GPT models are ordered by version (highest first), then Astra, Sol, Terra and Luna within a version, and Pro, normal, Mini and Nano within a model family. This order helps you find models; it does not determine which is most suitable for your task. The 4o family is listed separately.
-
-| Model ID | Availability or request-format note |
-| --- | --- |
-| `gpt-6.1-sol` | Chat Completions or Responses. |
-| `gpt-6-astra` | Chat Completions or Responses. |
-| `gpt-6-sol` | Chat Completions or Responses. |
-| `gpt-6-luna` | Chat Completions or Responses. |
-| `gpt-5.6-sol` | Chat Completions or Responses. |
-| `gpt-5.6-terra` | Chat Completions or Responses. |
-| `gpt-5.6-luna` | Chat Completions or Responses. |
-| `gpt-5.5-pro` | Responses format; provider does not support streaming. |
-| `gpt-5.5` | Chat Completions or Responses. |
-| `gpt-5.4-pro` | Responses format. |
-| `gpt-5.4` | Chat Completions or Responses. |
-| `gpt-5.4-mini` | Chat Completions or Responses. |
-| `gpt-5.2-pro` | Responses format. |
-| `gpt-5.2` | Chat Completions or Responses. |
-| `gpt-4.1` | Chat Completions or Responses. |
-| `gpt-4.1-mini` | Chat Completions or Responses. |
-
-#### GPT-4o family
-
-| Model ID | Availability or request-format note |
-| --- | --- |
-| `gpt-4o` | Chat Completions or Responses. |
-| `gpt-4o-mini` | Chat Completions or Responses. |
-
-
-Provider selection facts for text-only requests:
-
-- OpenAI positions [GPT-6 Astra](https://developers.openai.com/api/docs/models/gpt-6-astra) for complex reasoning and coding; Standard text input/output rates are $10/$50 per million tokens.
-- [GPT-6.1 Sol](https://developers.openai.com/api/docs/models/gpt-6.1-sol) balances capability and cost; Standard text input/output rates are $2/$10 per million tokens. Chat Completions supports text generation without tool calling; use Responses for tools.
-- [GPT-6 Luna](https://developers.openai.com/api/docs/models/gpt-6-luna) targets focused, high-volume workloads; Standard text input/output rates are $0.10/$0.50 per million tokens. For Chat Completions function calling, the provider requires `reasoning_effort: 'none'`; Responses uses its own reasoning settings.
-
-These three models accept text and image input and produce text output. Their provider context window is 1,050,000 tokens; prompts above 272,000 input tokens have different pricing. The 272,000-token warning in Fliplet Chat Completions does not truncate or reject input. The rates above describe provider costs, not Fliplet charges, and exclude caching, regional premiums and tools. They are facts for a selection decision, not comparative benchmark results. See [OpenAI pricing](https://developers.openai.com/api/docs/pricing) for conditions. Capability and cost comparisons for other configured models are not summarized here; preserve a supported user pin and verify the model-specific reference before changing it.
-
-### Gemini text models
-
-Gemini text models use [createCompletion({ model, contents })](/API/core/ai#using-gemini-models) or the [app REST completion endpoint](/REST-API/fliplet-ai#completions) with `contents`. Use the [Gemini model reference](https://ai.google.dev/gemini-api/docs/models) for payloads and capabilities.
-
-| Model ID | Availability note |
-| --- | --- |
-| `gemini-3.5-flash` | See provider model reference. |
-| `gemini-3.1-flash-lite` | Earliest announced shutdown May 7, 2027; check provider notice before migration. |
-| `gemini-2.5-pro` | Provider restricts access to accounts with prior active usage. |
-| `gemini-2.5-flash` | Provider restricts access to accounts with prior active usage. |
-| `gemini-2.5-flash-lite` | Provider restricts access to accounts with prior active usage. |
-
-For lightweight extraction and high-frequency text tasks, Google describes [Gemini 3.1 Flash-Lite](https://ai.google.dev/gemini-api/docs/models/gemini-3.1-flash-lite) as a low-latency, cost-effective model with text, image, video, audio and PDF inputs and text output. [Gemini 3.5 Flash](https://ai.google.dev/gemini-api/docs/models/gemini-3.5-flash) supports multi-step reasoning and coding workflows. These are provider capabilities; a required upload, tool execution or media flow still needs a verified Fliplet integration. See [Gemini pricing](https://ai.google.dev/gemini-api/docs/pricing) for provider costs.
-
-See the [Gemini changelog](https://ai.google.dev/gemini-api/docs/changelog) and [Gemini deprecations](https://ai.google.dev/gemini-api/docs/deprecations) for retirement and access restrictions.
-
-### Image models
-
-OpenAI image models use [generateImage()](/API/core/ai#flipletaigenerateimage) or [POST /v1/apps/:app/ai/image](/REST-API/fliplet-ai#images). Gemini image IDs are also configured, but use `createCompletion()` with Gemini `contents` and `generationConfig`, as shown in the [Fliplet Gemini image example](/API/core/ai#gemini-image-generation) and [provider image reference](https://ai.google.dev/gemini-api/docs/image-generation). Read image data from `candidates[0].content.parts` entries with `inlineData`. OpenAI image response handling does not apply.
-
-| Model ID | Availability note |
-| --- | --- |
-| `gpt-image-2` | OpenAI image model. |
-| `gemini-3.1-flash-image` | See provider image reference. |
-| `gemini-3-pro-image` | See provider image reference. |
-
-`dall-e-2` and `dall-e-3` are legacy IDs. Fliplet replaces either ID with `gpt-image-2`, so specifying a DALL-E ID does not pin the requested model.
-
-### Transcription models
-
-[transcribeAudio()](/API/core/ai#flipletaitranscribeaudio) and [POST /v1/apps/:app/ai/audio](/REST-API/fliplet-ai#audio-transcription) accept only the three IDs below. Newer provider transcription IDs are not accepted by these Fliplet methods until Fliplet adds support.
-
-| Model ID | Availability note |
-| --- | --- |
-| `gpt-4o-mini-transcribe` | Deprecated; retirement scheduled for February 26, 2027. |
-| `gpt-4o-transcribe` | Deprecated; retirement scheduled for February 26, 2027. |
-| `whisper-1` | Deprecated; retirement scheduled for February 26, 2027. |
-
-All three accepted transcription models have announced retirement dates. Provider replacements are not yet accepted by Fliplet's transcription allowlist. See [OpenAI deprecations](https://developers.openai.com/api/docs/deprecations) and test the app's [upload/recording workflow](/API/core/ai/audio-transcription) before changing its model.
-
-### Embedding models
-
-Embedding models use [createEmbedding()](/API/core/ai#flipletaicreateembedding) or [POST /v1/apps/:app/ai/embeddings](/REST-API/fliplet-ai#embeddings). See the [OpenAI embedding reference](https://developers.openai.com/api/docs/guides/embeddings) for input limits and dimensions.
-
-- `text-embedding-3-small`
-- `text-embedding-3-large`
-- `text-embedding-ada-002`
-
-OpenAI Standard embedding rates are $0.02 per million input tokens for [text-embedding-3-small](https://developers.openai.com/api/docs/models/text-embedding-3-small) and $0.13 for [text-embedding-3-large](https://developers.openai.com/api/docs/models/text-embedding-3-large). These are provider rates, not Fliplet charges. Their default vector dimensions are 1,536 and 3,072 respectively; `dimensions` can reduce the output length.
-
-Keep the same embedding model and dimensions when comparing stored vectors with new queries. Changing models can require regenerating stored embeddings.
-
 ## Usage examples
 
 The text examples below select a model explicitly. See the API reference for [image generation](#flipletaigenerateimage), [audio recording and transcription](#flipletaitranscribeaudio), and [embeddings](#flipletaicreateembedding).
@@ -4512,368 +4446,59 @@ For single-turn tasks where conversation history is not needed between requests,
 
 ### Browser recording example
 
-Add these controls to an app screen, then add the script below. The app owns the recording UI, device choice, duration, and where to insert the returned text; `Fliplet.AI` only uploads audio for transcription.
+For microphone capture, final audio chunks, cleanup and transcription, use the complete [recording and upload example](/API/core/ai/audio-transcription#complete-recording-and-upload-example). The [method reference](#flipletaitranscribeaudio) shows the call for an existing Blob or File.
 
-```html
-<button id="dictation-record" type="button">Start recording</button>
-<button id="dictation-cancel" type="button" disabled>Cancel</button>
-<p id="dictation-status" role="status"></p>
-<pre id="dictation-transcript"></pre>
-```
+## Model catalog
 
-```javascript
-const recordButton = document.getElementById('dictation-record');
-const cancelButton = document.getElementById('dictation-cancel');
-const statusElement = document.getElementById('dictation-status');
-const transcriptElement = document.getElementById('dictation-transcript');
-const allowedMimeTypes = ['audio/webm', 'audio/mp4', 'audio/mpeg', 'audio/wav', 'audio/ogg'];
-const recorderMimeTypes = [
-  'audio/webm;codecs=opus',
-  'audio/mp4;codecs=mp4a.40.2',
-  'audio/mp4'
-];
-const filenameByMimeType = {
-  'audio/webm': 'dictation.webm',
-  'audio/mp4': 'dictation.mp4',
-  'audio/mpeg': 'dictation.mp3',
-  'audio/wav': 'dictation.wav',
-  'audio/ogg': 'dictation.ogg'
-};
-const maxRecordingMs = 5 * 60 * 1000; // Example UI cap; choose a duration appropriate to the app.
+[AI models available through Fliplet](/API/core/ai/models) owns the configured IDs, compatibility, provider facts and retirement notices. Select a model compatible with the method and request format.
 
-let stream;
-let recorder;
-let chunks = [];
-let phase = 'idle';
-let cancelled = false;
-let stopPromise;
-let recordingTimer;
-let abortController;
+### OpenAI text models
 
-function baseMimeType(mimeType) {
-  return (mimeType || '').split(';', 1)[0].trim().toLowerCase();
-}
+See [OpenAI text models](/API/core/ai/models#openai-text-models) for IDs and request-format compatibility.
 
-function setStatus(message) {
-  statusElement.textContent = message;
-}
+#### GPT-4o family
 
-function clearRecordingTimer() {
-  window.clearTimeout(recordingTimer);
-  recordingTimer = undefined;
-}
+The [OpenAI catalog](/API/core/ai/models#gpt-4o-family) includes the GPT-4o family.
 
-function releaseMicrophone() {
-  if (stream) {
-    stream.getTracks().forEach(function(track) {
-      track.stop();
-    });
-  }
+### Gemini text models
 
-  stream = undefined;
-}
+See [Gemini text models](/API/core/ai/models#gemini-text-models). These use Gemini `contents` and response handling.
 
-function updateControls() {
-  recordButton.disabled = phase !== 'idle' && phase !== 'recording';
-  recordButton.textContent = phase === 'recording' ? 'Stop and transcribe' : 'Start recording';
-  cancelButton.disabled = phase === 'idle';
-}
+### Image models
 
-function recorderOptions() {
-  if (!MediaRecorder.isTypeSupported) {
-    return undefined;
-  }
+See [image models and legacy ID remapping](/API/core/ai/models#image-models), including the different OpenAI and Gemini method paths.
 
-  const mimeType = recorderMimeTypes.find(function(candidate) {
-    return MediaRecorder.isTypeSupported(candidate);
-  });
+### Transcription models
 
-  return mimeType ? { mimeType: mimeType } : undefined;
-}
+See [accepted transcription models](/API/core/ai/models#transcription-models) and their availability notices.
 
-function recordedBlob() {
-  const mimeType = baseMimeType(recorder.mimeType || (chunks[0] && chunks[0].type));
+### Embedding models
 
-  return new Blob(chunks, { type: mimeType });
-}
-
-function stopRecorder() {
-  if (stopPromise) {
-    return stopPromise;
-  }
-
-  if (!recorder) {
-    return Promise.reject(new Error('There is no recorder to stop.'));
-  }
-
-  if (recorder.state === 'inactive') {
-    return Promise.resolve(recordedBlob());
-  }
-
-  stopPromise = new Promise(function(resolve, reject) {
-    recorder.addEventListener('stop', function() {
-      resolve(recordedBlob());
-    }, { once: true });
-    recorder.addEventListener('error', function(event) {
-      reject(event.error || new Error('The recorder failed.'));
-    }, { once: true });
-    recorder.stop(); // Flushes the final dataavailable chunk before stop.
-  });
-
-  return stopPromise;
-}
-
-function reset() {
-  clearRecordingTimer();
-  releaseMicrophone();
-  recorder = undefined;
-  chunks = [];
-  stopPromise = undefined;
-  abortController = undefined;
-  phase = 'idle';
-  updateControls();
-}
-
-function showError(error) {
-  if (error.name === 'NotAllowedError') {
-    setStatus('Microphone permission was denied.');
-  } else if (error.name === 'NotFoundError') {
-    setStatus('No microphone is available.');
-  } else if (error.name === 'NotReadableError') {
-    setStatus('The microphone is already in use or cannot be read.');
-  } else if (error.name === 'AbortError') {
-    setStatus('Transcription cancelled.');
-  } else if (error.name === 'TimeoutError') {
-    setStatus('Transcription timed out after two minutes.');
-  } else if (error.name === 'TypeError') {
-    setStatus('Invalid audio or transcription options.');
-  } else if (error.status === 400) {
-    setStatus('The audio upload was invalid.');
-  } else if (error.status === 401 || error.status === 403) {
-    setStatus('You are not allowed to transcribe audio in this app.');
-  } else if (error.status === 402) {
-    setStatus('This organization has insufficient AI credits.');
-  } else if (error.status === 413) {
-    setStatus('The audio file is larger than 25 MiB.');
-  } else if (error.status === 415) {
-    setStatus('This browser produced an unsupported audio format.');
-  } else if (error.status === 429) {
-    setStatus('Too many transcription requests. Wait and try again.');
-  } else if (error.message) {
-    setStatus(error.message);
-  } else {
-    setStatus('The transcription request failed. Check the connection and try again.');
-  }
-}
-
-async function startRecording() {
-  if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || !window.MediaRecorder) {
-    setStatus('This browser cannot record audio.');
-    return;
-  }
-
-  cancelled = false;
-  phase = 'preparing';
-  transcriptElement.textContent = '';
-  setStatus('Requesting microphone permission…');
-  updateControls();
-
-  try {
-    stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-
-    if (cancelled) {
-      setStatus('Recording cancelled.');
-      reset();
-      return;
-    }
-
-    const options = recorderOptions();
-
-    // If no preferred MIME type is supported, let the browser choose one.
-    recorder = options ? new MediaRecorder(stream, options) : new MediaRecorder(stream);
-    chunks = [];
-    recorder.addEventListener('dataavailable', function(event) {
-      if (event.data && event.data.size > 0) {
-        chunks.push(event.data);
-      }
-    });
-    recorder.addEventListener('error', function(event) {
-      // stopRecorder() owns errors once stopping starts. During active
-      // recording there is no stop promise to clean up the microphone.
-      if (phase === 'recording') {
-        showError(event.error || new Error('The recorder failed.'));
-        reset();
-      }
-    });
-    recorder.start();
-    phase = 'recording';
-    recordingTimer = window.setTimeout(stopAndTranscribe, maxRecordingMs);
-    setStatus('Recording. It will stop after five minutes.');
-  } catch (error) {
-    showError(error);
-    reset();
-  }
-
-  updateControls();
-}
-
-async function stopAndTranscribe() {
-  if (phase !== 'recording') {
-    return;
-  }
-
-  phase = 'stopping';
-  clearRecordingTimer();
-  updateControls();
-
-  try {
-    const audio = await stopRecorder();
-
-    // The completed Blob no longer needs the microphone. Do not hold it open
-    // while a transcription request can take up to two minutes.
-    releaseMicrophone();
-
-    if (cancelled) {
-      setStatus('Recording cancelled.');
-      return;
-    }
-
-    const mimeType = baseMimeType(audio.type);
-    if (!allowedMimeTypes.includes(mimeType)) {
-      throw new Error('The recorder produced an unsupported MIME type: ' + (mimeType || 'none'));
-    }
-
-    phase = 'transcribing';
-    abortController = typeof AbortController === 'function' ? new AbortController() : undefined;
-    const options = {
-      filename: filenameByMimeType[mimeType],
-      model: 'gpt-4o-mini-transcribe', // Explicit example selection; see the transcription model catalog.
-      timeout: 120000
-    };
-
-    if (abortController) {
-      options.signal = abortController.signal;
-    }
-
-    setStatus('Transcribing…');
-    updateControls();
-    const result = await Fliplet.AI.transcribeAudio(audio, options);
-
-    // A browser without AbortController cannot stop the upload. Ignore its late result.
-    if (!cancelled) {
-      transcriptElement.textContent = result.text;
-      setStatus('Transcription complete.');
-    }
-  } catch (error) {
-    if (cancelled && error.name === 'AbortError') {
-      setStatus('Transcription cancelled.');
-    } else {
-      showError(error);
-    }
-  } finally {
-    reset();
-  }
-}
-
-async function cancelDictation() {
-  cancelled = true;
-  clearRecordingTimer();
-
-  if (phase === 'preparing') {
-    setStatus('Cancelling microphone request…');
-    return;
-  }
-
-  if (phase === 'recording' || phase === 'stopping') {
-    setStatus('Cancelling recording…');
-
-    if (phase === 'recording') {
-      stopAndTranscribe();
-    }
-
-    return;
-  }
-
-  if (phase === 'transcribing') {
-    if (abortController) {
-      abortController.abort();
-      setStatus('Cancelling transcription…');
-    } else {
-      setStatus('Upload cannot be aborted in this browser; its result will be ignored.');
-    }
-  }
-}
-
-recordButton.addEventListener('click', function() {
-  if (phase === 'recording') {
-    stopAndTranscribe();
-  } else if (phase === 'idle') {
-    startRecording();
-  }
-});
-cancelButton.addEventListener('click', cancelDictation);
-updateControls();
-```
-
-Before provider handoff, cancellation stops processing, so no provider call or charge occurs. After handoff, cancellation stops the caller waiting for a result. Fliplet lets the provider request continue; if it completes successfully, usage is metered and the organization may be charged.
-
+See [embedding models and vector compatibility](/API/core/ai/models#embedding-models).
 
 ## Fallback defaults
 
-These defaults apply only when `model` is omitted. They are not recommendations for new features.
-
-The following defaults reflect the JavaScript wrapper and REST handlers. JavaScript inserts its own completion fallback before making the REST request, so that request does not inherit the REST completion default.
-
-| Operation | JavaScript fallback when `model` is omitted | Direct app REST fallback when `model` is omitted |
-|---|---|---|
-| Chat: `Fliplet.AI()` / `ask()` and `createCompletion({ messages })`; `POST /v1/apps/:app/ai/completions` | `gpt-3.5-turbo` | `gpt-4o-mini` |
-| Responses: `createCompletion({ input, useResponses: true })`; same REST endpoint | `gpt-3.5-turbo` (incompatible with Responses; specify a compatible model) | `gpt-4o-mini` |
-| Legacy non-streaming prompt: `createCompletion({ prompt })`; same REST endpoint | `gpt-3.5-turbo` (not a legacy prompt model) | `gpt-3.5-turbo-instruct` (retired) |
-| Images: `generateImage()`; `POST /v1/apps/:app/ai/image` | `gpt-image-2` through the REST handler | `gpt-image-2` |
-| Audio transcription: `transcribeAudio()`; `POST /v1/apps/:app/ai/audio` | `gpt-4o-mini-transcribe` through the REST handler | `gpt-4o-mini-transcribe` |
-| Embeddings: `createEmbedding()`; `POST /v1/apps/:app/ai/embeddings` | `text-embedding-ada-002` through the REST handler | `text-embedding-ada-002` |
-
-Gemini requests require an explicit Gemini model ID and a Gemini payload. OpenAI retired `gpt-3.5-turbo-instruct` on September 28, 2026; new text features use `messages` or Responses `input` instead of the legacy `prompt` format. `gpt-3.5-turbo` is scheduled for retirement on October 23, 2026. See [OpenAI deprecations](https://developers.openai.com/api/docs/deprecations).
+Omitting `model` uses a fallback, not a suitability recommendation. The [fallback table](/API/core/ai/models#fallback-defaults) gives the JavaScript and direct REST values; JavaScript completions insert their own fallback before calling REST.
 
 ## Deprecated and retired models
 
-These IDs remain listed in Fliplet configuration or historical JavaScript metadata; their presence does not establish provider availability. Do not select them for new features. Check the provider notices for affected IDs and retirement dates. Transcription IDs remain in their category because they are the only IDs accepted by Fliplet, with deprecation clearly marked.
+See [deprecated and retired models](/API/core/ai/models#deprecated-and-retired-models) before selecting or migrating a model. A historical configuration entry does not establish provider availability.
 
 ### Deprecated OpenAI text models
 
-| Model ID | Availability or request-format note |
-| --- | --- |
-| `gpt-5.4-nano` | Deprecated; retirement April 1, 2027. Chat Completions or Responses. |
-| `gpt-5.3-codex` | Deprecated; retirement April 1, 2027. Responses format. |
-| `gpt-5.1` | Deprecated; retirement April 1, 2027. Chat Completions or Responses. |
-| `gpt-5-pro` | Responses format. Deprecated; see the snapshot retirement notice below. |
-| `gpt-5` | Chat Completions or Responses. Deprecated; see the snapshot retirement notice below. |
-| `gpt-5-mini` | Chat Completions or Responses. Deprecated; see the snapshot retirement notice below. |
-| `gpt-5-nano` | Chat Completions or Responses. Deprecated; see the snapshot retirement notice below. |
-
-OpenAI announced deprecation of GPT-5.1, GPT-5.3-Codex and GPT-5.4-Nano on October 1, 2026. GPT-5, GPT-5 Mini, GPT-5 Nano and GPT-5 Pro are also deprecated. The affected dated snapshots of GPT-5, GPT-5 Mini, GPT-5 Nano and GPT-5 Pro are scheduled for retirement on December 11, 2026; check the [OpenAI deprecation list](https://developers.openai.com/api/docs/deprecations) for exact affected IDs.
+See [OpenAI retirement notices](/API/core/ai/models#deprecated-openai-text-models).
 
 ### Historical Gemini text models
 
-| Model ID | Availability note |
-| --- | --- |
-| `gemini-2.0-flash-thinking` | Historical configuration entry; no current provider model with this ID. Do not select. |
-| `gemini-2.0-flash` | Legacy 2.0 family retired June 1, 2026; do not select. |
-| `gemini-1.5-pro` | Retired September 29, 2025; do not select. |
-| `gemini-1.5-flash-8b` | Retired September 29, 2025; do not select. |
-| `gemini-1.5-flash` | Retired September 29, 2025; do not select. |
+See [historical Gemini IDs](/API/core/ai/models#historical-gemini-text-models).
 
 ### Retired image models
 
-| Model ID | Availability note |
-| --- | --- |
-| `gemini-2.5-flash-image` | Retired October 2, 2026; do not select. |
+See [retired image IDs](/API/core/ai/models#retired-image-models).
 
 ### Historical IDs and additional provider models
 
-The JavaScript `AVAILABLE_MODELS` metadata is not a complete availability catalog or a validation list. In addition to IDs above, it retains `gpt-3.5-turbo`, `text-davinci-003`, `gpt-4`, `gpt-4-turbo`, `o1`, `o1-mini`, `o3` and `o3-mini`. Do not infer availability from that metadata. `text-davinci-003` and `o1-mini` are retired. `gpt-3.5-turbo`, `gpt-4`, `gpt-4-turbo`, `o1` and `o3-mini` are scheduled for retirement on October 23, 2026. `o3` is deprecated; its `o3-2025-04-16` snapshot is scheduled for retirement on December 11, 2026.
-
-The completion proxy also routes additional model IDs and provider snapshots that are not listed in the catalog above. Successful routing alone does not establish current provider access or endpoint compatibility. New features should start from the configured catalog above and use current provider documentation to confirm compatibility.
+See [JavaScript metadata and additional provider IDs](/API/core/ai/models#historical-ids-and-additional-provider-models). Exported metadata and successful proxy routing do not establish provider availability.
 
 ## Related guides
 
@@ -4926,7 +4551,9 @@ The five-minute capture cap in the example is an app choice, not a Fliplet platf
 
 ## Complete recording and upload example
 
-Add these controls to your screen and run the script after they exist. This example combines the recording workflow with file upload and retry. It displays an editable transcript separately; **Insert transcript** appends it to the text currently in the Notes field. A failed or cancelled operation leaves existing typed text intact.
+Add these controls to your screen and run the script after they exist. This vanilla JavaScript browser example combines the recording workflow with file upload and retry, updating DOM controls directly. It displays an editable transcript separately; **Insert transcript** appends it to the text currently in the Notes field. A failed or cancelled operation leaves existing typed text intact.
+
+When adapting this example to a framework, use its state, bindings and screen-disposal hook. Vue apps should follow [asynchronous reactive-state updates](/API/v3/frameworks/vue#updating-reactive-state-asynchronously). Preserve microphone cleanup on disposal; browser page lifecycle events alone do not cover SPA navigation.
 
 ```html
 <label for="dictation-file">Audio file</label>
@@ -5188,7 +4815,7 @@ window.addEventListener('pagehide', function() {
 updateControls();
 ```
 
-Use your framework's screen-disposal hook as well as appropriate page lifecycle events when adapting this example. Block the affected form's Save or Send while capture, finalization or transcription is pending. Keep typing and editing available wherever they do not conflict with the operation. This example does not submit Notes automatically.
+Block the affected form's Save or Send while capture, finalization or transcription is pending. Keep typing and editing available wherever they do not conflict with the operation. This example does not submit Notes automatically.
 
 ## Cancellation, timeout and retry
 
@@ -5268,7 +4895,11 @@ For other app setups, add `fliplet-socket` through [dependencies and assets](/De
 
 ## Build a conversation
 
-Add this HTML and CSS to your screen, then run the JavaScript after the controls exist and Fliplet is ready. This framework-agnostic example uses Chat Completions. It displays the user's turn immediately, updates one assistant message during streaming and stores both raw text turns only after success.
+Add this HTML and CSS to your screen, then run the JavaScript after the controls exist and Fliplet is ready. This vanilla JavaScript browser example uses Chat Completions and updates DOM elements directly. It displays the user's turn immediately, updates one assistant message during streaming and stores both raw text turns only after success.
+
+When adapting it to a framework, use that framework's state and rendering mechanisms. For Vue, follow [asynchronous reactive-state updates](/API/v3/frameworks/vue#updating-reactive-state-asynchronously) so callbacks update the reactive state read by the template.
+
+Call the returned `disposeAIChat()` from your framework's unmount or route cleanup hook. The example also handles `pagehide`, which alone does not cover SPA navigation.
 
 ```html
 <ol id="ai-chat-messages" aria-label="Conversation" aria-live="off" tabindex="0"></ol>
@@ -5445,9 +5076,7 @@ const disposeAIChat = mountAIChat();
 
 The conversation is readable without announcing every chunk to a screen reader: the separate status reports waiting, completion or failure. Updates follow the bottom while the reader is there and preserve their position when they scroll back. Adapt the controls and styles to your app's design and audience.
 
-In Vue, keep callbacks connected to [reactive state](/API/v3/frameworks/vue#updating-reactive-state-asynchronously); mutating an original object after inserting it into component state does not trigger a display update. On SPA route changes or framework unmount, call `disposeAIChat()`; `pagehide` alone does not cover SPA navigation.
-
-<span id="conversation-history"></span>
+## Conversation history
 
 History contains raw `{ role, content }` messages, not the HTML used for display. Failed or stopped replies remain visibly interrupted and are excluded from successful history. Retrying an unchanged draft reuses the failed display turn and adds the successful user/assistant pair once. A changed draft starts a separate display turn.
 
@@ -5455,7 +5084,7 @@ Send a message, then ask about the reply. The next request includes the successf
 
 ## Choose the request format
 
-Replace `requestReply(model, messages, onText)` in the complete example with the appropriate adapter below and set `model` to your supported selection. These adapters convert this guide's raw text history and deliver text to the same progressive renderer. Images, tool calls and tool results require the provider-specific structures in the [reference](/API/core/ai).
+Replace `requestReply(model, messages, onText)` in the [complete browser example](#build-a-conversation) with the appropriate adapter below and set `model` to your supported selection. These adapters convert this guide's raw text history and deliver text to the same progressive renderer. Images, tool calls and tool results require the provider-specific structures in the [reference](/API/core/ai).
 
 ### Gemini conversation
 
@@ -5511,7 +5140,7 @@ Cancellation is asynchronous. Keep the send guard active until the request settl
 
 ## Non-streaming and plain-text replies
 
-If the user requests a supported non-streaming model, preserve that choice and show a pending state while waiting. For Chat Completions, replace `requestReply` with this adapter. It renders the completed reply through the same safe renderer; the Stop button stays disabled because this buffered Promise has no cancellation method.
+If the user requests a supported non-streaming model, preserve that choice and show a pending state while waiting. For Chat Completions, replace `requestReply` in the [complete browser example](#build-a-conversation) with this adapter. It renders the completed reply through the same safe renderer; the Stop button stays disabled because this buffered Promise has no cancellation method.
 
 ```js
 async function requestReply(model, messages, onText) {
@@ -5525,7 +5154,7 @@ async function requestReply(model, messages, onText) {
 
 For a Responses-only non-streaming model, send `input` with `useResponses: true` and extract message content with `type: 'output_text'` from `result.output`; see [Responses](/API/core/ai#using-the-responses-api). For Gemini, use `contents` and extract non-thought text parts from `result.candidates[0].content.parts`; see [Gemini](/API/core/ai#using-gemini-models). Preserve the guard, pending/error state and raw history when adapting either format.
 
-For explicitly plain-text replies, replace the parser/sanitizer lines in `paint()` with `run.assistant.body.textContent = run.reply`, set that body's `white-space: pre-wrap`, and remove only the Markdown resources and their loading. In this example, `ensureRenderer()` loads only Markdown libraries, so its call can be removed. If your adapted loader also loads streaming dependencies, retain that part: a plain-text stream still needs `fliplet-socket`. Keep streaming if appropriate. Never display model output through unsanitized `innerHTML`.
+For explicitly plain-text replies in the [complete browser example](#build-a-conversation), replace the parser/sanitizer lines in `paint()` with `run.assistant.body.textContent = run.reply`, set that body's `white-space: pre-wrap`, and remove only the Markdown resources and their loading. In this example, `ensureRenderer()` loads only Markdown libraries, so its call can be removed. If your adapted loader also loads streaming dependencies, retain that part: a plain-text stream still needs `fliplet-socket`. Keep streaming if appropriate. Never display model output through unsanitized `innerHTML`.
 
 The example's eager `fliplet-socket` dependency loads at app boot and is ready after Fliplet initialization. If your app instead declares that registered package as lazy, await its full dependency chain inside `submit()`'s `try` block before calling `requestReply()`. Keep the existing error/retry handling if loading fails:
 
@@ -5589,9 +5218,9 @@ Use a compatible model requested by the user. Otherwise select for the task, bud
 
 The tables list model IDs configured by Fliplet. Deprecated and retired entries appear in [Deprecated and retired models](#deprecated-and-retired-models). Configuration and provider routing do not guarantee that a model remains available from its provider, or that every model supports every request format. Check the linked provider reference for endpoint compatibility and parameters before using a model.
 
-OpenAI text models use [createCompletion()](/API/core/ai#flipletaicreatecompletion) or [POST /v1/apps/:app/ai/completions](/REST-API/fliplet-ai#completions). Chat Completions uses `messages`; Responses uses `input` and `useResponses: true`. Models marked Responses require that format. Other models must use a format supported by their individual [OpenAI model reference](https://developers.openai.com/api/docs/models).
-
 ### OpenAI text models
+
+OpenAI text models use [createCompletion()](/API/core/ai#flipletaicreatecompletion) or [POST /v1/apps/:app/ai/completions](/REST-API/fliplet-ai#completions). Chat Completions uses `messages`; Responses uses `input` and `useResponses: true`. Models marked Responses require that format. Other models must use a format supported by their individual [OpenAI model reference](https://developers.openai.com/api/docs/models).
 
 Numbered GPT models are ordered by version (highest first), then Astra, Sol, Terra and Luna within a version, and Pro, normal, Mini and Nano within a model family. This order helps you find models; it does not determine which is most suitable for your task. The 4o family is listed separately.
 
@@ -5621,6 +5250,7 @@ Numbered GPT models are ordered by version (highest first), then Astra, Sol, Ter
 | `gpt-4o` | Chat Completions or Responses. |
 | `gpt-4o-mini` | Chat Completions or Responses. |
 
+#### OpenAI capability and cost facts
 
 Provider selection facts for text-only requests:
 
@@ -13290,6 +12920,498 @@ Both `find` and `findOne` accept:
 
 ---
 
+# Data source security examples
+URL: https://developers.fliplet.com/API/datasources/security-examples.md
+
+# Data source security examples
+
+Use these policies with their stated data shapes and operation limits. Each example pairs the complete rule array with app SDK calls and outcomes to verify with security enforcement enabled.
+
+## Before you start
+
+Configure each data source's columns and sample rows in Studio before running the app code. For authenticated examples, configure a **Members** login source using the [authentication guide](../v3/auth.md). Replace illustrative ID `731` in every bound rule with its actual ID. Seed two test identities whose flat authenticated data includes:
+
+```json
+[
+  { "Email": "ada@example.org", "Enabled": true, "Roles": ["Author", "Approver"] },
+  { "Email": "lin@example.org", "Enabled": true, "Roles": ["Author"] }
+]
+```
+
+`Enabled` is a native boolean, and `Roles` is an array of strings. Protect those identity fields from self-service writes. Columns are names, not enforced types: verify actual stored values. Use disposable test sources and record allowed and denied results using the [preview procedure](testing-security.md). Outcomes below describe the policy contract, not a substitute for authenticated runtime tests.
+
+SDK query results have `{ id, data }` envelopes. Obtain current fixture IDs from Studio rather than guessing IDs. These plain JavaScript examples use `await` and run inside an app with the Data Sources library available. Authentication happens through the app's configured login flow before these calls.
+
+## Public lookup
+
+**Goal:** Anonymous readers can browse a public instrument catalog. App users cannot change it.
+
+Create **Instrument Catalog** with columns `Instrument` and `Family`, seeded with:
+
+```json
+[
+  { "Instrument": "Oboe", "Family": "Woodwind" },
+  { "Instrument": "Cello", "Family": "Strings" }
+]
+```
+
+Save this entire rule array:
+
+```json
+[
+  { "type": ["select"], "allow": "all" }
+]
+```
+
+Allowed as an anonymous app user:
+
+```js
+const catalog = await Fliplet.DataSources.connectByName('Instrument Catalog', { offline: false });
+const instruments = await catalog.find();
+console.log(instruments.map(entry => entry.data.Instrument));
+// Expected: ['Oboe', 'Cello'] (order is illustrative).
+```
+
+Denied as either an anonymous or signed-in app user:
+
+```js
+const catalog = await Fliplet.DataSources.connectByName('Instrument Catalog', { offline: false });
+let denied = false;
+try {
+  await catalog.insert({ Instrument: 'Flute', Family: 'Woodwind' });
+} catch (error) {
+  denied = true;
+  console.log(error); // Inspect the denial; then confirm no Flute row persisted.
+}
+if (!denied) throw new Error('Unexpected grant: verify the saved policy and preview mode.');
+```
+
+Update and delete are also denied because no rule grants them. Studio administrators may still seed the catalog; that success is separate from app-user evidence.
+
+## Shared signed-in notices
+
+**Goal:** Members from the intended login source can read and add shared notices. They cannot update or delete existing notices.
+
+Create **Rehearsal Notices** with columns `Message` and `Venue`, seeded with `{ "Message": "Bring a music stand", "Venue": "Hall B" }`. Save:
+
+```json
+[
+  {
+    "type": ["select"],
+    "allow": { "loggedIn": true, "dataSourceId": 731 }
+  },
+  {
+    "type": ["insert"],
+    "allow": { "loggedIn": true, "dataSourceId": 731 },
+    "require": ["Message", "Venue"]
+  }
+]
+```
+
+Allowed after Ada signs in through Members:
+
+```js
+const notices = await Fliplet.DataSources.connectByName('Rehearsal Notices', { offline: false });
+await notices.insert({ Message: 'Doors open at six', Venue: 'Hall A' });
+const rows = await notices.find({ where: { Venue: 'Hall A' } });
+console.log(rows.map(entry => entry.data));
+```
+
+Denied tests: sign out and call `find()` or `insert()`; sign in through another login source and repeat. As Ada, submit `insert({ Message: 'Missing venue' })`, or update/delete a seeded notice. Each must reject and leave no forbidden persisted effect. The string requirements check presence only: `Venue: null` is not a nonempty validation failure under this policy.
+
+## Private sketches
+
+**Goal:** An enabled member reads, creates and deletes sketches scoped to their email. This example deliberately grants no updates, keeping ownership immutable through the app operations it permits.
+
+Create **Composition Sketches** with columns `OwnerEmail` and `Title`. Seed:
+
+```json
+[
+  { "OwnerEmail": "ada@example.org", "Title": "Morning motif" },
+  { "OwnerEmail": "lin@example.org", "Title": "Evening variation" }
+]
+```
+
+Save:
+
+{% raw %}
+```json
+[
+  {
+    "type": ["select", "insert", "delete"],
+    "allow": { "dataSourceId": 731, "user": { "Enabled": true } },
+    "require": [{ "OwnerEmail": { "equals": "{{user.[Email]}}" } }]
+  }
+]
+```
+{% endraw %}
+
+Allowed as Ada:
+
+```js
+const sketches = await Fliplet.DataSources.connectByName('Composition Sketches', { offline: false });
+const mine = await sketches.find({ where: { OwnerEmail: 'ada@example.org' } });
+console.log(mine.map(entry => entry.data.Title)); // ['Morning motif']
+await sketches.insert({ OwnerEmail: 'ada@example.org', Title: 'Second motif' });
+```
+
+Use the fixture ID from Studio to test `removeById(adaSketchId)` on Ada's disposable row; the stored owner grants deletion. Denied as Ada: `find()` without an owner filter, `find({ where: { OwnerEmail: 'lin@example.org' } })`, inserting Lin's email or deleting Lin's fixture ID. Anonymous callers, a wrong-source login and `Enabled: false` must also be denied. No update is granted, even on Ada's own row.
+
+The query rule validates `where`; it does not add an owner filter for you. A record read with `findById(id)` instead evaluates the stored row. Repeat both paths when the app uses both. This textual email comparison is case-insensitive; use normalized unique identities and do not assume case-sensitive ownership.
+
+## Editable profiles
+
+**Goal:** An enabled member updates their stored profile through single-record writes while excluded fields remain unchanged. This example does not guarantee protection on bulk/commit writes.
+
+Create **Performer Profiles** with columns `OwnerEmail`, `DisplayName` and `Badge`. Seed:
+
+```json
+[
+  { "OwnerEmail": "ada@example.org", "DisplayName": "Ada", "Badge": "Soloist" },
+  { "OwnerEmail": "lin@example.org", "DisplayName": "Lin", "Badge": "Member" }
+]
+```
+
+For immutable ownership or protected badges across **all** endpoints, leave app-session updates disabled until an implemented trusted write path has been verified against source and runtime tests. This example does not provide that guarantee: bulk/commit updates can write fields that single-record `exclude` filters out. Omitting bulk methods from the UI is not server enforcement. A script's `query` can also come from caller-supplied `body.where`, so proposed-payload validation cannot be assumed even when `entry.data` exists.
+
+Save:
+
+{% raw %}
+```json
+[
+  {
+    "type": ["select", "update"],
+    "allow": { "dataSourceId": 731, "user": { "Enabled": true } },
+    "require": [{ "OwnerEmail": { "equals": "{{user.[Email]}}" } }],
+    "exclude": ["OwnerEmail", "Badge"]
+  }
+]
+```
+{% endraw %}
+
+For the explicitly limited single-record example, copy Ada's and Lin's fixture IDs from Studio and run as Ada:
+
+```js
+async function verifySingleProfileWrite(adaProfileId, linProfileId) {
+  const profiles = await Fliplet.DataSources.connectByName('Performer Profiles', { offline: false });
+  await profiles.update(adaProfileId, { DisplayName: 'Ada L.' });
+  const saved = await profiles.findById(adaProfileId);
+  console.log(saved.data.DisplayName); // 'Ada L.'
+  let denied = false;
+  try {
+    await profiles.update(linProfileId, { OwnerEmail: 'ada@example.org', DisplayName: 'Changed' });
+  } catch (error) {
+    denied = true;
+    console.log(error); // Stored Lin ownership does not match Ada.
+  }
+  if (!denied) throw new Error('Unexpected grant on another member’s profile.');
+}
+```
+
+Also submit a single update of Ada's row with `Badge: 'Director'` and `OwnerEmail: 'lin@example.org'`. It can resolve successfully, but those excluded fields must remain unchanged in a trusted Studio readback; the read rule hides them from the SDK response. Anonymous or wrong-source updates, insert and delete must be denied. This distinguishes a rejected operation from a filtered field.
+
+## Role and state access
+
+**Goal:** An enabled Approver can update an existing Pending review. This demonstrates stored-state authorization only, not a complete approval workflow.
+
+Create **Festival Reviews** with columns `WorkTitle`, `Stage` and `Comment`. Seed `{ "WorkTitle": "River quartet", "Stage": "Pending", "Comment": "" }`.
+
+This policy permits changing Pending directly to any next stage. Do not use it as approval-transition enforcement. Leave strict workflow writes disabled until an implemented trusted write path and actor-operation tests verify caller role, stored stage, proposed stage and protected fields across all allowed endpoints.
+
+Save this illustrative stored-state policy:
+
+```json
+[
+  {
+    "type": ["select"],
+    "allow": { "dataSourceId": 731, "user": { "Enabled": true } }
+  },
+  {
+    "type": ["update"],
+    "allow": { "dataSourceId": 731, "user": { "Enabled": true, "Roles": "Approver" } },
+    "require": [{ "Stage": { "equals": "Pending" } }]
+  }
+]
+```
+
+As Ada (`Roles: ['Author', 'Approver']`), a single update of the seeded Pending review's `Comment` is allowed:
+
+```js
+async function addReviewComment(reviewId) {
+  const reviews = await Fliplet.DataSources.connectByName('Festival Reviews', { offline: false });
+  await reviews.update(reviewId, { Comment: 'Ready for rehearsal' });
+  const saved = await reviews.findById(reviewId);
+  console.log(saved.data.Comment); // 'Ready for rehearsal'
+}
+```
+
+Denied tests: Lin (`Roles: ['Author']`), a user with only `['SuperApprover']`, an inactive user or an anonymous caller attempting that update. Ada updating a seeded `Stage: 'Closed'` row must also be denied. Insert and delete have no grant.
+
+**Transition limit:** Ada can also submit `Stage: 'Published'` while the stored row is Pending. The requirement does not validate the next stage. Do not deploy this example as an approval-transition policy. A strict workflow needs server checks of caller role, stored stage, proposed stage and protected fields on every allowed write path. A single-update script can inspect `entry.data`, but commit lacks `entry`, and even a single-update request can supply `body.where` instead of the proposed payload to the script. Keep strict workflow writes unavailable until an implemented trusted write path and its actor-operation tests establish the required contract. Frontend guards and rule-query mutation do not supply that guarantee.
+
+---
+
+# Data source security rule reference
+URL: https://developers.fliplet.com/API/datasources/security-rules.md
+
+# Data source security rule reference
+
+Data source access rules grant app operations using identity, request and stored-record conditions. This reference distinguishes the rule evaluator from endpoint-specific reads and writes.
+
+## Contents
+
+- [Evaluation and defaults](#evaluation-and-defaults)
+- [Rule properties](#rule-properties)
+- [Identity and login binding](#identity-and-login-binding)
+- [Requirements by operation](#requirements-by-operation)
+- [Column restrictions](#column-restrictions)
+- [Custom scripts](#custom-scripts)
+- [Errors](#errors)
+
+## Evaluation and defaults
+
+Active rules are evaluated in order. The first grant wins; disabled rules, nonmatching actors and failed requirements are skipped. This fallthrough applies to insert, update and delete as well as select. A denied script does not veto a later grant.
+
+Absent or null `accessRules` retains legacy unrestricted access. An explicit empty array `[]`, or an array with no applicable grant, denies access. Studio administrative access and preview with enforcement disabled can bypass rules; use [authenticated preview testing](testing-security.md) to prove app access.
+
+## Rule properties
+
+| Property | Shape | Behavior |
+|---|---|---|
+| `type` | Array of operation strings | `select`, `insert`, `update`, `delete`. A nonempty `script` runs independently of this filter. |
+| `allow` | String or object | `all`, `loggedIn`, a user condition, login-source gate or token-ID gate. A script must make its own access decision. |
+| `enabled` | Boolean | `false` skips the rule. Omission leaves it active. |
+| `appId` | Array of numbers | Limits the rule to those apps, including the corresponding cloned/production app relationship. Applies to script rules too. |
+| `require` | Array of strings or objects | All requirements must match their operation-specific target. |
+| `include`, `exclude` | Arrays of column names | Endpoint-specific column restrictions, described below. |
+| `name` | String | Descriptive Studio label. |
+| `script` | String | JavaScript returning an object with `granted: true` to grant. |
+
+## Identity and login binding
+
+`allow.user` checks the authenticated user's data, not the target record. The data-source identity is the signed-in row's flat column values plus its entry metadata; SAML identity comes from the authenticated assertion. Client-written session fields must not be used as proof of identity. A bound data-source rule uses the same source identity for its user gate and templated requirements.
+
+Use the actual authentication data source ID in `dataSourceId` (one positive integer or an array of IDs). For example, after configuring authentication against your **Members** source with ID `731`, this gate grants reads to users signed in through that source:
+
+```json
+[
+  { "type": ["select"], "allow": { "loggedIn": true, "dataSourceId": 731 } }
+]
+```
+
+`"loggedIn"` alone accepts a supported authenticated login without requiring this particular source. An API-token gate uses `{ "tokens": [tokenId] }`; these are token IDs, not token secrets.
+
+### Typed user conditions
+
+Literal boolean and numeric user conditions compare native values. Preserve the actual identity types:
+
+```json
+{
+  "type": ["select"],
+  "allow": {
+    "dataSourceId": 731,
+    "user": { "Enabled": true, "Clearance": 7, "Roles": "Approver" }
+  }
+}
+```
+
+For textual comparisons, `equals` compiles a case-insensitive anchored, escaped regular expression. It matches text and string elements of arrays, not native boolean or number values. `{ "Enabled": { "equals": true } }` therefore does not match native `true`. `contains` is a substring check: it matches both `Approver` and `SuperApprover`, including string elements in role arrays. Use a literal `"Approver"` or `{ "equals": "Approver" }` for exact role values. Both match `["Author", "Approver"]`; `contains` is unsuitable for exact role membership.
+
+Multiple fields in `allow.user` are AND conditions. Use separate rules for alternative grants. Object conditions support `equals`, `notequals` and `contains`; do not invent query operators in this rule syntax.
+
+### Identity templates
+
+{% raw %}
+`{{user.[Email]}}` resolves the signed-in identity field; brackets also support names with spaces. Use it in `require` to compare a record or query to the caller. Comparing a user's own field to that same template inside `allow.user` does not restrict the actor. Missing identity must deny owner-scoped access; test missing, null and blank fields rather than relying on template output.
+{% endraw %}
+
+Authentication setup and client-side session retrieval belong to the [authentication guide](../v3/auth.md) and [Session API](../fliplet-session.md).
+
+## Requirements by operation
+
+String requirements check **key presence**, not a nonempty value or type. For example, `"require": ["Label"]` can accept a submitted `Label: null`. Object requirements check values using the operators below. These two forms have different targets on updates.
+
+| Operation/path | String requirement target | Object requirement target |
+|---|---|---|
+| `find()` / `findOne()` query | Submitted `where` keys or supported `$filters` column conditions | Submitted query filter, not every returned row |
+| `findById()` record read | Stored record keys | Stored record values |
+| Single `insert()` | Submitted keys | Submitted data |
+| Single `update()` | Submitted keys | **Stored row**, not proposed data |
+| Bulk/commit insert | Keys in every submitted data object | Every submitted data object |
+| Bulk/commit update | Keys in every submitted data object | Every loaded stored row; no stored context means the condition cannot grant |
+| Single `removeById()` | Stored record keys | Stored record values |
+| Query writes | Depends on the request's query and operation checks | Query admission and affected-record checks differ; do not infer access from a single-record test |
+| Commit delete | Existing data for the requested IDs | Existing data for the requested IDs |
+
+A query read requirement checks the client's filter; it does not inject a filter. Send the appropriate `where` clause. `findOne({ where: ... })` follows the query route, whereas `findById(id)` follows the record route and cannot be assumed equivalent. Additional source permissions can reject either route.
+
+### Requirement operators
+
+{% raw %}
+```json
+[
+  {
+    "type": ["select", "update"],
+    "allow": { "loggedIn": true, "dataSourceId": 731 },
+    "require": [{ "OwnerEmail": { "equals": "{{user.[Email]}}" } }]
+  }
+]
+```
+{% endraw %}
+
+| Operator | Meaning |
+|---|---|
+| `equals` | Case-insensitive anchored text comparison; query validation also recognizes `$eq` and matching equality `$filters`. |
+| `notequals` | Inequality comparison; it is not an existence or nonempty check. |
+| `contains` | Substring comparison; query validation recognizes direct strings and relevant `$eq`, `$like`, `$iLike` or equality `$filters` values. |
+
+Only these three object operators are supported. They are separate from [query operators](query-operators.md). On updates the example authorizes the stored owner's row, but it does **not** prohibit changing `OwnerEmail`. The [examples guide](security-examples.md) shows that limitation beside the write.
+
+## Column restrictions
+
+Column restrictions do not have a uniform write contract:
+
+| Path | `exclude` | `include` |
+|---|---|---|
+| Select query/record response | Removes excluded data columns | Restricts returned data columns after exclusion; a field removed by `exclude` is not restored by `include` |
+| Single insert/update | Removes submitted excluded fields before persistence; this is filtering, not necessarily a rejected request | Does not reliably filter the persisted single-write payload |
+| Bulk append/replace/commit | Does not filter each persisted entry | Does not filter each persisted entry |
+| Query update | Has separate affected-record filtering behavior | Do not assume single-write or bulk behavior |
+
+A single update that submits an excluded privilege field can resolve successfully while leaving that field unchanged. It is incorrect to describe that outcome as an authorization error. Do not use an `exclude` policy to promise protection on bulk/commit writes. Leave strict app-session writes unavailable until an implemented trusted write path has been verified. Script input selection can substitute `body.where` for proposed data, so a script that checks `query` is not automatically a complete payload validator.
+
+## Custom scripts
+
+A nonempty script runs regardless of `type` and `allow`, subject to the enabled/app filters. It must check operation, authenticated identity and login source itself. Return `{ granted: true }` to grant; bare booleans, missing returns and `{ granted: false }` do not grant. A script grant returns immediately for that rule, so standard `require` is not an additional payload validator.
+
+```js
+// A read-only script for a bound login source; replace 731 with its actual ID.
+if (!user || !session || session.dataSourceId !== 731 || type !== 'select') {
+  return { granted: false };
+}
+return { granted: true, exclude: ['PrivateNotes'] };
+```
+
+The returned `include`/`exclude` use the endpoint limits above. Put a script into the custom-rule editor; it is server-side rule code, not browser JavaScript.
+
+### Script inputs and mutation
+
+| Variable | Shape |
+|---|---|
+| `type` | Operation string: `select`, `insert`, `update` or `delete` |
+| `user` | Authenticated flat identity object, or `undefined` |
+| `session` | Read-only verified login context with `loggedIn`, `passports`, `dataSourceId` and `entryId`; data-source IDs are absent for other login types |
+| `query` | A **shallow copy** selected in this order: request `body.where`, supplied entry data, request body |
+| `entry` | Stored `{ id, data, ... }` for a single update when supplied; absent for commit and initial query evaluation |
+| `DataSources` | Server-side lookup library described below |
+
+An online query read normally receives the unwrapped `where`. A single insert/update normally receives flat submitted data. A commit receives arrays of flat data for each operation; deletes receive loaded existing data. Query writes can receive `body.where` instead of proposed data even during affected-record checks. Do not treat `query` as a universal proposed payload or assume `entry` exists on every update.
+
+Assigning `query.OwnerEmail` or `query.UpdatedAt` does not establish a persisted transformation. The rule's copied query is not a supported audit-stamping or filter-injection contract. Validate inputs or deny access; do not advertise mutation as server-enforced stamping. The script VM has a 3,000 ms synchronous execution timeout; this is not a guaranteed end-to-end deadline for awaited lookups.
+
+### Reading another data source
+
+`DataSources(idOrName).find(options)` and `.findOne(options)` perform server-side reads without applying the target source's access rules. A lookup may therefore expose fields ordinary app users cannot read. Use it only for the minimum policy decision, and do not return its contents to clients.
+
+```js
+if (!user || !session || session.dataSourceId !== 731 || type !== 'select') {
+  return { granted: false };
+}
+const membership = await DataSources('Reading Groups').findOne({
+  where: { Email: user.Email, Group: 'Curators' }
+});
+return { granted: !!membership };
+```
+
+These methods return **flat data**: `find` returns an array and `findOne` returns a flat object or `undefined`. They do not return SDK `{ id, data }` envelopes. Options are `where`, `limit` (up to 100, default 100) and `offset` (default 0). See [query operators](query-operators.md) for supported filters.
+
+## Errors
+
+A denied operation rejects the SDK promise. Standard access denials may expose `type: "datasource.access"` with `payload.dataSourceId`, but error shape and HTTP status depend on the endpoint and caller. Query/record reads commonly return HTTP 400; single insert/update access checks can return HTTP 401. The insert denial message uses “write”, while update and delete use their respective operations. Scripts can surface a custom-rule error. Do not classify every rejected promise, HTTP 400 or HTTP 401 as a policy denial: inspect the response and follow [preview diagnosis](testing-security.md#diagnose-a-failure).
+
+---
+
+# Testing data source security in preview
+URL: https://developers.fliplet.com/API/datasources/testing-security.md
+
+# Testing data source security in preview
+
+Test data access as the intended app identity with Studio's preview security enforcement enabled. A rendered screen, a successful administrative query or a preview with enforcement disabled does not prove app-user authorization.
+
+## Prepare a disposable test
+
+Create dedicated test data sources and records. Record the saved rule array, login source, actual field types and test record IDs. Build an actor-operation table before testing:
+
+| Actor | Operation | Expected result |
+|---|---|---|
+| Anonymous | Read private data | Denied |
+| Bound enabled member | Read their record | Allowed |
+| Bound enabled member | Change another member's record | Denied |
+| Wrong-source login | Read protected data | Denied |
+| Inactive member | Protected write | Denied |
+| Approver with multiple roles | Supported review operation | Allowed |
+| Member without required role | Same operation | Denied |
+
+Adapt the matrix to the configured policy. Include missing/null identity fields, different native types and each write method your app uses. For protected ownership, privilege or state fields, attempt malicious payloads directly through the SDK as well as through the UI. A hidden button does not stop an SDK call.
+
+## Enable enforcement and sign in
+
+1. Record the initial preview **Enforce security** setting.
+2. Open preview settings and enable **Enforce security**. Wait for the preview to reload before continuing.
+3. Use the app's configured login flow to sign in as the test actor. Confirm the identity and login source; a Studio account alone is not the app-user identity. Sign out between actors and test the anonymous case too.
+4. Confirm the reloaded preview environment is consistent with enforcement enabled:
+
+```js
+console.log({
+  appId: Fliplet.Env.get('appId'),
+  disableSecurity: Fliplet.Env.get('disableSecurity'),
+  interact: Fliplet.Env.get('interact'),
+  development: Fliplet.Env.get('development')
+});
+// Require disableSecurity === false, interact === false and development !== true.
+// Missing/unknown enforcement state is unverified.
+```
+
+Also confirm the UI setting is enabled and the preview is outside editor interaction mode. Interaction mode can bypass data source enforcement. A stale document or an unknown setting is unverified. Do not log tokens or copy token-bearing preview URLs into reports.
+
+## Run allowed and denied operations
+
+Use an online connection to avoid counting cached reads or queued writes as server proof:
+
+```js
+const sketches = await Fliplet.DataSources.connectByName('Composition Sketches', { offline: false });
+const rows = await sketches.find({ where: { OwnerEmail: 'ada@example.org' } });
+console.log(rows.map(entry => ({ id: entry.id, data: entry.data })));
+```
+
+Run this only after configuring the matching [private sketches policy](security-examples.md#private-sketches) and signing in as Ada. Record the successful server response and returned rows. Repeat with another actor's filter and confirm the authorization denial.
+
+For every allowed write, perform a fresh read and check the exact saved values. For every forbidden write, inspect the rejection and verify that no forbidden insert, update or delete persisted. Use a trusted Studio readback where the app's read rules hide the affected fields; label it as persistence evidence, not an app-user access test.
+
+Test `findOne({ where: ... })` separately from `findById(id)` if the app uses both. Test single writes, append/replace, query writes and `commit()` separately when enabled. Do not extrapolate single-record `exclude` behavior to bulk writes. Record the mode, actor, rule revision, request, response and persisted result together. Change any of those inputs and rerun the relevant checks.
+
+## Diagnose a failure
+
+A policy denial must be supported by the error response and unchanged forbidden state. An HTTP 400 or 401 alone is insufficient because errors vary by method and caller.
+
+| Symptom | Check |
+|---|---|
+| Access denial / `datasource.access` | Saved rule order, operation, login binding, field casing/types and the correct requirement target |
+| Empty results | Actual filter and fixtures; an allowed empty read is different from a denied request |
+| HTTP 429 | Rate-limit response and retry interval; do not classify it as a rule failure |
+| Login/loading screen | Complete authentication before testing data access |
+| Network/transport error | Request completion and response body; authorization remains unverified |
+| Successful update but field unchanged | Single-write `exclude` may filter the submitted field rather than reject |
+| Success only with enforcement off | Rerun with enforcement on and the intended identity |
+
+Use the [rule reference](security-rules.md) for evaluator and endpoint differences, and the [authentication guide](../v3/auth.md) for sign-in setup. Hooks remain documented in [Data source hooks](../../Data-Source-Hooks.md).
+
+## Finish and restore preview
+
+Delete the disposable test records through an authorized test/admin path. Restore the original **Enforce security** setting and wait for a fresh reload. Confirm the effective setting before reporting restoration; a failed reload is unverified. Preserve a compact allowed/denied result table with outstanding gaps, without credentials or private data.
+
+---
+
 # Data Source views
 URL: https://developers.fliplet.com/API/datasources/views.md
 
@@ -15167,6 +15289,12 @@ URL: https://developers.fliplet.com/API/fliplet-datasources.md
 
 Connect to, query, insert, update, and delete records in Fliplet Data Sources from inside an app. All methods are promise-based.
 
+## Security and verification
+
+Configure [data source access rules](../Data-source-security.md) before exposing private data. Use the [rule reference](datasources/security-rules.md), [complete policy examples](datasources/security-examples.md) and [authenticated preview tests](datasources/testing-security.md) alongside this method reference.
+
+Query reads (`find`/`findOne`) and record reads (`findById`) evaluate different requirement targets. Object update requirements check stored rows, not proposed values. Single and bulk writes have different column restrictions; a successful administrative request or cached/offline result does not establish app-user authorization.
+
 ## ⚠️ Important: All API Calls Are Asynchronous
 
 **All Fliplet Data Sources API methods return Promises and must be chained using `.then()` or used with `async/await`.**
@@ -16108,7 +16236,8 @@ const newDataSource = await Fliplet.DataSources.create({
     }
   ],
   
-  // Set permissions
+  // Public sample data only: grants every app user all four operations.
+  // Use a scoped policy from the security guide for private data.
   accessRules: [
     { type: ['select', 'insert', 'update', 'delete'], allow: 'all' }
   ]
@@ -35577,688 +35706,106 @@ URL: https://developers.fliplet.com/Data-source-security.md
 
 # Securing Fliplet data sources
 
-How to protect data sources with access rules, required-data validation, column-level restrictions, and custom JavaScript security rules.
+Protect app data with server-evaluated access rules, then test the allowed and denied operations as real app users. Rules control access; browser checks and successful Studio administrative requests do not prove authorization.
 
-## Contents
+## Configure a policy
 
-- [Security rules](#security-rules)
-- [Access rule structure](#access-rule-structure)
-  - [Defining who can access](#defining-who-can-access)
-  - [Restricting columns](#restricting-columns)
-  - [Example: role-based access with protected fields](#example-role-based-access-with-protected-fields)
-  - [Example: department-scoped access](#example-department-scoped-access)
-- [Data requirements and query validation](#data-requirements-and-query-validation)
-  - [Data requirement types](#data-requirement-types)
-  - [Handlebars templating](#handlebars-templating)
-  - [Require syntax](#require-syntax)
-- [Custom security rules](#custom-security-rules)
-  - [Granting access](#granting-access)
-  - [Modifying the input query](#modifying-the-input-query)
-  - [Checking data when committing changes](#checking-data-when-committing-changes)
-  - [Reading data from other Data Sources](#reading-data-from-other-data-sources)
+1. Open **App Data** in Fliplet Studio, select the data source and open **Access Rules**.
+2. Define the actors, operations and fields that need protection. Start with an explicit empty rules array (`[]`) for a source that should deny app access until configured. Missing or null rules retain legacy unrestricted access.
+3. Choose a [complete security example](API/datasources/security-examples.md) and adapt its data shape and login-source binding. Save the rules, then read back the configuration.
+4. Test both allowed and denied operations with [Enforce security enabled in preview](API/datasources/testing-security.md). Confirm persisted results using a fresh read.
 
-## Security rules
+A minimal public read-only policy is:
 
-Access to Data Sources is secured via the **Access Rules** tab of the **App Data** section in Fliplet Studio. Each rule controls who can access the data source, what operations they can perform, and what conditions must be met.
-
-Rules are evaluated from top to bottom. The first rule that grants access is used and evaluation stops — later rules are not checked. If no rules match, access is denied by default. If no rules are defined at all, all access is denied — data sources are locked down until you explicitly add rules.
-
-Note that for read operations, a rule with unmet `require` conditions is **skipped**, not denied — evaluation continues to the next rule. For writes, unmet `require` is a hard rejection. See [Data requirements](#data-requirements-and-query-validation) for details.
-
-## Access rule structure
-
-Each access rule is a JSON object with the following properties:
-
-| Property | Type | Required | Description |
-|---|---|---|---|
-| `type` | Array of strings | Yes | Operations this rule applies to: `"select"`, `"insert"`, `"update"`, `"delete"` |
-| `allow` | String or Object | Yes | Who can access: `"all"`, `"loggedIn"`, `{ "user": {...} }`, or `{ "tokens": [...] }` |
-| `enabled` | Boolean | No | Whether the rule is active (defaults to `true`). Set to `false` to disable the rule without deleting it — disabled rules are skipped during evaluation |
-| `include` | Array of strings | No | Whitelist of accessible columns. If both `include` and `exclude` are present, `include` takes precedence |
-| `exclude` | Array of strings | No | Blacklist of hidden columns. Ignored if `include` is also present |
-| `require` | Array | No | Data requirements that must be met (see [Data requirements](#data-requirements-and-query-validation)) |
-| `appId` | Array of numbers | No | Restrict this rule to specific app IDs (applies to all apps if omitted) |
-| `name` | String | No | Descriptive label for identifying the rule in Studio |
-| `script` | String | No | Custom JavaScript code for advanced security logic. When present, `allow` and `type` are ignored — see [Custom security rules](#custom-security-rules) |
-
-### Defining who can access
-
-The `allow` property supports four modes:
-
-**All users** (including anonymous):
-
-```json
-{ "allow": "all" }
-```
-
-**Logged-in users only:**
-
-```json
-{ "allow": "loggedIn" }
-```
-
-**Specific users** (filtered by session data). `allow.user` checks the logged-in user's **identity** — use it with literal values to control *who* can access. To control *which records* they can access, use `require` instead (see [Data requirements](#data-requirements-and-query-validation)):
-
-```json
-{
-  "allow": {
-    "user": {
-      "Role": { "equals": "Admin" }
-    }
-  }
-}
-```
-
-User filters support three operators: `equals`, `notequals`, and `contains`. Multiple conditions in the same `user` object are combined with AND logic. For OR logic, create separate rules instead.
-
-<p class="warning"><strong>Important:</strong> <code>allow.user</code> conditions check the logged-in user's session data — not data source records. Always use <strong>literal values</strong> here (e.g., <code>"Admin"</code>, <code>"Manager"</code>). Although Handlebars syntax is supported, using it in <code>allow.user</code> (e.g., <code>{% raw %}{{ user.[Department] }}{% endraw %}</code>) compares the user's field against itself — always true, granting access to any logged-in user. Handlebars templates are useful in <code>require</code> conditions, where they scope queries by the user's data. See <a href="#data-requirements-and-query-validation">Data requirements</a>.</p>
-
-{% raw %}
-```json
-{
-  "allow": {
-    "user": {
-      "Role": { "equals": "Manager" },
-      "Status": { "notequals": "Inactive" }
-    }
-  }
-}
-```
-{% endraw %}
-
-**Specific API token:**
-
-```json
-{
-  "allow": {
-    "tokens": [42857]
-  }
-}
-```
-
-### Restricting columns
-
-Use `include` to whitelist specific columns, or `exclude` to hide specific columns. If both are specified in the same rule, `include` takes precedence — only the whitelisted columns are returned, and the `exclude` list has no effect. If neither is specified, all columns are accessible.
-
-```json
-{
-  "type": ["select"],
-  "allow": "loggedIn",
-  "exclude": ["Password", "SSN", "Salary"]
-}
-```
-
-<p class="warning"><strong>Security note:</strong> Always exclude privilege fields (e.g., <code>Admin</code>, <code>Role</code>, <code>Permissions</code>) from rules that allow logged-in users to insert or update records. Otherwise, users can escalate their own privileges.</p>
-
-### Example: role-based access with protected fields
-
-This example shows an "Employees" data source where admins have full access, regular users can read records (without sensitive fields), and can only update their own record or insert records with a non-privileged role.
-
-**Data source columns:**
-
-| Email | First Name | Role | Department | Salary | Password | Admin | Permissions |
-|---|---|---|---|---|---|---|---|
-| alice@acme.com | Alice | Admin | Engineering | 150000 | ••••• | Yes | all |
-| bob@acme.com | Bob | User | Marketing | 85000 | ••••• | No | read |
-| carol@acme.com | Carol | User | Engineering | 95000 | ••••• | No | read |
-
-**Security rules:**
-
-{% raw %}
 ```json
 [
-  {
-    "type": ["select", "insert", "update", "delete"],
-    "allow": { "user": { "Role": { "equals": "Admin" } } },
-    "enabled": true
-  },
-  {
-    "type": ["select"],
-    "allow": "loggedIn",
-    "exclude": ["Password", "Salary"],
-    "enabled": true
-  },
-  {
-    "type": ["update"],
-    "allow": "loggedIn",
-    "require": [
-      { "Email": { "equals": "{{user.[Email]}}" } }
-    ],
-    "exclude": ["Role", "Admin", "Permissions"],
-    "enabled": true
-  },
-  {
-    "type": ["insert"],
-    "allow": "loggedIn",
-    "require": [
-      "Email",
-      "First Name",
-      { "Email": { "equals": "{{user.[Email]}}" } },
-      { "Role": { "equals": "User" } }
-    ],
-    "exclude": ["Admin", "Permissions"],
-    "enabled": true
-  }
+  { "type": ["select"], "allow": "all" }
 ]
 ```
-{% endraw %}
-
-**Queries that succeed:**
-
-When Alice (Admin) is logged in, the first rule matches — she has full access to all records and columns:
-
-```js
-// JS API — Alice reads all records including sensitive fields
-const connection = await Fliplet.DataSources.connectByName('Employees');
-const allRecords = await connection.find();
-// Returns all 3 records with all columns including Salary and Password
-```
-
-```plaintext
-// REST API equivalent
-POST /v1/data-sources/123/data/query
-Auth-token: <Alice's token>
-Content-Type: application/json
-
-// "type" here is the REST API operation type, not a security rule field
-{ "type": "select" }
-
-// Response (200 OK): all entries with all columns
-```
-
-When Bob (User) is logged in, the second rule matches for reads — he can see records but `Password` and `Salary` are excluded:
-
-```js
-// JS API — Bob reads records (sensitive columns automatically excluded)
-const connection = await Fliplet.DataSources.connectByName('Employees');
-const records = await connection.find();
-// Returns all 3 records, but each record is missing Password and Salary
-// e.g. { Email: "alice@acme.com", "First Name": "Alice", Role: "Admin", Department: "Engineering", Admin: "Yes", Permissions: "all" }
-```
-
-Bob can update his own record (the third rule requires his email in the data):
-
-```js
-// JS API — Bob updates his own name
-const connection = await Fliplet.DataSources.connectByName('Employees');
-await connection.update(456, {
-  Email: 'bob@acme.com',
-  'First Name': 'Robert'
-});
-// Succeeds — Email matches Bob's session, and Role/Admin/Permissions are excluded from writes
-```
-
-```plaintext
-// REST API equivalent
-PUT /v1/data-sources/123/data/456
-Auth-token: <Bob's token>
-Content-Type: application/json
-
-{ "Email": "bob@acme.com", "First Name": "Robert" }
-
-// Response (200 OK): updated entry
-```
-
-**Queries that fail:**
-
-When a query is denied, the API responds with HTTP status **400** and a JSON error body. The `message` field changes based on the denied operation — for example, `"do not allow this app to read data"` for selects, or `"do not allow this app to insert data"` for inserts:
-
-```json
-{
-  "message": "The security rules for the Data Source \"Employees\" do not allow this app to read data.",
-  "type": "datasource.access",
-  "payload": { "dataSourceId": 123 }
-}
-```
-
-In the JS API, the promise is rejected with this error object. The `message` adapts to include the data source name and the specific operation that was denied (read, insert, update, or delete). The `type` is always `"datasource.access"` and `payload.dataSourceId` identifies the data source.
-
-```js
-// Bob tries to update another user's record — fails
-// (Email does not match Bob's session, so the require condition is not met)
-await connection.update(789, {
-  Email: 'carol@acme.com',
-  'First Name': 'Carolina'
-});
-
-// Bob tries to escalate his own role — fails
-// (Role is excluded from the update rule, so it cannot be written)
-await connection.update(456, {
-  Email: 'bob@acme.com',
-  Role: 'Admin'
-});
-
-// Bob tries to insert a record with an admin role — fails
-// (the insert rule requires Role: "User")
-await connection.insert({
-  Email: 'bob@acme.com',
-  'First Name': 'Bob Clone',
-  Role: 'Admin'
-});
-
-// Bob tries to delete a record — fails
-// (no delete rule matches for non-admin users)
-await connection.removeById(789);
-```
-
-### Example: department-scoped access
-
-In this example, managers see all records for their department, regular users only see their own record, and inserts are restricted to the user's department. Department scoping is enforced through `require` conditions on the query, not through `allow.user` (which checks the user's identity, not the data being accessed).
-
-**Data source columns:**
-
-| Email | Name | Role | Department | Salary | ManagerNotes |
-|---|---|---|---|---|---|
-| alice@acme.com | Alice | Manager | Engineering | 150000 | Top performer |
-| bob@acme.com | Bob | User | Engineering | 85000 | |
-| carol@acme.com | Carol | User | Marketing | 95000 | |
-| dave@acme.com | Dave | Manager | Marketing | 140000 | Needs training |
-
-**Security rules:**
-
-{% raw %}
-```json
-[
-  {
-    "type": ["select"],
-    "allow": {
-      "user": { "Role": { "equals": "Manager" } }
-    },
-    "require": [
-      { "Department": { "equals": "{{user.[Department]}}" } }
-    ],
-    "exclude": ["Salary"],
-    "enabled": true
-  },
-  {
-    "type": ["select", "update"],
-    "allow": "loggedIn",
-    "require": [
-      { "Email": { "equals": "{{user.[Email]}}" } }
-    ],
-    "exclude": ["Salary", "ManagerNotes"],
-    "enabled": true
-  },
-  {
-    "type": ["insert"],
-    "allow": "loggedIn",
-    "require": [
-      "Name",
-      { "Department": { "equals": "{{user.[Department]}}" } },
-      { "CreatedBy": { "equals": "{{user.[Email]}}" } }
-    ],
-    "exclude": ["Role", "Admin"],
-    "enabled": true
-  }
-]
-```
-{% endraw %}
-
-The first rule uses `allow.user` to check the user's role (a literal match — "is this user a Manager?") and `require` to enforce department scoping on the query (the `where` clause must include the user's own department). This combination ensures only managers can use the rule *and* they can only query their own department's data.
-
-**Queries that succeed:**
-
-When Alice (Manager, Engineering) is logged in, the first rule matches — she is a Manager, and her query includes `Department: 'Engineering'` which satisfies the `require` condition:
-
-```js
-// JS API — Alice reads all Engineering records
-const connection = await Fliplet.DataSources.connectByName('Staff');
-const records = await connection.find({
-  where: { Department: 'Engineering' }
-});
-// Returns Alice and Bob's records, excluding Salary
-// e.g. { Email: "bob@acme.com", Name: "Bob", Role: "User", Department: "Engineering", ManagerNotes: "" }
-```
-
-```plaintext
-// REST API equivalent
-POST /v1/data-sources/123/data/query
-Auth-token: <Alice's token>
-Content-Type: application/json
-
-{ "type": "select", "where": { "Department": "Engineering" } }
-
-// Response (200 OK): Alice and Bob's entries, Salary excluded
-```
-
-When Bob (User, Engineering) is logged in, the first rule does not match (wrong role). The second rule matches — he must filter by his own email:
-
-```js
-// JS API — Bob reads his own record
-const connection = await Fliplet.DataSources.connectByName('Staff');
-const records = await connection.find({
-  where: { Email: 'bob@acme.com' }
-});
-// Returns Bob's record only, excluding Salary and ManagerNotes
-```
-
-Bob can insert a record in his own department:
-
-```js
-// JS API — Bob creates a record in Engineering
-await connection.insert({
-  Name: 'New Hire',
-  Department: 'Engineering',
-  CreatedBy: 'bob@acme.com'
-});
-// Succeeds — all require conditions are met, Role and Admin are excluded from writes
-```
-
-```plaintext
-// REST API equivalent (Fliplet uses PUT for both inserts and updates on this endpoint)
-PUT /v1/data-sources/123/data
-Auth-token: <Bob's token>
-Content-Type: application/json
-
-{ "Name": "New Hire", "Department": "Engineering", "CreatedBy": "bob@acme.com" }
-
-// Response (200 OK): new entry
-```
-
-**Queries that fail:**
-
-```js
-// Alice (Manager) tries to read Marketing records — fails
-// (the require condition demands Department matching Alice's own department "Engineering";
-// "Marketing" does not match, so the first rule is skipped; no other rule grants broad access)
-await connection.find({
-  where: { Department: 'Marketing' }
-});
-
-// Bob tries to read all records without filtering by email — fails
-// (the second rule requires Email matching Bob's session; without a where clause,
-// the require condition is not met, the rule is skipped, and no subsequent rule grants access)
-await connection.find();
-
-// Bob tries to read Alice's record — fails
-// (Email does not match Bob's session)
-await connection.find({
-  where: { Email: 'alice@acme.com' }
-});
-
-// Bob tries to insert a record in Marketing — fails
-// (Department does not match Bob's department "Engineering")
-await connection.insert({
-  Name: 'Spy',
-  Department: 'Marketing',
-  CreatedBy: 'bob@acme.com'
-});
-
-// Bob tries to insert with a different CreatedBy — fails
-// (CreatedBy must equal Bob's email)
-await connection.insert({
-  Name: 'Fake',
-  Department: 'Engineering',
-  CreatedBy: 'alice@acme.com'
-});
-```
-
-## Data requirements and query validation
-
-The `require` property defines conditions that incoming queries must satisfy. This is not the same as querying data — it controls how queries are **assessed against the rule's data requirements**.
-
-<p class="info">If you add data requirements to your rules, Fliplet core components that query the data source (e.g., <strong>List from Data Source</strong>, <strong>Chart</strong>, <strong>Form</strong>) may stop working because they issue broad queries without the <code>where</code> clauses that <code>require</code> demands. You will need to either add a permissive rule (without <code>require</code>) scoped to those components' app IDs, or replace the component queries with custom code that satisfies the requirements.</p>
-
-
-For example, to allow a specific app's components to read without `require` constraints while keeping other apps locked down:
-
-```json
-{
-  "type": ["select"],
-  "allow": "loggedIn",
-  "appId": [456, 789],
-  "enabled": true
-}
-```
-
-This rule grants read access to logged-in users only when the request originates from app 456 or 789. Place it before stricter rules so that the matching apps get broad access while other apps fall through to rules with `require` conditions.
-
-The behavior of `require` varies by operation type:
-
-- **For `select` and `delete` operations:** The client's query must include a `where` clause that satisfies all requirements, or the rule does not match. For example, if a rule requires `{ "Email": { "equals": "{{user.[Email]}}" } }`, every `find()` call must include `where: { Email: user.Email }` (or the equivalent `$eq` operator) for that rule to grant access. To obtain the user's session data client-side, use the [Session API](API/fliplet-session.html). If the requirements are not met, the rule is **skipped** (not rejected) — evaluation falls through to the next rule. This means a more permissive rule below could still grant access. Design your rule order carefully: place restrictive rules first and ensure no later rule inadvertently grants broader access than intended.
-- **For `insert` and `update` operations:** Validates that the submitted data contains the required fields and values. If the data does not match, the write is **rejected immediately** — unlike reads, unmet requirements on a write do not fall through to the next rule.
-
-<p class="quote"><strong>Key difference:</strong> Unmet <code>require</code> on a read = rule skipped, next rule evaluated. Unmet <code>require</code> on a write = request denied outright. This means a permissive read rule further down the list can still grant access, but a failed write requirement stops evaluation.</p>
-
-### Data requirement types
-
-`require` accepts an array of strings (required field names) and objects (field conditions). Four requirement types are available:
-
-| Requirement type | Description | Query patterns that satisfy this requirement |
-|---|---|---|
-| Field is required | The query must include the specified column | Any query that provides the column as a key |
-| Field equals | The query value for the column must match exactly | `{ Field: value }` or `{ Field: { $eq: value } }` |
-| Field not equals | The query value for the column must not match the specified value | `{ Field: { $ne: value } }` or any query where the field's value differs from the specified value |
-| Field contains | The query value for the column must contain the specified substring | `{ Field: value }` or `{ Field: { $iLike: value } }` or `{ Field: { $like: value } }` |
-
-<p class="quote">These requirement types (<code>equals</code>, <code>notequals</code>, <code>contains</code>) are <strong>not</strong> query operators — they define how the security rule validates incoming queries. For the full list of query operators you can use when reading and writing data, see the <a href="API/datasources/query-operators.html">query operators reference</a>.</p>
-
-### Handlebars templating
-
-Condition values can reference the logged-in user's session data using Handlebars syntax. This enables dynamic, per-user access scoping. Use bracket notation (e.g., `[Email]`) for field names — it is required for names with spaces or special characters (e.g., {% raw %}`{{user.[First Name]}}`{% endraw %}), and also works for simple names. Plain dot notation ({% raw %}`{{user.Email}}`{% endraw %}) works only for field names without spaces.
-
-- {% raw %}`{{user.[Email]}}`{% endraw %} — the user's email address
-- {% raw %}`{{user.[Department]}}`{% endraw %} — the user's department
-- {% raw %}`{{user.[Role]}}`{% endraw %} — the user's role
-- {% raw %}`{{user.[ID]}}`{% endraw %} — the user's data source entry ID
-
-### Require syntax
-
-**Required fields** (string) — the query must include these columns:
-
-```json
-"require": ["Email", "FirstName", "Department"]
-```
-
-**Field conditions** (object with operator) — the query must match these conditions:
-
-{% raw %}
-```json
-"require": [
-  { "Email": { "equals": "{{user.[Email]}}" } },
-  { "Status": { "notequals": "Archived" } },
-  { "Department": { "contains": "{{user.[Department]}}" } }
-]
-```
-{% endraw %}
-
-You can mix both formats in the same array:
-
-{% raw %}
-```json
-"require": [
-  "Title",
-  "Description",
-  { "CreatedBy": { "equals": "{{user.[Email]}}" } },
-  { "Status": { "equals": "Draft" } }
-]
-```
-{% endraw %}
-
-For full examples of `require` in practice — including sample data, succeed queries, and fail queries — see [role-based access with protected fields](#example-role-based-access-with-protected-fields) and [department-scoped access](#example-department-scoped-access) above.
-
-## Custom security rules
-
-For advanced logic beyond what the standard rule properties support, you can write custom JavaScript security rules.
-
-![Custom security](assets/img/datasource-custom-security.png)
-
-The custom security rule editor in Fliplet Studio displays a code editor where you write JavaScript that controls access. The rule name and enabled toggle appear above the code area.
-
-<p class="warning"><strong>Important:</strong> When a rule has a <code>script</code>, the script is the <strong>sole determinant</strong> of access. Standard rule fields like <code>allow</code> and <code>type</code> are ignored — the script runs regardless of login status or operation type. Your script must perform its own identity and operation checks (e.g., <code>if (!user) return { granted: false };</code>). If the script does not return a value (e.g., an unhandled operation type falls through without a <code>return</code>), access is <strong>denied by default</strong>.</p>
-
-When writing a custom rule, these variables are available in the script context:
-
-- `type` (String) — the operation the user is attempting: `select`, `insert`, `update`, or `delete`
-- `user` (Object) — the authenticated user's session data, or `undefined` if not logged in. For data-source passport sessions (e.g., Email Verification, Fliplet Login), this contains the flat column values from the user's row in the authentication data source (e.g., `user.Email`, `user.Role`). For SAML2 sessions, it contains the assertion attributes.
-- `query` (Object or Array) — **important: the shape of this variable changes depending on the operation type:**
-  - **`select`**: the unwrapped `where` object from the request (e.g., if the client sends `find({ where: { Email: "a@b.com" } })`, the rule receives `{ Email: "a@b.com" }`)
-  - **`insert`** / **`update`**: the data being written to the entry. When called via the `commit` endpoint, `query` is an array of entries — see [Checking data when committing changes](#checking-data-when-committing-changes)
-  - **`delete`**: the current data of the entry being deleted (populated by the server from the existing record, not sent by the client)
-- `entry` (Object) — the existing entry being updated, with `id` (Number) and `data` (Object containing the entry's current column values) properties. `undefined` for other operation types
-- `DataSources` (Function) — server-side library for reading data from other data sources. See [Reading data from other Data Sources](#reading-data-from-other-data-sources)
-
-Your code should handle all relevant operation types. Here is an example:
-
-```js
-// Always check for unauthenticated access first
-if (!user) {
-  return { granted: false };
-}
-
-switch (type) {
-  case 'select':
-    // "query" is the unwrapped where object from the API request.
-    // If the client sends find() with no where clause, query may be empty.
-    return { granted: query && query.Department === user.Department };
-
-  case 'insert':
-    // "query" is the data being inserted.
-    // It can also be an array when committing multiple records at once.
-    if (Array.isArray(query)) {
-      return { granted: query.every(data => data.Department === user.Department) };
-    }
-
-    return { granted: query.Department === user.Department };
-
-  case 'update':
-    // "query" is the data being updated.
-    // It can also be an array when committing multiple records at once.
-    // "entry" is the existing record (with id and data properties) when applicable.
-    if (Array.isArray(query)) {
-      return { granted: query.every(data => data.Department === user.Department) };
-    }
-
-    return { granted: query.Department === user.Department && entry && entry.data.Active === true };
-
-  case 'delete':
-    // "query" is the data of the entry being deleted.
-    // It can also be an array when deleting multiple records at once.
-    if (Array.isArray(query)) {
-      return { granted: query.every(data => data.CreatedBy === user.Email) };
-    }
-
-    return { granted: query.CreatedBy === user.Email };
-}
-```
-
-### Granting access
-
-Return an object with `granted: true` to grant access. You can also return an `exclude` or `include` array to restrict which columns the user can access:
-
-```js
-if (type === 'select') {
-  if (!user) {
-    return { granted: false };
-  }
-
-  // Grant full access to admin users
-  if (user.Admin === 'Yes') {
-    return { granted: true };
-  }
-
-  // Grant access to any other logged-in user, but hide sensitive columns
-  return { granted: true, exclude: ['Phone', 'NextOfKin'] };
-}
-
-// No further access is granted by this rule to other operation types
-```
-
-<p class="warning"><strong>Important:</strong> You must return an object — bare boolean values (e.g., <code>return true</code>) are not supported and will be treated as a denial. Always use <code>return { granted: true }</code> or <code>return { granted: false }</code>.</p>
-
-### Modifying the input query
-
-Rules can modify the `query` object to enforce constraints:
-
-```js
-if (!user) {
-  return { granted: false };
-}
-
-if (type === 'select') {
-  // Only allow reading records for the same office as the user's
-  query.Office = user.Office;
-
-  return { granted: true };
-}
-
-if (type === 'insert') {
-  // Forces writes to have the office field same as the user's
-  query.Office = user.Office;
-
-  // Also generate a "CreatedAt" datetime field for all records added
-  query.CreatedAt = Date.now();
-
-  return { granted: true };
-}
-```
-
-### Checking data when committing changes
-
-When a data source is updated via the `commit` endpoint (or JS API), `query` is always an **array** of flat data objects — not a single object. The security rule runs separately for each operation type in the commit (inserts, updates, and deletes).
-
-<p class="quote"><strong>Note:</strong> For all three operation types during a commit, <code>query</code> is an array of flat data objects (the entry's column values). For deletes, the server loads the existing entries and provides their data — you receive the same flat shape as inserts and updates, not an array of IDs.</p>
-
-```js
-if (type === 'insert') {
-  // "query" is the array of entries to insert
-  // e.g. [{ Name: "Alice", Department: "Engineering" }, { Name: "Bob", Department: "Marketing" }]
-} else if (type === 'update') {
-  // "query" is the array of entry data being written
-  // e.g. [{ Name: "Alice Updated", Department: "Engineering" }, { Name: "Bob Updated", Department: "Marketing" }]
-} else if (type === 'delete') {
-  // "query" is the array of existing entry data for the entries being deleted
-  // e.g. [{ Name: "Alice", Department: "Engineering" }, { Name: "Dave", Department: "Marketing" }]
-}
-```
-
-### Reading data from other Data Sources
-
-Custom rules can read data from other Data Sources using the `find` (multiple records) and `findOne` (single record) methods of the `DataSources` server-side library. These reads run at **server level** and bypass all security rules on the target data source.
-
-<p class="quote">Cross-data-source lookups add a database round-trip per request and are not cached. Keep queries efficient and use <code>findOne</code> when you only need a single record. Script execution has a <strong>3-second timeout</strong> — if the script does not return within 3 seconds, access is denied. Async operations (like <code>DataSources</code> queries) are supported via <code>await</code>.</p>
-
-Connect using the data source ID (number) or name (string):
-
-```js
-if (!user) {
-  return { granted: false };
-}
-
-if (type === 'select') {
-  const entry = await DataSources(123).findOne({
-    where: {
-      Office: user.Office,
-      Managers: { $in: user.Manager },
-      Country: { $like: '%United Kingdom%' }
-    }
-  });
-
-  // Allow reading data if the user has a manager in the same office
-  if (entry) {
-    return { granted: true };
-  }
-}
-
-if (type === 'insert') {
-  const entries = await DataSources('Users').find();
-
-  // Only allow writes as long as there are fewer than 10 entries in the target Data Source
-  if (entries && entries.length < 10) {
-    return { granted: true };
-  }
-}
-```
-
-`find` returns an array of matching entries (empty array if none match). `findOne` returns a single entry object, or `null` if no match is found.
-
-Both methods accept the following properties:
-
-- `where` (Object) — query filter supporting [standard query operators](API/datasources/query-operators.html) such as `$eq`, `$ne`, `$like`, `$iLike`, `$gt`, `$gte`, `$lt`, `$lte`, `$in`
-- `limit` (Number, defaults to `100`)
-- `offset` (Number, defaults to `0`)
-
-<p class="quote">Use <code>DataSources('Name')</code> (data source name) instead of <code>DataSources(123)</code> (ID) in custom scripts. Data source names are preserved during app clone, so name-based lookups continue to work without manual remapping.</p>
+
+Use this only for data intended for anonymous readers. It grants no insert, update or delete operation. The [public lookup example](API/datasources/security-examples.md#public-lookup) pairs this rule with sample rows and SDK calls.
+
+## Choose the right guide
+
+| Task | Guide |
+|---|---|
+| Understand rule order, identity, requirements and endpoint differences | [Security rule reference](API/datasources/security-rules.md) |
+| Configure public, shared, private, profile or role/state data | [Security examples](API/datasources/security-examples.md) |
+| Prove allowed and denied app behavior | [Authenticated preview testing](API/datasources/testing-security.md) |
+| Connect, query or write through JavaScript | [Fliplet.DataSources reference](API/fliplet-datasources.md) |
+| Configure authentication or hooks | [App authentication](API/v3/auth.md), [Session API](API/fliplet-session.md) and [Data source hooks](Data-Source-Hooks.md) |
+
+## Check the policy's limits
+
+Rules grant access in order. A failed rule falls through for writes as well as reads, so a later broad grant can defeat an earlier restriction.
+
+Object conditions on updates check the **stored row**, while string requirements check submitted key presence. A condition that checks stored `Owner` or `Status` does not prevent a permitted write from changing those fields. Single-record writes honor `exclude`, but bulk/commit writes do not provide the same field protection. Custom scripts receive a copied input; assigning audit fields to that copy does not reliably persist them.
+
+For immutable ownership or approval transitions, keep app-user writes unavailable until an implemented trusted write path has been verified to check both stored and proposed values on every supported endpoint. See [role and state limits](API/datasources/security-examples.md#role-and-state-access) before choosing a workflow policy.
+
+## Existing section links
+
+These destinations retain links to the previous sections of this guide.
+
+<a id="security-rules"></a>
+
+[Security rules](API/datasources/security-rules.md#evaluation-and-defaults)
+
+<a id="access-rule-structure"></a>
+
+[Access rule structure](API/datasources/security-rules.md#rule-properties)
+
+<a id="defining-who-can-access"></a>
+
+[Defining who can access](API/datasources/security-rules.md#identity-and-login-binding)
+
+<a id="restricting-columns"></a>
+
+[Restricting columns](API/datasources/security-rules.md#column-restrictions)
+
+<a id="example-role-based-access-with-protected-fields"></a>
+
+[Example role based access with protected fields](API/datasources/security-examples.md#editable-profiles)
+
+<a id="example-department-scoped-access"></a>
+
+[Example department scoped access](API/datasources/security-examples.md#private-sketches)
+
+<a id="data-requirements-and-query-validation"></a>
+
+[Data requirements and query validation](API/datasources/security-rules.md#requirements-by-operation)
+
+<a id="data-requirement-types"></a>
+
+[Data requirement types](API/datasources/security-rules.md#requirement-operators)
+
+<a id="handlebars-templating"></a>
+
+[Handlebars templating](API/datasources/security-rules.md#identity-and-login-binding)
+
+<a id="require-syntax"></a>
+
+[Require syntax](API/datasources/security-rules.md#requirement-operators)
+
+<a id="custom-security-rules"></a>
+
+[Custom security rules](API/datasources/security-rules.md#custom-scripts)
+
+<a id="granting-access"></a>
+
+[Granting access](API/datasources/security-rules.md#custom-scripts)
+
+<a id="modifying-the-input-query"></a>
+
+[Modifying the input query](API/datasources/security-rules.md#script-inputs-and-mutation)
+
+<a id="checking-data-when-committing-changes"></a>
+
+[Checking data when committing changes](API/datasources/security-rules.md#script-inputs-and-mutation)
+
+<a id="reading-data-from-other-data-sources"></a>
+
+[Reading data from other data sources](API/datasources/security-rules.md#reading-another-data-source)
 
 ---
 
@@ -38616,6 +38163,8 @@ URL: https://developers.fliplet.com/REST-API/fliplet-ai.md
 
 Use these app-scoped endpoints to generate text or images, transcribe audio and create embeddings through Fliplet. Requests use a Fliplet token and the selected provider's payload format; a customer provider key is not required.
 
+These endpoints run models through Fliplet’s server API and require an internet connection. They do not provide an on-device model or offline inference.
+
 ## Contents
 
 - [Before your first request](#before-your-first-request)
@@ -38656,6 +38205,8 @@ For code running inside an app, use [Fliplet.AI](/API/core/ai), which supplies t
 `POST /v1/apps/:app/ai/completions`
 
 Use exactly one input format with an explicit compatible `model`. Non-streaming success returns the provider JSON directly, without a Fliplet response wrapper.
+
+This endpoint does not return an SSE stream. With `stream: true`, HTTP acknowledges the request and Fliplet sockets deliver the generated content; see the [streaming boundary](#streaming-boundary). The external examples below use non-streaming requests.
 
 | Format | Required fields | Plain text in the response |
 | --- | --- | --- |
