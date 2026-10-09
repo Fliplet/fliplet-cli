@@ -35,7 +35,7 @@ Every Fliplet JS API available to V3 apps, grouped by capability category. Each 
 - [`Fliplet.Communicate`](https://developers.fliplet.com/API/fliplet-communicate.html) — Send email, SMS, push notifications, and share URLs from a Fliplet app using a single Communicate namespace.
 - [`Fliplet.Navigator.Notifications`](https://developers.fliplet.com/API/core/notifications.html) **(preloaded)** — Check notification support, request permission, and send local device notifications from JavaScript.
 - [`Fliplet.Notifications`](https://developers.fliplet.com/API/fliplet-notifications.html) — Read, send, and schedule in-app and push notifications in Fliplet apps, with support for scopes, read receipts, and badge counts.
-- [`Fliplet.Socket`](https://developers.fliplet.com/API/fliplet-socket.html) — Real-time WebSocket connection to the Fliplet API with auto-authentication, server URL discovery, and dev/prod transport fallback via the fliplet-socket package.
+- [`Fliplet.Socket`](https://developers.fliplet.com/API/fliplet-socket.html) — Real-time connection to the Fliplet API for sending events between devices that have an app open, through shared rooms, via the fliplet-socket package.
 
 ## Media
 
