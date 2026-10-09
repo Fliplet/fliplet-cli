@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-06T16:53:50.629Z",
+  "generatedAt": "2026-10-09T09:40:01.582Z",
   "libraries": [
     {
       "package": "fliplet-analytics-spa",
@@ -133,7 +133,7 @@
       "package": "fliplet-datasources",
       "namespace": "Fliplet.DataSources",
       "title": "Fliplet.DataSources",
-      "description": "Connect to, query, insert, update, and delete records in Fliplet Data Sources from inside an app. All methods are promise-based.",
+      "description": "Connect to Fliplet data sources and find references for queries, writes, subscriptions, native storage and source management.",
       "docUrl": "https://developers.fliplet.com/API/fliplet-datasources.md",
       "preloaded": false,
       "capabilities": [

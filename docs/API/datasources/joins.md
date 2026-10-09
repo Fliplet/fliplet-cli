@@ -1,6 +1,6 @@
 ---
 title: Data Source joins
-description: "Fetch related rows from multiple data sources in a single query using named joins, like SQL joins."
+description: "Fetch related rows with named join configuration and read them from each record’s joins property."
 type: api-reference
 tags: [js-api, datasources, joins]
 v3_relevant: true
@@ -8,7 +8,17 @@ deprecated: false
 ---
 # Data Source joins
 
-Fetch related rows from multiple data sources in a single query using named joins, like SQL joins.
+Fetch related rows with named join configuration and read them from each record’s joins property.
+
+## Security boundary for online joins
+
+An online join does not automatically enforce the joined source's access rules and field restrictions in the same way as a direct read. The primary query evaluates its source's select rules. The caller must be able to resolve the joined source through the source access lookup. This lookup does not establish enforcement of the joined source's read permission, access rules or column restrictions. The primary rule's `include` and `exclude` do not filter nested joined data.
+
+For example, joining public articles to a Users source available to the token can return user rows or fields that a direct Users read would restrict. Use only related data that the requesting audience is allowed to receive. Do not join private user records into a public response on the assumption that their direct-read rules protect them.
+
+Join `where` and `attributes` options select data for that request; they are caller-controlled and do not establish a security boundary. Before claiming privacy, compare direct and joined reads as allowed and denied actors and inspect all returned rows and nested fields. See the [access-rule reference](security-rules.md#joined-source-reads) and [preview security tests](testing-security.md#check-joined-source-responses). Native-local joins have a different execution context; online authorization evidence does not establish native behavior.
+
+## Define a join
 
 Joins are defined by a unique name and their configuration options; any number of joins can be defined when fetching data from one data source:
 
@@ -20,10 +30,11 @@ const connection = await Fliplet.DataSources.connect(123);
 const result = await connection.find({
   join: {
     // ... with their comments
-    Comments: { options },
+    Comments: { dataSourceId: 456, on: { 'id': 'data.ArticleID' } },
 
     // ... and users who posted them
-    Users: { options }
+    // Use only rows and fields safe for this audience; direct-read rules do not protect joined results.
+    Users: { dataSourceId: 789, on: { 'data.AuthorID': 'id' } }
   }
 });
 console.log(result);
@@ -37,16 +48,17 @@ Fliplet.DataSources.connect(123).then(function (connection) {
   return connection.find({
     join: {
       // ... with their comments
-      Comments: { options },
+      Comments: { dataSourceId: 456, on: { 'id': 'data.ArticleID' } },
 
       // ... and users who posted them
-      Users: { options }
+    // Use only rows and fields safe for this audience; direct-read rules do not protect joined results.
+      Users: { dataSourceId: 789, on: { 'data.AuthorID': 'id' } }
     }
   })
 }).then(console.log)
 ```
 
-Before we dive into complete examples, let's start with the three types of joins we support.
+The following sections describe join configurations and result shapes.
 
 ## Types of joins
 
@@ -62,6 +74,8 @@ Left joins must be defined by specifying:
 Consider **an example** where two dataSources are created as follows:
 
 #### Articles
+
+Here `ID` is the record metadata `id`, and `ArticleID` is a data column in Comments.
 
 | ID | Title                   |
 |----|-------------------------|
@@ -83,9 +97,9 @@ We can simply reference the entries between the two dataSources as follows:
 const result = await connection.find({
   join: {
     Comments: {
-      dataSourceId: 123,
+      dataSourceId: 456,
       on: {
-        'data.ID': 'data.ArticleID'
+        'id': 'data.ArticleID'
       }
     }
   }
@@ -98,9 +112,9 @@ const result = await connection.find({
 connection.find({
   join: {
     Comments: {
-      dataSourceId: 123,
+      dataSourceId: 456,
       on: {
-        'data.ID': 'data.ArticleID'
+        'id': 'data.ArticleID'
       }
     }
   }
@@ -119,9 +133,9 @@ Inner joins are defined like left joins but with the `required` attribute set to
 const result = await connection.find({
   join: {
     Comments: {
-      dataSourceId: 123,
+      dataSourceId: 456,
       on: {
-        'data.ID': 'data.ArticleID'
+        'id': 'data.ArticleID'
       },
       required: true
     }
@@ -135,9 +149,9 @@ const result = await connection.find({
 connection.find({
   join: {
     Comments: {
-      dataSourceId: 123,
+      dataSourceId: 456,
       on: {
-        'data.ID': 'data.ArticleID'
+        'id': 'data.ArticleID'
       },
       required: true
     }
@@ -200,9 +214,9 @@ Example input:
 const result = await connection.find({
   join: {
     Comments: {
-      dataSourceId: 123,
+      dataSourceId: 456,
       on: {
-        'data.ID': 'data.ArticleID'
+        'id': 'data.ArticleID'
       }
     }
   }
@@ -215,9 +229,9 @@ const result = await connection.find({
 connection.find({
   join: {
     Comments: {
-      dataSourceId: 123,
+      dataSourceId: 456,
       on: {
-        'data.ID': 'data.ArticleID'
+        'id': 'data.ArticleID'
       }
     }
   }
@@ -230,18 +244,18 @@ Example of the returned data:
 [
   {
     id: 1,
-    dataSourceId: 456,
+    dataSourceId: 123,
     data: { Title: 'A great blog post' },
     joins: {
       Comments: [
         {
           id: 3,
-          dataSourceId: 123,
+          dataSourceId: 456,
           data: { ArticleID: 1, 'Comment text': 'Thanks! This was worth reading.', Likes: 5 }
         },
         {
           id: 4,
-          dataSourceId: 123,
+          dataSourceId: 456,
           data: { ArticleID: 1, 'Comment text': 'Loved it, would read it again.', Likes: 2 }
         }
       ]
@@ -262,9 +276,9 @@ Example input:
 const result = await connection.find({
   join: {
     HasComments: {
-      dataSourceId: 123,
+      dataSourceId: 456,
       on: {
-        'data.ID': 'data.ArticleID'
+        'id': 'data.ArticleID'
       },
       has: true
     }
@@ -278,9 +292,9 @@ const result = await connection.find({
 connection.find({
   join: {
     HasComments: {
-      dataSourceId: 123,
+      dataSourceId: 456,
       on: {
-        'data.ID': 'data.ArticleID'
+        'id': 'data.ArticleID'
       },
       has: true
     }
@@ -294,7 +308,7 @@ Example of the returned data:
 [
   {
     id: 1,
-    dataSourceId: 456,
+    dataSourceId: 123,
     data: { Title: 'A great blog post' },
     joins: {
       HasComments: true
@@ -302,7 +316,7 @@ Example of the returned data:
   },
   {
     id: 2,
-    dataSourceId: 456,
+    dataSourceId: 123,
     data: { Title: 'Something worth reading' },
     joins: {
       HasComments: false
@@ -323,9 +337,9 @@ Example input:
 const result = await connection.find({
   join: {
     NumberOfComments: {
-      dataSourceId: 123,
+      dataSourceId: 456,
       on: {
-        'data.ID': 'data.ArticleID'
+        'id': 'data.ArticleID'
       },
       count: true
     }
@@ -339,9 +353,9 @@ const result = await connection.find({
 connection.find({
   join: {
     NumberOfComments: {
-      dataSourceId: 123,
+      dataSourceId: 456,
       on: {
-        'data.ID': 'data.ArticleID'
+        'id': 'data.ArticleID'
       },
       count: true
     }
@@ -355,7 +369,7 @@ Example of the returned data:
 [
   {
     id: 1,
-    dataSourceId: 456,
+    dataSourceId: 123,
     data: { Title: 'A great blog post' },
     joins: {
       NumberOfComments: 2
@@ -363,7 +377,7 @@ Example of the returned data:
   },
   {
     id: 2,
-    dataSourceId: 456,
+    dataSourceId: 123,
     data: { Title: 'Something worth reading' },
     joins: {
       NumberOfComments: 0
@@ -384,9 +398,9 @@ Example input:
 const result = await connection.find({
   join: {
     LikesForComments: {
-      dataSourceId: 123,
+      dataSourceId: 456,
       on: {
-        'data.ID': 'data.ArticleID'
+        'id': 'data.ArticleID'
       },
       sum: 'Likes'
     }
@@ -400,9 +414,9 @@ const result = await connection.find({
 connection.find({
   join: {
     LikesForComments: {
-      dataSourceId: 123,
+      dataSourceId: 456,
       on: {
-        'data.ID': 'data.ArticleID'
+        'id': 'data.ArticleID'
       },
       sum: 'Likes'
     }
@@ -416,7 +430,7 @@ Example of the returned data:
 [
   {
     id: 1,
-    dataSourceId: 456,
+    dataSourceId: 123,
     data: { Title: 'A great blog post' },
     joins: {
       LikesForComments: 7
@@ -424,7 +438,7 @@ Example of the returned data:
   },
   {
     id: 2,
-    dataSourceId: 456,
+    dataSourceId: 123,
     data: { Title: 'Something worth reading' },
     joins: {
       LikesForComments: 0
@@ -445,9 +459,9 @@ Use the `where` parameter to define a filtering query for the data to be selecte
 const result = await connection.find({
   join: {
     LikesForPopularComments: {
-      dataSourceId: 123,
+      dataSourceId: 456,
       on: {
-        'data.ID': 'data.ArticleID'
+        'id': 'data.ArticleID'
       },
       where: {
         // only fetch a comment when it has more than 10 likes
@@ -464,9 +478,9 @@ const result = await connection.find({
 connection.find({
   join: {
     LikesForPopularComments: {
-      dataSourceId: 123,
+      dataSourceId: 456,
       on: {
-        'data.ID': 'data.ArticleID'
+        'id': 'data.ArticleID'
       },
       where: {
         // only fetch a comment when it has more than 10 likes
@@ -487,9 +501,9 @@ Use the `attributes` parameter to define which fields should only be returned fr
 const result = await connection.find({
   join: {
     LikesForComments: {
-      dataSourceId: 123,
+      dataSourceId: 456,
       on: {
-        'data.ID': 'data.ArticleID'
+        'id': 'data.ArticleID'
       },
       // only fetch the comment text
       attributes: ['Comment text']
@@ -504,9 +518,9 @@ const result = await connection.find({
 connection.find({
   join: {
     LikesForComments: {
-      dataSourceId: 123,
+      dataSourceId: 456,
       on: {
-        'data.ID': 'data.ArticleID'
+        'id': 'data.ArticleID'
       },
       // only fetch the comment text
       attributes: ['Comment text']
@@ -525,9 +539,9 @@ Use the `limit` parameter to define how many entries should be returned at most 
 const result = await connection.find({
   join: {
     LikesForComments: {
-      dataSourceId: 123,
+      dataSourceId: 456,
       on: {
-        'data.ID': 'data.ArticleID'
+        'id': 'data.ArticleID'
       },
       // only fetch up to 5 comments at most
       limit: 5
@@ -542,9 +556,9 @@ const result = await connection.find({
 connection.find({
   join: {
     LikesForComments: {
-      dataSourceId: 123,
+      dataSourceId: 456,
       on: {
-        'data.ID': 'data.ArticleID'
+        'id': 'data.ArticleID'
       },
       // only fetch up to 5 comments at most
       limit: 5
@@ -569,9 +583,9 @@ Use the `order` parameter to define the order at which entries are returned for 
 const result = await connection.find({
   join: {
     MostRecentComments: {
-      dataSourceId: 123,
+      dataSourceId: 456,
       on: {
-        'data.ID': 'data.ArticleID'
+        'id': 'data.ArticleID'
       },
       // only fetch the 5 most recent comments, combining order and limit
       // note: inside a join, order is a single flat [column, direction] pair
@@ -588,9 +602,9 @@ const result = await connection.find({
 connection.find({
   join: {
     MostRecentComments: {
-      dataSourceId: 123,
+      dataSourceId: 456,
       on: {
-        'data.ID': 'data.ArticleID'
+        'id': 'data.ArticleID'
       },
       // only fetch the 5 most recent comments, combining order and limit
       // note: inside a join, order is a single flat [column, direction] pair
@@ -613,7 +627,7 @@ const result = await connection.find({
     LikesForComments: {
       dataSourceName: 'User comments',
       on: {
-        'data.ID': 'data.ArticleID'
+        'id': 'data.ArticleID'
       },
       // only fetch the comment text
       attributes: ['Comment text']
@@ -630,7 +644,7 @@ connection.find({
     LikesForComments: {
       dataSourceName: 'User comments',
       on: {
-        'data.ID': 'data.ArticleID'
+        'id': 'data.ArticleID'
       },
       // only fetch the comment text
       attributes: ['Comment text']
@@ -643,3 +657,11 @@ connection.find({
 
 [Back to DataSources general documentation](../fliplet-datasources)
 {: .buttons}
+
+## Combinations and result counts
+
+When reduction options are combined, `count` takes precedence over `has`, which takes precedence over `sum`. Reductions use the matched rows before `limit` and `attributes`; those options apply to array results. `sum` parses the named data column as a number and treats unparseable values as zero. Prefer one reduction option per join.
+
+Online parent pagination is applied before required-join filtering. Therefore `pagination.total` can include parents removed by a required join, and a returned page can contain fewer rows than its limit. Joins use an SDK/API composition, not a promise of a database-native SQL JOIN or a universal performance improvement. Native local join behavior differs; verify the target platform rather than assuming all online combinations behave identically.
+
+[Reading records and pagination](reading-data)
