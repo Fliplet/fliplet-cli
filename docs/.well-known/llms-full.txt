@@ -12005,6 +12005,16 @@ URL: https://developers.fliplet.com/API/datasources/joins.md
 
 Fetch related rows with named join configuration and read them from each record’s joins property.
 
+## Security boundary for online joins
+
+An online join does not automatically enforce the joined source's access rules and field restrictions in the same way as a direct read. The primary query evaluates its source's select rules. The caller must be able to resolve the joined source through the source access lookup. This lookup does not establish enforcement of the joined source's read permission, access rules or column restrictions. The primary rule's `include` and `exclude` do not filter nested joined data.
+
+For example, joining public articles to a Users source available to the token can return user rows or fields that a direct Users read would restrict. Use only related data that the requesting audience is allowed to receive. Do not join private user records into a public response on the assumption that their direct-read rules protect them.
+
+Join `where` and `attributes` options select data for that request; they are caller-controlled and do not establish a security boundary. Before claiming privacy, compare direct and joined reads as allowed and denied actors and inspect all returned rows and nested fields. See the [access-rule reference](security-rules.md#joined-source-reads) and [preview security tests](testing-security.md#check-joined-source-responses). Native-local joins have a different execution context; online authorization evidence does not establish native behavior.
+
+## Define a join
+
 Joins are defined by a unique name and their configuration options; any number of joins can be defined when fetching data from one data source:
 
 **Using async/await (recommended)**
@@ -12018,6 +12028,7 @@ const result = await connection.find({
     Comments: { dataSourceId: 456, on: { 'id': 'data.ArticleID' } },
 
     // ... and users who posted them
+    // Use only rows and fields safe for this audience; direct-read rules do not protect joined results.
     Users: { dataSourceId: 789, on: { 'data.AuthorID': 'id' } }
   }
 });
@@ -12035,6 +12046,7 @@ Fliplet.DataSources.connect(123).then(function (connection) {
       Comments: { dataSourceId: 456, on: { 'id': 'data.ArticleID' } },
 
       // ... and users who posted them
+    // Use only rows and fields safe for this audience; direct-read rules do not protect joined results.
       Users: { dataSourceId: 789, on: { 'data.AuthorID': 'id' } }
     }
   })
@@ -13931,6 +13943,12 @@ Column restrictions do not have a uniform write contract:
 
 A single update that submits an excluded privilege field can resolve successfully while leaving that field unchanged. It is incorrect to describe that outcome as an authorization error. Do not use an `exclude` policy to promise protection on bulk/commit writes. Leave strict app-session writes unavailable until an implemented trusted write path has been verified. Script input selection can substitute `body.where` for proposed data, so a script that checks `query` is not automatically a complete payload validator.
 
+### Joined-source reads
+
+Online joins evaluate the primary source's select rules. The caller must be able to resolve the joined source through the source access lookup. This lookup does not establish enforcement of the joined source's read permission, access rules or column restrictions. Primary-source `include` and `exclude` filtering does not sanitize nested joined data. A token-accessible joined source can therefore return rows or fields that its direct-read rules restrict.
+
+Do not treat direct-read authorization as proof of joined-data privacy. Caller-supplied join filters or projections are not enforceable protection against other callers. See [Data Source joins](joins.md#security-boundary-for-online-joins) for the contract and [joined-response tests](testing-security.md#check-joined-source-responses) before exposing related private data.
+
 ## Custom scripts
 
 A nonempty script runs regardless of `type` and `allow`, subject to the enabled/app filters. It must check operation, authenticated identity and login source itself. Return `{ granted: true }` to grant; bare booleans, missing returns and `{ granted: false }` do not grant. A script grant returns immediately for that rule, so standard `require` is not an additional payload validator.
@@ -14252,6 +14270,39 @@ Test `findOne({ where: ... })` separately from `findById(id)` if the app uses bo
 For grants that admit commit/bulk operations, seed another owner's row and a sensitive column in the same disposable source. As the allowed actor, submit an own-data append or commit with response entries enabled or left at their default. Inspect **all returned rows and columns**, not just the submitted entry. Repeat direct requests as denied and wrong-source actors, and check both response data and persisted effects. Test these SDK calls independently of whether the UI exposes them.
 
 Read-response filtering does not automatically apply to commit responses. A client choosing `returnEntries: false` is not proof that other callers cannot request entries. To assert a read-only private configuration, verify commit and other response-bearing routes are actually unavailable or appropriately isolated under its real source permissions. A select-only evaluator result is insufficient. Record the tested deployment/configuration and any unknowns; do not infer deployed behavior from local source alone.
+
+## Check joined-source responses
+
+Use disposable primary and related sources with an allowed related row, another actor's private row and a sensitive column. Record both sources' rules and the caller's source access. As each intended actor, compare a direct read of the related source with a primary query that joins it. Include an actor whose primary read is allowed but whose direct related read is denied or restricted.
+
+Inspect every returned related row and nested field, including `entry.joins`, and compare them with the intended policy. Repeat without optional join `where` or `attributes` restrictions; cooperative projections do not prove another caller cannot request more data. Also check the case where the caller cannot access or resolve the related source. A primary-query denial alone does not test the joined-source boundary.
+
+For a disposable Articles source (123) and related Users source (789), seed `AuthorID` on an article with a matching Users record metadata `id`. Run both requests as the same actor. Capture each outcome independently so a denied direct read does not prevent the joined read:
+
+```js
+const users = await Fliplet.DataSources.connect(789, { offline: false });
+const articles = await Fliplet.DataSources.connect(123, { offline: false });
+
+try {
+  console.log('Direct Users read:', await users.find());
+} catch (error) {
+  console.log('Direct Users read failed:', error);
+}
+
+try {
+  console.log('Joined Users read:', await articles.find({
+    join: {
+      Users: { dataSourceId: 789, on: { 'data.AuthorID': 'id' } }
+    }
+  }));
+} catch (error) {
+  console.log('Joined Users read failed:', error);
+}
+```
+
+Use only disposable fixture data in these logs. Repeat the direct read with any owner filter required by the policy, and inspect each returned `entry.joins.Users` row and field. A rejected unfiltered direct read does not by itself establish owner-read behavior or joined-data privacy.
+
+The [online join contract](joins.md#security-boundary-for-online-joins) does not promise equivalent direct-read rule enforcement for related sources. If joined results violate the required policy, do not use that join for private data or report it as secure. Record the tested configuration and limitation. Check native-local joins separately when that runtime is required.
 
 ## Diagnose a failure
 

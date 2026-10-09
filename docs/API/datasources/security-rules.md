@@ -145,6 +145,12 @@ Column restrictions do not have a uniform write contract:
 
 A single update that submits an excluded privilege field can resolve successfully while leaving that field unchanged. It is incorrect to describe that outcome as an authorization error. Do not use an `exclude` policy to promise protection on bulk/commit writes. Leave strict app-session writes unavailable until an implemented trusted write path has been verified. Script input selection can substitute `body.where` for proposed data, so a script that checks `query` is not automatically a complete payload validator.
 
+### Joined-source reads
+
+Online joins evaluate the primary source's select rules. The caller must be able to resolve the joined source through the source access lookup. This lookup does not establish enforcement of the joined source's read permission, access rules or column restrictions. Primary-source `include` and `exclude` filtering does not sanitize nested joined data. A token-accessible joined source can therefore return rows or fields that its direct-read rules restrict.
+
+Do not treat direct-read authorization as proof of joined-data privacy. Caller-supplied join filters or projections are not enforceable protection against other callers. See [Data Source joins](joins.md#security-boundary-for-online-joins) for the contract and [joined-response tests](testing-security.md#check-joined-source-responses) before exposing related private data.
+
 ## Custom scripts
 
 A nonempty script runs regardless of `type` and `allow`, subject to the enabled/app filters. It must check operation, authenticated identity and login source itself. Return `{ granted: true }` to grant; bare booleans, missing returns and `{ granted: false }` do not grant. A script grant returns immediately for that rule, so standard `require` is not an additional payload validator.

@@ -71,6 +71,39 @@ For grants that admit commit/bulk operations, seed another owner's row and a sen
 
 Read-response filtering does not automatically apply to commit responses. A client choosing `returnEntries: false` is not proof that other callers cannot request entries. To assert a read-only private configuration, verify commit and other response-bearing routes are actually unavailable or appropriately isolated under its real source permissions. A select-only evaluator result is insufficient. Record the tested deployment/configuration and any unknowns; do not infer deployed behavior from local source alone.
 
+## Check joined-source responses
+
+Use disposable primary and related sources with an allowed related row, another actor's private row and a sensitive column. Record both sources' rules and the caller's source access. As each intended actor, compare a direct read of the related source with a primary query that joins it. Include an actor whose primary read is allowed but whose direct related read is denied or restricted.
+
+Inspect every returned related row and nested field, including `entry.joins`, and compare them with the intended policy. Repeat without optional join `where` or `attributes` restrictions; cooperative projections do not prove another caller cannot request more data. Also check the case where the caller cannot access or resolve the related source. A primary-query denial alone does not test the joined-source boundary.
+
+For a disposable Articles source (123) and related Users source (789), seed `AuthorID` on an article with a matching Users record metadata `id`. Run both requests as the same actor. Capture each outcome independently so a denied direct read does not prevent the joined read:
+
+```js
+const users = await Fliplet.DataSources.connect(789, { offline: false });
+const articles = await Fliplet.DataSources.connect(123, { offline: false });
+
+try {
+  console.log('Direct Users read:', await users.find());
+} catch (error) {
+  console.log('Direct Users read failed:', error);
+}
+
+try {
+  console.log('Joined Users read:', await articles.find({
+    join: {
+      Users: { dataSourceId: 789, on: { 'data.AuthorID': 'id' } }
+    }
+  }));
+} catch (error) {
+  console.log('Joined Users read failed:', error);
+}
+```
+
+Use only disposable fixture data in these logs. Repeat the direct read with any owner filter required by the policy, and inspect each returned `entry.joins.Users` row and field. A rejected unfiltered direct read does not by itself establish owner-read behavior or joined-data privacy.
+
+The [online join contract](joins.md#security-boundary-for-online-joins) does not promise equivalent direct-read rule enforcement for related sources. If joined results violate the required policy, do not use that join for private data or report it as secure. Record the tested configuration and limitation. Check native-local joins separately when that runtime is required.
+
 ## Diagnose a failure
 
 A policy denial must be supported by the error response and unchanged forbidden state. An HTTP 400 or 401 alone is insufficient because errors vary by method and caller.

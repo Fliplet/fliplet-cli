@@ -10,6 +10,16 @@ deprecated: false
 
 Fetch related rows with named join configuration and read them from each record’s joins property.
 
+## Security boundary for online joins
+
+An online join does not automatically enforce the joined source's access rules and field restrictions in the same way as a direct read. The primary query evaluates its source's select rules. The caller must be able to resolve the joined source through the source access lookup. This lookup does not establish enforcement of the joined source's read permission, access rules or column restrictions. The primary rule's `include` and `exclude` do not filter nested joined data.
+
+For example, joining public articles to a Users source available to the token can return user rows or fields that a direct Users read would restrict. Use only related data that the requesting audience is allowed to receive. Do not join private user records into a public response on the assumption that their direct-read rules protect them.
+
+Join `where` and `attributes` options select data for that request; they are caller-controlled and do not establish a security boundary. Before claiming privacy, compare direct and joined reads as allowed and denied actors and inspect all returned rows and nested fields. See the [access-rule reference](security-rules.md#joined-source-reads) and [preview security tests](testing-security.md#check-joined-source-responses). Native-local joins have a different execution context; online authorization evidence does not establish native behavior.
+
+## Define a join
+
 Joins are defined by a unique name and their configuration options; any number of joins can be defined when fetching data from one data source:
 
 **Using async/await (recommended)**
@@ -23,6 +33,7 @@ const result = await connection.find({
     Comments: { dataSourceId: 456, on: { 'id': 'data.ArticleID' } },
 
     // ... and users who posted them
+    // Use only rows and fields safe for this audience; direct-read rules do not protect joined results.
     Users: { dataSourceId: 789, on: { 'data.AuthorID': 'id' } }
   }
 });
@@ -40,6 +51,7 @@ Fliplet.DataSources.connect(123).then(function (connection) {
       Comments: { dataSourceId: 456, on: { 'id': 'data.ArticleID' } },
 
       // ... and users who posted them
+    // Use only rows and fields safe for this audience; direct-read rules do not protect joined results.
       Users: { dataSourceId: 789, on: { 'data.AuthorID': 'id' } }
     }
   })
