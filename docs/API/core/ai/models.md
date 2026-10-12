@@ -19,6 +19,7 @@ Use a compatible model requested by the user. Otherwise select for the task, bud
 - [Images](#image-models)
 - [Transcription](#transcription-models)
 - [Embeddings](#embedding-models)
+- [Decisions (internal trial)](#decisions-models)
 - [Pinning and changes](#pinning-and-changes)
 - [Fallback defaults](#fallback-defaults)
 - [Deprecated and retired models](#deprecated-and-retired-models)
@@ -121,6 +122,16 @@ OpenAI Standard embedding rates are $0.02 per million input tokens for [text-emb
 
 Keep the same embedding model and dimensions when comparing stored vectors with new queries. Changing models can require regenerating stored embeddings.
 
+### Decisions models
+
+[POST /v1/apps/:app/ai/decisions](/REST-API/fliplet-ai#decisions) accepts only the ID below. It is an internal trial on staging, available through REST only, with no JavaScript method.
+
+| Model ID | Availability note |
+| --- | --- |
+| `gpt-6-luna` | Decisions internal trial only. Required explicitly; there is no fallback. |
+
+Decisions support is separate from the text catalog. Listing `gpt-6-luna` under [OpenAI text models](#openai-text-models) doesn't make other text models usable for Decisions. OpenAI charges Decisions on input tokens only ($0.10 per million for `gpt-6-luna`), with no output or cache charges. That is the provider's rate, not a Fliplet charge. See the [OpenAI Decisions guide](https://developers.openai.com/api/docs/guides/decisions).
+
 ## Pinning and changes
 
 An explicit alias such as `gpt-6.1-sol` pins the requested ID; the provider can change the version behind it. A compatible dated snapshot pins a version where the provider offers one, but remains subject to retirement. Configuration or successful routing does not guarantee current provider access. The exported JavaScript `AVAILABLE_MODELS` metadata is older descriptive information, not an enforced allowlist or this catalog.
@@ -141,6 +152,7 @@ The following defaults reflect the JavaScript wrapper and REST handlers. JavaScr
 | Images: `generateImage()`; `POST /v1/apps/:app/ai/image` | `gpt-image-2` through the REST handler | `gpt-image-2` |
 | Audio transcription: `transcribeAudio()`; `POST /v1/apps/:app/ai/audio` | `gpt-4o-mini-transcribe` through the REST handler | `gpt-4o-mini-transcribe` |
 | Embeddings: `createEmbedding()`; `POST /v1/apps/:app/ai/embeddings` | `text-embedding-ada-002` through the REST handler | `text-embedding-ada-002` |
+| Decisions: `POST /v1/apps/:app/ai/decisions` (internal trial) | No JavaScript method | None; returns `400` |
 
 Gemini requests require an explicit Gemini model ID and a Gemini payload. OpenAI retired `gpt-3.5-turbo-instruct` on September 28, 2026; new text features use `messages` or Responses `input` instead of the legacy `prompt` format. `gpt-3.5-turbo` is scheduled for retirement on October 23, 2026. See [OpenAI deprecations](https://developers.openai.com/api/docs/deprecations).
 

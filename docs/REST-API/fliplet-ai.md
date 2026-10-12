@@ -1,6 +1,6 @@
 ---
 title: Fliplet app AI REST API
-description: "Make app-scoped Fliplet AI requests for text, images, transcription and embeddings using the format required by the selected model."
+description: "Make app-scoped Fliplet AI requests for text, images, transcription, embeddings and Decisions (internal trial) using the format required by the selected model."
 type: api-reference
 tags: [rest-api, ai]
 v3_relevant: true
@@ -20,6 +20,7 @@ These endpoints run models through Fliplet’s server API and require an interne
 - [Images](#images)
 - [Audio transcription](#audio-transcription)
 - [Embeddings](#embeddings)
+- [Decisions (internal trial)](#decisions)
 - [Errors, limits and retries](#errors-limits-and-retries)
 - [Streaming boundary](#streaming-boundary)
 - [Related documentation](#related-documentation)
@@ -44,6 +45,7 @@ For code running inside an app, use [Fliplet.AI](/API/core/ai), which supplies t
 | [OpenAI image generation](#images) | `POST /v1/apps/:app/ai/image` | JSON with `prompt` |
 | [Transcription](#audio-transcription) | `POST /v1/apps/:app/ai/audio` | Multipart form with `file` and optional `model` |
 | [Embeddings](#embeddings) | `POST /v1/apps/:app/ai/embeddings` | JSON with `input` |
+| [Decisions](#decisions) (internal trial) | `POST /v1/apps/:app/ai/decisions` | JSON in the OpenAI Decisions format |
 
 `:app` is the authorized app ID. Examples use EU; substitute the app's regional host. The environment variables below must be set to your own authorized token and app ID. Keep credentials in the external integration's secure configuration.
 
@@ -198,9 +200,119 @@ curl --fail-with-body "https://api.fliplet.com/v1/apps/${FLIPLET_APP_ID}/ai/embe
 
 Success contains `object`, `data: [{ object, index, embedding }]`, `model` and `usage: { prompt_tokens, total_tokens }`. Numeric embeddings are arrays; base64 embeddings are strings. Keep the same model and dimensions for stored vectors and queries. Missing `input` returns `400`; provider validation supplies model and token constraints. See [embedding method details](/API/core/ai#flipletaicreateembedding).
 
+## Decisions
+
+`POST /v1/apps/:app/ai/decisions`
+
+**Availability:** internal trial on Fliplet's staging environment only. This endpoint is not available to customers in production, and there is no `Fliplet.AI` JavaScript wrapper for it. Use it only through REST, with synthetic or non-customer data.
+
+Decisions evaluates shared evidence and returns typed answers: probabilities for predicates, a selected value for choices, and a level-weighted score for rubrics. Fliplet forwards the request body to [OpenAI Decisions](https://developers.openai.com/api/docs/guides/decisions) unchanged and returns OpenAI's success JSON unchanged, without a Fliplet wrapper.
+
+### Request
+
+Use the authentication and app ID rules in [Before your first request](#before-your-first-request), with `Content-Type: application/json`.
+
+| Field | Required | Notes |
+| --- | --- | --- |
+| `model` | Yes | Must be `gpt-6-luna`. Fliplet rejects a missing or different model with `400` and has no fallback. |
+| `input` | Yes | Shared evidence: a string, or user messages containing text and inline base64 image data URLs. OpenAI rejects non-user roles, tools, audio, files and hosted image URLs. |
+| `questions` | Yes | Array of questions, each with `type`, `instructions` and `name`. |
+
+Question types:
+
+- `predicate`: estimates the probability that a condition is true.
+- `choice`: picks one value from `choices`. Each entry has `value` (string or boolean) and optional `description`.
+- `score`: rates the input against ordered `levels`. Each entry has `label` and optional `description`.
+
+Other OpenAI parameters, such as `safety_identifier`, are forwarded as sent. Fliplet does not validate the Decisions schema; OpenAI does, and its validation errors are returned to you (see [Decisions errors](#decisions-errors)). A `safety_identifier` you send is passed to OpenAI only. It does not affect Fliplet authorization, attribution or billing.
+
+```bash
+curl --fail-with-body "https://api.fliplet.com/v1/apps/${FLIPLET_APP_ID}/ai/decisions" \
+  -H "Auth-token: ${FLIPLET_API_TOKEN}" \
+  -H 'Accept: application/json' \
+  -H 'Content-Type: application/json' \
+  --data '{
+    "model": "gpt-6-luna",
+    "input": "Customer writes: I was charged twice for my October invoice and need the duplicate refunded.",
+    "questions": [
+      { "type": "predicate", "name": "is_billing_issue", "instructions": "Is this message about billing or payments?" },
+      { "type": "choice", "name": "team", "instructions": "Which team should handle this?", "choices": [
+        { "value": "billing" }, { "value": "technical" }, { "value": "sales" } ] },
+      { "type": "choice", "name": "needs_refund", "instructions": "Does the customer ask for money back?", "choices": [
+        { "value": true }, { "value": false } ] },
+      { "type": "score", "name": "urgency", "instructions": "How urgent is this request?", "levels": [
+        { "label": "low" }, { "label": "medium" }, { "label": "high" } ] }
+    ]
+  }'
+```
+
+During the internal trial, use the staging API host for the app's region in place of `https://api.fliplet.com`.
+
+### Response
+
+Success returns OpenAI's JSON. `answers` has one entry per question, in request order. Each entry has its `type` and `name` (`null` when the question had no name). The example below is illustrative:
+
+```json
+{
+  "model": "gpt-6-luna",
+  "answers": [
+    { "type": "predicate", "name": "is_billing_issue", "probability": 0.97 },
+    { "type": "choice", "name": "team", "choice": "billing", "confidence": 0.94,
+      "probabilities": [
+        { "value": "billing", "probability": 0.94 },
+        { "value": "technical", "probability": 0.04 },
+        { "value": "sales", "probability": 0.02 } ] },
+    { "type": "choice", "name": "needs_refund", "choice": true, "confidence": 0.91,
+      "probabilities": [ { "value": true, "probability": 0.91 }, { "value": false, "probability": 0.09 } ] },
+    { "type": "score", "name": "urgency", "score": 1.3, "confidence": 0.58,
+      "probabilities": [
+        { "label": "low", "value": 0, "probability": 0.12 },
+        { "label": "medium", "value": 1, "probability": 0.46 },
+        { "label": "high", "value": 2, "probability": 0.42 } ] }
+  ],
+  "usage": {
+    "input_tokens": 182,
+    "input_tokens_details": { "cached_tokens": 0, "cache_write_tokens": 0 },
+    "output_tokens": 0,
+    "output_tokens_details": { "reasoning_tokens": 0 },
+    "total_tokens": 182
+  }
+}
+```
+
+How to read the answers:
+
+- **Choice:** `choice` keeps the original type of the value, so a boolean choice returns `true` or `false`, not a string.
+- **Score:** `score` is the probability-weighted average of the level indexes (`0` for the first level). It can be a fraction, so `1.3` falls between `medium` and `high`. Use `probabilities` when you need the distribution rather than a single number.
+- **Refusal:** an answer with `type: "refusal"` means the model declined that question. Other questions in the same response can still have normal answers, so check each answer's `type`. A refusal is not a negative or "safe" result. Treat it as no answer.
+
+### Credits
+
+Decisions is charged on input tokens only (`usage.input_tokens`), once per successful call. Requests that fail or time out are not charged. A credit check runs before the request is sent to OpenAI, and returns `402` if the app's organization lacks enough credits. Every caller, including Fliplet staff and Studio sessions, uses runtime credits; request headers do not change this. Trial pricing is provisional and is not a published rate.
+
+<a id="decisions-errors"></a>
+
+### Errors and limits
+
+| Status | `type` | Meaning |
+| --- | --- | --- |
+| `400` | `entity.parse.failed` | The body is not valid JSON. Nothing was sent to OpenAI. |
+| `400` | `unsupported_model` | `model` is missing or is not `gpt-6-luna`. Nothing was sent to OpenAI. |
+| `400` or other `4xx` | `provider_invalid_request` | OpenAI rejected the request. `message` explains why, and `payload` contains OpenAI's `code` and `param`. Correct the request before retrying. |
+| `402` | — | Not enough credits; the body has `error: "insufficient_credits"` instead of `type`. Nothing was sent to OpenAI. |
+| `413` | `payload_too_large` | The request body is over 10 MB (counted in bytes, including chunked uploads). Nothing was sent to OpenAI. |
+| `429` | — | Fliplet's app AI rate limit was reached. |
+| `502` | `provider_unavailable` | OpenAI is unavailable, rate-limited Fliplet, or the service is misconfigured. Retry later. |
+| `502` | `provider_malformed_response` | OpenAI's response was missing its answers. Do not treat this as a result. |
+| `504` | `provider_timeout` | OpenAI didn't respond within 60 seconds. |
+
+Fliplet never retries a Decisions request automatically. A `504` doesn't mean OpenAI stopped processing, and retrying sends a new request that is charged separately if it succeeds. Retry `502` and `504` after a delay, and don't retry `4xx` errors without changing the request.
+
+Fliplet logs metadata for each call: outcome, status, token counts, timing and question count. It does not log the evidence you send or the answers returned. Your app's regional Fliplet host doesn't determine where OpenAI processes the request.
+
 ## Errors, limits and retries
 
-Use `Accept: application/json`. The AI handlers' JSON errors include `message` and may include `type` or `payload`; authentication middleware can return a different envelope. A provider failure is normally returned as HTTP `400`, even when its embedded code describes a provider-specific limit or failure.
+Use `Accept: application/json`. The AI handlers' JSON errors include `message` and may include `type` or `payload`; authentication middleware can return a different envelope. A provider failure is normally returned as HTTP `400`, even when its embedded code describes a provider-specific limit or failure. Decisions uses its own statuses; see [Decisions errors](#decisions-errors).
 
 ```json
 { "message": "Missing audio file" }
