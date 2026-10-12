@@ -51,7 +51,7 @@ Fliplet.DataSources.connect(123).then(function (connection) {
       Comments: { dataSourceId: 456, on: { 'id': 'data.ArticleID' } },
 
       // ... and users who posted them
-    // Use only rows and fields safe for this audience; direct-read rules do not protect joined results.
+      // Use only rows and fields safe for this audience; direct-read rules do not protect joined results.
       Users: { dataSourceId: 789, on: { 'data.AuthorID': 'id' } }
     }
   })
