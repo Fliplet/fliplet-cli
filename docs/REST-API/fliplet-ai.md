@@ -1,6 +1,6 @@
 ---
 title: Fliplet app AI REST API
-description: "Make app-scoped Fliplet AI requests for text, images, transcription, embeddings and Decisions (internal trial) using the format required by the selected model."
+description: "Make app-scoped Fliplet AI requests for text, images, transcription, embeddings and Decisions using the format required by the selected model."
 type: api-reference
 tags: [rest-api, ai]
 v3_relevant: true
@@ -20,7 +20,7 @@ These endpoints run models through Fliplet’s server API and require an interne
 - [Images](#images)
 - [Audio transcription](#audio-transcription)
 - [Embeddings](#embeddings)
-- [Decisions (internal trial)](#decisions)
+- [Decisions](#decisions)
 - [Errors, limits and retries](#errors-limits-and-retries)
 - [Streaming boundary](#streaming-boundary)
 - [Related documentation](#related-documentation)
@@ -45,7 +45,7 @@ For code running inside an app, use [Fliplet.AI](/API/core/ai), which supplies t
 | [OpenAI image generation](#images) | `POST /v1/apps/:app/ai/image` | JSON with `prompt` |
 | [Transcription](#audio-transcription) | `POST /v1/apps/:app/ai/audio` | Multipart form with `file` and optional `model` |
 | [Embeddings](#embeddings) | `POST /v1/apps/:app/ai/embeddings` | JSON with `input` |
-| [Decisions](#decisions) (internal trial) | `POST /v1/apps/:app/ai/decisions` | JSON in the OpenAI Decisions format |
+| [Decisions](#decisions) | `POST /v1/apps/:app/ai/decisions` | JSON in the OpenAI Decisions format |
 
 `:app` is the authorized app ID. Examples use EU; substitute the app's regional host. The environment variables below must be set to your own authorized token and app ID. Keep credentials in the external integration's secure configuration.
 
@@ -204,7 +204,7 @@ Success contains `object`, `data: [{ object, index, embedding }]`, `model` and `
 
 `POST /v1/apps/:app/ai/decisions`
 
-**Availability:** internal trial on Fliplet's staging environment only. This endpoint is not available to customers in production, and there is no `Fliplet.AI` JavaScript wrapper for it. Use it only through REST, with synthetic or non-customer data.
+**Availability:** REST only. There is no `Fliplet.AI` JavaScript wrapper for it.
 
 Decisions evaluates shared evidence and returns typed answers: probabilities for predicates, a selected value for choices, and a level-weighted score for rubrics. Fliplet forwards the request body to [OpenAI Decisions](https://developers.openai.com/api/docs/guides/decisions) unchanged and returns OpenAI's success JSON unchanged, without a Fliplet wrapper.
 
@@ -246,8 +246,6 @@ curl --fail-with-body "https://api.fliplet.com/v1/apps/${FLIPLET_APP_ID}/ai/deci
   }'
 ```
 
-During the internal trial, use the staging API host for the app's region in place of `https://api.fliplet.com`.
-
 ### Response
 
 Success returns OpenAI's JSON. `answers` has one entry per question, in request order. Each entry has its `type` and `name` (`null` when the question had no name). The example below is illustrative:
@@ -288,7 +286,7 @@ How to read the answers:
 
 ### Credits
 
-Decisions is charged on input tokens only (`usage.input_tokens`), once per successful call. Requests that fail or time out are not charged. A credit check runs before the request is sent to OpenAI, and returns `402` if the app's organization lacks enough credits. Every caller, including Fliplet staff and Studio sessions, uses runtime credits; request headers do not change this. Trial pricing is provisional and is not a published rate.
+Decisions is charged on input tokens only (`usage.input_tokens`), once per successful call. Requests that fail or time out are not charged. A credit check runs before the request is sent to OpenAI, and returns `402` if the app's organization lacks enough credits. Every caller, including Fliplet staff and Studio sessions, uses runtime credits; request headers do not change this. Decisions pricing is provisional: it isn't final yet and isn't a published rate.
 
 <a id="decisions-errors"></a>
 
