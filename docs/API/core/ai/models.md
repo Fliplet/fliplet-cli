@@ -130,7 +130,7 @@ Keep the same embedding model and dimensions when comparing stored vectors with 
 | --- | --- |
 | `gpt-6-luna` | Required explicitly; there is no fallback. |
 
-Decisions support is separate from the text catalog. Listing `gpt-6-luna` under [OpenAI text models](#openai-text-models) doesn't make other text models usable for Decisions. OpenAI charges Decisions on input tokens only ($0.10 per million for `gpt-6-luna`), with no output or cache charges. That is the provider's rate, not a Fliplet charge. See the [OpenAI Decisions guide](https://developers.openai.com/api/docs/guides/decisions).
+Decisions support is separate from the text catalog. Listing `gpt-6-luna` under [OpenAI text models](#openai-text-models) doesn't make other text models usable for Decisions. OpenAI charges Decisions on input tokens only ($0.10 per million for `gpt-6-luna`), with no output or cache charges. Requests over 272,000 input tokens are charged at 2x for the whole request, and regional processing adds 10%. That is the provider's rate, not a Fliplet charge. See the [OpenAI Decisions guide](https://developers.openai.com/api/docs/guides/decisions).
 
 ## Pinning and changes
 
