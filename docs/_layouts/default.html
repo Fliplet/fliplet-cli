@@ -118,10 +118,16 @@
                 <li><a href="/API/core/misc">Common functions</a></li>
                 <li><span class="divider"></span></li>
                 <li><strong>Namespaces</strong></li>
-                <li><a href="/API/core/ai">AI</a></li>
-                <li><a href="/API/core/ai/models">AI models</a></li>
-                <li><a href="/API/core/ai/chatbot">Build an AI chatbot</a></li>
-                <li><a href="/API/core/ai/audio-transcription">Audio transcription</a></li>
+                <li>
+                  <a href="/API/core/ai">AI</a>
+                  {% if page.path == 'API/core/ai.md' or page.path contains 'API/core/ai/' %}
+                  <ul class="namespace-pages" aria-label="AI documentation">
+                    <li><a href="/API/core/ai/models">Models</a></li>
+                    <li><a href="/API/core/ai/chatbot">Build an AI chatbot</a></li>
+                    <li><a href="/API/core/ai/audio-transcription">Audio transcription</a></li>
+                  </ul>
+                  {% endif %}
+                </li>
                 <li><a href="/API/core/analytics">Analytics</a></li>
                 <li><a href="/API/core/api">API</a></li>
                 <li><a href="/API/core/app">App</a></li>

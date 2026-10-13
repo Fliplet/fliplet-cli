@@ -10,6 +10,20 @@ deprecated: false
 
 Use these app-scoped endpoints to generate text or images, transcribe audio and create embeddings through Fliplet. Requests use a Fliplet token and the selected provider's payload format; a customer provider key is not required.
 
+These endpoints run models through Fliplet’s server API and require an internet connection. They do not provide an on-device model or offline inference.
+
+## Contents
+
+- [Before your first request](#before-your-first-request)
+- [Operations](#operations)
+- [Completions](#completions)
+- [Images](#images)
+- [Audio transcription](#audio-transcription)
+- [Embeddings](#embeddings)
+- [Errors, limits and retries](#errors-limits-and-retries)
+- [Streaming boundary](#streaming-boundary)
+- [Related documentation](#related-documentation)
+
 <a id="authentication-and-app-access"></a>
 
 ## Before your first request
@@ -38,6 +52,8 @@ For code running inside an app, use [Fliplet.AI](/API/core/ai), which supplies t
 `POST /v1/apps/:app/ai/completions`
 
 Use exactly one input format with an explicit compatible `model`. Non-streaming success returns the provider JSON directly, without a Fliplet response wrapper.
+
+This endpoint does not return an SSE stream. With `stream: true`, HTTP acknowledges the request and Fliplet sockets deliver the generated content; see the [streaming boundary](#streaming-boundary). The external examples below use non-streaming requests.
 
 | Format | Required fields | Plain text in the response |
 | --- | --- | --- |

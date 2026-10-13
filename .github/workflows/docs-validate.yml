@@ -17,12 +17,16 @@ on:
       - 'docs/**/*.md'
       - 'docs/bin/**'
       - 'docs/package.json'
+      - 'docs/package-lock.json'
       - '.github/workflows/docs-validate.yml'
   push:
     branches: [master]
     paths:
       - 'docs/**/*.md'
       - 'docs/bin/**'
+      - 'docs/package.json'
+      - 'docs/package-lock.json'
+      - '.github/workflows/docs-validate.yml'
 
 permissions:
   contents: read
@@ -41,6 +45,9 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '20'
+
+      - name: Install docs test dependencies
+        run: npm ci
 
       - name: Run bin/ unit tests
         run: npm run test:unit
