@@ -69,6 +69,8 @@ Test `findOne({ where: ... })` separately from `findById(id)` if the app uses bo
 
 For grants that admit commit/bulk operations, seed another owner's row and a sensitive column in the same disposable source. As the allowed actor, submit an own-data append or commit with response entries enabled or left at their default. Inspect **all returned rows and columns**, not just the submitted entry. Repeat direct requests as denied and wrong-source actors, and check both response data and persisted effects. Test these SDK calls independently of whether the UI exposes them.
 
+A `**REDACTED**` value in a returned row is a hashed field such as a password, and is not an exposure of that value. Still check whether the other returned rows and columns are acceptable for the actor.
+
 Read-response filtering does not automatically apply to commit responses. A client choosing `returnEntries: false` is not proof that other callers cannot request entries. To assert a read-only private configuration, verify commit and other response-bearing routes are actually unavailable or appropriately isolated under its real source permissions. A select-only evaluator result is insufficient. Record the tested deployment/configuration and any unknowns; do not infer deployed behavior from local source alone.
 
 ## Check joined-source responses
