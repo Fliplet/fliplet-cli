@@ -107,7 +107,7 @@ async function execute(context) {
 - `client` and `any` actions always get `context.settings = {}`.
 - If the underscore settings exceed 100 KB in total, every server action of the app fails until they are reduced.
 
-- Call the provider with [`Fliplet.App.V3.Actions.request()`](../core/app-actions-v3#flipletappv3actionsrequest-server-actions-only). Server actions run in a headless browser, so a plain `fetch` is rejected by provider APIs that do not allow cross-origin browser requests (CORS).
+- Call the provider with [`Fliplet.App.V3.Actions.request()`](../core/app-actions-v3#flipletappv3actionsrequest-server-actions-only). Unlike a plain `fetch`, it refuses private network addresses, caps the timeout, response size and redirects, and keeps the URL, headers and body out of the runner logs.
 
 See [`context.settings` in App Actions V3](../core/app-actions-v3#contextsettings-server-actions-only) for the complete example, the limits and the rules for keeping values out of logs and responses.
 

@@ -7359,7 +7359,7 @@ async function execute(context) {
 
 <p class="warning"><strong>Never let a setting value leave the action.</strong> Never return it, never log it (<code>console.*</code>), never put it in a thrown or returned error message, and never put it in a URL or query string — send it in a request header or body instead. Return values and error messages are stored in the app action logs and returned to the caller of <code>runWithResult()</code>; console output and the URL of every <code>fetch</code> or XHR request are captured in the server runner logs. A provider that only accepts its key in the URL query string must be called with <a href="#flipletappv3actionsrequest-server-actions-only"><code>Fliplet.App.V3.Actions.request()</code></a>, which is the one request the runner does not log.</p>
 
-<p class="warning">Server actions run in a headless browser, so <code>fetch</code> from a server action is a cross-origin browser request. Provider APIs that do not allow cross-origin browser requests (CORS) reject it. Call third-party provider APIs with <a href="#flipletappv3actionsrequest-server-actions-only"><code>Fliplet.App.V3.Actions.request()</code></a> instead.</p>
+<p class="warning">Call third-party provider APIs from a server action with <a href="#flipletappv3actionsrequest-server-actions-only"><code>Fliplet.App.V3.Actions.request()</code></a>, not <code>fetch</code>. Both reach the provider, but only <code>request()</code> refuses private network addresses, caps the timeout, response size and redirects, and keeps the URL, headers and body out of the server runner logs. The URL of every <code>fetch</code> is captured in those logs.</p>
 
 A credential reaches `context.settings` from one of two sources:
 
@@ -7386,8 +7386,7 @@ async function execute(context) {
   let response;
 
   try {
-    // The server runner makes this request, so the provider does not
-    // need to allow cross-origin browser requests (CORS)
+    // The server runner makes this request and keeps it out of its logs
     response = await Fliplet.App.V3.Actions.request({
       url: 'https://api.example.com/v1/messages',
       method: 'POST',
@@ -7418,7 +7417,7 @@ async function execute(context) {
 
 #### `Fliplet.App.V3.Actions.request()` (server actions only)
 
-`Fliplet.App.V3.Actions.request()` makes an HTTPS request from the server runner instead of from the headless browser the action runs in. Browser cross-origin rules (CORS) do not apply to it, so it reaches provider APIs that reject `fetch`. The request leaves from the same static IP address as every other server action request, so provider keys restricted to an allow-listed IP keep working.
+`Fliplet.App.V3.Actions.request()` makes an HTTPS request from the server runner instead of from the headless browser the action runs in. Unlike `fetch`, it refuses private network addresses, enforces timeout, size and redirect limits, and is never written to the runner logs. The request leaves from the same static IP address as every other server action request, so provider keys restricted to an allow-listed IP keep working.
 
 ```js
 const response = await Fliplet.App.V3.Actions.request({
@@ -7437,7 +7436,7 @@ const response = await Fliplet.App.V3.Actions.request({
 }
 ```
 
-- **Server only.** It works only in actions with `environment: 'server'`. In a `client` action, or an `any` action running on the device, it rejects immediately with the code `UNAVAILABLE`.
+- **Server only.** It works only in actions with `environment: 'server'`. In a `client` action, or an `any` action — on the device or run on the server — it rejects immediately with the code `UNAVAILABLE`.
 - **Any HTTP status resolves.** A `404` or `500` from the provider resolves with that `status`; check it yourself. The promise rejects only when no response was received.
 - **The body is text.** Use `JSON.parse(response.body)` for a JSON response. The body is always decoded as UTF-8, so binary responses and responses in another character encoding are not supported. A response compressed with gzip, deflate or Brotli is decompressed for you.
 - **HTTPS only, public destinations only.** Private, loopback and link-local addresses are refused, including when a public hostname resolves or redirects to one.
@@ -28905,7 +28904,7 @@ async function execute(context) {
 - `client` and `any` actions always get `context.settings = {}`.
 - If the underscore settings exceed 100 KB in total, every server action of the app fails until they are reduced.
 
-- Call the provider with [`Fliplet.App.V3.Actions.request()`](../core/app-actions-v3#flipletappv3actionsrequest-server-actions-only). Server actions run in a headless browser, so a plain `fetch` is rejected by provider APIs that do not allow cross-origin browser requests (CORS).
+- Call the provider with [`Fliplet.App.V3.Actions.request()`](../core/app-actions-v3#flipletappv3actionsrequest-server-actions-only). Unlike a plain `fetch`, it refuses private network addresses, caps the timeout, response size and redirects, and keeps the URL, headers and body out of the runner logs.
 
 See [`context.settings` in App Actions V3](../core/app-actions-v3#contextsettings-server-actions-only) for the complete example, the limits and the rules for keeping values out of logs and responses.
 
