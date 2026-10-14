@@ -216,7 +216,7 @@ Use the authentication and app ID rules in [Before your first request](#before-y
 | --- | --- | --- |
 | `model` | Yes | Must be `gpt-6-luna`. Fliplet rejects a missing or different model with `400` and has no fallback. |
 | `input` | Yes | Shared evidence: a string, or user messages containing text and inline base64 image data URLs. OpenAI rejects non-user roles, tools, audio, files and hosted image URLs. |
-| `questions` | Yes | Array of questions, each with `type`, `instructions` and `name`. |
+| `questions` | Yes | Array of questions, each with `type` and `instructions`, plus an optional `name` that is echoed back on its answer. |
 
 Question types:
 
@@ -296,10 +296,10 @@ Decisions is charged on input tokens only (`usage.input_tokens`), once per succe
 | --- | --- | --- |
 | `400` | `entity.parse.failed` | The body is not valid JSON. Nothing was sent to OpenAI. |
 | `400` | `unsupported_model` | `model` is missing or is not `gpt-6-luna`. Nothing was sent to OpenAI. |
+| `400` | `billing.enforcement.aiApiPerMinute` or `billing.enforcement.aiApiPerDay` | The app's plan AI rate limit was reached. This applies to V2 apps only; V3 apps are limited by credits instead. Nothing was sent to OpenAI. |
 | `400` or other `4xx` | `provider_invalid_request` | OpenAI rejected the request. `message` explains why, and `payload` contains OpenAI's `code` and `param`. Correct the request before retrying. |
 | `402` | — | Not enough credits; the body has `error: "insufficient_credits"` instead of `type`. Nothing was sent to OpenAI. |
 | `413` | `payload_too_large` | The request body is over 10 MB (counted in bytes, including chunked uploads). Nothing was sent to OpenAI. |
-| `429` | — | Fliplet's app AI rate limit was reached. |
 | `502` | `provider_unavailable` | OpenAI is unavailable, rate-limited Fliplet, or the service is misconfigured. Retry later. |
 | `502` | `provider_malformed_response` | OpenAI's response was missing its answers. Do not treat this as a result. |
 | `504` | `provider_timeout` | OpenAI didn't respond within 60 seconds. |
