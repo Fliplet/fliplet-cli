@@ -4,7 +4,7 @@
   "description": "Command line utility for creating and running components, themes and menus to be used on the Fliplet platform.",
   "main": "fliplet.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node test/api-credential.js",
     "update-assets-docs": "node ./docs/update-assets-list.js"
   },
   "author": "Nicholas Valbusa",
