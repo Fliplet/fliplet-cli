@@ -22,6 +22,8 @@ The app executes tools. A model request never grants permission to access data o
 
 ## Before you start
 
+<p class="warning"><strong>Preview:</strong> The rule below requires the custom security-rule <code>filter</code> and <code>payload</code> contexts from the pending API release. Do not deploy this workflow until that API support is available in your region. On an older API, the rule denies unsupported reads and writes instead of falling back to <code>query</code>.</p>
+
 Use an app with AI credits and a compatible [model](/API/core/ai/models). The example uses an illustrative `gpt-6.1-sol` ID and Responses function tools. Load both `fliplet-session` and `fliplet-datasources` as app dependencies and run the code after Fliplet is ready. `Fliplet.AI` is preloaded, but this example also uses `Fliplet.Session.get()` and `Fliplet.DataSources.connect()`.
 
 For a V3 screen, add these eager dependencies to its app resources before running the example:
@@ -41,13 +43,13 @@ Create an **Assistant items** data source with these columns and sample records.
 | ITEM-001 | 101 | Check the workshop checklist | Open |
 | ITEM-002 | 202 | Review the equipment list | Open |
 
-Use this data source only for the demonstrated state assignment. Remove consequential data source hooks and log-triggered actions, including email, payment and inventory effects. Repeating an update can trigger those effects even when the stored status stays the same.
+Use this data source only for the demonstrated state assignment. Do not attach hooks that broaden or replace read filters after access validation. Remove consequential data source hooks and log-triggered actions, including email, payment and inventory effects. Repeating an update can trigger those effects even when the stored status stays the same.
 
 ## Configure record access
 
 In the data source's **Access Rules** tab, replace its rules with one enabled custom script rule below. Set `LOGIN_DATA_SOURCE_ID` to your actual login data source ID. Do not retain a permissive fallback rule: a custom rule denial can fall through to another rule. Keep these rules attached to every app that accesses these records.
 
-The server supplies `user`, `session` and the existing `entry`. The read rule requires the submitted owner filter to match the authenticated login entry. The app obtains that entry ID from its session to construct the query; the server checks it independently. The update rule checks the stored owner and permits only `Status: 'Reviewed'`; callers cannot change ownership, references or other columns. It rejects insert, delete and bulk operations. See [custom rule context](/Data-source-security#custom-security-rules).
+The server supplies `user`, `session` and the existing `entry`. The read rule checks the route-supplied `filter` and requires its owner value to match the authenticated login entry. The app obtains that entry ID from its session to construct the query; the server checks it independently. The update rule checks the stored owner and validates the operation's `payload`, permitting only `Status: 'Reviewed'`. Callers cannot change ownership, references or other columns. It rejects inserts, deletes and array payloads, including commit updates and imports. A query-based update can affect several owned records because the server evaluates this rule for each matched row; this rule does not enforce a single-record request. See [custom rule context](/Data-source-security#custom-security-rules).
 
 <!-- example: item-security-rule -->
 ```js
@@ -56,21 +58,23 @@ const denied = { granted: false };
 if (!user || !session || !session.loggedIn ||
     session.dataSourceId !== LOGIN_DATA_SOURCE_ID ||
     !Number.isSafeInteger(session.entryId)) return denied;
-if (!query || typeof query !== 'object' || Array.isArray(query)) return denied;
-
 if (type === 'select') {
-  if (Object.keys(query).length !== 2 || query.OwnerId !== session.entryId ||
-      typeof query.Reference !== 'string' ||
-      !/^ITEM-[0-9]{3,8}$/.test(query.Reference)) return denied;
+  if (typeof filter === 'undefined' || !filter || typeof filter !== 'object' || Array.isArray(filter) ||
+      Object.keys(filter).length !== 2 || filter.OwnerId !== session.entryId ||
+      typeof filter.Reference !== 'string' ||
+      !/^ITEM-[0-9]{3,8}$/.test(filter.Reference)) return denied;
   return { granted: true, include: ['Reference', 'Title', 'Status'] };
 }
 
 if (type === 'update') {
+  // payload contains the proposed operation data; query can be a caller's where filter.
+  if (typeof payload === 'undefined' || !payload ||
+      typeof payload !== 'object' || Array.isArray(payload)) return denied;
   if (!entry || !entry.data || entry.data.OwnerId !== session.entryId ||
       !/^ITEM-[0-9]{3,8}$/.test(entry.data.Reference) ||
       !['Open', 'Reviewed'].includes(entry.data.Status) ||
-      Object.keys(query).length !== 1 || query.Status !== 'Reviewed') return denied;
-  return { granted: true, include: ['Status'] };
+      Object.keys(payload).length !== 1 || payload.Status !== 'Reviewed') return denied;
+  return { granted: true };
 }
 return denied;
 ```
@@ -331,9 +335,9 @@ The time limits stop this app's waiting and tool loop. They cannot cancel an alr
 
 Run this checklist with real app users and a disposable data source. Studio editor access can bypass data security; it does not prove end-user authorization.
 
-- Read an owned item, then a different user's item. The second must not enter the model context. Test an anonymous user and a user logged into a different login data source too.
+- Read an owned item, then a different user's item. The second must not enter the model context. Test an anonymous user and a user logged into a different login data source too. Submit raw `{ OwnerId: 101, Reference: 'ITEM-001' }` without a `where` wrapper and try a direct read by entry ID: this rule must deny both because neither provides the required route filter.
 - Request the fixed change, decline confirmation and verify the row is unchanged. Accept a fresh proposal and verify `Status` through a server read.
-- Bypass the assistant and try direct updates to another owner's row, `OwnerId`, `Title` and an unsupported status. Each must be rejected by the server. Test insert, delete and bulk updates too.
+- Bypass the assistant and try direct updates to another owner's row, `OwnerId`, `Title` and an unsupported status. Each must be rejected by the server. Include a body such as `{ where: { Status: 'Reviewed' }, Status: 'Open', Title: 'Unexpected change' }` to prove a filter cannot disguise the write. Test insert, delete and array-based commit/import requests too. A query update over owned rows may succeed; a query update that also matches another owner's row must reject the whole update without changing any rows.
 - Simulate a lost write response. If the readback shows Reviewed, display the observed state. If readback fails, show an unknown outcome, stop and retain the user's request for explicit recovery.
 - Exercise malformed/unknown tools, duplicate IDs, refusal, incomplete output, oversized output and repeated tool rounds. None may cause a write from an invalid response or an automatic retry.
 - Put instruction-like text in an authorized item title. It remains untrusted text and cannot widen the tool allowlist, bypass confirmation or override server rules.

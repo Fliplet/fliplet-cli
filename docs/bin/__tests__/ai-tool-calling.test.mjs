@@ -4,18 +4,26 @@ import { readFileSync } from 'node:fs';
 import vm from 'node:vm';
 
 const source = readFileSync(new URL('../../API/core/ai/tool-calling.md', import.meta.url), 'utf8');
-function example(name) {
-  const section = source.split(`<!-- example: ${name} -->`)[1];
+function example(name, document = source) {
+  const section = document.split(`<!-- example: ${name} -->`)[1];
   assert.ok(section, `Missing example ${name}`);
   return section.match(/```js\n([\s\S]*?)```/)[1];
 }
 const rule = example('item-security-rule');
 const assistant = example('item-assistant');
-const plain = value => JSON.parse(JSON.stringify(value));
-function authorize(type, query, entry, session = { loggedIn: true, dataSourceId: 123, entryId: 101 }, user = { Name: 'Alice' }) {
+const plain = value => value === undefined ? undefined : JSON.parse(JSON.stringify(value));
+function authorize(type, query, entry, session = { loggedIn: true, dataSourceId: 123, entryId: 101 }, user = { Name: 'Alice' }, operation = {}) {
   const context = { type, query: plain(query), entry: entry && plain(entry), session, user };
+  for (const key of ['payload', 'filter']) {
+    if (Object.hasOwn(operation, key)) context[key] = plain(operation[key]);
+  }
   const result = vm.runInNewContext(`(function() { ${rule} })()`, context);
   return { result: plain(result), query: context.query };
+}
+// Match the query route's separate inputs: legacy query falls back to body,
+// while filter receives only the actual where supplied for access validation.
+function authorizeRead(body, session, user) {
+  return authorize('select', body.where || body, undefined, session, user, { filter: body.where });
 }
 function call(name = 'read_item', reference = 'ITEM-001', id = 'call_1') {
   return { type: 'function_call', status: 'completed', name, call_id: id, arguments: JSON.stringify({ reference }) };
@@ -41,7 +49,7 @@ function runtime(replies, options = {}) {
     async find(query) {
       reads++;
       if (options.readError && options.readError(reads)) throw Error('Unavailable');
-      const access = authorize('select', query.where, undefined, options.session, options.user);
+      const access = authorizeRead(query, options.session, options.user);
       if (!access.result.granted) throw Error('Denied');
       // Use the submitted filters. Do not simulate server query rewriting.
       return rows.filter(row => Object.entries(query.where).every(([key, value]) => row.data[key] === value))
@@ -50,7 +58,7 @@ function runtime(replies, options = {}) {
     async update(id, data, controls) {
       assert.equal(controls.allowOffline, false);
       const row = rows.find(row => row.id === id);
-      if (!authorize('update', data, row, options.session, options.user).result.granted) throw Error('Denied');
+      if (!authorize('update', data.where || data, row, options.session, options.user, { payload: data }).result.granted) throw Error('Denied');
       writes++;
       if (!options.noSave) Object.assign(row.data, data);
       if (options.writeError) throw Error('Lost response');
@@ -81,26 +89,74 @@ function runtime(replies, options = {}) {
 }
 
 it('server rule binds login source and rejects missing, forged or operator-based ownership filters', () => {
-  const allowed = authorize('select', { Reference: 'ITEM-001', OwnerId: 101 });
+  const allowed = authorizeRead({ where: { Reference: 'ITEM-001', OwnerId: 101 } });
   assert.equal(allowed.result.granted, true);
   assert.deepEqual(plain(allowed.query), { Reference: 'ITEM-001', OwnerId: 101 });
   for (const query of [{}, { Reference: 'ITEM-001' }, { Reference: 'ITEM-001', OwnerId: 202 }, { Reference: { $ne: '' }, OwnerId: 101 }, []]) {
-    assert.equal(authorize('select', query).result.granted, false);
+    assert.equal(authorizeRead({ where: query }).result.granted, false);
   }
   for (const session of [null, { loggedIn: false }, { loggedIn: true, dataSourceId: 999, entryId: 101 }]) {
-    assert.equal(authorize('select', { Reference: 'ITEM-001' }, undefined, session).result.granted, false);
+    assert.equal(authorizeRead({ where: { Reference: 'ITEM-001', OwnerId: 101 } }, session).result.granted, false);
   }
-  assert.equal(authorize('select', { Reference: 'ITEM-001' }, undefined, undefined, null).result.granted, false);
+  assert.equal(authorizeRead({ where: { Reference: 'ITEM-001', OwnerId: 101 } }, undefined, null).result.granted, false);
 });
 
-it('server update checks stored owner and exact fields; unsupported operations cannot mutate rows', () => {
-  const entry = { id: 11, data: { OwnerId: 101, Reference: 'ITEM-001', Status: 'Open' } };
-  assert.equal(authorize('update', { Status: 'Reviewed' }, entry).result.granted, true);
-  for (const data of [{ Status: 'Open' }, { Status: 'Reviewed', OwnerId: 101 }, [{ Status: 'Reviewed' }], {}]) {
-    assert.equal(authorize('update', data, entry).result.granted, false);
+const ownedEntry = { id: 11, data: { OwnerId: 101, Reference: 'ITEM-001', Status: 'Open' } };
+function authorizeUpdate(payload, entry = ownedEntry, query = payload) {
+  return authorize('update', query, entry, undefined, undefined, { payload }).result;
+}
+
+it('server update checks stored owner, reference, status and exact proposed fields', () => {
+  assert.equal(authorizeUpdate({ Status: 'Reviewed' }).granted, true);
+  assert.equal(authorizeUpdate({ Status: 'Reviewed' }, { ...ownedEntry, data: { ...ownedEntry.data, Status: 'Reviewed' } }).granted, true);
+  for (const payload of [{ Status: 'Open' }, { Status: 'Reviewed', OwnerId: 101 },
+    { Status: 'Reviewed', Title: 'Changed' }, { Status: 'Reviewed', Reference: 'ITEM-002' }, {}]) {
+    assert.equal(authorizeUpdate(payload).granted, false);
   }
-  assert.equal(authorize('update', { Status: 'Reviewed' }, { ...entry, data: { ...entry.data, OwnerId: 202 } }).result.granted, false);
-  for (const type of ['insert', 'delete']) assert.equal(authorize(type, { Status: 'Reviewed' }, entry).result.granted, false);
+  for (const data of [{ ...ownedEntry.data, OwnerId: 202 }, { ...ownedEntry.data, Reference: 'OTHER-001' },
+    { ...ownedEntry.data, Status: 'Archived' }]) {
+    assert.equal(authorizeUpdate({ Status: 'Reviewed' }, { id: 11, data }).granted, false);
+  }
+  assert.equal(authorizeUpdate({ Status: 'Reviewed' }, null).granted, false);
+  for (const type of ['insert', 'delete']) {
+    assert.equal(authorize(type, { Status: 'Reviewed' }, ownedEntry, undefined, undefined,
+      { payload: { Status: 'Reviewed' } }).result.granted, false);
+  }
+});
+
+it('server update rejects disguised write data even when query looks authorized', () => {
+  const payload = { where: { Status: 'Reviewed' }, Status: 'Open', Title: 'Camouflaged unsafe change' };
+  assert.equal(authorizeUpdate(payload, ownedEntry, payload.where).granted, false);
+  assert.equal(authorizeUpdate({ where: { Status: 'Reviewed' }, Status: 'Reviewed' }, ownedEntry,
+    { Status: 'Reviewed' }).granted, false);
+  // A query-based update exposes its filter separately and is checked against each stored row.
+  assert.equal(authorizeUpdate({ Status: 'Reviewed' }, ownedEntry, { OwnerId: 101 }).granted, true);
+  assert.equal(authorizeUpdate({ Status: 'Reviewed' }, { ...ownedEntry, data: { ...ownedEntry.data, OwnerId: 202 } },
+    { Status: 'Open' }).granted, false);
+});
+
+it('server update fails closed for absent, null, scalar and array operation payloads', () => {
+  assert.equal(authorize('update', { Status: 'Reviewed' }, ownedEntry).result.granted, false);
+  for (const payload of [undefined, null, true, 42, 'Reviewed', [], [{ Status: 'Reviewed' }]]) {
+    assert.equal(authorizeUpdate(payload, ownedEntry, { Status: 'Reviewed' }).granted, false);
+  }
+});
+
+it('write payload cannot bypass login identity and source checks', () => {
+  for (const session of [null, { loggedIn: false }, { loggedIn: true, dataSourceId: 999, entryId: 101 },
+    { loggedIn: true, dataSourceId: 123, entryId: '101' }]) {
+    assert.equal(authorize('update', {}, ownedEntry, session, undefined, { payload: { Status: 'Reviewed' } }).result.granted, false);
+  }
+  assert.equal(authorize('update', {}, ownedEntry, undefined, null, { payload: { Status: 'Reviewed' } }).result.granted, false);
+});
+
+it('filtered reads work without payload and ignore unrelated write-like context', () => {
+  for (const operation of [{}, { payload: null }, { payload: { Status: 'Reviewed' } }]) {
+    assert.equal(authorize('select', { Reference: 'ITEM-001', OwnerId: 101 }, undefined,
+      undefined, undefined, { ...operation, filter: { Reference: 'ITEM-001', OwnerId: 101 } }).result.granted, true);
+    assert.equal(authorize('select', { Reference: 'ITEM-002', OwnerId: 202 }, undefined,
+      undefined, undefined, { ...operation, filter: { Reference: 'ITEM-002', OwnerId: 202 } }).result.granted, false);
+  }
 });
 
 it('authorized read result influences continuation without exposing owner or hidden fields', async () => {
@@ -245,10 +301,10 @@ it('verified operation outcome remains visible when final model generation fails
 });
 
 
-it('canonical office rule validates submitted filters without relying on query mutation', () => {
+it('canonical office rule validates route filters without relying on query mutation', () => {
   const security = readFileSync(new URL('../../Data-source-security.md', import.meta.url), 'utf8');
   const script = security.split('<!-- example: office-filter-rule -->')[1].match(/```js\n([\s\S]*?)```/)[1];
-  for (const [query, type, user, expected] of [
+  for (const [filter, type, user, expected] of [
     [{ Office: 'London' }, 'select', { Office: 'London' }, true],
     [{}, 'select', { Office: 'London' }, false],
     [{ Office: 'Paris' }, 'select', { Office: 'London' }, false],
@@ -258,14 +314,106 @@ it('canonical office rule validates submitted filters without relying on query m
     [{ Office: 'London' }, 'insert', { Office: 'London' }, false],
     [{ Office: 'London' }, 'update', { Office: 'London' }, false]
   ]) {
-    const before = plain(query);
-    const result = vm.runInNewContext(`(function() { ${script} })()`, { query, type, user });
+    const before = plain(filter);
+    const result = vm.runInNewContext(`(function() { ${script} })()`, { query: {}, filter, type, user });
     assert.equal(result.granted, expected);
-    assert.deepEqual(query, before);
+    assert.deepEqual(filter, before);
   }
 });
 
 it('setup declares both registered dependencies used by the worked example', () => {
   const dependencies = JSON.parse(source.match(/```json\n([\s\S]*?)```/)[1]);
   assert.deepEqual(dependencies, ['fliplet-session', 'fliplet-datasources']);
+});
+
+const security = readFileSync(new URL('../../Data-source-security.md', import.meta.url), 'utf8');
+function authorizeDepartment(name, context) {
+  return vm.runInNewContext(`(function() { ${example(name, security)} })()`, {
+    user: { Department: 'Engineering' },
+    session: { loggedIn: true, dataSourceId: 123, entryId: 101 },
+    query: {}, entry: undefined, ...context
+  });
+}
+
+it('canonical department write example validates payload and stored record independently', () => {
+  const name = 'department-write-rule';
+  const entry = { id: 789, data: { Department: 'Engineering', Active: true } };
+  assert.equal(authorizeDepartment(name, { type: 'select', filter: { Department: 'Engineering' } }).granted, true);
+  assert.equal(authorizeDepartment(name, { type: 'insert', payload: { Name: 'Alice', Department: 'Engineering' } }).granted, true);
+  assert.equal(authorizeDepartment(name, { type: 'update', entry, payload: { Name: 'Updated' } }).granted, true);
+  for (const context of [
+    { type: 'select', filter: { Department: 'Marketing' } },
+    { type: 'update', entry },
+    ...[undefined, null, 1, 'Name', [], [{ Name: 'Updated' }]].map(payload => ({ type: 'update', entry, payload })),
+    { type: 'insert', payload: { Name: 'Alice', Department: 'Marketing' } },
+    { type: 'insert', payload: { Name: 'Alice', Department: 'Engineering', Role: 'Admin' } },
+    { type: 'insert', query: { Name: 'Alice', Department: 'Engineering' }, payload: { where: { Department: 'Engineering' }, Name: 'Alice', Department: 'Marketing' } },
+    { type: 'update', entry, query: { Name: 'Allowed' }, payload: { where: { Name: 'Allowed' }, Name: 'Changed', Active: true } },
+    { type: 'update', entry, payload: { Name: 'Changed', Department: 'Engineering' } },
+    { type: 'update', entry: { data: { Department: 'Marketing', Active: true } }, payload: { Name: 'Changed' } },
+    { type: 'update', entry: { data: { Department: 'Engineering', Active: false } }, payload: { Name: 'Changed' } },
+    { type: 'delete', entry, payload: entry.data },
+    { type: 'insert', user: null, payload: { Name: 'Alice', Department: 'Engineering' } },
+    { type: 'insert', session: { loggedIn: true, dataSourceId: 999 }, payload: { Name: 'Alice', Department: 'Engineering' } }
+  ]) assert.equal(authorizeDepartment(name, context).granted, false, JSON.stringify(context));
+});
+
+it('canonical batch example grants only valid department insert arrays', () => {
+  const name = 'department-batch-insert-rule';
+  const valid = [{ Name: 'Alice', Department: 'Engineering' }];
+  assert.equal(authorizeDepartment(name, { type: 'insert', payload: valid }).granted, true);
+  assert.equal(authorizeDepartment(name, { type: 'insert', query: valid }).granted, false);
+  for (const payload of [undefined, null, 1, 'Alice', {}, [], [null], [valid],
+    [{ Name: 'Alice', Department: 'Marketing' }], [...valid, { Name: 'Bob', Department: 'Marketing' }],
+    [{ Name: '', Department: 'Engineering' }], [{ Name: 'Alice', Department: 'Engineering', Role: 'Admin' }],
+    [{ where: valid[0], Name: 'Alice', Department: 'Marketing' }]]) {
+    assert.equal(authorizeDepartment(name, { type: 'insert', query: valid, payload }).granted, false);
+  }
+  for (const type of ['update', 'delete', 'select']) {
+    assert.equal(authorizeDepartment(name, { type, payload: valid }).granted, false);
+  }
+});
+
+it('query-route raw body fields cannot substitute for where in the tool rule', async () => {
+  const valid = { Reference: 'ITEM-001', OwnerId: 101 };
+  assert.equal(authorizeRead({ where: valid }).result.granted, true);
+  assert.equal(authorizeRead(valid).result.granted, false);
+  for (const where of [undefined, null, false, 0, '', [], true, 1, 'ITEM-001', {}]) {
+    assert.equal(authorizeRead({ ...valid, where }).result.granted, false);
+  }
+  const app = runtime([]);
+  await assert.rejects(app.connection.find(valid), /Denied/);
+  assert.deepEqual(await app.connection.find({ where: valid }), [
+    { id: 11, data: { Reference: 'ITEM-001', Title: 'Checklist', Status: 'Open' } }
+  ]);
+});
+
+it('tool read authorization uses filter independently of plausible legacy query or stored direct-read data', () => {
+  const valid = { Reference: 'ITEM-001', OwnerId: 101 };
+  assert.equal(authorize('select', valid, undefined).result.granted, false);
+  assert.equal(authorize('select', valid, undefined, undefined, undefined, { payload: valid }).result.granted, false);
+  assert.equal(authorize('select', {}, undefined, undefined, undefined, { filter: valid }).result.granted, true);
+  for (const filter of [{ ...valid, OwnerId: 202 }, { ...valid, OwnerId: '101' },
+    { ...valid, Reference: { $ne: '' } }, { ...valid, Reference: 'OTHER-001' },
+    { ...valid, extra: true }]) {
+    assert.equal(authorize('select', valid, undefined, undefined, undefined, { filter }).result.granted, false);
+  }
+});
+
+it('canonical constrained read examples deny missing or malformed filters regardless of legacy query', () => {
+  for (const [name, valid, invalid, user] of [
+    ['department-write-rule', { Department: 'Engineering' }, { Department: 'Marketing' }, { Department: 'Engineering' }],
+    ['office-filter-rule', { Office: 'London' }, { Office: 'Paris' }, { Office: 'London' }]
+  ]) {
+    const script = example(name, security);
+    const context = { type: 'select', user, session: { loggedIn: true, dataSourceId: 123 }, query: valid };
+    const run = extra => vm.runInNewContext(`(function() { ${script} })()`, { ...context, ...extra });
+    assert.equal(run({}).granted, false, name + ': raw body without where');
+    assert.equal(run({ payload: valid }).granted, false, name + ': direct entry read');
+    assert.equal(run({ query: {}, filter: valid }).granted, true, name + ': actual valid filter');
+    for (const filter of [undefined, null, true, 1, '', 'Engineering', [], [valid], {}, invalid,
+      Object.fromEntries(Object.keys(valid).map(key => [key, { $ne: '' }])), { ...valid, extra: true }]) {
+      assert.equal(run({ filter }).granted, false, name + ': ' + JSON.stringify(filter));
+    }
+  }
 });
