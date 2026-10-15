@@ -457,6 +457,8 @@ The behavior of `require` varies by operation type:
 
 Condition values can reference the logged-in user's session data using Handlebars syntax. This enables dynamic, per-user access scoping. Use bracket notation (e.g., `[Email]`) for field names — it is required for names with spaces or special characters (e.g., {% raw %}`{{user.[First Name]}}`{% endraw %}), and also works for simple names. Plain dot notation ({% raw %}`{{user.Email}}`{% endraw %}) works only for field names without spaces.
 
+For per-account ownership, use an owner key that is unique to each account, stable and protected from end-user changes through every write path. This requirement applies to the owner key; shared fields such as `Role` and `Department` do not need to be unique. Before matching an account to private records already assigned to an email address or external identity, verify control of that identity or provision the account through a trusted process. A self-chosen email at public signup does not establish entitlement to those records. Public signup can support users creating their own records when a stable account key and server-enforced rules bind those records to the authenticated account.
+
 - {% raw %}`{{user.[Email]}}`{% endraw %} — the user's email address
 - {% raw %}`{{user.[Department]}}`{% endraw %} — the user's department
 - {% raw %}`{{user.[Role]}}`{% endraw %} — the user's role
