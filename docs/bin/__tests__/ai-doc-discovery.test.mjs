@@ -10,7 +10,7 @@ import { copySiblings } from '../copy-md-siblings.mjs';
 it('indexes nested AI pages and copies raw siblings while retaining one Fliplet.AI namespace', () => {
   const source = fileURLToPath(new URL('../../', import.meta.url));
   const root = mkdtempSync(join(tmpdir(), 'ai-doc-discovery-'));
-  const paths = ['API/core/ai.md', 'API/core/ai/models.md', 'API/core/ai/chatbot.md', 'API/core/ai/audio-transcription.md'];
+  const paths = ['API/core/ai.md', 'API/core/ai/models.md', 'API/core/ai/chatbot.md', 'API/core/ai/audio-transcription.md', 'API/core/ai/tool-calling.md', 'API/core/ai/grounded-answers.md', 'API/core/ai/media-inputs.md'];
   try {
     for (const path of paths) {
       mkdirSync(dirname(join(root, path)), { recursive: true });

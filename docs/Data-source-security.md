@@ -25,7 +25,7 @@ How to protect data sources with access rules, required-data validation, column-
   - [Require syntax](#require-syntax)
 - [Custom security rules](#custom-security-rules)
   - [Granting access](#granting-access)
-  - [Modifying the input query](#modifying-the-input-query)
+  - [Validating submitted filters](#validating-submitted-filters)
   - [Checking data when committing changes](#checking-data-when-committing-changes)
   - [Reading data from other Data Sources](#reading-data-from-other-data-sources)
 
@@ -523,12 +523,15 @@ When writing a custom rule, these variables are available in the script context:
 
 - `type` (String) — the operation the user is attempting: `select`, `insert`, `update`, or `delete`
 - `user` (Object) — the authenticated user's session data, or `undefined` if not logged in. For data-source passport sessions (e.g., Email Verification, Fliplet Login), this contains the flat column values from the user's row in the authentication data source (e.g., `user.Email`, `user.Role`). For SAML2 sessions, it contains the assertion attributes.
+- `session` (Object) — server-verified login context with `loggedIn` (Boolean), `passports` (Array of passport type names), `dataSourceId` and `entryId` (Numbers when the current identity is a data source login). For Studio preview, it is scoped to the previewed app. Guard missing values and bind `session.dataSourceId` to the intended login source when access depends on that source. This is not the client-writable session data from `Fliplet.Session.set()`.
 - `query` (Object or Array) — **important: the shape of this variable changes depending on the operation type:**
   - **`select`**: the unwrapped `where` object from the request (e.g., if the client sends `find({ where: { Email: "a@b.com" } })`, the rule receives `{ Email: "a@b.com" }`)
   - **`insert`** / **`update`**: the data being written to the entry. When called via the `commit` endpoint, `query` is an array of entries — see [Checking data when committing changes](#checking-data-when-committing-changes)
   - **`delete`**: the current data of the entry being deleted (populated by the server from the existing record, not sent by the client)
 - `entry` (Object) — the existing entry being updated, with `id` (Number) and `data` (Object containing the entry's current column values) properties. `undefined` for other operation types
 - `DataSources` (Function) — server-side library for reading data from other data sources. See [Reading data from other Data Sources](#reading-data-from-other-data-sources)
+
+For ownership checks on individual updates, compare the authenticated identity with the existing `entry.data`, then validate the submitted `query`. Requiring an owner value in the submitted data alone does not prove that the caller owns the stored record. See the complete [authorized AI tool example](/API/core/ai/tool-calling#configure-record-access) for a login-source binding and a narrow update rule.
 
 Your code should handle all relevant operation types. Here is an example:
 
@@ -598,32 +601,43 @@ if (type === 'select') {
 
 <p class="warning"><strong>Important:</strong> You must return an object — bare boolean values (e.g., <code>return true</code>) are not supported and will be treated as a denial. Always use <code>return { granted: true }</code> or <code>return { granted: false }</code>.</p>
 
-### Modifying the input query
+<a id="modifying-the-input-query"></a>
 
-Rules can modify the `query` object to enforce constraints:
+### Validating submitted filters
 
+Validate the filter the client submitted before granting access. Mutating `query` inside a security script is not a reliable server-side query rewrite: the data query route uses the submitted filter, and the individual insert/update route writes the original submitted data. Do not grant access on the assumption that assigning `query.Office` adds a database filter or forces a stored value.
+
+This read-only rule requires exactly one literal `Office` filter matching the authenticated user. It denies missing filters, query operators and other operations. Keep it as the only rule for this access path, or ensure other rules cannot grant broader access. For additional login-source restrictions, use the trusted `session` context described above.
+
+<!-- example: office-filter-rule -->
 ```js
-if (!user) {
+if (!user || typeof user.Office !== 'string' || !user.Office ||
+    type !== 'select' || !query || Array.isArray(query) ||
+    Object.keys(query).length !== 1 || query.Office !== user.Office) {
   return { granted: false };
 }
-
-if (type === 'select') {
-  // Only allow reading records for the same office as the user's
-  query.Office = user.Office;
-
-  return { granted: true };
-}
-
-if (type === 'insert') {
-  // Forces writes to have the office field same as the user's
-  query.Office = user.Office;
-
-  // Also generate a "CreatedAt" datetime field for all records added
-  query.CreatedAt = Date.now();
-
-  return { granted: true };
-}
+return { granted: true };
 ```
+
+The app must submit the matching filter. Load `fliplet-session` and `fliplet-datasources`, replace `123` with the records data source ID and run after Fliplet is ready. The client value constructs the query; the security rule independently checks it against the authenticated user's office.
+
+```js
+async function readOfficeRecords() {
+  const session = await Fliplet.Session.get();
+  const account = session && session.entries && session.entries.dataSource;
+  const user = account && account.data;
+  if (!user || typeof user.Office !== 'string' || !user.Office) {
+    throw new Error('Sign in with the app login before reading office records.');
+  }
+  const connection = await Fliplet.DataSources.connect(123, { offline: false });
+  return connection.find({ where: { Office: user.Office } });
+}
+readOfficeRecords().then(console.log).catch(function(error) {
+  console.error('Office records could not be read:', error);
+});
+```
+
+For inserts, validate the supplied fields and reject unauthorized values. For updates, check the stored `entry.data` as well as the submitted data. Use a supported server write mechanism when a value must be generated or changed on the server; do not depend on security-script assignment to persist it.
 
 ### Checking data when committing changes
 

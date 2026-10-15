@@ -286,11 +286,11 @@ function requestReply(model, messages, onText) {
 
 ## Stream a reply
 
-The complete example above assembles chunks and renders before completion. Fliplet delivers chunks through its socket transport; normal completion resolves without an assembled answer. See the [streaming contract](/API/core/ai#streaming-with-createcompletion) for each request format's chunks and cancellation behavior.
+The complete example above assembles chunks and renders before completion. Fliplet delivers chunks through its socket transport; default completion resolves without an assembled answer. Opt into `{ returnResult: true }` when a Responses workflow needs final typed output, tools or annotations; see [terminal results](/API/core/ai#terminal-results). See the [streaming contract](/API/core/ai#streaming-with-createcompletion) for each request format's chunks and cancellation behavior.
 
 Reparse the accumulated raw text as it grows, then sanitize before inserting it into the DOM. An incomplete Markdown delimiter may render differently until later chunks arrive; finalize the same message when the stream ends. For large replies, batch display updates without waiting for the entire request. Keep code blocks and tables within the screen width.
 
-Cancellation is asynchronous. Keep the send guard active until the request settles, ignore late chunks after Stop or disposal, and distinguish partial output from a successful turn. Cancellation does not undo text already generated or guarantee that no credits were used. The example preserves partial text on error and keeps the draft for explicit retry; it does not automatically retry permission or credit failures.
+Stop settles the local request immediately; its separate cancellation Promise reports the remote acknowledgement or failure. Keep the send guard active until the completion Promise settles, ignore late chunks after Stop or disposal, and distinguish partial output from a successful turn. Cancellation does not undo text already generated or guarantee that no credits were used. The example preserves partial text on error and keeps the draft for explicit retry; it does not automatically retry permission or credit failures.
 
 ## Non-streaming and plain-text replies
 
@@ -322,6 +322,8 @@ Add persistence only if the feature needs it. [App storage](/API/core/storage) c
 
 For shared or private server storage, use [Data Sources](/API/fliplet-datasources) with [access rules](/Data-source-security) that enforce the intended owner and operations. Establish identity through the app's genuine login flow and designated login data source; writable `Fliplet.Session.set()` fields do not establish authenticated ownership. If the app supports multiple logins, bind the rule to the intended login source and verify which account is active. Do not add a login or conversation data source to a chatbot that only needs temporary public conversation state.
 
+For model-requested operations, use the [tool-calling guide](/API/core/ai/tool-calling). For hosted search and sources use [grounded answers](/API/core/ai/grounded-answers); for PDF/photo input use [media analysis](/API/core/ai/media-inputs). These capabilities are optional and should follow the feature requirements.
+
 The model does not automatically read app records. Query only records the current user is authorized to read, then include the smallest relevant context in the request. Treat record text as data, avoid sending unnecessary private fields and check authorization again when performing actions based on a reply. Uploading or storing private attachments also needs the [media API](/API/fliplet-media) and its permissions; data-source login bindings are not media access rules.
 
 ## Verify and troubleshoot
@@ -345,3 +347,6 @@ For access, credits and rate-limit errors, use the [error reference](/API/core/a
 - [AI models available through Fliplet](/API/core/ai/models)
 - [Record or upload audio](/API/core/ai/audio-transcription)
 - [App AI REST API](/REST-API/fliplet-ai)
+- [Tools and authorized actions](/API/core/ai/tool-calling)
+- [Research with cited sources](/API/core/ai/grounded-answers)
+- [Analyze documents and photos](/API/core/ai/media-inputs)

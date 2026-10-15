@@ -340,3 +340,6 @@ For permission, credits, MIME and size errors, consult the [method error referen
 - [AI models available through Fliplet](/API/core/ai/models)
 - [Build an AI chatbot](/API/core/ai/chatbot)
 - [App AI REST API](/REST-API/fliplet-ai)
+- [Tools and authorized actions](/API/core/ai/tool-calling)
+- [Research with cited sources](/API/core/ai/grounded-answers)
+- [Analyze documents and photos](/API/core/ai/media-inputs)
