@@ -267,7 +267,7 @@ async function execute(context) {
 
 <p class="warning"><strong>Never let a setting value leave the action.</strong> Never return it, never log it (<code>console.*</code>), never put it in a thrown or returned error message, and never put it in a URL or query string — send it in a request header or body instead. Return values and error messages are stored in the app action logs and returned to the caller of <code>runWithResult()</code>; console output and every request URL are captured in the server runner logs. A provider that only accepts its key in the URL query string can not be called without breaking this rule.</p>
 
-<p class="warning">Server actions run in a headless browser, so <code>fetch</code> from a server action is a cross-origin browser request. Provider APIs that do not allow cross-origin browser requests (CORS) reject it. Server-side HTTP requests without this restriction are not available yet.</p>
+<p class="warning">Server actions use native <code>fetch</code> in a headless browser runtime. A provider's CORS policy for ordinary browser requests does not establish whether a server action can call it. Test the request in a server action and diagnose the observed HTTP response or network failure before declaring the integration unsupported.</p>
 
 A credential reaches `context.settings` from one of two sources:
 
