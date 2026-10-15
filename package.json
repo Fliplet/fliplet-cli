@@ -4,8 +4,10 @@
   "description": "Command line utility for creating and running components, themes and menus to be used on the Fliplet platform.",
   "main": "fliplet.js",
   "scripts": {
-    "test": "node test/api-credential.js",
-    "update-assets-docs": "node ./docs/update-assets-list.js"
+    "test": "node test/api-credential.js && node test/api-credential-browser.js",
+    "update-assets-docs": "node ./docs/update-assets-list.js",
+    "test:unit": "node test/api-credential.js",
+    "test:browser": "node test/api-credential-browser.js"
   },
   "author": "Nicholas Valbusa",
   "license": "ISC",

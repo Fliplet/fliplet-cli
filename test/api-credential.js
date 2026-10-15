@@ -21,7 +21,7 @@
  */
 
 const assert = require('assert');
-const { isApiOrigin, authenticateApiRequests } = require('../lib/api-credential');
+const { isApiOrigin, authenticateApiRequests, withoutCredential, CREDENTIAL_HEADER } = require('../lib/api-credential');
 
 const API_URL = 'https://api.fliplet.test/';
 const TOKEN = 'eu--test-account-token';
@@ -57,8 +57,11 @@ function stubRequest(url, headers) {
     },
     get authHeader() {
       const sent = (calls[0] && calls[0].headers) || {};
+      const key = Object.keys(sent).find((k) => k.toLowerCase() === 'auth-token');
 
-      return sent['Auth-token'];
+      // Returns undefined for "absent" AND for the blank value the handler
+      // sends on an untrusted hop, since neither authenticates anything.
+      return key && sent[key] ? sent[key] : undefined;
     }
   };
 }
@@ -130,8 +133,12 @@ it('does NOT attach the token to a cross-origin subresource', () => {
   const request = run('https://cdn.example.com/widget-image.png');
 
   assert.strictEqual(request.authHeader, undefined);
-  // No header overrides at all, so nothing can leak by accident.
-  assert.strictEqual(request.calls[0], null);
+  // Headers ARE supplied, with the credential blanked. A bare continue() would
+  // forward whatever a redirect hop inherited, so the override is required —
+  // this assertion used to demand the opposite and is why the redirect leak
+  // survived the first fix.
+  assert.notStrictEqual(request.calls[0], null);
+  assert.strictEqual(request.sentHeaders['auth-token'], '');
 });
 
 it('does NOT attach the token to a cross-origin script or iframe', () => {
@@ -163,7 +170,10 @@ it('preserves the request\'s own headers when adding the token', () => {
 
   assert.strictEqual(request.sentHeaders.accept, 'text/html');
   assert.strictEqual(request.sentHeaders['user-agent'], 'stub');
-  assert.strictEqual(request.sentHeaders['Auth-token'], TOKEN);
+  // Chromium reports and expects the lower-case spelling; HTTP header names
+  // are case-insensitive, and the browser test confirms the API hop still
+  // authenticates at a real server.
+  assert.strictEqual(request.sentHeaders['auth-token'], TOKEN);
 });
 
 it('never puts the token on the query string', () => {
@@ -171,6 +181,70 @@ it('never puts the token on the query string', () => {
 
   assert.strictEqual(request.url().indexOf('auth_token'), -1);
   assert.strictEqual(request.url().indexOf(TOKEN), -1);
+});
+
+console.log('lib/api-credential — an inherited credential on an untrusted hop');
+
+// On a redirect, Chromium hands the next hop the headers of the previous one,
+// so a request to another origin arrives ALREADY carrying the token added for
+// the API hop. The original stub could not show this because it built every
+// request fresh. These cases hand the handler a request that already has the
+// header, which is the shape a redirected hop really has.
+function runWithInherited(url) {
+  const request = stubRequest(url, { [CREDENTIAL_HEADER]: TOKEN });
+
+  authenticateApiRequests(TOKEN, API_URL)(request);
+
+  return request;
+}
+
+it('blanks an inherited token when the hop is cross-origin', () => {
+  const request = runWithInherited('https://cdn.example.com/redirected.svg');
+
+  assert.strictEqual(request.sentHeaders[CREDENTIAL_HEADER], '');
+});
+
+it('always sends explicit headers on an untrusted hop, never a bare continue', () => {
+  // A bare continue() forwards whatever the hop inherited, so the override
+  // object is not optional here.
+  const request = runWithInherited('https://cdn.example.com/redirected.svg');
+
+  assert.notStrictEqual(request.calls[0], null);
+  assert.ok(request.sentHeaders, 'no headers were supplied to continue()');
+});
+
+it('re-authenticates an inherited token when the hop is still the API', () => {
+  const request = runWithInherited('https://api.fliplet.test/v1/user');
+
+  assert.strictEqual(request.sentHeaders[CREDENTIAL_HEADER], TOKEN);
+});
+
+it('strips a differently-cased inherited header rather than duplicating it', () => {
+  // Chromium lower-cases, but a mixed-case key must never survive alongside
+  // the canonical one or the wrong value can win.
+  const request = stubRequest('https://cdn.example.com/x.png', { 'Auth-Token': TOKEN });
+
+  authenticateApiRequests(TOKEN, API_URL)(request);
+
+  const keys = Object.keys(request.sentHeaders).filter(
+    (k) => k.toLowerCase() === CREDENTIAL_HEADER
+  );
+
+  assert.strictEqual(keys.length, 1);
+  assert.strictEqual(request.sentHeaders[keys[0]], '');
+});
+
+it('withoutCredential drops every casing and blanks the canonical key', () => {
+  const cleaned = withoutCredential({ 'Auth-Token': 'a', 'auth-token': 'b', accept: 'text/html' });
+
+  assert.strictEqual(cleaned.accept, 'text/html');
+  assert.strictEqual(cleaned[CREDENTIAL_HEADER], '');
+  assert.strictEqual(Object.keys(cleaned).filter((k) => k.toLowerCase() === CREDENTIAL_HEADER).length, 1);
+});
+
+it('withoutCredential tolerates missing headers', () => {
+  assert.strictEqual(withoutCredential(undefined)[CREDENTIAL_HEADER], '');
+  assert.strictEqual(withoutCredential(null)[CREDENTIAL_HEADER], '');
 });
 
 console.log('');
