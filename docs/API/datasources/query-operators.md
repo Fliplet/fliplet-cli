@@ -20,10 +20,10 @@ Fliplet Data Sources uses [Sift.js](https://github.com/Fliplet/sift.js) which pr
 |----------|-------------|---------|-------|
 | `$eq` | Equal to | `{ age: { $eq: 25 } }` | Can be simplified to `{ age: 25 }` |
 | `$ne` | Not equal to | `{ status: { $ne: 'inactive' } }` | |
-| `$gt` | Greater than | `{ score: { $gt: 80 } }` | Optimized for performance |
-| `$gte` | Greater than or equal | `{ score: { $gte: 80 } }` | Optimized for performance |
-| `$lt` | Less than | `{ age: { $lt: 30 } }` | Optimized for performance |
-| `$lte` | Less than or equal | `{ age: { $lte: 30 } }` | Optimized for performance |
+| `$gt` | Greater than | `{ score: { $gt: 80 } }` | |
+| `$gte` | Greater than or equal | `{ score: { $gte: 80 } }` | |
+| `$lt` | Less than | `{ age: { $lt: 30 } }` | |
+| `$lte` | Less than or equal | `{ age: { $lte: 30 } }` | |
 
 ```js
 // Examples
@@ -43,7 +43,7 @@ const highScores = await connection.find({
 
 | Operator | Description | Example | Notes |
 |----------|-------------|---------|-------|
-| `$in` | Value in array | `{ category: { $in: ['tech', 'science'] } }` | Optimized for performance |
+| `$in` | Value in array | `{ category: { $in: ['tech', 'science'] } }` | |
 | `$nin` | Value not in array | `{ status: { $nin: ['banned', 'suspended'] } }` | |
 | `$all` | Array contains all values | `{ tags: { $all: ['urgent', 'review'] } }` | For array fields |
 | `$size` | Array size equals | `{ items: { $size: 3 } }` | For array fields |
@@ -66,8 +66,8 @@ const completeTasks = await connection.find({
 
 | Operator | Description | Example | Notes |
 |----------|-------------|---------|-------|
-| `$and` | Logical AND | `{ $and: [{ age: { $gte: 18 } }, { status: 'active' }] }` | Optimized for performance |
-| `$or` | Logical OR | `{ $or: [{ role: 'admin' }, { role: 'moderator' }] }` | Optimized for performance |
+| `$and` | Logical AND | `{ $and: [{ age: { $gte: 18 } }, { status: 'active' }] }` | |
+| `$or` | Logical OR | `{ $or: [{ role: 'admin' }, { role: 'moderator' }] }` | |
 | `$nor` | Logical NOR | `{ $nor: [{ status: 'banned' }, { status: 'suspended' }] }` | None of the conditions |
 | `$not` | Logical NOT | `{ age: { $not: { $lt: 18 } } }` | Negates the condition |
 
@@ -98,8 +98,8 @@ const activeUsers = await connection.find({
 
 | Operator | Description | Example | Notes |
 |----------|-------------|---------|-------|
-| `$regex` | Regular expression | `{ email: { $regex: /@company\.com$/i } }` | Case-insensitive with `i` flag |
-| `$iLike` | Case-insensitive partial match | `{ name: { $iLike: 'john' } }` | Fliplet-specific, optimized |
+| `$regex` | Regular expression | `{ email: { $regex: '@company\\.com$', $options: 'i' } }` | Case-insensitive with `i` flag |
+| `$iLike` | Case-insensitive partial match | `{ name: { $iLike: 'john' } }` | Fliplet-specific |
 
 ```js
 // Example
@@ -111,10 +111,12 @@ const johnUsers = await connection.find({
 
 ### Existence and Type Operators
 
+Online queries use JSON. A JavaScript `RegExp` object becomes `{}` during serialization; use a string `$regex` and `$options` instead. The bundled `$type` implementation expects constructors, which are not JSON-safe, rather than strings such as `number`.
+
 | Operator | Description | Example | Notes |
 |----------|-------------|---------|-------|
 | `$exists` | Field exists | `{ phone: { $exists: true } }` | Checks if field is present |
-| `$type` | Field type check | `{ score: { $type: 'number' } }` | Types: string, number, boolean, array, object |
+| `$type` | Not supported as an online JSON type-name filter | — | Do not pass string type names or constructors in online queries. |
 
 ```js
 // Examples
@@ -122,9 +124,7 @@ const usersWithPhone = await connection.find({
   where: { phone: { $exists: true } }
 });
 
-const numericScores = await connection.find({
-  where: { score: { $type: 'number' } }
-});
+// Validate field types in application code; $type is not a JSON type-name filter.
 ```
 
 ### Mathematical Operators
@@ -134,7 +134,7 @@ const numericScores = await connection.find({
 | `$mod` | Modulo operation | `{ id: { $mod: [2, 0] } }` | `[divisor, remainder]` |
 
 ```js
-// Examples - find even IDs
+// Find even values in the data column named id (not record metadata IDs)
 const evenIds = await connection.find({
   where: { id: { $mod: [2, 0] } }
 });
@@ -164,7 +164,7 @@ const studentsWithGoodGrades = await connection.find({
 
 ## Fliplet Custom $filters Operator
 
-Fliplet provides a custom `$filters` operator that offers optimized performance and additional conditions not available in standard MongoDB operators.
+Fliplet provides a custom `$filters` operator for named filter conditions. Filters are combined with AND. Online database optimization depends on the expression and input values; nested filters may be evaluated in memory.
 
 ### Syntax
 
@@ -194,6 +194,10 @@ Fliplet provides a custom `$filters` operator that offers optimized performance 
 | `<` | Less than | Number | `{ column: 'Price', condition: '<', value: 100 }` |
 | `<=` | Less than or equal | Number | `{ column: 'Quantity', condition: '<=', value: 50 }` |
 | `contains` | Case-insensitive partial match | String | `{ column: 'Email', condition: 'contains', value: '@company.com' }` |
+| `notcontain`, `notcontains` | Excludes matching text; missing values do not count as a negative match | String | `{ column: 'Email', condition: 'notcontains', value: '@example.com' }` |
+| `regex` | Regular-expression string | String | `{ column: 'Email', condition: 'regex', value: '@example[.]com$' }` |
+| `notoneof`, `notin` | Excludes values from a list | Array/String | `{ column: 'Status', condition: 'notin', value: ['Archived'] }` |
+| `none` | Inactive filter; matches all rows | None | `{ column: 'Status', condition: 'none' }` |
 | `empty` | Field is empty | None | `{ column: 'Notes', condition: 'empty' }` |
 | `notempty` | Field is not empty | None | `{ column: 'Description', condition: 'notempty' }` |
 | `between` | Numeric range (inclusive) | Object | `{ column: 'Age', condition: 'between', value: { from: 18, to: 65 } }` |
@@ -213,7 +217,7 @@ Fliplet provides a custom `$filters` operator that offers optimized performance 
 For date conditions, you can optionally specify a unit of comparison:
 
 ```js
-{
+const birthdayFilter = {
   column: 'Birthday',
   condition: 'dateis',
   value: '1990-01-01',
@@ -287,12 +291,12 @@ const getFilteredUsers = async (filters = {}) => {
 };
 
 // Usage with destructuring
-const { length: userCount, ...users } = await getFilteredUsers({
+const users = await getFilteredUsers({
   minAge: 25,
   departments: ['Engineering', 'Design']
 });
 
-console.log(`Found ${userCount} users matching criteria`);
+console.log(`Found ${users.length} users matching criteria`);
 ```
 
 ---
@@ -301,43 +305,11 @@ console.log(`Found ${userCount} users matching criteria`);
 
 ### Optimized Operators
 
-The following operators are optimized for better performance with Fliplet's database:
-
-**MongoDB-style (optimized):**
-- `$or`, `$and`, `$gte`, `$lte`, `$gt`, `$lt`, `$eq`, `$in`
-
-**Fliplet $filters (optimized):**
-- `==`, `contains` (especially optimized)
-
-**Optimized Value Types:**
-- Strings and numbers perform better than complex objects
+Some simple `$or`, `$and`, comparison and `$in` expressions can be evaluated by the online database. Supported `$filters` conditions can also be promoted when their structure and values permit. Other expressions use in-memory filtering. Operator choice alone does not guarantee a particular execution plan or faster query.
 
 ### Best Practices
 
-1. **Use $filters for complex conditions** - Better performance than equivalent MongoDB operators
-2. **Prefer optimized operators** - Use `$gte` instead of `$not: { $lt: value }`
-3. **Index-friendly queries** - Simple equality and range queries perform best
-4. **Combine efficiently** - Use `$and` for multiple conditions on different fields
-
-```js
-// Good - optimized query
-const optimized = await connection.find({
-  where: {
-    $filters: [
-      { column: 'Status', condition: '==', value: 'Active' },
-      { column: 'Score', condition: '>=', value: 80 }
-    ]
-  }
-});
-
-// Also good - using optimized MongoDB operators
-const mongoOptimized = await connection.find({
-  where: {
-    Status: 'Active',
-    Score: { $gte: 80 }
-  }
-});
-```
+Use the operator that expresses the required result. Add a positive `limit` for bounded reads and verify representative data and result counts. Combining filters does not turn a caller-controlled query into an access rule.
 
 ---
 
@@ -387,34 +359,26 @@ const userData = await getComplexUserData({
 
 ## Using operators in custom security rules
 
-When writing [custom security rules](/Data-source-security#custom-security-rules), you can query other Data Sources using the `DataSources` server-side library. The `find` and `findOne` methods support the same query operators listed above.
+The `DataSources(idOrName)` library inside [custom security scripts](security-rules#custom-scripts) has a separate lookup contract. Its `find(options?)` returns flat data objects, not SDK `{ id, data }` records; `findOne(options?)` returns one flat object or `undefined`.
+
+| Property | Type / default | Behavior |
+|---|---|---|
+| `where` | Object; omitted | Filters data fields. Scalar operator operands are restricted to `$or`, `$and`, `$gt`, `$gte`, `$lt`, `$lte`, `$ne`, `$not`, `$like`, `$iLike`, `$notLike`, `$notILike`, `$eq`, `$contains`. Do not assume the app Sift operators or `$filters` work here. |
+| `limit` | Number; at most `100` | Maximum lookup records; `findOne` sets it to `1`. |
+| `offset` | Number; omitted | Skip records. |
 
 ```js
-// Custom security rule: grant access if user is a manager in the same office
-if (type === 'select') {
-  var entry = await DataSources(123).findOne({
-    where: {
-      Office: user.Office,
-      Managers: { $in: [user.Email] },
-      Status: { $ne: 'Inactive' }
-    }
+// Security script: user is a flat login record and may be absent.
+if (user && user.Office && user.Email) {
+  const manager = await DataSources(123).findOne({
+    where: { Office: user.Office, Email: user.Email, Status: 'Active' }
   });
-
-  if (entry) {
-    return { granted: true };
-  }
+  if (manager) { return { granted: true }; }
 }
+return { granted: false };
 ```
 
-Both `find` and `findOne` accept:
-
-| Property | Type | Default | Description |
-|---|---|---|---|
-| `where` | Object | — | Query filter using any operators from this page |
-| `limit` | Number | `100` | Maximum number of records to return |
-| `offset` | Number | `0` | Number of records to skip |
-
-<p class="quote">The operators on this page are for <strong>querying data</strong>. The <code>require</code> property in security rules uses a different set of requirement types (<code>equals</code>, <code>notequals</code>, <code>contains</code>) to validate incoming queries — see <a href="/Data-source-security#data-requirements-and-query-validation">data requirements and query validation</a>.</p>
+Array operands and complex nested expressions must be checked against this lookup contract independently; the whitelist is not a promise of full MongoDB compatibility. A missing or inaccessible source can throw. The rule `require` property uses requirement types such as `equals`, `notequals` and `contains`, described in [security rules](security-rules); it does not use this query operator table.
 
 [Back to Data Sources Documentation](../fliplet-datasources)
-{: .buttons} 
+{: .buttons}
