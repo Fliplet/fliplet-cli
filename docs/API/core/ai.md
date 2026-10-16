@@ -171,12 +171,13 @@ Send the payload required by the selected model in the first argument. The optio
 | stream | Boolean | `true` chooses streaming; omit or use `false` for a buffered response. |
 | prompt | String or Array of Strings | Legacy non-streaming OpenAI completion format. Its [REST fallback is retired](#fallback-defaults); use messages or Responses for new work. |
 
+Streaming has a fixed five-minute internal deadline covering readiness, request start and streaming. Incoming chunks do not extend it.
+
 Client controls apply only when `payload.stream === true`. Omit the second argument or pass `{}` for buffered calls; nonempty buffered controls and invalid controls reject with `TypeError`.
 
 | Client control | Type | Default and behavior |
 | --- | --- | --- |
 | returnResult | Boolean | `false`. Set `true` to retain the terminal result, including the native Responses object. |
-| timeout | Number | `300000` milliseconds. Must be finite and positive. The deadline covers readiness, request start and streaming; incoming chunks do not extend it. |
 
 Use one input format per request. A truthy `prompt` selects the legacy route on a non-streaming call, even if other input fields are also present.
 
@@ -297,7 +298,7 @@ async function streamResponseResult(prompt, onText) {
   const request = Fliplet.AI.createCompletion({
     model: 'gpt-6.1-sol', useResponses: true,
     input: prompt, stream: true
-  }, { returnResult: true, timeout: 300000 });
+  }, { returnResult: true });
   request.stream(function(chunk) {
     if (chunk && chunk.type === 'response.output_text.delta' && typeof chunk.delta === 'string') {
       onText(chunk.delta);

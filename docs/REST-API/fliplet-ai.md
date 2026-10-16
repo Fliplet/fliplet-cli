@@ -109,7 +109,7 @@ A text response includes typed output items:
 }
 ```
 
-Buffered Responses returns the native typed object, including tool calls, annotations, refusal, structured text and usage when supplied. The integration owns the execution loop, validation, authorization and display; see [tools](/API/core/ai/tool-calling), [cited research](/API/core/ai/grounded-answers) and [media input](/API/core/ai/media-inputs). JavaScript examples use the same provider payload, but SDK controls such as `returnResult` and `timeout` are not REST body fields.
+Buffered Responses returns the native typed object, including tool calls, annotations, refusal, structured text and usage when supplied. The integration owns the execution loop, validation, authorization and display; see [tools](/API/core/ai/tool-calling), [cited research](/API/core/ai/grounded-answers) and [media input](/API/core/ai/media-inputs). JavaScript examples use the same provider payload, but The SDK `returnResult` control is not a REST body field.
 
 Collect `output_text` from message items. Do not display the entire `output` object as text. Reasoning, refusal and tool items require their own handling. See [Responses request and extraction](/API/core/ai#using-the-responses-api).
 
