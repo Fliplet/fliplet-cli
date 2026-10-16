@@ -61,9 +61,10 @@ Write and run JavaScript code directly on the server or client to perform automa
 
 Actions have two versions: **master** (development) and **production** (live).
 
-- `create()` always creates a **master** action.
+- `create()` always creates a **master** action. Creating, updating or restoring a master action does not start its automatic schedule or change the published schedule.
 - `update()` can only update the **master** action. You can **not** update a production action directly — update the master and republish.
-- `publish()` copies the current master action to production. The app itself must be published first.
+- Publishing the whole app (`POST /v1/apps/:appId/publish`) copies its V3 actions to production, including apps that contain only actions. This does not require a website URL or a web, iOS or Android build.
+- `publish()` copies one master action to production. The app itself must already be published.
 - `unpublish()` removes the production version. The master version remains.
 - `remove()` deletes the master action. If a production version exists, it is also deleted. You can **not** delete a production action directly.
 - **Scheduled actions** (`schedule` trigger) only run the **published (production)** version.
@@ -740,7 +741,7 @@ triggers: [
 
 ## Create an action
 
-Use `Fliplet.App.V3.Actions.create()` to create a V3 action. This always creates a **master** (development) version. To run the action in production/live apps, you must also publish it using `publish()`.
+Use `Fliplet.App.V3.Actions.create()` to create a V3 action. This always creates a **master** (development) version. To run it in production/live apps, publish the whole app or use `publish()` for an already-published app.
 
 ### Parameters
 
@@ -800,7 +801,7 @@ Example timezones:
 
 ### Create a scheduled action
 
-A scheduled action requires: `frequency` (cron expression), `triggers: [{ trigger: 'schedule' }]`, and `environment` set to `"server"` or `"any"`. The action only runs in production after being published with `publish()`.
+A scheduled action requires `active: true`, `frequency` (cron expression), `triggers: [{ trigger: 'schedule' }]` and `environment` set to `"server"` or `"any"`. Publish the whole app to activate its production schedule, or use `publish()` for one action in an already-published app. Saving the master action alone does not start the schedule.
 
 ```js
 var result = await Fliplet.App.V3.Actions.create({
@@ -825,7 +826,8 @@ var result = await Fliplet.App.V3.Actions.create({
 // result — the created action object (returned directly, not wrapped)
 // result.id — use this ID to publish, update, or delete the action
 
-// IMPORTANT: You must publish the action for the schedule to be active in production:
+// Publish the whole app to activate this schedule.
+// Alternatively, if the app is already published, publish this action alone:
 // await Fliplet.App.V3.Actions.publish(result.id);
 ```
 
@@ -1158,13 +1160,15 @@ var result = await Fliplet.App.V3.Actions.update(12345, {
 
 ## Temporarily deactivate an action
 
-Update an action with `active: false` to disable it. Inactive actions do **not** run on any trigger (manual, schedule, log, or analytics). To reactivate, set `active: true` and republish if needed.
+Updating the master action with `active: false` disables the master only. If a production copy exists, republish the action or the whole app to disable that copy too. Until then, its published schedule keeps running. To reactivate it, set `active: true` and republish. `unpublish()` is another way to stop production execution while retaining the master.
 
 ```js
 var result = await Fliplet.App.V3.Actions.update(12345, {
   active: false
 });
-// Action is now inactive — it will not run until active is set back to true
+// For an already-published action, apply the disabled state to production:
+await Fliplet.App.V3.Actions.publish(12345);
+// Both versions are inactive after publication succeeds.
 ```
 
 ## Delete an action
@@ -1183,7 +1187,7 @@ await Fliplet.App.V3.Actions.remove(12345);
 
 ## Publish an action
 
-Use `Fliplet.App.V3.Actions.publish()` to copy the master action to production. Only published actions run in live apps. The app itself must be published first.
+Use `Fliplet.App.V3.Actions.publish()` to copy one master action to production after the app itself has been published. Publishing the whole app also publishes its V3 actions. See [Master vs production lifecycle](#master-vs-production-lifecycle).
 
 - **Parameters:** `id` (Number) — The action ID
 - **Returns:** Promise resolving to `{ action: <published production action object> }`
@@ -1193,7 +1197,7 @@ var result = await Fliplet.App.V3.Actions.publish(12345);
 // result.action — the published production action object
 ```
 
-<p class="warning">If the app has not been published, <code>publish()</code> returns an <code>APP_NOT_PUBLISHED</code> error. Publish the app first, then publish the action.</p>
+<p class="warning">If the app has not been published, <code>publish()</code> returns an <code>APP_NOT_PUBLISHED</code> error. Publish the whole app to create its production copy and publish its V3 actions.</p>
 
 ## Unpublish an action
 
@@ -1377,7 +1381,7 @@ The restore:
 
 - Takes a `pre-restore` snapshot of the current configuration first, so the restore can itself be undone.
 - Restores every field from the snapshot **except** `masterTaskId` and `productionTaskId` (those describe the action's identity and publish state, not its config).
-- Re-applies the cron schedule if the restored configuration has a `frequency` and is `active`.
+- Restores the master's schedule configuration without starting it or changing the production schedule. Republish the action or the whole app to apply the restored configuration to production.
 - Writes an `appAction.v3.restore` audit log carrying both `restoredFromVersionId` and `preRestoreVersionId`.
 
 ```js
@@ -1449,7 +1453,7 @@ The `data` object contains:
 | `payload` | Object | Always | The payload that was passed to the action. Empty `{}` for scheduled actions. For log triggers, contains the `{ trigger, log }` object. |
 | `duration` | Number | Always | Execution time in milliseconds |
 | `actionVersion` | String | Always | Always `"v3"` |
-| `result` | Object | On success (on-demand only) | `{ data: <return value of execute()>, success: true }`. Not present for successful scheduled runs. |
+| `result` | Object | When the server returns a result | The server execution result, including for scheduled runs. On success: `{ data: <return value of execute()>, success: true }`. |
 | `error` | Object | On failure only | Error details: `{ name: "ErrorType", message: "description", stack: "..." }` |
 
 ### Example: successful on-demand log entry
@@ -1486,12 +1490,16 @@ The `data` object contains:
     "runOn": "server",
     "taskId": 130057,
     "duration": 747,
-    "actionVersion": "v3"
+    "actionVersion": "v3",
+    "result": {
+      "data": { "processedCount": 12 },
+      "success": true
+    }
   }
 }
 ```
 
-<p class="info">Successful scheduled log entries do <strong>not</strong> include a <code>result</code> property, even if the <code>execute()</code> function returns a value.</p>
+Scheduled server execution logs include the returned result. Keep secrets out of return values as well as log messages.
 
 ### Example: failed action log entry
 
