@@ -211,7 +211,9 @@ Invalid offsets, overlapping ranges, unsafe URL schemes and credential-bearing U
 
 HTTP and HTTPS links are allowed; a valid URL is not an endorsement of its destination.
 
-A failed or incomplete response, refusal, empty answer or request error leaves a visible message and the question available for correction. Authentication, credits, rate limits and model/tool compatibility can also cause failures; see [AI errors](/API/core/ai#shared-access-and-errors). The example buffers the final answer. For interactive presentation, including streamed output, use the [AI reply presentation guide](chatbot); adapt it to the app's framework while preserving the citation handling above.
+A failed or incomplete response, refusal, empty answer or request error leaves a visible message and the question available for correction. Authentication, credits, rate limits and model/tool compatibility can also cause failures; see [AI errors](/API/core/ai#shared-access-and-errors). The example buffers the final answer to demonstrate citation handling.
+
+For interactive research, follow the [progressive reply guidance](chatbot#stream-a-reply) and [streaming terminal-result contract](/API/core/ai#terminal-results). Safely format accumulated raw text as provisional output through your app's framework renderer. Use `{ returnResult: true }` to retain the native final Responses result. After successful completion, finalize the answer from that result, applying annotations to each original text part before formatting a display copy as above. Partial deltas do not establish a completed search or usable source citations; keep provisional output visibly unverified.
 
 ## Related docs
 

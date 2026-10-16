@@ -27,7 +27,7 @@ Build a conversation in which an AI model generates replies using `Fliplet.AI`. 
 
 Choose and specify a compatible [text model](/API/core/ai/models#openai-text-models). The IDs in this guide are illustrative selections, not recommendations for every chatbot. Preserve a supported model requested by the user and use its request format. For conversations between people, use [Fliplet.Chat](/API/fliplet-chat).
 
-For interactive generated text, show text as it arrives when the selected model supports streaming. Preserve explicit non-streaming requirements. Formatting and streaming are separate choices: plain text can stream, and formatted replies can use a buffered request. Background tasks and structured JSON need their own output handling.
+For interactive generated text, show text as it arrives when the selected method and model support streaming. Formatting and streaming are separate choices: plain text can stream. Use a buffered formatted reply when non-streaming is explicitly required or the selected method or model does not support streaming. Background tasks and structured JSON need their own output handling.
 
 For reader-facing prose, present paragraphs, lists, emphasis, code and links as readable structure suited to the audience. Safely render Markdown when present unless the user or output contract requires plain text. Keep literal source or code output verbatim, parse structured JSON according to its contract, and keep editable extracted fields in their controls. Do not invent a plain-text-only instruction to avoid formatting a prose reply.
 
