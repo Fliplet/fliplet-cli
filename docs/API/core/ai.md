@@ -6,7 +6,7 @@ tags: [js-api, core]
 v3_relevant: true
 deprecated: false
 category: automation
-capabilities: [ai, llm, openai, gemini, gpt, chatbot, chat completion, image generation, dall-e, transcription, whisper, embeddings, streaming completion, vision, multimodal, ai assistant]
+capabilities: [ai, llm, openai, gemini, gpt, chatbot, chat completion, image generation, dall-e, transcription, whisper, embeddings, streaming completion, vision, multimodal, ai assistant, function calling, tool calling, web search, citations, structured output, document analysis]
 ---
 # `Fliplet.AI`
 
@@ -42,12 +42,15 @@ Generate text and images, transcribe audio and create embeddings through Fliplet
 | Feature | Method | Model category |
 | --- | --- | --- |
 | Generated text, summaries or an AI chatbot | [createCompletion()](#flipletaicreatecompletion); [ask()](#instance-methods) for a single text request | [OpenAI text](/API/core/ai/models#openai-text-models) or [Gemini text](/API/core/ai/models#gemini-text-models) |
+| Model-requested app operations | [createCompletion()](#flipletaicreatecompletion) and the [tool-calling guide](/API/core/ai/tool-calling) | Compatible function-tool model |
+| Research with cited web sources | [createCompletion()](#flipletaicreatecompletion) and the [grounded-answers guide](/API/core/ai/grounded-answers) | Compatible hosted-search model |
+| PDF/photo analysis and structured extraction | [createCompletion()](#flipletaicreatecompletion) and the [media-input guide](/API/core/ai/media-inputs) | Compatible file/image and structured-output model |
 | OpenAI image generation | [generateImage()](#flipletaigenerateimage) | [Images](/API/core/ai/models#image-models) |
 | Gemini image generation | [createCompletion() with Gemini contents](#gemini-image-generation) | [Images](/API/core/ai/models#image-models) |
 | Audio transcription | [transcribeAudio()](#flipletaitranscribeaudio) | [Transcription](/API/core/ai/models#transcription-models) |
 | Text vectors for semantic search | [createEmbedding()](#flipletaicreateembedding) | [Embeddings](/API/core/ai/models#embedding-models) |
 
-For messages between people, use [Fliplet.Chat](/API/fliplet-chat). The [chatbot guide](/API/core/ai/chatbot) covers app-managed conversation history and UI behavior.
+For messages between people, use [Fliplet.Chat](/API/fliplet-chat). The [AI reply presentation and conversation guide](/API/core/ai/chatbot) covers safe formatting, progressive output and app-managed conversation history.
 
 <a id="model-selection-and-fallback-defaults"></a>
 
@@ -148,14 +151,15 @@ For streaming, set `stream: true` in the constructor and attach `.stream(onChunk
 
 ### `Fliplet.AI.createCompletion()`
 
-`Fliplet.AI.createCompletion(options: Object): Promise`
+`Fliplet.AI.createCompletion(payload: Object, controls?: Object): Promise`
 
-Send the payload required by the selected model. The return value depends on `stream`:
+Send the payload required by the selected model in the first argument. The optional second argument contains only the client controls below; it is not sent to the provider. The return value depends on `stream` and `returnResult`:
 
 | Mode | Returned request | Resolved value |
 | --- | --- | --- |
 | Buffered (`stream` omitted or `false`) | Promise | The provider response object for the selected format. |
-| Streaming (`stream: true`) | Promise with `.stream(onChunk)`, `.cancel()` and `.guid` | `undefined` on normal completion, or `{ cancelled: true }` on cancellation. Accumulate reply text from callbacks; see the [streaming contract](#streaming-with-createcompletion). |
+| Streaming (`stream: true`), default controls | Promise with `.stream(onChunk)`, `.cancel()` and `.guid` | `undefined` on completion; `{ cancelled: true }` on cancellation. Incomplete output rejects. |
+| Streaming with `{ returnResult: true }` | The same streamable Promise | A terminal envelope with `status` and `guid`, preserving terminal packet fields and native `response` where supplied. See [terminal results](#terminal-results). |
 
 | Field | Type | Required or behavior |
 | --- | --- | --- |
@@ -166,6 +170,13 @@ Send the payload required by the selected model. The return value depends on `st
 | contents | Array of Gemini content objects | Gemini input, with an explicit Gemini model. |
 | stream | Boolean | `true` chooses streaming; omit or use `false` for a buffered response. |
 | prompt | String or Array of Strings | Legacy non-streaming OpenAI completion format. Its [REST fallback is retired](#fallback-defaults); use messages or Responses for new work. |
+
+Client controls apply only when `payload.stream === true`. Omit the second argument or pass `{}` for buffered calls; nonempty buffered controls and invalid controls reject with `TypeError`.
+
+| Client control | Type | Default and behavior |
+| --- | --- | --- |
+| returnResult | Boolean | `false`. Set `true` to retain the terminal result, including the native Responses object. |
+| timeout | Number | `300000` milliseconds. Must be finite and positive. The deadline covers readiness, request start and streaming; incoming chunks do not extend it. |
 
 Use one input format per request. A truthy `prompt` selects the legacy route on a non-streaming call, even if other input fields are also present.
 
@@ -206,7 +217,7 @@ async function summarizeWithResponses() {
 summarizeWithResponses();
 ```
 
-For app-managed conversation context, `input` can also be an array such as `[{ role: 'user', content: 'Hello' }, { role: 'assistant', content: 'Hello! How can I help?' }, { role: 'user', content: 'Suggest a meeting agenda.' }]`. Preserve model-required tool items when using tools. Do not assume every Responses provider feature, including retrieval, background execution or provider-stored conversations, has a matching Fliplet integration. See the [Responses schema](https://platform.openai.com/docs/api-reference/responses/create) and [chatbot guide](/API/core/ai/chatbot).
+For app-managed conversation context, `input` can also be an array such as `[{ role: 'user', content: 'Hello' }, { role: 'assistant', content: 'Hello! How can I help?' }, { role: 'user', content: 'Suggest a meeting agenda.' }]`. Preserve model-required tool items when using tools. Use the [tool-calling](/API/core/ai/tool-calling), [grounded-answer](/API/core/ai/grounded-answers) and [media-input](/API/core/ai/media-inputs) guides for complete workflows. Declaring tools does not execute app operations. Background execution and provider-stored conversations are not established app workflows. See the [Responses schema](https://platform.openai.com/docs/api-reference/responses/create) and [chatbot guide](/API/core/ai/chatbot).
 
 #### Using Gemini models
 
@@ -263,11 +274,58 @@ Register `.stream(onChunk)` immediately. The callback receives nonterminal paylo
 | Responses | `chunk.delta` when `chunk.type === 'response.output_text.delta'` |
 | Gemini | Text parts of `chunk.candidates[0].content.parts` |
 
-#### Completion and cancellation
+#### Terminal results
 
-Normal completion resolves the Promise with `undefined`. Cancellation resolves it with `{ cancelled: true }` after the socket cancellation event. The completion callback does not receive the assembled answer, including for Responses. Errors reject with the socket error payload, which need not be an `Error` instance.
+With default controls, completion resolves with `undefined`, cancellation resolves with `{ cancelled: true }` and incomplete output rejects with `code: 'response_incomplete'`. The callback receives nonterminal events only; it never receives the terminal envelope. An absent callback safely discards events.
 
-To cancel, retain the request and call `await request.cancel()`, or use `Fliplet.AI.cancel(request.guid)`. Cancellation asks Fliplet to abort the active provider stream. A cancellation acknowledgement may report that the signal was broadcast; it is not proof that no generation or charge occurred. Keep partial text visibly interrupted and handle failure/retry in the app. The [chatbot guide](/API/core/ai/chatbot#build-a-conversation) covers progressive display, safe formatting and UI state.
+With `{ returnResult: true }`, the resolved envelope preserves terminal packet fields and adds:
+
+| Field | Meaning |
+| --- | --- |
+| status | `completed`, `incomplete` or `cancelled`. |
+| guid | This request's identifier. |
+| response | The native final Responses object, when supplied by the server. Includes typed `output`, `usage`, `model` and other provider fields. |
+| isIncomplete, incompleteReason | Present on incomplete Responses results; inspect `response.incomplete_details` too. Partial output is not a successful complete result. |
+| isCancelled, cancelled | `true` on cancelled results. |
+
+Chat Completions and Gemini streams do not supply an assembled native `response`; continue assembling their content from callbacks, or use a buffered call for a native aggregate. Native refusal remains provider content and needs an explicit UI branch. Do not flatten reasoning, function calls or citations into displayed text. Preserve required typed items when [continuing a tool conversation](/API/core/ai/tool-calling).
+
+This example displays deltas through `onText` and returns the authoritative native Responses result. Load `fliplet-socket` first and use it after Fliplet is ready. `onText` must update the actual state used by your framework or renderer; see the [chatbot guide](/API/core/ai/chatbot).
+
+```js
+async function streamResponseResult(prompt, onText) {
+  const request = Fliplet.AI.createCompletion({
+    model: 'gpt-6.1-sol', useResponses: true,
+    input: prompt, stream: true
+  }, { returnResult: true, timeout: 300000 });
+  request.stream(function(chunk) {
+    if (chunk && chunk.type === 'response.output_text.delta' && typeof chunk.delta === 'string') {
+      onText(chunk.delta);
+    }
+  });
+  const result = await request;
+  if (!result || !['completed', 'incomplete', 'cancelled'].includes(result.status)) {
+    throw new Error('The loaded Fliplet SDK did not return a terminal result. Do not automatically repeat the request.');
+  }
+  if (result.status !== 'completed') return result;
+  if (!result.response || result.response.status !== 'completed' || !Array.isArray(result.response.output)) {
+    throw new Error('No complete native Responses result was returned.');
+  }
+  return result;
+}
+```
+
+A cached SDK asset can ignore the second argument and resolve with `undefined`. Guard the envelope before using advanced results and report the unsupported loaded asset without automatically regenerating or repeating actions.
+
+#### Cancellation and failures
+
+Retain the request and call `request.cancel()`, or `Fliplet.AI.cancel(request.guid)`. Stop settles the local completion immediately and removes only that request's listeners. The separate Promise returned by `cancel()` reports the remote DELETE acknowledgement or failure, with a 30-second deadline. Repeated cancellation of the active handle shares that operation. Cancellation before dispatch prevents the generation POST. Completing, stopping or failing one request leaves other requests and the shared socket connected.
+
+A remote acknowledgement can report a broadcast signal; neither it nor local Stop proves that the provider stopped or that no generation or charge occurred. Keep partial output visibly interrupted. Handle the cancellation Promise's rejection if you show remote status; local UI settlement does not wait for it.
+
+HTTP start failures, provider failures and synchronous or asynchronous callback failures reject. Errors can be structured payloads rather than `Error` instances. SDK errors include `stream_timeout` for deadline expiry, `auth_changed` when the bound app/token changes and `protocol_error` for invalid stream packets. A token change fails closed; the request is not silently retried under another token. Best-effort abort cannot guarantee that an old-token generation stops.
+
+The SDK does not automatically reconnect, poll for a missed terminal result or repeat a generation. A lost terminal eventually reaches the deadline. Retain drafts, mark partial output incomplete and offer an explicit recovery choice. The [chatbot guide](/API/core/ai/chatbot#build-a-conversation) covers visible pending, error and Stop states.
 
 #### Console streaming example
 
@@ -587,6 +645,9 @@ See [JavaScript metadata and additional provider IDs](/API/core/ai/models#histor
 ## Related guides
 
 - [AI models available through Fliplet](/API/core/ai/models): configured IDs, provider facts, fallback defaults and retirement notices.
-- [Build an AI chatbot](/API/core/ai/chatbot): conversation state, send/retry controls and streaming.
+- [AI reply presentation and conversations](/API/core/ai/chatbot): safe formatting, progressive output, conversation state and send/retry controls.
+- [Tools and authorized actions](/API/core/ai/tool-calling): bounded tool loops, validation and existing app permissions.
+- [Research with cited sources](/API/core/ai/grounded-answers): hosted search and safe inline citations.
+- [Analyze documents and photos](/API/core/ai/media-inputs): authorized content and validated structured results.
 - [Record or upload audio](/API/core/ai/audio-transcription): file selection, microphone capture and transcript insertion.
 - [App AI REST API](/REST-API/fliplet-ai): external requests and authentication.

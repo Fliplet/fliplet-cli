@@ -109,6 +109,8 @@ A text response includes typed output items:
 }
 ```
 
+Buffered Responses returns the native typed object, including tool calls, annotations, refusal, structured text and usage when supplied. The integration owns the execution loop, validation, authorization and display; see [tools](/API/core/ai/tool-calling), [cited research](/API/core/ai/grounded-answers) and [media input](/API/core/ai/media-inputs). JavaScript examples use the same provider payload, but SDK controls such as `returnResult` and `timeout` are not REST body fields.
+
 Collect `output_text` from message items. Do not display the entire `output` object as text. Reasoning, refusal and tool items require their own handling. See [Responses request and extraction](/API/core/ai#using-the-responses-api).
 
 ### Gemini format
@@ -225,3 +227,6 @@ Use the [JavaScript streaming API](/API/core/ai#streaming-with-createcompletion)
 - [Build an AI chatbot](/API/core/ai/chatbot)
 - [Record or upload audio](/API/core/ai/audio-transcription)
 - [REST authentication](/REST-API/authenticate)
+- [Tools and authorized actions](/API/core/ai/tool-calling)
+- [Research with cited sources](/API/core/ai/grounded-answers)
+- [Analyze documents and photos](/API/core/ai/media-inputs)

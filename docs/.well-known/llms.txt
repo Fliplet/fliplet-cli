@@ -6,8 +6,11 @@
 
 - [Fliplet.AI](https://developers.fliplet.com/API/core/ai.md): Generate text and images, transcribe audio and create embeddings with Fliplet.AI. Covers request formats, streaming, models and limits.
 - [Record or upload audio for transcription](https://developers.fliplet.com/API/core/ai/audio-transcription.md): Upload or record audio with Fliplet.AI, retain audio for retry and let users review a transcript before inserting it into their text.
-- [Build an AI chatbot](https://developers.fliplet.com/API/core/ai/chatbot.md): Build AI conversations with progressive replies, safe Markdown formatting, explicit models, message history and recoverable errors.
+- [Build an AI chatbot](https://developers.fliplet.com/API/core/ai/chatbot.md): Present interactive AI text in conversations, research, writing tools and explanation panels with safe formatting, progressive output and recoverable errors.
+- [Answer questions with web sources](https://developers.fliplet.com/API/core/ai/grounded-answers.md): Use Fliplet AI with hosted web search and display returned citations as safe, clickable links beside the answer.
+- [Extract editable fields from PDFs and images](https://developers.fliplet.com/API/core/ai/media-inputs.md): Analyze a selected PDF or image with Fliplet AI, validate structured results and let the user review extracted fields before saving.
 - [AI models available through Fliplet](https://developers.fliplet.com/API/core/ai/models.md): Choose compatible AI model IDs, compare verified provider facts and understand Fliplet fallbacks, pinning and retirement notices.
+- [Use AI tools with authorized app data](https://developers.fliplet.com/API/core/ai/tool-calling.md): Build a bounded AI tool loop with authorized reads, confirmed record updates, validated arguments and provider-compatible conversation history.
 - [Fliplet.Analytics](https://developers.fliplet.com/API/core/analytics.md): Enable, disable, and check analytics tracking, and record custom app events and page views from JavaScript.
 - [Fliplet.API.request()](https://developers.fliplet.com/API/core/api.md): Make authenticated HTTP requests to Fliplet APIs with automatic URL construction, caching, offline queueing, and error handling.
 - [App Actions V2 (deprecated)](https://developers.fliplet.com/API/core/app-actions-v2.md): Deprecated App Actions V2 — configure a pipeline of functions that runs on-device or in the cloud, ad hoc or on a schedule. Migrate to V3 App Actions.

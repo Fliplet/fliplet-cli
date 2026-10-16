@@ -25,7 +25,7 @@ All our APIs require your client to authenticate when accessing the endpoints. P
 
 ### App AI
 
-Generate text and images, transcribe audio and create embeddings for a Fliplet app. Select a compatible model from the shared [AI model catalog](/API/core/ai/models).
+Generate text and images, transcribe audio and create embeddings for a Fliplet app. Use compatible completion models for [tool calls](/API/core/ai/tool-calling), [cited research](/API/core/ai/grounded-answers) and [document/photo analysis](/API/core/ai/media-inputs). Select a compatible model from the shared [AI model catalog](/API/core/ai/models).
 
 [View the app AI REST reference »](REST-API/fliplet-ai)
 {: .buttons}
