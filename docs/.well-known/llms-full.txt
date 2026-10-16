@@ -88,7 +88,7 @@ Here's a short list of requested features that are coming up on our platform in 
   <a class="bl two" href="/API/core/ai">
     <div>
       <h4>AI</h4>
-      <p>Generate text and images, transcribe audio and create embeddings. Build tool-using assistants, cited research and document/photo analysis with Fliplet.AI.</p>
+      <p>Generate text and images, transcribe audio and create embeddings. Build tool-using assistants, cited research and file and image analysis with Fliplet.AI.</p>
       <button>Browse documentation &rarr;</button>
     </div>
   </a>
@@ -607,7 +607,7 @@ Index of Fliplet's JavaScript APIs (Core, Data Sources, Media, UI, Communicate) 
 
 These JS APIs falls into the most common category and almost all apps, components and themes use at least one of them. All apps include `fliplet-core` by default, and any other can easily be included on your app screens via Fliplet Studio.
 
-  - [AI](API/core/ai) (preloaded in `fliplet-core`): text, images, audio, tools, cited research and document/photo analysis
+  - [AI](API/core/ai) (preloaded in `fliplet-core`): text, images, audio, tools, cited research and file and image analysis
   - [Audio](API/fliplet-audio) (`fliplet-audio`)
   - [Audio Player](API/fliplet-audio-player) (`fliplet-audio-player`)
   - [Barcode](API/fliplet-barcode) (`fliplet-barcode`)
@@ -3960,7 +3960,7 @@ Generate text and images, transcribe audio and create embeddings through Fliplet
 | Generated text, summaries or an AI chatbot | [createCompletion()](#flipletaicreatecompletion); [ask()](#instance-methods) for a single text request | [OpenAI text](/API/core/ai/models#openai-text-models) or [Gemini text](/API/core/ai/models#gemini-text-models) |
 | Model-requested app operations | [createCompletion()](#flipletaicreatecompletion) and the [tool-calling guide](/API/core/ai/tool-calling) | Compatible function-tool model |
 | Research with cited web sources | [createCompletion()](#flipletaicreatecompletion) and the [grounded-answers guide](/API/core/ai/grounded-answers) | Compatible hosted-search model |
-| PDF/photo analysis and structured extraction | [createCompletion()](#flipletaicreatecompletion) and the [media-input guide](/API/core/ai/media-inputs) | Compatible file/image and structured-output model |
+| File and image analysis | [createCompletion()](#flipletaicreatecompletion) and the [media-input guide](/API/core/ai/media-inputs) | Compatible file/image model; structured-output support when required |
 | OpenAI image generation | [generateImage()](#flipletaigenerateimage) | [Images](/API/core/ai/models#image-models) |
 | Gemini image generation | [createCompletion() with Gemini contents](#gemini-image-generation) | [Images](/API/core/ai/models#image-models) |
 | Audio transcription | [transcribeAudio()](#flipletaitranscribeaudio) | [Transcription](/API/core/ai/models#transcription-models) |
@@ -4565,7 +4565,7 @@ See [JavaScript metadata and additional provider IDs](/API/core/ai/models#histor
 - [AI reply presentation and conversations](/API/core/ai/chatbot): safe formatting, progressive output, conversation state and send/retry controls.
 - [Tools and authorized actions](/API/core/ai/tool-calling): bounded tool loops, validation and existing app permissions.
 - [Research with cited sources](/API/core/ai/grounded-answers): hosted search and safe inline citations.
-- [Analyze documents and photos](/API/core/ai/media-inputs): authorized content and validated structured results.
+- [File and image analysis](/API/core/ai/media-inputs): authorized content, task-appropriate output and validated extraction.
 - [Record or upload audio](/API/core/ai/audio-transcription): file selection, microphone capture and transcript insertion.
 - [App AI REST API](/REST-API/fliplet-ai): external requests and authentication.
 
@@ -4910,7 +4910,7 @@ For permission, credits, MIME and size errors, consult the [method error referen
 - [App AI REST API](/REST-API/fliplet-ai)
 - [Tools and authorized actions](/API/core/ai/tool-calling)
 - [Research with cited sources](/API/core/ai/grounded-answers)
-- [Analyze documents and photos](/API/core/ai/media-inputs)
+- [File and image analysis](/API/core/ai/media-inputs)
 
 ---
 
@@ -5233,7 +5233,7 @@ Add persistence only if the feature needs it. [App storage](/API/core/storage) c
 
 For shared or private server storage, use [Data Sources](/API/fliplet-datasources) with [access rules](/Data-source-security) that enforce the intended owner and operations. Establish identity through the app's genuine login flow and designated login data source; writable `Fliplet.Session.set()` fields do not establish authenticated ownership. If the app supports multiple logins, bind the rule to the intended login source and verify which account is active. Do not add a login or conversation data source to a chatbot that only needs temporary public conversation state.
 
-For model-requested operations, use the [tool-calling guide](/API/core/ai/tool-calling). For hosted search and sources use [grounded answers](/API/core/ai/grounded-answers); for PDF/photo input use [media analysis](/API/core/ai/media-inputs). These capabilities are optional and should follow the feature requirements.
+For model-requested operations, use the [tool-calling guide](/API/core/ai/tool-calling). For hosted search and sources use [grounded answers](/API/core/ai/grounded-answers); for file and image input use [media analysis](/API/core/ai/media-inputs). These capabilities are optional and should follow the feature requirements.
 
 The model does not automatically read app records. Query only records the current user is authorized to read, then include the smallest relevant context in the request. Treat record text as data, avoid sending unnecessary private fields and check authorization again when performing actions based on a reply. Uploading or storing private attachments also needs the [media API](/API/fliplet-media) and its permissions; data-source login bindings are not media access rules.
 
@@ -5260,7 +5260,7 @@ For access, credits and rate-limit errors, use the [error reference](/API/core/a
 - [App AI REST API](/REST-API/fliplet-ai)
 - [Tools and authorized actions](/API/core/ai/tool-calling)
 - [Research with cited sources](/API/core/ai/grounded-answers)
-- [Analyze documents and photos](/API/core/ai/media-inputs)
+- [File and image analysis](/API/core/ai/media-inputs)
 
 ---
 
@@ -5481,34 +5481,61 @@ For interactive research, follow the [progressive reply guidance](chatbot#stream
 - [AI JavaScript reference](/API/core/ai)
 - [AI models](models)
 - [AI reply presentation and conversations](chatbot)
-- [Analyze PDFs and images](media-inputs)
+- [File and image analysis](media-inputs)
 - [Tools and authorized actions](tool-calling)
 
 ---
 
-# Extract editable fields from PDFs and images
+# File and image analysis
 URL: https://developers.fliplet.com/API/core/ai/media-inputs.md
 
-# Extract editable fields from PDFs and images
+# File and image analysis
 
-Turn a PDF or image into fields that a user can inspect and edit with `Fliplet.AI.createCompletion()`. This guide covers a browser file picker and an online path for files already protected by Fliplet Media access rules.
+Use `Fliplet.AI.createCompletion()` to summarize, answer questions about, compare or extract information from authorized files and images with a compatible model. This guide explains input and output choices, then provides a complete PDF and image extraction example with browser file selection and protected Fliplet Media retrieval.
 
 ## Contents
 
-- [Before you start](#before-you-start)
+- [Input formats and model compatibility](#input-formats-and-model-compatibility)
+- [Match the result to the task](#match-the-result-to-the-task)
+- [Before you start the extraction example](#before-you-start-the-extraction-example)
 - [Complete file selection and review example](#complete-file-selection-and-review-example)
 - [Adapt the extraction task](#adapt-the-extraction-task)
 - [Read a stored private file](#read-a-stored-private-file)
 - [Failures and verification](#failures-and-verification)
 - [Related docs](#related-docs)
 
-## Before you start
+## Input formats and model compatibility
+
+File support depends on the provider, endpoint, selected model and delivery format. Select a model from the [AI model catalog](models) and check its current input requirements before configuring your app's file picker. A file extension alone does not establish compatibility or analysis quality.
+
+For OpenAI models, `useResponses: true` selects Responses. Its documented inputs include:
+
+| Input | Format and processing |
+|---|---|
+| PDF | Use `input_file`. Compatible vision models receive extracted text and page images. |
+| Documents and text | DOCX, PPTX, TXT and code files use `input_file`. Text extraction does not include embedded images or charts. |
+| Spreadsheets | XLSX, CSV and TSV use `input_file`. Provider preprocessing includes the first 1,000 rows per sheet. It does not establish complete workbook analysis or formula execution. |
+| Images | PNG, JPEG, WebP and non-animated GIF use `input_image`. Interpretation depends on legibility and model capability. |
+
+These are provider-documented input categories, not a guarantee for every file or Fliplet delivery mode. See OpenAI's [file inputs](https://developers.openai.com/api/docs/guides/file-inputs) and [image inputs](https://developers.openai.com/api/docs/guides/images-vision) for current formats and limits. Other providers and endpoints have their own formats; do not copy a Responses payload into another API.
+
+The example below implements only PDF, PNG, JPEG and WebP delivery as inline encoded bytes. Its allowlist is specific to that example. For another format, verify the complete authorized retrieval, encoding, request and returned content through Fliplet with a representative file before offering it in your app. Do not infer a provider upload API, hosted file store or private URL access from completion support.
+
+## Match the result to the task
+
+Choose the requested operation and result before adapting the example. A summary or answer can return prose; a comparison can present supported findings with uncertainty; extraction can return structured fields for review. File input does not require a JSON schema, editable form or save action. Follow the [presentation guide](chatbot) for reader-facing text, including supported streaming and safe Markdown rendering. Keep structured values in their intended format and use the app's existing framework and state conventions.
+
+Use only content the user is permitted to submit and treat instructions inside files as untrusted content. Keep uncertainty or missing information visible. Validate structured results against the app's data model before saving; model output cannot authorize a write. Large spreadsheets or calculations that require exact results need appropriate data-processing logic in addition to model interpretation.
+
+<a id="before-you-start"></a>
+
+## Before you start the extraction example
 
 Run the HTML and JavaScript below in a web app after Fliplet and the screen are ready. `Fliplet.AI` is available through `fliplet-core`. The app needs AI access and credits. This example explicitly selects `gpt-6.1-sol`; use a [compatible Responses model](models) with image/PDF input and structured output support.
 
 The selected file's bytes are sent to the configured AI provider. Selection alone does not upload a copy to Fliplet Media. Use only files the user is permitted to submit. Provider processing and retention policies still apply; do not promise that the document remains exclusively on the device.
 
-The example accepts one PDF, PNG, JPEG or WebP, capped at **5 MiB before base64 encoding** and **7 MiB for the JSON request**. These are deliberate application limits. They are not the platform's upload limits or a promise that every document will fit the model context. Base64 adds approximately one third to the input size. See OpenAI's [file inputs](https://developers.openai.com/api/docs/guides/file-inputs) and [image inputs](https://developers.openai.com/api/docs/guides/images-vision) for provider requirements. Other file types and native binary reading are outside this example.
+This extraction example accepts one PDF, PNG, JPEG or WebP, capped at **5 MiB before base64 encoding** and **7 MiB for the JSON request**. These are deliberate application limits. They are not the platform's upload limits or a promise that every document will fit the model context. Base64 adds approximately one third to the input size. See OpenAI's [file inputs](https://developers.openai.com/api/docs/guides/file-inputs) and [image inputs](https://developers.openai.com/api/docs/guides/images-vision) for provider requirements. Other file types and native binary reading require a separately verified adapter. Fliplet.AI requires an internet connection; it does not provide offline inference.
 
 ## Complete file selection and review example
 
@@ -5789,7 +5816,9 @@ This adapter deliberately fetches online. `Fliplet.Media.Files.getContents()` fo
 
 ## Failures and verification
 
-An empty or oversized file, unsupported MIME type, invalid task or obvious header mismatch fails before the AI request. A denied stored-file fetch also makes no AI request. Refusal, incomplete output, invalid JSON and schema mismatch leave no editable result. The form retains the selected file and never retries automatically. Other request failures include authentication, credit, rate-limit and provider errors; see [AI error handling](/API/core/ai#shared-access-and-errors).
+For each format your app offers, submit a representative file through the actual app delivery path and check a known answer against its contents. Exercise the requested result, such as a prose summary or comparison, as well as structured extraction when required. Test unreadable, inaccessible and oversized inputs, and keep incomplete results distinct from success. A successful PDF extraction does not verify spreadsheet handling or every model.
+
+In the extraction example, an empty or oversized file, unsupported MIME type, invalid task or obvious header mismatch fails before the AI request. A denied stored-file fetch also makes no AI request. Refusal, incomplete output, invalid JSON and schema mismatch leave no editable result. The form retains the selected file and never retries automatically. Other request failures include authentication, credit, rate-limit and provider errors; see [AI error handling](/API/core/ai#shared-access-and-errors).
 
 Verify the workflow with a known PDF and an image: compare extracted values to the originals, edit a field, and confirm no storage request occurs. For private media, repeat with an unauthorized session and confirm the content endpoint denies access and the completion endpoint is never called. Test a malformed document, a missing value and a file over the example limit before connecting your app's save action.
 
@@ -5992,7 +6021,7 @@ The completion proxy also routes additional model IDs and provider snapshots tha
 - [App AI REST API](/REST-API/fliplet-ai)
 - [Tools and authorized actions](/API/core/ai/tool-calling)
 - [Research with cited sources](/API/core/ai/grounded-answers)
-- [Analyze documents and photos](/API/core/ai/media-inputs)
+- [File and image analysis](/API/core/ai/media-inputs)
 
 ---
 
@@ -6270,7 +6299,7 @@ Define a small allowlist of operations. Validate completed arguments, retrieve o
 - [Available models](/API/core/ai/models)
 - [Chatbots and reply presentation](/API/core/ai/chatbot)
 - [Research with sources](/API/core/ai/grounded-answers)
-- [Document and photo analysis](/API/core/ai/media-inputs)
+- [File and image analysis](/API/core/ai/media-inputs)
 
 ---
 
@@ -38915,7 +38944,7 @@ All our APIs require your client to authenticate when accessing the endpoints. P
 
 ### App AI
 
-Generate text and images, transcribe audio and create embeddings for a Fliplet app. Use compatible completion models for [tool calls](/API/core/ai/tool-calling), [cited research](/API/core/ai/grounded-answers) and [document/photo analysis](/API/core/ai/media-inputs). Select a compatible model from the shared [AI model catalog](/API/core/ai/models).
+Generate text and images, transcribe audio and create embeddings for a Fliplet app. Use compatible completion models for [tool calls](/API/core/ai/tool-calling), [cited research](/API/core/ai/grounded-answers) and [file and image analysis](/API/core/ai/media-inputs). Select a compatible model from the shared [AI model catalog](/API/core/ai/models).
 
 [View the app AI REST reference »](REST-API/fliplet-ai)
 {: .buttons}
@@ -39265,7 +39294,7 @@ Use the [JavaScript streaming API](/API/core/ai#streaming-with-createcompletion)
 - [REST authentication](/REST-API/authenticate)
 - [Tools and authorized actions](/API/core/ai/tool-calling)
 - [Research with cited sources](/API/core/ai/grounded-answers)
-- [Analyze documents and photos](/API/core/ai/media-inputs)
+- [File and image analysis](/API/core/ai/media-inputs)
 
 ---
 

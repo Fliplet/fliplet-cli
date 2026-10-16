@@ -322,7 +322,7 @@ Add persistence only if the feature needs it. [App storage](/API/core/storage) c
 
 For shared or private server storage, use [Data Sources](/API/fliplet-datasources) with [access rules](/Data-source-security) that enforce the intended owner and operations. Establish identity through the app's genuine login flow and designated login data source; writable `Fliplet.Session.set()` fields do not establish authenticated ownership. If the app supports multiple logins, bind the rule to the intended login source and verify which account is active. Do not add a login or conversation data source to a chatbot that only needs temporary public conversation state.
 
-For model-requested operations, use the [tool-calling guide](/API/core/ai/tool-calling). For hosted search and sources use [grounded answers](/API/core/ai/grounded-answers); for PDF/photo input use [media analysis](/API/core/ai/media-inputs). These capabilities are optional and should follow the feature requirements.
+For model-requested operations, use the [tool-calling guide](/API/core/ai/tool-calling). For hosted search and sources use [grounded answers](/API/core/ai/grounded-answers); for file and image input use [media analysis](/API/core/ai/media-inputs). These capabilities are optional and should follow the feature requirements.
 
 The model does not automatically read app records. Query only records the current user is authorized to read, then include the smallest relevant context in the request. Treat record text as data, avoid sending unnecessary private fields and check authorization again when performing actions based on a reply. Uploading or storing private attachments also needs the [media API](/API/fliplet-media) and its permissions; data-source login bindings are not media access rules.
 
@@ -349,4 +349,4 @@ For access, credits and rate-limit errors, use the [error reference](/API/core/a
 - [App AI REST API](/REST-API/fliplet-ai)
 - [Tools and authorized actions](/API/core/ai/tool-calling)
 - [Research with cited sources](/API/core/ai/grounded-answers)
-- [Analyze documents and photos](/API/core/ai/media-inputs)
+- [File and image analysis](/API/core/ai/media-inputs)

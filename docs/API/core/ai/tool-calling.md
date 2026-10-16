@@ -277,4 +277,4 @@ Define a small allowlist of operations. Validate completed arguments, retrieve o
 - [Available models](/API/core/ai/models)
 - [Chatbots and reply presentation](/API/core/ai/chatbot)
 - [Research with sources](/API/core/ai/grounded-answers)
-- [Document and photo analysis](/API/core/ai/media-inputs)
+- [File and image analysis](/API/core/ai/media-inputs)

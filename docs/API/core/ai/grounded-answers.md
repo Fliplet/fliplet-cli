@@ -220,5 +220,5 @@ For interactive research, follow the [progressive reply guidance](chatbot#stream
 - [AI JavaScript reference](/API/core/ai)
 - [AI models](models)
 - [AI reply presentation and conversations](chatbot)
-- [Analyze PDFs and images](media-inputs)
+- [File and image analysis](media-inputs)
 - [Tools and authorized actions](tool-calling)

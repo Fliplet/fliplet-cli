@@ -44,7 +44,7 @@ Generate text and images, transcribe audio and create embeddings through Fliplet
 | Generated text, summaries or an AI chatbot | [createCompletion()](#flipletaicreatecompletion); [ask()](#instance-methods) for a single text request | [OpenAI text](/API/core/ai/models#openai-text-models) or [Gemini text](/API/core/ai/models#gemini-text-models) |
 | Model-requested app operations | [createCompletion()](#flipletaicreatecompletion) and the [tool-calling guide](/API/core/ai/tool-calling) | Compatible function-tool model |
 | Research with cited web sources | [createCompletion()](#flipletaicreatecompletion) and the [grounded-answers guide](/API/core/ai/grounded-answers) | Compatible hosted-search model |
-| PDF/photo analysis and structured extraction | [createCompletion()](#flipletaicreatecompletion) and the [media-input guide](/API/core/ai/media-inputs) | Compatible file/image and structured-output model |
+| File and image analysis | [createCompletion()](#flipletaicreatecompletion) and the [media-input guide](/API/core/ai/media-inputs) | Compatible file/image model; structured-output support when required |
 | OpenAI image generation | [generateImage()](#flipletaigenerateimage) | [Images](/API/core/ai/models#image-models) |
 | Gemini image generation | [createCompletion() with Gemini contents](#gemini-image-generation) | [Images](/API/core/ai/models#image-models) |
 | Audio transcription | [transcribeAudio()](#flipletaitranscribeaudio) | [Transcription](/API/core/ai/models#transcription-models) |
@@ -649,6 +649,6 @@ See [JavaScript metadata and additional provider IDs](/API/core/ai/models#histor
 - [AI reply presentation and conversations](/API/core/ai/chatbot): safe formatting, progressive output, conversation state and send/retry controls.
 - [Tools and authorized actions](/API/core/ai/tool-calling): bounded tool loops, validation and existing app permissions.
 - [Research with cited sources](/API/core/ai/grounded-answers): hosted search and safe inline citations.
-- [Analyze documents and photos](/API/core/ai/media-inputs): authorized content and validated structured results.
+- [File and image analysis](/API/core/ai/media-inputs): authorized content, task-appropriate output and validated extraction.
 - [Record or upload audio](/API/core/ai/audio-transcription): file selection, microphone capture and transcript insertion.
 - [App AI REST API](/REST-API/fliplet-ai): external requests and authentication.
