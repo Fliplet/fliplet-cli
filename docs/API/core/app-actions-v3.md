@@ -940,31 +940,50 @@ await Fliplet.App.V3.Actions.run('confirm-booking', {
 
 ### `runWithResult(nameOrId, payload)` — wait for result
 
-Executes the action and waits for it to complete. Returns the value from the `execute()` function.
+Executes the action and waits for it to complete. The result shape depends on where it runs.
 
 - **Parameters:**
   - `nameOrId` (String or Number) — The action name or numeric ID
   - `payload` (Optional Object) — Data to pass as `context.payload`.
-- **Returns:** Promise that resolves with the return value of the `execute()` function. The result is limited to 6MB.
+- **Returns:** A Promise resolving to the result described below. Server results are limited to 6MB.
+
+| Execution | Resolved value |
+|-----------|----------------|
+| Server | A result object: `{ success: true, data: <execute() return value> }` on success. Read the action's value from `result.data`, including `false`, `0`, `null`, and an empty string. |
+| Client | The value returned by `execute()` directly. A thrown error rejects the Promise. |
+| `any` | Uses the client behavior when the action is bundled locally; otherwise it runs on the server and uses the server result object. |
+
+Server execution failures can resolve with `{ success: false, error: { message: "..." } }`; they do not necessarily reject the Promise. Returning `{ success: false, error: "..." }` from the action can also produce a failed server result, with the returned value retained in `data`. Check `result.success` before using `result.data`, and handle any application-specific outcome within that value. Request failures, such as an HTTP or network error, can reject the Promise and need a `catch` handler.
 
 ```js
-// Run and get the result
-var result = await Fliplet.App.V3.Actions.runWithResult('confirm-booking', {
-  entryId: 123,
-  name: 'Nick'
-});
-// result is exactly what execute() returned
-// e.g., { success: true }
-if (result.success) {
-  // Booking confirmed
+// confirm-booking is configured with environment: 'server'.
+// Its execute() function returns { bookingId: 123, confirmed: true }.
+try {
+  var result = await Fliplet.App.V3.Actions.runWithResult('confirm-booking', {
+    entryId: 123,
+    name: 'Nick'
+  });
+
+  if (!result || result.success !== true) {
+    throw new Error('The booking action failed.');
+  }
+
+  var booking = result.data;
+  if (booking.confirmed) {
+    // Booking confirmed; booking.bookingId is 123.
+  }
+} catch (error) {
+  // Show a failure state. Do not automatically retry a potentially completed write.
 }
 
-// Run by action ID instead of name
-var result = await Fliplet.App.V3.Actions.runWithResult(12345, {
-  entryId: 123
+// calculate-total is bundled locally with environment: 'client' or 'any'.
+// Its execute() function returns a number, so no .data access is needed.
+var total = await Fliplet.App.V3.Actions.runWithResult('calculate-total', {
+  quantity: 2
 });
-// result is the return value of execute()
 ```
+
+Choose the result handling for the action's execution environment. Do not use `result.data || result`: it loses valid falsy values and can mistake a client action's own `data` property for a server wrapper. An action ID can be used instead of its name in either example.
 
 <p class="quote">Rate limiting: the run action endpoint is limited to <strong>30 requests per minute</strong>. Contact the Fliplet team for more details.</p>
 
@@ -1589,7 +1608,7 @@ All error responses follow this format:
 | `Fliplet.App.V3.Actions.update(id, data)` | `id` (Number), `data` (Object) | `action` (object) | Update a master action |
 | `Fliplet.App.V3.Actions.remove(id)` | `id` (Number) | void | Delete an action (master + production) |
 | `Fliplet.App.V3.Actions.run(nameOrId, payload)` | `nameOrId` (String/Number), `payload` (Object) | Promise<void> | Queue action for execution, no return value |
-| `Fliplet.App.V3.Actions.runWithResult(nameOrId, payload)` | `nameOrId` (String/Number), `payload` (Object) | Return value of `execute()` | Run action and wait for result |
+| `Fliplet.App.V3.Actions.runWithResult(nameOrId, payload)` | `nameOrId` (String/Number), `payload` (Object) | Server result object; direct `execute()` value on client | Run action and wait for result; see result handling above |
 | `Fliplet.App.V3.Actions.publish(id)` | `id` (Number) | `{ action }` | Publish master to production |
 | `Fliplet.App.V3.Actions.unpublish(id)` | `id` (Number) | void | Remove from production |
 | `Fliplet.App.V3.Actions.getLogs(options)` | `{ id, where, limit, offset }` | `{ count, logs }` | Get execution logs |
