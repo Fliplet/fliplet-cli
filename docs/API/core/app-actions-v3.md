@@ -63,7 +63,7 @@ Actions have two versions: **master** (development) and **production** (live).
 
 - `create()` always creates a **master** action. Creating, updating or restoring a master action does not start its automatic schedule or change the published schedule.
 - `update()` can only update the **master** action. You can **not** update a production action directly — update the master and republish.
-- Publishing the whole app (`POST /v1/apps/:appId/publish`) copies its V3 actions to production, including apps that contain only actions. This does not require a website URL or a web, iOS or Android build.
+- Publishing the whole app (`POST /v1/apps/:appId/publish`) copies its V3 actions to production, including apps that contain only actions; no website URL or web, iOS or Android build is required. In Studio V3, choose **Publish** > **Publish project changes**.
 - `publish()` copies one master action to production. The app itself must already be published.
 - `unpublish()` removes the production version. The master version remains.
 - `remove()` deletes the master action. If a production version exists, it is also deleted. You can **not** delete a production action directly.
