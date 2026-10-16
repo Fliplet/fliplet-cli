@@ -391,6 +391,40 @@ async function execute(context) {
 // Requires dependency: fliplet-notifications
 ```
 
+## Authorize callers before accessing private data
+
+A server action keeps provider credentials off the device; it does not automatically restrict who can receive the action's result. Decide which operations are public and which require an app user. Reading public information need not require login. Reading private account data or performing restricted writes requires an authorization check inside the action, before contacting the provider. A hidden button or a protected screen is not that check.
+
+For an on-demand action using Data Source login, include `fliplet-session` in `dependencies`. Read the calling session with `Fliplet.Session.run({ url: 'v1/session', cache: false })` and inspect `response.session.entries.dataSource`. Check its `dataSourceId` against the intended login Data Source and require its `id` (the authenticated entry ID). A session existing, or an email matching a row, is not sufficient. Do not accept caller identity or permission claims from `context.payload` or session `client` fields.
+
+```js
+// Action environment: 'server'; dependencies: ['fliplet-session'].
+// Replace 123 with the app's intended login Data Source ID.
+async function execute(context) {
+  try {
+    const response = await Fliplet.Session.run({ url: 'v1/session', cache: false });
+    const session = response && response.session;
+    const entry = session && session.entries && session.entries.dataSource;
+
+    if (!entry || entry.dataSourceId !== 123 || !entry.id) {
+      return { success: false, error: 'Access denied' };
+    }
+
+    // Identity check only. Apply the operation's account/ownership policy
+    // before adding a private provider request here.
+    return { success: true, identityVerified: true };
+  } catch (error) {
+    return { success: false, error: 'Unable to verify access' };
+  }
+}
+```
+
+This fresh read rejects request failures instead of returning a stored session; see [fresh session reads](../fliplet-session#read-the-session-without-a-stored-session-fallback). It establishes the authenticated entry, not necessarily its current permissions. If access depends on current account status, role or record ownership, read the authoritative records and apply that policy before the provider request. Session entry data can reflect an earlier login; do not treat a snapshot as proof that an account is still active. Add `fliplet-datasources` when using `Fliplet.DataSources` for those checks.
+
+Scheduled actions have no interactive caller. Give a scheduled service operation its own explicit permitted resources and operations. Never interpret a missing on-demand caller as permission to run the scheduled path. Likewise, keep caller authorization separate from the provider credential: a valid API key does not establish the caller's access.
+
+Verify both permitted and denied calls: the intended user succeeds, while signed-out users, a login from another Data Source, forged payload identity and failed session reads make no provider request. Verify current-account or ownership restrictions separately when the app requires them.
+
 ## Dependencies
 
 If your action code uses Fliplet APIs, you must include the corresponding package in the `dependencies` array. Dependencies can be Fliplet package names or external URLs.
@@ -409,6 +443,7 @@ dependencies: [
 
 | Package | Required when using | Description | API Reference |
 |---------|---------------------|-------------|---------------|
+| `fliplet-session` | `Fliplet.Session` | Session API — read the calling session | [Session JS API](../fliplet-session) |
 | `fliplet-datasources` | `Fliplet.DataSources` | Data Sources API — connect, find, insert, update, remove entries | [Data Sources JS API](https://developers.fliplet.com/API/fliplet-datasources.html) |
 | `fliplet-media` | `Fliplet.Media` | Media API — upload, retrieve, and manage media files | [Media JS API](https://developers.fliplet.com/API/fliplet-media.html) |
 | `fliplet-communicate` | `Fliplet.Communicate` | Communication API — send emails, push notifications, SMS | [Communicate JS API](https://developers.fliplet.com/API/fliplet-communicate.html) |
@@ -491,6 +526,7 @@ await Fliplet.Media.Files.upload({ folderId: folderId, file: fileBlob });
 
 When writing action code, **match each `Fliplet.*` namespace used in the `execute` function to its corresponding package** and include it in the `dependencies` array:
 
+- Code uses `Fliplet.Session` → add `fliplet-session`
 - Code uses `Fliplet.DataSources` → add `fliplet-datasources`
 - Code uses `Fliplet.Communicate` → add `fliplet-communicate`
 - Code uses `Fliplet.Media` → add `fliplet-media`

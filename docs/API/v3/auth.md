@@ -219,7 +219,7 @@ async function isLoggedIn() {
 }
 ```
 
-`Fliplet.User.getCachedSession()` is fast and works offline because it reads from local storage. Use it for UI decisions (show/hide content). For server-verified session checks, use `Fliplet.Session.get()` instead (requires network).
+`Fliplet.User.getCachedSession()` is fast and works offline because it reads from local storage. Use it for UI decisions (show/hide content). `Fliplet.Session.get()` requests the session but can fall back to a stored session on failure. When an access decision requires a fresh read that fails on request errors, use the [session read without stored-session fallback](../fliplet-session#read-the-session-without-a-stored-session-fallback).
 
 ### Get the Logged-In User's Data
 
