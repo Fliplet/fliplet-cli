@@ -565,7 +565,9 @@ Each trigger in the `triggers` array is an object with these properties:
 
 ### `manual` trigger
 
-The `manual` trigger has no `where` clause. It fires when you call `run()` or `runWithResult()`.
+The `manual` trigger has no `where` clause. Direct calls to `run()` or `runWithResult()` do not require this trigger.
+
+Trigger configuration does not authorize callers. Removing `manual`, or using an empty `triggers` array, does not prevent direct invocation. For restricted operations, [authorize callers inside the server action](#authorize-callers-before-accessing-private-data).
 
 ```js
 triggers: [{ trigger: 'manual' }]
@@ -833,7 +835,7 @@ var result = await Fliplet.App.V3.Actions.create({
 
 ### Create an on-demand (manual) action
 
-<p class="warning">To run an action on-demand (e.g., triggered by a user), you <strong>must</strong> include the <code>manual</code> trigger. Without it, <code>run()</code> and <code>runWithResult()</code> cannot execute the action.</p>
+The example includes a `manual` trigger, but direct invocation does not require it. See [the manual trigger and caller authorization](#manual-trigger).
 
 ```js
 var result = await Fliplet.App.V3.Actions.create({
@@ -950,9 +952,9 @@ var result = await Fliplet.App.V3.Actions.create({
 
 ## Run an on-demand action
 
-Actions with a `manual` trigger can be executed using `run()` (fire and forget) or `runWithResult()` (wait for the return value). Pass the action `name` (String) or `id` (Number) as the first parameter.
+Use `run()` (fire and forget) or `runWithResult()` (wait for the return value) to invoke an action directly. Pass the action `name` (String) or `id` (Number) as the first parameter.
 
-<p class="warning">Only actions with a <code>manual</code> trigger can be run via <code>run()</code> or <code>runWithResult()</code>. Calling these methods on an action without a <code>manual</code> trigger results in an error. The action must also have <code>active: true</code>.</p>
+The action must have `active: true`. A `manual` trigger is not required, including when `triggers` is empty. App access, the action's execution environment and any authorization checks inside the action still apply. See [the manual trigger and caller authorization](#manual-trigger).
 
 ### `run(nameOrId, payload)` — fire and forget
 
