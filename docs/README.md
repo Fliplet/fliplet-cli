@@ -94,7 +94,7 @@ Here's a short list of requested features that are coming up on our platform in 
   <a class="bl two" href="/API/core/ai">
     <div>
       <h4>AI</h4>
-      <p>Generate text and images, transcribe audio and create embeddings. Build tool-using assistants, cited research and document/photo analysis with Fliplet.AI.</p>
+      <p>Generate text and images, transcribe audio and create embeddings. Build tool-using assistants, cited research and file and image analysis with Fliplet.AI.</p>
       <button>Browse documentation &rarr;</button>
     </div>
   </a>

@@ -33,8 +33,8 @@ function browser(page, html, scripts) {
   scripts.forEach(id => vm.runInContext(fence(page, id), dom.getInternalVMContext()));
   return { dom, window, requests, extraction, element: id => window.document.getElementById(id) };
 }
-const media = scripts => browser('media-inputs', 'media-html', scripts || ['media-core', 'media-form', 'media-private']);
-const research = () => browser('grounded-answers', 'grounded-html', ['grounded-main']);
+const media = scripts => browser('file-and-image-analysis', 'media-html', scripts || ['media-core', 'media-form', 'media-private']);
+const research = () => browser('web-search', 'grounded-html', ['grounded-main']);
 async function until(predicate, message = 'Expected async state was not reached') {
   const deadline = Date.now() + 3000;
   while (!predicate()) {
@@ -62,7 +62,7 @@ function streamResponse(bytes, { type = 'application/pdf', length = null } = {})
 
 it('research uses Responses search and the declared real parser and sanitizer for inline returned sources', async () => {
   const b = research();
-  const resources = JSON.parse(fence('grounded-answers', 'grounded-resources'));
+  const resources = JSON.parse(fence('web-search', 'grounded-resources'));
   const dependencies = JSON.parse(readFileSync(new URL('../../package.json', import.meta.url))).devDependencies;
   assert.ok(resources[0].latest.includes('marked@' + dependencies.marked + '/'));
   assert.ok(resources[1].latest.includes('dompurify@' + dependencies.dompurify + '/'));

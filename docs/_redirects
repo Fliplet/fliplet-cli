@@ -1,0 +1,7 @@
+# Keep published AI guide links working. Markdown stays Markdown for AI clients.
+/API/core/ai/grounded-answers /API/core/ai/web-search 301
+/API/core/ai/grounded-answers.html /API/core/ai/web-search 301
+/API/core/ai/grounded-answers.md /API/core/ai/web-search.md 301
+/API/core/ai/media-inputs /API/core/ai/file-and-image-analysis 301
+/API/core/ai/media-inputs.html /API/core/ai/file-and-image-analysis 301
+/API/core/ai/media-inputs.md /API/core/ai/file-and-image-analysis.md 301

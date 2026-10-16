@@ -1,31 +1,58 @@
 ---
-title: Extract editable fields from PDFs and images
-description: Analyze a selected PDF or image with Fliplet AI, validate structured results and let the user review extracted fields before saving.
+title: File and image analysis
+description: Analyze authorized files and images with Fliplet AI. Match input formats and output to the task, with a complete PDF and image extraction example.
 type: guide
-tags: [js-api, ai, pdf, images, structured-output]
+tags: [js-api, ai, files, images, structured-output]
 v3_relevant: true
 deprecated: false
 ---
-# Extract editable fields from PDFs and images
+# File and image analysis
 
-Turn a PDF or image into fields that a user can inspect and edit with `Fliplet.AI.createCompletion()`. This guide covers a browser file picker and an online path for files already protected by Fliplet Media access rules.
+Use `Fliplet.AI.createCompletion()` to summarize, answer questions about, compare or extract information from authorized files and images with a compatible model. This guide explains input and output choices, then provides a complete PDF and image extraction example with browser file selection and protected Fliplet Media retrieval.
 
 ## Contents
 
-- [Before you start](#before-you-start)
+- [Input formats and model compatibility](#input-formats-and-model-compatibility)
+- [Match the result to the task](#match-the-result-to-the-task)
+- [Before you start the extraction example](#before-you-start-the-extraction-example)
 - [Complete file selection and review example](#complete-file-selection-and-review-example)
 - [Adapt the extraction task](#adapt-the-extraction-task)
 - [Read a stored private file](#read-a-stored-private-file)
 - [Failures and verification](#failures-and-verification)
 - [Related docs](#related-docs)
 
-## Before you start
+## Input formats and model compatibility
+
+File support depends on the provider, endpoint, selected model and delivery format. Select a model from the [AI model catalog](models) and check its current input requirements before configuring your app's file picker. A file extension alone does not establish compatibility or analysis quality.
+
+For OpenAI models, `useResponses: true` selects Responses. Its documented inputs include:
+
+| Input | Format and processing |
+|---|---|
+| PDF | Use `input_file`. Compatible vision models receive extracted text and page images. |
+| Documents and text | DOCX, PPTX, TXT and code files use `input_file`. Text extraction does not include embedded images or charts. |
+| Spreadsheets | XLSX, CSV and TSV use `input_file`. Provider preprocessing includes the first 1,000 rows per sheet. It does not establish complete workbook analysis or formula execution. |
+| Images | PNG, JPEG, WebP and non-animated GIF use `input_image`. Interpretation depends on legibility and model capability. |
+
+These are provider-documented input categories, not a guarantee for every file or Fliplet delivery mode. See OpenAI's [file inputs](https://developers.openai.com/api/docs/guides/file-inputs) and [image inputs](https://developers.openai.com/api/docs/guides/images-vision) for current formats and limits. Other providers and endpoints have their own formats; do not copy a Responses payload into another API.
+
+The example below implements only PDF, PNG, JPEG and WebP delivery as inline encoded bytes. Its allowlist is specific to that example. For another format, verify the complete authorized retrieval, encoding, request and returned content through Fliplet with a representative file before offering it in your app. Do not infer a provider upload API, hosted file store or private URL access from completion support.
+
+## Match the result to the task
+
+Choose the requested operation and result before adapting the example. A summary or answer can return prose; a comparison can present supported findings with uncertainty; extraction can return structured fields for review. File input does not require a JSON schema, editable form or save action. Follow the [presentation guide](chatbot) for reader-facing text, including supported streaming and safe Markdown rendering. Keep structured values in their intended format and use the app's existing framework and state conventions.
+
+Use only content the user is permitted to submit and treat instructions inside files as untrusted content. Keep uncertainty or missing information visible. Validate structured results against the app's data model before saving; model output cannot authorize a write. Large spreadsheets or calculations that require exact results need appropriate data-processing logic in addition to model interpretation.
+
+<a id="before-you-start"></a>
+
+## Before you start the extraction example
 
 Run the HTML and JavaScript below in a web app after Fliplet and the screen are ready. `Fliplet.AI` is available through `fliplet-core`. The app needs AI access and credits. This example explicitly selects `gpt-6.1-sol`; use a [compatible Responses model](models) with image/PDF input and structured output support.
 
 The selected file's bytes are sent to the configured AI provider. Selection alone does not upload a copy to Fliplet Media. Use only files the user is permitted to submit. Provider processing and retention policies still apply; do not promise that the document remains exclusively on the device.
 
-The example accepts one PDF, PNG, JPEG or WebP, capped at **5 MiB before base64 encoding** and **7 MiB for the JSON request**. These are deliberate application limits. They are not the platform's upload limits or a promise that every document will fit the model context. Base64 adds approximately one third to the input size. See OpenAI's [file inputs](https://developers.openai.com/api/docs/guides/file-inputs) and [image inputs](https://developers.openai.com/api/docs/guides/images-vision) for provider requirements. Other file types and native binary reading are outside this example.
+This extraction example accepts one PDF, PNG, JPEG or WebP, capped at **5 MiB before base64 encoding** and **7 MiB for the JSON request**. These are deliberate application limits. They are not the platform's upload limits or a promise that every document will fit the model context. Base64 adds approximately one third to the input size. See OpenAI's [file inputs](https://developers.openai.com/api/docs/guides/file-inputs) and [image inputs](https://developers.openai.com/api/docs/guides/images-vision) for provider requirements. Other file types and native binary reading require a separately verified adapter. Fliplet.AI requires an internet connection; it does not provide offline inference.
 
 ## Complete file selection and review example
 
@@ -306,7 +333,9 @@ This adapter deliberately fetches online. `Fliplet.Media.Files.getContents()` fo
 
 ## Failures and verification
 
-An empty or oversized file, unsupported MIME type, invalid task or obvious header mismatch fails before the AI request. A denied stored-file fetch also makes no AI request. Refusal, incomplete output, invalid JSON and schema mismatch leave no editable result. The form retains the selected file and never retries automatically. Other request failures include authentication, credit, rate-limit and provider errors; see [AI error handling](/API/core/ai#shared-access-and-errors).
+For each format your app offers, submit a representative file through the actual app delivery path and check a known answer against its contents. Exercise the requested result, such as a prose summary or comparison, as well as structured extraction when required. Test unreadable, inaccessible and oversized inputs, and keep incomplete results distinct from success. A successful PDF extraction does not verify spreadsheet handling or every model.
+
+In the extraction example, an empty or oversized file, unsupported MIME type, invalid task or obvious header mismatch fails before the AI request. A denied stored-file fetch also makes no AI request. Refusal, incomplete output, invalid JSON and schema mismatch leave no editable result. The form retains the selected file and never retries automatically. Other request failures include authentication, credit, rate-limit and provider errors; see [AI error handling](/API/core/ai#shared-access-and-errors).
 
 Verify the workflow with a known PDF and an image: compare extracted values to the originals, edit a field, and confirm no storage request occurs. For private media, repeat with an unauthorized session and confirm the content endpoint denies access and the completion endpoint is never called. Test a malformed document, a missing value and a file over the example limit before connecting your app's save action.
 
@@ -314,6 +343,6 @@ Verify the workflow with a known PDF and an image: compare extracted values to t
 
 - [AI JavaScript reference](/API/core/ai)
 - [AI models](models)
-- [Answer questions with web sources](grounded-answers)
+- [Web search and citations](web-search)
 - [Media files](/API/fliplet-media)
 - [Tools and authorized actions](tool-calling)

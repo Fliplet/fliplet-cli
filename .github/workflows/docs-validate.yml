@@ -16,6 +16,8 @@ on:
     paths:
       - 'docs/**/*.md'
       - 'docs/bin/**'
+      - 'docs/_config.yml'
+      - 'docs/_redirects'
       - 'docs/package.json'
       - 'docs/package-lock.json'
       - '.github/workflows/docs-validate.yml'
@@ -24,6 +26,8 @@ on:
     paths:
       - 'docs/**/*.md'
       - 'docs/bin/**'
+      - 'docs/_config.yml'
+      - 'docs/_redirects'
       - 'docs/package.json'
       - 'docs/package-lock.json'
       - '.github/workflows/docs-validate.yml'

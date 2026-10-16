@@ -191,5 +191,5 @@ The completion proxy also routes additional model IDs and provider snapshots tha
 - [Record or upload audio](/API/core/ai/audio-transcription)
 - [App AI REST API](/REST-API/fliplet-ai)
 - [Tools and authorized actions](/API/core/ai/tool-calling)
-- [Research with cited sources](/API/core/ai/grounded-answers)
-- [Analyze documents and photos](/API/core/ai/media-inputs)
+- [Web search and citations](/API/core/ai/web-search)
+- [File and image analysis](/API/core/ai/file-and-image-analysis)

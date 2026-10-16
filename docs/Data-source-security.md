@@ -436,7 +436,7 @@ The behavior of `require` varies by operation type:
 - **For `select` queries:** Requirements validate the submitted filter. For example, if a rule requires {% raw %}`{ "Email": { "equals": "{{user.[Email]}}" } }`{% endraw %}, a `find()` call must include `where: { Email: user.Email }` (or an equivalent supported filter) for that rule to grant access. Direct reads by entry ID instead validate the stored entry data. To obtain session data client-side, use the [Session API](API/fliplet-session.html).
 - **For `delete` operations:** Direct deletion by entry ID validates the stored entry data and does not require a client `where` filter. Query-based deletion requires a nonempty filter and read access, then validates delete access against each matched row's stored data. Explicit commit deletion IDs provide an array of existing row data; other bulk deletion paths, such as replacing imported data, can omit row data. Do not assume every delete evaluates a submitted filter or always provides stored rows.
 - **For `insert` operations:** Required fields and value conditions validate the submitted data.
-- **For `update` operations:** String requirements check that the submitted data includes the named fields. Object-form value conditions check the existing stored row, including stored rows loaded for commit updates. They do not restrict proposed replacement values. Use a [custom rule](#custom-security-rules) with `payload` checks to enforce allowed new values or an exact set of write fields.
+- **For `update` operations:** String requirements check that the submitted data includes the named fields. Object-form value conditions check the existing stored row, including stored rows loaded for commit updates. They do not restrict proposed replacement values. The current custom-rule `query` context also cannot reliably enforce allowed new values or an exact set of write fields. Use a server write mechanism that independently enforces such constraints, or leave the constrained write unavailable.
 
 <p class="warning"><strong>Rules grant access independently:</strong> If any <code>require</code> condition fails, that rule does not grant access and evaluation continues for reads and writes alike. Access is denied only if no applicable rule grants it. Remove or narrow any other rule that would admit requests your restrictions are intended to reject; ordering a strict rule first does not make a broader fallback safe.</p>
 
@@ -515,63 +515,14 @@ When writing a custom rule, these variables are available in the script context:
 - `user` (Object) — the authenticated user's session data, or `undefined` if not logged in. For data-source passport sessions (e.g., Email Verification, Fliplet Login), this contains the flat column values from the user's row in the authentication data source (e.g., `user.Email`, `user.Role`). For SAML2 sessions, it contains the assertion attributes.
 - `session` (Object) — server-verified login context with `loggedIn` (Boolean), `passports` (Array of passport type names), `dataSourceId` and `entryId` (Numbers when the current identity is a data source login). For Studio preview, it is scoped to the previewed app. Guard missing values and bind `session.dataSourceId` to the intended login source when access depends on that source. This is not the client-writable session data from `Fliplet.Session.set()`.
 - `query` (Object or Array) — legacy request context. A truthy submitted `where` takes precedence over operation data and the request body. It does not prove that the route will apply those fields as a filter or write them as data. Do not use it to authorize constrained reads or writes: without `where`, arbitrary body fields can look like a valid filter even though the route reads without that filter.
-- `filter` (Object or `undefined`) — a deep copy of the filter supplied by the query route at access validation. Use it to validate constrained reads. Routes that do not supply a filter, including direct reads by entry ID, leave it undefined; deny those paths when the rule requires a filter. Its values are client-controlled. Changing this copy does not rewrite the request. It describes the filter at validation, not the final database query after hooks; do not attach hooks that broaden or replace filters when relying on these examples.
-- `payload` (Object, Array or `undefined`) — a deep copy of the operation data selected by the server for access validation. For individual inserts and updates it contains the proposed column values; query-based updates provide the update data separately from the filter. Commit inserts and updates provide arrays of flat column objects. Other operations may omit it; validate its presence and shape before use. Submitted values remain client-controlled. The copy is mutable, but changing it does not rewrite the operation or another rule's payload. It reflects data at access validation, which can differ from the original request and from the final stored row after exclusions or hooks.
 - `entry` (Object or `undefined`) — the existing entry for individual updates and each row of a query-based update, with `id` (Number) and `data` (Object containing current column values). Commit updates do not provide a single `entry`; do not infer stored ownership from their submitted payload arrays.
 - `DataSources` (Function) — server-side library for reading data from other data sources. See [Reading data from other Data Sources](#reading-data-from-other-data-sources)
 
-<p class="warning"><strong>Preview:</strong> The <code>filter</code> and <code>payload</code> contexts require the pending API release. Deploy rules using them only after that support is available in your region. Guard both with <code>typeof</code> checks to deny unsupported reads and writes on older APIs; never fall back to <code>query</code>.</p>
-
-For ownership checks on updates, compare authenticated identity with the existing `entry.data`, then validate the proposed `payload`. A submitted owner value does not prove ownership of the stored record. See the complete [authorized AI tool example](/API/core/ai/tool-calling#configure-record-access) for a login-source binding and a narrow update rule.
-
-This rule permits department-filtered reads, inserts with exactly `Name` and `Department`, and a `Name` update to an active record already in the user's department. Set the login data source ID before use and remove any broader fallback rules. It denies deletes and array payloads. Query-based updates are checked per existing row, so several eligible rows can pass; rejecting arrays does not prohibit every multi-row operation.
-
-<!-- example: department-write-rule -->
-```js
-const LOGIN_DATA_SOURCE_ID = 123;
-const denied = { granted: false };
-if (!user || typeof user.Department !== 'string' || !user.Department ||
-    !session || !session.loggedIn || session.dataSourceId !== LOGIN_DATA_SOURCE_ID) {
-  return denied;
-}
-if (type === 'select') {
-  return { granted: typeof filter !== 'undefined' && !!filter &&
-    typeof filter === 'object' && !Array.isArray(filter) &&
-    Object.keys(filter).length === 1 && filter.Department === user.Department };
-}
-if (type !== 'insert' && type !== 'update') return denied;
-if (typeof payload === 'undefined' || !payload ||
-    typeof payload !== 'object' || Array.isArray(payload) ||
-    typeof payload.Name !== 'string' || !payload.Name.trim() || payload.Name.length > 100) {
-  return denied;
-}
-if (type === 'insert') {
-  return { granted: Object.keys(payload).length === 2 && payload.Department === user.Department };
-}
-// Updates cannot change the stored department or activate another record.
-return { granted: Object.keys(payload).length === 1 && !!entry && !!entry.data &&
-  entry.data.Department === user.Department && entry.data.Active === true };
-```
-
-With `fliplet-datasources` loaded and a user logged into source `123` with `Department: 'Engineering'`, these calls use a separate records data source (`456`). Record `789` must already have `Department: 'Engineering'` and `Active: true` for its update to succeed.
-
-```js
-async function useDepartmentRecords() {
-  const connection = await Fliplet.DataSources.connect(456, { offline: false });
-  await connection.find({ where: { Department: 'Engineering' } });
-  await connection.insert({ Name: 'New hire', Department: 'Engineering' });
-  await connection.update(789, { Name: 'Updated name' }, { allowOffline: false });
-}
-useDepartmentRecords().catch(function(error) {
-  console.error('Department operation failed:', error);
-});
-```
-
-An insert for another department, an update containing `Department` or `Active`, and an update to another department's stored row are denied. A body containing `{ where: { Name: 'Allowed' }, Name: 'Changed', Active: true }` is also denied: the rule validates every key in `payload`, regardless of `query`.
+The current `query` context cannot reliably distinguish a caller's filter from proposed write data. Use the documented declarative rules when they express the permission. If the available context cannot establish a required constraint, deny that operation or use a server action that independently enforces it.
 
 ### Granting access
 
-Return an object with `granted: true` to grant access. For reads, return an `exclude` or `include` array to restrict returned columns. `include` does not enforce a write allowlist; validate the exact keys and values in `payload` for narrow writes:
+Return an object with `granted: true` to grant access. For reads, return an `exclude` or `include` array to restrict returned columns. `include` does not enforce a write allowlist. This example grants read access only:
 
 ```js
 if (type === 'select') {
@@ -597,66 +548,11 @@ if (type === 'select') {
 
 ### Validating submitted filters
 
-Validate the route-supplied `filter` before granting constrained read access. A plausible value in legacy `query` does not prove the route will apply it. Mutating `filter`, `query` or `payload` is not a supported way to rewrite the database operation. Do not attach hooks that broaden or replace read filters after access validation.
-
-This read-only rule requires exactly one literal `Office` filter matching the authenticated user. It denies missing filters, query operators, direct reads by entry ID and other operations. It requires the preview `filter` context described above and fails closed when that context is unavailable. Keep it as the only rule for this access path, or ensure other rules cannot grant broader access. For additional login-source restrictions, use the trusted `session` context described above.
-
-<!-- example: office-filter-rule -->
-```js
-if (!user || typeof user.Office !== 'string' || !user.Office ||
-    type !== 'select' || typeof filter === 'undefined' || !filter ||
-    typeof filter !== 'object' || Array.isArray(filter) ||
-    Object.keys(filter).length !== 1 || filter.Office !== user.Office) {
-  return { granted: false };
-}
-return { granted: true };
-```
-
-The app must submit the matching filter. Load `fliplet-session` and `fliplet-datasources`, replace `123` with the records data source ID and run after Fliplet is ready. The client value constructs the query; the security rule independently checks it against the authenticated user's office.
-
-```js
-async function readOfficeRecords() {
-  const session = await Fliplet.Session.get();
-  const account = session && session.entries && session.entries.dataSource;
-  const user = account && account.data;
-  if (!user || typeof user.Office !== 'string' || !user.Office) {
-    throw new Error('Sign in with the app login before reading office records.');
-  }
-  const connection = await Fliplet.DataSources.connect(123, { offline: false });
-  return connection.find({ where: { Office: user.Office } });
-}
-readOfficeRecords().then(console.log).catch(function(error) {
-  console.error('Office records could not be read:', error);
-});
-```
-
-For inserts, validate the supplied `payload` fields and reject unauthorized values. For updates, check the stored `entry.data` as well as `payload`. Use a supported server write mechanism when a value must be generated or changed on the server; do not depend on security-script assignment to persist it.
+A plausible value in legacy `query` does not prove that the route will apply those fields as a read filter. Do not use it to authorize constrained reads or writes. Mutating a security-script context is not a supported way to rewrite the database operation. Use declarative read requirements when they express the restriction, and review hooks that may broaden an authorized query.
 
 ### Checking data when committing changes
 
-The data source `commit` operation evaluates security separately for inserts, updates and deletes. For inserts and updates, `payload` is an array of flat column objects. A commit update does not provide the existing rows through a single `entry`, so a rule that needs stored ownership must deny that shape unless it can independently verify the targeted records. Checking submitted owner fields alone is insufficient.
-
-For explicit commit deletion IDs, the server can provide an array of existing row data. Other deletion paths can omit operation data. Do not assume `payload` is always present or always an array, and do not use `query` as a substitute.
-
-This insert-only rule accepts a nonempty array of records with exactly `Name` and the authenticated user's `Department`. It denies updates and deletes, which need separate authorization. Set the login source ID and use it only where those operations should remain denied. The rule also accepts an import's insert batch with the same shape; it does not identify which endpoint submitted the batch.
-
-<!-- example: department-batch-insert-rule -->
-```js
-const LOGIN_DATA_SOURCE_ID = 123;
-if (!user || typeof user.Department !== 'string' || !user.Department ||
-    !session || !session.loggedIn || session.dataSourceId !== LOGIN_DATA_SOURCE_ID ||
-    type !== 'insert' || typeof payload === 'undefined' ||
-    !Array.isArray(payload) || !payload.length) {
-  return { granted: false };
-}
-return { granted: payload.every(function(data) {
-  return !!data && typeof data === 'object' && !Array.isArray(data) &&
-    Object.keys(data).length === 2 && data.Department === user.Department &&
-    typeof data.Name === 'string' && !!data.Name.trim() && data.Name.length <= 100;
-}) };
-```
-
-For an Engineering user, `[{ Name: 'Alice', Department: 'Engineering' }]` passes this insert check. An array containing a Marketing row, an extra field such as `Role`, or a missing name is denied. This validates the insert batch only; other operations in the same commit still require their own authorization. See the [commit API](/API/fliplet-datasources#commit-multiple-changes) for the request structure.
+Commit operations evaluate inserts, updates and deletes separately. Do not assume an individual-record custom rule can authorize a bulk operation or that submitted owner values establish ownership of stored rows. Deny operation shapes for which the available context cannot establish the required permission. See the [commit API](/API/fliplet-datasources#commit-multiple-changes).
 
 ### Reading data from other Data Sources
 

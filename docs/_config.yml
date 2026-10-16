@@ -23,6 +23,7 @@ plugins:
 
 include:
   - _headers
+  - _redirects
 
 # .well-known is intentionally NOT in `include:` — its contents are copied
 # verbatim by bin/copy-md-siblings.mjs after Jekyll runs. Letting Jekyll
