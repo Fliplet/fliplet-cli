@@ -3959,8 +3959,8 @@ Generate text and images, transcribe audio and create embeddings through Fliplet
 | --- | --- | --- |
 | Generated text, summaries or an AI chatbot | [createCompletion()](#flipletaicreatecompletion); [ask()](#instance-methods) for a single text request | [OpenAI text](/API/core/ai/models#openai-text-models) or [Gemini text](/API/core/ai/models#gemini-text-models) |
 | Model-requested app operations | [createCompletion()](#flipletaicreatecompletion) and the [tool-calling guide](/API/core/ai/tool-calling) | Compatible function-tool model |
-| Research with cited web sources | [createCompletion()](#flipletaicreatecompletion) and the [grounded-answers guide](/API/core/ai/grounded-answers) | Compatible hosted-search model |
-| File and image analysis | [createCompletion()](#flipletaicreatecompletion) and the [media-input guide](/API/core/ai/media-inputs) | Compatible file/image model; structured-output support when required |
+| Research with cited web sources | [createCompletion()](#flipletaicreatecompletion) and the [web-search guide](/API/core/ai/web-search) | Compatible hosted-search model |
+| File and image analysis | [createCompletion()](#flipletaicreatecompletion) and the [file and image analysis guide](/API/core/ai/file-and-image-analysis) | Compatible file/image model; structured-output support when required |
 | OpenAI image generation | [generateImage()](#flipletaigenerateimage) | [Images](/API/core/ai/models#image-models) |
 | Gemini image generation | [createCompletion() with Gemini contents](#gemini-image-generation) | [Images](/API/core/ai/models#image-models) |
 | Audio transcription | [transcribeAudio()](#flipletaitranscribeaudio) | [Transcription](/API/core/ai/models#transcription-models) |
@@ -4134,7 +4134,7 @@ async function summarizeWithResponses() {
 summarizeWithResponses();
 ```
 
-For app-managed conversation context, `input` can also be an array such as `[{ role: 'user', content: 'Hello' }, { role: 'assistant', content: 'Hello! How can I help?' }, { role: 'user', content: 'Suggest a meeting agenda.' }]`. Preserve model-required tool items when using tools. Use the [tool-calling](/API/core/ai/tool-calling), [grounded-answer](/API/core/ai/grounded-answers) and [media-input](/API/core/ai/media-inputs) guides for complete workflows. Declaring tools does not execute app operations. Background execution and provider-stored conversations are not established app workflows. See the [Responses schema](https://platform.openai.com/docs/api-reference/responses/create) and [chatbot guide](/API/core/ai/chatbot).
+For app-managed conversation context, `input` can also be an array such as `[{ role: 'user', content: 'Hello' }, { role: 'assistant', content: 'Hello! How can I help?' }, { role: 'user', content: 'Suggest a meeting agenda.' }]`. Preserve model-required tool items when using tools. Use the [tool-calling](/API/core/ai/tool-calling), [web-search](/API/core/ai/web-search) and [file and image analysis](/API/core/ai/file-and-image-analysis) guides for complete workflows. Declaring tools does not execute app operations. Background execution and provider-stored conversations are not established app workflows. See the [Responses schema](https://platform.openai.com/docs/api-reference/responses/create) and [chatbot guide](/API/core/ai/chatbot).
 
 #### Using Gemini models
 
@@ -4564,8 +4564,8 @@ See [JavaScript metadata and additional provider IDs](/API/core/ai/models#histor
 - [AI models available through Fliplet](/API/core/ai/models): configured IDs, provider facts, fallback defaults and retirement notices.
 - [AI reply presentation and conversations](/API/core/ai/chatbot): safe formatting, progressive output, conversation state and send/retry controls.
 - [Tools and authorized actions](/API/core/ai/tool-calling): bounded tool loops, validation and existing app permissions.
-- [Research with cited sources](/API/core/ai/grounded-answers): hosted search and safe inline citations.
-- [File and image analysis](/API/core/ai/media-inputs): authorized content, task-appropriate output and validated extraction.
+- [Web search and citations](/API/core/ai/web-search): hosted search and safe inline citations.
+- [File and image analysis](/API/core/ai/file-and-image-analysis): authorized content, task-appropriate output and validated extraction.
 - [Record or upload audio](/API/core/ai/audio-transcription): file selection, microphone capture and transcript insertion.
 - [App AI REST API](/REST-API/fliplet-ai): external requests and authentication.
 
@@ -4909,8 +4909,8 @@ For permission, credits, MIME and size errors, consult the [method error referen
 - [Build an AI chatbot](/API/core/ai/chatbot)
 - [App AI REST API](/REST-API/fliplet-ai)
 - [Tools and authorized actions](/API/core/ai/tool-calling)
-- [Research with cited sources](/API/core/ai/grounded-answers)
-- [File and image analysis](/API/core/ai/media-inputs)
+- [Web search and citations](/API/core/ai/web-search)
+- [File and image analysis](/API/core/ai/file-and-image-analysis)
 
 ---
 
@@ -5233,7 +5233,7 @@ Add persistence only if the feature needs it. [App storage](/API/core/storage) c
 
 For shared or private server storage, use [Data Sources](/API/fliplet-datasources) with [access rules](/Data-source-security) that enforce the intended owner and operations. Establish identity through the app's genuine login flow and designated login data source; writable `Fliplet.Session.set()` fields do not establish authenticated ownership. If the app supports multiple logins, bind the rule to the intended login source and verify which account is active. Do not add a login or conversation data source to a chatbot that only needs temporary public conversation state.
 
-For model-requested operations, use the [tool-calling guide](/API/core/ai/tool-calling). For hosted search and sources use [grounded answers](/API/core/ai/grounded-answers); for file and image input use [media analysis](/API/core/ai/media-inputs). These capabilities are optional and should follow the feature requirements.
+For model-requested operations, use the [tool-calling guide](/API/core/ai/tool-calling). For hosted search and sources use [web search and citations](/API/core/ai/web-search); for file and image input use [file and image analysis](/API/core/ai/file-and-image-analysis). These capabilities are optional and should follow the feature requirements.
 
 The model does not automatically read app records. Query only records the current user is authorized to read, then include the smallest relevant context in the request. Treat record text as data, avoid sending unnecessary private fields and check authorization again when performing actions based on a reply. Uploading or storing private attachments also needs the [media API](/API/fliplet-media) and its permissions; data-source login bindings are not media access rules.
 
@@ -5259,235 +5259,13 @@ For access, credits and rate-limit errors, use the [error reference](/API/core/a
 - [Record or upload audio](/API/core/ai/audio-transcription)
 - [App AI REST API](/REST-API/fliplet-ai)
 - [Tools and authorized actions](/API/core/ai/tool-calling)
-- [Research with cited sources](/API/core/ai/grounded-answers)
-- [File and image analysis](/API/core/ai/media-inputs)
-
----
-
-# Answer questions with web sources
-URL: https://developers.fliplet.com/API/core/ai/grounded-answers.md
-
-# Answer questions with web sources
-
-Use `Fliplet.AI.createCompletion()` with OpenAI Responses and hosted web search to answer questions using web sources. Display the returned citation annotations alongside the answer so readers can inspect its sources.
-
-## Contents
-
-- [Before you start](#before-you-start)
-- [Complete question and answer example](#complete-question-and-answer-example)
-- [Citation and error behavior](#citation-and-error-behavior)
-- [Related docs](#related-docs)
-
-## Before you start
-
-Run this browser example after the screen HTML and Fliplet are ready. `Fliplet.AI` is available through `fliplet-core`; no provider key belongs in app code. The app needs AI access and credits. Select a compatible [Responses model](models); this example explicitly uses `gpt-6.1-sol`.
-
-The request sends the question to the configured provider and enables its `web_search` tool. It does not query private app records or sign in to websites. Use this flow for public information, and review source dates and content before relying on an answer. Enabling a search tool does not prove that a search ran or that every claim is supported.
-
-### Example resources
-
-Reuse the parser and sanitizer from the [AI reply presentation resources](chatbot#example-resources) if already configured. For a V3 screen, declare both named resources below in app resources; the JavaScript loads them on demand. Buffered research does not need the socket dependency. For other app setups, load these pinned URLs using [dependencies and assets](/Dependencies-and-assets), replace the two lazy-loading calls with your loader, and retain the availability check. Review security updates when maintaining pinned dependencies.
-
-<!-- example: grounded-resources -->
-```json
-[
-  { "name": "ai-chat-marked", "latest": "https://cdn.jsdelivr.net/npm/marked@18.1.0/lib/marked.umd.js", "lazy": true },
-  { "name": "ai-chat-purify", "latest": "https://cdn.jsdelivr.net/npm/dompurify@3.4.16/dist/purify.min.js", "lazy": true }
-]
-```
-
-## Complete question and answer example
-
-Add this HTML, then the JavaScript below. The renderer reads offsets from each unchanged response text part, preserves each annotated span and appends a citation placeholder, parses Markdown, sanitizes it, and inserts visible **Source 1** links using the returned URLs. The source title is available as the link tooltip and accessible label. OpenAI requires visible, clickable inline citations when displaying web results; see its [web search contract](https://developers.openai.com/api/docs/guides/tools-web-search).
-
-<!-- example: grounded-html -->
-```html
-<form id="research-form">
-  <label for="research-question">Question about public information</label>
-  <textarea id="research-question" required maxlength="2000"></textarea>
-  <button id="research-submit" type="submit">Research</button>
-</form>
-<p id="research-status" role="status"></p>
-<div id="research-answer" style="overflow-wrap: anywhere"></div>
-```
-
-<!-- example: grounded-main -->
-```js
-function checkResearchRenderer() {
-  if (!window.marked || typeof window.marked.parse !== 'function' ||
-      !window.DOMPurify || !window.DOMPurify.isSupported) {
-    throw new Error('Answer formatting could not load. Check your connection and retry.');
-  }
-}
-
-async function ensureResearchRenderer() {
-  await Promise.all([
-    Fliplet.require.lazy('ai-chat-marked'),
-    Fliplet.require.lazy('ai-chat-purify')
-  ]);
-  checkResearchRenderer();
-}
-
-function researchSourceUrl(value) {
-  if (typeof value !== 'string' || /[\u0000-\u0020\u007f]/.test(value)) return null;
-  try {
-    const url = new URL(value);
-    return ['https:', 'http:'].includes(url.protocol) && !url.username && !url.password ? url : null;
-  } catch (_) { return null; }
-}
-
-function renderWebAnswer(result, container) {
-  if (!result || result.status !== 'completed' || result.error) {
-    throw new Error('The answer was not completed. Try again when ready.');
-  }
-  const output = Array.isArray(result.output) ? result.output : [];
-  const parts = output.filter(item => item && item.type === 'message')
-    .flatMap(item => Array.isArray(item.content) ? item.content : []);
-  if (parts.some(part => part && part.type === 'refusal')) {
-    throw new Error('The model declined to answer this question.');
-  }
-  const textParts = parts.filter(part => part && part.type === 'output_text' && typeof part.text === 'string');
-  if (!textParts.some(part => part.text.trim())) throw new Error('No answer text was returned.');
-  const fragment = document.createDocumentFragment();
-  let citationCount = 0;
-  for (const part of textParts) {
-    const text = part.text;
-    const citations = (Array.isArray(part.annotations) ? part.annotations : [])
-      .filter(annotation => annotation && annotation.type === 'url_citation')
-      .sort((a, b) => a.start_index - b.start_index);
-    const prefix = 'FLIPLETCITATION' + crypto.randomUUID().replace(/-/g, '');
-    const sources = [];
-    let cursor = 0;
-    let displayText = '';
-    for (const citation of citations) {
-      const start = citation.start_index;
-      const end = citation.end_index;
-      const url = researchSourceUrl(citation.url);
-      if (!Number.isInteger(start) || !Number.isInteger(end) || start < cursor ||
-          end <= start || end > text.length || !url) {
-        throw new Error('Source links could not be displayed reliably. The answer has been withheld.');
-      }
-      const number = ++citationCount;
-      const marker = prefix + number + 'END';
-      displayText += text.slice(cursor, end) + ' ' + marker;
-      sources.push({ marker, number, url, title: typeof citation.title === 'string' ? citation.title : url.hostname });
-      cursor = end;
-    }
-    displayText += text.slice(cursor);
-    checkResearchRenderer();
-    const section = document.createElement('div');
-    section.innerHTML = window.DOMPurify.sanitize(window.marked.parse(displayText), {
-      ALLOWED_TAGS: ['p', 'br', 'ul', 'ol', 'li', 'strong', 'em', 'del', 'blockquote',
-        'pre', 'code', 'a', 'h1', 'h2', 'h3', 'h4', 'hr', 'table', 'thead', 'tbody', 'tr', 'th', 'td'],
-      ALLOWED_ATTR: ['href', 'title'],
-      ALLOWED_URI_REGEXP: /^https?:/i
-    });
-    for (const link of section.querySelectorAll('a')) {
-      const url = researchSourceUrl(link.getAttribute('href'));
-      if (!url) link.replaceWith(...link.childNodes);
-      else { link.target = '_blank'; link.rel = 'noopener noreferrer'; }
-    }
-    for (const source of sources) {
-      const walker = document.createTreeWalker(section, NodeFilter.SHOW_TEXT);
-      const matches = [];
-      let node;
-      while ((node = walker.nextNode())) {
-        let start = node.data.indexOf(source.marker);
-        while (start !== -1) {
-          matches.push({ node, start });
-          start = node.data.indexOf(source.marker, start + source.marker.length);
-        }
-      }
-      if (matches.length !== 1) {
-        throw new Error('Source links could not be displayed reliably. The answer has been withheld.');
-      }
-      const match = matches[0];
-      // A citation inside a model-written Markdown link must not create nested anchors.
-      const enclosingLink = match.node.parentElement.closest('a');
-      if (enclosingLink) enclosingLink.replaceWith(...enclosingLink.childNodes);
-      const link = document.createElement('a');
-      link.href = source.url.href;
-      link.textContent = 'Source ' + source.number;
-      link.title = source.title;
-      link.setAttribute('aria-label', source.title + ': ' + link.textContent);
-      link.target = '_blank';
-      link.rel = 'noopener noreferrer';
-      match.node.replaceWith(document.createTextNode(match.node.data.slice(0, match.start)), link,
-        document.createTextNode(match.node.data.slice(match.start + source.marker.length)));
-    }
-    fragment.append(section);
-  }
-  container.replaceChildren(fragment);
-  const searched = output.some(item => item && item.type === 'web_search_call' && item.status === 'completed');
-  return !citationCount ? 'No usable source citations were returned. Treat this answer as unverified.'
-    : !searched ? 'Source links returned; completed web search was not confirmed.'
-      : 'Open the inline source links to check the answer.';
-}
-
-const researchForm = document.getElementById('research-form');
-const researchQuestion = document.getElementById('research-question');
-const researchSubmit = document.getElementById('research-submit');
-const researchStatus = document.getElementById('research-status');
-const researchAnswer = document.getElementById('research-answer');
-let researchBusy = false;
-researchForm.addEventListener('submit', async function(event) {
-  event.preventDefault();
-  if (researchBusy) return;
-  const question = researchQuestion.value.trim();
-  if (!question || question.length > 2000) {
-    researchStatus.textContent = 'Enter a question of 1 to 2,000 characters.';
-    return;
-  }
-  researchBusy = researchSubmit.disabled = true;
-  researchQuestion.disabled = true;
-  researchAnswer.replaceChildren();
-  researchStatus.textContent = 'Researching…';
-  try {
-    await ensureResearchRenderer();
-    const result = await Fliplet.AI.createCompletion({
-      model: 'gpt-6.1-sol',
-      useResponses: true,
-      tools: [{ type: 'web_search' }],
-      input: 'Search the web to answer this question. Cite sources and identify uncertainty. ' + question,
-      max_output_tokens: 2000
-    });
-    researchStatus.textContent = renderWebAnswer(result, researchAnswer);
-  } catch (error) {
-    researchAnswer.replaceChildren();
-    researchStatus.textContent = error instanceof Error ? error.message : 'Research failed. Try again when ready.';
-  } finally {
-    researchBusy = researchSubmit.disabled = false;
-    researchQuestion.disabled = false;
-  }
-});
-```
-
-The form retains the question after failure and makes another request only when the reader selects **Research** again. It blocks duplicate submissions while a request is pending. A retry is a new AI request and can incur usage.
-
-## Citation and error behavior
-
-Responses returns typed `output` items. The renderer reads only `message.content` parts with `type: 'output_text'`, and their flat `url_citation` annotations (`url`, `title`, `start_index`, `end_index`). It evaluates offsets separately for each original text part, before joining or formatting anything. It keeps duplicate URLs when they cite different passages. See the [Responses reference](https://developers.openai.com/api/reference/resources/responses/methods/create).
-
-Invalid offsets, overlapping ranges, unsafe URL schemes and credential-bearing URLs withhold the answer. Missing annotations display the formatted text with an explicit unverified status and no generated source links. The response object and original text remain unchanged. The display copy keeps the annotated words and appends a source link after them, because an annotation can cover a factual claim rather than a disposable citation marker. An existing Markdown citation link may therefore appear beside the generated source link. Only the display copy is formatted. Marked parses Markdown; DOMPurify sanitizes the resulting HTML before insertion. Citation URLs bypass Markdown parsing and are assigned through DOM properties after sanitization. Source labels and titles use text properties. If formatting removes or duplicates a citation placeholder, the answer is withheld rather than attaching a source to the wrong passage. Ordinary Markdown links are not counted as returned citations.
-
-HTTP and HTTPS links are allowed; a valid URL is not an endorsement of its destination.
-
-A failed or incomplete response, refusal, empty answer or request error leaves a visible message and the question available for correction. Authentication, credits, rate limits and model/tool compatibility can also cause failures; see [AI errors](/API/core/ai#shared-access-and-errors). The example buffers the final answer to demonstrate citation handling.
-
-For interactive research, follow the [progressive reply guidance](chatbot#stream-a-reply) and [streaming terminal-result contract](/API/core/ai#terminal-results). Safely format accumulated raw text as provisional output through your app's framework renderer. Use `{ returnResult: true }` to retain the native final Responses result. After successful completion, finalize the answer from that result, applying annotations to each original text part before formatting a display copy as above. Partial deltas do not establish a completed search or usable source citations; keep provisional output visibly unverified.
-
-## Related docs
-
-- [AI JavaScript reference](/API/core/ai)
-- [AI models](models)
-- [AI reply presentation and conversations](chatbot)
-- [File and image analysis](media-inputs)
-- [Tools and authorized actions](tool-calling)
+- [Web search and citations](/API/core/ai/web-search)
+- [File and image analysis](/API/core/ai/file-and-image-analysis)
 
 ---
 
 # File and image analysis
-URL: https://developers.fliplet.com/API/core/ai/media-inputs.md
+URL: https://developers.fliplet.com/API/core/ai/file-and-image-analysis.md
 
 # File and image analysis
 
@@ -5826,7 +5604,7 @@ Verify the workflow with a known PDF and an image: compare extracted values to t
 
 - [AI JavaScript reference](/API/core/ai)
 - [AI models](models)
-- [Answer questions with web sources](grounded-answers)
+- [Web search and citations](web-search)
 - [Media files](/API/fliplet-media)
 - [Tools and authorized actions](tool-calling)
 
@@ -6020,8 +5798,8 @@ The completion proxy also routes additional model IDs and provider snapshots tha
 - [Record or upload audio](/API/core/ai/audio-transcription)
 - [App AI REST API](/REST-API/fliplet-ai)
 - [Tools and authorized actions](/API/core/ai/tool-calling)
-- [Research with cited sources](/API/core/ai/grounded-answers)
-- [File and image analysis](/API/core/ai/media-inputs)
+- [Web search and citations](/API/core/ai/web-search)
+- [File and image analysis](/API/core/ai/file-and-image-analysis)
 
 ---
 
@@ -6298,8 +6076,232 @@ Define a small allowlist of operations. Validate completed arguments, retrieve o
 - [AI JavaScript reference](/API/core/ai)
 - [Available models](/API/core/ai/models)
 - [Chatbots and reply presentation](/API/core/ai/chatbot)
-- [Research with sources](/API/core/ai/grounded-answers)
-- [File and image analysis](/API/core/ai/media-inputs)
+- [Web search and citations](/API/core/ai/web-search)
+- [File and image analysis](/API/core/ai/file-and-image-analysis)
+
+---
+
+# Web search and citations
+URL: https://developers.fliplet.com/API/core/ai/web-search.md
+
+# Web search and citations
+
+Use `Fliplet.AI.createCompletion()` with OpenAI Responses and hosted web search to answer questions using web sources. Display the returned citation annotations alongside the answer so readers can inspect its sources.
+
+<a id="answer-questions-with-web-sources"></a>
+
+## Contents
+
+- [Before you start](#before-you-start)
+- [Complete question and answer example](#complete-question-and-answer-example)
+- [Citation and error behavior](#citation-and-error-behavior)
+- [Related docs](#related-docs)
+
+## Before you start
+
+Run this browser example after the screen HTML and Fliplet are ready. `Fliplet.AI` is available through `fliplet-core`; no provider key belongs in app code. The app needs AI access and credits. Select a compatible [Responses model](models); this example explicitly uses `gpt-6.1-sol`.
+
+The request sends the question to the configured provider and enables its `web_search` tool. It does not query private app records or sign in to websites. Use this flow for public information, and review source dates and content before relying on an answer. Enabling a search tool does not prove that a search ran or that every claim is supported.
+
+### Example resources
+
+Reuse the parser and sanitizer from the [AI reply presentation resources](chatbot#example-resources) if already configured. For a V3 screen, declare both named resources below in app resources; the JavaScript loads them on demand. Buffered research does not need the socket dependency. For other app setups, load these pinned URLs using [dependencies and assets](/Dependencies-and-assets), replace the two lazy-loading calls with your loader, and retain the availability check. Review security updates when maintaining pinned dependencies.
+
+<!-- example: grounded-resources -->
+```json
+[
+  { "name": "ai-chat-marked", "latest": "https://cdn.jsdelivr.net/npm/marked@18.1.0/lib/marked.umd.js", "lazy": true },
+  { "name": "ai-chat-purify", "latest": "https://cdn.jsdelivr.net/npm/dompurify@3.4.16/dist/purify.min.js", "lazy": true }
+]
+```
+
+## Complete question and answer example
+
+Add this HTML, then the JavaScript below. The renderer reads offsets from each unchanged response text part, preserves each annotated span and appends a citation placeholder, parses Markdown, sanitizes it, and inserts visible **Source 1** links using the returned URLs. The source title is available as the link tooltip and accessible label. OpenAI requires visible, clickable inline citations when displaying web results; see its [web search contract](https://developers.openai.com/api/docs/guides/tools-web-search).
+
+<!-- example: grounded-html -->
+```html
+<form id="research-form">
+  <label for="research-question">Question about public information</label>
+  <textarea id="research-question" required maxlength="2000"></textarea>
+  <button id="research-submit" type="submit">Research</button>
+</form>
+<p id="research-status" role="status"></p>
+<div id="research-answer" style="overflow-wrap: anywhere"></div>
+```
+
+<!-- example: grounded-main -->
+```js
+function checkResearchRenderer() {
+  if (!window.marked || typeof window.marked.parse !== 'function' ||
+      !window.DOMPurify || !window.DOMPurify.isSupported) {
+    throw new Error('Answer formatting could not load. Check your connection and retry.');
+  }
+}
+
+async function ensureResearchRenderer() {
+  await Promise.all([
+    Fliplet.require.lazy('ai-chat-marked'),
+    Fliplet.require.lazy('ai-chat-purify')
+  ]);
+  checkResearchRenderer();
+}
+
+function researchSourceUrl(value) {
+  if (typeof value !== 'string' || /[\u0000-\u0020\u007f]/.test(value)) return null;
+  try {
+    const url = new URL(value);
+    return ['https:', 'http:'].includes(url.protocol) && !url.username && !url.password ? url : null;
+  } catch (_) { return null; }
+}
+
+function renderWebAnswer(result, container) {
+  if (!result || result.status !== 'completed' || result.error) {
+    throw new Error('The answer was not completed. Try again when ready.');
+  }
+  const output = Array.isArray(result.output) ? result.output : [];
+  const parts = output.filter(item => item && item.type === 'message')
+    .flatMap(item => Array.isArray(item.content) ? item.content : []);
+  if (parts.some(part => part && part.type === 'refusal')) {
+    throw new Error('The model declined to answer this question.');
+  }
+  const textParts = parts.filter(part => part && part.type === 'output_text' && typeof part.text === 'string');
+  if (!textParts.some(part => part.text.trim())) throw new Error('No answer text was returned.');
+  const fragment = document.createDocumentFragment();
+  let citationCount = 0;
+  for (const part of textParts) {
+    const text = part.text;
+    const citations = (Array.isArray(part.annotations) ? part.annotations : [])
+      .filter(annotation => annotation && annotation.type === 'url_citation')
+      .sort((a, b) => a.start_index - b.start_index);
+    const prefix = 'FLIPLETCITATION' + crypto.randomUUID().replace(/-/g, '');
+    const sources = [];
+    let cursor = 0;
+    let displayText = '';
+    for (const citation of citations) {
+      const start = citation.start_index;
+      const end = citation.end_index;
+      const url = researchSourceUrl(citation.url);
+      if (!Number.isInteger(start) || !Number.isInteger(end) || start < cursor ||
+          end <= start || end > text.length || !url) {
+        throw new Error('Source links could not be displayed reliably. The answer has been withheld.');
+      }
+      const number = ++citationCount;
+      const marker = prefix + number + 'END';
+      displayText += text.slice(cursor, end) + ' ' + marker;
+      sources.push({ marker, number, url, title: typeof citation.title === 'string' ? citation.title : url.hostname });
+      cursor = end;
+    }
+    displayText += text.slice(cursor);
+    checkResearchRenderer();
+    const section = document.createElement('div');
+    section.innerHTML = window.DOMPurify.sanitize(window.marked.parse(displayText), {
+      ALLOWED_TAGS: ['p', 'br', 'ul', 'ol', 'li', 'strong', 'em', 'del', 'blockquote',
+        'pre', 'code', 'a', 'h1', 'h2', 'h3', 'h4', 'hr', 'table', 'thead', 'tbody', 'tr', 'th', 'td'],
+      ALLOWED_ATTR: ['href', 'title'],
+      ALLOWED_URI_REGEXP: /^https?:/i
+    });
+    for (const link of section.querySelectorAll('a')) {
+      const url = researchSourceUrl(link.getAttribute('href'));
+      if (!url) link.replaceWith(...link.childNodes);
+      else { link.target = '_blank'; link.rel = 'noopener noreferrer'; }
+    }
+    for (const source of sources) {
+      const walker = document.createTreeWalker(section, NodeFilter.SHOW_TEXT);
+      const matches = [];
+      let node;
+      while ((node = walker.nextNode())) {
+        let start = node.data.indexOf(source.marker);
+        while (start !== -1) {
+          matches.push({ node, start });
+          start = node.data.indexOf(source.marker, start + source.marker.length);
+        }
+      }
+      if (matches.length !== 1) {
+        throw new Error('Source links could not be displayed reliably. The answer has been withheld.');
+      }
+      const match = matches[0];
+      // A citation inside a model-written Markdown link must not create nested anchors.
+      const enclosingLink = match.node.parentElement.closest('a');
+      if (enclosingLink) enclosingLink.replaceWith(...enclosingLink.childNodes);
+      const link = document.createElement('a');
+      link.href = source.url.href;
+      link.textContent = 'Source ' + source.number;
+      link.title = source.title;
+      link.setAttribute('aria-label', source.title + ': ' + link.textContent);
+      link.target = '_blank';
+      link.rel = 'noopener noreferrer';
+      match.node.replaceWith(document.createTextNode(match.node.data.slice(0, match.start)), link,
+        document.createTextNode(match.node.data.slice(match.start + source.marker.length)));
+    }
+    fragment.append(section);
+  }
+  container.replaceChildren(fragment);
+  const searched = output.some(item => item && item.type === 'web_search_call' && item.status === 'completed');
+  return !citationCount ? 'No usable source citations were returned. Treat this answer as unverified.'
+    : !searched ? 'Source links returned; completed web search was not confirmed.'
+      : 'Open the inline source links to check the answer.';
+}
+
+const researchForm = document.getElementById('research-form');
+const researchQuestion = document.getElementById('research-question');
+const researchSubmit = document.getElementById('research-submit');
+const researchStatus = document.getElementById('research-status');
+const researchAnswer = document.getElementById('research-answer');
+let researchBusy = false;
+researchForm.addEventListener('submit', async function(event) {
+  event.preventDefault();
+  if (researchBusy) return;
+  const question = researchQuestion.value.trim();
+  if (!question || question.length > 2000) {
+    researchStatus.textContent = 'Enter a question of 1 to 2,000 characters.';
+    return;
+  }
+  researchBusy = researchSubmit.disabled = true;
+  researchQuestion.disabled = true;
+  researchAnswer.replaceChildren();
+  researchStatus.textContent = 'Researching…';
+  try {
+    await ensureResearchRenderer();
+    const result = await Fliplet.AI.createCompletion({
+      model: 'gpt-6.1-sol',
+      useResponses: true,
+      tools: [{ type: 'web_search' }],
+      input: 'Search the web to answer this question. Cite sources and identify uncertainty. ' + question,
+      max_output_tokens: 2000
+    });
+    researchStatus.textContent = renderWebAnswer(result, researchAnswer);
+  } catch (error) {
+    researchAnswer.replaceChildren();
+    researchStatus.textContent = error instanceof Error ? error.message : 'Research failed. Try again when ready.';
+  } finally {
+    researchBusy = researchSubmit.disabled = false;
+    researchQuestion.disabled = false;
+  }
+});
+```
+
+The form retains the question after failure and makes another request only when the reader selects **Research** again. It blocks duplicate submissions while a request is pending. A retry is a new AI request and can incur usage.
+
+## Citation and error behavior
+
+Responses returns typed `output` items. The renderer reads only `message.content` parts with `type: 'output_text'`, and their flat `url_citation` annotations (`url`, `title`, `start_index`, `end_index`). It evaluates offsets separately for each original text part, before joining or formatting anything. It keeps duplicate URLs when they cite different passages. See the [Responses reference](https://developers.openai.com/api/reference/resources/responses/methods/create).
+
+Invalid offsets, overlapping ranges, unsafe URL schemes and credential-bearing URLs withhold the answer. Missing annotations display the formatted text with an explicit unverified status and no generated source links. The response object and original text remain unchanged. The display copy keeps the annotated words and appends a source link after them, because an annotation can cover a factual claim rather than a disposable citation marker. An existing Markdown citation link may therefore appear beside the generated source link. Only the display copy is formatted. Marked parses Markdown; DOMPurify sanitizes the resulting HTML before insertion. Citation URLs bypass Markdown parsing and are assigned through DOM properties after sanitization. Source labels and titles use text properties. If formatting removes or duplicates a citation placeholder, the answer is withheld rather than attaching a source to the wrong passage. Ordinary Markdown links are not counted as returned citations.
+
+HTTP and HTTPS links are allowed; a valid URL is not an endorsement of its destination.
+
+A failed or incomplete response, refusal, empty answer or request error leaves a visible message and the question available for correction. Authentication, credits, rate limits and model/tool compatibility can also cause failures; see [AI errors](/API/core/ai#shared-access-and-errors). The example buffers the final answer to demonstrate citation handling.
+
+For interactive research, follow the [progressive reply guidance](chatbot#stream-a-reply) and [streaming terminal-result contract](/API/core/ai#terminal-results). Safely format accumulated raw text as provisional output through your app's framework renderer. Use `{ returnResult: true }` to retain the native final Responses result. After successful completion, finalize the answer from that result, applying annotations to each original text part before formatting a display copy as above. Partial deltas do not establish a completed search or usable source citations; keep provisional output visibly unverified.
+
+## Related docs
+
+- [AI JavaScript reference](/API/core/ai)
+- [AI models](models)
+- [AI reply presentation and conversations](chatbot)
+- [File and image analysis](file-and-image-analysis)
+- [Tools and authorized actions](tool-calling)
 
 ---
 
@@ -38944,7 +38946,7 @@ All our APIs require your client to authenticate when accessing the endpoints. P
 
 ### App AI
 
-Generate text and images, transcribe audio and create embeddings for a Fliplet app. Use compatible completion models for [tool calls](/API/core/ai/tool-calling), [cited research](/API/core/ai/grounded-answers) and [file and image analysis](/API/core/ai/media-inputs). Select a compatible model from the shared [AI model catalog](/API/core/ai/models).
+Generate text and images, transcribe audio and create embeddings for a Fliplet app. Use compatible completion models for [tool calls](/API/core/ai/tool-calling), [cited research](/API/core/ai/web-search) and [file and image analysis](/API/core/ai/file-and-image-analysis). Select a compatible model from the shared [AI model catalog](/API/core/ai/models).
 
 [View the app AI REST reference »](REST-API/fliplet-ai)
 {: .buttons}
@@ -39174,7 +39176,7 @@ A text response includes typed output items:
 }
 ```
 
-Buffered Responses returns the native typed object, including tool calls, annotations, refusal, structured text and usage when supplied. The integration owns the execution loop, validation, authorization and display; see [tools](/API/core/ai/tool-calling), [cited research](/API/core/ai/grounded-answers) and [media input](/API/core/ai/media-inputs). JavaScript examples use the same provider payload, but The SDK `returnResult` control is not a REST body field.
+Buffered Responses returns the native typed object, including tool calls, annotations, refusal, structured text and usage when supplied. The integration owns the execution loop, validation, authorization and display; see [tools](/API/core/ai/tool-calling), [cited research](/API/core/ai/web-search) and [file and image analysis](/API/core/ai/file-and-image-analysis). JavaScript examples use the same provider payload, but The SDK `returnResult` control is not a REST body field.
 
 Collect `output_text` from message items. Do not display the entire `output` object as text. Reasoning, refusal and tool items require their own handling. See [Responses request and extraction](/API/core/ai#using-the-responses-api).
 
@@ -39293,8 +39295,8 @@ Use the [JavaScript streaming API](/API/core/ai#streaming-with-createcompletion)
 - [Record or upload audio](/API/core/ai/audio-transcription)
 - [REST authentication](/REST-API/authenticate)
 - [Tools and authorized actions](/API/core/ai/tool-calling)
-- [Research with cited sources](/API/core/ai/grounded-answers)
-- [File and image analysis](/API/core/ai/media-inputs)
+- [Web search and citations](/API/core/ai/web-search)
+- [File and image analysis](/API/core/ai/file-and-image-analysis)
 
 ---
 

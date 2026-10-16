@@ -341,5 +341,5 @@ For permission, credits, MIME and size errors, consult the [method error referen
 - [Build an AI chatbot](/API/core/ai/chatbot)
 - [App AI REST API](/REST-API/fliplet-ai)
 - [Tools and authorized actions](/API/core/ai/tool-calling)
-- [Research with cited sources](/API/core/ai/grounded-answers)
-- [File and image analysis](/API/core/ai/media-inputs)
+- [Web search and citations](/API/core/ai/web-search)
+- [File and image analysis](/API/core/ai/file-and-image-analysis)

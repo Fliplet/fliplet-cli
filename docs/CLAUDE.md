@@ -128,7 +128,11 @@ two `docUrl`s for one package.
 - `API/core/ai/models.md` owns complete model lists, request-format compatibility, fallback values and retirement information. Guides link here and use explicit illustrative IDs; do not copy model catalogs into guides.
 - `API/core/ai/chatbot.md` owns conversation state, reply rendering and streaming workflows.
 - `API/core/ai/audio-transcription.md` owns upload, microphone capture, final chunks, cleanup, retry and transcript insertion.
+- `API/core/ai/web-search.md` owns hosted web search and citation presentation.
+- `API/core/ai/file-and-image-analysis.md` owns file-input compatibility and task-appropriate analysis workflows.
 - `REST-API/fliplet-ai.md` owns the app AI REST contracts. Verify external token and app access before publishing it or its inbound links.
+
+When moving a published guide, add permanent HTML and Markdown redirects to `_redirects`, update incoming links and Studio references, then regenerate indexes. Publish the documentation before Studio instructions require its new paths.
 
 Nested AI pages have their own frontmatter and raw Markdown siblings. Keep namespace/catalog fields on the main reference only. Preserve moved public fragments in that reference with links to the corresponding destination sections. During a compatible documentation rollout, keep any temporary main-page catalog or workflow copies aligned until the deployed consumers fetch the split pages.
 

@@ -43,8 +43,8 @@ Generate text and images, transcribe audio and create embeddings through Fliplet
 | --- | --- | --- |
 | Generated text, summaries or an AI chatbot | [createCompletion()](#flipletaicreatecompletion); [ask()](#instance-methods) for a single text request | [OpenAI text](/API/core/ai/models#openai-text-models) or [Gemini text](/API/core/ai/models#gemini-text-models) |
 | Model-requested app operations | [createCompletion()](#flipletaicreatecompletion) and the [tool-calling guide](/API/core/ai/tool-calling) | Compatible function-tool model |
-| Research with cited web sources | [createCompletion()](#flipletaicreatecompletion) and the [grounded-answers guide](/API/core/ai/grounded-answers) | Compatible hosted-search model |
-| File and image analysis | [createCompletion()](#flipletaicreatecompletion) and the [media-input guide](/API/core/ai/media-inputs) | Compatible file/image model; structured-output support when required |
+| Research with cited web sources | [createCompletion()](#flipletaicreatecompletion) and the [web-search guide](/API/core/ai/web-search) | Compatible hosted-search model |
+| File and image analysis | [createCompletion()](#flipletaicreatecompletion) and the [file and image analysis guide](/API/core/ai/file-and-image-analysis) | Compatible file/image model; structured-output support when required |
 | OpenAI image generation | [generateImage()](#flipletaigenerateimage) | [Images](/API/core/ai/models#image-models) |
 | Gemini image generation | [createCompletion() with Gemini contents](#gemini-image-generation) | [Images](/API/core/ai/models#image-models) |
 | Audio transcription | [transcribeAudio()](#flipletaitranscribeaudio) | [Transcription](/API/core/ai/models#transcription-models) |
@@ -218,7 +218,7 @@ async function summarizeWithResponses() {
 summarizeWithResponses();
 ```
 
-For app-managed conversation context, `input` can also be an array such as `[{ role: 'user', content: 'Hello' }, { role: 'assistant', content: 'Hello! How can I help?' }, { role: 'user', content: 'Suggest a meeting agenda.' }]`. Preserve model-required tool items when using tools. Use the [tool-calling](/API/core/ai/tool-calling), [grounded-answer](/API/core/ai/grounded-answers) and [media-input](/API/core/ai/media-inputs) guides for complete workflows. Declaring tools does not execute app operations. Background execution and provider-stored conversations are not established app workflows. See the [Responses schema](https://platform.openai.com/docs/api-reference/responses/create) and [chatbot guide](/API/core/ai/chatbot).
+For app-managed conversation context, `input` can also be an array such as `[{ role: 'user', content: 'Hello' }, { role: 'assistant', content: 'Hello! How can I help?' }, { role: 'user', content: 'Suggest a meeting agenda.' }]`. Preserve model-required tool items when using tools. Use the [tool-calling](/API/core/ai/tool-calling), [web-search](/API/core/ai/web-search) and [file and image analysis](/API/core/ai/file-and-image-analysis) guides for complete workflows. Declaring tools does not execute app operations. Background execution and provider-stored conversations are not established app workflows. See the [Responses schema](https://platform.openai.com/docs/api-reference/responses/create) and [chatbot guide](/API/core/ai/chatbot).
 
 #### Using Gemini models
 
@@ -648,7 +648,7 @@ See [JavaScript metadata and additional provider IDs](/API/core/ai/models#histor
 - [AI models available through Fliplet](/API/core/ai/models): configured IDs, provider facts, fallback defaults and retirement notices.
 - [AI reply presentation and conversations](/API/core/ai/chatbot): safe formatting, progressive output, conversation state and send/retry controls.
 - [Tools and authorized actions](/API/core/ai/tool-calling): bounded tool loops, validation and existing app permissions.
-- [Research with cited sources](/API/core/ai/grounded-answers): hosted search and safe inline citations.
-- [File and image analysis](/API/core/ai/media-inputs): authorized content, task-appropriate output and validated extraction.
+- [Web search and citations](/API/core/ai/web-search): hosted search and safe inline citations.
+- [File and image analysis](/API/core/ai/file-and-image-analysis): authorized content, task-appropriate output and validated extraction.
 - [Record or upload audio](/API/core/ai/audio-transcription): file selection, microphone capture and transcript insertion.
 - [App AI REST API](/REST-API/fliplet-ai): external requests and authentication.

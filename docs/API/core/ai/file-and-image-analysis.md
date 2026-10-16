@@ -343,6 +343,6 @@ Verify the workflow with a known PDF and an image: compare extracted values to t
 
 - [AI JavaScript reference](/API/core/ai)
 - [AI models](models)
-- [Answer questions with web sources](grounded-answers)
+- [Web search and citations](web-search)
 - [Media files](/API/fliplet-media)
 - [Tools and authorized actions](tool-calling)

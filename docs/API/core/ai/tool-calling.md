@@ -276,5 +276,5 @@ Define a small allowlist of operations. Validate completed arguments, retrieve o
 - [AI JavaScript reference](/API/core/ai)
 - [Available models](/API/core/ai/models)
 - [Chatbots and reply presentation](/API/core/ai/chatbot)
-- [Research with sources](/API/core/ai/grounded-answers)
-- [File and image analysis](/API/core/ai/media-inputs)
+- [Web search and citations](/API/core/ai/web-search)
+- [File and image analysis](/API/core/ai/file-and-image-analysis)

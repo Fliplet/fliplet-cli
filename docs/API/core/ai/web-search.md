@@ -1,14 +1,16 @@
 ---
-title: Answer questions with web sources
+title: Web search and citations
 description: Use Fliplet AI with hosted web search and display returned citations as safe, clickable links beside the answer.
 type: guide
 tags: [js-api, ai, web-search, citations]
 v3_relevant: true
 deprecated: false
 ---
-# Answer questions with web sources
+# Web search and citations
 
 Use `Fliplet.AI.createCompletion()` with OpenAI Responses and hosted web search to answer questions using web sources. Display the returned citation annotations alongside the answer so readers can inspect its sources.
+
+<a id="answer-questions-with-web-sources"></a>
 
 ## Contents
 
@@ -220,5 +222,5 @@ For interactive research, follow the [progressive reply guidance](chatbot#stream
 - [AI JavaScript reference](/API/core/ai)
 - [AI models](models)
 - [AI reply presentation and conversations](chatbot)
-- [File and image analysis](media-inputs)
+- [File and image analysis](file-and-image-analysis)
 - [Tools and authorized actions](tool-calling)
