@@ -25,7 +25,7 @@ The request sends the question to the configured provider and enables its `web_s
 
 ### Example resources
 
-Reuse the parser and sanitizer from the [chatbot resources](chatbot#example-resources) if already configured. For a V3 screen, declare both named resources below in app resources; the JavaScript loads them on demand. Buffered research does not need the socket dependency. For other app setups, load these pinned URLs using [dependencies and assets](/Dependencies-and-assets), replace the two lazy-loading calls with your loader, and retain the availability check. Review security updates when maintaining pinned dependencies.
+Reuse the parser and sanitizer from the [AI reply presentation resources](chatbot#example-resources) if already configured. For a V3 screen, declare both named resources below in app resources; the JavaScript loads them on demand. Buffered research does not need the socket dependency. For other app setups, load these pinned URLs using [dependencies and assets](/Dependencies-and-assets), replace the two lazy-loading calls with your loader, and retain the availability check. Review security updates when maintaining pinned dependencies.
 
 <!-- example: grounded-resources -->
 ```json
@@ -211,12 +211,12 @@ Invalid offsets, overlapping ranges, unsafe URL schemes and credential-bearing U
 
 HTTP and HTTPS links are allowed; a valid URL is not an endorsement of its destination.
 
-A failed or incomplete response, refusal, empty answer or request error leaves a visible message and the question available for correction. Authentication, credits, rate limits and model/tool compatibility can also cause failures; see [AI errors](/API/core/ai#shared-access-and-errors). The example buffers the final answer. For streaming conversation UI, see [the chatbot guide](chatbot).
+A failed or incomplete response, refusal, empty answer or request error leaves a visible message and the question available for correction. Authentication, credits, rate limits and model/tool compatibility can also cause failures; see [AI errors](/API/core/ai#shared-access-and-errors). The example buffers the final answer. For interactive presentation, including streamed output, use the [AI reply presentation guide](chatbot); adapt it to the app's framework while preserving the citation handling above.
 
 ## Related docs
 
 - [AI JavaScript reference](/API/core/ai)
 - [AI models](models)
-- [Build an AI chatbot](chatbot)
+- [AI reply presentation and conversations](chatbot)
 - [Analyze PDFs and images](media-inputs)
 - [Tools and authorized actions](tool-calling)

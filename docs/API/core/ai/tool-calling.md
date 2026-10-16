@@ -98,6 +98,8 @@ Add this HTML to a test screen. The output uses `textContent`, so returned text 
 
 The loop validates the entire completed response before running any of its tools. The write tool reads the authorized record immediately before confirmation, performs the fixed update and reads it again. If the write response is lost, a readback can establish the observed status. If it cannot, the loop stops without retrying the write. A subsequent explicit request reads and confirms the same proposed change again.
 
+For reader-facing prose, adapt the [AI reply presentation guidance](chatbot#before-you-start) while keeping raw response text and verified operation outcomes separate from formatted display. Preserve literal code, structured results and explicitly requested plain text in their required form.
+
 The time limits stop this app's waiting and tool loop. They cannot cancel an already dispatched buffered model request or data update. A late result is not processed. Keep the pending state until this run settles; do not automatically retry paid calls or uncertain writes.
 
 <!-- example: item-assistant -->
@@ -350,12 +352,12 @@ The fixed assignment is repeatable at the data-state level. It does not provide 
 
 For read-only assistance, remove the write declaration and executor branch. For a different action, implement its server authorization and retry semantics before exposing it to the model. Keep tools narrow enough to validate every argument and verify the effect.
 
-For progressive display, use the [chatbot guide](/API/core/ai/chatbot) and the [streaming contract](/API/core/ai#streaming-with-createcompletion). Execute tools only after receiving a completed, validated result, never from streamed argument fragments.
+For progressive display, use the [AI reply presentation guide](/API/core/ai/chatbot) and the [streaming contract](/API/core/ai#streaming-with-createcompletion). Execute tools only after receiving a completed, validated result, never from streamed argument fragments.
 
 ## Related docs
 
 - [AI JavaScript reference](/API/core/ai)
 - [AI models](models)
-- [Build an AI chatbot](chatbot)
+- [AI reply presentation and conversations](chatbot)
 - [Research with cited sources](grounded-answers)
 - [Analyze documents and photos](media-inputs)

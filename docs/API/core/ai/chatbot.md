@@ -1,6 +1,6 @@
 ---
 title: Build an AI chatbot
-description: "Build AI conversations with progressive replies, safe Markdown formatting, explicit models, message history and recoverable errors."
+description: "Present interactive AI text in conversations, research, writing tools and explanation panels with safe formatting, progressive output and recoverable errors."
 type: how-to
 tags: [js-api, ai, chatbot]
 v3_relevant: true
@@ -8,7 +8,7 @@ deprecated: false
 ---
 # Build an AI chatbot
 
-Build a conversation in which an AI model generates replies using `Fliplet.AI`. Your app controls conversation history, progressive output and how replies appear to its audience.
+Build a conversation in which an AI model generates replies using `Fliplet.AI`. Use the same presentation guidance for researched answers, writing tools and explanation panels. Your app controls progressive output and how replies appear to its audience; add conversation history only when the feature needs it.
 
 ## Contents
 
@@ -27,9 +27,9 @@ Build a conversation in which an AI model generates replies using `Fliplet.AI`. 
 
 Choose and specify a compatible [text model](/API/core/ai/models#openai-text-models). The IDs in this guide are illustrative selections, not recommendations for every chatbot. Preserve a supported model requested by the user and use its request format. For conversations between people, use [Fliplet.Chat](/API/fliplet-chat).
 
-For interactive conversations, writing assistants and explanation panels, show text as it arrives when the selected model supports streaming. Preserve explicit plain-text or non-streaming requirements; background tasks and structured JSON need their own output handling.
+For interactive generated text, show text as it arrives when the selected model supports streaming. Preserve explicit non-streaming requirements. Formatting and streaming are separate choices: plain text can stream, and formatted replies can use a buffered request. Background tasks and structured JSON need their own output handling.
 
-For reader-facing replies, present paragraphs, lists, emphasis, code and links as readable structure suited to the audience. Safely render Markdown when present unless the user or output contract requires plain text. Do not invent a plain-text-only instruction to avoid formatting the response.
+For reader-facing prose, present paragraphs, lists, emphasis, code and links as readable structure suited to the audience. Safely render Markdown when present unless the user or output contract requires plain text. Keep literal source or code output verbatim, parse structured JSON according to its contract, and keep editable extracted fields in their controls. Do not invent a plain-text-only instruction to avoid formatting a prose reply.
 
 ### Example resources
 

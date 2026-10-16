@@ -3966,7 +3966,7 @@ Generate text and images, transcribe audio and create embeddings through Fliplet
 | Audio transcription | [transcribeAudio()](#flipletaitranscribeaudio) | [Transcription](/API/core/ai/models#transcription-models) |
 | Text vectors for semantic search | [createEmbedding()](#flipletaicreateembedding) | [Embeddings](/API/core/ai/models#embedding-models) |
 
-For messages between people, use [Fliplet.Chat](/API/fliplet-chat). The [chatbot guide](/API/core/ai/chatbot) covers app-managed conversation history and UI behavior.
+For messages between people, use [Fliplet.Chat](/API/fliplet-chat). The [AI reply presentation and conversation guide](/API/core/ai/chatbot) covers safe formatting, progressive output and app-managed conversation history.
 
 <a id="model-selection-and-fallback-defaults"></a>
 
@@ -4561,7 +4561,7 @@ See [JavaScript metadata and additional provider IDs](/API/core/ai/models#histor
 ## Related guides
 
 - [AI models available through Fliplet](/API/core/ai/models): configured IDs, provider facts, fallback defaults and retirement notices.
-- [Build an AI chatbot](/API/core/ai/chatbot): conversation state, send/retry controls and streaming.
+- [AI reply presentation and conversations](/API/core/ai/chatbot): safe formatting, progressive output, conversation state and send/retry controls.
 - [Tools and authorized actions](/API/core/ai/tool-calling): bounded tool loops, validation and existing app permissions.
 - [Research with cited sources](/API/core/ai/grounded-answers): hosted search and safe inline citations.
 - [Analyze documents and photos](/API/core/ai/media-inputs): authorized content and validated structured results.
@@ -4918,7 +4918,7 @@ URL: https://developers.fliplet.com/API/core/ai/chatbot.md
 
 # Build an AI chatbot
 
-Build a conversation in which an AI model generates replies using `Fliplet.AI`. Your app controls conversation history, progressive output and how replies appear to its audience.
+Build a conversation in which an AI model generates replies using `Fliplet.AI`. Use the same presentation guidance for researched answers, writing tools and explanation panels. Your app controls progressive output and how replies appear to its audience; add conversation history only when the feature needs it.
 
 ## Contents
 
@@ -4937,9 +4937,9 @@ Build a conversation in which an AI model generates replies using `Fliplet.AI`. 
 
 Choose and specify a compatible [text model](/API/core/ai/models#openai-text-models). The IDs in this guide are illustrative selections, not recommendations for every chatbot. Preserve a supported model requested by the user and use its request format. For conversations between people, use [Fliplet.Chat](/API/fliplet-chat).
 
-For interactive conversations, writing assistants and explanation panels, show text as it arrives when the selected model supports streaming. Preserve explicit plain-text or non-streaming requirements; background tasks and structured JSON need their own output handling.
+For interactive generated text, show text as it arrives when the selected model supports streaming. Preserve explicit non-streaming requirements. Formatting and streaming are separate choices: plain text can stream, and formatted replies can use a buffered request. Background tasks and structured JSON need their own output handling.
 
-For reader-facing replies, present paragraphs, lists, emphasis, code and links as readable structure suited to the audience. Safely render Markdown when present unless the user or output contract requires plain text. Do not invent a plain-text-only instruction to avoid formatting the response.
+For reader-facing prose, present paragraphs, lists, emphasis, code and links as readable structure suited to the audience. Safely render Markdown when present unless the user or output contract requires plain text. Keep literal source or code output verbatim, parse structured JSON according to its contract, and keep editable extracted fields in their controls. Do not invent a plain-text-only instruction to avoid formatting a prose reply.
 
 ### Example resources
 
@@ -5285,7 +5285,7 @@ The request sends the question to the configured provider and enables its `web_s
 
 ### Example resources
 
-Reuse the parser and sanitizer from the [chatbot resources](chatbot#example-resources) if already configured. For a V3 screen, declare both named resources below in app resources; the JavaScript loads them on demand. Buffered research does not need the socket dependency. For other app setups, load these pinned URLs using [dependencies and assets](/Dependencies-and-assets), replace the two lazy-loading calls with your loader, and retain the availability check. Review security updates when maintaining pinned dependencies.
+Reuse the parser and sanitizer from the [AI reply presentation resources](chatbot#example-resources) if already configured. For a V3 screen, declare both named resources below in app resources; the JavaScript loads them on demand. Buffered research does not need the socket dependency. For other app setups, load these pinned URLs using [dependencies and assets](/Dependencies-and-assets), replace the two lazy-loading calls with your loader, and retain the availability check. Review security updates when maintaining pinned dependencies.
 
 <!-- example: grounded-resources -->
 ```json
@@ -5471,13 +5471,13 @@ Invalid offsets, overlapping ranges, unsafe URL schemes and credential-bearing U
 
 HTTP and HTTPS links are allowed; a valid URL is not an endorsement of its destination.
 
-A failed or incomplete response, refusal, empty answer or request error leaves a visible message and the question available for correction. Authentication, credits, rate limits and model/tool compatibility can also cause failures; see [AI errors](/API/core/ai#shared-access-and-errors). The example buffers the final answer. For streaming conversation UI, see [the chatbot guide](chatbot).
+A failed or incomplete response, refusal, empty answer or request error leaves a visible message and the question available for correction. Authentication, credits, rate limits and model/tool compatibility can also cause failures; see [AI errors](/API/core/ai#shared-access-and-errors). The example buffers the final answer. For interactive presentation, including streamed output, use the [AI reply presentation guide](chatbot); adapt it to the app's framework while preserving the citation handling above.
 
 ## Related docs
 
 - [AI JavaScript reference](/API/core/ai)
 - [AI models](models)
-- [Build an AI chatbot](chatbot)
+- [AI reply presentation and conversations](chatbot)
 - [Analyze PDFs and images](media-inputs)
 - [Tools and authorized actions](tool-calling)
 
@@ -6088,6 +6088,8 @@ Add this HTML to a test screen. The output uses `textContent`, so returned text 
 
 The loop validates the entire completed response before running any of its tools. The write tool reads the authorized record immediately before confirmation, performs the fixed update and reads it again. If the write response is lost, a readback can establish the observed status. If it cannot, the loop stops without retrying the write. A subsequent explicit request reads and confirms the same proposed change again.
 
+For reader-facing prose, adapt the [AI reply presentation guidance](chatbot#before-you-start) while keeping raw response text and verified operation outcomes separate from formatted display. Preserve literal code, structured results and explicitly requested plain text in their required form.
+
 The time limits stop this app's waiting and tool loop. They cannot cancel an already dispatched buffered model request or data update. A late result is not processed. Keep the pending state until this run settles; do not automatically retry paid calls or uncertain writes.
 
 <!-- example: item-assistant -->
@@ -6340,13 +6342,13 @@ The fixed assignment is repeatable at the data-state level. It does not provide 
 
 For read-only assistance, remove the write declaration and executor branch. For a different action, implement its server authorization and retry semantics before exposing it to the model. Keep tools narrow enough to validate every argument and verify the effect.
 
-For progressive display, use the [chatbot guide](/API/core/ai/chatbot) and the [streaming contract](/API/core/ai#streaming-with-createcompletion). Execute tools only after receiving a completed, validated result, never from streamed argument fragments.
+For progressive display, use the [AI reply presentation guide](/API/core/ai/chatbot) and the [streaming contract](/API/core/ai#streaming-with-createcompletion). Execute tools only after receiving a completed, validated result, never from streamed argument fragments.
 
 ## Related docs
 
 - [AI JavaScript reference](/API/core/ai)
 - [AI models](models)
-- [Build an AI chatbot](chatbot)
+- [AI reply presentation and conversations](chatbot)
 - [Research with cited sources](grounded-answers)
 - [Analyze documents and photos](media-inputs)
 

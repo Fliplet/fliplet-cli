@@ -50,7 +50,7 @@ Generate text and images, transcribe audio and create embeddings through Fliplet
 | Audio transcription | [transcribeAudio()](#flipletaitranscribeaudio) | [Transcription](/API/core/ai/models#transcription-models) |
 | Text vectors for semantic search | [createEmbedding()](#flipletaicreateembedding) | [Embeddings](/API/core/ai/models#embedding-models) |
 
-For messages between people, use [Fliplet.Chat](/API/fliplet-chat). The [chatbot guide](/API/core/ai/chatbot) covers app-managed conversation history and UI behavior.
+For messages between people, use [Fliplet.Chat](/API/fliplet-chat). The [AI reply presentation and conversation guide](/API/core/ai/chatbot) covers safe formatting, progressive output and app-managed conversation history.
 
 <a id="model-selection-and-fallback-defaults"></a>
 
@@ -645,7 +645,7 @@ See [JavaScript metadata and additional provider IDs](/API/core/ai/models#histor
 ## Related guides
 
 - [AI models available through Fliplet](/API/core/ai/models): configured IDs, provider facts, fallback defaults and retirement notices.
-- [Build an AI chatbot](/API/core/ai/chatbot): conversation state, send/retry controls and streaming.
+- [AI reply presentation and conversations](/API/core/ai/chatbot): safe formatting, progressive output, conversation state and send/retry controls.
 - [Tools and authorized actions](/API/core/ai/tool-calling): bounded tool loops, validation and existing app permissions.
 - [Research with cited sources](/API/core/ai/grounded-answers): hosted search and safe inline citations.
 - [Analyze documents and photos](/API/core/ai/media-inputs): authorized content and validated structured results.
