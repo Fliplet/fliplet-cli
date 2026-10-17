@@ -110,7 +110,7 @@ User filters support three operators: `equals`, `notequals`, and `contains`. Mul
 
 ### Restricting columns
 
-For reads, use `include` to allow specific returned columns or `exclude` to hide columns. If both are specified, `include` takes precedence. Without either, all columns are returned. For individual inserts and updates, `exclude` removes named fields before saving; `include` does not restrict writes. For an exact write allowlist, validate the proposed `payload` in a [custom security rule](#custom-security-rules).
+For reads, use `include` to allow specific returned columns or `exclude` to hide columns. If both are specified, `include` takes precedence. Without either, all columns are returned. For individual inserts and updates, `exclude` removes named fields before saving; `include` does not restrict writes. An exact write allowlist requires independent server enforcement; see [Data requirements](#data-requirements-and-query-validation).
 
 ```json
 {
