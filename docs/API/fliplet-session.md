@@ -20,15 +20,30 @@ Read, write, and clear the current user session — including cached offline ses
 // Get the session using the locally cached offline data.
 // This is fast and work across all network conditions.
 Fliplet.User.getCachedSession().then(function onCachedSessionRetrieved(session) {
-  console.log(session);
+  // Use the session for UI state; do not log authentication fields.
 });
 
-// This only works if the app is online as it makes an API request
-// to Fliplet servers to return the live data.
+// Request the current session. If the request fails, get() can return
+// a stored session; use the fresh-read method below for access checks.
 Fliplet.Session.get().then(function onSessionRetrieved(session) {
-  console.log(session);
+  // Use the session for UI state; do not log authentication fields.
 });
 ```
+
+### Read the session without a stored-session fallback
+
+Use `Fliplet.Session.run({ url: 'v1/session', cache: false })` when a failed session read must stop an operation. Include `fliplet-session` in an app action's dependencies. The promise resolves to a response object containing `session`; it rejects when the request fails. Treat a missing or malformed `response.session` as a failed access check.
+
+```js
+const response = await Fliplet.Session.run({ url: 'v1/session', cache: false });
+const session = response && response.session;
+const login = session && session.entries && session.entries.dataSource;
+// For Data Source login, login.dataSourceId identifies the login Data Source
+// and login.id identifies its authenticated entry. Check the intended source
+// and operation's permissions before granting access.
+```
+
+`Fliplet.Session.get()` also requests the session, but can fall back to a stored session if the request fails. `Fliplet.User.getCachedSession()` is appropriate for cached UI decisions; neither a cached result nor the existence of a session establishes permission for a private operation. In a server action, use the fresh read above and follow [caller authorization](core/app-actions-v3#authorize-callers-before-accessing-private-data). Do not log the session response or its authentication fields.
 
 ### Get a key from the current session
 

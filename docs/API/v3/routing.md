@@ -46,7 +46,7 @@ Four requirements:
    - It returns `{ allowed: false, redirectTo, reason }` on denial, where `reason` is `'no-session'` or `'media-denied'`.
    - It already fetches the screen source via `Fliplet.Media.getContents(fileId)` internally. Don't call it yourself.
    - It rejects on transient or infra errors (5xx, network) so you can show an error UI instead of redirecting silently.
-4. **Guard against stale navigations.** If the user has navigated away before an access check resolves, don't redirect. Compare the resolved route against the current route before calling `push`.
+4. **Guard against stale navigations.** Capture the full target path and a request identifier before loading. Ignore results after a newer load, navigation or unmount, including results from asynchronous screen parsing. Do not compare a pending navigation only with the previously committed route.
 
 <p class="warning"><strong>Server media ACL is the final gate.</strong> The manifest's <code>public: true</code> flag is advisory. It just lets the client skip a known-401 round trip. Flipping <code>public: true</code> in the manifest without updating the media file's access rule grants no access.</p>
 
@@ -89,6 +89,8 @@ Every example assumes this manifest shape (see [App settings](app-settings) for 
 
 ### Vue Router 4 (Vue 3)
 
+Use a stable wrapper component for each manifest route. Vue Router caches resolved async route components, so an async component factory must not return a temporary access-denied or loading component. The wrapper below checks access on creation and on full-path changes, clears the previous screen, and ignores stale access or parsing results. `parseScreen(content)` is your framework-specific screen parser and may return a promise.
+
 ```js
 Fliplet.require.lazy('vue-router').then(function() {
   var manifest = Fliplet.Router.getRouteManifest();
@@ -98,25 +100,60 @@ Fliplet.require.lazy('vue-router').then(function() {
     ? VueRouter.createWebHashHistory()                         // native — hash only
     : VueRouter.createWebHistory(Fliplet.Router.getBasePath()); // web — path + basename
 
-  var routes = manifest.routes.map(function(r) {
+  function routeScreen(path) {
     return {
-      path: r.path,
-      name: r.name,
-      component: function() {
-        return Fliplet.Router.resolveRoute(r.path).then(function(result) {
-          if (!result.allowed) {
-            // Race guard: only redirect if the user is still on this route.
-            if (router.currentRoute.value.path === r.path) {
-              router.push(result.redirectTo);
+      data: function() {
+        return { loading: true, error: '', screen: null, requestId: 0 };
+      },
+      created: function() { this.load(); },
+      watch: {
+        '$route.fullPath': function() { this.load(); }
+      },
+      beforeUnmount: function() { this.requestId++; },
+      methods: {
+        load: async function() {
+          var id = ++this.requestId;
+          var fullPath = this.$route.fullPath;
+          var current = () => id === this.requestId && this.$route.fullPath === fullPath;
+          this.screen = null;
+          this.error = '';
+          this.loading = true;
+
+          try {
+            // Resolve the manifest path; keep query/hash in the navigation identity.
+            var result = await Fliplet.Router.resolveRoute(path);
+            if (!current()) return;
+
+            if (!result.allowed) {
+              if (!result.redirectTo || result.redirectTo === this.$route.path) {
+                this.error = 'Access denied.';
+                return;
+              }
+
+              sessionStorage.setItem('fl:postLoginPath', fullPath);
+              await this.$router.replace(result.redirectTo);
+              return;
             }
 
-            return { template: '<div></div>' };
+            var screen = await parseScreen(result.content);
+            if (!current()) return;
+            this.screen = Vue.markRaw(screen);
+          } catch (error) {
+            if (current()) this.error = 'Unable to load this screen. Please retry.';
+          } finally {
+            if (current()) this.loading = false;
           }
-
-          return parseScreen(result.content); // framework-specific
-        });
-      }
+        }
+      },
+      template: '<div><p v-if="loading" role="status">Loading…</p>' +
+        '<div v-else-if="error" role="alert"><p v-text="error"></p>' +
+        '<button type="button" @click="load">Retry</button></div>' +
+        '<component v-else-if="screen" :is="screen" /></div>'
     };
+  }
+
+  var routes = manifest.routes.map(function(r) {
+    return { path: r.path, name: r.name, component: routeScreen(r.path) };
   });
 
   routes.unshift({ path: '/', redirect: manifest.defaultRoute });
@@ -128,30 +165,66 @@ Fliplet.require.lazy('vue-router').then(function() {
 
 ### Vue Router 3 (Vue 2)
 
+Use the same wrapper lifecycle with Vue 2’s `beforeDestroy` hook. Vue 2 does not need `Vue.markRaw`.
+
 ```js
 Fliplet.require.lazy('vue-router').then(function() {
   var manifest = Fliplet.Router.getRouteManifest();
 
-  var routes = manifest.routes.map(function(r) {
+  function routeScreen(path) {
     return {
-      path: r.path,
-      name: r.name,
-      component: function(resolve) {
-        Fliplet.Router.resolveRoute(r.path).then(function(result) {
-          if (!result.allowed) {
-            if (router.currentRoute.path === r.path) {
-              router.push(result.redirectTo);
+      data: function() {
+        return { loading: true, error: '', screen: null, requestId: 0 };
+      },
+      created: function() { this.load(); },
+      watch: {
+        '$route.fullPath': function() { this.load(); }
+      },
+      beforeDestroy: function() { this.requestId++; },
+      methods: {
+        load: async function() {
+          var id = ++this.requestId;
+          var fullPath = this.$route.fullPath;
+          var current = () => id === this.requestId && this.$route.fullPath === fullPath;
+          this.screen = null;
+          this.error = '';
+          this.loading = true;
+
+          try {
+            // Resolve the manifest path; keep query/hash in the navigation identity.
+            var result = await Fliplet.Router.resolveRoute(path);
+            if (!current()) return;
+
+            if (!result.allowed) {
+              if (!result.redirectTo || result.redirectTo === this.$route.path) {
+                this.error = 'Access denied.';
+                return;
+              }
+
+              sessionStorage.setItem('fl:postLoginPath', fullPath);
+              await this.$router.replace(result.redirectTo);
+              return;
             }
 
-            resolve({ template: '<div></div>' });
-
-            return;
+            var screen = await parseScreen(result.content);
+            if (!current()) return;
+            this.screen = screen;
+          } catch (error) {
+            if (current()) this.error = 'Unable to load this screen. Please retry.';
+          } finally {
+            if (current()) this.loading = false;
           }
-
-          resolve(parseScreen(result.content));
-        });
-      }
+        }
+      },
+      template: '<div><p v-if="loading" role="status">Loading…</p>' +
+        '<div v-else-if="error" role="alert"><p v-text="error"></p>' +
+        '<button type="button" @click="load">Retry</button></div>' +
+        '<component v-else-if="screen" :is="screen" /></div>'
     };
+  }
+
+  var routes = manifest.routes.map(function(r) {
+    return { path: r.path, name: r.name, component: routeScreen(r.path) };
   });
 
   routes.unshift({ path: '/', redirect: manifest.defaultRoute });
@@ -315,15 +388,12 @@ render(currentPath());
 
 ## Post-login redirect
 
-When `resolveRoute` returns `reason: 'no-session'` or `reason: 'media-denied'`, stash the intended path before navigating to `authRedirect`. After a successful login, consume it.
+When `resolveRoute` denies access, stash the intended app-relative full path before redirecting, as the Vue wrappers above do. After a successful login, consume it. Do not redirect a denied login route to itself; show an access error. After logout succeeds, navigate to the login route so the protected wrapper is destroyed; a session change alone does not trigger navigation or recheck an already mounted screen.
 
 ### Vue Router 4 example
 
 ```js
-// Before redirecting to the auth screen:
-sessionStorage.setItem('fl:postLoginPath', router.currentRoute.value.fullPath);
-router.push(result.redirectTo);
-
+// The wrapper has already saved the intended full path.
 // After a successful login:
 var target = sessionStorage.getItem('fl:postLoginPath');
 sessionStorage.removeItem('fl:postLoginPath');
@@ -334,7 +404,9 @@ router.push(target || manifest.defaultRoute);
 
 ```js
 // Before redirecting to the auth screen:
-sessionStorage.setItem('fl:postLoginPath', location.pathname + location.search);
+// Capture this from your router: app-relative path, query and fragment.
+// Do not store the hosting base path or native file URL.
+sessionStorage.setItem('fl:postLoginPath', intendedFullPath);
 navigate(result.redirectTo);
 
 // After a successful login:

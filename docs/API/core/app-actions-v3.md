@@ -61,9 +61,10 @@ Write and run JavaScript code directly on the server or client to perform automa
 
 Actions have two versions: **master** (development) and **production** (live).
 
-- `create()` always creates a **master** action.
+- `create()` always creates a **master** action. Creating, updating or restoring a master action does not start its automatic schedule or change the published schedule.
 - `update()` can only update the **master** action. You can **not** update a production action directly — update the master and republish.
-- `publish()` copies the current master action to production. The app itself must be published first.
+- Publishing the whole app (`POST /v1/apps/:appId/publish`) copies its V3 actions to production, including apps that contain only actions; no website URL or web, iOS or Android build is required. In Studio V3, choose **Publish** > **Publish project changes**.
+- `publish()` copies one master action to production. The app itself must already be published.
 - `unpublish()` removes the production version. The master version remains.
 - `remove()` deletes the master action. If a production version exists, it is also deleted. You can **not** delete a production action directly.
 - **Scheduled actions** (`schedule` trigger) only run the **published (production)** version.
@@ -267,7 +268,7 @@ async function execute(context) {
 
 <p class="warning"><strong>Never let a setting value leave the action.</strong> Never return it, never log it (<code>console.*</code>), never put it in a thrown or returned error message, and never put it in a URL or query string — send it in a request header or body instead. Return values and error messages are stored in the app action logs and returned to the caller of <code>runWithResult()</code>; console output and every request URL are captured in the server runner logs. A provider that only accepts its key in the URL query string can not be called without breaking this rule.</p>
 
-<p class="warning">Server actions run in a headless browser, so <code>fetch</code> from a server action is a cross-origin browser request. Provider APIs that do not allow cross-origin browser requests (CORS) reject it. Server-side HTTP requests without this restriction are not available yet.</p>
+<p class="warning">Server actions use native <code>fetch</code> in a headless browser runtime. A provider's CORS policy for ordinary browser requests does not establish whether a server action can call it. Test the request in a server action and diagnose the observed HTTP response or network failure before declaring the integration unsupported.</p>
 
 A credential reaches `context.settings` from one of two sources:
 
@@ -391,6 +392,40 @@ async function execute(context) {
 // Requires dependency: fliplet-notifications
 ```
 
+## Authorize callers before accessing private data
+
+A server action keeps provider credentials off the device; it does not automatically restrict who can receive the action's result. Decide which operations are public and which require an app user. Reading public information need not require login. Reading private account data or performing restricted writes requires an authorization check inside the action, before contacting the provider. A hidden button or a protected screen is not that check.
+
+For an on-demand action using Data Source login, include `fliplet-session` in `dependencies`. Read the calling session with `Fliplet.Session.run({ url: 'v1/session', cache: false })` and inspect `response.session.entries.dataSource`. Check its `dataSourceId` against the intended login Data Source and require its `id` (the authenticated entry ID). A session existing, or an email matching a row, is not sufficient. Do not accept caller identity or permission claims from `context.payload` or session `client` fields.
+
+```js
+// Action environment: 'server'; dependencies: ['fliplet-session'].
+// Replace 123 with the app's intended login Data Source ID.
+async function execute(context) {
+  try {
+    const response = await Fliplet.Session.run({ url: 'v1/session', cache: false });
+    const session = response && response.session;
+    const entry = session && session.entries && session.entries.dataSource;
+
+    if (!entry || entry.dataSourceId !== 123 || !entry.id) {
+      return { success: false, error: 'Access denied' };
+    }
+
+    // Identity check only. Apply the operation's account/ownership policy
+    // before adding a private provider request here.
+    return { success: true, identityVerified: true };
+  } catch (error) {
+    return { success: false, error: 'Unable to verify access' };
+  }
+}
+```
+
+This fresh read rejects request failures instead of returning a stored session; see [fresh session reads](../fliplet-session#read-the-session-without-a-stored-session-fallback). It establishes the authenticated entry, not necessarily its current permissions. If access depends on current account status, role or record ownership, read the authoritative records and apply that policy before the provider request. Session entry data can reflect an earlier login; do not treat a snapshot as proof that an account is still active. Add `fliplet-datasources` when using `Fliplet.DataSources` for those checks.
+
+Scheduled actions have no interactive caller. Give a scheduled service operation its own explicit permitted resources and operations. Never interpret a missing on-demand caller as permission to run the scheduled path. Likewise, keep caller authorization separate from the provider credential: a valid API key does not establish the caller's access.
+
+Verify both permitted and denied calls: the intended user succeeds, while signed-out users, a login from another Data Source, forged payload identity and failed session reads make no provider request. Verify current-account or ownership restrictions separately when the app requires them.
+
 ## Dependencies
 
 If your action code uses Fliplet APIs, you must include the corresponding package in the `dependencies` array. Dependencies can be Fliplet package names or external URLs.
@@ -409,6 +444,7 @@ dependencies: [
 
 | Package | Required when using | Description | API Reference |
 |---------|---------------------|-------------|---------------|
+| `fliplet-session` | `Fliplet.Session` | Session API — read the calling session | [Session JS API](../fliplet-session) |
 | `fliplet-datasources` | `Fliplet.DataSources` | Data Sources API — connect, find, insert, update, remove entries | [Data Sources JS API](https://developers.fliplet.com/API/fliplet-datasources.html) |
 | `fliplet-media` | `Fliplet.Media` | Media API — upload, retrieve, and manage media files | [Media JS API](https://developers.fliplet.com/API/fliplet-media.html) |
 | `fliplet-communicate` | `Fliplet.Communicate` | Communication API — send emails, push notifications, SMS | [Communicate JS API](https://developers.fliplet.com/API/fliplet-communicate.html) |
@@ -491,6 +527,7 @@ await Fliplet.Media.Files.upload({ folderId: folderId, file: fileBlob });
 
 When writing action code, **match each `Fliplet.*` namespace used in the `execute` function to its corresponding package** and include it in the `dependencies` array:
 
+- Code uses `Fliplet.Session` → add `fliplet-session`
 - Code uses `Fliplet.DataSources` → add `fliplet-datasources`
 - Code uses `Fliplet.Communicate` → add `fliplet-communicate`
 - Code uses `Fliplet.Media` → add `fliplet-media`
@@ -528,7 +565,9 @@ Each trigger in the `triggers` array is an object with these properties:
 
 ### `manual` trigger
 
-The `manual` trigger has no `where` clause. It fires when you call `run()` or `runWithResult()`.
+The `manual` trigger has no `where` clause. Direct calls to `run()` or `runWithResult()` do not require this trigger.
+
+Trigger configuration does not authorize callers. Removing `manual`, or using an empty `triggers` array, does not prevent direct invocation. For restricted operations, [authorize callers inside the server action](#authorize-callers-before-accessing-private-data).
 
 ```js
 triggers: [{ trigger: 'manual' }]
@@ -704,7 +743,7 @@ triggers: [
 
 ## Create an action
 
-Use `Fliplet.App.V3.Actions.create()` to create a V3 action. This always creates a **master** (development) version. To run the action in production/live apps, you must also publish it using `publish()`.
+Use `Fliplet.App.V3.Actions.create()` to create a V3 action. This always creates a **master** (development) version. To run it in production/live apps, publish the whole app or use `publish()` for an already-published app.
 
 ### Parameters
 
@@ -764,7 +803,7 @@ Example timezones:
 
 ### Create a scheduled action
 
-A scheduled action requires: `frequency` (cron expression), `triggers: [{ trigger: 'schedule' }]`, and `environment` set to `"server"` or `"any"`. The action only runs in production after being published with `publish()`.
+A scheduled action requires `active: true`, `frequency` (cron expression), `triggers: [{ trigger: 'schedule' }]` and `environment` set to `"server"` or `"any"`. Publish the whole app to activate its production schedule, or use `publish()` for one action in an already-published app. Saving the master action alone does not start the schedule.
 
 ```js
 var result = await Fliplet.App.V3.Actions.create({
@@ -789,13 +828,14 @@ var result = await Fliplet.App.V3.Actions.create({
 // result — the created action object (returned directly, not wrapped)
 // result.id — use this ID to publish, update, or delete the action
 
-// IMPORTANT: You must publish the action for the schedule to be active in production:
+// Publish the whole app to activate this schedule.
+// Alternatively, if the app is already published, publish this action alone:
 // await Fliplet.App.V3.Actions.publish(result.id);
 ```
 
 ### Create an on-demand (manual) action
 
-<p class="warning">To run an action on-demand (e.g., triggered by a user), you <strong>must</strong> include the <code>manual</code> trigger. Without it, <code>run()</code> and <code>runWithResult()</code> cannot execute the action.</p>
+The example includes a `manual` trigger, but direct invocation does not require it. See [the manual trigger and caller authorization](#manual-trigger).
 
 ```js
 var result = await Fliplet.App.V3.Actions.create({
@@ -912,9 +952,9 @@ var result = await Fliplet.App.V3.Actions.create({
 
 ## Run an on-demand action
 
-Actions with a `manual` trigger can be executed using `run()` (fire and forget) or `runWithResult()` (wait for the return value). Pass the action `name` (String) or `id` (Number) as the first parameter.
+Use `run()` (fire and forget) or `runWithResult()` (wait for the return value) to invoke an action directly. Pass the action `name` (String) or `id` (Number) as the first parameter.
 
-<p class="warning">Only actions with a <code>manual</code> trigger can be run via <code>run()</code> or <code>runWithResult()</code>. Calling these methods on an action without a <code>manual</code> trigger results in an error. The action must also have <code>active: true</code>.</p>
+The action must have `active: true`. A `manual` trigger is not required, including when `triggers` is empty. App access, the action's execution environment and any authorization checks inside the action still apply. See [the manual trigger and caller authorization](#manual-trigger).
 
 ### `run(nameOrId, payload)` — fire and forget
 
@@ -940,31 +980,50 @@ await Fliplet.App.V3.Actions.run('confirm-booking', {
 
 ### `runWithResult(nameOrId, payload)` — wait for result
 
-Executes the action and waits for it to complete. Returns the value from the `execute()` function.
+Executes the action and waits for it to complete. The result shape depends on where it runs.
 
 - **Parameters:**
   - `nameOrId` (String or Number) — The action name or numeric ID
   - `payload` (Optional Object) — Data to pass as `context.payload`.
-- **Returns:** Promise that resolves with the return value of the `execute()` function. The result is limited to 6MB.
+- **Returns:** A Promise resolving to the result described below. Server results are limited to 6MB.
+
+| Execution | Resolved value |
+|-----------|----------------|
+| Server | A result object: `{ success: true, data: <execute() return value> }` on success. Read the action's value from `result.data`, including `false`, `0`, `null`, and an empty string. |
+| Client | The value returned by `execute()` directly. A thrown error rejects the Promise. |
+| `any` | Uses the client behavior when the action is bundled locally; otherwise it runs on the server and uses the server result object. |
+
+Server execution failures can resolve with `{ success: false, error: { message: "..." } }`; they do not necessarily reject the Promise. Returning `{ success: false, error: "..." }` from the action can also produce a failed server result, with the returned value retained in `data`. Check `result.success` before using `result.data`, and handle any application-specific outcome within that value. Request failures, such as an HTTP or network error, can reject the Promise and need a `catch` handler.
 
 ```js
-// Run and get the result
-var result = await Fliplet.App.V3.Actions.runWithResult('confirm-booking', {
-  entryId: 123,
-  name: 'Nick'
-});
-// result is exactly what execute() returned
-// e.g., { success: true }
-if (result.success) {
-  // Booking confirmed
+// confirm-booking is configured with environment: 'server'.
+// Its execute() function returns { bookingId: 123, confirmed: true }.
+try {
+  var result = await Fliplet.App.V3.Actions.runWithResult('confirm-booking', {
+    entryId: 123,
+    name: 'Nick'
+  });
+
+  if (!result || result.success !== true) {
+    throw new Error('The booking action failed.');
+  }
+
+  var booking = result.data;
+  if (booking.confirmed) {
+    // Booking confirmed; booking.bookingId is 123.
+  }
+} catch (error) {
+  // Show a failure state. Do not automatically retry a potentially completed write.
 }
 
-// Run by action ID instead of name
-var result = await Fliplet.App.V3.Actions.runWithResult(12345, {
-  entryId: 123
+// calculate-total is bundled locally with environment: 'client' or 'any'.
+// Its execute() function returns a number, so no .data access is needed.
+var total = await Fliplet.App.V3.Actions.runWithResult('calculate-total', {
+  quantity: 2
 });
-// result is the return value of execute()
 ```
+
+Choose the result handling for the action's execution environment. Do not use `result.data || result`: it loses valid falsy values and can mistake a client action's own `data` property for a server wrapper. An action ID can be used instead of its name in either example.
 
 <p class="quote">Rate limiting: the run action endpoint is limited to <strong>30 requests per minute</strong>. Contact the Fliplet team for more details.</p>
 
@@ -1103,13 +1162,15 @@ var result = await Fliplet.App.V3.Actions.update(12345, {
 
 ## Temporarily deactivate an action
 
-Update an action with `active: false` to disable it. Inactive actions do **not** run on any trigger (manual, schedule, log, or analytics). To reactivate, set `active: true` and republish if needed.
+Updating the master action with `active: false` disables the master only. If a production copy exists, republish the action or the whole app to disable that copy too. Until then, its published schedule keeps running. To reactivate it, set `active: true` and republish. `unpublish()` is another way to stop production execution while retaining the master.
 
 ```js
 var result = await Fliplet.App.V3.Actions.update(12345, {
   active: false
 });
-// Action is now inactive — it will not run until active is set back to true
+// For an already-published action, apply the disabled state to production:
+await Fliplet.App.V3.Actions.publish(12345);
+// Both versions are inactive after publication succeeds.
 ```
 
 ## Delete an action
@@ -1128,7 +1189,7 @@ await Fliplet.App.V3.Actions.remove(12345);
 
 ## Publish an action
 
-Use `Fliplet.App.V3.Actions.publish()` to copy the master action to production. Only published actions run in live apps. The app itself must be published first.
+Use `Fliplet.App.V3.Actions.publish()` to copy one master action to production after the app itself has been published. Publishing the whole app also publishes its V3 actions. See [Master vs production lifecycle](#master-vs-production-lifecycle).
 
 - **Parameters:** `id` (Number) — The action ID
 - **Returns:** Promise resolving to `{ action: <published production action object> }`
@@ -1138,7 +1199,7 @@ var result = await Fliplet.App.V3.Actions.publish(12345);
 // result.action — the published production action object
 ```
 
-<p class="warning">If the app has not been published, <code>publish()</code> returns an <code>APP_NOT_PUBLISHED</code> error. Publish the app first, then publish the action.</p>
+<p class="warning">If the app has not been published, <code>publish()</code> returns an <code>APP_NOT_PUBLISHED</code> error. Publish the whole app to create its production copy and publish its V3 actions.</p>
 
 ## Unpublish an action
 
@@ -1322,7 +1383,7 @@ The restore:
 
 - Takes a `pre-restore` snapshot of the current configuration first, so the restore can itself be undone.
 - Restores every field from the snapshot **except** `masterTaskId` and `productionTaskId` (those describe the action's identity and publish state, not its config).
-- Re-applies the cron schedule if the restored configuration has a `frequency` and is `active`.
+- Restores the master's schedule configuration without starting it or changing the production schedule. Republish the action or the whole app to apply the restored configuration to production.
 - Writes an `appAction.v3.restore` audit log carrying both `restoredFromVersionId` and `preRestoreVersionId`.
 
 ```js
@@ -1394,7 +1455,7 @@ The `data` object contains:
 | `payload` | Object | Always | The payload that was passed to the action. Empty `{}` for scheduled actions. For log triggers, contains the `{ trigger, log }` object. |
 | `duration` | Number | Always | Execution time in milliseconds |
 | `actionVersion` | String | Always | Always `"v3"` |
-| `result` | Object | On success (on-demand only) | `{ data: <return value of execute()>, success: true }`. Not present for successful scheduled runs. |
+| `result` | Object | When the server returns a result | The server execution result, including for scheduled runs. On success: `{ data: <return value of execute()>, success: true }`. |
 | `error` | Object | On failure only | Error details: `{ name: "ErrorType", message: "description", stack: "..." }` |
 
 ### Example: successful on-demand log entry
@@ -1431,12 +1492,16 @@ The `data` object contains:
     "runOn": "server",
     "taskId": 130057,
     "duration": 747,
-    "actionVersion": "v3"
+    "actionVersion": "v3",
+    "result": {
+      "data": { "processedCount": 12 },
+      "success": true
+    }
   }
 }
 ```
 
-<p class="info">Successful scheduled log entries do <strong>not</strong> include a <code>result</code> property, even if the <code>execute()</code> function returns a value.</p>
+Scheduled server execution logs include the returned result. Keep secrets out of return values as well as log messages.
 
 ### Example: failed action log entry
 
@@ -1589,7 +1654,7 @@ All error responses follow this format:
 | `Fliplet.App.V3.Actions.update(id, data)` | `id` (Number), `data` (Object) | `action` (object) | Update a master action |
 | `Fliplet.App.V3.Actions.remove(id)` | `id` (Number) | void | Delete an action (master + production) |
 | `Fliplet.App.V3.Actions.run(nameOrId, payload)` | `nameOrId` (String/Number), `payload` (Object) | Promise<void> | Queue action for execution, no return value |
-| `Fliplet.App.V3.Actions.runWithResult(nameOrId, payload)` | `nameOrId` (String/Number), `payload` (Object) | Return value of `execute()` | Run action and wait for result |
+| `Fliplet.App.V3.Actions.runWithResult(nameOrId, payload)` | `nameOrId` (String/Number), `payload` (Object) | Server result object; direct `execute()` value on client | Run action and wait for result; see result handling above |
 | `Fliplet.App.V3.Actions.publish(id)` | `id` (Number) | `{ action }` | Publish master to production |
 | `Fliplet.App.V3.Actions.unpublish(id)` | `id` (Number) | void | Remove from production |
 | `Fliplet.App.V3.Actions.getLogs(options)` | `{ id, where, limit, offset }` | `{ count, logs }` | Get execution logs |
