@@ -15,14 +15,14 @@ Each constraint maps to a concrete platform guarantee:
 
 1. Dependencies resolve through the Fliplet asset pipeline so versioning, caching, and per-environment injection work.
 2. Source files are fetched with signed media requests so private apps don't leak their screens.
-3. The runtime registers its globals (`Fliplet.ENV`, `Fliplet.Router`, `Fliplet.Session`, etc.) before your framework mounts.
+3. `Fliplet().then(...)` waits for runtime initialization before your framework mounts. Optional packages such as `Fliplet.Session` must also be loaded before use.
 4. The viewport is locked so native apps don't pinch-zoom or auto-zoom when users focus an input field.
 
 <p class="warning">Skip any of these constraints and the app fails at boot, works in dev but breaks in production, or is rejected by the boot-HTML lint.</p>
 
 ## 1. Fetch dependencies with `Fliplet.require.lazy`
 
-Any registered Fliplet dependency (Vue, React, Vue Router, etc.) **must** be loaded with `Fliplet.require.lazy(name)`. Never use `<script>` tags, `import`, or raw CDN URLs. These bypass the Fliplet asset pipeline and break versioning, caching, and dependency resolution.
+Use `Fliplet.require.lazy(name)` for a registered single dependency, such as Vue. For a registered package with transitive dependencies, use `Fliplet.require.lazy.chain(name)`, for example `Fliplet.require.lazy.chain('fliplet-session')`, to load its prerequisites in order. Plain `lazy(name)` rejects chained packages. Never use `<script>` tags, `import`, or raw CDN URLs. These bypass the Fliplet asset pipeline and break versioning, caching, and dependency resolution.
 
 ```js
 Fliplet.require.lazy('vue').then(function() {
