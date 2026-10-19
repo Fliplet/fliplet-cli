@@ -7685,7 +7685,7 @@ Write and run JavaScript code directly on the server or client to perform automa
 5. App action execution time limits depend on environment: **120 seconds** for server-side (`server`) and **30 seconds** for client-side V3 (`client`). When the limit is exceeded, the action is killed and a timeout error is returned and saved in the logs.
 6. On-demand actions accept a `payload` object that is serialized to JSON and sent to the execution backend. The effective maximum payload size is constrained by the transport layer used to invoke the action (in practice, this is typically limited by the maximum URL/query-string length when the payload is sent as a URL-encoded query parameter). Keep payloads small; for larger inputs, store data elsewhere (e.g., a data source or file) and pass a reference (IDs/keys) instead.
 7. The result sent from an on-demand app action is **limited to 6MB**.
-8. Scheduled app actions only run the **published (production)** version of an action. On-demand actions run the version from the same environment they are fired from (e.g., Fliplet Viewer runs the master version, live apps run the production version).
+8. An active app action with a `frequency` can run on schedule even before publication. Master and production copies can each have a schedule; see [Master vs production lifecycle](#master-vs-production-lifecycle). On-demand actions run the version from the same environment they are fired from (e.g., Fliplet Viewer runs the master version, live apps run the production version).
 9. An action must have `active` set to `true` to be executed. Inactive actions do **not** run regardless of whether they are on-demand, scheduled, or triggered by events.
 10. If a scheduled action fails, the error is logged and the execution is skipped. Scheduled actions do **not** retry on failure — they wait for the next cron tick.
 11. Every **create**, **update**, and **restore** snapshots the action's configuration to a **version history**. Up to **100** versions are retained per action; older snapshots are pruned automatically. Snapshotting is best-effort and never blocks the create/update response. See [Version history](#version-history).
@@ -7704,13 +7704,12 @@ Write and run JavaScript code directly on the server or client to perform automa
 
 Actions have two versions: **master** (development) and **production** (live).
 
-- `create()` always creates a **master** action. Creating, updating or restoring a master action does not start its automatic schedule or change the published schedule.
+- `create()` always creates a **master** action. Creating, updating or restoring a master with `active: true` and a `frequency` can start its schedule before publication.
 - `update()` can only update the **master** action. You can **not** update a production action directly — update the master and republish.
-- Publishing the whole app (`POST /v1/apps/:appId/publish`) copies its V3 actions to production, including apps that contain only actions; no website URL or web, iOS or Android build is required. In Studio V3, choose **Publish** > **Publish project changes**.
 - `publish()` copies one master action to production. The app itself must already be published.
 - `unpublish()` removes the production version. The master version remains.
 - `remove()` deletes the master action. If a production version exists, it is also deleted. You can **not** delete a production action directly.
-- **Scheduled actions** (`schedule` trigger) only run the **published (production)** version.
+- **Scheduled actions** can run from the master as well as a published copy. Publishing is not a boundary that keeps a scheduled draft from running. Inspect both copies before enabling or changing a schedule.
 - **On-demand actions** (`manual` trigger) run the version from the environment they are fired from (master in Fliplet Viewer, production in live apps).
 - **Log-triggered actions** run the **published (production)** version on the server.
 - **Analytics-triggered actions** run the version loaded in the client (production in live apps, master in Fliplet Viewer).
@@ -8434,7 +8433,7 @@ triggers: [
 
 ## Create an action
 
-Use `Fliplet.App.V3.Actions.create()` to create a V3 action. This always creates a **master** (development) version. To run it in production/live apps, publish the whole app or use `publish()` for an already-published app.
+Use `Fliplet.App.V3.Actions.create()` to create a V3 action. This always creates a **master** (development) version. To make it available in production/live apps, use `publish()` after the app has been published. This does not prevent a master action from running on schedule.
 
 ### Parameters
 
@@ -8494,7 +8493,7 @@ Example timezones:
 
 ### Create a scheduled action
 
-A scheduled action requires `active: true`, `frequency` (cron expression), `triggers: [{ trigger: 'schedule' }]` and `environment` set to `"server"` or `"any"`. Publish the whole app to activate its production schedule, or use `publish()` for one action in an already-published app. Saving the master action alone does not start the schedule.
+Configure a scheduled action with `active: true`, `frequency` (cron expression), `triggers: [{ trigger: 'schedule' }]` and `environment` set to `"server"` or `"any"`. Creating this active master can start its schedule immediately; publication is not required. Use `active: false` while preparing it, and enable it only when its scheduled effects are authorized. Check any published copy too, because it has separate schedule configuration.
 
 ```js
 var result = await Fliplet.App.V3.Actions.create({
@@ -8519,9 +8518,10 @@ var result = await Fliplet.App.V3.Actions.create({
 // result — the created action object (returned directly, not wrapped)
 // result.id — use this ID to publish, update, or delete the action
 
-// Publish the whole app to activate this schedule.
-// Alternatively, if the app is already published, publish this action alone:
+// This active master can now run on schedule, even before publication.
+// To create or update a production copy in an already-published app:
 // await Fliplet.App.V3.Actions.publish(result.id);
+// Inspect both copies to avoid unintended repeated work.
 ```
 
 ### Create an on-demand (manual) action
@@ -8853,7 +8853,7 @@ var result = await Fliplet.App.V3.Actions.update(12345, {
 
 ## Temporarily deactivate an action
 
-Updating the master action with `active: false` disables the master only. If a production copy exists, republish the action or the whole app to disable that copy too. Until then, its published schedule keeps running. To reactivate it, set `active: true` and republish. `unpublish()` is another way to stop production execution while retaining the master.
+Updating the master action with `active: false` disables the master only. If a production copy exists, publish that disabled action to apply the change to it too. Keep its existing `frequency` until the schedules have been stopped. Alternatively, `unpublish()` removes the production copy and its schedule, but leaves the master; unpublishing alone does not stop an active master schedule. Verify both copies and their run logs. A request already in progress can still finish.
 
 ```js
 var result = await Fliplet.App.V3.Actions.update(12345, {
@@ -8861,7 +8861,8 @@ var result = await Fliplet.App.V3.Actions.update(12345, {
 });
 // For an already-published action, apply the disabled state to production:
 await Fliplet.App.V3.Actions.publish(12345);
-// Both versions are inactive after publication succeeds.
+// Verify the master and production schedules have stopped.
+// Requests already in progress can still finish.
 ```
 
 ## Delete an action
@@ -8880,7 +8881,7 @@ await Fliplet.App.V3.Actions.remove(12345);
 
 ## Publish an action
 
-Use `Fliplet.App.V3.Actions.publish()` to copy one master action to production after the app itself has been published. Publishing the whole app also publishes its V3 actions. See [Master vs production lifecycle](#master-vs-production-lifecycle).
+Use `Fliplet.App.V3.Actions.publish()` to copy one master action to production after the app itself has been published. This can also start the production copy's schedule when it is active and has a `frequency`; the master schedule is separate. See [Master vs production lifecycle](#master-vs-production-lifecycle).
 
 - **Parameters:** `id` (Number) — The action ID
 - **Returns:** Promise resolving to `{ action: <published production action object> }`
@@ -8890,11 +8891,11 @@ var result = await Fliplet.App.V3.Actions.publish(12345);
 // result.action — the published production action object
 ```
 
-<p class="warning">If the app has not been published, <code>publish()</code> returns an <code>APP_NOT_PUBLISHED</code> error. Publish the whole app to create its production copy and publish its V3 actions.</p>
+<p class="warning">If the app has not been published, <code>publish()</code> returns an <code>APP_NOT_PUBLISHED</code> error. Publish the app first, then publish the action.</p>
 
 ## Unpublish an action
 
-Use `Fliplet.App.V3.Actions.unpublish()` to remove an action from production. The master version remains and can be republished later.
+Use `Fliplet.App.V3.Actions.unpublish()` to remove an action from production. The master version remains and can be republished later. Unpublishing does not disable the master; an active master with a `frequency` can continue running on schedule.
 
 - **Parameters:** `id` (Number) — The action ID
 - **Returns:** Promise that resolves when the action has been unpublished
@@ -9074,7 +9075,7 @@ The restore:
 
 - Takes a `pre-restore` snapshot of the current configuration first, so the restore can itself be undone.
 - Restores every field from the snapshot **except** `masterTaskId` and `productionTaskId` (those describe the action's identity and publish state, not its config).
-- Restores the master's schedule configuration without starting it or changing the production schedule. Republish the action or the whole app to apply the restored configuration to production.
+- Re-applies the master's schedule if the restored configuration has a `frequency` and is `active`, even before publication. Restoring does not update an existing production copy; inspect both copies before restoring scheduled work.
 - Writes an `appAction.v3.restore` audit log carrying both `restoredFromVersionId` and `preRestoreVersionId`.
 
 ```js
