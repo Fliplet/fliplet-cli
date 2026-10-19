@@ -1,6 +1,6 @@
 ---
 title: Build an AI chatbot
-description: "Build AI conversations with progressive replies, safe Markdown formatting, explicit models, message history and recoverable errors."
+description: "Present interactive AI text in conversations, research, writing tools and explanation panels with safe formatting, progressive output and recoverable errors."
 type: how-to
 tags: [js-api, ai, chatbot]
 v3_relevant: true
@@ -8,7 +8,7 @@ deprecated: false
 ---
 # Build an AI chatbot
 
-Build a conversation in which an AI model generates replies using `Fliplet.AI`. Your app controls conversation history, progressive output and how replies appear to its audience.
+Build a conversation in which an AI model generates replies using `Fliplet.AI`. Use the same presentation guidance for researched answers, writing tools and explanation panels. Your app controls progressive output and how replies appear to its audience; add conversation history only when the feature needs it.
 
 ## Contents
 
@@ -27,9 +27,9 @@ Build a conversation in which an AI model generates replies using `Fliplet.AI`. 
 
 Choose and specify a compatible [text model](/API/core/ai/models#openai-text-models). The IDs in this guide are illustrative selections, not recommendations for every chatbot. Preserve a supported model requested by the user and use its request format. For conversations between people, use [Fliplet.Chat](/API/fliplet-chat).
 
-For interactive conversations, writing assistants and explanation panels, show text as it arrives when the selected model supports streaming. Preserve explicit plain-text or non-streaming requirements; background tasks and structured JSON need their own output handling.
+For interactive generated text, show text as it arrives when the selected method and model support streaming. Formatting and streaming are separate choices: plain text can stream. Use a buffered formatted reply when non-streaming is explicitly required or the selected method or model does not support streaming. Background tasks and structured JSON need their own output handling.
 
-For reader-facing replies, present paragraphs, lists, emphasis, code and links as readable structure suited to the audience. Safely render Markdown when present unless the user or output contract requires plain text. Do not invent a plain-text-only instruction to avoid formatting the response.
+For reader-facing prose, present paragraphs, lists, emphasis, code and links as readable structure suited to the audience. Safely render Markdown when present unless the user or output contract requires plain text. Keep literal source or code output verbatim, parse structured JSON according to its contract, and keep editable extracted fields in their controls. Do not invent a plain-text-only instruction to avoid formatting a prose reply.
 
 ### Example resources
 
@@ -286,11 +286,11 @@ function requestReply(model, messages, onText) {
 
 ## Stream a reply
 
-The complete example above assembles chunks and renders before completion. Fliplet delivers chunks through its socket transport; normal completion resolves without an assembled answer. See the [streaming contract](/API/core/ai#streaming-with-createcompletion) for each request format's chunks and cancellation behavior.
+The complete example above assembles chunks and renders before completion. Fliplet delivers chunks through its socket transport; default completion resolves without an assembled answer. Opt into `{ returnResult: true }` when a Responses workflow needs final typed output, tools or annotations; see [terminal results](/API/core/ai#terminal-results). See the [streaming contract](/API/core/ai#streaming-with-createcompletion) for each request format's chunks and cancellation behavior.
 
 Reparse the accumulated raw text as it grows, then sanitize before inserting it into the DOM. An incomplete Markdown delimiter may render differently until later chunks arrive; finalize the same message when the stream ends. For large replies, batch display updates without waiting for the entire request. Keep code blocks and tables within the screen width.
 
-Cancellation is asynchronous. Keep the send guard active until the request settles, ignore late chunks after Stop or disposal, and distinguish partial output from a successful turn. Cancellation does not undo text already generated or guarantee that no credits were used. The example preserves partial text on error and keeps the draft for explicit retry; it does not automatically retry permission or credit failures.
+Stop settles the local request immediately; its separate cancellation Promise reports the remote acknowledgement or failure. Keep the send guard active until the completion Promise settles, ignore late chunks after Stop or disposal, and distinguish partial output from a successful turn. Cancellation does not undo text already generated or guarantee that no credits were used. The example preserves partial text on error and keeps the draft for explicit retry; it does not automatically retry permission or credit failures.
 
 ## Non-streaming and plain-text replies
 
@@ -322,6 +322,8 @@ Add persistence only if the feature needs it. [App storage](/API/core/storage) c
 
 For shared or private server storage, use [Data Sources](/API/fliplet-datasources) with [access rules](/Data-source-security) that enforce the intended owner and operations. Establish identity through the app's genuine login flow and designated login data source; writable `Fliplet.Session.set()` fields do not establish authenticated ownership. If the app supports multiple logins, bind the rule to the intended login source and verify which account is active. Do not add a login or conversation data source to a chatbot that only needs temporary public conversation state.
 
+For model-requested operations, use the [tool-calling guide](/API/core/ai/tool-calling). For hosted search and sources use [web search and citations](/API/core/ai/web-search); for file and image input use [file and image analysis](/API/core/ai/file-and-image-analysis). These capabilities are optional and should follow the feature requirements.
+
 The model does not automatically read app records. Query only records the current user is authorized to read, then include the smallest relevant context in the request. Treat record text as data, avoid sending unnecessary private fields and check authorization again when performing actions based on a reply. Uploading or storing private attachments also needs the [media API](/API/fliplet-media) and its permissions; data-source login bindings are not media access rules.
 
 ## Verify and troubleshoot
@@ -345,3 +347,6 @@ For access, credits and rate-limit errors, use the [error reference](/API/core/a
 - [AI models available through Fliplet](/API/core/ai/models)
 - [Record or upload audio](/API/core/ai/audio-transcription)
 - [App AI REST API](/REST-API/fliplet-ai)
+- [Tools and authorized actions](/API/core/ai/tool-calling)
+- [Web search and citations](/API/core/ai/web-search)
+- [File and image analysis](/API/core/ai/file-and-image-analysis)
