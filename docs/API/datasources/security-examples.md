@@ -154,7 +154,7 @@ async function readOwnSketch(adaSketchId) {
 
 Denied read tests as Ada: `find()` without an owner filter, `find({ where: { OwnerEmail: 'lin@example.org' } })` and `findById(linSketchId)` using Lin's actual fixture ID. Anonymous callers, a wrong-source login and `Enabled: false` must also be denied on these read paths.
 
-The query rule validates `where`; it does not add an owner filter. `findById(id)` instead evaluates the stored row. This textual email comparison is case-insensitive; use normalized unique identities and do not assume case-sensitive ownership. Before asserting private deployment safety, verify commit and other response-bearing routes are actually unavailable or appropriately isolated under the source's real permissions, including their returned rows and columns. See [adversarial response tests](testing-security.md#check-write-responses).
+The query rule validates `where`; it does not add an owner filter. `findById(id)` instead evaluates the stored row. This textual email comparison is case-insensitive; use normalized unique identities and do not assume case-sensitive ownership. Test every operation your app uses as each user, including the rows and columns it returns. See [adversarial response tests](testing-security.md#check-write-responses).
 
 ## Editable profiles
 

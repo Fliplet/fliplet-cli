@@ -71,7 +71,7 @@ For grants that admit commit or bulk operations, seed another owner's row and a 
 
 A `**REDACTED**` value in a returned row is a hashed field such as a password, and is not an exposure of that value. Still check whether the other returned rows and columns are acceptable for the actor.
 
-A client choosing `returnEntries: false` is not proof that other callers cannot request entries. To assert a read-only private configuration, verify commit and other response-bearing routes are actually unavailable or appropriately isolated under its real source permissions. A select-only evaluator result is insufficient. Record the tested deployment/configuration and any unknowns; do not infer deployed behavior from local source alone.
+A client choosing `returnEntries: false` is not proof that other callers cannot request entries, so test responses with entries enabled. Test the operations your app uses, as real app users on the deployed configuration; do not infer deployed behavior from local source alone.
 
 ## Check joined-source responses
 
