@@ -102,6 +102,10 @@ These destinations retain links to the previous sections of this guide.
 
 [Modifying the input query](API/datasources/security-rules.md#script-inputs-and-mutation)
 
+<a id="validating-submitted-filters"></a>
+
+[Validating submitted filters](API/datasources/security-rules.md#script-inputs-and-mutation)
+
 <a id="checking-data-when-committing-changes"></a>
 
 [Checking data when committing changes](API/datasources/security-rules.md#script-inputs-and-mutation)

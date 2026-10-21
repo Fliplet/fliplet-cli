@@ -78,6 +78,8 @@ Multiple fields in `allow.user` are AND conditions. Use separate rules for alter
 `{{user.[Email]}}` resolves the signed-in identity field; brackets also support names with spaces. Use it in `require` to compare a record or query to the caller. Comparing a user's own field to that same template inside `allow.user` does not restrict the actor. Missing identity must deny owner-scoped access; test missing, null and blank fields rather than relying on template output.
 {% endraw %}
 
+For per-account ownership, use an owner key that is unique to each account, stable and protected from end-user changes through every write path. Shared fields such as `Role` and `Department` do not need to be unique. Before matching an account to private records already assigned to an email address or external identity, verify control of that identity or provision the account through a trusted process. A self-chosen email at public signup does not establish entitlement to those records.
+
 Authentication setup and client-side session retrieval belong to the [authentication guide](../v3/auth.md) and [Session API](../fliplet-session.md).
 
 ## Requirements by operation
@@ -97,6 +99,8 @@ String requirements check **key presence**, not a nonempty value or type. For ex
 | Query update, affected-record check | Submitted update-data keys | Stored row |
 | Query delete, affected-record check | Stored record keys | Stored record values |
 | Commit delete | Existing data for the requested IDs | Existing data for the requested IDs |
+
+Components such as **List from Data Source**, **Chart** and **Form** may issue broad queries that do not satisfy your read requirements. Configure their filters or use custom queries that satisfy the intended restrictions. A permissive fallback rule grants broader access even when a stricter rule appears first, and `appId` scopes a rule to apps, not to individual components.
 
 A query read requirement checks the client's filter; it does not inject a filter. Send the appropriate `where` clause. `findOne({ where: ... })` follows the query route, whereas `findById(id)` follows the record route and cannot be assumed equivalent. Additional source permissions can reject either route.
 

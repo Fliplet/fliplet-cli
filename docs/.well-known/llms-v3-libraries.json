@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-09T09:40:01.582Z",
+  "generatedAt": "2026-10-21T12:49:35.272Z",
   "libraries": [
     {
       "package": "fliplet-analytics-spa",
@@ -509,7 +509,13 @@
         "streaming completion",
         "vision",
         "multimodal",
-        "ai assistant"
+        "ai assistant",
+        "function calling",
+        "tool calling",
+        "web search",
+        "citations",
+        "structured output",
+        "document analysis"
       ],
       "category": "automation"
     },

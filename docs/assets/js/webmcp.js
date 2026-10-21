@@ -1,7 +1,7 @@
 // WebMCP integration for developers.fliplet.com.
 //
 // Exposes a small set of read-only tools to in-browser AI agents that
-// implement the WebMCP API (navigator.modelContext.registerTool). The
+// implement the WebMCP API (document.modelContext.registerTool). The
 // tools mirror what the docs MCP worker offers at /mcp, so an agent
 // browsing a doc page can search, fetch, and inspect docs without
 // leaving the tab.
@@ -11,7 +11,7 @@
 (function () {
   'use strict';
 
-  if (!('modelContext' in navigator) || typeof navigator.modelContext.registerTool !== 'function') {
+  if (!('modelContext' in document) || typeof document.modelContext.registerTool !== 'function') {
     return;
   }
 
@@ -156,7 +156,7 @@
 
   function register(tool) {
     try {
-      navigator.modelContext.registerTool(tool);
+      document.modelContext.registerTool(tool);
     } catch (err) {
       // InvalidStateError is thrown if the tool is already registered
       // (e.g., on bfcache restore). Ignore and continue.
