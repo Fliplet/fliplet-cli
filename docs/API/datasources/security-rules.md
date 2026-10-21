@@ -108,7 +108,7 @@ Query writes first require a `select` grant for the submitted `where`. In the in
 
 ### Requirement operators
 
-This select-only illustration compares the submitted read filter or stored record to the caller. On updates, the same object condition would authorize the **stored** owner's row without prohibiting a proposed change to `OwnerEmail`. See the explicitly limited [single-record profile example](security-examples.md#editable-profiles) before configuring updates; its exclusions do not protect bulk/commit writes.
+This select-only illustration compares the submitted read filter or stored record to the caller. On updates, the same object condition would authorize the **stored** owner's row without prohibiting a proposed change to `OwnerEmail`. See the explicitly limited [single-record profile example](security-examples.md#editable-profiles) before configuring updates; its exclusions do not apply to bulk `append()` or `replaceWith()`.
 
 {% raw %}
 ```json
@@ -136,7 +136,7 @@ When the read-filtering helpers run, source-level `definition.include`/`definiti
 
 The inspected query/record read routes invoke each helper when the matching rule has the corresponding **nonempty** list. Do not infer that a source list alone is always applied by those routes. These helpers filter read responses; they do not establish write-persistence restrictions.
 
-Successful write authorization does not itself prove that returned rows or columns satisfy read restrictions. The inspected `commit()` response can return source entries without owner-select filtering or rule column filtering; hash redaction is separate. Source permissions and caller-supplied response options also affect this path. Test response isolation independently before choosing a writable policy for private data; setting `returnEntries: false` in cooperative clients does not enforce that option on other callers.
+For app users, a `commit()` response contains only the rows that commit touched, each checked against the caller's own `select` rule: rows the caller cannot read are dropped and the read `include`/`exclude` applies. With no `select` rule the response has no entries. Studio, administrative and API-token commits still return the source. Other write routes do not filter their responses this way; test them before relying on a writable policy for private data.
 
 Column restrictions do not have a uniform write contract:
 
@@ -144,10 +144,11 @@ Column restrictions do not have a uniform write contract:
 |---|---|---|
 | Select query/record response | Removes excluded data columns | Restricts returned data columns after exclusion; a field removed by `exclude` is not restored by `include` |
 | Single insert/update | Removes submitted excluded fields before persistence; this is filtering, not necessarily a rejected request | Does not reliably filter the persisted single-write payload |
-| Bulk append/replace/commit | Does not filter each persisted entry | Does not filter each persisted entry |
+| `commit()` by app users | Removes excluded fields from inserts and updates; updates merge onto the stored row, so unsent and excluded fields keep their stored values | Restricts written fields to the list |
+| Bulk `append()` / `replaceWith()` | Does not filter each persisted entry | Does not filter each persisted entry |
 | Query update | Omits matched exclusions from affected-row update data when operation checks run | Not a write whitelist |
 
-A single update that submits an excluded privilege field can resolve successfully while leaving that field unchanged. It is incorrect to describe that outcome as an authorization error. Do not use an `exclude` policy to promise protection on bulk/commit writes. Leave strict app-session writes unavailable until an implemented trusted write path has been verified. Script input selection can substitute `body.where` for proposed data, so a script that checks `query` is not automatically a complete payload validator.
+A single update that submits an excluded privilege field can resolve successfully while leaving that field unchanged. It is incorrect to describe that outcome as an authorization error. `commit()` applies the same exclusions for app users; bulk `append()` and `replaceWith()` do not, so an `exclude` policy does not protect those two paths. Script input selection can substitute `body.where` for proposed data, so a script that checks `query` is not automatically a complete payload validator.
 
 ### Joined-source reads
 

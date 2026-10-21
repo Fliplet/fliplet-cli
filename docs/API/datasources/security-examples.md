@@ -118,7 +118,7 @@ Create **Composition Sketches** with columns `OwnerEmail` and `Title`. Seed:
 ]
 ```
 
-This illustrates the named read checks, not complete source privacy. Write/bulk response routes and actual source permissions require independent verification before using the source for private data. A select-only rule array does not prove every commit request is denied or its response isolated. Do not rely on UI availability, cooperative response options or evaluator-only tests to establish privacy.
+This illustrates the named read checks, not complete source privacy. The source's own permissions and any bulk `append()`/`replaceWith()` access still need their own tests before using the source for private data. Do not rely on UI availability, cooperative response options or evaluator-only tests to establish privacy.
 
 Save this select-only illustration:
 
@@ -158,7 +158,7 @@ The query rule validates `where`; it does not add an owner filter. `findById(id)
 
 ## Editable profiles
 
-**Goal:** An enabled member updates their stored profile through single-record writes while excluded fields remain unchanged. This example does not guarantee protection on bulk/commit writes.
+**Goal:** An enabled member updates their stored profile through single-record writes while excluded fields remain unchanged. Single-record writes and `commit()` drop the excluded fields; bulk `append()` and `replaceWith()` do not.
 
 Create **Performer Profiles** with columns `OwnerEmail`, `DisplayName` and `Badge`. Seed:
 
@@ -169,7 +169,7 @@ Create **Performer Profiles** with columns `OwnerEmail`, `DisplayName` and `Badg
 ]
 ```
 
-For immutable ownership or protected badges across **all** endpoints, leave app-session updates disabled until an implemented trusted write path has been verified against source and runtime tests. This example does not provide that guarantee: bulk/commit updates can write fields that single-record `exclude` filters out. Omitting bulk methods from the UI is not server enforcement. A script's `query` can also come from caller-supplied `body.where`, so proposed-payload validation cannot be assumed even when `entry.data` exists.
+Single updates and `commit()` leave `OwnerEmail` and `Badge` unchanged; commit updates merge onto the stored row. Bulk `append()` and `replaceWith()` do not apply exclusions, and omitting them from the UI is not server enforcement. A script's `query` can also come from caller-supplied `body.where`, so proposed-payload validation cannot be assumed even when `entry.data` exists.
 
 Save:
 
@@ -213,7 +213,7 @@ Also submit a single update of Ada's row with `Badge: 'Director'` and `OwnerEmai
 
 Create **Festival Reviews** with columns `WorkTitle`, `Stage` and `Comment`. Seed `{ "WorkTitle": "River quartet", "Stage": "Pending", "Comment": "" }`.
 
-This policy permits changing Pending directly to any next stage. Do not use it as approval-transition enforcement. Leave strict workflow writes disabled until an implemented trusted write path and actor-operation tests verify caller role, stored stage, proposed stage and protected fields across all allowed endpoints.
+The requirement checks the stored stage, not the proposed one, so an approver can move a Pending review to any stage. For a workflow where other people submit and approvers decide, see [requests and approvals](#requests-and-approvals).
 
 Save this illustrative stored-state policy:
 
@@ -244,4 +244,57 @@ async function addReviewComment(reviewId) {
 
 Denied tests: Lin (`Roles: ['Author']`), a user with only `['SuperApprover']`, an inactive user or an anonymous caller attempting that update. Ada updating a seeded `Stage: 'Closed'` row must also be denied. Insert and delete have no grant.
 
-**Transition limit:** Ada can also submit `Stage: 'Published'` while the stored row is Pending. The requirement does not validate the next stage. Do not deploy this example as an approval-transition policy. A strict workflow needs server checks of caller role, stored stage, proposed stage and protected fields on every allowed write path. A single-update script can inspect `entry.data`, but commit lacks `entry`, and even a single-update request can supply `body.where` instead of the proposed payload to the script. Keep strict workflow writes unavailable until an implemented trusted write path and its actor-operation tests establish the required contract. Frontend guards and rule-query mutation do not supply that guarantee.
+**Transition limit:** Ada can also submit `Stage: 'Published'` while the stored row is Pending. Rules cannot restrict which next stage an approver chooses; that choice is the approver's to make. What rules enforce is who may change `Stage` at all: exclude it from every other actor's insert and update rules, as in [requests and approvals](#requests-and-approvals). Do not rely on a script to validate the proposed stage: a single-update request can supply `body.where` instead of the proposed payload to the script. Frontend guards and rule-query mutation do not supply that guarantee either.
+
+## Requests and approvals
+
+**Goal:** Members submit requests and can edit their own; approvers decide. Nobody decides their own request, and members can never set the decision fields.
+
+Create **Purchase Requests** with columns `OwnerEmail`, `Item`, `Amount`, `Status` and `DecidedBy`. Seed one request owned by Lin: `{ "OwnerEmail": "lin@example.org", "Item": "Monitor", "Amount": 180, "Status": "", "DecidedBy": "" }`.
+
+Rules run most privileged first. The approver rule's stored-row requirement stops an approver deciding their own request; Ada's own requests fall through to the member rules.
+
+{% raw %}
+```json
+[
+  { "type": ["select"], "allow": { "dataSourceId": 731, "user": { "Enabled": true, "Roles": "Approver" } } },
+  {
+    "type": ["update"],
+    "allow": { "dataSourceId": 731, "user": { "Enabled": true, "Roles": "Approver" } },
+    "require": [{ "OwnerEmail": { "notequals": "{{user.[Email]}}" } }],
+    "exclude": ["OwnerEmail"]
+  },
+  {
+    "type": ["select"],
+    "allow": { "dataSourceId": 731, "user": { "Enabled": true } },
+    "require": [{ "OwnerEmail": { "equals": "{{user.[Email]}}" } }]
+  },
+  {
+    "type": ["insert"],
+    "allow": { "dataSourceId": 731, "user": { "Enabled": true } },
+    "require": [{ "OwnerEmail": { "equals": "{{user.[Email]}}" } }],
+    "exclude": ["Status", "DecidedBy"]
+  },
+  {
+    "type": ["update"],
+    "allow": { "dataSourceId": 731, "user": { "Enabled": true } },
+    "require": [{ "OwnerEmail": { "equals": "{{user.[Email]}}" } }],
+    "exclude": ["OwnerEmail", "Status", "DecidedBy"]
+  }
+]
+```
+{% endraw %}
+
+As Lin, submitting a decision is filtered rather than rejected:
+
+```js
+async function trySelfApproval(requestId) {
+  const requests = await Fliplet.DataSources.connectByName('Purchase Requests', { offline: false });
+  await requests.update(requestId, { Item: 'Monitor arm', Status: 'Approved', DecidedBy: 'lin@example.org' });
+  const saved = await requests.findById(requestId);
+  console.log(saved.data.Item, saved.data.Status); // 'Monitor arm' ''
+}
+```
+
+As Ada, updating Lin's request with `Status: 'Approved'` and `DecidedBy: 'ada@example.org'` saves both. Denied tests: Ada approving a request she owns keeps `Status` unchanged, Lin reading or updating another member's request is denied, and an anonymous or wrong-source caller is denied. Excluded fields start empty on insert, so treat an empty `Status` as pending in the app. To stop edits after a decision, add a stored-state requirement to the member update rule and test it against the values the app actually stores, including empty.
+

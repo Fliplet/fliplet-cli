@@ -106,5 +106,5 @@ it('compatibility links describe the actual replacement scopes', () => {
   const section = examples.slice(examples.indexOf('<a id="private-sketches">'), examples.indexOf('## Editable profiles'));
   const policy = JSON.parse(section.match(/```json\n(\[\s*\{\s*"type"[\s\S]*?)```/)[1]);
   assert.deepEqual(policy[0].type, ['select']);
-  assert.ok(section.includes('does not prove every commit request is denied'));
+  assert.ok(section.includes('`replaceWith()` access still need their own tests'));
 });

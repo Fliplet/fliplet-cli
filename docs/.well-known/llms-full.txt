@@ -14641,7 +14641,7 @@ Create **Composition Sketches** with columns `OwnerEmail` and `Title`. Seed:
 ]
 ```
 
-This illustrates the named read checks, not complete source privacy. Write/bulk response routes and actual source permissions require independent verification before using the source for private data. A select-only rule array does not prove every commit request is denied or its response isolated. Do not rely on UI availability, cooperative response options or evaluator-only tests to establish privacy.
+This illustrates the named read checks, not complete source privacy. The source's own permissions and any bulk `append()`/`replaceWith()` access still need their own tests before using the source for private data. Do not rely on UI availability, cooperative response options or evaluator-only tests to establish privacy.
 
 Save this select-only illustration:
 
@@ -14681,7 +14681,7 @@ The query rule validates `where`; it does not add an owner filter. `findById(id)
 
 ## Editable profiles
 
-**Goal:** An enabled member updates their stored profile through single-record writes while excluded fields remain unchanged. This example does not guarantee protection on bulk/commit writes.
+**Goal:** An enabled member updates their stored profile through single-record writes while excluded fields remain unchanged. Single-record writes and `commit()` drop the excluded fields; bulk `append()` and `replaceWith()` do not.
 
 Create **Performer Profiles** with columns `OwnerEmail`, `DisplayName` and `Badge`. Seed:
 
@@ -14692,7 +14692,7 @@ Create **Performer Profiles** with columns `OwnerEmail`, `DisplayName` and `Badg
 ]
 ```
 
-For immutable ownership or protected badges across **all** endpoints, leave app-session updates disabled until an implemented trusted write path has been verified against source and runtime tests. This example does not provide that guarantee: bulk/commit updates can write fields that single-record `exclude` filters out. Omitting bulk methods from the UI is not server enforcement. A script's `query` can also come from caller-supplied `body.where`, so proposed-payload validation cannot be assumed even when `entry.data` exists.
+Single updates and `commit()` leave `OwnerEmail` and `Badge` unchanged; commit updates merge onto the stored row. Bulk `append()` and `replaceWith()` do not apply exclusions, and omitting them from the UI is not server enforcement. A script's `query` can also come from caller-supplied `body.where`, so proposed-payload validation cannot be assumed even when `entry.data` exists.
 
 Save:
 
@@ -14736,7 +14736,7 @@ Also submit a single update of Ada's row with `Badge: 'Director'` and `OwnerEmai
 
 Create **Festival Reviews** with columns `WorkTitle`, `Stage` and `Comment`. Seed `{ "WorkTitle": "River quartet", "Stage": "Pending", "Comment": "" }`.
 
-This policy permits changing Pending directly to any next stage. Do not use it as approval-transition enforcement. Leave strict workflow writes disabled until an implemented trusted write path and actor-operation tests verify caller role, stored stage, proposed stage and protected fields across all allowed endpoints.
+The requirement checks the stored stage, not the proposed one, so an approver can move a Pending review to any stage. For a workflow where other people submit and approvers decide, see [requests and approvals](#requests-and-approvals).
 
 Save this illustrative stored-state policy:
 
@@ -14767,7 +14767,59 @@ async function addReviewComment(reviewId) {
 
 Denied tests: Lin (`Roles: ['Author']`), a user with only `['SuperApprover']`, an inactive user or an anonymous caller attempting that update. Ada updating a seeded `Stage: 'Closed'` row must also be denied. Insert and delete have no grant.
 
-**Transition limit:** Ada can also submit `Stage: 'Published'` while the stored row is Pending. The requirement does not validate the next stage. Do not deploy this example as an approval-transition policy. A strict workflow needs server checks of caller role, stored stage, proposed stage and protected fields on every allowed write path. A single-update script can inspect `entry.data`, but commit lacks `entry`, and even a single-update request can supply `body.where` instead of the proposed payload to the script. Keep strict workflow writes unavailable until an implemented trusted write path and its actor-operation tests establish the required contract. Frontend guards and rule-query mutation do not supply that guarantee.
+**Transition limit:** Ada can also submit `Stage: 'Published'` while the stored row is Pending. Rules cannot restrict which next stage an approver chooses; that choice is the approver's to make. What rules enforce is who may change `Stage` at all: exclude it from every other actor's insert and update rules, as in [requests and approvals](#requests-and-approvals). Do not rely on a script to validate the proposed stage: a single-update request can supply `body.where` instead of the proposed payload to the script. Frontend guards and rule-query mutation do not supply that guarantee either.
+
+## Requests and approvals
+
+**Goal:** Members submit requests and can edit their own; approvers decide. Nobody decides their own request, and members can never set the decision fields.
+
+Create **Purchase Requests** with columns `OwnerEmail`, `Item`, `Amount`, `Status` and `DecidedBy`. Seed one request owned by Lin: `{ "OwnerEmail": "lin@example.org", "Item": "Monitor", "Amount": 180, "Status": "", "DecidedBy": "" }`.
+
+Rules run most privileged first. The approver rule's stored-row requirement stops an approver deciding their own request; Ada's own requests fall through to the member rules.
+
+{% raw %}
+```json
+[
+  { "type": ["select"], "allow": { "dataSourceId": 731, "user": { "Enabled": true, "Roles": "Approver" } } },
+  {
+    "type": ["update"],
+    "allow": { "dataSourceId": 731, "user": { "Enabled": true, "Roles": "Approver" } },
+    "require": [{ "OwnerEmail": { "notequals": "{{user.[Email]}}" } }],
+    "exclude": ["OwnerEmail"]
+  },
+  {
+    "type": ["select"],
+    "allow": { "dataSourceId": 731, "user": { "Enabled": true } },
+    "require": [{ "OwnerEmail": { "equals": "{{user.[Email]}}" } }]
+  },
+  {
+    "type": ["insert"],
+    "allow": { "dataSourceId": 731, "user": { "Enabled": true } },
+    "require": [{ "OwnerEmail": { "equals": "{{user.[Email]}}" } }],
+    "exclude": ["Status", "DecidedBy"]
+  },
+  {
+    "type": ["update"],
+    "allow": { "dataSourceId": 731, "user": { "Enabled": true } },
+    "require": [{ "OwnerEmail": { "equals": "{{user.[Email]}}" } }],
+    "exclude": ["OwnerEmail", "Status", "DecidedBy"]
+  }
+]
+```
+{% endraw %}
+
+As Lin, submitting a decision is filtered rather than rejected:
+
+```js
+async function trySelfApproval(requestId) {
+  const requests = await Fliplet.DataSources.connectByName('Purchase Requests', { offline: false });
+  await requests.update(requestId, { Item: 'Monitor arm', Status: 'Approved', DecidedBy: 'lin@example.org' });
+  const saved = await requests.findById(requestId);
+  console.log(saved.data.Item, saved.data.Status); // 'Monitor arm' ''
+}
+```
+
+As Ada, updating Lin's request with `Status: 'Approved'` and `DecidedBy: 'ada@example.org'` saves both. Denied tests: Ada approving a request she owns keeps `Status` unchanged, Lin reading or updating another member's request is denied, and an anonymous or wrong-source caller is denied. Excluded fields start empty on insert, so treat an empty `Status` as pending in the app. To stop edits after a decision, add a stored-state requirement to the member update rule and test it against the values the app actually stores, including empty.
 
 ---
 
@@ -14875,7 +14927,7 @@ Query writes first require a `select` grant for the submitted `where`. In the in
 
 ### Requirement operators
 
-This select-only illustration compares the submitted read filter or stored record to the caller. On updates, the same object condition would authorize the **stored** owner's row without prohibiting a proposed change to `OwnerEmail`. See the explicitly limited [single-record profile example](security-examples.md#editable-profiles) before configuring updates; its exclusions do not protect bulk/commit writes.
+This select-only illustration compares the submitted read filter or stored record to the caller. On updates, the same object condition would authorize the **stored** owner's row without prohibiting a proposed change to `OwnerEmail`. See the explicitly limited [single-record profile example](security-examples.md#editable-profiles) before configuring updates; its exclusions do not apply to bulk `append()` or `replaceWith()`.
 
 {% raw %}
 ```json
@@ -14903,7 +14955,7 @@ When the read-filtering helpers run, source-level `definition.include`/`definiti
 
 The inspected query/record read routes invoke each helper when the matching rule has the corresponding **nonempty** list. Do not infer that a source list alone is always applied by those routes. These helpers filter read responses; they do not establish write-persistence restrictions.
 
-Successful write authorization does not itself prove that returned rows or columns satisfy read restrictions. The inspected `commit()` response can return source entries without owner-select filtering or rule column filtering; hash redaction is separate. Source permissions and caller-supplied response options also affect this path. Test response isolation independently before choosing a writable policy for private data; setting `returnEntries: false` in cooperative clients does not enforce that option on other callers.
+For app users, a `commit()` response contains only the rows that commit touched, each checked against the caller's own `select` rule: rows the caller cannot read are dropped and the read `include`/`exclude` applies. With no `select` rule the response has no entries. Studio, administrative and API-token commits still return the source. Other write routes do not filter their responses this way; test them before relying on a writable policy for private data.
 
 Column restrictions do not have a uniform write contract:
 
@@ -14911,10 +14963,11 @@ Column restrictions do not have a uniform write contract:
 |---|---|---|
 | Select query/record response | Removes excluded data columns | Restricts returned data columns after exclusion; a field removed by `exclude` is not restored by `include` |
 | Single insert/update | Removes submitted excluded fields before persistence; this is filtering, not necessarily a rejected request | Does not reliably filter the persisted single-write payload |
-| Bulk append/replace/commit | Does not filter each persisted entry | Does not filter each persisted entry |
+| `commit()` by app users | Removes excluded fields from inserts and updates; updates merge onto the stored row, so unsent and excluded fields keep their stored values | Restricts written fields to the list |
+| Bulk `append()` / `replaceWith()` | Does not filter each persisted entry | Does not filter each persisted entry |
 | Query update | Omits matched exclusions from affected-row update data when operation checks run | Not a write whitelist |
 
-A single update that submits an excluded privilege field can resolve successfully while leaving that field unchanged. It is incorrect to describe that outcome as an authorization error. Do not use an `exclude` policy to promise protection on bulk/commit writes. Leave strict app-session writes unavailable until an implemented trusted write path has been verified. Script input selection can substitute `body.where` for proposed data, so a script that checks `query` is not automatically a complete payload validator.
+A single update that submits an excluded privilege field can resolve successfully while leaving that field unchanged. It is incorrect to describe that outcome as an authorization error. `commit()` applies the same exclusions for app users; bulk `append()` and `replaceWith()` do not, so an `exclude` policy does not protect those two paths. Script input selection can substitute `body.where` for proposed data, so a script that checks `query` is not automatically a complete payload validator.
 
 ### Joined-source reads
 
@@ -15197,7 +15250,7 @@ Create dedicated test data sources and records. Record the saved rule array, log
 | Inactive member | Protected write | Denied |
 | Approver with multiple roles | Supported review operation | Allowed |
 | Member without required role | Same operation | Denied |
-| Bound member with commit/bulk access | Own-data write with response enabled/default | Returned rows and columns satisfy the intended read isolation |
+| Bound member with commit access | Own-data commit with response enabled/default | Only the touched rows come back, filtered by the member's read rule |
 | Denied or wrong-source actor | Direct response-bearing request | No forbidden data returned or persisted |
 
 Adapt the matrix to the configured policy. Include missing/null identity fields, different native types and each write method your app uses. For protected ownership, privilege or state fields, attempt malicious payloads directly through the SDK as well as through the UI. A hidden button does not stop an SDK call.
@@ -15236,15 +15289,15 @@ Record the successful server response and returned rows. This read illustration 
 
 For every allowed write, perform a fresh read and check the exact saved values. For every forbidden write, inspect the rejection and verify that no forbidden insert, update or delete persisted. Use a trusted Studio readback where the app's read rules hide the affected fields; label it as persistence evidence, not an app-user access test.
 
-Test `findOne({ where: ... })` separately from `findById(id)` if the app uses both. Test single writes, append/replace, query writes and `commit()` separately when enabled. Do not extrapolate single-record `exclude` behavior to bulk writes. Record the mode, actor, rule revision, request, response and persisted result together. Change any of those inputs and rerun the relevant checks.
+Test `findOne({ where: ... })` separately from `findById(id)` if the app uses both. Test single writes, append/replace, query writes and `commit()` separately when enabled. Do not extrapolate `exclude` behavior to bulk `append()` or `replaceWith()`. Record the mode, actor, rule revision, request, response and persisted result together. Change any of those inputs and rerun the relevant checks.
 
 ## Check write responses
 
-For grants that admit commit/bulk operations, seed another owner's row and a sensitive column in the same disposable source. As the allowed actor, submit an own-data append or commit with response entries enabled or left at their default. Inspect **all returned rows and columns**, not just the submitted entry. Repeat direct requests as denied and wrong-source actors, and check both response data and persisted effects. Test these SDK calls independently of whether the UI exposes them.
+For grants that admit commit or bulk operations, seed another owner's row and a sensitive column in the same disposable source. As the allowed actor, submit an own-data commit, and an append if the app uses one, with response entries enabled or left at their default. Inspect **all returned rows and columns**, not just the submitted entry. An app user's commit response should hold only the touched rows, filtered by their read rule. Repeat direct requests as denied and wrong-source actors, and check both response data and persisted effects. Test these SDK calls independently of whether the UI exposes them.
 
 A `**REDACTED**` value in a returned row is a hashed field such as a password, and is not an exposure of that value. Still check whether the other returned rows and columns are acceptable for the actor.
 
-Read-response filtering does not automatically apply to commit responses. A client choosing `returnEntries: false` is not proof that other callers cannot request entries. To assert a read-only private configuration, verify commit and other response-bearing routes are actually unavailable or appropriately isolated under its real source permissions. A select-only evaluator result is insufficient. Record the tested deployment/configuration and any unknowns; do not infer deployed behavior from local source alone.
+A client choosing `returnEntries: false` is not proof that other callers cannot request entries. To assert a read-only private configuration, verify commit and other response-bearing routes are actually unavailable or appropriately isolated under its real source permissions. A select-only evaluator result is insufficient. Record the tested deployment/configuration and any unknowns; do not infer deployed behavior from local source alone.
 
 ## Check joined-source responses
 
@@ -15562,7 +15615,9 @@ if (mapping) {
 }
 ```
 
-The online result is `{ entries?, clientIds: [{ id, clientId }, ...] }`. By default, `entries` can contain the source dataset, not only changed rows. Hashed fields are redacted, but query-read filters and projections must not be assumed to protect this write response. Test returned rows and columns as each actor before enabling commits on private data. A cooperative caller's `returnEntries: false` is not authorization enforcement. See [write-response tests](testing-security.md#check-write-responses).
+The online result is `{ entries?, clientIds: [{ id, clientId }, ...] }`. For app users, `entries` holds only the rows this commit touched, each filtered by the caller's `select` rule, and is empty when no `select` rule grants access. Studio, administrative and API-token commits return the source dataset. Hashed fields are redacted.
+
+Commits by app users also follow the write rules: each insert and update drops the fields its matching rule excludes (or does not include), and updates merge onto the stored row, so unsent and excluded fields keep their stored values. `where` is ignored, `deleteColumns` and `renameColumns` are refused, and `columns` can only add columns. Test returned rows and saved values as each actor before enabling commits on private data. A cooperative caller's `returnEntries: false` is not authorization enforcement. See [write-response tests](testing-security.md#check-write-responses).
 
 ## Hooks and completion
 
@@ -36130,9 +36185,9 @@ Use this only for data intended for anonymous readers. It grants no insert, upda
 
 Rules grant access in order. A failed rule falls through for writes as well as reads, so a later broad grant can defeat an earlier restriction.
 
-Object conditions on updates check the **stored row**, while string requirements check submitted key presence. A condition that checks stored `Owner` or `Status` does not prevent a permitted write from changing those fields. Single-record writes honor `exclude`, but bulk/commit writes do not provide the same field protection. Custom scripts receive a copied input; assigning audit fields to that copy does not reliably persist them.
+Object conditions on updates check the **stored row**, while string requirements check submitted key presence. A condition on stored `Owner` or `Status` decides whether the caller may update that row; it does not stop them changing those fields. Exclude the fields each actor must not set from that actor's insert and update rules: single-record writes and `commit()` both drop excluded fields, and commit updates merge onto the stored row. Bulk `append()` and `replaceWith()` do not apply exclusions. Custom scripts receive a copied input; assigning audit fields to that copy does not reliably persist them.
 
-For immutable ownership or approval transitions, keep app-user writes unavailable until an implemented trusted write path has been verified to check both stored and proposed values on every supported endpoint. See [role and state limits](API/datasources/security-examples.md#role-and-state-access) before choosing a workflow policy.
+For workflows where one person submits and another decides, see [requests and approvals](API/datasources/security-examples.md#requests-and-approvals).
 
 ## Existing section links
 

@@ -24,7 +24,7 @@ Create dedicated test data sources and records. Record the saved rule array, log
 | Inactive member | Protected write | Denied |
 | Approver with multiple roles | Supported review operation | Allowed |
 | Member without required role | Same operation | Denied |
-| Bound member with commit/bulk access | Own-data write with response enabled/default | Returned rows and columns satisfy the intended read isolation |
+| Bound member with commit access | Own-data commit with response enabled/default | Only the touched rows come back, filtered by the member's read rule |
 | Denied or wrong-source actor | Direct response-bearing request | No forbidden data returned or persisted |
 
 Adapt the matrix to the configured policy. Include missing/null identity fields, different native types and each write method your app uses. For protected ownership, privilege or state fields, attempt malicious payloads directly through the SDK as well as through the UI. A hidden button does not stop an SDK call.
@@ -63,15 +63,15 @@ Record the successful server response and returned rows. This read illustration 
 
 For every allowed write, perform a fresh read and check the exact saved values. For every forbidden write, inspect the rejection and verify that no forbidden insert, update or delete persisted. Use a trusted Studio readback where the app's read rules hide the affected fields; label it as persistence evidence, not an app-user access test.
 
-Test `findOne({ where: ... })` separately from `findById(id)` if the app uses both. Test single writes, append/replace, query writes and `commit()` separately when enabled. Do not extrapolate single-record `exclude` behavior to bulk writes. Record the mode, actor, rule revision, request, response and persisted result together. Change any of those inputs and rerun the relevant checks.
+Test `findOne({ where: ... })` separately from `findById(id)` if the app uses both. Test single writes, append/replace, query writes and `commit()` separately when enabled. Do not extrapolate `exclude` behavior to bulk `append()` or `replaceWith()`. Record the mode, actor, rule revision, request, response and persisted result together. Change any of those inputs and rerun the relevant checks.
 
 ## Check write responses
 
-For grants that admit commit/bulk operations, seed another owner's row and a sensitive column in the same disposable source. As the allowed actor, submit an own-data append or commit with response entries enabled or left at their default. Inspect **all returned rows and columns**, not just the submitted entry. Repeat direct requests as denied and wrong-source actors, and check both response data and persisted effects. Test these SDK calls independently of whether the UI exposes them.
+For grants that admit commit or bulk operations, seed another owner's row and a sensitive column in the same disposable source. As the allowed actor, submit an own-data commit, and an append if the app uses one, with response entries enabled or left at their default. Inspect **all returned rows and columns**, not just the submitted entry. An app user's commit response should hold only the touched rows, filtered by their read rule. Repeat direct requests as denied and wrong-source actors, and check both response data and persisted effects. Test these SDK calls independently of whether the UI exposes them.
 
 A `**REDACTED**` value in a returned row is a hashed field such as a password, and is not an exposure of that value. Still check whether the other returned rows and columns are acceptable for the actor.
 
-Read-response filtering does not automatically apply to commit responses. A client choosing `returnEntries: false` is not proof that other callers cannot request entries. To assert a read-only private configuration, verify commit and other response-bearing routes are actually unavailable or appropriately isolated under its real source permissions. A select-only evaluator result is insufficient. Record the tested deployment/configuration and any unknowns; do not infer deployed behavior from local source alone.
+A client choosing `returnEntries: false` is not proof that other callers cannot request entries. To assert a read-only private configuration, verify commit and other response-bearing routes are actually unavailable or appropriately isolated under its real source permissions. A select-only evaluator result is insufficient. Record the tested deployment/configuration and any unknowns; do not infer deployed behavior from local source alone.
 
 ## Check joined-source responses
 

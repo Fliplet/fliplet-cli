@@ -42,9 +42,9 @@ Use this only for data intended for anonymous readers. It grants no insert, upda
 
 Rules grant access in order. A failed rule falls through for writes as well as reads, so a later broad grant can defeat an earlier restriction.
 
-Object conditions on updates check the **stored row**, while string requirements check submitted key presence. A condition that checks stored `Owner` or `Status` does not prevent a permitted write from changing those fields. Single-record writes honor `exclude`, but bulk/commit writes do not provide the same field protection. Custom scripts receive a copied input; assigning audit fields to that copy does not reliably persist them.
+Object conditions on updates check the **stored row**, while string requirements check submitted key presence. A condition on stored `Owner` or `Status` decides whether the caller may update that row; it does not stop them changing those fields. Exclude the fields each actor must not set from that actor's insert and update rules: single-record writes and `commit()` both drop excluded fields, and commit updates merge onto the stored row. Bulk `append()` and `replaceWith()` do not apply exclusions. Custom scripts receive a copied input; assigning audit fields to that copy does not reliably persist them.
 
-For immutable ownership or approval transitions, keep app-user writes unavailable until an implemented trusted write path has been verified to check both stored and proposed values on every supported endpoint. See [role and state limits](API/datasources/security-examples.md#role-and-state-access) before choosing a workflow policy.
+For workflows where one person submits and another decides, see [requests and approvals](API/datasources/security-examples.md#requests-and-approvals).
 
 ## Existing section links
 

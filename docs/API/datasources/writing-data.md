@@ -204,7 +204,9 @@ if (mapping) {
 }
 ```
 
-The online result is `{ entries?, clientIds: [{ id, clientId }, ...] }`. By default, `entries` can contain the source dataset, not only changed rows. Hashed fields are redacted, but query-read filters and projections must not be assumed to protect this write response. Test returned rows and columns as each actor before enabling commits on private data. A cooperative caller's `returnEntries: false` is not authorization enforcement. See [write-response tests](testing-security.md#check-write-responses).
+The online result is `{ entries?, clientIds: [{ id, clientId }, ...] }`. For app users, `entries` holds only the rows this commit touched, each filtered by the caller's `select` rule, and is empty when no `select` rule grants access. Studio, administrative and API-token commits return the source dataset. Hashed fields are redacted.
+
+Commits by app users also follow the write rules: each insert and update drops the fields its matching rule excludes (or does not include), and updates merge onto the stored row, so unsent and excluded fields keep their stored values. `where` is ignored, `deleteColumns` and `renameColumns` are refused, and `columns` can only add columns. Test returned rows and saved values as each actor before enabling commits on private data. A cooperative caller's `returnEntries: false` is not authorization enforcement. See [write-response tests](testing-security.md#check-write-responses).
 
 ## Hooks and completion
 
