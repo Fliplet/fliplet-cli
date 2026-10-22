@@ -98,6 +98,8 @@ String requirements check **key presence**, not a nonempty value or type. For ex
 | Query admission | Submitted `where` keys, evaluated as `select` | Submitted `where`, evaluated as `select` |
 | Query update, affected-record check | Submitted update-data keys | Stored row |
 | Query delete, affected-record check | Stored record keys | Stored record values |
+
+An object requirement on a query is met only by a value on that key at the top level of `where`. A condition on it only inside `$or`, or written with `$ne` or `$in`, does not meet it, and extra conditions beside it only narrow the result. To let either of two parties read a record, such as a message's sender and recipient, add one `select` rule per identity column.
 | Commit delete | Existing data for the requested IDs | Existing data for the requested IDs |
 
 Components such as **List from Data Source**, **Chart** and **Form** may issue broad queries that do not satisfy your read requirements. Configure their filters or use custom queries that satisfy the intended restrictions. A permissive fallback rule grants broader access even when a stricter rule appears first, and `appId` scopes a rule to apps, not to individual components.
