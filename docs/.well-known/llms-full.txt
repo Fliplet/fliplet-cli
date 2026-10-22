@@ -14495,7 +14495,7 @@ if (!cursor.isLastPage) {
 
 ## Column indexes
 
-`connection.getIndex(column)` resolves an array of distinct values. `connection.getIndexes(columns)` resolves an object mapping each requested column to its values. These source-wide lookups do not accept the `where`, views, pagination or request options of `find`; do not use them to infer the values visible to a filtered user. Verify returned values separately when configuring security.
+`connection.getIndex(column)` resolves an array of distinct values. `connection.getIndexes(columns)` resolves an object mapping each requested column to its values. These source-wide lookups do not accept the `where`, views, pagination or request options of `find`; for values that depend on the signed-in user, use `find` with `attributes`.
 
 | Argument | Type | Required |
 |---|---|---|
