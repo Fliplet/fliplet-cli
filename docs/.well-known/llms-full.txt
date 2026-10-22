@@ -16256,7 +16256,7 @@ For model-generated replies, use the [AI chatbot guide](/API/core/ai/chatbot). `
 
 ## Install
 
-Add the `fliplet-chat` dependency to your screen or app resources. In V3 apps, add it via Studio's library picker — required dependencies (`fliplet-datasources`, `fliplet-utils`) are pulled in automatically.
+Add the `fliplet-chat` dependency to your screen or app resources; required dependencies (`fliplet-datasources`, `fliplet-utils`) are pulled in automatically. The chat's server routes read their settings from a Chat component on one of the app's screens, so they need one. V3 apps can't add components: build messaging on the app's own data sources instead, with [security rules](datasources/security-rules) that let only the sender and the recipient read each message.
 
 When using the chat instance from screens that aren't the chat screen itself, prefer `Fliplet.Chat.init()` (reads settings from the chat widget on the page) or `Fliplet.Chat.get()` (resolves once another screen has called `connect()`).
 
