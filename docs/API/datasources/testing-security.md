@@ -67,11 +67,11 @@ Test `findOne({ where: ... })` separately from `findById(id)` if the app uses bo
 
 ## Check write responses
 
-For grants that admit commit or bulk operations, seed another owner's row and a sensitive column in the same disposable source. As the allowed actor, submit an own-data commit, and an append if the app uses one, with response entries enabled or left at their default. Inspect **all returned rows and columns**, not just the submitted entry. An app user's commit response should hold only the touched rows, filtered by their read rule. Repeat direct requests as denied and wrong-source actors, and check both response data and persisted effects. Test these SDK calls independently of whether the UI exposes them.
+For grants that admit commit or bulk operations, seed another owner's row and a sensitive column in the same disposable source. As the allowed actor, submit an own-data commit and an append whenever the rules grant insert, with response entries enabled or left at their default. Inspect **all returned rows and columns**, not just the submitted entry. An app user's commit response should hold only the touched rows, filtered by their read rule. Repeat direct requests as denied and wrong-source actors, and check both response data and persisted effects. Test these SDK calls independently of whether the UI exposes them.
 
 A `**REDACTED**` value in a returned row is a hashed field such as a password, and is not an exposure of that value. Still check whether the other returned rows and columns are acceptable for the actor.
 
-A client choosing `returnEntries: false` is not proof that other callers cannot request entries, so test responses with entries enabled. Test the operations your app uses, as real app users on the deployed configuration; do not infer deployed behavior from local source alone.
+A client choosing `returnEntries: false` is not proof that other callers cannot request entries, so test responses with entries enabled. Test every SDK call the rules grant, not only the ones your app's screens use, as real app users on the deployed configuration; do not infer deployed behavior from local source alone.
 
 ## Check joined-source responses
 

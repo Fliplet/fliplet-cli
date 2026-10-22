@@ -248,9 +248,9 @@ Denied tests: Lin (`Roles: ['Author']`), a user with only `['SuperApprover']`, a
 
 ## Requests and approvals
 
-**Goal:** Members submit requests and can edit their own; approvers decide. Nobody decides their own request, and members can never set the decision fields.
+**Goal:** Members submit requests and can edit their own; approvers decide. Nobody decides their own request, and members can't create or change a decision.
 
-Create **Purchase Requests** with columns `OwnerEmail`, `Item`, `Amount`, `Status` and `DecidedBy`. Seed one request owned by Lin: `{ "OwnerEmail": "lin@example.org", "Item": "Monitor", "Amount": 180, "Status": "", "DecidedBy": "" }`.
+Create **Purchase Requests** with columns `OwnerEmail`, `Item`, `Amount`, `Status` and `DecidedBy`. Seed one request owned by Lin: `{ "OwnerEmail": "lin@example.org", "Item": "Monitor", "Amount": 180, "Status": "Pending", "DecidedBy": "" }`.
 
 Rules run most privileged first. The approver rule's stored-row requirement stops an approver deciding their own request; Ada's own requests fall through to the member rules.
 
@@ -272,8 +272,8 @@ Rules run most privileged first. The approver rule's stored-row requirement stop
   {
     "type": ["insert"],
     "allow": { "dataSourceId": 731, "user": { "Enabled": true } },
-    "require": [{ "OwnerEmail": { "equals": "{{user.[Email]}}" } }],
-    "exclude": ["Status", "DecidedBy"]
+    "require": [{ "OwnerEmail": { "equals": "{{user.[Email]}}" } }, { "Status": { "equals": "Pending" } }],
+    "exclude": ["DecidedBy"]
   },
   {
     "type": ["update"],
@@ -292,9 +292,11 @@ async function trySelfApproval(requestId) {
   const requests = await Fliplet.DataSources.connectByName('Purchase Requests', { offline: false });
   await requests.update(requestId, { Item: 'Monitor arm', Status: 'Approved', DecidedBy: 'lin@example.org' });
   const saved = await requests.findById(requestId);
-  console.log(saved.data.Item, saved.data.Status); // 'Monitor arm' ''
+  console.log(saved.data.Item, saved.data.Status); // 'Monitor arm' 'Pending'
 }
 ```
 
-As Ada, updating Lin's request with `Status: 'Approved'` and `DecidedBy: 'ada@example.org'` saves both. Denied tests: Ada approving a request she owns keeps `Status` unchanged, Lin reading or updating another member's request is denied, and an anonymous or wrong-source caller is denied. Excluded fields start empty on insert, so treat an empty `Status` as pending in the app. To stop edits after a decision, add a stored-state requirement to the member update rule and test it against the values the app actually stores, including empty.
+The insert rule pins `Status` with `require` rather than `exclude`. `exclude` doesn't apply to bulk `append()`, but `require` checks every appended record, so Lin's `append([{ OwnerEmail: 'lin@example.org', Item: 'Laptop', Amount: 3000, Status: 'Approved' }])` is refused. Inserts must send `Status: 'Pending'`. `append()` can still fill in `DecidedBy` on a pending request, so treat `DecidedBy` as meaningful only once `Status` is decided; the approver's update sets it.
+
+As Ada, updating Lin's request with `Status: 'Approved'` and `DecidedBy: 'ada@example.org'` saves both. Denied tests: Lin appending or inserting a request whose `Status` isn't `Pending` is refused, Ada approving a request she owns keeps `Status` unchanged, Lin reading or updating another member's request is denied, and an anonymous or wrong-source caller is denied. To stop edits after a decision, add `{ "Status": { "equals": "Pending" } }` to the member update rule's `require`; it checks the stored row.
 
