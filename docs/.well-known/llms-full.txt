@@ -37477,10 +37477,29 @@ When writing a custom rule, these variables are available in the script context:
 
 - `type` (String) — the operation being attempted: `read`, `create`, `update`, or `delete`
 - `user` (Object) — the authenticated user's session data, or `undefined` if not logged in. For data-source passport sessions (e.g., Email Verification, Fliplet Login), this contains the flat column values from the user's row in the authentication data source (e.g., `user.Email`, `user.Role`). For SAML2 sessions, it contains the assertion attributes.
+- `session` (Object): server-verified login context with `loggedIn` (Boolean), `passports` (Array of validated passport type names), `dataSourceId` and `entryId` (Numbers when the current identity is a data source login). `dataSourceId` identifies the login source of the current user, not every passport the session holds. This is not the client-writable data from `Fliplet.Session.set()`.
 - `file` (Object) — the resource being accessed. This is the plain Sequelize model of either a file or a folder, depending on the operation. See [The `file` object](#the-file-object) for available properties.
 - `DataSources` (Function) — server-side library for reading data from other data sources. See [Reading data from other Data Sources](#reading-data-from-other-data-sources).
 
 <p class="quote">Script execution has a <strong>3-second timeout</strong>. Async operations (like <code>DataSources</code> queries) are supported via <code>await</code>.</p>
+
+To allow reads only through one login data source, use this script as the file or folder's only rule. Replace `123` with that login data source's ID:
+
+```js
+var loginDataSourceId = 123;
+
+if (type !== 'read'
+  || typeof session === 'undefined'
+  || !session
+  || session.loggedIn !== true
+  || session.dataSourceId !== loginDataSourceId) {
+  return { granted: false };
+}
+
+return { granted: true };
+```
+
+This denies other operations, signed-out callers and callers authenticated through another data source, even if their email matches an approved user. Missing login-source context also denies access. Checking whether an email exists in a data source does not establish how the caller authenticated.
 
 Here is an example covering multiple scenarios:
 
