@@ -368,6 +368,12 @@ A failed request rejects with an `Error` that has a `code`:
 
 The error `message` never contains the URL, headers or body, so `error.code` and `error.message` are safe to return.
 
+### Data source access during server execution
+
+During server execution, ordinary `Fliplet.DataSources` record reads and writes use the action's platform-provided task credentials and bypass Data Source access rules. A data source can therefore grant app users only `select` while a server action writes its cached records. Other API permission checks and request validation still apply. Client-side action execution does not receive task credentials.
+
+A fresh caller session read is separate from these data operations; it does not make them obey the caller's access rules. Restricted on-demand operations still need [caller and ownership checks](#authorize-callers-before-accessing-private-data), with fixed or validated target data sources and records. Values in `context.payload`, including a claimed scheduled flag, do not establish that permission.
+
 ### Example: simple action
 
 ```js
@@ -377,6 +383,8 @@ async function execute(context) {
 ```
 
 ### Example: action with data source
+
+This example reads records intended to be public. Private reads and restricted writes require the [caller checks](#authorize-callers-before-accessing-private-data) described below.
 
 ```js
 async function execute(context) {
@@ -441,7 +449,7 @@ async function execute(context) {
 
 ## Authorize callers before accessing private data
 
-A server action keeps provider credentials off the device; it does not automatically restrict who can receive the action's result. Decide which operations are public and which require an app user. Reading public information need not require login. Reading private account data or performing restricted writes requires an authorization check inside the action, before contacting the provider. A hidden button or a protected screen is not that check.
+A server action keeps provider credentials off the device; it does not automatically restrict who can receive the action's result. Decide which operations are public and which require an app user. Reading public information need not require login. Reading private account data or performing restricted writes requires an authorization check inside the action before the operation. A hidden button or a protected screen is not that check.
 
 For an on-demand action using Data Source login, include `fliplet-session` in `dependencies`. Read the calling session with `Fliplet.Session.run({ url: 'v1/session', cache: false })` and inspect `response.session.entries.dataSource`. Check its `dataSourceId` against the intended login Data Source and require its `id` (the authenticated entry ID). A session existing, or an email matching a row, is not sufficient. Do not accept caller identity or permission claims from `context.payload` or session `client` fields.
 
@@ -459,7 +467,7 @@ async function execute(context) {
     }
 
     // Identity check only. Apply the operation's account/ownership policy
-    // before adding a private provider request here.
+    // before adding a private provider request or data operation here.
     return { success: true, identityVerified: true };
   } catch (error) {
     return { success: false, error: 'Unable to verify access' };
@@ -467,11 +475,13 @@ async function execute(context) {
 }
 ```
 
-This fresh read rejects request failures instead of returning a stored session; see [fresh session reads](../fliplet-session#read-the-session-without-a-stored-session-fallback). It establishes the authenticated entry, not necessarily its current permissions. If access depends on current account status, role or record ownership, read the authoritative records and apply that policy before the provider request. Session entry data can reflect an earlier login; do not treat a snapshot as proof that an account is still active. Add `fliplet-datasources` when using `Fliplet.DataSources` for those checks.
+This fresh read rejects request failures instead of returning a stored session; see [fresh session reads](../fliplet-session#read-the-session-without-a-stored-session-fallback). It establishes the authenticated entry, not necessarily its current permissions. If access depends on current account status, role or record ownership, read the authoritative records and apply that policy before the restricted operation. Session entry data can reflect an earlier login; do not treat a snapshot as proof that an account is still active. Add `fliplet-datasources` when using `Fliplet.DataSources` for those checks.
 
-Scheduled actions have no interactive caller. Give a scheduled service operation its own explicit permitted resources and operations. Never interpret a missing on-demand caller as permission to run the scheduled path. Likewise, keep caller authorization separate from the provider credential: a valid API key does not establish the caller's access.
+Scheduled actions have no interactive caller, but a run can carry the stored session of the user who enabled the schedule, including a session that later expires. Give a scheduled service operation its own explicit permitted resources and operations rather than depending on that session. Never interpret a missing on-demand caller as permission to run the scheduled path.
 
-Verify both permitted and denied calls: the intended user succeeds, while signed-out users, a login from another Data Source, forged payload identity and failed session reads make no provider request. Verify current-account or ownership restrictions separately when the app requires them.
+Keep caller authorization separate from the provider credential: a valid API key does not establish the caller's access.
+
+Verify both permitted and denied calls: the intended user succeeds, while signed-out users, a login from another Data Source, forged payload identity and failed session reads make no provider request or restricted data operation. Verify current-account or ownership restrictions separately when the app requires them.
 
 ## Dependencies
 

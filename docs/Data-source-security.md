@@ -33,7 +33,9 @@ How to protect data sources with access rules, required-data validation, column-
 
 Access to Data Sources is secured via the **Access Rules** tab of the **App Data** section in Fliplet Studio. Each rule controls who can access the data source, what operations they can perform, and what conditions must be met.
 
-Rules are evaluated from top to bottom. The first rule that grants access is used and evaluation stops — later rules are not checked. If no rules match, access is denied by default. If no rules are defined at all, all access is denied — data sources are locked down until you explicitly add rules.
+For requests evaluated against Data Source access rules, rules are evaluated from top to bottom. The first rule that grants access is used and evaluation stops; later rules are not checked. If no rule matches, including when the rule list is empty, access is denied.
+
+Server-executed App Actions use task credentials for ordinary record operations and bypass these rules. Keep app-user rules restrictive and apply the action's [caller and data access requirements](API/core/app-actions-v3#data-source-access-during-server-execution).
 
 For every operation, unmet `require` conditions skip that rule and evaluation continues. A later matching rule can grant access to the same read or write. Restrictive rules do not override broader grants. See [Data requirements](#data-requirements-and-query-validation) for details.
 

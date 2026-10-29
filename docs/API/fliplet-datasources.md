@@ -12,6 +12,8 @@ capabilities: [data source, datasource, query, insert, update, delete, crud, rec
 
 Connect to, query, insert, update, and delete records in Fliplet Data Sources from inside an app. All methods are promise-based.
 
+For calls inside a server-executed V3 App Action, see [Data source access during server execution](core/app-actions-v3#data-source-access-during-server-execution). These record operations use task credentials and bypass the app user's Data Source access rules.
+
 ## ⚠️ Important: All API Calls Are Asynchronous
 
 **All Fliplet Data Sources API methods return Promises and must be chained using `.then()` or used with `async/await`.**
