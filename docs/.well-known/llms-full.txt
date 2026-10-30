@@ -7685,7 +7685,7 @@ Write and run JavaScript code directly on the server or client to perform automa
 5. App action execution time limits depend on environment: **120 seconds** for server-side (`server`) and **30 seconds** for client-side V3 (`client`). When the limit is exceeded, the action is killed and a timeout error is returned and saved in the logs.
 6. On-demand actions accept a `payload` object that is serialized to JSON and sent to the execution backend. The effective maximum payload size is constrained by the transport layer used to invoke the action (in practice, this is typically limited by the maximum URL/query-string length when the payload is sent as a URL-encoded query parameter). Keep payloads small; for larger inputs, store data elsewhere (e.g., a data source or file) and pass a reference (IDs/keys) instead.
 7. The result sent from an on-demand app action is **limited to 6MB**.
-8. Scheduled app actions only run the **published (production)** version of an action. On-demand actions run the version from the same environment they are fired from (e.g., Fliplet Viewer runs the master version, live apps run the production version).
+8. An active app action with a `frequency` can run on schedule even before publication. Master and production copies can each have a schedule; see [Master vs production lifecycle](#master-vs-production-lifecycle). On-demand actions run the version from the same environment they are fired from (e.g., Fliplet Viewer runs the master version, live apps run the production version).
 9. An action must have `active` set to `true` to be executed. Inactive actions do **not** run regardless of whether they are on-demand, scheduled, or triggered by events.
 10. If a scheduled action fails, the error is logged and the execution is skipped. Scheduled actions do **not** retry on failure — they wait for the next cron tick.
 11. Every **create**, **update**, and **restore** snapshots the action's configuration to a **version history**. Up to **100** versions are retained per action; older snapshots are pruned automatically. Snapshotting is best-effort and never blocks the create/update response. See [Version history](#version-history).
@@ -7704,12 +7704,12 @@ Write and run JavaScript code directly on the server or client to perform automa
 
 Actions have two versions: **master** (development) and **production** (live).
 
-- `create()` always creates a **master** action.
+- `create()` always creates a **master** action. Creating, updating or restoring a master with `active: true` and a `frequency` can start its schedule before publication.
 - `update()` can only update the **master** action. You can **not** update a production action directly — update the master and republish.
-- `publish()` copies the current master action to production. The app itself must be published first.
+- `publish()` copies one master action to production. The app itself must already be published.
 - `unpublish()` removes the production version. The master version remains.
 - `remove()` deletes the master action. If a production version exists, it is also deleted. You can **not** delete a production action directly.
-- **Scheduled actions** (`schedule` trigger) only run the **published (production)** version.
+- **Scheduled actions** can run from the master as well as a published copy. Publishing is not a boundary that keeps a scheduled draft from running. Inspect both copies before enabling or changing a schedule.
 - **On-demand actions** (`manual` trigger) run the version from the environment they are fired from (master in Fliplet Viewer, production in live apps).
 - **Log-triggered actions** run the **published (production)** version on the server.
 - **Analytics-triggered actions** run the version loaded in the client (production in live apps, master in Fliplet Viewer).
@@ -8011,6 +8011,12 @@ A failed request rejects with an `Error` that has a `code`:
 
 The error `message` never contains the URL, headers or body, so `error.code` and `error.message` are safe to return.
 
+### Data source access during server execution
+
+During server execution, ordinary `Fliplet.DataSources` record reads and writes use the action's platform-provided task credentials and bypass Data Source access rules. A data source can therefore grant app users only `select` while a server action writes its cached records. Other API permission checks and request validation still apply. Client-side action execution does not receive task credentials.
+
+A fresh caller session read is separate from these data operations; it does not make them obey the caller's access rules. Restricted on-demand operations still need [caller and ownership checks](#authorize-callers-before-accessing-private-data), with fixed or validated target data sources and records. Values in `context.payload`, including a claimed scheduled flag, do not establish that permission.
+
 ### Example: simple action
 
 ```js
@@ -8020,6 +8026,8 @@ async function execute(context) {
 ```
 
 ### Example: action with data source
+
+This example reads records intended to be public. Private reads and restricted writes require the [caller checks](#authorize-callers-before-accessing-private-data) described below.
 
 ```js
 async function execute(context) {
@@ -8082,6 +8090,42 @@ async function execute(context) {
 // Requires dependency: fliplet-notifications
 ```
 
+## Authorize callers before accessing private data
+
+A server action keeps provider credentials off the device; it does not automatically restrict who can receive the action's result. Decide which operations are public and which require an app user. Reading public information need not require login. Reading private account data or performing restricted writes requires an authorization check inside the action before the operation. A hidden button or a protected screen is not that check.
+
+For an on-demand action using Data Source login, include `fliplet-session` in `dependencies`. Read the calling session with `Fliplet.Session.run({ url: 'v1/session', cache: false })` and inspect `response.session.entries.dataSource`. Check its `dataSourceId` against the intended login Data Source and require its `id` (the authenticated entry ID). A session existing, or an email matching a row, is not sufficient. Do not accept caller identity or permission claims from `context.payload` or session `client` fields.
+
+```js
+// Action environment: 'server'; dependencies: ['fliplet-session'].
+// Replace 123 with the app's intended login Data Source ID.
+async function execute(context) {
+  try {
+    const response = await Fliplet.Session.run({ url: 'v1/session', cache: false });
+    const session = response && response.session;
+    const entry = session && session.entries && session.entries.dataSource;
+
+    if (!entry || entry.dataSourceId !== 123 || !entry.id) {
+      return { success: false, error: 'Access denied' };
+    }
+
+    // Identity check only. Apply the operation's account/ownership policy
+    // before adding a private provider request or data operation here.
+    return { success: true, identityVerified: true };
+  } catch (error) {
+    return { success: false, error: 'Unable to verify access' };
+  }
+}
+```
+
+This fresh read rejects request failures instead of returning a stored session; see [fresh session reads](../fliplet-session#read-the-session-without-a-stored-session-fallback). It establishes the authenticated entry, not necessarily its current permissions. If access depends on current account status, role or record ownership, read the authoritative records and apply that policy before the restricted operation. Session entry data can reflect an earlier login; do not treat a snapshot as proof that an account is still active. Add `fliplet-datasources` when using `Fliplet.DataSources` for those checks.
+
+Scheduled actions have no interactive caller, but a run can carry the stored session of the user who enabled the schedule, including a session that later expires. Give a scheduled service operation its own explicit permitted resources and operations rather than depending on that session. Never interpret a missing on-demand caller as permission to run the scheduled path.
+
+Keep caller authorization separate from the provider credential: a valid API key does not establish the caller's access.
+
+Verify both permitted and denied calls: the intended user succeeds, while signed-out users, a login from another Data Source, forged payload identity and failed session reads make no provider request or restricted data operation. Verify current-account or ownership restrictions separately when the app requires them.
+
 ## Dependencies
 
 If your action code uses Fliplet APIs, you must include the corresponding package in the `dependencies` array. Dependencies can be Fliplet package names or external URLs.
@@ -8100,6 +8144,7 @@ dependencies: [
 
 | Package | Required when using | Description | API Reference |
 |---------|---------------------|-------------|---------------|
+| `fliplet-session` | `Fliplet.Session` | Session API — read the calling session | [Session JS API](../fliplet-session) |
 | `fliplet-datasources` | `Fliplet.DataSources` | Data Sources API — connect, find, insert, update, remove entries | [Data Sources JS API](https://developers.fliplet.com/API/fliplet-datasources.html) |
 | `fliplet-media` | `Fliplet.Media` | Media API — upload, retrieve, and manage media files | [Media JS API](https://developers.fliplet.com/API/fliplet-media.html) |
 | `fliplet-communicate` | `Fliplet.Communicate` | Communication API — send emails, push notifications, SMS | [Communicate JS API](https://developers.fliplet.com/API/fliplet-communicate.html) |
@@ -8182,6 +8227,7 @@ await Fliplet.Media.Files.upload({ folderId: folderId, file: fileBlob });
 
 When writing action code, **match each `Fliplet.*` namespace used in the `execute` function to its corresponding package** and include it in the `dependencies` array:
 
+- Code uses `Fliplet.Session` → add `fliplet-session`
 - Code uses `Fliplet.DataSources` → add `fliplet-datasources`
 - Code uses `Fliplet.Communicate` → add `fliplet-communicate`
 - Code uses `Fliplet.Media` → add `fliplet-media`
@@ -8219,7 +8265,9 @@ Each trigger in the `triggers` array is an object with these properties:
 
 ### `manual` trigger
 
-The `manual` trigger has no `where` clause. It fires when you call `run()` or `runWithResult()`.
+The `manual` trigger has no `where` clause. Direct calls to `run()` or `runWithResult()` do not require this trigger.
+
+Trigger configuration does not authorize callers. Removing `manual`, or using an empty `triggers` array, does not prevent direct invocation. For restricted operations, [authorize callers inside the server action](#authorize-callers-before-accessing-private-data).
 
 ```js
 triggers: [{ trigger: 'manual' }]
@@ -8395,7 +8443,7 @@ triggers: [
 
 ## Create an action
 
-Use `Fliplet.App.V3.Actions.create()` to create a V3 action. This always creates a **master** (development) version. To run the action in production/live apps, you must also publish it using `publish()`.
+Use `Fliplet.App.V3.Actions.create()` to create a V3 action. This always creates a **master** (development) version. To make it available in production/live apps, use `publish()` after the app has been published. This does not prevent a master action from running on schedule.
 
 ### Parameters
 
@@ -8455,7 +8503,7 @@ Example timezones:
 
 ### Create a scheduled action
 
-A scheduled action requires: `frequency` (cron expression), `triggers: [{ trigger: 'schedule' }]`, and `environment` set to `"server"` or `"any"`. The action only runs in production after being published with `publish()`.
+Configure a scheduled action with `active: true`, `frequency` (cron expression), `triggers: [{ trigger: 'schedule' }]` and `environment` set to `"server"` or `"any"`. Creating this active master can start its schedule immediately; publication is not required. Use `active: false` while preparing it, and enable it only when its scheduled effects are authorized. Check any published copy too, because it has separate schedule configuration.
 
 ```js
 var result = await Fliplet.App.V3.Actions.create({
@@ -8480,13 +8528,15 @@ var result = await Fliplet.App.V3.Actions.create({
 // result — the created action object (returned directly, not wrapped)
 // result.id — use this ID to publish, update, or delete the action
 
-// IMPORTANT: You must publish the action for the schedule to be active in production:
+// This active master can now run on schedule, even before publication.
+// To create or update a production copy in an already-published app:
 // await Fliplet.App.V3.Actions.publish(result.id);
+// Inspect both copies to avoid unintended repeated work.
 ```
 
 ### Create an on-demand (manual) action
 
-<p class="warning">To run an action on-demand (e.g., triggered by a user), you <strong>must</strong> include the <code>manual</code> trigger. Without it, <code>run()</code> and <code>runWithResult()</code> cannot execute the action.</p>
+The example includes a `manual` trigger, but direct invocation does not require it. See [the manual trigger and caller authorization](#manual-trigger).
 
 ```js
 var result = await Fliplet.App.V3.Actions.create({
@@ -8603,18 +8653,18 @@ var result = await Fliplet.App.V3.Actions.create({
 
 ## Run an on-demand action
 
-Actions with a `manual` trigger can be executed using `run()` (fire and forget) or `runWithResult()` (wait for the return value). Pass the action `name` (String) or `id` (Number) as the first parameter.
+Use `run()` (without the action's return value) or `runWithResult()` (with the return value) to invoke an action directly. Pass the action `name` (String) or `id` (Number) as the first parameter.
 
-<p class="warning">Only actions with a <code>manual</code> trigger can be run via <code>run()</code> or <code>runWithResult()</code>. Calling these methods on an action without a <code>manual</code> trigger results in an error. The action must also have <code>active: true</code>.</p>
+The action must have `active: true`. A `manual` trigger is not required, including when `triggers` is empty. App access, the action's execution environment and any authorization checks inside the action still apply. See [the manual trigger and caller authorization](#manual-trigger).
 
-### `run(nameOrId, payload)` — fire and forget
+### `run(nameOrId, payload)` — run without a result
 
-Queues the action for execution and returns immediately. You do **not** get the return value of `execute()`.
+Runs the action without returning the value of `execute()`. Server execution is queued; client execution is awaited. An `any` action follows the behavior of the environment where it runs.
 
 - **Parameters:**
   - `nameOrId` (String or Number) — The action name or numeric ID
   - `payload` (Optional Object) — Data to pass as `context.payload`.
-- **Returns:** Promise that resolves when the action has been **queued** (not when it finishes executing).
+- **Returns:** A Promise that resolves after the server accepts the queued execution, or after client execution completes. It does not return the value of `execute()`.
 
 ```js
 // Run without payload
@@ -8625,37 +8675,56 @@ await Fliplet.App.V3.Actions.run('confirm-booking', {
   entryId: 123,
   name: 'Nick'
 });
-// The action has been queued for processing
+// Server: execution has been queued. Client: execution has completed.
 // No result is returned — use runWithResult() if you need the return value
 ```
 
 ### `runWithResult(nameOrId, payload)` — wait for result
 
-Executes the action and waits for it to complete. Returns the value from the `execute()` function.
+Executes the action and waits for it to complete. The result shape depends on where it runs.
 
 - **Parameters:**
   - `nameOrId` (String or Number) — The action name or numeric ID
   - `payload` (Optional Object) — Data to pass as `context.payload`.
-- **Returns:** Promise that resolves with the return value of the `execute()` function. The result is limited to 6MB.
+- **Returns:** A Promise resolving to the result described below. Server results are limited to 6MB.
+
+| Execution | Resolved value |
+|-----------|----------------|
+| Server | A result object: `{ success: true, data: <execute() return value> }` on success. Read the action's value from `result.data`, including `false`, `0`, `null`, and an empty string. |
+| Client | The value returned by `execute()` directly. A thrown error rejects the Promise. |
+| `any` | Uses the client behavior when the action is bundled locally; otherwise it runs on the server and uses the server result object. |
+
+Server execution failures can resolve with `{ success: false, error: { message: "..." } }`; they do not necessarily reject the Promise. Returning `{ success: false, error: "..." }` from the action can also produce a failed server result, with the returned value retained in `data`. Check `result.success` before using `result.data`, and handle any application-specific outcome within that value. Request failures, such as an HTTP or network error, can reject the Promise and need a `catch` handler.
 
 ```js
-// Run and get the result
-var result = await Fliplet.App.V3.Actions.runWithResult('confirm-booking', {
-  entryId: 123,
-  name: 'Nick'
-});
-// result is exactly what execute() returned
-// e.g., { success: true }
-if (result.success) {
-  // Booking confirmed
+// confirm-booking is configured with environment: 'server'.
+// Its execute() function returns { bookingId: 123, confirmed: true }.
+try {
+  var result = await Fliplet.App.V3.Actions.runWithResult('confirm-booking', {
+    entryId: 123,
+    name: 'Nick'
+  });
+
+  if (!result || result.success !== true) {
+    throw new Error('The booking action failed.');
+  }
+
+  var booking = result.data;
+  if (booking.confirmed) {
+    // Booking confirmed; booking.bookingId is 123.
+  }
+} catch (error) {
+  // Show a failure state. Do not automatically retry a potentially completed write.
 }
 
-// Run by action ID instead of name
-var result = await Fliplet.App.V3.Actions.runWithResult(12345, {
-  entryId: 123
+// calculate-total is bundled locally with environment: 'client' or 'any'.
+// Its execute() function returns a number, so no .data access is needed.
+var total = await Fliplet.App.V3.Actions.runWithResult('calculate-total', {
+  quantity: 2
 });
-// result is the return value of execute()
 ```
+
+Choose the result handling for the action's execution environment. Do not use `result.data || result`: it loses valid falsy values and can mistake a client action's own `data` property for a server wrapper. An action ID can be used instead of its name in either example.
 
 <p class="quote">Rate limiting: the run action endpoint is limited to <strong>30 requests per minute</strong>. Contact the Fliplet team for more details.</p>
 
@@ -8794,13 +8863,16 @@ var result = await Fliplet.App.V3.Actions.update(12345, {
 
 ## Temporarily deactivate an action
 
-Update an action with `active: false` to disable it. Inactive actions do **not** run on any trigger (manual, schedule, log, or analytics). To reactivate, set `active: true` and republish if needed.
+Updating the master action with `active: false` disables the master only. If a production copy exists, publish that disabled action to apply the change to it too. Keep its existing `frequency` until the schedules have been stopped. Alternatively, `unpublish()` removes the production copy and its schedule, but leaves the master; unpublishing alone does not stop an active master schedule. Verify both copies and their run logs. A request already in progress can still finish.
 
 ```js
 var result = await Fliplet.App.V3.Actions.update(12345, {
   active: false
 });
-// Action is now inactive — it will not run until active is set back to true
+// For an already-published action, apply the disabled state to production:
+await Fliplet.App.V3.Actions.publish(12345);
+// Verify the master and production schedules have stopped.
+// Requests already in progress can still finish.
 ```
 
 ## Delete an action
@@ -8819,7 +8891,7 @@ await Fliplet.App.V3.Actions.remove(12345);
 
 ## Publish an action
 
-Use `Fliplet.App.V3.Actions.publish()` to copy the master action to production. Only published actions run in live apps. The app itself must be published first.
+Use `Fliplet.App.V3.Actions.publish()` to copy one master action to production after the app itself has been published. This can also start the production copy's schedule when it is active and has a `frequency`; the master schedule is separate. See [Master vs production lifecycle](#master-vs-production-lifecycle).
 
 - **Parameters:** `id` (Number) — The action ID
 - **Returns:** Promise resolving to `{ action: <published production action object> }`
@@ -8833,7 +8905,7 @@ var result = await Fliplet.App.V3.Actions.publish(12345);
 
 ## Unpublish an action
 
-Use `Fliplet.App.V3.Actions.unpublish()` to remove an action from production. The master version remains and can be republished later.
+Use `Fliplet.App.V3.Actions.unpublish()` to remove an action from production. The master version remains and can be republished later. Unpublishing does not disable the master; an active master with a `frequency` can continue running on schedule.
 
 - **Parameters:** `id` (Number) — The action ID
 - **Returns:** Promise that resolves when the action has been unpublished
@@ -9013,7 +9085,7 @@ The restore:
 
 - Takes a `pre-restore` snapshot of the current configuration first, so the restore can itself be undone.
 - Restores every field from the snapshot **except** `masterTaskId` and `productionTaskId` (those describe the action's identity and publish state, not its config).
-- Re-applies the cron schedule if the restored configuration has a `frequency` and is `active`.
+- Re-applies the master's schedule if the restored configuration has a `frequency` and is `active`, even before publication. Restoring does not update an existing production copy; inspect both copies before restoring scheduled work.
 - Writes an `appAction.v3.restore` audit log carrying both `restoredFromVersionId` and `preRestoreVersionId`.
 
 ```js
@@ -9085,7 +9157,7 @@ The `data` object contains:
 | `payload` | Object | Always | The payload that was passed to the action. Empty `{}` for scheduled actions. For log triggers, contains the `{ trigger, log }` object. |
 | `duration` | Number | Always | Execution time in milliseconds |
 | `actionVersion` | String | Always | Always `"v3"` |
-| `result` | Object | On success (on-demand only) | `{ data: <return value of execute()>, success: true }`. Not present for successful scheduled runs. |
+| `result` | Object | When the server returns a result | The server execution result, including for scheduled runs. On success: `{ data: <return value of execute()>, success: true }`. |
 | `error` | Object | On failure only | Error details: `{ name: "ErrorType", message: "description", stack: "..." }` |
 
 ### Example: successful on-demand log entry
@@ -9122,12 +9194,16 @@ The `data` object contains:
     "runOn": "server",
     "taskId": 130057,
     "duration": 747,
-    "actionVersion": "v3"
+    "actionVersion": "v3",
+    "result": {
+      "data": { "processedCount": 12 },
+      "success": true
+    }
   }
 }
 ```
 
-<p class="info">Successful scheduled log entries do <strong>not</strong> include a <code>result</code> property, even if the <code>execute()</code> function returns a value.</p>
+Scheduled server execution logs include the returned result. Keep secrets out of return values as well as log messages.
 
 ### Example: failed action log entry
 
@@ -9279,8 +9355,8 @@ All error responses follow this format:
 | `Fliplet.App.V3.Actions.create(data)` | See [Create parameters](#parameters) | `action` (object) | Create a new master action |
 | `Fliplet.App.V3.Actions.update(id, data)` | `id` (Number), `data` (Object) | `action` (object) | Update a master action |
 | `Fliplet.App.V3.Actions.remove(id)` | `id` (Number) | void | Delete an action (master + production) |
-| `Fliplet.App.V3.Actions.run(nameOrId, payload)` | `nameOrId` (String/Number), `payload` (Object) | Promise<void> | Queue action for execution, no return value |
-| `Fliplet.App.V3.Actions.runWithResult(nameOrId, payload)` | `nameOrId` (String/Number), `payload` (Object) | Return value of `execute()` | Run action and wait for result |
+| `Fliplet.App.V3.Actions.run(nameOrId, payload)` | `nameOrId` (String/Number), `payload` (Object) | Promise<void> | Run without the action's return value; server queues, client waits |
+| `Fliplet.App.V3.Actions.runWithResult(nameOrId, payload)` | `nameOrId` (String/Number), `payload` (Object) | Server result object; direct `execute()` value on client | Run action and wait for result; see result handling above |
 | `Fliplet.App.V3.Actions.publish(id)` | `id` (Number) | `{ action }` | Publish master to production |
 | `Fliplet.App.V3.Actions.unpublish(id)` | `id` (Number) | void | Remove from production |
 | `Fliplet.App.V3.Actions.getLogs(options)` | `{ id, where, limit, offset }` | `{ count, logs }` | Get execution logs |
@@ -15766,6 +15842,8 @@ URL: https://developers.fliplet.com/API/fliplet-datasources.md
 
 Connect to, query, insert, update, and delete records in Fliplet Data Sources from inside an app. All methods are promise-based.
 
+For calls inside a server-executed V3 App Action, see [Data source access during server execution](core/app-actions-v3#data-source-access-during-server-execution). These record operations use task credentials and bypass the app user's Data Source access rules.
+
 ## ⚠️ Important: All API Calls Are Asynchronous
 
 **All Fliplet Data Sources API methods return Promises and must be chained using `.then()` or used with `async/await`.**
@@ -22173,15 +22251,30 @@ Read, write, and clear the current user session — including cached offline ses
 // Get the session using the locally cached offline data.
 // This is fast and work across all network conditions.
 Fliplet.User.getCachedSession().then(function onCachedSessionRetrieved(session) {
-  console.log(session);
+  // Use the session for UI state; do not log authentication fields.
 });
 
-// This only works if the app is online as it makes an API request
-// to Fliplet servers to return the live data.
+// Request the current session. If the request fails, get() can return
+// a stored session; use the fresh-read method below for access checks.
 Fliplet.Session.get().then(function onSessionRetrieved(session) {
-  console.log(session);
+  // Use the session for UI state; do not log authentication fields.
 });
 ```
+
+### Read the session without a stored-session fallback
+
+Use `Fliplet.Session.run({ url: 'v1/session', cache: false })` when a failed session read must stop an operation. Include `fliplet-session` in an app action's dependencies. The promise resolves to a response object containing `session`; it rejects when the request fails. Treat a missing or malformed `response.session` as a failed access check.
+
+```js
+const response = await Fliplet.Session.run({ url: 'v1/session', cache: false });
+const session = response && response.session;
+const login = session && session.entries && session.entries.dataSource;
+// For Data Source login, login.dataSourceId identifies the login Data Source
+// and login.id identifies its authenticated entry. Check the intended source
+// and operation's permissions before granting access.
+```
+
+`Fliplet.Session.get()` also requests the session, but can fall back to a stored session if the request fails. `Fliplet.User.getCachedSession()` is appropriate for cached UI decisions; neither a cached result nor the existence of a session establishes permission for a private operation. In a server action, use the fresh read above and follow [caller authorization](core/app-actions-v3#authorize-callers-before-accessing-private-data). Do not log the session response or its authentication fields.
 
 ### Get a key from the current session
 
@@ -29284,14 +29377,14 @@ Each constraint maps to a concrete platform guarantee:
 
 1. Dependencies resolve through the Fliplet asset pipeline so versioning, caching, and per-environment injection work.
 2. Source files are fetched with signed media requests so private apps don't leak their screens.
-3. The runtime registers its globals (`Fliplet.ENV`, `Fliplet.Router`, `Fliplet.Session`, etc.) before your framework mounts.
+3. `Fliplet().then(...)` waits for runtime initialization before your framework mounts. Optional packages such as `Fliplet.Session` must also be loaded before use.
 4. The viewport is locked so native apps don't pinch-zoom or auto-zoom when users focus an input field.
 
 <p class="warning">Skip any of these constraints and the app fails at boot, works in dev but breaks in production, or is rejected by the boot-HTML lint.</p>
 
 ## 1. Fetch dependencies with `Fliplet.require.lazy`
 
-Any registered Fliplet dependency (Vue, React, Vue Router, etc.) **must** be loaded with `Fliplet.require.lazy(name)`. Never use `<script>` tags, `import`, or raw CDN URLs. These bypass the Fliplet asset pipeline and break versioning, caching, and dependency resolution.
+Use `Fliplet.require.lazy(name)` for a registered single dependency, such as Vue. For a registered package with transitive dependencies, use `Fliplet.require.lazy.chain(name)`, for example `Fliplet.require.lazy.chain('fliplet-session')`, to load its prerequisites in order. Plain `lazy(name)` rejects chained packages. Never use `<script>` tags, `import`, or raw CDN URLs. These bypass the Fliplet asset pipeline and break versioning, caching, and dependency resolution.
 
 ```js
 Fliplet.require.lazy('vue').then(function() {
@@ -29812,7 +29905,7 @@ async function isLoggedIn() {
 }
 ```
 
-`Fliplet.User.getCachedSession()` is fast and works offline because it reads from local storage. Use it for UI decisions (show/hide content). For server-verified session checks, use `Fliplet.Session.get()` instead (requires network).
+`Fliplet.User.getCachedSession()` is fast and works offline because it reads from local storage. Use it for UI decisions (show/hide content). `Fliplet.Session.get()` requests the session but can fall back to a stored session on failure. When an access decision requires a fresh read that fails on request errors, use the [session read without stored-session fallback](../fliplet-session#read-the-session-without-a-stored-session-fallback).
 
 ### Get the Logged-In User's Data
 
@@ -36202,7 +36295,9 @@ How to protect data sources with access rules, required-data validation, column-
 
 Access to Data Sources is secured via the **Access Rules** tab of the **App Data** section in Fliplet Studio. Each rule controls who can access the data source, what operations they can perform, and what conditions must be met.
 
-Rules are evaluated from top to bottom. The first rule that grants access is used and evaluation stops — later rules are not checked. If no rules match, access is denied by default. If no rules are defined at all, all access is denied — data sources are locked down until you explicitly add rules.
+For requests evaluated against Data Source access rules, rules are evaluated from top to bottom. The first rule that grants access is used and evaluation stops; later rules are not checked. If no rule matches, including when the rule list is empty, access is denied.
+
+Server-executed App Actions use task credentials for ordinary record operations and bypass these rules. Keep app-user rules restrictive and apply the action's [caller and data access requirements](API/core/app-actions-v3#data-source-access-during-server-execution).
 
 For every operation, unmet `require` conditions skip that rule and evaluation continues. A later matching rule can grant access to the same read or write. Restrictive rules do not override broader grants. See [Data requirements](#data-requirements-and-query-validation) for details.
 
@@ -36279,7 +36374,7 @@ User filters support three operators: `equals`, `notequals`, and `contains`. Mul
 
 ### Restricting columns
 
-For reads, use `include` to allow specific returned columns or `exclude` to hide columns. If both are specified, `include` takes precedence. Without either, all columns are returned. For individual inserts and updates, `exclude` removes named fields before saving; `include` does not restrict writes. For an exact write allowlist, validate the proposed `payload` in a [custom security rule](#custom-security-rules).
+For reads, use `include` to allow specific returned columns or `exclude` to hide columns. If both are specified, `include` takes precedence. Without either, all columns are returned. For individual inserts and updates, `exclude` removes named fields before saving; `include` does not restrict writes. An exact write allowlist requires independent server enforcement; see [Data requirements](#data-requirements-and-query-validation).
 
 ```json
 {
@@ -37324,10 +37419,29 @@ When writing a custom rule, these variables are available in the script context:
 
 - `type` (String) — the operation being attempted: `read`, `create`, `update`, or `delete`
 - `user` (Object) — the authenticated user's session data, or `undefined` if not logged in. For data-source passport sessions (e.g., Email Verification, Fliplet Login), this contains the flat column values from the user's row in the authentication data source (e.g., `user.Email`, `user.Role`). For SAML2 sessions, it contains the assertion attributes.
+- `session` (Object): server-verified login context with `loggedIn` (Boolean), `passports` (Array of validated passport type names), `dataSourceId` and `entryId` (Numbers when the current identity is a data source login). `dataSourceId` identifies the login source of the current user, not every passport the session holds. This is not the client-writable data from `Fliplet.Session.set()`.
 - `file` (Object) — the resource being accessed. This is the plain Sequelize model of either a file or a folder, depending on the operation. See [The `file` object](#the-file-object) for available properties.
 - `DataSources` (Function) — server-side library for reading data from other data sources. See [Reading data from other Data Sources](#reading-data-from-other-data-sources).
 
 <p class="quote">Script execution has a <strong>3-second timeout</strong>. Async operations (like <code>DataSources</code> queries) are supported via <code>await</code>.</p>
+
+To allow reads only through one login data source, use this script as the file or folder's only rule. Replace `123` with that login data source's ID:
+
+```js
+var loginDataSourceId = 123;
+
+if (type !== 'read'
+  || typeof session === 'undefined'
+  || !session
+  || session.loggedIn !== true
+  || session.dataSourceId !== loginDataSourceId) {
+  return { granted: false };
+}
+
+return { granted: true };
+```
+
+This denies other operations, signed-out callers and callers authenticated through another data source, even if their email matches an approved user. Missing login-source context also denies access. Checking whether an email exists in a data source does not establish how the caller authenticated.
 
 Here is an example covering multiple scenarios:
 
