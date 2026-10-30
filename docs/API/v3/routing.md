@@ -43,9 +43,9 @@ Four requirements:
 2. **Read the manifest** with `Fliplet.Router.getRouteManifest()`. Build your route table from `manifest.routes`. The manifest lives at `app.settings.v3` (see [App settings](app-settings.md)). Update it via the App Settings API (`PUT /v1/apps/:id` with `settings.v3`) or the Studio routing UI whenever you add or remove a user-visible route.
 3. **Guard each route with `Fliplet.Router.resolveRoute(path)`** in the component, loader, or resolver:
    - It returns `{ allowed: true, content, route }` on success.
-   - It returns `{ allowed: false, redirectTo, reason }` on denial, where `reason` is `'no-session'` or `'media-denied'`.
+   - It returns `{ allowed: false, redirectTo, reason }` on denial, where `reason` is `'no-session'`, `'media-denied'` or `'unknown-route'`.
    - It already fetches the screen source via `Fliplet.Media.getContents(fileId)` internally. Don't call it yourself.
-   - It rejects on transient or infra errors (5xx, network) so you can show an error UI instead of redirecting silently.
+   - It can reject on request failures, including access-denied responses that are not classified as a denial result. Handle rejection with an error UI; do not assume every denied file request provides `redirectTo`.
 4. **Guard against stale navigations.** Capture the full target path and a request identifier before loading. Ignore results after a newer load, navigation or unmount, including results from asynchronous screen parsing. Do not compare a pending navigation only with the previously committed route.
 
 <p class="warning"><strong>Server media ACL is the final gate.</strong> The manifest's <code>public: true</code> flag is advisory. It just lets the client skip a known-401 round trip. Flipping <code>public: true</code> in the manifest without updating the media file's access rule grants no access.</p>
@@ -277,13 +277,14 @@ Fliplet.require.lazy('react-router-dom').then(function() {
 
 ### Svelte
 
-Most Svelte routers default to hash mode. Pick one that supports history, or thin-wrap `history.pushState` yourself:
+Most Svelte routers default to hash mode. Pick one that supports history, or thin-wrap `history.pushState` yourself. Supply `mountScreen(content)` to render a screen and `showError(message)` to display a failure:
 
 ```js
 var manifest = Fliplet.Router.getRouteManifest();
 var base = Fliplet.Router.getBasePath();
 var native = Fliplet.Router.isNative();   // file:// → route via the hash
 var basePrefix = base.replace(/\/$/, '');
+var currentNavId = 0;
 
 function currentPath() {
   if (native) return location.hash.replace(/^#/, '') || '/';
@@ -300,18 +301,29 @@ function navigate(path) {
 }
 
 function render(path) {
+  var navId = ++currentNavId;
   var target = path === '/' ? manifest.defaultRoute : path;
 
+  function isCurrent() {
+    return navId === currentNavId && currentPath() === path;
+  }
+
   Fliplet.Router.resolveRoute(target).then(function(result) {
-    if (currentPath() !== target) return; // stale
+    if (!isCurrent()) return;
 
     if (!result.allowed) {
-      navigate(result.redirectTo);
+      if (!result.redirectTo || result.redirectTo === path || result.redirectTo === target) {
+        showError('Access denied.');
+      } else {
+        navigate(result.redirectTo);
+      }
 
       return;
     }
 
     mountScreen(result.content);
+  }).catch(function() {
+    if (isCurrent()) showError('Unable to load this screen.');
   });
 }
 

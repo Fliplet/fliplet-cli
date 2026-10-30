@@ -8653,18 +8653,18 @@ var result = await Fliplet.App.V3.Actions.create({
 
 ## Run an on-demand action
 
-Use `run()` (fire and forget) or `runWithResult()` (wait for the return value) to invoke an action directly. Pass the action `name` (String) or `id` (Number) as the first parameter.
+Use `run()` (without the action's return value) or `runWithResult()` (with the return value) to invoke an action directly. Pass the action `name` (String) or `id` (Number) as the first parameter.
 
 The action must have `active: true`. A `manual` trigger is not required, including when `triggers` is empty. App access, the action's execution environment and any authorization checks inside the action still apply. See [the manual trigger and caller authorization](#manual-trigger).
 
-### `run(nameOrId, payload)` — fire and forget
+### `run(nameOrId, payload)` — run without a result
 
-Queues the action for execution and returns immediately. You do **not** get the return value of `execute()`.
+Runs the action without returning the value of `execute()`. Server execution is queued; client execution is awaited. An `any` action follows the behavior of the environment where it runs.
 
 - **Parameters:**
   - `nameOrId` (String or Number) — The action name or numeric ID
   - `payload` (Optional Object) — Data to pass as `context.payload`.
-- **Returns:** Promise that resolves when the action has been **queued** (not when it finishes executing).
+- **Returns:** A Promise that resolves after the server accepts the queued execution, or after client execution completes. It does not return the value of `execute()`.
 
 ```js
 // Run without payload
@@ -8675,7 +8675,7 @@ await Fliplet.App.V3.Actions.run('confirm-booking', {
   entryId: 123,
   name: 'Nick'
 });
-// The action has been queued for processing
+// Server: execution has been queued. Client: execution has completed.
 // No result is returned — use runWithResult() if you need the return value
 ```
 
@@ -9355,7 +9355,7 @@ All error responses follow this format:
 | `Fliplet.App.V3.Actions.create(data)` | See [Create parameters](#parameters) | `action` (object) | Create a new master action |
 | `Fliplet.App.V3.Actions.update(id, data)` | `id` (Number), `data` (Object) | `action` (object) | Update a master action |
 | `Fliplet.App.V3.Actions.remove(id)` | `id` (Number) | void | Delete an action (master + production) |
-| `Fliplet.App.V3.Actions.run(nameOrId, payload)` | `nameOrId` (String/Number), `payload` (Object) | Promise<void> | Queue action for execution, no return value |
+| `Fliplet.App.V3.Actions.run(nameOrId, payload)` | `nameOrId` (String/Number), `payload` (Object) | Promise<void> | Run without the action's return value; server queues, client waits |
 | `Fliplet.App.V3.Actions.runWithResult(nameOrId, payload)` | `nameOrId` (String/Number), `payload` (Object) | Server result object; direct `execute()` value on client | Run action and wait for result; see result handling above |
 | `Fliplet.App.V3.Actions.publish(id)` | `id` (Number) | `{ action }` | Publish master to production |
 | `Fliplet.App.V3.Actions.unpublish(id)` | `id` (Number) | void | Remove from production |
@@ -31046,9 +31046,9 @@ Four requirements:
 2. **Read the manifest** with `Fliplet.Router.getRouteManifest()`. Build your route table from `manifest.routes`. The manifest lives at `app.settings.v3` (see [App settings](app-settings.md)). Update it via the App Settings API (`PUT /v1/apps/:id` with `settings.v3`) or the Studio routing UI whenever you add or remove a user-visible route.
 3. **Guard each route with `Fliplet.Router.resolveRoute(path)`** in the component, loader, or resolver:
    - It returns `{ allowed: true, content, route }` on success.
-   - It returns `{ allowed: false, redirectTo, reason }` on denial, where `reason` is `'no-session'` or `'media-denied'`.
+   - It returns `{ allowed: false, redirectTo, reason }` on denial, where `reason` is `'no-session'`, `'media-denied'` or `'unknown-route'`.
    - It already fetches the screen source via `Fliplet.Media.getContents(fileId)` internally. Don't call it yourself.
-   - It rejects on transient or infra errors (5xx, network) so you can show an error UI instead of redirecting silently.
+   - It can reject on request failures, including access-denied responses that are not classified as a denial result. Handle rejection with an error UI; do not assume every denied file request provides `redirectTo`.
 4. **Guard against stale navigations.** Capture the full target path and a request identifier before loading. Ignore results after a newer load, navigation or unmount, including results from asynchronous screen parsing. Do not compare a pending navigation only with the previously committed route.
 
 <p class="warning"><strong>Server media ACL is the final gate.</strong> The manifest's <code>public: true</code> flag is advisory. It just lets the client skip a known-401 round trip. Flipping <code>public: true</code> in the manifest without updating the media file's access rule grants no access.</p>
@@ -31280,13 +31280,14 @@ Fliplet.require.lazy('react-router-dom').then(function() {
 
 ### Svelte
 
-Most Svelte routers default to hash mode. Pick one that supports history, or thin-wrap `history.pushState` yourself:
+Most Svelte routers default to hash mode. Pick one that supports history, or thin-wrap `history.pushState` yourself. Supply `mountScreen(content)` to render a screen and `showError(message)` to display a failure:
 
 ```js
 var manifest = Fliplet.Router.getRouteManifest();
 var base = Fliplet.Router.getBasePath();
 var native = Fliplet.Router.isNative();   // file:// → route via the hash
 var basePrefix = base.replace(/\/$/, '');
+var currentNavId = 0;
 
 function currentPath() {
   if (native) return location.hash.replace(/^#/, '') || '/';
@@ -31303,18 +31304,29 @@ function navigate(path) {
 }
 
 function render(path) {
+  var navId = ++currentNavId;
   var target = path === '/' ? manifest.defaultRoute : path;
 
+  function isCurrent() {
+    return navId === currentNavId && currentPath() === path;
+  }
+
   Fliplet.Router.resolveRoute(target).then(function(result) {
-    if (currentPath() !== target) return; // stale
+    if (!isCurrent()) return;
 
     if (!result.allowed) {
-      navigate(result.redirectTo);
+      if (!result.redirectTo || result.redirectTo === path || result.redirectTo === target) {
+        showError('Access denied.');
+      } else {
+        navigate(result.redirectTo);
+      }
 
       return;
     }
 
     mountScreen(result.content);
+  }).catch(function() {
+    if (isCurrent()) showError('Unable to load this screen.');
   });
 }
 

@@ -1010,18 +1010,18 @@ var result = await Fliplet.App.V3.Actions.create({
 
 ## Run an on-demand action
 
-Use `run()` (fire and forget) or `runWithResult()` (wait for the return value) to invoke an action directly. Pass the action `name` (String) or `id` (Number) as the first parameter.
+Use `run()` (without the action's return value) or `runWithResult()` (with the return value) to invoke an action directly. Pass the action `name` (String) or `id` (Number) as the first parameter.
 
 The action must have `active: true`. A `manual` trigger is not required, including when `triggers` is empty. App access, the action's execution environment and any authorization checks inside the action still apply. See [the manual trigger and caller authorization](#manual-trigger).
 
-### `run(nameOrId, payload)` — fire and forget
+### `run(nameOrId, payload)` — run without a result
 
-Queues the action for execution and returns immediately. You do **not** get the return value of `execute()`.
+Runs the action without returning the value of `execute()`. Server execution is queued; client execution is awaited. An `any` action follows the behavior of the environment where it runs.
 
 - **Parameters:**
   - `nameOrId` (String or Number) — The action name or numeric ID
   - `payload` (Optional Object) — Data to pass as `context.payload`.
-- **Returns:** Promise that resolves when the action has been **queued** (not when it finishes executing).
+- **Returns:** A Promise that resolves after the server accepts the queued execution, or after client execution completes. It does not return the value of `execute()`.
 
 ```js
 // Run without payload
@@ -1032,7 +1032,7 @@ await Fliplet.App.V3.Actions.run('confirm-booking', {
   entryId: 123,
   name: 'Nick'
 });
-// The action has been queued for processing
+// Server: execution has been queued. Client: execution has completed.
 // No result is returned — use runWithResult() if you need the return value
 ```
 
@@ -1712,7 +1712,7 @@ All error responses follow this format:
 | `Fliplet.App.V3.Actions.create(data)` | See [Create parameters](#parameters) | `action` (object) | Create a new master action |
 | `Fliplet.App.V3.Actions.update(id, data)` | `id` (Number), `data` (Object) | `action` (object) | Update a master action |
 | `Fliplet.App.V3.Actions.remove(id)` | `id` (Number) | void | Delete an action (master + production) |
-| `Fliplet.App.V3.Actions.run(nameOrId, payload)` | `nameOrId` (String/Number), `payload` (Object) | Promise<void> | Queue action for execution, no return value |
+| `Fliplet.App.V3.Actions.run(nameOrId, payload)` | `nameOrId` (String/Number), `payload` (Object) | Promise<void> | Run without the action's return value; server queues, client waits |
 | `Fliplet.App.V3.Actions.runWithResult(nameOrId, payload)` | `nameOrId` (String/Number), `payload` (Object) | Server result object; direct `execute()` value on client | Run action and wait for result; see result handling above |
 | `Fliplet.App.V3.Actions.publish(id)` | `id` (Number) | `{ action }` | Publish master to production |
 | `Fliplet.App.V3.Actions.unpublish(id)` | `id` (Number) | void | Remove from production |
