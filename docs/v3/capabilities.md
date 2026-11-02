@@ -16,7 +16,7 @@ Every Fliplet JS API available to V3 apps, grouped by capability category. Each 
 ## Data
 
 - [`Fliplet.Cache`](https://developers.fliplet.com/API/core/cache.html) **(preloaded)** — Run async operations once and memoize their results, with optional expiry and background refresh.
-- [`Fliplet.DataSources`](https://developers.fliplet.com/API/fliplet-datasources.html) — Connect to, query, insert, update, and delete records in Fliplet Data Sources from inside an app. All methods are promise-based.
+- [`Fliplet.DataSources`](https://developers.fliplet.com/API/fliplet-datasources.html) — Connect to Fliplet data sources and find references for queries, writes, subscriptions, native storage and source management.
 - [`Fliplet.DataSources.Encryption`](https://developers.fliplet.com/API/fliplet-encryption.html) — Automatically encrypt and decrypt selected Data Source columns on-device by registering a private key and column list.
 - [`Fliplet.Storage and Fliplet.App.Storage`](https://developers.fliplet.com/API/core/storage.html) **(preloaded)** — Persist JSON-serializable values to device or browser storage, scoped globally or to the current app.
 
@@ -31,7 +31,7 @@ Every Fliplet JS API available to V3 apps, grouped by capability category. Each 
 
 ## Communications
 
-- [`Fliplet.Chat`](https://developers.fliplet.com/API/fliplet-chat.html) — Build one-to-one, group, and public-channel chat features. Fliplet.Chat owns the conversations and messages data sources internally — supply only the contacts list (who can chat with whom).
+- [`Fliplet.Chat`](https://developers.fliplet.com/API/fliplet-chat.html) — Chat API for V2 apps with a Chat component. Not available to V3 apps: build messaging on the app's own data sources.
 - [`Fliplet.Communicate`](https://developers.fliplet.com/API/fliplet-communicate.html) — Send email, SMS, push notifications, and share URLs from a Fliplet app using a single Communicate namespace.
 - [`Fliplet.Navigator.Notifications`](https://developers.fliplet.com/API/core/notifications.html) **(preloaded)** — Check notification support, request permission, and send local device notifications from JavaScript.
 - [`Fliplet.Notifications`](https://developers.fliplet.com/API/fliplet-notifications.html) — Read, send, and schedule in-app and push notifications in Fliplet apps, with support for scopes, read receipts, and badge counts.

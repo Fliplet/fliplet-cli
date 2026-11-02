@@ -1,13 +1,13 @@
 ---
 title: Fliplet.Chat
-description: Build one-to-one, group, and public-channel chat features. Fliplet.Chat owns the conversations and messages data sources internally — supply only the contacts list (who can chat with whom).
+description: "Chat API for V2 apps with a Chat component. Not available to V3 apps: build messaging on the app's own data sources."
 type: api-reference
 tags: [js-api, chat, messaging, realtime, conversations]
 v3_relevant: true
 deprecated: false
 category: communications
 capabilities: [chat, conversation, group chat, public channel, direct message, dm, im, messaging, real-time chat, contacts, chat room, typing indicator, message history]
-notes: "Owns the conversations and messages data sources internally — never propose `Conversations`, `Messages`, `Typing Status`, or similar data sources of your own. The only data source you design is the `contacts` list passed to `Fliplet.Chat.connect()` (who can chat with whom)."
+notes: "V3 apps can't use Fliplet.Chat: its server routes need a Chat component on a screen. Build messaging on the app's own data sources, with select rules that admit only the sender and the recipient."
 ---
 # `Fliplet.Chat`
 
@@ -19,7 +19,7 @@ For model-generated replies, use the [AI chatbot guide](/API/core/ai/chatbot). `
 
 ## Install
 
-Add the `fliplet-chat` dependency to your screen or app resources. In V3 apps, add it via Studio's library picker — required dependencies (`fliplet-datasources`, `fliplet-utils`) are pulled in automatically.
+Add the `fliplet-chat` dependency to your screen or app resources; required dependencies (`fliplet-datasources`, `fliplet-utils`) are pulled in automatically. The chat's server routes read their settings from a Chat component on one of the app's screens, so they need one. V3 apps can't add components: build messaging on the app's own data sources instead, with [security rules](datasources/security-rules) that let only the sender and the recipient read each message.
 
 When using the chat instance from screens that aren't the chat screen itself, prefer `Fliplet.Chat.init()` (reads settings from the chat widget on the page) or `Fliplet.Chat.get()` (resolves once another screen has called `connect()`).
 

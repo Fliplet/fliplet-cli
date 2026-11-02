@@ -222,6 +222,8 @@ Here's an example where the field named "Password" will be hashed before saving 
 ```
 {% endraw %}
 
+The value is stored as a SHA-256 hash; a value that is already 64 characters long is treated as hashed and stored unchanged. API responses never return a hashed field: reads, queries and commit responses replace its value with `**REDACTED**`, and writing the placeholder back keeps the stored hash. Seeing `**REDACTED**` means the field is hashed and protected, not that the password was exposed. To check a password, sign in with it rather than reading the field.
+
 And one more example where one field gets trimmed and converted to lowercase while the second field is converted to uppercase:
 
 {% raw %}

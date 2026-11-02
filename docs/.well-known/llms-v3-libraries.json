@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generatedAt": "2026-10-16T11:33:39.654Z",
+  "generatedAt": "2026-10-22T12:21:52.485Z",
   "libraries": [
     {
       "package": "fliplet-analytics-spa",
@@ -84,7 +84,7 @@
       "package": "fliplet-chat",
       "namespace": "Fliplet.Chat",
       "title": "Fliplet.Chat",
-      "description": "Build one-to-one, group, and public-channel chat features. Fliplet.Chat owns the conversations and messages data sources internally — supply only the contacts list (who can chat with whom).",
+      "description": "Chat API for V2 apps with a Chat component. Not available to V3 apps: build messaging on the app's own data sources.",
       "docUrl": "https://developers.fliplet.com/API/fliplet-chat.md",
       "preloaded": false,
       "capabilities": [
@@ -103,7 +103,7 @@
         "message history"
       ],
       "category": "communications",
-      "notes": "Owns the conversations and messages data sources internally — never propose `Conversations`, `Messages`, `Typing Status`, or similar data sources of your own. The only data source you design is the `contacts` list passed to `Fliplet.Chat.connect()` (who can chat with whom)."
+      "notes": "V3 apps can't use Fliplet.Chat: its server routes need a Chat component on a screen. Build messaging on the app's own data sources, with select rules that admit only the sender and the recipient."
     },
     {
       "package": "fliplet-communicate",
@@ -133,7 +133,7 @@
       "package": "fliplet-datasources",
       "namespace": "Fliplet.DataSources",
       "title": "Fliplet.DataSources",
-      "description": "Connect to, query, insert, update, and delete records in Fliplet Data Sources from inside an app. All methods are promise-based.",
+      "description": "Connect to Fliplet data sources and find references for queries, writes, subscriptions, native storage and source management.",
       "docUrl": "https://developers.fliplet.com/API/fliplet-datasources.md",
       "preloaded": false,
       "capabilities": [
