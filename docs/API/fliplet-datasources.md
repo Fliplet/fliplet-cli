@@ -12,6 +12,8 @@ capabilities: [data source, datasource, query, insert, update, delete, crud, rec
 
 Fliplet.DataSources connects app code to data sources. The references below describe supported arguments, result shapes, errors and the differences between online operations, native storage and source management.
 
+For calls inside a server-executed V3 App Action, see [Data source access during server execution](core/app-actions-v3#data-source-access-during-server-execution). These record operations use task credentials and bypass the app user's Data Source access rules.
+
 ## Before you start
 
 Load the `fliplet-datasources` library in your app and create a data source in Studio. Configure [access rules](../Data-source-security.md) for the intended app users before exposing private data. Calls use the current app/page context and identity; a connection does not supply an independent login.

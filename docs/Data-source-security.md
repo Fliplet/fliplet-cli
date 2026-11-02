@@ -11,6 +11,8 @@ deprecated: false
 
 Protect app data with server-evaluated access rules, then test the allowed and denied operations as real app users. Rules control access; browser checks and successful Studio administrative requests do not prove authorization.
 
+Server-executed App Actions use task credentials for ordinary record operations and bypass these rules. Keep app-user rules restrictive and apply the action's [caller and data access requirements](API/core/app-actions-v3#data-source-access-during-server-execution).
+
 ## Configure a policy
 
 1. Open **App Data** in Fliplet Studio, select the data source and open **Access Rules**.

@@ -27,6 +27,8 @@ Active rules are evaluated in order. The first grant wins; disabled rules, nonma
 
 Absent or null `accessRules` retains legacy unrestricted access. An explicit empty array `[]`, or an array with no applicable grant, denies access. Studio administrative access and preview with enforcement disabled can bypass rules; use [authenticated preview testing](testing-security.md) to prove app access.
 
+Server-executed V3 App Actions use task credentials for ordinary record reads and writes and bypass these rules; see [Data source access during server execution](../core/app-actions-v3#data-source-access-during-server-execution).
+
 ## Rule properties
 
 | Property | Shape | Behavior |

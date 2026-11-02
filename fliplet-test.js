@@ -9,6 +9,7 @@ const _ = require('lodash');
 const config = require('./lib/config');
 const publish = require('./lib/publish');
 const api = require('./lib/api');
+const { authenticateApiRequests } = require('./lib/api-credential');
 
 
 const authToken = _.get(config.data, 'user.auth_token', process.env.AUTH_TOKEN);
@@ -126,7 +127,22 @@ const runner = async function run() {
         ? `v1/widget-instances/${widgetInstance.id}/interface`
         : `v1/apps/${app.id}/pages/${page.id}/preview`;
 
-      const url = `${config.api_url}${uri}?auth_token=${authToken}`;
+      const url = `${config.api_url}${uri}`;
+
+      // DEV-1231: send the token as a header rather than on the query string.
+      //
+      // A navigation cannot carry request headers by itself, so the header has
+      // to be attached per request — but ONLY to requests for the API's own
+      // origin. setExtraHTTPHeaders() attaches a header to EVERY request the
+      // page makes, and a widget preview or interface routinely pulls in
+      // cross-origin images, fonts, scripts and iframes; that would hand the
+      // developer's reusable account token to each of those third-party
+      // servers, a wider exposure than the query string it replaces (PR #319
+      // review). Interception re-runs per hop, so a redirect that leaves the
+      // API origin drops the header too.
+      await global.page.setRequestInterception(true);
+
+      global.page.on('request', authenticateApiRequests(authToken, config.api_url));
 
       await global.page.goto(url);
     };
