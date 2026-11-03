@@ -197,6 +197,9 @@ export function emitCapabilitiesIndex(docs) {
 
   for (const doc of docs) {
     if (!isV3CatalogEntry(doc)) continue;
+    // Chat requires a V2 component and is not available to V3 apps. Keep its
+    // catalog entry and warning, but omit it from the available capabilities.
+    if (doc.relPath === 'API/fliplet-chat.md') continue;
     const fm = doc.fm || {};
     const category = fm.category && fm.category.trim();
     const isAmbient = V3_AMBIENT_PATH_RE.test(doc.relPath);
