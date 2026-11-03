@@ -31,7 +31,6 @@ Every Fliplet JS API available to V3 apps, grouped by capability category. Each 
 
 ## Communications
 
-- [`Fliplet.Chat`](https://developers.fliplet.com/API/fliplet-chat.html) — Chat API for V2 apps with a Chat component. Not available to V3 apps: build messaging on the app's own data sources.
 - [`Fliplet.Communicate`](https://developers.fliplet.com/API/fliplet-communicate.html) — Send email, SMS, push notifications, and share URLs from a Fliplet app using a single Communicate namespace.
 - [`Fliplet.Navigator.Notifications`](https://developers.fliplet.com/API/core/notifications.html) **(preloaded)** — Check notification support, request permission, and send local device notifications from JavaScript.
 - [`Fliplet.Notifications`](https://developers.fliplet.com/API/fliplet-notifications.html) — Read, send, and schedule in-app and push notifications in Fliplet apps, with support for scopes, read receipts, and badge counts.
