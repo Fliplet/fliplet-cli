@@ -1156,6 +1156,22 @@ describe('emitCapabilitiesIndex', () => {
     assert.ok(!out.includes('Themes — Theme guide'));
   });
 
+  it('omits V2 Chat from capabilities while retaining its catalog warning', () => {
+    const chat = doc('API/fliplet-chat.md', 'Fliplet.Chat', 'Not available to V3 apps', {
+      category: 'communications',
+      notes: 'Requires a V2 Chat component',
+    });
+    const communicate = doc('API/fliplet-communicate.md', 'Fliplet.Communicate', 'Send messages', {
+      category: 'communications',
+    });
+    const out = emitCapabilitiesIndex([chat, communicate]);
+    assert.ok(!out.includes('Fliplet.Chat'));
+    assert.ok(out.includes('Fliplet.Communicate'));
+    assert.equal(isV3CatalogEntry(chat), true);
+    const catalog = emitV3LibraryCatalog([chat]);
+    assert.equal(catalog.libraries[0].notes, 'Requires a V2 Chat component');
+  });
+
   it('groups entries by category in ALLOWED_CATEGORIES order', () => {
     const docs = [
       doc('API/fliplet-payments.md', 'Fliplet.Payments', 'Stripe', { category: 'commerce', capabilities: '[stripe]' }),
