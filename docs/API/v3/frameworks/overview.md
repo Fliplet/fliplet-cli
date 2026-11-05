@@ -11,7 +11,7 @@ deprecated: false
 
 V3 apps run **without a build step**. Source files are uploaded to the media library and fetched at runtime via `Fliplet.Media.getContents`. Dependencies are resolved through `Fliplet.require.lazy`, not `import`. This changes which framework features work and which quietly fail.
 
-Fetch the per-framework doc (`v3-framework-vue`, `v3-framework-react`, etc.) before scaffolding. This doc is for picking.
+Read the [Vue](vue), [React](react), [Alpine](alpine) or [vanilla JS](vanilla) guide before scaffolding with your chosen framework. This page helps you choose.
 
 ## The runtime constraints (apply to every framework)
 
@@ -39,11 +39,11 @@ Default order when the user hasn't expressed a preference:
 1. **One screen, no forms**: vanilla JS
 2. **Multi-screen, reactive state**: Vue 3 — best balance of no-build ergonomics and features
 3. **Form-heavy single-page CRUD**: Alpine.js
-4. **User explicitly asked for React**: React, via `htm` or `React.createElement` (see `v3-framework-react`)
+4. **User explicitly asked for React**: React, via `htm` or `React.createElement` (see the [React guide](react))
 
 ## What to fetch next
 
-After picking, call `get_fliplet_docs('v3-framework-<name>')` for the specific constraints. Every per-framework doc covers: loading the framework, features that need a build step (and what to do instead), wiring to `Fliplet.Router`, binding `Fliplet.Media.authenticate`, common errors, and DO/DON'T.
+After picking, fetch the matching guide with `fetch_fliplet_doc({ path: 'API/v3/frameworks/vue.md' })` (or the `react`, `alpine` or `vanilla` path) for its setup and constraints. Every per-framework doc covers: loading the framework, features that need a build step (and what to do instead), wiring to `Fliplet.Router`, binding `Fliplet.Media.authenticate`, common errors, and DO/DON'T.
 
 ## Related
 
