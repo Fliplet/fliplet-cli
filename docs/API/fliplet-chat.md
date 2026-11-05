@@ -1,13 +1,13 @@
 ---
 title: Fliplet.Chat
-description: "Chat API for V2 apps with a Chat component. Not available to V3 apps: build messaging on the app's own data sources."
+description: "Chat API for one-to-one chats, group chats and public channels. V2 apps use a Chat component; V3 apps connect with a login data source."
 type: api-reference
 tags: [js-api, chat, messaging, realtime, conversations]
 v3_relevant: true
 deprecated: false
 category: communications
 capabilities: [chat, conversation, group chat, public channel, direct message, dm, im, messaging, real-time chat, contacts, chat room, typing indicator, message history]
-notes: "V3 apps can't use Fliplet.Chat: its server routes need a Chat component on a screen. Build messaging on the app's own data sources, with select rules that admit only the sender and the recipient."
+notes: "V3 apps can use Fliplet.Chat.connect({ dataSourceId }) when the data source has a login and the user is signed in to it. No push notifications in V3. Message encryption is not access control."
 ---
 # `Fliplet.Chat`
 
@@ -19,9 +19,38 @@ For model-generated replies, use the [AI chatbot guide](/API/core/ai/chatbot). `
 
 ## Install
 
-Add the `fliplet-chat` dependency to your screen or app resources; required dependencies (`fliplet-datasources`, `fliplet-utils`) are pulled in automatically. The chat's server routes read their settings from a Chat component on one of the app's screens, so they need one. V3 apps can't add components: build messaging on the app's own data sources instead, with [security rules](datasources/security-rules) that let only the sender and the recipient read each message.
+Add the `fliplet-chat` dependency to your screen or app resources; required dependencies (`fliplet-datasources`, `fliplet-utils`) are pulled in automatically. V2 apps add a Chat component to a screen, and the chat reads its settings from that component. V3 apps can't add components, so they call `Fliplet.Chat.connect({ dataSourceId })` instead. This needs a data source with a login set up, and the user must be signed in to that data source. See [Security and identity](#security-and-identity) for what the server does in each case.
 
-When using the chat instance from screens that aren't the chat screen itself, prefer `Fliplet.Chat.init()` (reads settings from the chat widget on the page) or `Fliplet.Chat.get()` (resolves once another screen has called `connect()`).
+When using the chat instance from screens that aren't the chat screen itself, prefer `Fliplet.Chat.init()` (reads settings from the chat widget on the page, so it needs the Chat component) or `Fliplet.Chat.get()` (resolves once another screen has called `connect()`).
+
+---
+
+## Security and identity
+
+The server decides who the chat user is and which conversations that user can see. The app does not.
+
+* **Identity.** The chat user is the data source login the visitor is signed in with, worked out on the server. A token sent by the client is accepted only when it matches that visitor's own login session. A token from another session is rejected.
+* **Private conversations.** A private conversation can be read or changed only by its participants. This applies to the chat endpoints and to the Fliplet Data Sources API. Public channels stay open to everyone, as before.
+* **Encryption is not access control.** With `encryptMessages: true`, message bodies are encrypted with a key derived from the contacts data source ID. Anyone who knows that ID can work out the key, so don't rely on encryption to keep messages confidential. The server's access checks do that.
+* **Chats without a `primaryKey`.** Chat in this legacy mode keeps working. A user's `flUserId` can't be changed after it is set, and the contacts data source never returns other users' tokens.
+
+### V2 apps
+
+Apps with a Chat component behave as before. The component's settings choose the contacts data source and the `primaryKey`.
+
+### V3 apps
+
+V3 apps can use `Fliplet.Chat` with a login data source:
+
+```js
+// The user must already be signed in to this data source.
+const chat = await Fliplet.Chat.connect({ dataSourceId: 123 });
+```
+
+* The data source must have a login set up, and the user must be signed in to it. Otherwise the chat routes return an error ("You have not logged in on this app.").
+* The chat user ID comes from the data source's login column, which is the email column used for sign-in. The server picks it. Setting `primaryKey` in `connect()` has no effect when the app has no Chat component.
+* If the data source has no login column, the chat routes return an error, because there is no safe way to identify the user.
+* Push notifications for new messages are not sent in V3 apps. They still work in V2 apps with a Chat component.
 
 ---
 
@@ -29,7 +58,7 @@ When using the chat instance from screens that aren't the chat screen itself, pr
 
 (Returns **`Promise<Chat>`**)
 
-Connects to a chat backend and returns the chat instance you use for everything else. This is the entry point for the rest of the public API.
+Connects to a chat backend and returns the chat instance you use for everything else. This is the entry point for the rest of the public API. It works with or without a Chat component, so V3 apps use it directly.
 
 ### Usage
 
@@ -48,7 +77,7 @@ const chat = await Fliplet.Chat.connect({
 
 * **connectionOptions** (Object)
   * **dataSourceId** (Number, required) The ID of the contacts data source. Each row is a user; messages reference users by their ID in this data source.
-  * **primaryKey** (String) Optional column name used to identify users (e.g. `'email'`). When set, the chat uses the encrypted `flUserId`/`flUserToken` flow instead of the legacy random-token flow.
+  * **primaryKey** (String) Optional column name used to identify users (e.g. `'email'`). In V3 apps (no Chat component) the server uses the data source's login column and this option is ignored. When set, the chat uses the encrypted `flUserId`/`flUserToken` flow instead of the legacy random-token flow.
   * **encryptMessages** (Boolean) When `true`, message bodies sent via `chat.message()` and `chat.updateMessage()` are AES-encrypted before being stored. Default `false`.
   * **pushNotifications** (Boolean) When `true`, the device is subscribed for push notifications and new conversations are wired with a `push-message` hook. Default `false`.
   * **crossLogin** / **crossLoginDataSourceId** / **crossLoginEmailKey** / **crossLoginContactsKey** Cross-login options used in conjunction with `Fliplet.Chat.subscribe()` for screens that need push without rendering the chat UI.
@@ -61,7 +90,7 @@ The promise resolves with the chat instance; subsequent calls to `Fliplet.Chat.g
 
 (Returns **`Promise<Chat>`**)
 
-Bootstraps the chat from the chat widget's exported settings on the current screen, then logs the current Fliplet user in automatically using the configured `primaryKey`. Use this when you want the chat to follow the user across screens without re-passing the data source ID.
+Bootstraps the chat from the chat widget's exported settings on the current screen (V2 apps with a Chat component; V3 apps use `Fliplet.Chat.connect()` instead), then logs the current Fliplet user in automatically using the configured `primaryKey`. Use this when you want the chat to follow the user across screens without re-passing the data source ID.
 
 ```js
 const chat = await Fliplet.Chat.init();
