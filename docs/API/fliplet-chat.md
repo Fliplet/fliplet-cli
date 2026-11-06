@@ -1,13 +1,13 @@
 ---
 title: Fliplet.Chat
-description: "Chat API for V2 apps with a Chat component. Not available to V3 apps: build messaging on the app's own data sources."
+description: "Chat API for one-to-one chats, group chats and public channels. V2 apps use a Chat component; V3 apps connect with a login data source."
 type: api-reference
 tags: [js-api, chat, messaging, realtime, conversations]
 v3_relevant: true
 deprecated: false
 category: communications
 capabilities: [chat, conversation, group chat, public channel, direct message, dm, im, messaging, real-time chat, contacts, chat room, typing indicator, message history]
-notes: "V3 apps can't use Fliplet.Chat: its server routes need a Chat component on a screen. Build messaging on the app's own data sources, with select rules that admit only the sender and the recipient."
+notes: "V3 apps: call Fliplet.Chat.connect({ dataSourceId }) with a data source that has a login, then await chat.login({}). The user must be signed in to it. Don't pass primaryKey. No push notifications in V3. Message encryption is not access control."
 ---
 # `Fliplet.Chat`
 
@@ -19,9 +19,59 @@ For model-generated replies, use the [AI chatbot guide](/API/core/ai/chatbot). `
 
 ## Install
 
-Add the `fliplet-chat` dependency to your screen or app resources; required dependencies (`fliplet-datasources`, `fliplet-utils`) are pulled in automatically. The chat's server routes read their settings from a Chat component on one of the app's screens, so they need one. V3 apps can't add components: build messaging on the app's own data sources instead, with [security rules](datasources/security-rules) that let only the sender and the recipient read each message.
+Add the `fliplet-chat` dependency to your screen or app resources; required dependencies (`fliplet-datasources`, `fliplet-utils`) are pulled in automatically. V2 apps add a Chat component to a screen, and the chat reads its settings from that component. V3 apps can't add components, so they call `Fliplet.Chat.connect({ dataSourceId })` and then `chat.login({})` instead. This needs a data source with a login set up, and the user must be signed in to that data source. See [Security and identity](#security-and-identity) for what the server does in each case.
 
-When using the chat instance from screens that aren't the chat screen itself, prefer `Fliplet.Chat.init()` (reads settings from the chat widget on the page) or `Fliplet.Chat.get()` (resolves once another screen has called `connect()`).
+When using the chat instance from screens that aren't the chat screen itself, prefer `Fliplet.Chat.init()` (reads settings from the chat widget on the page, so it needs the Chat component) or `Fliplet.Chat.get()` (resolves once another screen has called `connect()`).
+
+---
+
+## Security and identity
+
+The server decides who the chat user is and which conversations that user can see. The app does not.
+
+* **Identity.** The chat user is the contacts data source login the user is signed in with, worked out on the server. A chat token sent by the app counts only when it belongs to the user's own login session. A token from another session is ignored: the request is handled as if it came from someone who isn't in the conversation.
+* **Private conversations.** Only participants can read or change a private conversation. This applies to the chat API and to the Fliplet Data Sources API. To anyone else the conversation looks as if it doesn't exist. Editors and publishers of the app, admins of the app's organization and Fliplet admins can also see the app's conversations. Public channels stay open to everyone, as before.
+* **Creating conversations.** A user can only create a private conversation they are a participant of. `chat.create()` always adds the current user, so it isn't affected.
+* **Changing participants.** A participant can add people to a conversation they stay in. A user can only remove themselves (leave); removing someone else is refused. Mute and unmute only apply to the current user. A refused change comes back as an error (403 with a message), and the `participants.add()`, `participants.remove()`, `notifications.mute()` and `notifications.unmute()` promises reject, leaving the local conversation unchanged. Editors, publishers and admins of the app are not restricted.
+* **Hooks.** App users can only create conversations with push-notification hooks. Creating one with any other hook is refused with an error (403). Hook changes they send when updating a conversation are ignored.
+* **Integration and task tokens.** A token can read a conversation data source only if it has an explicit role on that data source. Otherwise the conversation looks as if it doesn't exist.
+* **Invite codes.** Only participants can see a conversation's invite code. Anyone who has the code can still join with `chat.conversations.join()`.
+* **Encryption is not access control.** `encryptMessages: true` stores message text encrypted, but every copy of the app can decrypt it. Don't use it to keep messages private. The server's access checks do that.
+* **Legacy mode (no `primaryKey`).** Chats that don't use a `primaryKey` keep working, but only for users signed in to the contacts data source: the chat token must belong to the row they are signed in with. For app users, a contact's `flUserId` can't be changed or cleared once it is set, and can't be given to a second row. Reads of the contacts data source don't return other users' `flUserToken`.
+
+### Which column identifies users
+
+The server says which column identifies chat users, and `connect()` always uses its answer:
+
+* in a V2 app with a Chat component, the component's `primaryKey` (or none, if the component has none);
+* in a V2 app with no Chat component, none, so the chat runs in legacy mode;
+* in a V3 app, the login column of the contacts data source. V3 apps never run in legacy mode.
+
+A `primaryKey` passed to `connect()` is replaced by the server's value, so leave it out. The one exception is connecting to a different data source from the one the app's Chat component uses (for example, for cross-login): then the options you pass are kept.
+
+### V2 apps
+
+Apps with a Chat component behave as before. The component's settings choose the contacts data source and the `primaryKey`. If you call `connect()` yourself, pass the same `dataSourceId` as the component; `Fliplet.Chat.init()` does this for you. V2 apps without a Chat component run in legacy mode.
+
+### V3 apps
+
+V3 apps can use `Fliplet.Chat` with a login data source:
+
+```js
+// The user must already be signed in to this data source.
+const chat = await Fliplet.Chat.connect({ dataSourceId: 123 });
+
+// The server says who is signed in; pass an empty object.
+await chat.login({});
+
+const conversations = await chat.conversations();
+```
+
+* The data source must have a login set up, and the user must be signed in to it. Otherwise `connect()` rejects with the error "You have not logged in on this app."
+* The chat user comes from the data source's login column, which is the email column used for sign-in. If the data source has no login column, `connect()` rejects with "The chat contacts data source has no login column, so the chat can't identify its users."
+* `chat.contacts()` lists only the rows the data source's select access rules let the user read, without the fields those rules leave out. Each contact has the login column and, when the data source has them, the columns named Name (or Full Name), First Name, Last Name, Avatar and Title.
+* Push notifications for new messages are not sent in V3 apps, so `pushNotifications` has no effect. They still work in V2 apps with a Chat component.
+* Offline, `connect()` uses the settings it got the last time it connected on this device. If there are none, it rejects with "You need internet connection to log in" rather than falling back to legacy mode.
 
 ---
 
@@ -29,14 +79,13 @@ When using the chat instance from screens that aren't the chat screen itself, pr
 
 (Returns **`Promise<Chat>`**)
 
-Connects to a chat backend and returns the chat instance you use for everything else. This is the entry point for the rest of the public API.
+Connects to a chat backend and returns the chat instance you use for everything else. This is the entry point for the rest of the public API. It works with or without a Chat component, so V3 apps use it directly.
 
 ### Usage
 
 ```js
 const chat = await Fliplet.Chat.connect({
   dataSourceId: 123,             // required — the Contacts data source ID
-  primaryKey: 'email',           // optional — column to identify users
   encryptMessages: true,         // optional — AES-encrypt message bodies at rest
   pushNotifications: true,       // optional — subscribe device for push
   crossLogin: false,             // optional — share session across screens
@@ -48,10 +97,12 @@ const chat = await Fliplet.Chat.connect({
 
 * **connectionOptions** (Object)
   * **dataSourceId** (Number, required) The ID of the contacts data source. Each row is a user; messages reference users by their ID in this data source.
-  * **primaryKey** (String) Optional column name used to identify users (e.g. `'email'`). When set, the chat uses the encrypted `flUserId`/`flUserToken` flow instead of the legacy random-token flow.
-  * **encryptMessages** (Boolean) When `true`, message bodies sent via `chat.message()` and `chat.updateMessage()` are AES-encrypted before being stored. Default `false`.
-  * **pushNotifications** (Boolean) When `true`, the device is subscribed for push notifications and new conversations are wired with a `push-message` hook. Default `false`.
+  * **primaryKey** (String) Leave this out. The server says which column identifies users and its value replaces this one (see [Which column identifies users](#which-column-identifies-users)). With a primary key the chat uses the encrypted `flUserId`/`flUserToken` flow; without one it uses the legacy random-token flow.
+  * **encryptMessages** (Boolean) When `true`, message bodies sent via `chat.message()` and `chat.updateMessage()` are AES-encrypted before being stored. Default `false`. This is not access control (see [Security and identity](#security-and-identity)).
+  * **pushNotifications** (Boolean) When `true`, the device is subscribed for push notifications and new conversations are wired with a `push-message` hook. Default `false`. No effect in V3 apps.
   * **crossLogin** / **crossLoginDataSourceId** / **crossLoginEmailKey** / **crossLoginContactsKey** Cross-login options used in conjunction with `Fliplet.Chat.subscribe()` for screens that need push without rendering the chat UI.
+
+`connect()` asks the server for the chat settings first. If the server can't identify the user (for example, a V3 app user who isn't signed in), the promise rejects with the server's error. Offline, it uses the settings from the last online connect on this device, then the settings of the app's Chat component (V2). If neither exists, it rejects with "You need internet connection to log in".
 
 The promise resolves with the chat instance; subsequent calls to `Fliplet.Chat.get()` will resolve with the same instance.
 
@@ -61,7 +112,7 @@ The promise resolves with the chat instance; subsequent calls to `Fliplet.Chat.g
 
 (Returns **`Promise<Chat>`**)
 
-Bootstraps the chat from the chat widget's exported settings on the current screen, then logs the current Fliplet user in automatically using the configured `primaryKey`. Use this when you want the chat to follow the user across screens without re-passing the data source ID.
+Bootstraps the chat from the chat widget's exported settings on the current screen (V2 apps with a Chat component; V3 apps use `Fliplet.Chat.connect()` instead), then logs the current Fliplet user in automatically using the configured `primaryKey`. Use this when you want the chat to follow the user across screens without re-passing the data source ID.
 
 ```js
 const chat = await Fliplet.Chat.init();
@@ -113,21 +164,24 @@ The promise rejects if the screen has no Push Notifications widget, or if the cr
 
 (Returns **`Promise<DataSourceEntry>`**)
 
-Logs a user into the chat by matching against the contacts data source. After login, the user's `flUserId` and `flUserToken` are generated (or read) and cached.
+Logs the user into the chat. After login, the user's `flUserId` and `flUserToken` are generated (or read) and cached.
+
+* **With a primary key** (V3 apps, and V2 apps whose Chat component has a `primaryKey`): the server says which contact is signed in to the contacts data source. The query is ignored, so pass `{}`. If the server can't identify the user (for example, they aren't signed in), the promise rejects with the server's error.
+* **Legacy mode** (no primary key): the query is matched against the contacts data source.
 
 ```js
-// Log in by primary key (when configured)
-await chat.login({ email: 'jane@example.org' });
+// With a primary key (V3 apps, and V2 apps whose Chat component has one)
+await chat.login({});
 
-// Offline-first login: try cache, fall back to network
-await chat.login({ email: 'jane@example.org' }, { offline: true });
+// Legacy mode: find the contact with a query
+await chat.login({ email: 'jane@example.org' });
 ```
 
-* **query** (Object) `where`-style query against the contacts data source.
+* **query** (Object, required) Pass `{}` when the chat has a primary key. In legacy mode, a `where`-style query against the contacts data source. Calling `chat.login()` with no object rejects with "Authentication details are required".
 * **options** (Object)
-  * **offline** (Boolean) When `true`, attempts a cache-only login first; falls back to online login when the device is online.
+  * **offline** (Boolean) Kept for older code. Offline, the chat always uses the user cached by the last login on this device; online, it always checks with the server.
 
-The promise rejects with `{ code: 404 }` if no contact matches, or `{ code: 400 }` if the device is offline and no cached user exists.
+In legacy mode the promise rejects with `{ code: 404 }` if no contact matches. Offline, it rejects with `{ code: 400 }` if no cached user exists.
 
 ---
 
@@ -135,7 +189,7 @@ The promise rejects with `{ code: 404 }` if no contact matches, or `{ code: 400 
 
 (Returns **`Promise`**)
 
-Clears the user's token in the contacts data source and stops polling.
+Stops polling and forgets the user in this chat instance. In legacy mode it also clears the user's token in the contacts data source. With a primary key it doesn't write to the data source. It doesn't sign the user out of the data source login.
 
 ```js
 await chat.logout();
@@ -176,7 +230,13 @@ const conversation = await chat.conversations.join('abc123');
 
 (Returns **`Promise<Conversation>`**)
 
-Creates a new conversation, or returns the existing conversation if one already exists with the same set of participants. The returned object is decorated with the same instance helpers as conversations returned by `chat.conversations()`.
+Creates a new conversation, or returns an existing one. An existing conversation is reused only when all of these are true:
+
+* it is private and has no invite code;
+* it has exactly the same people as the request (the current user included);
+* nobody outside that set has left it.
+
+Otherwise a new conversation is created. For example, a one-to-one that the other person has left is not reused. The returned object is decorated with the same instance helpers as conversations returned by `chat.conversations()`.
 
 ```js
 const conversation = await chat.create({
@@ -196,7 +256,7 @@ console.log(conversation.isNew);
   * **name** (String) Optional conversation name; defaults to a generated GUID.
   * **group** (Object) Pass any object (typically `{ public: false }`) to mark the conversation as a group chat.
   * **metadata** (Object) Arbitrary metadata stored on the conversation definition.
-  * **allowInvite** (Boolean) When `true`, an invite code is generated and retrievable via `conversation.getInviteCode()`.
+  * **allowInvite** (Boolean) When `true`, an invite code is generated and retrievable via `conversation.getInviteCode()`. Only participants can see it.
 
 ---
 
@@ -211,9 +271,12 @@ const contacts = await chat.contacts();
 const offlineContacts = await chat.contacts({ offline: true });
 ```
 
+* **With a primary key**, the server returns the list. Each contact has only the chat's columns: the primary key and the name, avatar and title columns. In V3 apps the list holds only the rows the data source's select access rules let the user read. In V2 apps with a Chat component it holds every row. Options other than `offline` are ignored.
+* **In legacy mode**, the list is read from the data source, and other users' `flUserToken` is never included.
+
 * **options** (Object)
   * **offline** (Boolean) When `true`, returns the cached contacts list.
-  * Any other option supported by `connection.find()` (e.g. `where`, `limit`).
+  * In legacy mode only, any other option supported by `connection.find()` (e.g. `where`, `limit`).
 
 ---
 
@@ -333,13 +396,10 @@ const messages = ref([]);
 let chat;
 
 onMounted(async () => {
-  chat = await Fliplet.Chat.connect({
-    dataSourceId: Fliplet.Env.get('appSettings').contactsDataSourceId,
-    primaryKey: 'email',
-    encryptMessages: true
-  });
+  // The ID of the contacts data source the user is signed in to
+  chat = await Fliplet.Chat.connect({ dataSourceId: 123 });
 
-  await chat.login({ email: Fliplet.Env.get('user').email });
+  await chat.login({});
 
   await chat.stream((message) => {
     if (message.isDeleted) {
@@ -459,7 +519,7 @@ const people = await conversation.participants.fetch();
 
 // Add or remove participants by their contact-data-source ID
 await conversation.participants.add([contactId1, contactId2]);
-await conversation.participants.remove([contactId1]);
+await conversation.participants.remove([contactId1]); // app users can only remove themselves
 ```
 
 ### conversation.notifications
