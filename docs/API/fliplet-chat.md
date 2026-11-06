@@ -32,6 +32,9 @@ The server decides who the chat user is and which conversations that user can se
 * **Identity.** The chat user is the contacts data source login the user is signed in with, worked out on the server. A chat token sent by the app counts only when it belongs to the user's own login session. A token from another session is ignored: the request is handled as if it came from someone who isn't in the conversation.
 * **Private conversations.** Only participants can read or change a private conversation. This applies to the chat API and to the Fliplet Data Sources API. To anyone else the conversation looks as if it doesn't exist. Editors and publishers of the app, admins of the app's organization and Fliplet admins can also see the app's conversations. Public channels stay open to everyone, as before.
 * **Creating conversations.** A user can only create a private conversation they are a participant of. `chat.create()` always adds the current user, so it isn't affected.
+* **Changing participants.** A participant can add people to a conversation they stay in. A user can only remove themselves (leave); removing someone else is refused. Mute and unmute only apply to the current user. A refused change comes back as an error (403 with a message), and the `participants.add()`, `participants.remove()`, `notifications.mute()` and `notifications.unmute()` promises reject, leaving the local conversation unchanged. Editors, publishers and admins of the app are not restricted.
+* **Hooks.** App users can only create conversations with push-notification hooks. Any other hooks they send are ignored, and hook changes they send when updating a conversation are ignored.
+* **Integration and task tokens.** A token can read a conversation data source only if it has an explicit role on that data source. Otherwise the conversation looks as if it doesn't exist.
 * **Invite codes.** Only participants can see a conversation's invite code. Anyone who has the code can still join with `chat.conversations.join()`.
 * **Encryption is not access control.** `encryptMessages: true` stores message text encrypted, but every copy of the app can decrypt it. Don't use it to keep messages private. The server's access checks do that.
 * **Legacy mode (no `primaryKey`).** Chats that don't use a `primaryKey` keep working, but only for users signed in to the contacts data source: the chat token must belong to the row they are signed in with. For app users, a contact's `flUserId` can't be changed or cleared once it is set, and can't be given to a second row. Reads of the contacts data source don't return other users' `flUserToken`.
@@ -227,7 +230,13 @@ const conversation = await chat.conversations.join('abc123');
 
 (Returns **`Promise<Conversation>`**)
 
-Creates a new conversation, or returns the existing conversation if one already exists with the same set of participants. The returned object is decorated with the same instance helpers as conversations returned by `chat.conversations()`.
+Creates a new conversation, or returns an existing one. An existing conversation is reused only when all of these are true:
+
+* it is private and has no invite code;
+* it has exactly the same people as the request (the current user included);
+* nobody outside that set has left it.
+
+Otherwise a new conversation is created. For example, a one-to-one that the other person has left is not reused. The returned object is decorated with the same instance helpers as conversations returned by `chat.conversations()`.
 
 ```js
 const conversation = await chat.create({
@@ -510,7 +519,7 @@ const people = await conversation.participants.fetch();
 
 // Add or remove participants by their contact-data-source ID
 await conversation.participants.add([contactId1, contactId2]);
-await conversation.participants.remove([contactId1]);
+await conversation.participants.remove([contactId1]); // app users can only remove themselves
 ```
 
 ### conversation.notifications
