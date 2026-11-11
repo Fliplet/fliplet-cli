@@ -30,6 +30,7 @@ When using the chat instance from screens that aren't the chat screen itself, pr
 The server decides who the chat user is and which conversations that user can see. The app does not.
 
 * **Identity.** The chat user is the contacts data source login the user is signed in with, worked out on the server. A chat token sent by the app counts only when it belongs to the user's own login session. A token from another session is ignored: the request is handled as if it came from someone who isn't in the conversation.
+* **The login value must be unique.** A user is identified by their value of the login column. If two rows of the contacts data source hold the same value (for example, a second sign-up with an email that already exists), neither row is recognised as a chat user, so that user can't start or see conversations until the duplicate is resolved. A contact with no value of the login column has no chat identity and is left out of the contacts list.
 * **Private conversations.** Only participants can read or change a private conversation. This applies to the chat API and to the Fliplet Data Sources API. To anyone else the conversation looks as if it doesn't exist. Editors and publishers of the app, admins of the app's organization and Fliplet admins can also see the app's conversations. Public channels stay open to everyone, as before.
 * **Creating conversations.** A user can only create a private conversation they are a participant of. `chat.create()` always adds the current user, so it isn't affected.
 * **Changing participants.** A participant can add people to a conversation they stay in. A user can only remove themselves (leave); removing someone else is refused. Mute and unmute only apply to the current user. A refused change comes back as an error (403 with a message), and the `participants.add()`, `participants.remove()`, `notifications.mute()` and `notifications.unmute()` promises reject, leaving the local conversation unchanged. Editors, publishers and admins of the app are not restricted.
@@ -44,14 +45,14 @@ The server decides who the chat user is and which conversations that user can se
 The server says which column identifies chat users, and `connect()` always uses its answer:
 
 * in a V2 app with a Chat component, the component's `primaryKey` (or none, if the component has none);
-* in a V2 app with no Chat component, none, so the chat runs in legacy mode;
+* in a V2 app with no Chat component, the `primaryKey` passed to `connect()` when it is the data source's login column and the user is signed in to that data source; otherwise none, so the chat runs in legacy mode;
 * in a V3 app, the login column of the contacts data source. V3 apps never run in legacy mode.
 
-A `primaryKey` passed to `connect()` is replaced by the server's value, so leave it out. The one exception is connecting to a different data source from the one the app's Chat component uses (for example, for cross-login): then the options you pass are kept.
+In a V3 app, or a V2 app with a Chat component, a `primaryKey` passed to `connect()` is replaced by the server's value, so leave it out. In a V2 app with no Chat component, pass the data source's login column as the `primaryKey` to keep the chat out of legacy mode; any other value is ignored and the chat falls back to legacy mode. The one exception for apps with a Chat component is connecting to a different data source from the one the component uses (for example, for cross-login): then the options you pass are kept.
 
 ### V2 apps
 
-Apps with a Chat component behave as before. The component's settings choose the contacts data source and the `primaryKey`. If you call `connect()` yourself, pass the same `dataSourceId` as the component; `Fliplet.Chat.init()` does this for you. V2 apps without a Chat component run in legacy mode.
+Apps with a Chat component behave as before. The component's settings choose the contacts data source and the `primaryKey`. If you call `connect()` yourself, pass the same `dataSourceId` as the component; `Fliplet.Chat.init()` does this for you. A V2 app with no Chat component runs in legacy mode, unless you pass the data source's login column as the `primaryKey` to `connect()` and the user is signed in to that data source.
 
 ### V3 apps
 
