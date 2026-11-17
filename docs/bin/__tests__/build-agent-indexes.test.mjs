@@ -1156,20 +1156,20 @@ describe('emitCapabilitiesIndex', () => {
     assert.ok(!out.includes('Themes — Theme guide'));
   });
 
-  it('omits V2 Chat from capabilities while retaining its catalog warning', () => {
-    const chat = doc('API/fliplet-chat.md', 'Fliplet.Chat', 'Not available to V3 apps', {
+  it('lists Chat in capabilities and the catalog like any other communications API', () => {
+    const chat = doc('API/fliplet-chat.md', 'Fliplet.Chat', 'Chat API for conversations', {
       category: 'communications',
-      notes: 'Requires a V2 Chat component',
+      notes: 'V3 apps connect with a login data source',
     });
     const communicate = doc('API/fliplet-communicate.md', 'Fliplet.Communicate', 'Send messages', {
       category: 'communications',
     });
     const out = emitCapabilitiesIndex([chat, communicate]);
-    assert.ok(!out.includes('Fliplet.Chat'));
+    assert.ok(out.includes('Fliplet.Chat'));
     assert.ok(out.includes('Fliplet.Communicate'));
     assert.equal(isV3CatalogEntry(chat), true);
     const catalog = emitV3LibraryCatalog([chat]);
-    assert.equal(catalog.libraries[0].notes, 'Requires a V2 Chat component');
+    assert.equal(catalog.libraries[0].notes, 'V3 apps connect with a login data source');
   });
 
   it('groups entries by category in ALLOWED_CATEGORIES order', () => {
