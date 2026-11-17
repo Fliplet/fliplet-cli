@@ -114,7 +114,7 @@ These are the user-facing JS surfaces V3 apps can call. Some already have docs; 
 | 48 | `fliplet-auth` | **Skipped for now** — documentation may follow alongside AI skills work; not in current scope |
 | 49 | `Fliplet.Communicate.AES` | Internal AES helper — sub-namespace of fliplet-communicate |
 | 50 | `Fliplet.Media.PrivateFiles` | Internal — private media file storage |
-| 51 | `Fliplet.UI.MapField` | V1 widget |
+| 51 | `Fliplet.UI.MapField` | Legacy widget with a [JavaScript API reference](../API/fliplet-ui-map). Excluded from the V3 library catalogue. |
 | 53 | `fliplet-auth-loader` | Studio-only auth UI renderer |
 | 54 | `window.Overlay` | V1 widget (fliplet-pages) |
 | 55 | `Fliplet.UI.Toast` | V1 widget — V3 design system has its own toast |

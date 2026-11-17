@@ -41,6 +41,11 @@ The following UI elements are optionally available by adding extra packages to y
 
   - [Typeahead](fliplet-ui-typeahead) (`fliplet-ui-typeahead`)
 
+## Address and Map
+
+- [Address Field](fliplet-ui-address) (`fliplet-ui-address`)
+- [Map Field](fliplet-ui-map) (`fliplet-ui-address`)
+
 ## Data Display
 
   - [Table](fliplet-table) (`fliplet-table`)
