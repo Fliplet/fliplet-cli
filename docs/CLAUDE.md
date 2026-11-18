@@ -212,6 +212,8 @@ cd docs
 npm run test:unit    # stdlib node:test; covers both bin/ scripts
 ```
 
+The Vue routing recipe test executes the published example with Vue and Vue Router. To also exercise the paired API runtime instead of the portable fixture, run `FLIPLET_API_ROOT=/path/to/fliplet-api node --test bin/__tests__/vue-routing-example.test.mjs` from `docs/`.
+
 ## Primitives published under `.well-known/`
 
 These are the AI-consumption surfaces. Publish URLs on `developers.fliplet.com`:
