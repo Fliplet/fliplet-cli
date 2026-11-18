@@ -9,54 +9,109 @@ deprecated: false
 
 # V3 Vue apps
 
-Vue 3 is the best-supported multi-screen framework in V3 because a runtime-compiler build exists — meaning `template` strings compile in the browser without a toolchain. The traps below come from using the wrong Vue build, or reaching for features that assume Vite/webpack.
+V3 Vue apps use the browser runtime compiler and Fliplet’s media helpers to load Vue single-file components (SFCs) without a build step. Keep `App.js` as a JavaScript component export and each screen as ordinary `<template>`, `<script>` and `<style>` blocks.
 
 ## Loading the framework
 
-Add `vue` via `add_dependencies` with `lazy: true`, then:
+Register Vue and Vue Router as lazy app resources with verified CDN URLs through `add_dependencies`. They are third-party libraries, so an empty dependency URL does not select a Fliplet package. For example:
 
-```js
-await Fliplet.require.lazy('vue');
-const Vue = window.Vue;
+```json
+[
+  { "name": "vue", "latest": "https://unpkg.com/vue@3/dist/vue.global.prod.js", "lazy": true },
+  { "name": "vue-router", "latest": "https://unpkg.com/vue-router@4/dist/vue-router.global.prod.js", "lazy": true }
+]
 ```
 
-`Fliplet.require.lazy(name)` resolves once the UMD bundle has executed; the module itself lands on `window` (`window.Vue`, `window.VueRouter`). Read it off `window` after the `await` — assigning the awaited value directly gives you the URL string, not the module.
-
-**Pick the runtime-compiler build (usually `vue.global.js`), not the runtime-only build.** The runtime-only build (`vue.runtime.global.js`) does not include the template compiler — any component that uses `template: '...'` strings will fail to render. The runtime-only build only works if every component is authored as a pre-compiled render function, which is impractical without a bundler.
-
-For Vue Router, the separate dependency:
+Run the following inside your boot script's `Fliplet().then(async function() { ... })` callback, before creating the router or mounting the app:
 
 ```js
-await Fliplet.require.lazy('vue-router');
+await Fliplet.require.lazy.chain('vue');
+await Fliplet.require.lazy.chain('vue-router');
+const Vue = window.Vue;
 const VueRouter = window.VueRouter;
 ```
+
+Load Vue before its companion libraries; they read `window.Vue` when executing. The lazy loader resolves to the resource URL, so read the module from its browser global after awaiting it.
+
+Use the runtime-compiler build (`vue.global.js` or `vue.global.prod.js`). It compiles the extracted template in the browser. The runtime-only build cannot compile these templates.
+
+## Loading Vue screen files
+
+The boot script loads a screen's source through `Fliplet.Router.resolveRoute(path)`, which already uses authenticated media loading. `Fliplet.Media.parseSFC(source)` extracts `{ template, script, style }` strings; `Fliplet.Media.evalModule(parts.script)` returns the component's default export. Assign the template to that component and insert its CSS. These Fliplet helpers are preloaded; this path needs no `vue3-sfc-loader` dependency.
+
+Upload each screen as a `.vue` file and register it in the [route manifest](../routing). A simple screen looks like this:
+
+{% raw %}
+```html
+<template>
+  <section class="welcome-screen"><h1>{{ title }}</h1></section>
+</template>
+<script>
+export default {
+  data: function() { return { title: 'Welcome' }; }
+};
+</script>
+<style>
+.welcome-screen { padding: 24px; }
+</style>
+```
+{% endraw %}
+
+Use this helper in the boot script before building the routes below:
+
+```js
+function loadVueScreen(source) {
+  const parts = Fliplet.Media.parseSFC(source);
+  const screen = Fliplet.Media.evalModule(parts.script);
+  screen.template = parts.template;
+  if (parts.style) {
+    const style = document.createElement('style');
+    style.textContent = parts.style;
+    document.head.appendChild(style);
+  }
+  return screen;
+}
+```
+
+`parseSFC` extracts blocks; it does not compile advanced Vue syntax or preprocess CSS. Use `export default { ... }` in the screen's script, without a separate `template` property. Styles are global: prefix selectors with the screen's root class. Keep `App.js` as JavaScript only and load its exported component with `Fliplet.Media.getContentsAsModule(appFileId)`; pass that returned object directly to `Vue.createApp(App)`.
 
 ## Features that need a build step
 
 | Feature | Why it fails | Do this instead |
 |---|---|---|
-| `.vue` single-file components | There is no loader resolving them at runtime | Use plain component objects with `template:` strings, **or** add `vue3-sfc-loader` as a dependency if the app genuinely needs SFCs. Pick one approach per app and stay consistent. |
 | `<script setup>` | Requires SFC compilation | Use the Options API or explicit `setup()` function on component objects. |
-| `<style scoped>` | Requires SFC compilation | Scope manually by wrapping each component's CSS in a root class selector. |
+| `<style scoped>` or CSS preprocessing | Extracted styles are inserted as plain global CSS | Use plain CSS with a screen-specific root class; `scoped` and `lang` attributes do not transform it. |
 | Bare ESM imports (`import Vue from 'vue'`) | No bundler resolves the specifier | Use `Fliplet.require.lazy('vue')`. |
 | TypeScript (`.ts`, `.tsx`) | No transpiler | Plain JavaScript. |
 
 ## Wiring to Fliplet.Router
 
-Full contract is in [V3 routing](../routing). Vue-specific note: the history backend is platform-conditional — path history with the base path on web, hash history on native (Cordova `file://` blocks `pushState` path changes):
+After loading Vue, Vue Router and the helper above, build routes from the [V3 route manifest](../routing). This example requires a registered home screen at `/`. Use path history with the base path on web and hash history on native, where Cordova `file://` blocks path changes:
 
 ```js
+const manifest = Fliplet.Router.getRouteManifest();
+const routes = manifest.routes.map(function(route) {
+  return {
+    path: route.path,
+    component: function() {
+      return Fliplet.Router.resolveRoute(route.path).then(function(result) {
+        return loadVueScreen(result.content);
+      });
+    }
+  };
+});
+
 const router = VueRouter.createRouter({
   history: Fliplet.Router.isNative()
     ? VueRouter.createWebHashHistory()                       // native — hash only
     : VueRouter.createWebHistory(Fliplet.Router.getBasePath()), // web — path + basename
-  routes: [...]
+  routes: routes
 });
 ```
 
 Unconditional `createWebHistory()` throws a `file:` `SecurityError` on native; unconditional `createWebHashHistory()` produces ugly `#/route` URLs on web. The boot-HTML lint flags both unless you branch on `Fliplet.Router.isNative()` (`unguarded-web-history` / `create-web-hash-history`).
 
-Build routes from `Fliplet.Router.getRouteManifest()` — do not hardcode. In each route's resolver, call `Fliplet.Router.resolveRoute(path)`. The `content` field in its result IS the screen's source — already fetched for you via `Fliplet.Media.getContents`. Return it from your loader and render it in your component; don't fetch the file again.
+Mount your root component with `Vue.createApp(App).use(router).mount('#app')` after loading `App.js`, inside the [Fliplet initialization callback](../app-bootstrap#3-init-sequence). Its template should contain `<router-view></router-view>` and the boot HTML must contain `<div id="app"></div>`. Open `/` to confirm the registered screen renders. Reuse `result.content`; do not fetch the screen again.
 
 ## Binding Fliplet.Media.authenticate
 
@@ -125,8 +180,8 @@ Vue batches DOM updates. Use `await this.$nextTick()` (Options API) or `await Vu
 | Symptom in `get_preview_logs('errors')` | Cause | Fix |
 |---|---|---|
 | `[Vue warn]: Component is missing template or render function` | Runtime-only Vue build loaded; `template:` strings silently ignored | Switch to the runtime-compiler build (`vue.global.js`) |
-| `Uncaught SyntaxError: Unexpected token '<'` inside a component file | `.vue` SFC uploaded without `vue3-sfc-loader` | Either convert the component to a plain object with `template:` string, or add `vue3-sfc-loader` |
-| Blank screen, no errors | Component returned from `Fliplet.Media.getContents` wasn't registered before router resolved | Register the component inside the route resolver, not at module load |
+| `Uncaught SyntaxError: Unexpected token '<'` inside a component file | SFC or HTML content was evaluated as JavaScript | For a screen, extract its script with `parseSFC` before `evalModule`; keep `App.js` free of HTML and style blocks. |
+| Blank route | The resolver did not return a component with its extracted template, or no route matched | Return `loadVueScreen(result.content)` and confirm the manifest contains the opened route. |
 
 ## DO / DON'T
 
@@ -136,7 +191,7 @@ Vue batches DOM updates. Use `await this.$nextTick()` (Options API) or `await Vu
 - DO bind authenticated media URLs into reactive `data()` fields.
 - DON'T use `createWebHistory()` unconditionally — it throws a `file:` `SecurityError` on native. Gate it on `Fliplet.Router.isNative()`.
 - DON'T use `createWebHashHistory()` on web — hash mode is only for native.
-- DON'T author `.vue` SFCs without `vue3-sfc-loader` loaded.
+- DO load screen SFCs through `parseSFC` and `evalModule`, then assign the extracted template.
 - DON'T `import` anything — use `Fliplet.require.lazy`.
 
 ## Related
