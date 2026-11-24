@@ -28,7 +28,8 @@ This example needs a source named `Directory` with `Name` and `Department` colum
 async function readDirectory() {
   try {
     const connection = await Fliplet.DataSources.connectByName('Directory', {
-      offline: false
+      offline: false,
+      appScoped: true
     });
     const entries = await connection.find({
       where: { Department: 'Operations' },
@@ -76,20 +77,24 @@ A query's `where` filters column values under `data`; entry metadata filters use
 
 ## Connect to a source
 
-`Fliplet.DataSources.connect(id, connectionOptions?)` and `Fliplet.DataSources.connectByName(name, connectionOptions?)` return `Promise<Connection>`. The options-object overload `connect({ name, offline })` also selects a named source.
+`Fliplet.DataSources.connect(id, connectionOptions?)` and `Fliplet.DataSources.connectByName(name, connectionOptions?)` return `Promise<Connection>`. The options-object overload `connect({ name, offline })` also selects a named source. `Fliplet.DataSources.getByName(name)` resolves an app-owned name to `{ id, name }` without opening a connection.
 
 | Argument | Type and behavior |
 |---|---|
 | `id` | Required source identifier for the ID form. A missing/falsy identifier rejects. |
-| `name` | Required source name for the named form. Name lookup uses the current request context; it does not grant cross-app access. |
+| `name` | Required source name for the named form. Without `appScoped` the lookup also matches sources shared at organization level, so two apps in one organization can resolve the same name to one source. |
+| `connectionOptions.appScoped` | Optional Boolean. `true` resolves the name only among sources owned by the app making the call, and rejects when the name is missing (404) or held by more than one source in that app (409). It never falls back to an organization-level source. Use it for anything the app owns, so the same code keeps working in a copy of the app. |
 | `connectionOptions.offline` | Optional Boolean. `false` forces online operations. When omitted, native apps can use bundled storage if the Database API is available. `true` does not enable native storage in a browser. |
 
 ```js
-const online = await Fliplet.DataSources.connectByName('Directory', { offline: false });
+const appOwned = await Fliplet.DataSources.connectByName('Directory', { offline: false, appScoped: true });
+const shared = await Fliplet.DataSources.connectByName('Directory', { offline: false });
 const byId = await Fliplet.DataSources.connect(123, { offline: false });
 ```
 
-The SDK may reuse a connection for the same identifier and offline setting. Connecting establishes a handle; it does not prove a successful server query or authorized access. Native bundle loading is lazy and failed local loading can cause later reads to use the server. There is no public connection `close`, `disconnect` or `destroy` method. Unsubscribe each listener when its owner is disposed.
+An app-owned name is the portable reference: a numeric id written into app code points at the source it had in the app the code was written in, and copying the app gives the copy new ids. `appScoped: true` requires a network connection, so it is not available for offline-only initialization; a native bundle that must open a source before it has connectivity uses the id form.
+
+The SDK may reuse a connection for the same identifier and offline setting. A connection opened with `appScoped` is not reused for a plain name lookup, or the reverse. Connecting establishes a handle; it does not prove a successful server query or authorized access. Native bundle loading is lazy and failed local loading can cause later reads to use the server. There is no public connection `close`, `disconnect` or `destroy` method. Unsubscribe each listener when its owner is disposed.
 
 ## Security and verification
 
