@@ -26,11 +26,11 @@ For SAML2/SSO configuration, use the SAML2 tab in App Settings (not code). For e
 Authenticate a user against a Data Source using `Fliplet.Session.authorize()`. This creates a server-side session that persists across page navigations.
 
 ```js
-async function loginUser(email, password, dataSourceId) {
+async function loginUser(email, password, dataSourceName) {
   try {
     const session = await Fliplet.Session.authorize({
       passport: 'dataSource',
-      dataSourceId: dataSourceId,
+      dataSourceName: dataSourceName,
       where: {
         Email: email,
         Password: password
@@ -59,7 +59,10 @@ async function loginUser(email, password, dataSourceId) {
 | Parameter | Type | Required | Description |
 |-----------|------|----------|-------------|
 | `passport` | String | Yes | Must be `'dataSource'` for email/password login |
-| `dataSourceId` | Number | Yes | The ID of the Data Source containing user records |
+| `dataSourceName` | String | Yes* | The exact, case-sensitive name of the app-owned Data Source holding user records. Resolved against the app making the call, so the same code works in a copy of the app. Rejects when the name is missing or held by more than one source in the app. |
+| `dataSourceId` | Number | Yes* | The ID of the Data Source containing user records. Still accepted, and the only form the REST endpoints take, but an ID written into app code stops pointing at this app's source once the app is copied. |
+
+\* Supply one of `dataSourceName` or `dataSourceId`. Supplying both rejects.
 | `where` | Object | Yes | Field-value pairs to match. Typically `{ Email, Password }` |
 
 **Returns:** `Promise<Session>` — the session object with `entries.dataSource.data` containing the matched user record.
@@ -110,8 +113,8 @@ A complete login screen as a Vue SFC for V3 apps:
 </template>
 
 <script>
-// Replace with the actual Data Source ID for your users table
-var USERS_DATA_SOURCE_ID = 123456;
+// The exact name of this app's users Data Source
+var USERS_DATA_SOURCE = 'Users';
 
 export default {
   data: function() {
@@ -130,7 +133,7 @@ export default {
       try {
         await Fliplet.Session.authorize({
           passport: 'dataSource',
-          dataSourceId: USERS_DATA_SOURCE_ID,
+          dataSourceName: USERS_DATA_SOURCE,
           where: {
             Email: this.email,
             Password: this.password
@@ -385,7 +388,7 @@ The flow uses three existing APIs:
 </template>
 
 <script>
-var USERS_DATA_SOURCE_ID = 123456; // Replace with your Users data source ID
+var USERS_DATA_SOURCE = 'Users';   // The exact name of your Users data source
 var EMAIL_COLUMN = 'Email';        // The column name for email in your data source
 var PASSWORD_COLUMN = 'Password';  // The column name for password in your data source
 
@@ -405,7 +408,7 @@ export default {
   methods: {
     getDataSource: async function() {
       if (!this.dataSource) {
-        this.dataSource = await Fliplet.DataSources.connect(USERS_DATA_SOURCE_ID);
+        this.dataSource = await Fliplet.DataSources.connectByName(USERS_DATA_SOURCE, { offline: false, appScoped: true });
       }
       return this.dataSource;
     },
@@ -506,8 +509,13 @@ This is the same flow the V2 login widget uses. All security-critical operations
 ## Patterns — DO and DON'T
 
 ```js
-// DO: Use Fliplet.Session.authorize() for email/password login
-await Fliplet.Session.authorize({ passport: 'dataSource', dataSourceId: id, where: { Email, Password } });
+// DO: Use Fliplet.Session.authorize() for email/password login, naming the source
+await Fliplet.Session.authorize({ passport: 'dataSource', dataSourceName: 'Users', where: { Email, Password } });
+
+// DON'T: Write a numeric data source ID into app code
+// Copying the app gives the copy new source IDs, so the login keeps
+// authenticating against the original app's source. Name it instead.
+// await Fliplet.Session.authorize({ passport: 'dataSource', dataSourceId: 123456, ... });
 
 // DON'T: Store session tokens in localStorage
 // localStorage is partitioned in cross-origin iframes (Studio preview).

@@ -51,7 +51,7 @@ console.log(record.id, record.data.Name);
 | `ack` | Boolean; omitted | Relevant to query deletion and native reconciliation; see [writing records](writing-data). |
 
 ```js
-const connection = await Fliplet.DataSources.connect(123);
+const connection = await Fliplet.DataSources.connectByName('Directory', { offline: false, appScoped: true });
 const records = await connection.find({
   where: { Department: 'Design', Score: { $gte: 80 } },
   attributes: ['Name', 'Score'],
